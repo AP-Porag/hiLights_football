@@ -243,15 +243,16 @@ interface AdminLayoutProps {
 export default function AdminLayout({ children, pageTitle, breadcrumb }: AdminLayoutProps) {
     const { url, props } = usePage<PageProps>();
     // TODO: const { auth } = usePage<PageProps>().props;
-    const auth = props.auth ?? {
-        user: {
-            id: 1,
-            name: 'Helena Costa',
-            email: 'helena.costa@hilights.fc',
-            role: 'Super Admin',
-            avatar_url: null,
-        },
-    };
+    const auth = props.auth?.user
+        ? props.auth
+        : {
+              user: {
+                  id: 1,
+                  name: 'Lucas Pereira',
+                  email: 'lucas@hilights.fc',
+                  avatar_url: null,
+              },
+          };
 
     const [mobileOpen, setMobileOpen] = useState(false);
 
