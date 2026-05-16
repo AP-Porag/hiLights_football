@@ -53,16 +53,27 @@ function getInitials(name: string): string {
 export default function ScoutNavbar() {
     const { url, props } = usePage<PageProps>();
     // TODO: const { auth } = usePage<PageProps>().props;
-    const auth = props.auth ?? {
-        user: {
-            id: 42,
-            name: 'Marco Verratti',
-            email: 'marco.verratti@scoutnet.eu',
-            role: 'SCOUT' as ScoutRole,
-            organization: 'ScoutNet Europe',
-            avatar_url: null,
-        },
-    };
+    // const auth = props.auth ?? {
+    //     user: {
+    //         id: 42,
+    //         name: 'Marco Verratti',
+    //         email: 'marco.verratti@scoutnet.eu',
+    //         role: 'SCOUT' as ScoutRole,
+    //         organization: 'ScoutNet Europe',
+    //         avatar_url: null,
+    //     },
+    // };
+
+    const auth = props.auth?.user
+        ? props.auth
+        : {
+            user: {
+                id: 1,
+                name: 'Lucas Pereira',
+                email: 'lucas@hilights.fc',
+                avatar_url: null,
+            },
+        };
     const notificationCount = props.notificationCount ?? 2;
 
     const [scrolled, setScrolled] = useState(false);

@@ -20,12 +20,24 @@ Route::get('/contact', function () {
     return Inertia::render('web/Contact');
 })->name('contact');
 
+Route::get('/player/profile/{id}', function () {
+    return Inertia::render('player/profile/public/Detail');
+})->name('profile.public.detail');
+
 //all player routes
 Route::prefix('player')->group(function () {
 
     Route::get('/', function () {
         return Inertia::render('player/dashboard/Index');
     })->name('dashboard');
+
+    Route::get('/profile', function () {
+        return Inertia::render('player/profile/Edit');
+    })->name('profile.edit');
+
+    Route::get('/subscription', function () {
+        return Inertia::render('player/subscription/Index');
+    })->name('subscription');
 });
 
 //all Scouts / Agents / Clubs routes
@@ -35,12 +47,8 @@ Route::prefix('scouting')->group(function () {
         return Inertia::render('scouting/dashboard/Index');
     })->name('dashboard');
 
-    Route::get('/search', function () {
-            return Inertia::render('scouting/search/Index');
-        })->name('search.player');
-
-    Route::get('/player-profile', function () {
-                return Inertia::render('scouting/player/details');
+    Route::get('/player', function () {
+                return Inertia::render('scouting/player/Detail');
             })->name('player.details');
 });
 
