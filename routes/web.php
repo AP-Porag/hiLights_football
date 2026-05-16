@@ -51,19 +51,22 @@ Route::prefix('scouting')->group(function () {
     Route::get('/player', function () {
         return Inertia::render('scouting/player/Detail');
     })->name('player.details');
+
+    //saved player
+    //    Route::get('/player/saved', function () {
+    //        return Inertia::render('scouting/player/Saved');
+    //    })->name('player.saved');
+
 });
 
 
 //all admin routes
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+//Route::middleware(['auth'])->prefix('admin')->group(function () {
+Route::prefix('admin')->group(function () {
 
     Route::get('/', function () {
         return Inertia::render('admin/dashboard/Index');
     })->name('dashboard');
-
-    Route::get('/users', function () {
-        return Inertia::render('admin/users/Index');
-    })->name('users.index');
 
     Route::get('/players', function () {
         return Inertia::render('admin/players/Index');
