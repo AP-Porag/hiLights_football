@@ -55,7 +55,7 @@ Route::prefix('scouting')->group(function () {
 
 
 //all admin routes
-Route::prefix('admin')->group(function () {
+Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/', function () {
         return Inertia::render('admin/dashboard/Index');
@@ -68,6 +68,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/players', function () {
         return Inertia::render('admin/players/Index');
     })->name('players.index');
+
+    Route::get('/players/{id}', function () {
+        return Inertia::render('admin/players/details');
+    })->name('players.details');
 
     Route::get('/players/{id}', function () {
         return Inertia::render('admin/players/details');
