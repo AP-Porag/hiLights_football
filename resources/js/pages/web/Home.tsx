@@ -1,20 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from '@inertiajs/react';
-import {
-    Search,
-    User,
-    Video,
-    Eye,
-    Github,
-    Twitter,
-    Instagram,
-    Youtube,
-    Play,
-    MapPin,
-    TrendingUp,
-} from 'lucide-react';
 import PublicNavbar from '@/Components/Public/PublicNavbar';
 import { Tabs, TabsList, TabsTrigger } from '@/Components/ui/tabs';
+import { Link, router } from '@inertiajs/react';
+import { Eye, Github, Instagram, Play, Search, TrendingUp, Twitter, User, Video, Youtube } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 // TODO: Replace with usePage<Props>().props
 const stats = { players: 12847, scouts: 1243, clubs: 387, countries: 67 };
@@ -117,15 +105,15 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-white dark:bg-[#0D0D0D] text-[#0F172A] dark:text-[#F5F5F5]">
+        <div className="min-h-screen bg-white text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]">
             <PublicNavbar />
 
             <main className="pt-16">
                 {/* ━━━ SECTION 1: HERO ━━━ */}
-                <section className="relative overflow-hidden bg-[#FF6B00] min-h-[88vh] flex items-center">
+                <section className="relative flex min-h-[88vh] items-center overflow-hidden bg-[#FF6B00]">
                     {/* Pitch line texture */}
                     <div
-                        className="absolute inset-0 opacity-5 pointer-events-none"
+                        className="pointer-events-none absolute inset-0 opacity-5"
                         style={{
                             backgroundImage:
                                 'linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)',
@@ -134,18 +122,18 @@ export default function Home() {
                     />
                     {/* Center circle decoration */}
                     <div
-                        className="absolute opacity-5 pointer-events-none rounded-full border-2 border-white"
+                        className="pointer-events-none absolute rounded-full border-2 border-white opacity-5"
                         style={{ width: 500, height: 500, right: -180, bottom: -180 }}
                     />
 
-                    <div className="relative w-full max-w-[1300px] mx-auto px-6 py-20 grid lg:grid-cols-[1fr_460px] gap-12 items-center">
+                    <div className="relative mx-auto grid w-full max-w-[1300px] items-center gap-12 px-6 py-20 lg:grid-cols-[1fr_460px]">
                         {/* LEFT */}
                         <div>
-              <span className="inline-flex items-center gap-2 bg-white/15 border border-white/25 text-white text-xs font-semibold px-4 py-1.5 rounded-full tracking-wide">
-                ⚽ Football Discovery Platform — Trusted by 1,200+ Scouts Worldwide
-              </span>
+                            <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/15 px-4 py-1.5 text-xs font-semibold tracking-wide text-white">
+                                ⚽ Football Discovery Platform — Trusted by 1,200+ Scouts Worldwide
+                            </span>
 
-                            <h1 className="font-display font-black text-[48px] sm:text-[58px] lg:text-[68px] leading-[0.9] tracking-[-2px] text-white mt-6">
+                            <h1 className="font-display mt-6 text-[48px] leading-[0.9] font-black tracking-[-2px] text-white sm:text-[58px] lg:text-[68px]">
                                 DISCOVER
                                 <br />
                                 YOUR NEXT
@@ -153,33 +141,33 @@ export default function Home() {
                                 SIGNING.
                             </h1>
 
-                            <p className="text-lg sm:text-xl text-white/80 font-normal max-w-md mt-4 leading-relaxed">
+                            <p className="mt-4 max-w-md text-lg leading-relaxed font-normal text-white/80 sm:text-xl">
                                 The professional scouting database connecting amateur talent with clubs, agents, and scouts across 67 countries.
                             </p>
 
                             {/* Search bar */}
-                            <div className="mt-8 bg-white dark:bg-[#0D0D0D] rounded-2xl shadow-2xl flex items-center h-[60px] overflow-hidden max-w-[560px]">
-                                <Search className="w-5 h-5 text-[#FF6B00] ml-4 shrink-0" />
+                            <div className="mt-8 flex h-[60px] max-w-[560px] items-center overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-[#0D0D0D]">
+                                <Search className="ml-4 h-5 w-5 shrink-0 text-[#FF6B00]" />
                                 <input
                                     type="text"
                                     placeholder="Search by name, club, position..."
-                                    className="flex-1 text-base text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] px-3 border-none outline-none bg-transparent min-w-0"
+                                    className="min-w-0 flex-1 border-none bg-transparent px-3 text-base text-[#0F172A] outline-none placeholder:text-[#94A3B8] dark:text-[#F5F5F5]"
                                 />
-                                <div className="w-px h-8 bg-[#E2E8F0] dark:bg-[#2A2A2A] mx-2 hidden sm:block" />
-                                <select className="hidden sm:block text-sm text-[#475569] dark:text-[#9A9A9A] px-3 border-none outline-none bg-transparent cursor-pointer">
+                                <div className="mx-2 hidden h-8 w-px bg-[#E2E8F0] sm:block dark:bg-[#2A2A2A]" />
+                                <select className="hidden cursor-pointer border-none bg-transparent px-3 text-sm text-[#475569] outline-none sm:block dark:text-[#9A9A9A]">
                                     <option>All Positions</option>
                                     <option>Forward</option>
                                     <option>Midfielder</option>
                                     <option>Defender</option>
                                     <option>Goalkeeper</option>
                                 </select>
-                                <button className="bg-[#FF6B00] text-white font-bold px-5 sm:px-8 h-full text-sm rounded-r-2xl hover:bg-[#CC5500] border-l-2 border-white/20 transition-colors whitespace-nowrap">
+                                <button className="h-full rounded-r-2xl border-l-2 border-white/20 bg-[#FF6B00] px-5 text-sm font-bold whitespace-nowrap text-white transition-colors hover:bg-[#CC5500] sm:px-8">
                                     Search Players
                                 </button>
                             </div>
 
                             {/* Stats row */}
-                            <div className="mt-8 grid grid-cols-2 sm:flex sm:items-center gap-4 sm:gap-6">
+                            <div className="mt-8 grid grid-cols-2 gap-4 sm:flex sm:items-center sm:gap-6">
                                 {[
                                     { v: stats.players.toLocaleString(), l: 'PLAYERS' },
                                     { v: stats.scouts.toLocaleString(), l: 'SCOUTS' },
@@ -188,38 +176,26 @@ export default function Home() {
                                 ].map((s, i) => (
                                     <React.Fragment key={s.l}>
                                         <div className="flex flex-col">
-                      <span className="font-display font-black text-3xl text-white leading-none">
-                        {s.v}
-                      </span>
-                                            <span className="text-white/70 text-xs font-medium tracking-wide mt-1">
-                        {s.l}
-                      </span>
+                                            <span className="font-display text-3xl leading-none font-black text-white">{s.v}</span>
+                                            <span className="mt-1 text-xs font-medium tracking-wide text-white/70">{s.l}</span>
                                         </div>
-                                        {i < 3 && (
-                                            <div className="hidden sm:block w-px h-10 bg-white/25" />
-                                        )}
+                                        {i < 3 && <div className="hidden h-10 w-px bg-white/25 sm:block" />}
                                     </React.Fragment>
                                 ))}
                             </div>
 
-                            <div className="text-sm text-white/75 mt-6 flex flex-wrap gap-x-6 gap-y-2">
-                                <Link
-                                    href="/register/player"
-                                    className="hover:underline underline-offset-4 font-medium"
-                                >
+                            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/75">
+                                <Link href="/register/player" className="font-medium underline-offset-4 hover:underline">
                                     Register as Player →
                                 </Link>
-                                <Link
-                                    href="/register/scout"
-                                    className="hover:underline underline-offset-4 font-medium"
-                                >
+                                <Link href="/register/scout" className="font-medium underline-offset-4 hover:underline">
                                     Join as Scout / Club →
                                 </Link>
                             </div>
                         </div>
 
                         {/* RIGHT — floating cards */}
-                        <div className="hidden lg:block relative h-[460px]">
+                        <div className="relative hidden h-[460px] lg:block">
                             {[
                                 {
                                     pos: 'top-0 left-0',
@@ -251,24 +227,22 @@ export default function Home() {
                             ].map((c, i) => (
                                 <div
                                     key={i}
-                                    className={`absolute ${c.pos} ${c.rot} bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.25)] p-5 w-[200px] transition-all ${c.delay} ${
+                                    className={`absolute ${c.pos} ${c.rot} w-[200px] rounded-2xl bg-white p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] transition-all ${c.delay} ${
                                         mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
                                     }`}
                                 >
-                                    <div className="h-1 w-12 bg-[#FF6B00] rounded mb-3" />
-                                    <div className="h-[80px] rounded-xl bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
-                                        <User className="w-10 h-10 text-slate-400" />
+                                    <div className="mb-3 h-1 w-12 rounded bg-[#FF6B00]" />
+                                    <div className="flex h-[80px] items-center justify-center rounded-xl bg-gradient-to-br from-slate-200 to-slate-300">
+                                        <User className="h-10 w-10 text-slate-400" />
                                     </div>
-                                    <div className="font-bold text-[#0F172A] text-sm mt-3">{c.name}</div>
-                                    <div className="flex items-center gap-2 mt-1">
-                    <span className="bg-[#FFF3EB] border border-[#FF6B00] text-[#CC5500] text-[10px] font-bold px-2 py-0.5 rounded-full">
-                      {c.position}
-                    </span>
+                                    <div className="mt-3 text-sm font-bold text-[#0F172A]">{c.name}</div>
+                                    <div className="mt-1 flex items-center gap-2">
+                                        <span className="rounded-full border border-[#FF6B00] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#CC5500]">
+                                            {c.position}
+                                        </span>
                                         <span className="text-sm">{c.flag}</span>
                                     </div>
-                                    <div className="font-mono text-[#FF6B00] text-xs mt-2">
-                                        {c.views} views
-                                    </div>
+                                    <div className="mt-2 font-mono text-xs text-[#FF6B00]">{c.views} views</div>
                                 </div>
                             ))}
                         </div>
@@ -276,31 +250,26 @@ export default function Home() {
                 </section>
 
                 {/* ━━━ SECTION 2: LEADERBOARD AD ━━━ */}
-                <section className="bg-white dark:bg-[#111111] py-4">
-                    <div className="max-w-[728px] mx-auto px-4">
-                        <div className="text-[10px] text-[#94A3B8] uppercase tracking-wider text-center mb-2">
-                            Sponsored
-                        </div>
-                        <div className="bg-[#0F172A] rounded-xl flex items-center px-6 gap-4 h-[90px] mx-auto overflow-hidden relative">
-              <span
-                  className="absolute right-4 top-[-10px] font-black text-[120px] text-white leading-none pointer-events-none select-none"
-                  style={{ opacity: 0.03 }}
-              >
-                W
-              </span>
-                            <div className="text-white font-black text-2xl tracking-tight shrink-0">
-                                WYSCOUT
+                <section className="bg-white py-4 dark:bg-[#111111]">
+                    <div className="mx-auto max-w-[728px] px-4">
+                        <div className="mb-2 text-center text-[10px] tracking-wider text-[#94A3B8] uppercase">Sponsored</div>
+                        <div className="relative mx-auto flex h-[90px] items-center gap-4 overflow-hidden rounded-xl bg-[#0F172A] px-6">
+                            <span
+                                className="pointer-events-none absolute top-[-10px] right-4 text-[120px] leading-none font-black text-white select-none"
+                                style={{ opacity: 0.03 }}
+                            >
+                                W
+                            </span>
+                            <div className="shrink-0 text-2xl font-black tracking-tight text-white">WYSCOUT</div>
+                            <div className="h-10 w-px shrink-0 bg-white/30" />
+                            <div className="hidden min-w-0 flex-1 sm:block">
+                                <div className="truncate text-sm font-semibold text-white">The #1 professional scouting platform</div>
+                                <div className="truncate text-xs text-white/50">4,000+ leagues · 400M+ data points · Used by 4,000 clubs</div>
                             </div>
-                            <div className="w-px h-10 bg-white/30 shrink-0" />
-                            <div className="flex-1 min-w-0 hidden sm:block">
-                                <div className="text-white font-semibold text-sm truncate">
-                                    The #1 professional scouting platform
-                                </div>
-                                <div className="text-white/50 text-xs truncate">
-                                    4,000+ leagues · 400M+ data points · Used by 4,000 clubs
-                                </div>
-                            </div>
-                            <button className="bg-[#FF6B00] text-white font-bold text-sm px-4 sm:px-6 py-3 rounded-lg hover:bg-[#CC5500] shrink-0 whitespace-nowrap">
+                            <button
+                                onClick={() => router.visit('/register')}
+                                className="shrink-0 rounded-lg bg-[#FF6B00] px-4 py-3 text-sm font-bold whitespace-nowrap text-white hover:bg-[#CC5500] sm:px-6"
+                            >
                                 START FREE TRIAL →
                             </button>
                         </div>
@@ -308,68 +277,57 @@ export default function Home() {
                 </section>
 
                 {/* ━━━ SECTION 3: FEATURED PLAYERS ━━━ */}
-                <section className="bg-white dark:bg-[#0D0D0D] py-16">
-                    <div className="max-w-[1300px] mx-auto px-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+                <section className="bg-white py-16 dark:bg-[#0D0D0D]">
+                    <div className="mx-auto flex max-w-[1300px] flex-col gap-4 px-6 md:flex-row md:items-end md:justify-between">
                         <div>
-                            <div className="text-[#FF6B00] text-xs font-bold tracking-[0.14em] uppercase">
-                                Featured Players
-                            </div>
-                            <h2 className="font-display text-4xl text-[#0F172A] dark:text-[#F5F5F5] font-black mt-1 leading-tight">
+                            <div className="text-xs font-bold tracking-[0.14em] text-[#FF6B00] uppercase">Featured Players</div>
+                            <h2 className="font-display mt-1 text-4xl leading-tight font-black text-[#0F172A] dark:text-[#F5F5F5]">
                                 Rising Talent. Global Stage.
                             </h2>
                         </div>
                         <Tabs defaultValue="all">
-                            <TabsList className="bg-transparent border-b border-[#E2E8F0] dark:border-[#2A2A2A] rounded-none h-auto p-0 gap-1 flex-wrap">
-                                {['All', 'Forwards', 'Midfielders', 'Defenders', 'Goalkeepers'].map(
-                                    (t) => (
-                                        <TabsTrigger
-                                            key={t}
-                                            value={t.toLowerCase()}
-                                            className="text-sm font-medium text-[#475569] dark:text-[#9A9A9A] data-[state=active]:text-[#FF6B00] data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B00] rounded-none px-3 py-2 data-[state=active]:shadow-none bg-transparent data-[state=active]:bg-transparent"
-                                        >
-                                            {t}
-                                        </TabsTrigger>
-                                    ),
-                                )}
+                            <TabsList className="h-auto flex-wrap gap-1 rounded-none border-b border-[#E2E8F0] bg-transparent p-0 dark:border-[#2A2A2A]">
+                                {['All', 'Forwards', 'Midfielders', 'Defenders', 'Goalkeepers'].map((t) => (
+                                    <TabsTrigger
+                                        key={t}
+                                        value={t.toLowerCase()}
+                                        className="rounded-none bg-transparent px-3 py-2 text-sm font-medium text-[#475569] data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B00] data-[state=active]:bg-transparent data-[state=active]:text-[#FF6B00] data-[state=active]:shadow-none dark:text-[#9A9A9A]"
+                                    >
+                                        {t}
+                                    </TabsTrigger>
+                                ))}
                             </TabsList>
                         </Tabs>
                     </div>
 
-                    <div className="mt-6 max-w-[1300px] mx-auto">
-                        <div
-                            className="flex gap-4 overflow-x-auto pb-4 px-6 scrollbar-none"
-                            style={{ scrollbarWidth: 'none' }}
-                        >
+                    <div className="mx-auto mt-6 max-w-[1300px]">
+                        <div className="scrollbar-none flex gap-4 overflow-x-auto px-6 pb-4" style={{ scrollbarWidth: 'none' }}>
                             {featuredPlayers.map((p) => (
                                 <Link
                                     key={p.id}
-                                    href={`/players/${p.id}`}
-                                    className="group bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-5 w-[240px] shrink-0 cursor-pointer hover:border-[#FF6B00] hover:border-l-4 hover:shadow-[0_4px_16px_rgba(255,107,0,0.12)] hover:-translate-y-1 transition-all duration-200"
+                                    href={`/player/profile/${p.id}`}
+                                    className="group w-[240px] shrink-0 cursor-pointer rounded-2xl border border-[#E2E8F0] bg-white p-5 transition-all duration-200 hover:-translate-y-1 hover:border-l-4 hover:border-[#FF6B00] hover:shadow-[0_4px_16px_rgba(255,107,0,0.12)] dark:border-[#2A2A2A] dark:bg-[#161616]"
                                 >
-                                    <div className="h-[160px] rounded-xl bg-[#F8FAFC] dark:bg-[#1F1F1F] relative flex items-center justify-center">
-                                        <User className="w-16 h-16 text-[#CBD5E1] dark:text-[#2A2A2A]" />
-                                        <span className="absolute top-3 left-3 bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-bold px-2 py-0.5 rounded-full">
-                      {p.position}
-                    </span>
+                                    <div className="relative flex h-[160px] items-center justify-center rounded-xl bg-[#F8FAFC] dark:bg-[#1F1F1F]">
+                                        <User className="h-16 w-16 text-[#CBD5E1] dark:text-[#2A2A2A]" />
+                                        <span className="absolute top-3 left-3 rounded-full border border-[#FF6B00] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#CC5500] dark:bg-[rgba(255,107,0,0.12)]">
+                                            {p.position}
+                                        </span>
                                         {p.premium && (
-                                            <span className="absolute top-3 right-3 bg-[#FF6B00] text-white text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wide">
-                        PREMIUM
-                      </span>
+                                            <span className="absolute top-3 right-3 rounded-full bg-[#FF6B00] px-2 py-0.5 text-[9px] font-bold tracking-wide text-white">
+                                                PREMIUM
+                                            </span>
                                         )}
                                     </div>
                                     <div className="p-3">
-                                        <div className="font-bold text-[#0F172A] dark:text-[#F5F5F5] text-sm">
-                                            {p.name}
-                                        </div>
-                                        <div className="text-xs text-[#475569] dark:text-[#9A9A9A] mt-0.5">
+                                        <div className="text-sm font-bold text-[#0F172A] dark:text-[#F5F5F5]">{p.name}</div>
+                                        <div className="mt-0.5 text-xs text-[#475569] dark:text-[#9A9A9A]">
                                             {p.club} {p.flag}
                                         </div>
-                                        <div className="text-xs text-[#94A3B8] mt-2 font-mono">
+                                        <div className="mt-2 font-mono text-xs text-[#94A3B8]">
                                             {p.age}y · {p.height}cm · {p.foot}
                                         </div>
-                                        <div className="text-[#FF6B00] text-xs font-bold mt-3 group-hover:underline">
-                                            VIEW PROFILE →
-                                        </div>
+                                        <div className="mt-3 text-xs font-bold text-[#FF6B00] group-hover:underline">VIEW PROFILE →</div>
                                     </div>
                                 </Link>
                             ))}
@@ -378,59 +336,44 @@ export default function Home() {
                 </section>
 
                 {/* ━━━ SECTION 4: HALF-PAGE ADS ━━━ */}
-                <section className="bg-[#F8FAFC] dark:bg-[#111111] py-8">
-                    <div className="max-w-[1300px] mx-auto px-6 grid lg:grid-cols-2 gap-6">
+                <section className="bg-[#F8FAFC] py-8 dark:bg-[#111111]">
+                    <div className="mx-auto grid max-w-[1300px] gap-6 px-6 lg:grid-cols-2">
                         {/* Nike */}
                         <div
-                            className="relative bg-[#111] rounded-2xl h-[260px] flex flex-col items-center justify-center overflow-hidden"
+                            className="relative flex h-[260px] flex-col items-center justify-center overflow-hidden rounded-2xl bg-[#111]"
                             style={{
-                                backgroundImage:
-                                    'radial-gradient(ellipse at 50% 0%, rgba(255,107,0,0.3) 0%, transparent 60%)',
+                                backgroundImage: 'radial-gradient(ellipse at 50% 0%, rgba(255,107,0,0.3) 0%, transparent 60%)',
                                 backgroundColor: '#111',
                             }}
                         >
-              <span className="absolute top-3 right-3 text-white/30 text-[10px] uppercase tracking-wider">
-                Ad
-              </span>
+                            <span className="absolute top-3 right-3 text-[10px] tracking-wider text-white/30 uppercase">Ad</span>
                             <span
-                                className="absolute -right-4 -top-4 font-black text-[120px] text-white leading-none pointer-events-none select-none"
+                                className="pointer-events-none absolute -top-4 -right-4 text-[120px] leading-none font-black text-white select-none"
                                 style={{ opacity: 0.08 }}
                             >
-                ✓
-              </span>
-                            <div className="text-white font-black text-3xl tracking-tight">
-                                NIKE FOOTBALL
-                            </div>
-                            <div className="text-white/60 text-sm mt-1">2025 Season Collection</div>
-                            <div className="text-white/80 font-semibold text-sm mt-3 italic">
-                                "Just Do It."
-                            </div>
-                            <button className="bg-[#FF6B00] text-white font-bold px-8 py-3 rounded-xl mt-6 text-sm hover:bg-[#CC5500] transition-colors">
+                                ✓
+                            </span>
+                            <div className="text-3xl font-black tracking-tight text-white">NIKE FOOTBALL</div>
+                            <div className="mt-1 text-sm text-white/60">2025 Season Collection</div>
+                            <div className="mt-3 text-sm font-semibold text-white/80 italic">"Just Do It."</div>
+                            <button className="mt-6 rounded-xl bg-[#FF6B00] px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-[#CC5500]">
                                 SHOP THE COLLECTION →
                             </button>
                         </div>
 
                         {/* Adidas */}
-                        <div className="relative bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl h-[260px] flex flex-col items-center justify-center p-8">
-              <span className="absolute top-3 right-3 text-[#94A3B8] text-[10px] uppercase tracking-wider">
-                Ad
-              </span>
-                            <div className="absolute top-6 left-8 right-8 flex flex-col gap-1">
+                        <div className="relative flex h-[260px] flex-col items-center justify-center rounded-2xl border border-[#E2E8F0] bg-white p-8 dark:border-[#2A2A2A] dark:bg-[#161616]">
+                            <span className="absolute top-3 right-3 text-[10px] tracking-wider text-[#94A3B8] uppercase">Ad</span>
+                            <div className="absolute top-6 right-8 left-8 flex flex-col gap-1">
                                 <div className="h-1 w-full bg-[#0F172A] dark:bg-[#F5F5F5]" />
                                 <div className="h-1 w-full bg-[#0F172A] dark:bg-[#F5F5F5]" />
                                 <div className="h-1 w-full bg-[#0F172A] dark:bg-[#F5F5F5]" />
                             </div>
-                            <div className="text-[#0F172A] dark:text-[#F5F5F5] font-black text-3xl tracking-tight mt-4">
-                                adidas
-                            </div>
-                            <div className="text-[#475569] dark:text-[#9A9A9A] font-semibold text-sm">
-                                Predator Elite
-                            </div>
-                            <div className="text-5xl mt-2 mb-2">⚽</div>
-                            <div className="text-[#0F172A] dark:text-[#F5F5F5] font-bold text-sm text-center">
-                                Precision. Power. Control.
-                            </div>
-                            <button className="bg-[#0F172A] dark:bg-[#F5F5F5] text-white dark:text-[#0F172A] font-bold px-8 py-2.5 rounded-lg mt-4 text-sm hover:opacity-90 transition-opacity">
+                            <div className="mt-4 text-3xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">adidas</div>
+                            <div className="text-sm font-semibold text-[#475569] dark:text-[#9A9A9A]">Predator Elite</div>
+                            <div className="mt-2 mb-2 text-5xl">⚽</div>
+                            <div className="text-center text-sm font-bold text-[#0F172A] dark:text-[#F5F5F5]">Precision. Power. Control.</div>
+                            <button className="mt-4 rounded-lg bg-[#0F172A] px-8 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90 dark:bg-[#F5F5F5] dark:text-[#0F172A]">
                                 EXPLORE NOW
                             </button>
                         </div>
@@ -438,18 +381,16 @@ export default function Home() {
                 </section>
 
                 {/* ━━━ SECTION 5: HOW IT WORKS ━━━ */}
-                <section className="bg-white dark:bg-[#0D0D0D] py-16">
-                    <div className="max-w-[1100px] mx-auto px-6">
+                <section className="bg-white py-16 dark:bg-[#0D0D0D]">
+                    <div className="mx-auto max-w-[1100px] px-6">
                         <div className="text-center">
-                            <div className="text-[#FF6B00] text-xs font-bold tracking-[0.14em] uppercase">
-                                The Platform
-                            </div>
-                            <h2 className="font-display text-4xl text-[#0F172A] dark:text-[#F5F5F5] font-black mt-1">
+                            <div className="text-xs font-bold tracking-[0.14em] text-[#FF6B00] uppercase">The Platform</div>
+                            <h2 className="font-display mt-1 text-4xl font-black text-[#0F172A] dark:text-[#F5F5F5]">
                                 Simple. Professional. Effective.
                             </h2>
                         </div>
 
-                        <div className="grid lg:grid-cols-3 gap-8 mt-10">
+                        <div className="mt-10 grid gap-8 lg:grid-cols-3">
                             {[
                                 {
                                     num: '01',
@@ -471,16 +412,10 @@ export default function Home() {
                                 },
                             ].map((s) => (
                                 <div key={s.num} className="text-center lg:text-left">
-                                    <div className="font-display font-black text-[80px] text-[#FF6B00]/10 leading-none">
-                                        {s.num}
-                                    </div>
-                                    <s.Icon className="w-7 h-7 text-[#FF6B00] -mt-6 mb-3 mx-auto lg:mx-0" />
-                                    <div className="font-bold text-[#0F172A] dark:text-[#F5F5F5] text-lg">
-                                        {s.title}
-                                    </div>
-                                    <div className="text-[#475569] dark:text-[#9A9A9A] text-sm leading-relaxed mt-2">
-                                        {s.desc}
-                                    </div>
+                                    <div className="font-display text-[80px] leading-none font-black text-[#FF6B00]/10">{s.num}</div>
+                                    <s.Icon className="mx-auto -mt-6 mb-3 h-7 w-7 text-[#FF6B00] lg:mx-0" />
+                                    <div className="text-lg font-bold text-[#0F172A] dark:text-[#F5F5F5]">{s.title}</div>
+                                    <div className="mt-2 text-sm leading-relaxed text-[#475569] dark:text-[#9A9A9A]">{s.desc}</div>
                                 </div>
                             ))}
                         </div>
@@ -489,7 +424,7 @@ export default function Home() {
 
                 {/* ━━━ SECTION 6: STATS BAND ━━━ */}
                 <section className="bg-[#FF6B00] py-12">
-                    <div className="max-w-[900px] mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                    <div className="mx-auto grid max-w-[900px] grid-cols-2 gap-8 px-6 text-center lg:grid-cols-4">
                         {[
                             { v: stats.players.toLocaleString(), l: 'REGISTERED PLAYERS' },
                             { v: stats.scouts.toLocaleString(), l: 'ACTIVE SCOUTS' },
@@ -497,44 +432,34 @@ export default function Home() {
                             { v: stats.countries.toString(), l: 'COUNTRIES' },
                         ].map((s) => (
                             <div key={s.l}>
-                                <div className="font-display font-black text-5xl lg:text-6xl text-white leading-none">
-                                    {s.v}
-                                </div>
-                                <div className="text-white/75 text-sm font-medium tracking-wide mt-2">
-                                    {s.l}
-                                </div>
+                                <div className="font-display text-5xl leading-none font-black text-white lg:text-6xl">{s.v}</div>
+                                <div className="mt-2 text-sm font-medium tracking-wide text-white/75">{s.l}</div>
                             </div>
                         ))}
                     </div>
                 </section>
 
                 {/* ━━━ SECTION 7: SPONSOR PARTNERS ━━━ */}
-                <section className="bg-white dark:bg-[#0D0D0D] py-10">
-                    <div className="max-w-[1300px] mx-auto px-6">
-                        <div className="text-[#94A3B8] text-xs uppercase tracking-widest text-center mb-8">
-                            Our Partners
-                        </div>
-                        <div className="flex flex-wrap gap-4 justify-center">
-                            {['SPORTRADAR', 'TRANSFERROOM', 'WYSCOUT', 'INSTAT', 'FOOTBALL MANAGER'].map(
-                                (name) => (
-                                    <div
-                                        key={name}
-                                        className="bg-[#F8FAFC] dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-16 w-36 flex items-center justify-center text-[#475569] dark:text-[#9A9A9A] font-black text-xs tracking-tight grayscale hover:grayscale-0 hover:text-[#FF6B00] dark:hover:text-[#FF6B00] transition-all"
-                                    >
-                                        {name}
-                                    </div>
-                                ),
-                            )}
+                <section className="bg-white py-10 dark:bg-[#0D0D0D]">
+                    <div className="mx-auto max-w-[1300px] px-6">
+                        <div className="mb-8 text-center text-xs tracking-widest text-[#94A3B8] uppercase">Our Partners</div>
+                        <div className="flex flex-wrap justify-center gap-4">
+                            {['SPORTRADAR', 'TRANSFERROOM', 'WYSCOUT', 'INSTAT', 'FOOTBALL MANAGER'].map((name) => (
+                                <div
+                                    key={name}
+                                    className="flex h-16 w-36 items-center justify-center rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-xs font-black tracking-tight text-[#475569] grayscale transition-all hover:text-[#FF6B00] hover:grayscale-0 dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#9A9A9A] dark:hover:text-[#FF6B00]"
+                                >
+                                    {name}
+                                </div>
+                            ))}
                         </div>
 
                         {/* Hero sponsor banner */}
-                        <div className="relative max-w-[970px] mx-auto mt-8 bg-gradient-to-r from-[#1a1a2e] to-[#16213e] rounded-2xl h-[250px] flex items-center px-6 sm:px-12 gap-6 overflow-hidden">
-              <span className="absolute top-3 right-3 text-white/30 text-[10px] uppercase tracking-wider">
-                Sponsored
-              </span>
+                        <div className="relative mx-auto mt-8 flex h-[250px] max-w-[970px] items-center gap-6 overflow-hidden rounded-2xl bg-gradient-to-r from-[#1a1a2e] to-[#16213e] px-6 sm:px-12">
+                            <span className="absolute top-3 right-3 text-[10px] tracking-wider text-white/30 uppercase">Sponsored</span>
                             {/* Orb decorations */}
                             <div
-                                className="absolute pointer-events-none rounded-full bg-[#FF6B00]"
+                                className="pointer-events-none absolute rounded-full bg-[#FF6B00]"
                                 style={{
                                     width: 260,
                                     height: 260,
@@ -545,7 +470,7 @@ export default function Home() {
                                 }}
                             />
                             <div
-                                className="absolute pointer-events-none rounded-full bg-[#3b82f6]"
+                                className="pointer-events-none absolute rounded-full bg-[#3b82f6]"
                                 style={{
                                     width: 200,
                                     height: 200,
@@ -556,25 +481,23 @@ export default function Home() {
                                 }}
                             />
 
-                            <div className="relative flex-1 min-w-0">
-                                <div className="text-white/60 text-xs font-bold tracking-[0.2em] uppercase">
-                                    ScoutPro Network
-                                </div>
-                                <div className="font-display font-black text-white text-3xl sm:text-4xl mt-2 leading-tight">
+                            <div className="relative min-w-0 flex-1">
+                                <div className="text-xs font-bold tracking-[0.2em] text-white/60 uppercase">ScoutPro Network</div>
+                                <div className="font-display mt-2 text-3xl leading-tight font-black text-white sm:text-4xl">
                                     GLOBAL SCOUTING.
                                     <br />
                                     ONE NETWORK.
                                 </div>
-                                <div className="text-white/70 text-sm mt-3 max-w-md hidden sm:block">
+                                <div className="mt-3 hidden max-w-md text-sm text-white/70 sm:block">
                                     Connecting clubs, agents, and players across 90+ countries with verified intelligence and live match data.
                                 </div>
-                                <button className="bg-[#FF6B00] text-white font-bold px-6 py-3 rounded-xl mt-4 text-sm hover:bg-[#CC5500] transition-colors">
+                                <button className="mt-4 rounded-xl bg-[#FF6B00] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#CC5500]">
                                     JOIN THE NETWORK →
                                 </button>
                             </div>
-                            <div className="relative hidden md:flex items-center justify-center w-[180px] shrink-0">
-                                <div className="w-[140px] h-[140px] rounded-full border-2 border-white/20 flex items-center justify-center">
-                                    <TrendingUp className="w-14 h-14 text-white/80" strokeWidth={1.5} />
+                            <div className="relative hidden w-[180px] shrink-0 items-center justify-center md:flex">
+                                <div className="flex h-[140px] w-[140px] items-center justify-center rounded-full border-2 border-white/20">
+                                    <TrendingUp className="h-14 w-14 text-white/80" strokeWidth={1.5} />
                                 </div>
                             </div>
                         </div>
@@ -582,69 +505,54 @@ export default function Home() {
                 </section>
 
                 {/* ━━━ SECTION 8: FEATURED VIDEOS ━━━ */}
-                <section className="bg-[#F8FAFC] dark:bg-[#111111] py-16">
-                    <div className="max-w-[1300px] mx-auto px-6">
+                <section className="bg-[#F8FAFC] py-16 dark:bg-[#111111]">
+                    <div className="mx-auto max-w-[1300px] px-6">
                         <div>
-                            <div className="text-[#FF6B00] text-xs font-bold tracking-[0.14em] uppercase">
-                                Player Highlights
-                            </div>
-                            <h2 className="font-display text-4xl text-[#0F172A] dark:text-[#F5F5F5] font-black mt-1">
-                                Watch Them Play
-                            </h2>
+                            <div className="text-xs font-bold tracking-[0.14em] text-[#FF6B00] uppercase">Player Highlights</div>
+                            <h2 className="font-display mt-1 text-4xl font-black text-[#0F172A] dark:text-[#F5F5F5]">Watch Them Play</h2>
                         </div>
 
-                        <div className="grid lg:grid-cols-[1.6fr_1fr] gap-4 mt-8">
+                        <div className="mt-8 grid gap-4 lg:grid-cols-[1.6fr_1fr]">
                             {/* Large video */}
-                            <div className="relative bg-[#0F172A] rounded-2xl h-[300px] overflow-hidden group cursor-pointer">
+                            <div className="group relative h-[300px] cursor-pointer overflow-hidden rounded-2xl bg-[#0F172A]">
                                 <div
-                                    className="absolute inset-0 pointer-events-none"
+                                    className="pointer-events-none absolute inset-0"
                                     style={{
-                                        backgroundImage:
-                                            'radial-gradient(ellipse at 30% 30%, rgba(255,107,0,0.25) 0%, transparent 60%)',
+                                        backgroundImage: 'radial-gradient(ellipse at 30% 30%, rgba(255,107,0,0.25) 0%, transparent 60%)',
                                     }}
                                 />
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-20 h-20 rounded-full bg-[#FF6B00] flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
-                                        <Play className="w-8 h-8 text-white ml-1" fill="white" />
+                                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#FF6B00] shadow-2xl transition-transform group-hover:scale-110">
+                                        <Play className="ml-1 h-8 w-8 text-white" fill="white" />
                                     </div>
                                 </div>
-                                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                  <span className="bg-[#FFF3EB] border border-[#FF6B00] text-[#CC5500] text-[10px] font-bold px-2 py-0.5 rounded-full">
-                    ST · Santos FC
-                  </span>
-                                    <div className="font-display font-black text-white text-3xl tracking-tight mt-3">
-                                        LUCAS ALMEIDA
-                                    </div>
-                                    <div className="text-white/60 text-xs font-mono mt-1">
-                                        Season Highlights · 4:32
-                                    </div>
+                                <div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                    <span className="rounded-full border border-[#FF6B00] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#CC5500]">
+                                        ST · Santos FC
+                                    </span>
+                                    <div className="font-display mt-3 text-3xl font-black tracking-tight text-white">LUCAS ALMEIDA</div>
+                                    <div className="mt-1 font-mono text-xs text-white/60">Season Highlights · 4:32</div>
                                 </div>
                             </div>
 
                             {/* Two small videos */}
                             <div className="flex flex-col gap-4">
                                 {featuredVideos.slice(1).map((v) => (
-                                    <div
-                                        key={v.id}
-                                        className="relative bg-[#0F172A] rounded-2xl h-[140px] overflow-hidden group cursor-pointer"
-                                    >
+                                    <div key={v.id} className="group relative h-[140px] cursor-pointer overflow-hidden rounded-2xl bg-[#0F172A]">
                                         <div
-                                            className="absolute inset-0 pointer-events-none"
+                                            className="pointer-events-none absolute inset-0"
                                             style={{
-                                                backgroundImage:
-                                                    'radial-gradient(ellipse at 70% 50%, rgba(255,107,0,0.2) 0%, transparent 60%)',
+                                                backgroundImage: 'radial-gradient(ellipse at 70% 50%, rgba(255,107,0,0.2) 0%, transparent 60%)',
                                             }}
                                         />
-                                        <div className="absolute right-5 top-1/2 -translate-y-1/2">
-                                            <div className="w-12 h-12 rounded-full bg-[#FF6B00] flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
-                                                <Play className="w-5 h-5 text-white ml-0.5" fill="white" />
+                                        <div className="absolute top-1/2 right-5 -translate-y-1/2">
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FF6B00] shadow-xl transition-transform group-hover:scale-110">
+                                                <Play className="ml-0.5 h-5 w-5 text-white" fill="white" />
                                             </div>
                                         </div>
-                                        <div className="absolute bottom-0 left-0 right-0 p-4">
-                                            <div className="font-display font-black text-white text-xl tracking-tight">
-                                                {v.name}
-                                            </div>
-                                            <div className="text-white/60 text-[11px] mt-0.5">{v.position}</div>
+                                        <div className="absolute right-0 bottom-0 left-0 p-4">
+                                            <div className="font-display text-xl font-black tracking-tight text-white">{v.name}</div>
+                                            <div className="mt-0.5 text-[11px] text-white/60">{v.position}</div>
                                         </div>
                                     </div>
                                 ))}
@@ -654,25 +562,25 @@ export default function Home() {
                 </section>
 
                 {/* ━━━ SECTION 9: CTA BAND ━━━ */}
-                <section className="bg-[#FF6B00] py-20 text-center relative overflow-hidden">
+                <section className="relative overflow-hidden bg-[#FF6B00] py-20 text-center">
                     <div
-                        className="absolute inset-0 opacity-5 pointer-events-none"
+                        className="pointer-events-none absolute inset-0 opacity-5"
                         style={{
                             backgroundImage:
                                 'linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)',
                             backgroundSize: '60px 60px',
                         }}
                     />
-                    <div className="relative max-w-3xl mx-auto px-6">
-                        <h2 className="font-display font-black text-[40px] sm:text-[52px] text-white leading-tight tracking-tight">
+                    <div className="relative mx-auto max-w-3xl px-6">
+                        <h2 className="font-display text-[40px] leading-tight font-black tracking-tight text-white sm:text-[52px]">
                             ARE YOU THE NEXT GREAT TALENT?
                         </h2>
-                        <p className="text-lg sm:text-xl text-white/80 max-w-xl mx-auto mt-4">
+                        <p className="mx-auto mt-4 max-w-xl text-lg text-white/80 sm:text-xl">
                             Join 12,000+ players already building their professional career on HiLights Football.
                         </p>
                         <Link
-                            href="/register/player"
-                            className="inline-block bg-white text-[#FF6B00] font-black text-base sm:text-lg px-10 sm:px-12 py-4 sm:py-5 rounded-2xl hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:scale-105 transition-all mt-8"
+                            href="/register"
+                            className="mt-8 inline-block rounded-2xl bg-white px-10 py-4 text-base font-black text-[#FF6B00] transition-all hover:scale-105 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] sm:px-12 sm:py-5 sm:text-lg"
                         >
                             CREATE YOUR FREE PROFILE
                         </Link>
@@ -680,42 +588,33 @@ export default function Home() {
                 </section>
 
                 {/* ━━━ FOOTER ━━━ */}
-                <footer className="bg-[#0F172A] text-white py-12">
-                    <div className="max-w-[1300px] mx-auto px-6">
-                        <div className="grid lg:grid-cols-4 gap-10">
+                <footer className="bg-[#0F172A] py-12 text-white">
+                    <div className="mx-auto max-w-[1300px] px-6">
+                        <div className="grid gap-10 lg:grid-cols-4">
                             <div>
-                                <img
-                                    src="/images/logo/hilights_logo_dark_200.png"
-                                    className="h-12 w-auto"
-                                    alt="HiLights Football"
-                                />
-                                <p className="text-slate-400 text-sm mt-4 leading-relaxed">
+                                <img src="/images/logo/hilights_logo_dark_200.png" className="h-12 w-auto" alt="HiLights Football" />
+                                <p className="mt-4 text-sm leading-relaxed text-slate-400">
                                     The professional football discovery platform connecting talent with opportunity worldwide.
                                 </p>
-                                <div className="flex gap-3 mt-5">
+                                <div className="mt-5 flex gap-3">
                                     {[Github, Twitter, Instagram, Youtube].map((I, i) => (
                                         <a
                                             key={i}
                                             href="#"
-                                            className="w-9 h-9 rounded-lg bg-white/5 hover:bg-[#FF6B00] flex items-center justify-center transition-colors"
+                                            className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 transition-colors hover:bg-[#FF6B00]"
                                         >
-                                            <I className="w-4 h-4 text-slate-400 hover:text-white" />
+                                            <I className="h-4 w-4 text-slate-400 hover:text-white" />
                                         </a>
                                     ))}
                                 </div>
                             </div>
 
                             <div>
-                                <div className="font-bold text-white text-sm tracking-wide mb-4">
-                                    PLATFORM
-                                </div>
+                                <div className="mb-4 text-sm font-bold tracking-wide text-white">PLATFORM</div>
                                 <ul className="space-y-2.5">
                                     {['About', 'How It Works', 'Pricing', 'Press', 'Careers'].map((l) => (
                                         <li key={l}>
-                                            <Link
-                                                href="#"
-                                                className="text-slate-400 hover:text-white text-sm transition-colors"
-                                            >
+                                            <Link href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
                                                 {l}
                                             </Link>
                                         </li>
@@ -724,22 +623,11 @@ export default function Home() {
                             </div>
 
                             <div>
-                                <div className="font-bold text-white text-sm tracking-wide mb-4">
-                                    FOR PLAYERS
-                                </div>
+                                <div className="mb-4 text-sm font-bold tracking-wide text-white">FOR PLAYERS</div>
                                 <ul className="space-y-2.5">
-                                    {[
-                                        'Create Profile',
-                                        'Upload Highlights',
-                                        'Pricing Plans',
-                                        'Success Stories',
-                                        'Player Support',
-                                    ].map((l) => (
+                                    {['Create Profile', 'Upload Highlights', 'Pricing Plans', 'Success Stories', 'Player Support'].map((l) => (
                                         <li key={l}>
-                                            <Link
-                                                href="#"
-                                                className="text-slate-400 hover:text-white text-sm transition-colors"
-                                            >
+                                            <Link href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
                                                 {l}
                                             </Link>
                                         </li>
@@ -748,22 +636,11 @@ export default function Home() {
                             </div>
 
                             <div>
-                                <div className="font-bold text-white text-sm tracking-wide mb-4">
-                                    FOR SCOUTS
-                                </div>
+                                <div className="mb-4 text-sm font-bold tracking-wide text-white">FOR SCOUTS</div>
                                 <ul className="space-y-2.5">
-                                    {[
-                                        'Join as Scout',
-                                        'Search Database',
-                                        'Scout Tools',
-                                        'Club Partnerships',
-                                        'API Access',
-                                    ].map((l) => (
+                                    {['Join as Scout', 'Search Database', 'Scout Tools', 'Club Partnerships', 'API Access'].map((l) => (
                                         <li key={l}>
-                                            <Link
-                                                href="#"
-                                                className="text-slate-400 hover:text-white text-sm transition-colors"
-                                            >
+                                            <Link href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
                                                 {l}
                                             </Link>
                                         </li>
@@ -772,19 +649,19 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-slate-500 text-xs">
+                        <div className="mt-10 flex flex-col justify-between gap-3 border-t border-white/10 pt-6 text-xs text-slate-500 sm:flex-row">
                             <div>© 2026 HiLights Football. All rights reserved.</div>
                             <div className="flex flex-wrap gap-4">
-                                <Link href="#" className="hover:text-white transition-colors">
+                                <Link href="#" className="transition-colors hover:text-white">
                                     Terms
                                 </Link>
-                                <Link href="#" className="hover:text-white transition-colors">
+                                <Link href="#" className="transition-colors hover:text-white">
                                     Privacy
                                 </Link>
-                                <Link href="#" className="hover:text-white transition-colors">
+                                <Link href="#" className="transition-colors hover:text-white">
                                     Cookies
                                 </Link>
-                                <Link href="#" className="hover:text-white transition-colors">
+                                <Link href="#" className="transition-colors hover:text-white">
                                     Contact
                                 </Link>
                             </div>

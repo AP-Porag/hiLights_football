@@ -35,6 +35,7 @@ Route::prefix('player')->group(function () {
         return Inertia::render('player/profile/Edit');
     })->name('profile.edit');
 
+
     Route::get('/subscription', function () {
         return Inertia::render('player/subscription/Index');
     })->name('subscription');
@@ -48,13 +49,13 @@ Route::prefix('scouting')->group(function () {
     })->name('dashboard');
 
     Route::get('/player', function () {
-                return Inertia::render('scouting/player/Detail');
-            })->name('player.details');
+        return Inertia::render('scouting/player/Detail');
+    })->name('player.details');
 });
 
 
 //all admin routes
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+Route::prefix('admin')->group(function () {
 
     Route::get('/', function () {
         return Inertia::render('admin/dashboard/Index');
@@ -72,10 +73,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         return Inertia::render('admin/players/details');
     })->name('players.details');
 
-    Route::get('/players/{id}', function () {
-        return Inertia::render('admin/players/details');
-    })->name('players.details');
-
     Route::get('/subscriptions', function () {
         return Inertia::render('admin/subscriptions/Index');
     })->name('subscriptions.index');
@@ -85,5 +82,5 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     })->name('scouting.index');
 });
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';
