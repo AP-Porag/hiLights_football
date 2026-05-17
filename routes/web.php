@@ -52,10 +52,9 @@ Route::prefix('scouting')->group(function () {
         return Inertia::render('scouting/player/Detail');
     })->name('player.details');
 
-    //saved player
-    //    Route::get('/player/saved', function () {
-    //        return Inertia::render('scouting/player/Saved');
-    //    })->name('player.saved');
+        Route::get('/player/saved', function () {
+            return Inertia::render('scouting/search/Saved');
+        })->name('player.saved');
 
 });
 
@@ -76,7 +75,6 @@ Route::prefix('admin')->group(function () {
         return Inertia::render('admin/players/Index');
     })->name('players.index');
 
-    //TODO this page should be made uisng claude
     Route::get('/players/{id}', function () {
         return Inertia::render('admin/players/Detail');
     })->name('players.details');
