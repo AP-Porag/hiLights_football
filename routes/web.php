@@ -72,9 +72,10 @@ Route::prefix('admin')->group(function () {
         return Inertia::render('admin/players/Index');
     })->name('players.index');
 
-//    Route::get('/players/{id}', function () {
-//        return Inertia::render('admin/players/details');
-//    })->name('players.details');
+    //TODO this page should be made uisng claude
+    Route::get('/players/{id}', function () {
+        return Inertia::render('admin/players/Detail');
+    })->name('players.details');
 //
 //    Route::get('/subscriptions', function () {
 //        return Inertia::render('admin/subscriptions/Index');
