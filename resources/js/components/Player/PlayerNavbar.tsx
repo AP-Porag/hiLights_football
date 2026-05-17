@@ -27,9 +27,9 @@ interface NavLink {
 
 // TODO: Replace with route() helper from Ziggy
 const NAV_LINKS: NavLink[] = [
-    { label: 'Dashboard', href: '/player/dashboard' },
-    { label: 'My Profile', href: '/player/profile/edit' },
-    { label: 'Analytics', href: '/player/analytics' },
+    { label: 'Dashboard', href: '/player/' },
+    { label: 'My Profile', href: '/player/profile' },
+    // { label: 'Analytics', href: '/player/analytics' },
     { label: 'Subscription', href: '/player/subscription' },
 ];
 

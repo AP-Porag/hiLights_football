@@ -32,9 +32,11 @@ interface NavLink {
 
 // TODO: Replace with route() helper from Ziggy
 const NAV_LINKS: NavLink[] = [
-    { label: 'Search Players', href: '/scout/search', prominent: true },
-    { label: 'Saved Players', href: '/scout/saved' },
-    { label: 'My Account', href: '/scout/account' },
+    // { label: 'Search Players', href: '/scout/search', prominent: true },
+    // { label: 'Saved Players', href: '/scout/saved' },
+    // { label: 'My Account', href: '/scout/account' },
+    { label: 'Dashboard', href: '/scouting' },
+    { label: 'Player', href: '/scouting/player' },
 ];
 
 const ROLE_STYLES: Record<ScoutRole, string> = {
@@ -67,13 +69,13 @@ export default function ScoutNavbar() {
     const auth = props.auth?.user
         ? props.auth
         : {
-            user: {
-                id: 1,
-                name: 'Lucas Pereira',
-                email: 'lucas@hilights.fc',
-                avatar_url: null,
-            },
-        };
+              user: {
+                  id: 1,
+                  name: 'Lucas Pereira',
+                  email: 'lucas@hilights.fc',
+                  avatar_url: null,
+              },
+          };
     const notificationCount = props.notificationCount ?? 2;
 
     const [scrolled, setScrolled] = useState(false);

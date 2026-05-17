@@ -12,6 +12,7 @@ interface UserMenuContentProps {
 export function UserMenuContent({ user }: UserMenuContentProps) {
     const cleanup = useMobileNavigation();
 
+
     return (
         <>
             <DropdownMenuLabel className="p-0 font-normal">

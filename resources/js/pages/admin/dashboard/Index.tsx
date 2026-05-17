@@ -1,42 +1,21 @@
-import React from 'react';
-import { Link } from '@inertiajs/react';
-import AdminLayout from '@/Components/Admin/AdminLayout';
+// import AdminLayout from '@/Components/Admin/AdminLayout';
+
+// import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+import AppLayout from '@/layouts/app-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { usePage } from '@inertiajs/react';
+import type { BreadcrumbItem } from '@/types';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-    DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-    PieChart,
-    Pie,
-    Cell,
-} from 'recharts';
-import {
-    Users,
-    Crown,
-    TrendingUp,
-    UserPlus,
-    Search,
-    MoreHorizontal,
-    ArrowUpRight,
-    Eye,
-    Pencil,
-    Ban,
-} from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Link } from '@inertiajs/react';
+import { ArrowUpRight, Ban, Crown, Eye, MoreHorizontal, Pencil, Search, TrendingUp, UserPlus, Users } from 'lucide-react';
+import React from 'react';
+import { CartesianGrid, Cell, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 // MOCK DATA — TODO: Replace with usePage().props
 const stats = {
@@ -177,23 +156,15 @@ const StatCard: React.FC<{
     valueClass?: string;
     subtitle?: string;
 }> = ({ label, value, icon, trend, valueClass, subtitle }) => (
-    <Card className="relative overflow-hidden bg-white border-[#E2E8F0] rounded-2xl shadow-sm">
-        <div className="absolute right-0 top-0 bottom-0 w-1 bg-[#FF6B00]" />
+    <Card className="relative overflow-hidden rounded-2xl border-[#E2E8F0] bg-white shadow-sm">
+        <div className="absolute top-0 right-0 bottom-0 w-1 bg-[#FF6B00]" />
         <CardContent className="p-6">
-            <div className="flex items-start justify-between mb-4">
-        <span className="text-xs font-sans font-medium uppercase tracking-wider text-[#475569]">
-          {label}
-        </span>
-                <div className="h-9 w-9 rounded-lg bg-[#FFF3EB] flex items-center justify-center">
-                    {icon}
-                </div>
+            <div className="mb-4 flex items-start justify-between">
+                <span className="font-sans text-xs font-medium tracking-wider text-[#475569] uppercase">{label}</span>
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#FFF3EB]">{icon}</div>
             </div>
-            <div className={`font-display text-3xl font-bold leading-none text-[#0F172A] ${valueClass ?? ''}`}>
-                {value}
-            </div>
-            {subtitle && (
-                <div className="mt-1 text-xs font-mono text-[#94A3B8]">{subtitle}</div>
-            )}
+            <div className={`font-display text-3xl leading-none font-bold text-[#0F172A] ${valueClass ?? ''}`}>{value}</div>
+            {subtitle && <div className="mt-1 font-mono text-xs text-[#94A3B8]">{subtitle}</div>}
             {trend && (
                 <div className={`mt-3 inline-flex items-center gap-1 text-xs font-medium ${trend.positive ? 'text-green-600' : 'text-red-600'}`}>
                     <ArrowUpRight className="h-3 w-3" />
@@ -207,10 +178,10 @@ const StatCard: React.FC<{
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
         return (
-            <div className="bg-white border border-[#E2E8F0] rounded-lg shadow-md px-3 py-2">
-                <div className="text-xs font-sans text-[#475569] mb-1">{label}</div>
-                <div className="text-sm font-mono font-semibold text-[#0F172A]">
-                    {payload[0].value} <span className="text-xs font-sans font-normal text-[#94A3B8]">sign-ups</span>
+            <div className="rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 shadow-md">
+                <div className="mb-1 font-sans text-xs text-[#475569]">{label}</div>
+                <div className="font-mono text-sm font-semibold text-[#0F172A]">
+                    {payload[0].value} <span className="font-sans text-xs font-normal text-[#94A3B8]">sign-ups</span>
                 </div>
             </div>
         );
@@ -220,26 +191,22 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function Index() {
     return (
-        <AdminLayout pageTitle="Dashboard">
-            <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+        <AppLayout>
+            <div className="space-y-6 p-4 sm:p-6 lg:p-8">
                 {/* Page Header */}
-                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                     <div>
-                        <h1 className="font-display text-3xl sm:text-4xl font-bold text-[#0F172A] tracking-tight">
-                            Dashboard
-                        </h1>
-                        <p className="mt-1 text-sm text-[#475569]">
-                            Platform overview and key performance metrics.
-                        </p>
+                        <h1 className="font-display text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">Dashboard</h1>
+                        <p className="mt-1 text-sm text-[#475569]">Platform overview and key performance metrics.</p>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-[#475569] font-mono bg-white border border-[#E2E8F0] rounded-lg px-3 py-2">
-                        <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                    <div className="flex items-center gap-2 rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 font-mono text-xs text-[#475569]">
+                        <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
                         Live · Updated just now
                     </div>
                 </div>
 
                 {/* Stat Widgets */}
-                <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
                     <StatCard
                         label="Total Players"
                         value="12,847"
@@ -277,19 +244,15 @@ export default function Index() {
                 </div>
 
                 {/* Charts Row */}
-                <div className="grid lg:grid-cols-2 gap-4">
+                <div className="grid gap-4 lg:grid-cols-2">
                     {/* Registrations Line Chart */}
-                    <Card className="bg-white border-[#E2E8F0] rounded-2xl shadow-sm">
-                        <CardHeader className="p-6 pb-2 flex flex-row items-start justify-between space-y-0">
+                    <Card className="rounded-2xl border-[#E2E8F0] bg-white shadow-sm">
+                        <CardHeader className="flex flex-row items-start justify-between space-y-0 p-6 pb-2">
                             <div>
-                                <CardTitle className="font-display text-lg font-bold text-[#0F172A]">
-                                    Registrations — Last 30 Days
-                                </CardTitle>
-                                <p className="text-xs text-[#475569] mt-1">
-                                    Daily new user sign-ups across all roles
-                                </p>
+                                <CardTitle className="font-display text-lg font-bold text-[#0F172A]">Registrations — Last 30 Days</CardTitle>
+                                <p className="mt-1 text-xs text-[#475569]">Daily new user sign-ups across all roles</p>
                             </div>
-                            <Badge className="bg-[#FFF3EB] text-[#CC5500] border border-[#FF6B00]/30 hover:bg-[#FFF3EB]">
+                            <Badge className="border border-[#FF6B00]/30 bg-[#FFF3EB] text-[#CC5500] hover:bg-[#FFF3EB]">
                                 <span className="font-mono text-xs">+18.2%</span>
                             </Badge>
                         </CardHeader>
@@ -305,11 +268,7 @@ export default function Index() {
                                             axisLine={{ stroke: '#E2E8F0' }}
                                             interval={4}
                                         />
-                                        <YAxis
-                                            tick={{ fontSize: 10, fill: '#94A3B8' }}
-                                            tickLine={false}
-                                            axisLine={false}
-                                        />
+                                        <YAxis tick={{ fontSize: 10, fill: '#94A3B8' }} tickLine={false} axisLine={false} />
                                         <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#FF6B00', strokeOpacity: 0.2, strokeWidth: 2 }} />
                                         <Line
                                             type="monotone"
@@ -326,17 +285,13 @@ export default function Index() {
                     </Card>
 
                     {/* Subscription Distribution Pie */}
-                    <Card className="bg-white border-[#E2E8F0] rounded-2xl shadow-sm">
+                    <Card className="rounded-2xl border-[#E2E8F0] bg-white shadow-sm">
                         <CardHeader className="p-6 pb-2">
-                            <CardTitle className="font-display text-lg font-bold text-[#0F172A]">
-                                Subscription Distribution
-                            </CardTitle>
-                            <p className="text-xs text-[#475569] mt-1">
-                                Breakdown of all active accounts by tier
-                            </p>
+                            <CardTitle className="font-display text-lg font-bold text-[#0F172A]">Subscription Distribution</CardTitle>
+                            <p className="mt-1 text-xs text-[#475569]">Breakdown of all active accounts by tier</p>
                         </CardHeader>
                         <CardContent className="p-6 pt-4">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                            <div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2">
                                 <div className="h-[200px] w-full">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <PieChart>
@@ -370,16 +325,11 @@ export default function Index() {
                                     {subscriptionData.map((seg) => (
                                         <div key={seg.name} className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
-                        <span
-                            className="h-2.5 w-2.5 rounded-full"
-                            style={{ backgroundColor: seg.color }}
-                        />
+                                                <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: seg.color }} />
                                                 <span className="text-sm font-medium text-[#0F172A]">{seg.name}</span>
                                             </div>
                                             <div className="text-right">
-                                                <div className="font-mono text-sm font-semibold text-[#0F172A]">
-                                                    {seg.count.toLocaleString()}
-                                                </div>
+                                                <div className="font-mono text-sm font-semibold text-[#0F172A]">{seg.count.toLocaleString()}</div>
                                                 <div className="font-mono text-xs text-[#94A3B8]">{seg.value}%</div>
                                             </div>
                                         </div>
@@ -391,19 +341,15 @@ export default function Index() {
                 </div>
 
                 {/* Recent Registrations Table */}
-                <Card className="bg-white border-[#E2E8F0] rounded-2xl shadow-sm">
-                    <CardHeader className="p-6 pb-4 flex flex-row items-center justify-between space-y-0">
+                <Card className="rounded-2xl border-[#E2E8F0] bg-white shadow-sm">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 p-6 pb-4">
                         <div>
-                            <CardTitle className="font-display text-lg font-bold text-[#0F172A]">
-                                Recent Registrations
-                            </CardTitle>
-                            <p className="text-xs text-[#475569] mt-1">
-                                Last 8 sign-ups across all roles and regions
-                            </p>
+                            <CardTitle className="font-display text-lg font-bold text-[#0F172A]">Recent Registrations</CardTitle>
+                            <p className="mt-1 text-xs text-[#475569]">Last 8 sign-ups across all roles and regions</p>
                         </div>
                         <Link
                             href="/admin/users"
-                            className="text-sm font-medium text-[#FF6B00] hover:text-[#CC5500] transition-colors inline-flex items-center gap-1"
+                            className="inline-flex items-center gap-1 text-sm font-medium text-[#FF6B00] transition-colors hover:text-[#CC5500]"
                         >
                             View All
                             <ArrowUpRight className="h-3.5 w-3.5" />
@@ -411,34 +357,33 @@ export default function Index() {
                     </CardHeader>
                     <CardContent className="p-0">
                         {/* Desktop table */}
-                        <div className="hidden md:block overflow-x-auto">
+                        <div className="hidden overflow-x-auto md:block">
                             <Table>
                                 <TableHeader>
                                     <TableRow className="border-[#E2E8F0] hover:bg-transparent">
-                                        <TableHead className="text-xs font-medium uppercase tracking-wider text-[#475569] px-6">User</TableHead>
-                                        <TableHead className="text-xs font-medium uppercase tracking-wider text-[#475569]">Email</TableHead>
-                                        <TableHead className="text-xs font-medium uppercase tracking-wider text-[#475569]">Role</TableHead>
-                                        <TableHead className="text-xs font-medium uppercase tracking-wider text-[#475569]">Subscription</TableHead>
-                                        <TableHead className="text-xs font-medium uppercase tracking-wider text-[#475569]">Status</TableHead>
-                                        <TableHead className="text-xs font-medium uppercase tracking-wider text-[#475569]">Registered</TableHead>
-                                        <TableHead className="text-xs font-medium uppercase tracking-wider text-[#475569] text-right pr-6">Actions</TableHead>
+                                        <TableHead className="px-6 text-xs font-medium tracking-wider text-[#475569] uppercase">User</TableHead>
+                                        <TableHead className="text-xs font-medium tracking-wider text-[#475569] uppercase">Email</TableHead>
+                                        <TableHead className="text-xs font-medium tracking-wider text-[#475569] uppercase">Role</TableHead>
+                                        <TableHead className="text-xs font-medium tracking-wider text-[#475569] uppercase">Subscription</TableHead>
+                                        <TableHead className="text-xs font-medium tracking-wider text-[#475569] uppercase">Status</TableHead>
+                                        <TableHead className="text-xs font-medium tracking-wider text-[#475569] uppercase">Registered</TableHead>
+                                        <TableHead className="pr-6 text-right text-xs font-medium tracking-wider text-[#475569] uppercase">
+                                            Actions
+                                        </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {recentUsers.map((user) => (
-                                        <TableRow
-                                            key={user.id}
-                                            className="border-[#E2E8F0] hover:bg-[#F8FAFC] transition-colors"
-                                        >
+                                        <TableRow key={user.id} className="border-[#E2E8F0] transition-colors hover:bg-[#F8FAFC]">
                                             <TableCell className="px-6 py-4">
                                                 <div className="flex items-center gap-3">
                                                     <Avatar className="h-9 w-9 border border-[#E2E8F0]">
-                                                        {user.avatar && <AvatarImage src={user.avatar} alt={user.name} />}
-                                                        <AvatarFallback className="bg-[#FFF3EB] text-[#CC5500] text-xs font-semibold">
+                                                        {user?.avatar && <AvatarImage src={user?.avatar} alt={user.name} />}
+                                                        <AvatarFallback className="bg-[#FFF3EB] text-xs font-semibold text-[#CC5500]">
                                                             {user.initials}
                                                         </AvatarFallback>
                                                     </Avatar>
-                                                    <span className="font-medium text-sm text-[#0F172A]">{user.name}</span>
+                                                    <span className="text-sm font-medium text-[#0F172A]">{user.name}</span>
                                                 </div>
                                             </TableCell>
                                             <TableCell>
@@ -456,17 +401,22 @@ export default function Index() {
                                             </TableCell>
                                             <TableCell>
                                                 <Badge variant="outline" className={`${statusStyles[user.status]} text-xs font-medium`}>
-                          <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${
-                              user.status === 'Active' ? 'bg-green-500' :
-                                  user.status === 'Pending' ? 'bg-yellow-500' : 'bg-red-500'
-                          }`} />
+                                                    <span
+                                                        className={`mr-1.5 h-1.5 w-1.5 rounded-full ${
+                                                            user.status === 'Active'
+                                                                ? 'bg-green-500'
+                                                                : user.status === 'Pending'
+                                                                  ? 'bg-yellow-500'
+                                                                  : 'bg-red-500'
+                                                        }`}
+                                                    />
                                                     {user.status}
                                                 </Badge>
                                             </TableCell>
                                             <TableCell>
                                                 <span className="font-mono text-xs text-[#94A3B8]">{user.registered}</span>
                                             </TableCell>
-                                            <TableCell className="text-right pr-6">
+                                            <TableCell className="pr-6 text-right">
                                                 <DropdownMenu>
                                                     <DropdownMenuTrigger asChild>
                                                         <Button
@@ -491,8 +441,8 @@ export default function Index() {
                                                             </Link>
                                                         </DropdownMenuItem>
                                                         <DropdownMenuSeparator />
-                                                        <DropdownMenuItem className="cursor-pointer text-red-600 focus:text-red-700 focus:bg-red-50">
-                                                            <Ban className="h-3.5 w-3.5 mr-2" />
+                                                        <DropdownMenuItem className="cursor-pointer text-red-600 focus:bg-red-50 focus:text-red-700">
+                                                            <Ban className="mr-2 h-3.5 w-3.5" />
                                                             <span className="text-sm">Suspend</span>
                                                         </DropdownMenuItem>
                                                     </DropdownMenuContent>
@@ -505,25 +455,29 @@ export default function Index() {
                         </div>
 
                         {/* Mobile stacked cards */}
-                        <div className="md:hidden divide-y divide-[#E2E8F0]">
+                        <div className="divide-y divide-[#E2E8F0] md:hidden">
                             {recentUsers.map((user) => (
-                                <div key={user.id} className="p-4 hover:bg-[#F8FAFC] transition-colors">
+                                <div key={user.id} className="p-4 transition-colors hover:bg-[#F8FAFC]">
                                     <div className="flex items-start justify-between gap-3">
-                                        <div className="flex items-center gap-3 min-w-0 flex-1">
-                                            <Avatar className="h-10 w-10 border border-[#E2E8F0] shrink-0">
-                                                {user.avatar && <AvatarImage src={user.avatar} alt={user.name} />}
-                                                <AvatarFallback className="bg-[#FFF3EB] text-[#CC5500] text-xs font-semibold">
+                                        <div className="flex min-w-0 flex-1 items-center gap-3">
+                                            <Avatar className="h-10 w-10 shrink-0 border border-[#E2E8F0]">
+                                                {user?.avatar && <AvatarImage src={user?.avatar} alt={user.name} />}
+                                                <AvatarFallback className="bg-[#FFF3EB] text-xs font-semibold text-[#CC5500]">
                                                     {user.initials}
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="min-w-0 flex-1">
-                                                <div className="font-medium text-sm text-[#0F172A] truncate">{user.name}</div>
-                                                <div className="font-mono text-xs text-[#475569] truncate">{user.email}</div>
+                                                <div className="truncate text-sm font-medium text-[#0F172A]">{user.name}</div>
+                                                <div className="truncate font-mono text-xs text-[#475569]">{user.email}</div>
                                             </div>
                                         </div>
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 shrink-0 hover:bg-[#FFF3EB] hover:text-[#FF6B00]">
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    className="h-8 w-8 shrink-0 p-0 hover:bg-[#FFF3EB] hover:text-[#FF6B00]"
+                                                >
                                                     <MoreHorizontal className="h-4 w-4" />
                                                 </Button>
                                             </DropdownMenuTrigger>
@@ -541,8 +495,8 @@ export default function Index() {
                                                     </Link>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuSeparator />
-                                                <DropdownMenuItem className="cursor-pointer text-red-600 focus:text-red-700 focus:bg-red-50">
-                                                    <Ban className="h-3.5 w-3.5 mr-2" />
+                                                <DropdownMenuItem className="cursor-pointer text-red-600 focus:bg-red-50 focus:text-red-700">
+                                                    <Ban className="mr-2 h-3.5 w-3.5" />
                                                     <span className="text-sm">Suspend</span>
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
@@ -556,10 +510,15 @@ export default function Index() {
                                             {user.subscription}
                                         </Badge>
                                         <Badge variant="outline" className={`${statusStyles[user.status]} text-xs font-medium`}>
-                      <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${
-                          user.status === 'Active' ? 'bg-green-500' :
-                              user.status === 'Pending' ? 'bg-yellow-500' : 'bg-red-500'
-                      }`} />
+                                            <span
+                                                className={`mr-1.5 h-1.5 w-1.5 rounded-full ${
+                                                    user.status === 'Active'
+                                                        ? 'bg-green-500'
+                                                        : user.status === 'Pending'
+                                                          ? 'bg-yellow-500'
+                                                          : 'bg-red-500'
+                                                }`}
+                                            />
                                             {user.status}
                                         </Badge>
                                         <span className="ml-auto font-mono text-xs text-[#94A3B8]">{user.registered}</span>
@@ -570,6 +529,6 @@ export default function Index() {
                     </CardContent>
                 </Card>
             </div>
-        </AdminLayout>
+        </AppLayout>
     );
 }

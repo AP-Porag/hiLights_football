@@ -57,7 +57,7 @@ const NAV_GROUPS: NavGroup[] = [
         label: 'Users',
         items: [
             { label: 'All Users', href: '/admin/users', icon: Users, exactMatch: true },
-            { label: 'Players', href: '/admin/users?role=player', icon: User, queryMatch: 'role=player' },
+            { label: 'Players', href: '/admin/players', icon: User, queryMatch: 'role=player' },
             { label: 'Scouts & Agents', href: '/admin/users?role=scout', icon: Search, queryMatch: 'role=scout' },
         ],
     },
