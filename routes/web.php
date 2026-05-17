@@ -33,7 +33,7 @@ Route::prefix('player')->group(function () {
 
     Route::get('/profile', function () {
         return Inertia::render('player/profile/Edit');
-    })->name('profile.edit');
+    })->name('profile.change');
 
 
     Route::get('/subscription', function () {
