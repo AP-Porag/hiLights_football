@@ -34,7 +34,19 @@ export function UserInfo({
 }) {
     const getInitials = useInitials();
 
-    if (!user) return null;
+
+    // if (!user) return null;
+    if (!user){
+        user = {
+            id: 1,
+            name: 'Luna Parker',
+            email: 'luna.parker@app.com',
+            avatar: 'https://i.pravatar.cc/150?img=28',
+            email_verified_at: '2026-05-17T10:00:00.000000Z',
+            created_at: '2026-05-01T08:30:00.000000Z',
+            updated_at: '2026-05-17T10:00:00.000000Z',
+        };
+    }
 
     return (
         <>
