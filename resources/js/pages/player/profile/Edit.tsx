@@ -1,20 +1,20 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useForm } from '@inertiajs/react';
 import PlayerNavbar from '@/components/player/PlayerNavbar';
-import { Alert, AlertDescription } from '@/Components/ui/alert';
-import { Input } from '@/Components/ui/input';
-import { Label } from '@/Components/ui/label';
-import { Textarea } from '@/Components/ui/textarea';
-import { Button } from '@/Components/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
-import { Checkbox } from '@/Components/ui/checkbox';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from '@/Components/ui/select';
+} from '@/components/ui/select';
 import {
     Upload,
     Youtube,

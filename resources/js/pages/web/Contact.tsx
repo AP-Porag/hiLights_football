@@ -19,14 +19,14 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from '@/Components/ui/select';
-import { Alert, AlertDescription } from '@/Components/ui/alert';
+} from '@/components/ui/select';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from '@/Components/ui/accordion';
+} from '@/components/ui/accordion';
 
 // TODO: Replace with usePage().props for any server-driven content
 const faqs = [

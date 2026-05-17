@@ -1,8 +1,8 @@
 import PlayerNavbar from '@/components/player/PlayerNavbar';
-import { Avatar, AvatarFallback } from '@/Components/ui/avatar';
-import { Badge } from '@/Components/ui/badge';
-import { Button } from '@/Components/ui/button';
-import { Progress } from '@/Components/ui/progress';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { Link } from '@inertiajs/react';
 import { ArrowRight, CheckCircle2, Circle, Crown, Eye, History, Lock, Star, TrendingUp, Video } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';

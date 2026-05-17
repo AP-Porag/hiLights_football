@@ -1,4 +1,4 @@
-// import AdminLayout from '@/Components/Admin/AdminLayout';
+// import AdminLayout from '@/components/Admin/AdminLayout';
 
 // import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 

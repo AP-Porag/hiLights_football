@@ -1,5 +1,5 @@
 import PublicNavbar from '@/components/public/PublicNavbar';
-import { Tabs, TabsList, TabsTrigger } from '@/Components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Link, router } from '@inertiajs/react';
 import { Eye, Github, Instagram, Play, Search, TrendingUp, Twitter, User, Video, Youtube } from 'lucide-react';
 import React, { useEffect, useState } from 'react';

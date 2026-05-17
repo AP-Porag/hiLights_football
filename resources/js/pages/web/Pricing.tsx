@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from '@inertiajs/react';
 import PublicNavbar from '@/components/public/PublicNavbar';
-import { Button } from '@/Components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
     Table,
     TableBody,
@@ -9,13 +9,13 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/Components/ui/table';
+} from '@/components/ui/table';
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from '@/Components/ui/accordion';
+} from '@/components/ui/accordion';
 import {
     CheckCircle2,
     Lock,
