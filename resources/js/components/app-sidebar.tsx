@@ -6,6 +6,7 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { BookOpen, BriefcaseBusiness, BriefcaseBusinessIcon, DollarSign, Folder, Group, GroupIcon, LayoutGrid, LucideBriefcaseBusiness, SubscriptIcon, User, User2, User2Icon } from 'lucide-react';
 import AppLogo from './app-logo';
+import { adminTheme } from '@/lib/adminTheme'
 
 const mainNavItems: NavItem[] = [
     {
@@ -50,7 +51,9 @@ const footerNavItems: NavItem[] = [
 
 export function AppSidebar() {
     return (
-        <Sidebar collapsible="icon" variant="inset">
+        <Sidebar className="border-2 border-orange-500 rounded-3xl" style={{backgroundColor:adminTheme.colors.sidebar.background,
+            color:adminTheme.colors.text.sidebar
+        }} collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
