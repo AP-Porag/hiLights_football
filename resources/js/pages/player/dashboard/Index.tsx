@@ -1,4 +1,4 @@
-import PlayerNavbar from '@/Components/Player/PlayerNavbar';
+import PlayerNavbar from '@/components/player/PlayerNavbar';
 import { Avatar, AvatarFallback } from '@/Components/ui/avatar';
 import { Badge } from '@/Components/ui/badge';
 import { Button } from '@/Components/ui/button';

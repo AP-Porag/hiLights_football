@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from '@inertiajs/react';
-import ScoutNavbar from '@/components/Scout/ScoutNavbar';
+import ScoutNavbar from '@/components/scout/ScoutNavbar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';

@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import PublicNavbar from '@/Components/Public/PublicNavbar';
+import PublicNavbar from '@/components/public/PublicNavbar';
 import {
     Target,
     Globe,

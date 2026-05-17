@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from '@inertiajs/react';
-import PublicNavbar from '@/Components/Public/PublicNavbar';
+import PublicNavbar from '@/components/public/PublicNavbar';
 import { Button } from '@/Components/ui/button';
 import {
     Table,
