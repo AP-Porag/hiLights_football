@@ -52,10 +52,9 @@ Route::prefix('scouting')->group(function () {
         return Inertia::render('scouting/player/Detail');
     })->name('player.details');
 
-        Route::get('/player/saved', function () {
-            return Inertia::render('scouting/search/Saved');
-        })->name('player.saved');
-
+    Route::get('/player/saved', function () {
+        return Inertia::render('scouting/search/Saved');
+    })->name('player.saved');
 });
 
 

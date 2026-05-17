@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { Link } from '@inertiajs/react';
-import AdminLayout from '@/components/admin/AdminLayout';
+// import AdminLayout from '@/components/admin/AdminLayout';
+import AppLayout from '@/layouts/app-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { usePage } from '@inertiajs/react';
+import type { BreadcrumbItem } from '@/types';
+// import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -326,7 +330,7 @@ export default function RatingsIndex() {
     };
 
     return (
-        <AdminLayout pageTitle="Scout Ratings">
+        <AppLayout>
             <div className="space-y-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -985,6 +989,6 @@ export default function RatingsIndex() {
                     )}
                 </DialogContent>
             </Dialog>
-        </AdminLayout>
+        </AppLayout>
     );
 }

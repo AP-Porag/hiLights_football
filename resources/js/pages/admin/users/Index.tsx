@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from '@inertiajs/react';
-import AdminLayout from '@/components/admin/AdminLayout';
+// import AdminLayout from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import AppLayout from '@/layouts/app-layout';
+import { usePage } from '@inertiajs/react';
+import type { BreadcrumbItem } from '@/types';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -130,7 +133,7 @@ export default function UsersIndex() {
     };
 
     return (
-        <AdminLayout pageTitle="Users Management">
+        <AppLayout>
             {/* TOP ACTIONS BAR */}
             <div className="bg-white border-b border-[#E2E8F0] -mx-8 -mt-8 px-8 py-4 mb-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
                 <div className="flex flex-col sm:flex-row gap-3 sm:items-center flex-1">
@@ -449,6 +452,6 @@ export default function UsersIndex() {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
-        </AdminLayout>
+        </AppLayout>
     );
 }

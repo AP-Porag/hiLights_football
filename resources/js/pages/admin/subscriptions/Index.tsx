@@ -1,7 +1,11 @@
+import AppLayout from '@/layouts/app-layout';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { usePage } from '@inertiajs/react';
+import type { BreadcrumbItem } from '@/types';
 import React, { useState } from 'react';
 import { Link, useForm } from '@inertiajs/react';
 import AdminLayout from '@/components/admin/AdminLayout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+// import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -439,7 +443,7 @@ export default function SubscriptionsIndex() {
     const [searchQuery, setSearchQuery] = useState('');
 
     return (
-        <AdminLayout pageTitle="Subscriptions Management">
+        <AppLayout>
             <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
@@ -754,6 +758,6 @@ export default function SubscriptionsIndex() {
                     </Card>
                 </div>
             </div>
-        </AdminLayout>
+        </AppLayout>
     );
 }

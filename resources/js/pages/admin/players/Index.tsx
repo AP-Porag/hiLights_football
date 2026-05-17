@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Link, router, useForm } from '@inertiajs/react';
-import AdminLayout from '@/components/admin/AdminLayout';
+// import AdminLayout from '@/components/admin/AdminLayout';
+import AppLayout from '@/layouts/app-layout';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { usePage } from '@inertiajs/react';
+import type { BreadcrumbItem } from '@/types';
 import {
     Search,
     Filter,
@@ -286,7 +290,7 @@ export default function PlayersIndex() {
         n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n.toString();
 
     return (
-        <AdminLayout pageTitle="Player Profiles">
+        <AppLayout pageTitle="Player Profiles">
             <div className="space-y-6">
                 {/* Page header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -628,7 +632,7 @@ export default function PlayersIndex() {
                     )}
                 </SheetContent>
             </Sheet>
-        </AdminLayout>
+        </AppLayout>
     );
 }
 

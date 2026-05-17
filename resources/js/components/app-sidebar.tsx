@@ -10,27 +10,27 @@ import AppLogo from './app-logo';
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        url: '/dashboard',
+        url: 'admin/',
         icon: LayoutGrid,
     },
      {
         title: 'Users',
-        url: '',
+        url: 'admin/users',
         icon: User,
     },
       {
         title: 'Player Profile',
-        url: '',
+        url: 'admin/players',
         icon: User2,
     },
      {
         title: 'Subscriptions',
-        url: '',
+        url: 'admin/subscriptions',
         icon: DollarSign,
     },
       {
         title: 'Scout Rating',
-        url: '/dashboard',
+        url: 'admin/scouting',
         icon: LucideBriefcaseBusiness,
     },
 ];
@@ -55,7 +55,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch>
+                            <Link href="/" prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

@@ -575,7 +575,8 @@ export default function Index() {
                             {players.map((p) => (
                                 <Link
                                     key={p.id}
-                                    href={`/scout/players/${p.id}`}
+                                    // href={`/scouting/player/${p.id}`}
+                                    href={`/scouting/player`}
                                     className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden cursor-pointer group transition-all hover:-translate-y-1 hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_4px_20px_rgba(255,107,0,0.08)] hover:border-[#FF6B00]"
                                 >
                                     {/* Photo area */}

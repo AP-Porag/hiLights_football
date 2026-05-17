@@ -36,7 +36,7 @@ const NAV_LINKS: NavLink[] = [
     // { label: 'Saved Players', href: '/scout/saved' },
     // { label: 'My Account', href: '/scout/account' },
     { label: 'Dashboard', href: '/scouting' },
-    { label: 'Player', href: '/scouting/player' },
+    // { label: 'Player', href: '/scouting/player' },
 ];
 
 const ROLE_STYLES: Record<ScoutRole, string> = {
@@ -114,7 +114,7 @@ export default function ScoutNavbar() {
         >
             <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between gap-4 px-6">
                 {/* LEFT — Logo */}
-                <Link href="/scout/search" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football">
+                <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football">
                     <img src="/images/logo/hilights_logo_transparent_200.png" className="h-9 w-auto dark:hidden" alt="HiLights Football" />
                     <img src="/images/logo/hilights_logo_dark_200.png" className="hidden h-9 w-auto dark:block" alt="HiLights Football" />
                     <div className="hidden items-end gap-0.5 leading-none sm:flex">
