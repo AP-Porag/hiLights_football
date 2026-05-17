@@ -29,7 +29,7 @@ Route::prefix('player')->group(function () {
 
     Route::get('/', function () {
         return Inertia::render('player/dashboard/Index');
-    })->name('dashboard');
+    })->name('player.dashboard');
 
     Route::get('/profile', function () {
         return Inertia::render('player/profile/Edit');
@@ -46,7 +46,7 @@ Route::prefix('scouting')->group(function () {
 
     Route::get('/', function () {
         return Inertia::render('scouting/dashboard/Index');
-    })->name('dashboard');
+    })->name('scouting.dashboard');
 
     Route::get('/player', function () {
         return Inertia::render('scouting/player/Detail');
@@ -66,7 +66,11 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/', function () {
         return Inertia::render('admin/dashboard/Index');
-    })->name('dashboard');
+    })->name('admin.dashboard');
+
+    Route::get('/users', function () {
+        return Inertia::render('admin/users/Index');
+    })->name('users.index');
 
     Route::get('/players', function () {
         return Inertia::render('admin/players/Index');
@@ -76,14 +80,14 @@ Route::prefix('admin')->group(function () {
     Route::get('/players/{id}', function () {
         return Inertia::render('admin/players/Detail');
     })->name('players.details');
-//
-//    Route::get('/subscriptions', function () {
-//        return Inertia::render('admin/subscriptions/Index');
-//    })->name('subscriptions.index');
-//
-//    Route::get('/scouting', function () {
-//        return Inertia::render('admin/scouting/Index');
-//    })->name('scouting.index');
+
+    Route::get('/subscriptions', function () {
+        return Inertia::render('admin/subscriptions/Index');
+    })->name('subscriptions.index');
+
+    Route::get('/scouting', function () {
+        return Inertia::render('admin/scouting/Index');
+    })->name('scouting.index');
 });
 
 require __DIR__ . '/settings.php';
