@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useForm } from '@inertiajs/react';
-import PlayerNavbar from '@/Components/Player/PlayerNavbar';
+import PlayerNavbar from '@/components/player/PlayerNavbar';
 import { Alert, AlertDescription } from '@/Components/ui/alert';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';

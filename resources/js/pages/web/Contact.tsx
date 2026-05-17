@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useForm } from '@inertiajs/react';
-import PublicNavbar from '@/Components/Public/PublicNavbar';
+import PublicNavbar from '@/components/public/PublicNavbar';
 import {
     Mail,
     Clock,

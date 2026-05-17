@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import ScoutNavbar from '@/Components/Scout/ScoutNavbar';
+import ScoutNavbar from '@/components/scout/ScoutNavbar';
 import { useState } from 'react';
 import {
     MapPin,

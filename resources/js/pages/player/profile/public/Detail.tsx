@@ -19,7 +19,7 @@ import {
     Eye,
     Globe2,
 } from 'lucide-react';
-import PublicNavbar from '@/Components/Public/PublicNavbar';
+import PublicNavbar from '@/components/public/PublicNavbar';
 
 // MOCK DATA
 const player = {

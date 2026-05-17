@@ -20,7 +20,7 @@ import {
     Headphones,
     TrendingUp,
 } from 'lucide-react';
-import PlayerNavbar from '@/Components/Player/PlayerNavbar';
+import PlayerNavbar from '@/components/player/PlayerNavbar';
 
 // TODO: Replace with usePage().props — { subscription, plans, auth }
 const player = {
