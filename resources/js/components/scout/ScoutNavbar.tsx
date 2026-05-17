@@ -33,10 +33,10 @@ interface NavLink {
 // TODO: Replace with route() helper from Ziggy
 const NAV_LINKS: NavLink[] = [
     // { label: 'Search Players', href: '/scout/search', prominent: true },
-    // { label: 'Saved Players', href: '/scout/saved' },
+
     // { label: 'My Account', href: '/scout/account' },
     { label: 'Dashboard', href: '/scouting' },
-    // { label: 'Player', href: '/scouting/player' },
+    { label: 'Saved Players', href: '/scouting/player/saved' },
 ];
 
 const ROLE_STYLES: Record<ScoutRole, string> = {

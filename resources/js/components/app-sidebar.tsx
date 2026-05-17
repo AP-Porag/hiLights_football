@@ -13,26 +13,26 @@ const mainNavItems: NavItem[] = [
         url: 'admin/',
         icon: LayoutGrid,
     },
-     {
-        title: 'Users',
-        url: 'admin/users',
-        icon: User,
-    },
-      {
-        title: 'Player Profile',
-        url: 'admin/players',
-        icon: User2,
-    },
-     {
-        title: 'Subscriptions',
-        url: 'admin/subscriptions',
-        icon: DollarSign,
-    },
-      {
-        title: 'Scout Rating',
-        url: 'admin/scouting',
-        icon: LucideBriefcaseBusiness,
-    },
+    //  {
+    //     title: 'Users',
+    //     url: 'admin/users',
+    //     icon: User,
+    // },
+    //   {
+    //     title: 'Player Profile',
+    //     url: 'admin/players',
+    //     icon: User2,
+    // },
+    //  {
+    //     title: 'Subscriptions',
+    //     url: 'admin/subscriptions',
+    //     icon: DollarSign,
+    // },
+    //   {
+    //     title: 'Scout Rating',
+    //     url: 'admin/scouting',
+    //     icon: LucideBriefcaseBusiness,
+    // },
 ];
 
 const footerNavItems: NavItem[] = [
