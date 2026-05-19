@@ -51,8 +51,11 @@ const footerNavItems: NavItem[] = [
 
 export function AppSidebar() {
     return (
-        <Sidebar className="border-2 border-orange-500 rounded-3xl" style={{backgroundColor:adminTheme.colors.sidebar.background,
-            color:adminTheme.colors.text.sidebar
+        <Sidebar className="border-2 rounded-3xl"
+         style={{backgroundColor:adminTheme.colors.sidebar.background,
+            // color:adminTheme.colors.text.sidebar
+            borderColor: adminTheme.colors.primary.DEFAULT
+            
         }} collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
