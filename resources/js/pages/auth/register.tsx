@@ -156,7 +156,7 @@ export default function Register( { countries = [] }: Props) {
 
     // TODO: Replace with usePage().props for any server-provided defaults / errors
   const { data, setData, post, processing, errors } = useForm({
-        role: '' as RoleId,
+        role: '' as RoleId | '',
         name: '',
         email: '',
         password: '',
@@ -237,7 +237,13 @@ export default function Register( { countries = [] }: Props) {
                     Step {step + 1} of 2 —{' '}
                     {step === 0 ? 'Choose your role' : 'Your details'}
                 </p>
+
             </div>
+            {clientErrors.role && (
+    <p className="text-xs text-red-500 mt-2 text-center">
+        {clientErrors.role}
+    </p>
+)}
 
             {/* STEP 1 — ROLE CARDS */}
             {step === 0 && (

@@ -79,7 +79,7 @@ class RegisteredUserController extends Controller
             'scout' => to_route('scouting.dashboard'),
             'agent' => to_route('scouting.dashboard'),
             'club' => to_route('scouting.dashboard'),
-            default => to_route('home'),
+            // default => to_route('home'),
         };
     }
 }
