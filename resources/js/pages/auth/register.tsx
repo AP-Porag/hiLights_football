@@ -1,5 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { Link, useForm } from '@inertiajs/react';
+import Select from 'react-select';
+import { z } from 'zod';
 import {
     Zap,
     Search,
@@ -85,41 +87,76 @@ const ROLES: RoleOption[] = [
 interface Country {
     code: string;
     name: string;
-    flag: string;
 }
+type Props = {
+    countries: Country[];
+};
+const registerSchema = z.object({
+    role: z.enum(['player', 'scout', 'agent', 'club']),
+    name: z.string().min(2, 'Name is required'),
+    email: z.string().email('Invalid email'),
+    password: z.string().min(8, 'Password must be at least 8 characters'),
+    password_confirmation: z.string(),
+    dob: z.string().optional(),
+    nationality: z.string().optional(),
+    terms: z.boolean().refine((val) => val === true, {
+        message: 'You must accept terms',
+    }),
+}).refine((data) => data.password === data.password_confirmation, {
+    message: "Passwords don't match",
+    path: ['password_confirmation'],
+});
 
-const COUNTRIES: Country[] = [
-    { code: 'BR', name: 'Brazil', flag: '🇧🇷' },
-    { code: 'AR', name: 'Argentina', flag: '🇦🇷' },
-    { code: 'GB', name: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
-    { code: 'ES', name: 'Spain', flag: '🇪🇸' },
-    { code: 'FR', name: 'France', flag: '🇫🇷' },
-    { code: 'DE', name: 'Germany', flag: '🇩🇪' },
-    { code: 'IT', name: 'Italy', flag: '🇮🇹' },
-    { code: 'PT', name: 'Portugal', flag: '🇵🇹' },
-    { code: 'NL', name: 'Netherlands', flag: '🇳🇱' },
-    { code: 'BE', name: 'Belgium', flag: '🇧🇪' },
-    { code: 'CR', name: 'Croatia', flag: '🇭🇷' },
-    { code: 'UY', name: 'Uruguay', flag: '🇺🇾' },
-    { code: 'CO', name: 'Colombia', flag: '🇨🇴' },
-    { code: 'MX', name: 'Mexico', flag: '🇲🇽' },
-    { code: 'US', name: 'United States', flag: '🇺🇸' },
-    { code: 'JP', name: 'Japan', flag: '🇯🇵' },
-    { code: 'KR', name: 'South Korea', flag: '🇰🇷' },
-    { code: 'SN', name: 'Senegal', flag: '🇸🇳' },
-    { code: 'NG', name: 'Nigeria', flag: '🇳🇬' },
-    { code: 'MA', name: 'Morocco', flag: '🇲🇦' },
-];
-
-export default function Register() {
+export default function Register( { countries = [] }: Props) {
     const [step, setStep] = useState<0 | 1>(0);
     const [selectedRole, setSelectedRole] = useState<RoleId | null>(null);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
+    const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
+
+    const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    console.log('SUBMIT CLICKED', data);
+
+    if (!data.role) {
+        setClientErrors((prev) => ({
+            ...prev,
+            role: 'Please select a role',
+        }));
+        return;
+    }
+
+    const result = registerSchema.safeParse(data);
+
+    if (!result.success) {
+        const fieldErrors: Record<string, string> = {};
+
+        result.error.issues.forEach((err) => {
+            const path = err.path?.[0];
+            if (typeof path === 'string') {
+                fieldErrors[path] = err.message;
+            }
+        });
+
+        setClientErrors(fieldErrors);
+        return;
+    }
+
+    setClientErrors({});
+    post('/register');
+};
+
+    // Countries
+     const options = countries.map((c) => ({
+        value: c.code,
+        label: `${c.name} ${c.code ?? ''}`,
+    }));
+
 
     // TODO: Replace with usePage().props for any server-provided defaults / errors
-    const { data, setData, post, processing, errors } = useForm({
-        role: '' as RoleId | '',
+  const { data, setData, post, processing, errors } = useForm({
+        role: '' as RoleId,
         name: '',
         email: '',
         password: '',
@@ -146,11 +183,7 @@ export default function Register() {
 
     const age = calcAge(data.dob);
 
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        // TODO: POST route('register'), useForm
-        post('/register');
-    };
+
 
     const selectedRoleObj = ROLES.find((r) => r.id === selectedRole);
 
@@ -296,13 +329,13 @@ export default function Register() {
                                 }
                                 placeholder="e.g. Lucas Martinez"
                                 className="w-full h-11 px-3.5 rounded-xl bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-orange-800 transition"
-                                required
+
                             />
-                            {errors.name && (
-                                <p className="text-xs text-[#DC2626] mt-1.5">
-                                    {errors.name}
-                                </p>
-                            )}
+                            {(clientErrors.name || errors.name) && (
+    <p className="text-xs text-[#DC2626] mt-1.5">
+        {clientErrors.name || errors.name}
+    </p>
+)}
                         </div>
 
                         {/* Email */}
@@ -322,13 +355,12 @@ export default function Register() {
                                 }
                                 placeholder="you@example.com"
                                 className="w-full h-11 px-3.5 rounded-xl bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-orange-800 transition"
-                                required
                             />
-                            {errors.email && (
-                                <p className="text-xs text-[#DC2626] mt-1.5">
-                                    {errors.email}
-                                </p>
-                            )}
+                           {(clientErrors.name || errors.name) && (
+    <p className="text-xs text-[#DC2626] mt-1.5">
+        {clientErrors.name || errors.name}
+    </p>
+)}
                         </div>
 
                         {/* Password */}
@@ -349,7 +381,7 @@ export default function Register() {
                                     }
                                     placeholder="Minimum 8 characters"
                                     className="w-full h-11 pl-3.5 pr-11 rounded-xl bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-orange-800 transition"
-                                    required
+
                                 />
                                 <button
                                     type="button"
@@ -370,11 +402,11 @@ export default function Register() {
                                     )}
                                 </button>
                             </div>
-                            {errors.password && (
-                                <p className="text-xs text-[#DC2626] mt-1.5">
-                                    {errors.password}
-                                </p>
-                            )}
+                            {(clientErrors.password || errors.password) && (
+    <p className="text-xs text-[#DC2626] mt-1.5">
+        {clientErrors.password || errors.password}
+    </p>
+)}
                         </div>
 
                         {/* Confirm Password */}
@@ -398,7 +430,7 @@ export default function Register() {
                                     }
                                     placeholder="Re-enter your password"
                                     className="w-full h-11 pl-3.5 pr-11 rounded-xl bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-orange-800 transition"
-                                    required
+
                                 />
                                 <button
                                     type="button"
@@ -419,11 +451,11 @@ export default function Register() {
                                     )}
                                 </button>
                             </div>
-                            {errors.password_confirmation && (
-                                <p className="text-xs text-[#DC2626] mt-1.5">
-                                    {errors.password_confirmation}
-                                </p>
-                            )}
+                            {(clientErrors.password_confirmation || errors.password_confirmation) && (
+    <p className="text-xs text-[#DC2626] mt-1.5">
+        {clientErrors.password_confirmation || errors.password_confirmation}
+    </p>
+)}
                         </div>
 
                         {/* Player-specific fields */}
@@ -449,13 +481,14 @@ export default function Register() {
                                             setData('dob', e.target.value)
                                         }
                                         className="w-full h-11 px-3.5 rounded-xl bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] text-sm text-[#0F172A] dark:text-[#F5F5F5] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-orange-800 transition"
-                                        required
+
+
                                     />
-                                    {errors.dob && (
-                                        <p className="text-xs text-[#DC2626] mt-1.5">
-                                            {errors.dob}
-                                        </p>
-                                    )}
+                                    {(clientErrors.dob || errors.dob) && (
+    <p className="text-xs text-[#DC2626] mt-1.5">
+        {clientErrors.dob || errors.dob}
+    </p>
+)}
                                 </div>
 
                                 <div className="mb-4">
@@ -465,35 +498,21 @@ export default function Register() {
                                     >
                                         Nationality
                                     </label>
-                                    <select
-                                        id="nationality"
-                                        value={data.nationality}
-                                        onChange={(e) =>
-                                            setData(
-                                                'nationality',
-                                                e.target.value
-                                            )
-                                        }
-                                        className="w-full h-11 px-3.5 rounded-xl bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] text-sm text-[#0F172A] dark:text-[#F5F5F5] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-orange-800 transition appearance-none"
-                                        required
-                                    >
-                                        <option value="">
-                                            Select your country
-                                        </option>
-                                        {COUNTRIES.map((c) => (
-                                            <option
-                                                key={c.code}
-                                                value={c.code}
-                                            >
-                                                {c.flag} {c.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    {errors.nationality && (
-                                        <p className="text-xs text-[#DC2626] mt-1.5">
-                                            {errors.nationality}
-                                        </p>
-                                    )}
+                                     <Select
+            options={options}
+            value={options.find((o) => o.value === data.nationality)}
+            onChange={(selected) =>
+                setData('nationality', selected?.value)
+            }
+            placeholder="Select your country"
+            isSearchable
+            className="text-sm"
+        />
+                                     {(clientErrors.nationality || errors.nationality) && (
+    <p className="text-xs text-[#DC2626] mt-1.5">
+        {clientErrors.nationality || errors.nationality}
+    </p>
+)}
                                 </div>
                             </>
                         )}
@@ -505,10 +524,10 @@ export default function Register() {
                                     type="checkbox"
                                     checked={data.terms}
                                     onChange={(e) =>
-                                        setData('terms', e.target.checked)
+                                        setData('terms', e.target.checked ? true : false)
                                     }
                                     className="peer appearance-none h-5 w-5 rounded-md border-2 border-[#CBD5E1] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] checked:bg-[#FF6B00] checked:border-[#FF6B00] focus:outline-none focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-orange-800 transition cursor-pointer"
-                                    required
+
                                 />
                                 <Check className="h-3.5 w-3.5 text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 peer-checked:opacity-100 pointer-events-none" />
                             </span>
@@ -520,6 +539,7 @@ export default function Register() {
                                 >
                                     Terms of Service
                                 </Link>{' '}
+
                                 and{' '}
                                 <Link
                                     href="/privacy"
@@ -530,17 +550,20 @@ export default function Register() {
                                 .
                             </span>
                         </label>
-                        {errors.terms && (
-                            <p className="text-xs text-[#DC2626] -mt-3 mb-3">
-                                {errors.terms}
-                            </p>
-                        )}
+                        <div>
+                       {(clientErrors.terms || errors.terms) && (
+    <p className="text-xs text-[#DC2626] mt-1.5">
+        {clientErrors.terms || errors.terms}
+    </p>
+)}
+
+                        </div>
 
                         {/* Submit */}
                         <button
                             type="submit"
-                            disabled={processing || !data.terms}
-                            className="w-full h-12 rounded-xl bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold text-sm uppercase tracking-wider transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                            disabled={processing}
+                            className="w-full h-12 cursor-pointer rounded-xl bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold text-sm uppercase tracking-wider transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                         >
                             {processing
                                 ? 'Creating account…'

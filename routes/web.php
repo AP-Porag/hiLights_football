@@ -27,7 +27,11 @@ Route::get('/player/profile/{id}', function () {
 //all player routes
 Route::prefix('player')->group(function () {
 
-    Route::get('/', function () {
+    // Route::get('/', function () {
+    //     return Inertia::render('player/dashboard/Index');
+    // })->name('player.dashboard');
+
+    Route::get('/player', function () {
         return Inertia::render('player/dashboard/Index');
     })->name('player.dashboard');
 
