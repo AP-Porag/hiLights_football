@@ -2,23 +2,40 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->command->info('🌍 Seeding HiLights Football platform...');
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'role' => 'player',
-            'email' => 'test@example.com',
+        $this->call([
+            // ─── Lookup data (must run first) ───
+            CountriesSeeder::class,
+            PositionsSeeder::class,
+            ModalitiesSeeder::class,
+            PlansSeeder::class,
+
+            // ─── Users & profiles ───
+            AdminUserSeeder::class,
+            PlayersSeeder::class,
+            ClubHistoriesSeeder::class,
+            ScoutsSeeder::class,
+
+            // ─── Monetization ───
+            SubscriptionsSeeder::class,
+
+            // ─── Engagement (run after all profiles exist) ───
+            ScoutRatingsSeeder::class,
+            SavedPlayersSeeder::class,
+            ProfileViewsSeeder::class,
+
+            // ─── Misc ───
+            ContactMessagesSeeder::class,
         ]);
+
+        $this->command->info('✅ Platform seeded successfully!');
+        $this->command->info('📧 Admin login: admin@hilightsfootball.com / password');
     }
 }

@@ -17,11 +17,23 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role');
-            $table->date('dob')->nullable();
-            $table->string('nationality', 3)->nullable();
             $table->rememberToken();
+            // ─── HiLights additions ───
+            $table->enum('role', ['player', 'scout', 'agent', 'club', 'admin'])
+                ->default('player');
+            $table->string('avatar_path')->nullable();
+            $table->enum('status', ['active', 'pending', 'suspended', 'deleted'])
+                ->default('active');
+            $table->string('locale', 5)->default('en');
+            $table->string('timezone', 50)->default('UTC');
+            $table->timestamp('last_login_at')->nullable();
+            $table->string('last_login_ip', 45)->nullable();
+            $table->json('preferences')->nullable(); // theme, notifications, e
+            $table->softDeletes();
             $table->timestamps();
+            $table->index('role');
+            $table->index('status');
+            $table->index(['role', 'status']);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
