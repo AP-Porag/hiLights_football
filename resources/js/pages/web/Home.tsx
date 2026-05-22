@@ -3,91 +3,23 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Link, router } from '@inertiajs/react';
 import { Eye, Github, Instagram, Play, Search, TrendingUp, Twitter, User, Video, Youtube } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import { usePage } from '@inertiajs/react';
 
 // TODO: Replace with usePage<Props>().props
 const stats = { players: 12847, scouts: 1243, clubs: 387, countries: 67 };
 
-// TODO: Replace with usePage<Props>().props
-const featuredPlayers = [
-    {
-        id: 1,
-        name: 'Lucas Almeida',
-        position: 'ST',
-        club: 'Santos FC',
-        country: 'Brazil',
-        flag: '🇧🇷',
-        age: 19,
-        height: 184,
-        foot: 'Right',
-        views: '14.2K',
-        premium: true,
-    },
-    {
-        id: 2,
-        name: 'Rafael Costa',
-        position: 'CM',
-        club: 'Sporting CP B',
-        country: 'Portugal',
-        flag: '🇵🇹',
-        age: 21,
-        height: 178,
-        foot: 'Left',
-        views: '9.8K',
-        premium: false,
-    },
-    {
-        id: 3,
-        name: 'Mathys Dubois',
-        position: 'CB',
-        club: 'Lyon Académie',
-        country: 'France',
-        flag: '🇫🇷',
-        age: 18,
-        height: 191,
-        foot: 'Right',
-        views: '11.5K',
-        premium: true,
-    },
-    {
-        id: 4,
-        name: 'João Pereira',
-        position: 'RW',
-        club: 'Flamengo Sub-20',
-        country: 'Brazil',
-        flag: '🇧🇷',
-        age: 20,
-        height: 175,
-        foot: 'Right',
-        views: '22.1K',
-        premium: true,
-    },
-    {
-        id: 5,
-        name: 'Théo Laurent',
-        position: 'GK',
-        club: 'Stade Rennais',
-        country: 'France',
-        flag: '🇫🇷',
-        age: 22,
-        height: 193,
-        foot: 'Right',
-        views: '7.4K',
-        premium: false,
-    },
-    {
-        id: 6,
-        name: 'Diogo Ferreira',
-        position: 'LB',
-        club: 'FC Porto B',
-        country: 'Portugal',
-        flag: '🇵🇹',
-        age: 19,
-        height: 180,
-        foot: 'Left',
-        views: '13.6K',
-        premium: false,
-    },
-];
+
+
+type Props = {
+    featuredPlayers: {
+        id: number;
+        name: string;
+        is_featured: boolean;
+        positions: object;
+        user: object;
+    }[];
+};
+
 
 // TODO: Replace with usePage<Props>().props
 const featuredVideos = [
@@ -97,7 +29,26 @@ const featuredVideos = [
 ];
 
 export default function Home() {
+
+    const { featuredPlayers } = usePage<Props>().props;
+
+
+
     const [mounted, setMounted] = useState(false);
+
+    const [tab, setTab] = useState("all");
+    const filteredPlayers = featuredPlayers?.filter((p) => {
+        if (tab === "all") return true;
+
+        return p.positions?.some((pos) => {
+            if (tab === "midfielders") return pos.category === "midfielder";
+            if (tab === "forwards") return pos.category === "forward";
+            if (tab === "defenders") return pos.category === "defender";
+            if (tab === "goalkeepers") return pos.category === "goalkeeper";
+
+            return false;
+        });
+    });
 
     useEffect(() => {
         const t = setTimeout(() => setMounted(true), 50);
@@ -227,9 +178,8 @@ export default function Home() {
                             ].map((c, i) => (
                                 <div
                                     key={i}
-                                    className={`absolute ${c.pos} ${c.rot} w-[200px] rounded-2xl bg-white p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] transition-all ${c.delay} ${
-                                        mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-                                    }`}
+                                    className={`absolute ${c.pos} ${c.rot} w-[200px] rounded-2xl bg-white p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] transition-all ${c.delay} ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                                        }`}
                                 >
                                     <div className="mb-3 h-1 w-12 rounded bg-[#FF6B00]" />
                                     <div className="flex h-[80px] items-center justify-center rounded-xl bg-gradient-to-br from-slate-200 to-slate-300">
@@ -285,7 +235,21 @@ export default function Home() {
                                 Rising Talent. Global Stage.
                             </h2>
                         </div>
-                        <Tabs defaultValue="all">
+                        {/* <Tabs defaultValue="all">
+                            <TabsList className="h-auto flex-wrap gap-1 rounded-none border-b border-[#E2E8F0] bg-transparent p-0 dark:border-[#2A2A2A]">
+                                {['All', 'Forwards', 'Midfielders', 'Defenders', 'Goalkeepers'].map((t) => (
+                                    <TabsTrigger
+                                        key={t}
+                                        value={t.toLowerCase()}
+                                        className="rounded-none bg-transparent px-3 py-2 text-sm font-medium text-[#475569] data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B00] data-[state=active]:bg-transparent data-[state=active]:text-[#FF6B00] data-[state=active]:shadow-none dark:text-[#9A9A9A]"
+                                    >
+                                        {t}
+                                    </TabsTrigger>
+                                ))}
+                            </TabsList>
+                        </Tabs> */}
+
+                        <Tabs value={tab} onValueChange={setTab}>
                             <TabsList className="h-auto flex-wrap gap-1 rounded-none border-b border-[#E2E8F0] bg-transparent p-0 dark:border-[#2A2A2A]">
                                 {['All', 'Forwards', 'Midfielders', 'Defenders', 'Goalkeepers'].map((t) => (
                                     <TabsTrigger
@@ -302,17 +266,33 @@ export default function Home() {
 
                     <div className="mx-auto mt-6 max-w-[1300px]">
                         <div className="scrollbar-none flex gap-4 overflow-x-auto px-6 pb-4" style={{ scrollbarWidth: 'none' }}>
-                            {featuredPlayers.map((p) => (
+                            {filteredPlayers?.map((p) => (
                                 <Link
                                     key={p.id}
                                     href={`/player/profile/${p.id}`}
                                     className="group w-[240px] shrink-0 cursor-pointer rounded-2xl border border-[#E2E8F0] bg-white p-5 transition-all duration-200 hover:-translate-y-1 hover:border-l-4 hover:border-[#FF6B00] hover:shadow-[0_4px_16px_rgba(255,107,0,0.12)] dark:border-[#2A2A2A] dark:bg-[#161616]"
                                 >
                                     <div className="relative flex h-[160px] items-center justify-center rounded-xl bg-[#F8FAFC] dark:bg-[#1F1F1F]">
-                                        <User className="h-16 w-16 text-[#CBD5E1] dark:text-[#2A2A2A]" />
-                                        <span className="absolute top-3 left-3 rounded-full border border-[#FF6B00] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#CC5500] dark:bg-[rgba(255,107,0,0.12)]">
-                                            {p.position}
-                                        </span>
+                                        {p?.user?.avatar_path ? (
+                                            <img
+                                                src={p.user.avatar_path}
+                                                alt="avatar"
+                                                className="absolute inset-0 h-full w-full object-cover object-center rounded-xl"
+                                            />
+                                        ) : (
+                                            <User className="h-16 w-16 text-[#CBD5E1] dark:text-[#2A2A2A]" />
+                                        )}
+
+                                        <div className="absolute top-3 left-3 flex flex-wrap gap-1">
+                                            {p.positions?.map((pos) => (
+                                                <span
+                                                    key={pos.id}
+                                                    className="rounded-full border border-[#FF6B00] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#CC5500] dark:bg-[rgba(255,107,0,0.12)]"
+                                                >
+                                                    {pos.code}
+                                                </span>
+                                            ))}
+                                        </div>
                                         {p.premium && (
                                             <span className="absolute top-3 right-3 rounded-full bg-[#FF6B00] px-2 py-0.5 text-[9px] font-bold tracking-wide text-white">
                                                 PREMIUM
@@ -320,12 +300,12 @@ export default function Home() {
                                         )}
                                     </div>
                                     <div className="p-3">
-                                        <div className="text-sm font-bold text-[#0F172A] dark:text-[#F5F5F5]">{p.name}</div>
+                                        <div className="text-sm font-bold text-[#0F172A] dark:text-[#F5F5F5]">{p.full_name}</div>
                                         <div className="mt-0.5 text-xs text-[#475569] dark:text-[#9A9A9A]">
                                             {p.club} {p.flag}
                                         </div>
                                         <div className="mt-2 font-mono text-xs text-[#94A3B8]">
-                                            {p.age}y · {p.height}cm · {p.foot}
+                                            {new Date().getFullYear() - new Date(p.date_of_birth).getFullYear()}y · {p.height_cm}cm · {p.preferred_foot}
                                         </div>
                                         <div className="mt-3 text-xs font-bold text-[#FF6B00] group-hover:underline">VIEW PROFILE →</div>
                                     </div>
