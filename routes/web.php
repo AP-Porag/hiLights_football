@@ -20,8 +20,12 @@ Route::get('/contact', function () {
     return Inertia::render('web/Contact');
 })->name('contact');
 
+// Route::get('/player/profile/{id}', function () {
+//     return Inertia::render('player/profile/public/Detail');
+// })->name('profile.public.detail');
+
 Route::get('/player/profile/{id}', function () {
-    return Inertia::render('player/profile/public/Detail');
+    return Inertia::render('player/profile/public/New-Detail');
 })->name('profile.public.detail');
 
 //all player routes
