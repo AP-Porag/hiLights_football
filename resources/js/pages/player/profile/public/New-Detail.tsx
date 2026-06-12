@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
+import ReactCountryFlag from "react-country-flag";
 import {
     MapPin,
     Flag,
@@ -18,8 +19,16 @@ import {
     Footprints,
     Eye,
     Globe2,
+    Trophy,
+    CalendarDays,
+  Users,
+  Crosshair,
+  Shield,
+  Shirt
 } from 'lucide-react';
 import PublicNavbar from '@/components/public/PublicNavbar';
+import { PublicFooter } from '@/components/public/PublicFooter';
+import { Pitch } from '@/components/ui/pitch';
 // MOCK DATA
 const player = {
     id: 247,
@@ -71,6 +80,53 @@ const player = {
         { year: 2016, club: "Serrano - RJ" },
         { year: 2015, club: "Macaé - RJ" },
     ];
+
+ const achievements = [
+    { year: "2024", title: "Copinha" },
+    { year: "2025", title: "Gaúcho U-20" },
+    { year: "2025", title: "BH Cup" },
+    { year: "2019", title: "Gazetinha Cup" },
+    { year: "2019", title: "Rio Grande do Sul State Championship U11" },
+  ];
+
+
+    const competitions = [
+    { name: "Copinha", year: "2024" },
+    { name: "Gaúcho U-20", year: "2025" },
+    { name: "BH Cup", year: "2025" },
+    { name: "Gazetinha Cup", year: "2019" },
+    { name: "Rio Grande do Sul State Championship U11", year: "2019" },
+  ];
+
+  const matches = [
+    {
+      home: "São Cristóvão",
+      score: "3 x 1",
+      away: "Juventude",
+      goals: 1,
+      assists: 0,
+      minutes: "90'",
+    },
+    {
+      home: "São Cristóvão",
+      score: "2 x 2",
+      away: "Grêmio",
+      goals: 0,
+      assists: 1,
+      minutes: "90'",
+    },
+    {
+      home: "São Cristóvão",
+      score: "4 x 0",
+      away: "Internacional",
+      goals: 2,
+      assists: 0,
+      minutes: "90'",
+    },
+  ];
+
+
+
 // TODO: Replace with usePage<PageProps & { player: typeof player, viewerRole?: string, existingRating?: ScoutRating }>().props
 
 const viewerRole = 'scout'; // TODO: usePage().props.viewerRole
@@ -105,18 +161,9 @@ function StarRating({ value, onChange }: StarRatingProps) {
 }
 
 export default function NewDetail() {
-    // const { player, viewerRole } = usePage<any>().props;
-    const [technical, setTechnical] = useState(4);
-    const [physical, setPhysical] = useState(4);
-    const [mental, setMental] = useState(5);
-    const [overall, setOverall] = useState(4);
-    const [notes, setNotes] = useState('');
 
-    const initials = player.name
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .slice(0, 2);
+
+  
 
     return (
         <div className="min-h-screen bg-[#F4F6F9] dark:bg-[#0D0D0D] pt-16">
@@ -138,16 +185,10 @@ export default function NewDetail() {
                     >
                         Players
                     </Link>
-                    <ChevronRight className="w-3.5 h-3.5 text-[#CBD5E1] dark:text-[#555]" />
-                    <Link
-                        href="/players?country=brazil"
-                        className="hover:text-[#FF6B00] dark:hover:text-[#FF6B00] whitespace-nowrap"
-                    >
-                        Brazil
-                    </Link>
+                   
                     <ChevronRight className="w-3.5 h-3.5 text-[#CBD5E1] dark:text-[#555]" />
                     <span className="text-[#0F172A] dark:text-[#F5F5F5] font-medium whitespace-nowrap">
-            Benjamin Silva
+            Joao da Silva
           </span>
                 </nav>
             </div>
@@ -156,160 +197,153 @@ export default function NewDetail() {
             <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6">
 
                 {/* CENTER COLUMN */}
-                <main className="min-w-0 space-y-4">
+                <main className="min-w-0 space-y-4 overflow-x-hidden">
                     {/* IDENTITY CARD */}
-                    <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
-                        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
-                            {/* PHOTO */}
-                            <div className="shrink-0 mx-auto sm:mx-0">
-                                <div className="w-[200px] h-[200px] rounded-2xl bg-gradient-to-br from-[#1E293B] to-[#334155] border-2 border-[#E2E8F0] dark:border-[#2A2A2A] relative flex items-center justify-center">
-                  <span className="text-white font-display font-black text-5xl tracking-tight">
-                    {initials}
-                  </span>
-                                    {player.isPremium && (
-                                        <span className="absolute top-2 right-2 bg-gradient-to-r from-[#FF6B00] to-[#CC5500] text-white text-[10px] font-black px-3 py-1 rounded-full tracking-wider">
-                      PREMIUM
-                    </span>
-                                    )}
-                                    {player.isVerified && (
-                                        <div className="absolute bottom-2 right-2 bg-white rounded-full w-6 h-6 flex items-center justify-center shadow">
-                                            <BadgeCheck className="w-5 h-5 text-[#FF6B00] fill-white" />
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
+                    {/* <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8"> */}
+                    
+                        <div className="w-full max-w-7xl text-white overflow-hidden">
+            <div className="flex">
+                
+                {/* Left Image Section */}
+                <div className="md:w-[320px] p-2">
+                    <div className="border border-[#233247] rounded-md overflow-hidden">
+                        <img
+                            src="/images/img/player-1.png"
+                            alt="Player"
+                            className="w-[100] h-[130px] md:w-full md:h-auto object-cover"
+                        />
+                    </div>
+                </div>
 
-                            {/* INFO */}
-                            <div className="flex-1 min-w-0">
-                                <p className="font-mono text-[#94A3B8] text-xs mb-1">
-                                    {player.profileId}
-                                </p>
-                                <h1 className="font-display font-black text-[42px] leading-none text-[#0F172A] dark:text-[#F5F5F5] tracking-tight">
-                                    {player.name}
-                                </h1>
-                                <p className="text-[#94A3B8] text-sm mt-1">
-                                    ({player.nickname})
-                                </p>
+                {/* Right Content */}
+                <div className="flex-1 px-3 sm:px-8">
+                    <h1 className="text-[18px] font-bold md:text-3xl md:font-extrabold uppercase tracking-wide">
+                        JOÃO DA SILVA
+                    </h1>
 
-                                {player.isMinor && (
-                                    <div className="inline-flex items-center gap-1.5 mt-3 bg-amber-50 border border-amber-300 text-amber-700 dark:bg-amber-950 dark:border-amber-800 dark:text-amber-400 text-xs font-semibold px-3 py-1 rounded-md">
-                                        <AlertTriangle className="w-3.5 h-3.5" />
-                                        Under 18 — Guardian Managed
-                                    </div>
-                                )}
+                    <h3 className="text-[#ff7a00] text-[14px] md:text-[16px] uppercase mt-2">
+                        Right Winger
+                    </h3>
 
-                                {/* Info grid */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 mt-5">
-                                    <div className="flex items-center gap-2">
-                                        <MapPin className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">Birthplace:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5] truncate">
-                      Rio de Janeiro
-                    </span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Flag className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">Nationality:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                      {player.flag} {player.nationality}
-                    </span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Building2 className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">Club:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5] truncate">
-                      {player.currentClub}
-                    </span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Calendar className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">Since:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                      {player.teamSince}
-                    </span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Calendar className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">DOB:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                      {player.dob} · {player.age} yrs
-                    </span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Ruler className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">Physical:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                      {player.height} cm · {player.foot}
-                    </span>
-                                    </div>
-                                    <div className="flex items-center gap-2 sm:col-span-2">
-                                        <User className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">Agent:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                      {player.agent}
-                    </span>
-                                    </div>
-                                </div>
-
-                                {/* Positions */}
-                                <div className="flex flex-wrap gap-2 mt-4">
-                                    {player.positions.map((pos) => (
-                                        <span
-                                            key={pos}
-                                            className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-sm font-black px-4 py-1.5 rounded-lg tracking-wide"
-                                        >
-                      {pos}
-                    </span>
-                                    ))}
-                                </div>
-
-                                {/* Modalities */}
-                                <div className="flex flex-wrap gap-2 mt-2">
-                                    {player.modalities.map((m) => (
-                                        <span
-                                            key={m}
-                                            className="bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] text-xs px-3 py-1 rounded-full"
-                                        >
-                      {m}
-                    </span>
-                                    ))}
-                                </div>
-
-                                {/* Stats strip */}
-                                {/* <div className="border-t border-[#E2E8F0] dark:border-[#2A2A2A] mt-5 pt-5 grid grid-cols-3 text-center">
-                                    <div>
-                                        <p className="font-mono font-black text-xl text-[#FF6B00]">
-                                            {player.profileViews.toLocaleString()}
-                                        </p>
-                                        <p className="text-xs text-[#94A3B8] mt-0.5 flex items-center justify-center gap-1">
-                                            <Eye className="w-3 h-3" />
-                                            Views
-                                        </p>
-                                    </div>
-                                    <div className="border-x border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                        <p className="font-mono font-black text-xl text-[#FF6B00]">
-                                            {player.countriesCount}
-                                        </p>
-                                        <p className="text-xs text-[#94A3B8] mt-0.5 flex items-center justify-center gap-1">
-                                            <Globe2 className="w-3 h-3" />
-                                            Countries
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p className="font-mono font-black text-xl text-[#FF6B00]">
-                                            ★ {player.avgRating}
-                                        </p>
-                                        <p className="text-xs text-[#94A3B8] mt-0.5">Avg Rating</p>
-                                    </div>
-                                </div> */}
-                            </div>
+                    <div className="mt-3 space-y-3 text-[10px] md:text-[16px]">
+                        {/* Row */}
+                        <div className="flex">
+                            <CalendarDays className="w-3 h-3 md:w-5 md:h-5 text-orange-500 mr-1 md:mr-2" />
+                            <span className="text-gray-300">
+                                Date of Birth / Age:
+                            </span>
+                            <span className="text-gray-300 pl-2">Jan 30, 2007 (19)</span>
                         </div>
-                    </section>
+
+                        {/* Row */}
+                        <div className="flex">
+                            <Users className="w-3 h-3 md:w-5 md:h-5 text-orange-500 mr-1 md:mr-2" />
+                            <span className="text-gray-300 pr-3">
+                                Nationality:
+                            </span>
+                            <ReactCountryFlag
+                              countryCode="BR"
+                              svg
+                              className="mr-1 mt-[2px] md:mt-1 md:w-[1em] md:h-[1em]"
+                            />
+                            <span className="">Brazil</span>
+                            <span className="px-1">/</span>
+                             <ReactCountryFlag
+                                countryCode="IT"
+                                  svg
+                                 className="mr-1 mt-[2px] md:mt-1 md:w-[1em] md:h-[1em]"
+                                />
+                            <span>Italy III</span>
+                        </div>
+
+                        {/* Row */}
+                        <div className="flex">
+                            <Ruler className="w-3 h-3 md:w-5 md:h-5 text-orange-500 mr-1 md:mr-2"  />
+                            <span className="text-gray-300">Height:</span>
+                            <span className="text-gray-100 pl-2">1.84 m</span>
+                        </div>
+
+                        {/* Row */}
+                        <div className="flex">
+                            <Crosshair className="w-3 h-3 md:w-5 md:h-5 text-orange-500 mr-1 md:mr-2"  />
+                            <span className="text-gray-300">Position:</span>
+                            <span className="text-gray-100 pl-2">Right Winger</span>
+                        </div>
+
+                        {/* Row */}
+                        <div className="flex">
+                            <Footprints className="w-3 h-3 md:w-5 md:h-5 text-orange-500 mr-1 md:mr-2"  />
+                            <span className="text-gray-300">
+                                Dominant Foot:
+                            </span>
+                            <span className="text-gray-100 pl-2">Right</span>
+                        </div>
+
+                        {/* Row */}
+                        <div className="flex">
+                            <Shield className="w-3 h-3 md:w-5 md:h-5 text-orange-500 mr-1 md:mr-2"  />
+                            <span className="text-gray-300">
+                                Current Club:
+                            </span>
+                            <span className="text-gray-100 pl-2">São Cristovão</span>
+                        </div>
+
+                        {/* Row */}
+                        <div className="flex">
+                            <Shirt className="w-3 h-3 md:w-5 md:h-5 text-orange-500 mr-1 md:mr-2"  />
+                            <span className="text-gray-300">
+                                Previous Club:
+                            </span>
+                            <span className="text-gray-100 pl-2">Bangu</span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                 {/* RIGHT AD COLUMN */}
+                <aside className="hidden lg:block space-y-3">
+                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider">
+                        Sponsored
+                    </p>
+
+
+                     <div className="bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center w-[320px] h-[350px]">
+                        <div
+                            className="absolute inset-0 opacity-20"
+                            style={{
+                                background:
+                                    'radial-gradient(circle at 50% 0%, #FF6B00 0%, transparent 60%)',
+                            }}
+                        />
+                        <span className="text-white/10 font-black text-[100px] leading-none absolute -top-4 select-none">
+              ✓
+            </span>
+                        <div className="relative z-10 flex flex-col items-center">
+              <span className="text-white font-black text-2xl tracking-tight">
+                NIKE FC
+              </span>
+                            <div className="bg-[#FF6B00] w-8 h-0.5 mx-auto my-2" />
+                            <span className="text-white/70 text-sm">2025 Season Boots</span>
+                            <span className="text-white/60 text-xs tracking-widest mt-2">
+                MERCURIAL VAPOR
+              </span>
+                            <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-6 py-2 rounded-lg text-sm mt-3 transition-colors">
+                                SHOP NOW →
+                            </button>
+                        </div>
+                    </div>
+                    
+                </aside>
+            </div>
+        </div>
+
+
 
                     {/* VIDEO SECTION */}
-                    <section className="mt-24">
-                        <p className="pb-8 bold ">HIGHLIGHTS VIDEO</p>
-                    <div className="rounded-2xl overflow-hidden relative">
+                    <section className="mt-6">
+                        <p className="pb-8 font-bold text-xl">HIGHLIGHTS VIDEO</p>
+                    <div className=" overflow-hidden relative">
                         <div className="aspect-video w-full relative">
                             {player.videoUrl ? (
                                 <>
@@ -318,16 +352,16 @@ export default function NewDetail() {
                                         // title={`${player.name} highlights`}
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowFullScreen
-                                        className="w-full h-full bg-gray-500"
+                                        className="w-full h-full bg-gray-500 rounded-2xl"
                                     />
-                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pointer-events-none">
+                                    {/* <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pointer-events-none"> */}
                                         {/* <p className="text-[#FF6B00] text-xs font-bold tracking-widest">
                                             STRIKER · HIGHLIGHT REEL 2025
                                         </p> */}
                                         {/* <h2 className="font-display font-black text-2xl text-white">
                                             {player.name}
                                         </h2> */}
-                                    </div>
+                                    {/* </div> */}
                                 </>
                             ) : (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -359,14 +393,14 @@ export default function NewDetail() {
                                         allowFullScreen
                                         className="w-full h-full rounded-[12px] bg-gray-500"
                                     />
-                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pointer-events-none">
-                                        {/* <p className="text-[#FF6B00] text-xs font-bold tracking-widest">
+                                    {/* <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pointer-events-none">
+                                        <p className="text-[#FF6B00] text-xs font-bold tracking-widest">
                                             STRIKER · HIGHLIGHT REEL 2025
                                         </p>
                                         <h2 className="font-display font-black text-2xl text-white">
                                             {player.name}
-                                        </h2> */}
-                                    </div>
+                                        </h2>
+                                    </div> */}
                                 </>
                             ) : (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -393,14 +427,14 @@ export default function NewDetail() {
                                         allowFullScreen
                                         className="w-full h-full rounded-[12px] bg-gray-500"
                                     />
-                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pointer-events-none">
-                                        {/* <p className="text-[#FF6B00] text-xs font-bold tracking-widest">
+                                    {/* <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pointer-events-none">
+                                        <p className="text-[#FF6B00] text-xs font-bold tracking-widest">
                                             STRIKER · HIGHLIGHT REEL 2025
                                         </p>
                                         <h2 className="font-display font-black text-2xl text-white">
                                             {player.name}
-                                        </h2> */}
-                                    </div>
+                                        </h2>
+                                    </div> */}
                                 </>
                             ) : (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -429,14 +463,14 @@ export default function NewDetail() {
                                         allowFullScreen
                                         className="w-full h-full rounded-[12px] bg-gray-500"
                                     />
-                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pointer-events-none">
-                                        {/* <p className="text-[#FF6B00] text-xs font-bold tracking-widest">
+                                    {/* <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pointer-events-none">
+                                        <p className="text-[#FF6B00] text-xs font-bold tracking-widest">
                                             STRIKER · HIGHLIGHT REEL 2025
                                         </p>
                                         <h2 className="font-display font-black text-2xl text-white">
                                             {player.name}
-                                        </h2> */}
-                                    </div>
+                                        </h2>
+                                    </div> */}
                                 </>
                             ) : (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -455,268 +489,16 @@ export default function NewDetail() {
 
                     </div>
                     </section>
-                    
-
-                    {/* IN-CONTENT AD */}
-                    <div>
-                        <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl min-h-[80px] flex flex-col sm:flex-row items-center px-4 sm:px-6 py-3 sm:py-0 gap-3 sm:gap-4">
-              <span className="text-white font-black text-base tracking-wide shrink-0">
-                TRANSFERROOM
-              </span>
-                            <span className="text-white/70 text-xs sm:text-sm flex-1 text-center sm:text-left">
-                Join 1,200+ clubs on the professional transfer network
-              </span>
-                            <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
-                                Start Free Trial →
-                            </button>
-                        </div>
-                    </div>
 
 
-                    {/* CLUB HISTORY */}
-                    <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden">
-                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 bg-[#06111d] p-6">
-            {/* Transfer History */}
-            <div className="bg-[#0b1623] border border-slate-800 rounded-xl p-6">
-                <h2 className="text-white text-xl font-bold uppercase mb-6">
-                    Transfer History{" "}
-                    <span className="text-slate-400 font-medium">
-                        (Last 10 Years)
-                    </span>
-                </h2>
-
-                <div className="space-y-4">
-                    {transferHistory.map((item, index) => (
-                        <div
-                            key={index}
-                            className="flex items-center gap-4"
-                        >
-                            <span className="text-slate-300 font-medium w-12">
-                                {item.year}
-                            </span>
-
-                            {/* Club Logo */}
-                            <div className="w-8 h-8 rounded-full bg-slate-700 border border-slate-600 flex-shrink-0" />
-
-                            <span className="text-white text-sm md:text-base">
-                                {item.club}
-                            </span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* Positions */}
-            <div className="bg-[#0b1623] border border-slate-800 rounded-xl p-6">
-                <h2 className="text-white text-xl font-bold uppercase mb-6">
-                    Positions On The Pitch
-                </h2>
-
-                {/* Football Field */}
-                <div>
-                    <img src="/images/img/football_field.png" alt=""
-                     className="bg-cover bg-center bg-no-repeat w-full overflow-hidden"
-                      />
-                </div>
-
-                {/* Position Info */}
-                <div className="mt-6 space-y-2 text-white">
-                    <p>
-                        <span className="text-slate-400 pr-3">
-                            Main Position:
-                        </span>{" "}
-                        Right Winger
-                    </p>
-
-                    <p>
-                        <span className="text-slate-400 pr-3">
-                            Secondary:
-                        </span>{" "}
-                        Attacking Midfielder, Central Midfielder
-                    </p>
-                </div>
-            </div>
-        </div>
-                    </section>
-
-
-                    
-                    {/* STRUCTURED DATA CARD */}
-                    <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden">
-                        <div className="grid grid-cols-1 md:grid-cols-2">
-                            <div className="md:border-r border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase border-b border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                    Player Details
-                                </div>
-                                {[
-                                    { k: 'Position', v: player.positions.join(' / ') },
-                                    { k: 'Preferred Foot', v: player.foot },
-                                    { k: 'Modality', v: player.modalities[0] },
-                                    { k: 'Nationality', v: `${player.flag} ${player.nationality}` },
-                                    { k: 'Birthplace', v: player.birthplace },
-                                    { k: 'Agent', v: player.agent },
-                                ].map((row) => (
-                                    <div
-                                        key={row.k}
-                                        className="px-5 py-3 border-b border-[#F1F5F9] dark:border-[#1F1F1F] flex justify-between items-center last:border-b-0 md:last:border-b"
-                                    >
-                                        <span className="text-xs text-[#94A3B8]">{row.k}</span>
-                                        <span className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] text-right ml-2">
-                      {row.v}
-                    </span>
-                                    </div>
-                                ))}
-                            </div>
-                            <div>
-                                <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase border-b border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                    Physical Profile
-                                </div>
-                                {[
-                                    { k: 'Height', v: `${player.height} cm` },
-                                    { k: 'Age', v: `${player.age} years` },
-                                    { k: 'Profile Type', v: 'Premium · Verified' },
-                                    { k: 'Registered Since', v: player.teamSince },
-                                ].map((row) => (
-                                    <div
-                                        key={row.k}
-                                        className="px-5 py-3 border-b border-[#F1F5F9] dark:border-[#1F1F1F] flex justify-between items-center last:border-b-0"
-                                    >
-                                        <span className="text-xs text-[#94A3B8]">{row.k}</span>
-                                        <span className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] text-right ml-2">
-                      {row.v}
-                    </span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-
-                    {/* SCOUT ACTIONS PANEL */}
-                    {/* {viewerRole && (
-                        <section className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.08)] border-2 border-[#FF6B00] rounded-2xl overflow-hidden">
-                            <div className="bg-[#FF6B00] px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                                <h2 className="font-display font-black text-lg text-white tracking-wide">
-                                    SCOUT ACTIONS
-                                </h2>
-                                <span className="text-white/80 text-sm font-medium">
-                  ★ {player.avgRating} avg from {player.scoutRatings} ratings
-                </span>
-                            </div>
-                            <div className="px-6 py-5 space-y-4">
-                                {[
-                                    { label: 'Technical', value: technical, set: setTechnical },
-                                    { label: 'Physical', value: physical, set: setPhysical },
-                                    { label: 'Mental', value: mental, set: setMental },
-                                    { label: 'Overall', value: overall, set: setOverall },
-                                ].map((cat) => (
-                                    <div
-                                        key={cat.label}
-                                        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
-                                    >
-                                        <label className="text-sm font-semibold text-[#92400E] dark:text-[#FF6B00]">
-                                            {cat.label}
-                                        </label>
-                                        <StarRating value={cat.value} onChange={cat.set} />
-                                    </div>
-                                ))}
-
-                                <div>
-                  <textarea
-                      value={notes}
-                      onChange={(e) => setNotes(e.target.value)}
-                      placeholder="Add scouting notes (optional)..."
-                      className="w-full h-20 bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] placeholder-[#94A3B8] dark:placeholder-[#555] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-800 resize-none"
-                  />
-                                </div>
-
-                                <div className="flex flex-col sm:flex-row gap-3 pt-1">
-                                    <button
-                                        type="button"
-                                        className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold text-sm flex-1 px-5 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-colors"
-                                    >
-                                        <Star className="w-4 h-4 fill-white" />
-                                        Submit Rating
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="border-2 border-[#FF6B00] text-[#FF6B00] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)] font-bold text-sm flex-1 px-5 py-2.5 rounded-lg bg-transparent flex items-center justify-center gap-2 transition-colors"
-                                    >
-                                        <Bookmark className="w-4 h-4" />
-                                        Save Player
-                                    </button>
-                                </div>
-                            </div>
-                        </section>
-                    )} */}
-                </main>
-
-                {/* RIGHT AD COLUMN */}
-                <aside className="hidden lg:block sticky top-20 self-start space-y-3">
+{/* IN-CONTENT AD */}
+ <aside className="block lg:hidden space-y-3">
                     <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider">
                         Sponsored
                     </p>
 
-                    {/* SCOUTPRO AD */}
-                    {/* <div className="h-[280px] bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-2xl border border-[#334155] p-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 bg-[#FF6B00] rounded-full blur-2xl opacity-15" />
-                        <Search className="w-10 h-10 text-[#FF6B00] mb-3 relative z-10" />
-                        <span className="text-white font-black text-lg relative z-10">
-              ScoutPro Network
-            </span>
-                        <p className="text-white/60 text-xs leading-relaxed mt-2 relative z-10">
-                            Discover players across 67 countries. Join 4,000+ professional
-                            scouts.
-                        </p>
-                        <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-6 py-2 rounded-lg mt-4 text-sm relative z-10 transition-colors">
-                            Join Free →
-                        </button>
-                    </div> */}
 
-                    {/* ADIDAS X CRAZYFAST */}
-                    {/* <div className="h-[250px] bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-5 flex flex-col items-center justify-center text-center relative overflow-hidden">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col gap-1 pt-3">
-                            <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
-                            <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
-                            <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
-                        </div>
-                        <span className="text-[#0F172A] dark:text-[#F5F5F5] font-black text-2xl mt-4">
-              adidas
-            </span>
-                        <span className="text-[#475569] dark:text-[#9A9A9A] text-sm mt-1">
-              X Crazyfast
-            </span>
-                        <span className="text-4xl my-2">⚡</span>
-                        <span className="text-[#0F172A] dark:text-[#F5F5F5] font-bold text-sm">
-              Speed Unleashed.
-            </span>
-                        <button className="bg-[#0F172A] dark:bg-[#F5F5F5] text-white dark:text-[#0F172A] font-bold px-6 py-2 rounded-lg text-sm mt-3 hover:opacity-90 transition-opacity">
-                            EXPLORE
-                        </button>
-                    </div> */}
-
-                    {/* WYSCOUT AD */}
-                    {/* <div className="h-[150px] bg-gradient-to-br from-[#1a1a2e] to-[#16213e] rounded-2xl border border-[#334155] flex flex-col items-center justify-center px-4">
-            <span className="text-[#4FC3F7] font-black text-xl tracking-wide">
-              WYSCOUT
-            </span>
-                        <p className="text-white/60 text-xs mt-1 text-center">
-                            Professional scouting platform
-                        </p>
-                        <button className="bg-[#4FC3F7] hover:bg-[#29B6F6] text-[#1a1a2e] font-bold text-xs px-5 py-2 rounded-lg mt-3 transition-colors">
-                            Try 14 days free
-                        </button>
-                    </div> */}
-                </aside>
-
-                {/* MOBILE ADS (below content) */}
-                <div className="lg:hidden space-y-3">
-                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider">
-                        Sponsored
-                    </p>
-
-                    {/* Mobile Nike */}
-                    <div className="bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]">
+                     <div className="bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]">
                         <div
                             className="absolute inset-0 opacity-20"
                             style={{
@@ -741,37 +523,282 @@ export default function NewDetail() {
                             </button>
                         </div>
                     </div>
+                    
+                </aside>
 
-                    {/* Mobile ScoutPro */}
-                    <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-2xl border border-[#334155] p-6 flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[220px]">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 bg-[#FF6B00] rounded-full blur-2xl opacity-15" />
-                        <Search className="w-10 h-10 text-[#FF6B00] mb-3 relative z-10" />
-                        <span className="text-white font-black text-lg relative z-10">
-              ScoutPro Network
-            </span>
-                        <p className="text-white/60 text-xs leading-relaxed mt-2 relative z-10">
-                            Discover players across 67 countries.
-                        </p>
-                        <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-6 py-2 rounded-lg mt-4 text-sm relative z-10 transition-colors">
-                            Join Free →
-                        </button>
-                    </div>
+                    
 
-                    {/* Mobile Puma banner (sticky-style) */}
-                    <div className="bg-gradient-to-r from-[#CC0000] to-[#990000] rounded-2xl flex items-center justify-center flex-col gap-1 px-4 py-4">
-            <span className="text-white font-black text-sm tracking-wide">
-              PUMA FOOTBALL
-            </span>
-                        <span className="text-white/70 text-xs">Future 8 Pro</span>
-                        <button className="bg-white text-[#CC0000] font-bold text-xs px-4 py-1 rounded-md mt-1 hover:bg-white/90 transition-colors">
-                            View Boot
-                        </button>
-                    </div>
+              
+                    {/* CLUB HISTORY */}
+                    <section className="overflow-hidden">
+                     <div className="flex gap-4 md:gap-6 md:grid md:grid-cols-2">
+            {/* Transfer History */}
+            <div className="bg-[#06111d] border border-slate-800 rounded-xl p-6">
+                <h2 className="text-white text-[13px] md:text-[18px] font-bold uppercase mb-6">
+                    Transfer History{" "}
+                    <span className="text-slate-400 font-medium">
+                        (Last 10 Years)
+                    </span>
+                </h2>
+
+                <div className="space-y-3">
+                    {transferHistory.map((item, index) => (
+                        <div
+                            key={index}
+                            className="flex items-center gap-2 md:gap-4"
+                        >
+                            <span className="text-slate-300 font-medium w-8 md:w-12 text-[10px] sm:text-[13px] md:text-[16px]">
+                                {item.year}
+                            </span>
+
+                            {/* Club Logo */}
+                            <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-slate-700 border border-slate-600 flex-shrink-0" />
+
+                            <span className="text-white text-[10px] sm:text-[13px] md:text-base">
+                                {item.club}
+                            </span>
+                        </div>
+                    ))}
                 </div>
             </div>
 
+            {/* Positions */}
+            <div className="bg-[#06111d] border border-slate-800 rounded-xl p-5">
+                <h2 className="text-white text-[13px] md:text-[18px] font-bold uppercase mb-6">
+                    Positions On The Pitch
+                </h2>
+
+                {/* Football Field */}
+                {/* <div>
+                    <img src="/images/img/football_field.png" alt=""
+                     className="bg-cover bg-center bg-no-repeat w-full overflow-hidden"
+                      />
+                </div> */}
+
+
+                <Pitch/>
+               
+
+                {/* Position Info */}
+                <div className="mt-6 space-y-2 text-white text-[11px] md:text-[16px] font-bold uppercase">
+                    <p>
+                        <span className="text-white-400 text-[13px] md:text-[18px] font-bold uppercase mb-3">
+                            Main Position:
+                        </span>{" "}
+                        Right Winger
+                    </p>
+
+                    <p>
+                        <span className="text-white text-[13px] md:text-[18px] font-bold uppercase">
+                            Secondary:
+                        </span>{" "}
+                        Attacking Midfielder, Central Midfielder
+                    </p>
+                </div>
+            </div>
+        </div>
+                    </section>
+
+
+
+                     {/* <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-4"> */}
+                     <div className="flex md:grid md:grid-cols-[400px_1fr] gap-4">
+      {/* Achievements */}
+      <div className="bg-[#0b1523] border border-[#1b2a3d] rounded-lg p-5">
+        <h2 className="text-white text-[12px] md:text-sm font-semibold uppercase mb-5">
+          Achievements
+        </h2>
+
+        <div className="space-y-2 md:space-y-4">
+          {achievements.map((item, index) => (
+            <div key={index} className="flex items-start gap-1 md:gap-3">
+              <span className="text-yellow-500 text-[12px] md:text-sm">🏆</span>
+
+              <div className="flex gap-3 md:grid md:grid-cols-[100px_1fr]">
+                <p className="text-orange-500 text-[12px] md:text-sm font-medium">
+                  {item.year}
+                </p>
+                <p className="text-gray-300 text-[10px] md:text-sm leading-relaxed">
+                  {item.title}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <button className="mt-6 text-orange-500 text-[12px] md:text-sm font-medium hover:text-orange-400 transition">
+          View all achievements →
+        </button>
+      </div>
+
+      {/* Player Description */}
+      <div className="bg-[#0b1523] border border-[#1b2a3d] rounded-lg p-5">
+        <h2 className="text-white text-[12px] md:text-sm font-semibold uppercase mb-4">
+          Player Description{" "}
+          <span className="text-gray-500 font-normal">
+            (UP TO 500 WORDS)
+          </span>
+        </h2>
+
+        <div className="w-full">
+          <p className="w-full h-48 bg-[#08111d] border border-[#1b2a3d] rounded-lg p-2 md:p-4 text-gray-300 placeholder:text-gray-500 resize-none outline-none focus:border-orange-500">
+            Write a detailed description of the player's qualities, strengths, style of play, mentality, and other relevant information...
+          </p>
+
+          <span className="absolute bottom-3 right-4 text-xs text-gray-500">
+            {/* 0 / 500 words */}
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+{/* IN-CONTENT AD */}
+    <aside className="block lg:hidden space-y-3">
+                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider">
+                        Sponsored
+                    </p>
+
+
+                     <div className="bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]">
+                        <div
+                            className="absolute inset-0 opacity-20"
+                            style={{
+                                background:
+                                    'radial-gradient(circle at 50% 0%, #FF6B00 0%, transparent 60%)',
+                            }}
+                        />
+                        <span className="text-white/10 font-black text-[100px] leading-none absolute -top-4 select-none">
+              ✓
+            </span>
+                        <div className="relative z-10 flex flex-col items-center">
+              <span className="text-white font-black text-2xl tracking-tight">
+                NIKE FC
+              </span>
+                            <div className="bg-[#FF6B00] w-8 h-0.5 mx-auto my-2" />
+                            <span className="text-white/70 text-sm">2025 Season Boots</span>
+                            <span className="text-white/60 text-xs tracking-widest mt-2">
+                MERCURIAL VAPOR
+              </span>
+                            <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-6 py-2 rounded-lg text-sm mt-3 transition-colors">
+                                SHOP NOW →
+                            </button>
+                        </div>
+                    </div>
+                    
+                </aside>
+
+
+
+
+    <div className="grid gap-4 grid-cols-[1fr_1.25fr]">
+      {/* Competition History */}
+      <div className="rounded-lg border border-[#152538] bg-[#07111d] p-4 md:p-6">
+        <h2 className="mb-6 text-[14px] md:text-xl font-bold uppercase text-white">
+          Competition History
+        </h2>
+
+        <div className="md:space-y-4 space-y-2">
+          {competitions.map((item, index) => (
+            <div
+              key={index}
+              className="flex items-start justify-between gap-2 md:gap-4"
+            >
+              <div className="flex items-start gap-1 md:gap-3">
+                <Trophy
+                  size={18}
+                  strokeWidth={1.5}
+                  className="mt-0.5 text-gray-300"
+                />
+
+                <span className="text-[10px] md:text-sm text-gray-200">
+                  {item.name}
+                </span>
+              </div>
+
+              <span className="text-[10px] md:text-sm text-[#f97316]">
+                {item.year}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-8 flex justify-end">
+          <button className="flex items-center gap-2 text-[13px] md:text-[18px] text-[#f97316] transition hover:text-orange-400">
+            View all competitions
+            <ChevronRight size={22} />
+          </button>
+        </div>
+      </div>
+
+      {/* Recent Matches */}
+      <div className="rounded-lg border border-[#152538] bg-[#07111d] p-6 overflow-hidden">
+        <h2 className="mb-6 text-[14px] md:text-xl font-bold uppercase text-white">
+          Recent Matches
+        </h2>
+
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="text-left text-[12px] md:text-sm uppercase text-gray-300 border-b-1 border-gray-300/10">
+                <th className="pb-4">Match</th>
+                <th className="pb-4 text-center">Goals</th>
+                <th className="pb-4 text-center px-2">Assists</th>
+                <th className="pb-4 text-center">Minutes</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {matches.map((match, index) => (
+                <tr
+                  key={index}
+                  className="text-gray-200 border-b-1 text-[10px] md:text-[14px] border-gray-300/10"
+                >
+                  <td className="py-3">
+                    <div className="flex items-center gap-2 md:gap-4">
+                      <span>{match.home}</span>
+
+                      <span className="font-semibold">
+                        {match.score}
+                      </span>
+
+                      <span>{match.away}</span>
+                    </div>
+                  </td>
+
+                  <td className="py-3 text-center ">
+                    {match.goals}
+                  </td>
+
+                  <td className="py-3 text-center">
+                    {match.assists}
+                  </td>
+
+                  <td className="py-3 text-center">
+                    {match.minutes}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="mt-8 flex justify-end">
+          <button className="flex items-center gap-2 text-[14px] md:text-[18px] text-[#f97316] transition hover:text-orange-400">
+            View all matches
+            <ChevronRight size={22} />
+          </button>
+        </div>
+      </div>
+    </div>
+
+                </main>
+                
+
+            </div>
+
             {/* FOOTER SPACING */}
-            <div className="h-12" />
+            <PublicFooter/>
         </div>
     );
 }

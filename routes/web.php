@@ -3,9 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-//all web routes
+// all web routes
+// Route::get('/', function () {
+//     return Inertia::render('web/Home');
+// })->name('home');
 Route::get('/', function () {
-    return Inertia::render('web/Home');
+    return Inertia::render('web/HomeTwo');
 })->name('home');
 
 Route::get('/about', function () {
