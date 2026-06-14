@@ -5,50 +5,40 @@ var PublicNavbar_1 = require("@/components/public/PublicNavbar");
 var PublicFooter_1 = require("@/components/public/PublicFooter");
 var react_country_flag_1 = require("react-country-flag");
 var lucide_react_1 = require("lucide-react");
-var HomeTwo = function () {
+var Scout = function () {
     var steps = [
         {
-            icon: lucide_react_1.User,
+            icon: lucide_react_1.Binoculars,
             step: "01",
-            title: "CREATE YOUR PROFILE",
+            title: "EARLY ACCESS TO TALENT",
             desc: (react_1["default"].createElement(react_1["default"].Fragment, null,
-                "Build an organized, professional profile with your",
-                " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "data"),
-                ",",
-                " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "club history"),
-                ",",
-                " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "physical and technical characteristics"),
-                ", and your",
-                " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "achievements"),
-                "."))
+                "Be the first to discover young players before they become known to the world.",
+                " "))
         },
         {
-            icon: lucide_react_1.Play,
+            icon: lucide_react_1.Users,
             step: "02",
-            title: "UPLOAD YOUR BEST VIDEOS",
-            desc: (react_1["default"].createElement(react_1["default"].Fragment, null,
-                "Show the world your",
-                " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "best moments"),
-                ". Get",
-                " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "improvement tips"),
-                " to make your videos more attractive to scouts, agents and clubs."))
+            title: "ADVANCED SEARCH AND FILTERS",
+            desc: (react_1["default"].createElement(react_1["default"].Fragment, null, "Find players by position, age, country, club, tournament, skills and much more."))
         },
         {
-            icon: lucide_react_1.Megaphone,
+            icon: lucide_react_1.ChartColumn,
             step: "03",
-            title: "BE SEEN. BE DISCOVERED.",
-            desc: (react_1["default"].createElement(react_1["default"].Fragment, null,
-                "A platform developed by professionals from various areas of football with",
-                " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "over 20 years of experience worldwide"),
-                "."))
+            title: "DETAILED PLAYER PROFILES",
+            desc: (react_1["default"].createElement(react_1["default"].Fragment, null, "Watch highlights, check stats, performance and player information all in one place."))
         },
+        {
+            icon: lucide_react_1.Send,
+            step: "04",
+            title: "CONTACT TALENTS FOR FREE",
+            desc: (react_1["default"].createElement(react_1["default"].Fragment, null, "Get in touch directly with players or their representatives and start real connections."))
+        },
+        {
+            icon: lucide_react_1.Star,
+            step: "04",
+            title: "FOLLOW AND TRACK",
+            desc: (react_1["default"].createElement(react_1["default"].Fragment, null, "Follow your favorite players, receive updates and never miss a new talent."))
+        }
     ];
     var players = [
         {
@@ -93,18 +83,17 @@ var HomeTwo = function () {
         react_1["default"].createElement("main", { className: "pt-16" },
             react_1["default"].createElement("section", { className: "relative w-full bg-black text-white overflow-hidden" },
                 react_1["default"].createElement("div", { className: "max-w-7xl mx-auto" },
-                    react_1["default"].createElement("div", { className: "flex md:grid md:grid-cols-2 mb-26 sm:mb-10" },
+                    react_1["default"].createElement("div", { className: " grid grid-cols-[270px_1fr] sm:grid-cols-[300px_1fr] md:grid-cols-[380px_1fr] lg:grid-cols-2 mb-26 sm:mb-10" },
                         react_1["default"].createElement("div", { className: "flex px-6 sm:px-10 lg:px-16 pt-16" },
                             react_1["default"].createElement("div", { className: "max-w-xl" },
                                 react_1["default"].createElement("h1", { className: "text-[18px] md:text-2xl lg:text-4xl font-extrabold uppercase leading-tight" },
-                                    react_1["default"].createElement("span", { className: "block text-white" }, "Be Seen."),
-                                    react_1["default"].createElement("span", { className: "block text-orange-500" },
-                                        "Be Discovered ",
-                                        react_1["default"].createElement("span", { className: "text-white" }, "!"))),
-                                react_1["default"].createElement("p", { className: "mt-6 text-gray-300 text-[10px] sm:text-[12px] md:text-[14px] lg:text-base leading-relaxed max-w-lg" }, "The platform that connects players, clubs, agents and scouts through videos, statistics and professional profiles."),
+                                    react_1["default"].createElement("span", { className: "block text-white" }, "BE THE FIRST"),
+                                    react_1["default"].createElement("span", { className: "block text-orange-500" }, "TO SEE A RARE TALENT."),
+                                    react_1["default"].createElement("span", { className: "block text-white" }, "BE THE DISCOVERER"),
+                                    react_1["default"].createElement("span", { className: "block text-orange-500" }, "OF THE NEXT GREAT FOOTBALL STAR.")),
                                 react_1["default"].createElement("div", { className: "relative" },
-                                    react_1["default"].createElement("p", { className: "border-l-2 border-red-500 mt-4 pl-2 text-gray-300 text-[10px] sm:text-[12px] md:text-[14px] lg:text-base leading-relaxed max-w-lg" }, "Show your talent to the world and increase your opportunities in football."),
-                                    react_1["default"].createElement("div", { className: "flex absolute top-15 lg:top-25 left-0 z-0 flex-row gap-4 w-[200%]" },
+                                    react_1["default"].createElement("p", { className: "mt-6 text-gray-300 text-[12px] md:text-[14px] lg:text-base leading-relaxed md:pr-8 lg:w-[300px]" }, "At HiLights Football, you have the opportunity to discover, follow and contact great talents for free."),
+                                    react_1["default"].createElement("div", { className: "flex absolute top-17 md:top-22 lg:top-25 left-0 z-0 flex-row gap-4 w-[200%]" },
                                         react_1["default"].createElement("button", { className: "flex justify-center items-center bg-orange-500 hover:bg-orange-600 transition-all duration-300 px-3 py-2 md:px-6 md:py-4 rounded-md font-semibold uppercase text-[10px] md:text-sm" },
                                             react_1["default"].createElement(lucide_react_1.UserRoundPlus, { className: "w-6 h-6" }),
                                             react_1["default"].createElement("span", { className: "pl-2" },
@@ -116,51 +105,28 @@ var HomeTwo = function () {
                                             react_1["default"].createElement("span", { className: "pl-2" }, "Learn More")))))),
                         react_1["default"].createElement("div", { className: "" },
                             react_1["default"].createElement("img", { src: "/images/img/player-1.png", alt: "", className: "rounded-full mt-10" }))))),
-            react_1["default"].createElement("aside", { className: "space-y-3 " },
-                react_1["default"].createElement("p", { className: "text-[10px] text-[#94A3B8] uppercase tracking-wider" }, "Sponsored"),
-                react_1["default"].createElement("div", { className: "bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]" },
-                    react_1["default"].createElement("div", { className: "absolute inset-0 opacity-20", style: {
-                            background: 'radial-gradient(circle at 50% 0%, #FF6B00 0%, transparent 60%)'
-                        } }),
-                    react_1["default"].createElement("span", { className: "text-white/10 font-black text-[100px] leading-none absolute -top-4 select-none" }, "\u2713"),
-                    react_1["default"].createElement("div", { className: "relative z-10 flex flex-col items-center" },
-                        react_1["default"].createElement("span", { className: "text-white font-black text-2xl tracking-tight" }, "NIKE FC"),
-                        react_1["default"].createElement("div", { className: "bg-[#FF6B00] w-8 h-0.5 mx-auto my-2" }),
-                        react_1["default"].createElement("span", { className: "text-white/70 text-sm" }, "2025 Season Boots"),
-                        react_1["default"].createElement("span", { className: "text-white/60 text-xs tracking-widest mt-2" }, "MERCURIAL VAPOR"),
-                        react_1["default"].createElement("button", { className: "bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-6 py-2 rounded-lg text-sm mt-3 transition-colors" }, "SHOP NOW \u2192")))),
-            react_1["default"].createElement("section", { className: "max-w-7xl mx-auto bg-black text-white px-6 sm:px-10 lg:px-16 pt-10" },
+            react_1["default"].createElement("section", { className: "max-w-7xl mx-auto bg-black text-white px-6 sm:px-10 lg:px-16 pt-2" },
+                react_1["default"].createElement("div", { className: "bg-[#353535] px-6 py-4 mb-4" },
+                    react_1["default"].createElement("p", { className: "text-center text-[12px] sm:text-[14px] md:text-[16px]" }, " WHY SCOUTS, AGENTS AND CLUBS CHOOSE HILIGHTS FOOTBALL ")),
                 react_1["default"].createElement("div", { className: "" },
-                    react_1["default"].createElement("h2", { className: "mb-6 text-[20px] md:text-3xl font-extrabold uppercase leading-tight" },
-                        "A SIMPLE. PROFESSIONAL.",
-                        " ",
-                        react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "EFFECTIVE PLATFORM.")),
-                    react_1["default"].createElement("div", { className: "lg:max-w-5xl" }, steps.map(function (item, index) {
+                    react_1["default"].createElement("div", { className: "lg:max-w-5xl pl-1 pr-4 sm:pl-4 sm:pr-27 md:pl-7 md:pr-30  lg:pl-10" }, steps.map(function (item, index) {
                         var Icon = item.icon;
                         return (react_1["default"].createElement("div", { className: "border-b border-[#1f1f1f] lg:max-w-5x" },
-                            react_1["default"].createElement("div", { key: index, className: "lg:max-w-4xl grid grid-cols-[50px_60px_1fr] md:grid-cols-[70px_90px_1fr] items-center py-5" },
+                            react_1["default"].createElement("div", { key: index, className: "lg:max-w-4xl grid grid-cols-[50px_1fr] md:grid-cols-[70px_1fr] items-center py-5" },
                                 react_1["default"].createElement("div", { className: "flex justify-center" },
                                     react_1["default"].createElement("div", { className: "flex h-9 w-9 md:h-14 md:w-14 items-center justify-center rounded-full border border-gray-500" },
                                         react_1["default"].createElement(Icon, { className: "text-[#ff6b00] w-4 h-4 md:w-6 md:h-6" }))),
-                                react_1["default"].createElement("div", null,
-                                    react_1["default"].createElement("p", { className: "text-[10px] md:text-sm font-bold text-[#ff6b00]" }, "STEP"),
-                                    react_1["default"].createElement("h3", { className: "text-3xl md:text-5xl font-extrabold leading-none text-[#ff6b00]" }, item.step)),
-                                react_1["default"].createElement("div", { className: "border-l-4 border-[#1f1f1f] pl-3 md:pl-5" },
-                                    react_1["default"].createElement("h3", { className: "mb-1 text-[14px] sm:text-[16px] md:text-[18px] lg:text-[22px] font-extrabold uppercase" }, item.title),
+                                react_1["default"].createElement("div", { className: " border-[#1f1f1f] pl-3 md:pl-5" },
+                                    react_1["default"].createElement("h3", { className: "mb-1 text-[#ff6b00] text-[14px] sm:text-[16px] md:text-[18px] lg:text-[22px] font-extrabold uppercase" }, item.title),
                                     react_1["default"].createElement("p", { className: "text-[12px] sm:text-[14px] md:text-[16px] lg:text-[18px] leading-relaxed text-gray-300" }, item.desc)))));
                     })),
-                    react_1["default"].createElement("div", { className: "flex gap-4 sm:grid sm:grid-cols-[70px_1fr_200px] md:grid-cols-[90px_1fr_400px] lg:grid-cols-[110px_1fr_500px] items-center border-b border-[#1f1f1f] py-6" },
+                    react_1["default"].createElement("div", { className: "flex gap-4 sm:grid sm:grid-cols-[70px_1fr_200px] md:grid-cols-[90px_1fr_250px] lg:grid-cols-[110px_1fr_350px] items-center border-b border-[#1f1f1f] py-6" },
                         react_1["default"].createElement("div", { className: "flex justify-center" },
                             react_1["default"].createElement("div", { className: "flex h-12 w-12 md:h-20 md:w-20 items-center justify-center rounded-full bg-[#ff6b00]" },
                                 react_1["default"].createElement(lucide_react_1.Users, { className: "text-white md:w-12 md:h-12" }))),
                         react_1["default"].createElement("div", null,
-                            react_1["default"].createElement("h3", { className: "text-[14px] sm:text-[16px] md:text-[18px] lg:text-[22px] font-bold leading-tight" },
-                                "Not part of the",
-                                " ",
-                                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "HiLights Football"),
-                                react_1["default"].createElement("br", null),
-                                "community yet?"),
-                            react_1["default"].createElement("p", { className: "mt-3 text-[10px] sm:text-[12px] md:text-[14px] lg:text-[16px] leading-relaxed text-gray-300" }, "Create your free profile, share your best moments and become visible to coaches, clubs and recruiters worldwide.")),
+                            react_1["default"].createElement("h3", { className: "text-[13px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-bold leading-tight text-white" }, "JOIN THOUSANDS OF SCOUTS, AGENTS AND CLUBS ALREADY ON HILIGHTS FOOTBALL."),
+                            react_1["default"].createElement("p", { className: "mt-1 text-[10px] sm:text-[12px] md:text-[14px] lg:text-[16px] leading-relaxed text-gray-300" }, "Register now and start discovering the future of football.")),
                         react_1["default"].createElement("div", { className: "flex justify-end items-end lg:pr-10" },
                             react_1["default"].createElement("button", { className: "flex items-center gap-2 md:gap-4 rounded-xl sm:-w-45 border border-[#ff6b00] px-4 py-2 lg:px-8 lg:py-6 transition hover:bg-[#ff6b00]/10" },
                                 react_1["default"].createElement(lucide_react_1.UserPlus, { className: "text-white w-6 h-6 md:w-8 md:h-8" }),
@@ -168,20 +134,7 @@ var HomeTwo = function () {
                                     "Create a Free",
                                     react_1["default"].createElement("br", null),
                                     "Profile Now")))))),
-            react_1["default"].createElement("aside", { className: "mb-6 space-y-3" },
-                react_1["default"].createElement("p", { className: "text-[10px] text-[#94A3B8] uppercase tracking-wider" }, "Sponsored"),
-                react_1["default"].createElement("div", { className: "bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]" },
-                    react_1["default"].createElement("div", { className: "absolute inset-0 opacity-20", style: {
-                            background: 'radial-gradient(circle at 50% 0%, #FF6B00 0%, transparent 60%)'
-                        } }),
-                    react_1["default"].createElement("span", { className: "text-white/10 font-black text-[100px] leading-none absolute -top-4 select-none" }, "\u2713"),
-                    react_1["default"].createElement("div", { className: "relative z-10 flex flex-col items-center" },
-                        react_1["default"].createElement("span", { className: "text-white font-black text-2xl tracking-tight" }, "NIKE FC"),
-                        react_1["default"].createElement("div", { className: "bg-[#FF6B00] w-8 h-0.5 mx-auto my-2" }),
-                        react_1["default"].createElement("span", { className: "text-white/70 text-sm" }, "2025 Season Boots"),
-                        react_1["default"].createElement("span", { className: "text-white/60 text-xs tracking-widest mt-2" }, "MERCURIAL VAPOR"),
-                        react_1["default"].createElement("button", { className: "bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-6 py-2 rounded-lg text-sm mt-3 transition-colors" }, "SHOP NOW \u2192")))),
-            react_1["default"].createElement("section", { className: "overflow-x-hidden mb-6" },
+            react_1["default"].createElement("section", { className: "overflow-x-hidden mb-6 max-w-7xl mx-auto" },
                 react_1["default"].createElement("div", { className: "w-[90%] mx-auto rounded-xl p-3 md:p-6 bg-[#f9f9f9]" },
                     react_1["default"].createElement("div", { className: "flex items-center justify-between pb-3" },
                         react_1["default"].createElement("div", { className: "flex items-center gap-2 " },
@@ -210,4 +163,4 @@ var HomeTwo = function () {
                             player.age))); })))),
         react_1["default"].createElement(PublicFooter_1.PublicFooter, null)));
 };
-exports["default"] = HomeTwo;
+exports["default"] = Scout;

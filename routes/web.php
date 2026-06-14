@@ -31,6 +31,12 @@ Route::get('/player/profile/{id}', function () {
     return Inertia::render('player/profile/public/New-Detail');
 })->name('profile.public.detail');
 
+
+
+Route::get('/scout', function () {
+        return Inertia::render('player/profile/public/Scout');
+    })->name('scout');
+
 //all player routes
 Route::prefix('player')->group(function () {
 

@@ -526,8 +526,6 @@ export default function NewDetail() {
                     
                 </aside>
 
-                    
-
               
                     {/* CLUB HISTORY */}
                     <section className="overflow-hidden">
