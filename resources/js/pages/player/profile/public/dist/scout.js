@@ -48,7 +48,7 @@ var Scout = function () {
             code: "SN",
             height: "178 cm",
             age: "20 years",
-            image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43f?w=400"
+            image: "/images/img/p-3.jpg"
         },
         {
             name: "Gabriel Gama",
@@ -57,7 +57,7 @@ var Scout = function () {
             code: "BR",
             height: "175 cm",
             age: "21 years",
-            image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400"
+            image: "/images/img/p-6.png"
         },
         {
             name: "Mady Danfaga",
@@ -66,7 +66,7 @@ var Scout = function () {
             code: "GN",
             height: "185 cm",
             age: "22 years",
-            image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43f?w=400"
+            image: "/images/img/p-4.jpg"
         },
         {
             name: "Vinicius Peruchi",
@@ -75,7 +75,7 @@ var Scout = function () {
             code: "BR",
             height: "188 cm",
             age: "21 years",
-            image: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=400"
+            image: "/images/img/p-5.jpg"
         },
     ];
     return (react_1["default"].createElement("div", { className: " bg-white text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]" },
@@ -134,33 +134,34 @@ var Scout = function () {
                                     "Create a Free",
                                     react_1["default"].createElement("br", null),
                                     "Profile Now")))))),
-            react_1["default"].createElement("section", { className: "overflow-x-hidden mb-6 max-w-7xl mx-auto" },
+            react_1["default"].createElement("section", { className: "overflow-x-hidden mt-10 mb-6 max-w-7xl mx-auto" },
                 react_1["default"].createElement("div", { className: "w-[90%] mx-auto rounded-xl p-3 md:p-6 bg-[#f9f9f9]" },
                     react_1["default"].createElement("div", { className: "flex items-center justify-between pb-3" },
                         react_1["default"].createElement("div", { className: "flex items-center gap-2 " },
                             react_1["default"].createElement(lucide_react_1.Star, { size: 18, fill: "#ff6b00", className: "text-[#ff6b00]" }),
-                            react_1["default"].createElement("h2", { className: "whitespace-nowrap text-[12px] md:text-sm font-extrabold uppercase text-[#222]" }, "Community Highlights")),
+                            react_1["default"].createElement("h2", { className: "whitespace-nowrap text-[12px] md:text-sm font-extrabold uppercase text-[#222]" }, "TOP TALENTS YOU CAN DISCOVER TODAY")),
                         react_1["default"].createElement("button", { className: "flex items-center gap-2 whitespace-nowrap text-[10px] md:text-xs font-bold uppercase text-gray-700 bg-white px-4 py-2 rounded-[10px]" },
                             "View All",
                             react_1["default"].createElement(lucide_react_1.ArrowRight, { size: 14, className: "text-[#ff6b00]" }))),
-                    players.map(function (player, index) { return (react_1["default"].createElement("div", { key: index, className: "grid grid-cols-[40px_1fr_70px_70px] sm:grid-cols-[70px_1fr_80px_120px] md:grid-cols-[150px_1fr_120px_170px] items-center p-2 sm:p-4 md:p-6 rounded-[8px] bg-white mb-2" },
-                        react_1["default"].createElement("div", { className: "relative p-1 md:p-2" },
-                            react_1["default"].createElement("img", { src: player.image, alt: player.name, className: "h-[60px] w-[90px] rounded object-cover" }),
+                    react_1["default"].createElement("div", { className: "flex justify-between items-center overflow-x-auto pb-4" }, players.map(function (player, index) { return (react_1["default"].createElement("div", { key: index, className: "shadow-[0_4px_12px_rgba(0,0,0,0.12)] rounded-[8px] w-[24%]" },
+                        react_1["default"].createElement("div", { className: "relative " },
+                            react_1["default"].createElement("img", { src: player.image, alt: player.name, className: "h-[150px] w-full rounded object-cover " }),
                             react_1["default"].createElement("button", { className: "absolute bottom-3 right-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00]" },
                                 react_1["default"].createElement(lucide_react_1.Play, { size: 12, fill: "white", className: "text-white" }))),
-                        react_1["default"].createElement("div", { className: "px-1 md:px-2 mr-2" },
-                            react_1["default"].createElement("h3", { className: "whitespace-nowrap text-[12px] md:text-[15px] font-bold text-[#222]" }, player.name),
-                            react_1["default"].createElement("p", { className: "whitespace-nowrap text-[10px] md:text-xs text-gray-600" }, player.position),
-                            react_1["default"].createElement("div", { className: "mt-1 flex items-center gap-2" },
+                        react_1["default"].createElement("div", { className: "px-4 md:px-6 mr-2" },
+                            react_1["default"].createElement("h3", { className: "whitespace-nowrap text-[12px] mt-2 md:text-[15px] font-bold text-[#222]" }, player.name),
+                            react_1["default"].createElement("p", { className: "whitespace-nowrap mt-1 text-[10px] md:text-xs text-gray-600" }, player.position),
+                            react_1["default"].createElement("div", { className: "mt-2 flex items-center gap-2" },
                                 react_1["default"].createElement("span", { className: "text-sm" },
-                                    react_1["default"].createElement(react_country_flag_1["default"], { countryCode: player.code, svg: true, className: "mr-1 mt-[2px] md:mt-1 m[1em]" })),
+                                    react_1["default"].createElement(react_country_flag_1["default"], { countryCode: player.code, svg: true, className: "mr-1 -mt-[2px] m[1em]" })),
                                 react_1["default"].createElement("span", { className: "whitespace-nowrap text-[10px] md:text-xs text-gray-700" }, player.country))),
-                        react_1["default"].createElement("div", { className: "flex mr-3 items-center justify-center gap-2 whitespace-nowrap text-[12px] md:text-sm text-[#222]" },
-                            react_1["default"].createElement(lucide_react_1.Ruler, { size: 14 }),
-                            react_1["default"].createElement("p", null, player.height)),
-                        react_1["default"].createElement("div", { className: "flex items-center md:ml-4 justify-end gap-2 whitespace-nowrap text-[12px] md:text-sm text-[#222]" },
-                            react_1["default"].createElement(lucide_react_1.Clock3, { size: 14 }),
-                            player.age))); })))),
+                        react_1["default"].createElement("div", { className: "flex justify-between mt-5 pb-5 px-4" },
+                            react_1["default"].createElement("div", { className: "flex gap-2 whitespace-nowrap text-[12px] md:text-sm text-[#222]" },
+                                react_1["default"].createElement(lucide_react_1.Ruler, { size: 14, className: "mt-1 ml-2" }),
+                                react_1["default"].createElement("p", null, player.height)),
+                            react_1["default"].createElement("div", { className: "flex md:ml-4 gap-2 whitespace-nowrap text-[12px] md:text-sm text-[#222]" },
+                                react_1["default"].createElement(lucide_react_1.Clock3, { size: 14, className: "mt-[2px]" }),
+                                player.age)))); }))))),
         react_1["default"].createElement(PublicFooter_1.PublicFooter, null)));
 };
 exports["default"] = Scout;

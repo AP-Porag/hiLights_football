@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Link } from '@inertiajs/react';
-import { ArrowRight, CheckCircle2, Circle, Crown, Eye, History, Lock, Star, TrendingUp, Video } from 'lucide-react';
+import { ArrowRight, CalendarDays, CheckCircle2, Circle, Crown, Eye, Flag, History, Lock, MapPin, Star, TrendingUp, User, Video } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 // MOCK DATA (realistic)
@@ -88,92 +88,188 @@ export default function PlayerDashboard() {
 
             <main className="mx-auto max-w-[1300px] space-y-6 px-4 py-6 sm:px-8 sm:py-8">
                 {/* WIDGETS ROW */}
-                <section className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                <section className="grid grid-cols-[320px_1fr] gap-4">
                     {/* [1] Profile Complete */}
-                    <div className="flex flex-col items-center rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
-                        <div className="relative h-[112px] w-[112px]">
-                            <svg width="112" height="112" viewBox="0 0 112 112" className="-rotate-90">
-                                <circle cx="56" cy="56" r="44" fill="none" strokeWidth="10" className="stroke-[#E2E8F0] dark:stroke-[#2A2A2A]" />
-                                <circle
-                                    cx="56"
-                                    cy="56"
-                                    r="44"
-                                    fill="none"
-                                    stroke="#FF6B00"
-                                    strokeWidth="10"
-                                    strokeDasharray={circumference}
-                                    strokeDashoffset={dashOffset}
-                                    strokeLinecap="round"
-                                />
+
+                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                        <div className="flex flex-col items-center rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
+                            <div className="relative h-[112px] w-[112px]">
+                                <svg width="112" height="112" viewBox="0 0 112 112" className="-rotate-90">
+                                    <circle cx="56" cy="56" r="44" fill="none" strokeWidth="10" className="stroke-[#E2E8F0] dark:stroke-[#2A2A2A]" />
+                                    <circle
+                                        cx="56"
+                                        cy="56"
+                                        r="44"
+                                        fill="none"
+                                        stroke="#FF6B00"
+                                        strokeWidth="10"
+                                        strokeDasharray={circumference}
+                                        strokeDashoffset={dashOffset}
+                                        strokeLinecap="round"
+                                    />
+                                </svg>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <span className="font-display text-3xl font-black text-[#0F172A] dark:text-[#F5F5F5]">
+                                        {player.profileComplete}%
+                                    </span>
+                                </div>
+                            </div>
+                            <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Profile Complete</p>
+                            <p className="mt-2 text-[10px] font-medium text-[#FF6B00]">Add video to reach 80%</p>
+                        </div>
+
+                        {/* [2] Profile Views */}
+                        <div className="rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
+                            <div className="flex items-start justify-between">
+                                <div>
+                                    <p className="font-mono text-3xl font-black text-[#0F172A] dark:text-[#F5F5F5]">
+                                        {player.totalViews.toLocaleString('en-US')}
+                                    </p>
+                                    <p className="mt-1 text-sm text-[#475569] dark:text-[#9A9A9A]">Profile Views</p>
+                                </div>
+                                <Eye className="h-5 w-5 text-[#FF6B00]" />
+                            </div>
+                            <div className="mt-2 flex items-center gap-1">
+                                <TrendingUp className="h-3 w-3 text-green-500 dark:text-green-400" />
+                                <span className="text-xs font-medium text-green-500 dark:text-green-400">{player.trend}% this week</span>
+                            </div>
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="mt-2 h-12 w-full">
+                                <polyline points={sparkPoints} fill="none" stroke="#FF6B00" strokeWidth="2" vectorEffect="non-scaling-stroke" />
                             </svg>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="font-display text-3xl font-black text-[#0F172A] dark:text-[#F5F5F5]">{player.profileComplete}%</span>
-                            </div>
                         </div>
-                        <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Profile Complete</p>
-                        <p className="mt-2 text-[10px] font-medium text-[#FF6B00]">Add video to reach 80%</p>
+
+                        {/* [3] Scout Interest */}
+                        <div className="rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
+                            <div className="flex items-start justify-between">
+                                <div>
+                                    <p className="font-mono text-3xl font-black text-[#0F172A] dark:text-[#F5F5F5]">{player.scoutInterest}</p>
+                                    <p className="mt-1 text-sm text-[#475569] dark:text-[#9A9A9A]">Scout Ratings</p>
+                                </div>
+                                <Star className="h-5 w-5 fill-[#FF6B00] text-[#FF6B00]" />
+                            </div>
+                            <div className="mt-2 flex items-center gap-1">
+                                <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
+                                <span className="text-xs font-medium text-[#475569] dark:text-[#9A9A9A]">Average {player.avgRating} / 5.0</span>
+                            </div>
+                            <Progress value={84} className="mt-3 h-2 bg-[#E2E8F0] dark:bg-[#2A2A2A] [&>div]:bg-[#FF6B00]" />
+                        </div>
+
+                        {/* [4] Subscription */}
+                        <div className="flex flex-col rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
+                            {player.subscription === 'free' ? (
+                                <>
+                                    <Badge className="w-fit border border-[#FF6B00] bg-[#FFF3EB] text-[10px] font-bold tracking-wider text-[#CC5500] hover:bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]">
+                                        FREE PLAN
+                                    </Badge>
+                                    <p className="mt-3 flex-1 text-sm text-[#475569] dark:text-[#9A9A9A]">
+                                        Unlock all features and reach more scouts.
+                                    </p>
+                                    <Link href="/player/upgrade" className="mt-3">
+                                        <Button className="w-full bg-[#FF6B00] p-3 font-semibold text-white hover:bg-[#CC5500]">
+                                            <Crown className="mr-1.5 h-3.5 w-3.5" />
+                                            <span className="text-[12px]">
+                                                Upgrade to <br className="block" /> Premium
+                                            </span>
+                                        </Button>
+                                    </Link>
+                                </>
+                            ) : (
+                                <>
+                                    <Badge className="w-fit border border-green-600 bg-green-100 text-[10px] font-bold tracking-wider text-green-700 hover:bg-green-100 dark:bg-green-950/30 dark:text-green-400">
+                                        PREMIUM ACTIVE
+                                    </Badge>
+                                    <p className="mt-3 flex-1 text-sm text-[#475569] dark:text-[#9A9A9A]">All features unlocked.</p>
+                                    <p className="mt-3 text-xs text-[#94A3B8]">Renews 01/06/2026</p>
+                                </>
+                            )}
+                        </div>
                     </div>
 
-                    {/* [2] Profile Views */}
-                    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
-                        <div className="flex items-start justify-between">
-                            <div>
-                                <p className="font-mono text-3xl font-black text-[#0F172A] dark:text-[#F5F5F5]">
-                                    {player.totalViews.toLocaleString('en-US')}
-                                </p>
-                                <p className="mt-1 text-sm text-[#475569] dark:text-[#9A9A9A]">Profile Views</p>
-                            </div>
-                            <Eye className="h-5 w-5 text-[#FF6B00]" />
-                        </div>
-                        <div className="mt-2 flex items-center gap-1">
-                            <TrendingUp className="h-3 w-3 text-green-500 dark:text-green-400" />
-                            <span className="text-xs font-medium text-green-500 dark:text-green-400">{player.trend}% this week</span>
-                        </div>
-                        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="mt-2 h-12 w-full">
-                            <polyline points={sparkPoints} fill="none" stroke="#FF6B00" strokeWidth="2" vectorEffect="non-scaling-stroke" />
-                        </svg>
-                    </div>
+                    {/* right side */}
+                    <div>
+                        <div className="overflow-hidden border-1 border-red-500 text-white">
+                            {/* Left Section */}
+                            <div className="flex justify-between">
+                                {/* Logo */}
+                                <div className="mb-10">
+                                    <img src="/images/img/new_logo.png" alt="new-logo" />
+                                </div>
 
-                    {/* [3] Scout Interest */}
-                    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
-                        <div className="flex items-start justify-between">
-                            <div>
-                                <p className="font-mono text-3xl font-black text-[#0F172A] dark:text-[#F5F5F5]">{player.scoutInterest}</p>
-                                <p className="mt-1 text-sm text-[#475569] dark:text-[#9A9A9A]">Scout Ratings</p>
-                            </div>
-                            <Star className="h-5 w-5 fill-[#FF6B00] text-[#FF6B00]" />
-                        </div>
-                        <div className="mt-2 flex items-center gap-1">
-                            <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
-                            <span className="text-xs font-medium text-[#475569] dark:text-[#9A9A9A]">Average {player.avgRating} / 5.0</span>
-                        </div>
-                        <Progress value={84} className="mt-3 h-2 bg-[#E2E8F0] dark:bg-[#2A2A2A] [&>div]:bg-[#FF6B00]" />
-                    </div>
+                                <div>
+                                    <h2 className="text-[14px] sm:text-[16px] md:text-[20px] lg:text-[22px] font-bold uppercase">MEMBER CARD</h2>
 
-                    {/* [4] Subscription */}
-                    <div className="flex flex-col rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
-                        {player.subscription === 'free' ? (
-                            <>
-                                <Badge className="w-fit border border-[#FF6B00] bg-[#FFF3EB] text-[10px] font-bold tracking-wider text-[#CC5500] hover:bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]">
-                                    FREE PLAN
-                                </Badge>
-                                <p className="mt-3 flex-1 text-sm text-[#475569] dark:text-[#9A9A9A]">Unlock all features and reach more scouts.</p>
-                                <Link href="/player/upgrade" className="mt-3">
-                                    <Button size="sm" className="w-full bg-[#FF6B00] font-semibold text-white hover:bg-[#CC5500]">
-                                        <Crown className="mr-1.5 h-3.5 w-3.5" />
-                                        Upgrade to Premium
-                                    </Button>
-                                </Link>
-                            </>
-                        ) : (
-                            <>
-                                <Badge className="w-fit border border-green-600 bg-green-100 text-[10px] font-bold tracking-wider text-green-700 hover:bg-green-100 dark:bg-green-950/30 dark:text-green-400">
-                                    PREMIUM ACTIVE
-                                </Badge>
-                                <p className="mt-3 flex-1 text-sm text-[#475569] dark:text-[#9A9A9A]">All features unlocked.</p>
-                                <p className="mt-3 text-xs text-[#94A3B8]">Renews 01/06/2026</p>
-                            </>
-                        )}
+                                    <p className="mt-2 text-[10px] sm:text-[12px] md:text-[14px] lg:text-[16px] font-semibold text-orange-500 uppercase">Official Member</p>
+
+                                    <svg width="180" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />
+
+                                        <path
+                                            d="M90 4L92.35 9.15L98 9.8L94 13.6L95.2 19L90 16L84.8 19L86 13.6L82 9.8L87.65 9.15L90 4Z"
+                                            fill="#F97316"
+                                        />
+
+                                        <line x1="110" y1="12" x2="170" y2="12" stroke="#6B7280" strokeWidth="1" />
+                                    </svg>
+                                </div>
+                            </div>
+
+
+                            <div className="flex gap-6 px-2 pt-6">
+                                {/* Image */}
+                                <div className="h-[320px] w-[240px] border-2 border-gray-500 rounded-[20px]">
+                                    <img src="/images/img/p-6.png" alt="player" className="h-full w-full object-cover" />
+                                </div>
+
+                                <div>
+                                <h3 className="mt-8 text-[16px] sm:text-[22px] md:text-[30px] lg:text-[38px] font-bold uppercase">JOÃO DA SILVA</h3>
+
+                                <p className="mt-2 text-[12px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-semibold text-orange-500 uppercase">ATTACKING MIDFIELDER</p>
+
+                                <div className="mt-5 h-[2px] w-[100px] bg-orange-500"></div>
+
+                                <div className="mt-8 space-y-7">
+                                    <div className="flex items-center">
+                                        <User size={20} className="text-orange-500" />
+                                        <p className="text-[10px] text-gray-400 uppercase">
+                                            ID:
+                                            <br />
+                                            <span className="text-[12px] text-white">HLF-00012345</span>
+                                        </p>
+                                    </div>
+
+                                    <div className="flex ">
+                                        <CalendarDays size={20} className="text-orange-500" />
+                                        <p className="text-[10px] text-gray-400 uppercase">
+                                            DATE OF BIRTH:
+                                            <br />
+                                            <span className="text-[12px] text-white">15 / 05 / 2006</span>
+                                        </p>
+                                    </div>
+
+                                    <div className="flex items-center">
+                                        <Flag size={20} className="text-orange-500" />
+                                        <p className="text-[10px] text-gray-400 uppercase">
+                                            NATIONALITY:
+                                            <br />
+                                            <span className="text-[12px] text-white">Brazil</span>
+                                        </p>
+                                    </div>
+
+                                    <div className="flex items-center">
+                                        <MapPin size={20} className="text-orange-500" />
+                                        <p className="text-[10px] text-gray-400 uppercase">
+                                            CITY:
+                                            <br />
+                                            <span className="text-[12px] text-white">RIO DE JANEIRO - RJ</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+
+                            {/* Orange Side Strip */}
+                            <div className=""></div>
+                        </div>
                     </div>
                 </section>
 

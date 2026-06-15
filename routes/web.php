@@ -71,7 +71,6 @@ Route::prefix('scouting')->group(function () {
 
 });
 
-
 //all admin routes
 //Route::middleware(['auth'])->prefix('admin')->group(function () {
 Route::prefix('admin')->group(function () {
