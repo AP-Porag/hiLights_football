@@ -120,9 +120,18 @@ const HomeTwo = () => {
                 {/* ━━━ SECTION 1: HERO ━━━ */}
 
 
-    <section className="relative w-full bg-black text-white overflow-hidden">
+    <section className="w-full h-[100vh] text-white overflow-hidden"
+
+     style={{
+    backgroundImage: "url('/images/img/hero.jpg')",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+  }}
+    >
       <div className="max-w-7xl mx-auto">
-        <div className="flex md:grid md:grid-cols-2 mb-26 sm:mb-10">
+        <div className="flex md:grid md:grid-cols-2 mb-26 sm:mb-10 "
+        >
           
           {/* Left Content */}
           <div className="flex px-6 sm:px-10 lg:px-16 pt-16">
@@ -151,7 +160,20 @@ const HomeTwo = () => {
                 in football.
               </p>
 
-              <div className="flex absolute top-15 lg:top-25 left-0 z-0 flex-row gap-4 w-[200%]">
+              
+              </div>
+              
+            </div>
+          </div>
+
+          {/* Right Empty Section */}
+          {/* <div className="">
+            <img src="/images/img/player-1.png" alt="" 
+            className="rounded-full mt-10"
+            />
+          </div> */}
+        </div>
+        <div className="flex top-15 pl-16 flex-row gap-4 w-[200%] mb-10">
                 <button className="flex justify-center items-center bg-orange-500 hover:bg-orange-600 transition-all duration-300 px-3 py-2 md:px-6 md:py-4 rounded-md font-semibold uppercase text-[10px] md:text-sm">
                     <UserRoundPlus className="w-6 h-6"/>
                     <span className="pl-2">Create A Free<br/> Profile Now</span>
@@ -162,18 +184,6 @@ const HomeTwo = () => {
                   <span className="pl-2">Learn More</span>
                 </button>
               </div>
-              </div>
-              
-            </div>
-          </div>
-
-          {/* Right Empty Section */}
-          <div className="">
-            <img src="/images/img/player-1.png" alt="" 
-            className="rounded-full mt-10"
-            />
-          </div>
-        </div>
       </div>
 
     </section>

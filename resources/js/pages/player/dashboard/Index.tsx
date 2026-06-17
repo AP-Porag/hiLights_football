@@ -4,8 +4,38 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Link } from '@inertiajs/react';
-import { ArrowRight, CalendarDays, CheckCircle2, Circle, Crown, Eye, Flag, History, Lock, MapPin, Star, TrendingUp, User, Video } from 'lucide-react';
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+
+import {
+  ArrowRight, 
+  CalendarDays, 
+  CheckCircle2, 
+  Circle, 
+  Crown, 
+  Eye, 
+  Flag, 
+  History, 
+  Lock, 
+  MapPin, 
+  Star,
+  TrendingUp, 
+  User, 
+  Video,
+  Shirt,
+  Footprints,
+  Ruler,
+  Weight,
+  Shield,
+ } from 'lucide-react';
+ 
+import { 
+    Bar, 
+    BarChart, 
+    CartesianGrid, 
+    ResponsiveContainer, 
+    Tooltip, 
+    XAxis, 
+    YAxis 
+} from 'recharts';
 
 // MOCK DATA (realistic)
 // TODO: Replace with usePage<PageProps & {player:typeof player, recentViews:typeof recentViews}>().props
@@ -72,6 +102,39 @@ export default function PlayerDashboard() {
         })
         .join(' ');
 
+    const playerInfo = [
+        {
+            icon:  <Shirt className="w-4 h-4 text-gray-300" />,
+            label: 'POSITION',
+            value: 'ATTACKING MIDFIELDER',
+        },
+        {
+            icon: <Footprints className="w-4 h-4 text-gray-300"/>,
+            label: 'PREFERRED FOOT',
+            value: 'RIGHT',
+        },
+        {
+            icon: <Ruler className="w-4 h-4 text-gray-300"/>,
+            label: 'HEIGHT',
+            value: '178 CM',
+        },
+        {
+            icon: <Weight className="w-4 h-4 text-gray-300"/>,
+            label: 'WEIGHT',
+            value: '67 KG',
+        },
+        {
+            icon: <Shield className="w-4 h-4 text-gray-300"/>,
+            label: 'CLUB',
+            value: 'RIO DE JANEIRO FC',
+        },
+        {
+            icon: <CalendarDays className="w-4 h-4 text-gray-300"/>,
+            label: 'MEMBER SINCE',
+            value: 'MAY 2024',
+        },
+    ];
+
     return (
         <div className="min-h-screen bg-[#F8FAFC] pt-16 dark:bg-[#0D0D0D]">
             <PlayerNavbar />
@@ -88,10 +151,10 @@ export default function PlayerDashboard() {
 
             <main className="mx-auto max-w-[1300px] space-y-6 px-4 py-6 sm:px-8 sm:py-8">
                 {/* WIDGETS ROW */}
-                <section className="grid grid-cols-[320px_1fr] gap-4">
+                <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     {/* [1] Profile Complete */}
 
-                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                    <div className="grid grid-cols-2 gap-4 h-[500px]">
                         <div className="flex flex-col items-center rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
                             <div className="relative h-[112px] w-[112px]">
                                 <svg width="112" height="112" viewBox="0 0 112 112" className="-rotate-90">
@@ -186,21 +249,23 @@ export default function PlayerDashboard() {
                     </div>
 
                     {/* right side */}
-                    <div>
-                        <div className="overflow-hidden border-1 border-red-500 text-white">
+                    <div className="w-[420px] border-1 border-gray-600 rounded-[16px] md:translate-x-[20%]">
+                        <div className="overflow-hidden text-white">
                             {/* Left Section */}
-                            <div className="flex justify-between">
+                            <div className="flex items-center justify-between">
                                 {/* Logo */}
-                                <div className="mb-10">
-                                    <img src="/images/img/new_logo.png" alt="new-logo" />
+                                <div className="pl-4">
+                                    <img src="/images/img/new_logo.png" alt="new-logo" className="w-[130px]" />
                                 </div>
 
-                                <div>
-                                    <h2 className="text-[14px] sm:text-[16px] md:text-[20px] lg:text-[22px] font-bold uppercase">MEMBER CARD</h2>
+                                <div className="-translate-x-[30%] translate-y-[20%]">
+                                    <h2 className="text-center font-bold uppercase text-[14px]">
+                                        MEMBER CARD
+                                    </h2>
 
-                                    <p className="mt-2 text-[10px] sm:text-[12px] md:text-[14px] lg:text-[16px] font-semibold text-orange-500 uppercase">Official Member</p>
+                                    <p className="text-center text-[10px] font-semibold text-orange-500 uppercase">Official Member</p>
 
-                                    <svg width="180" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="130" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />
 
                                         <path
@@ -213,63 +278,136 @@ export default function PlayerDashboard() {
                                 </div>
                             </div>
 
-
-                            <div className="flex gap-6 px-2 pt-6">
+                            <div className="relative flex gap-4 pl-4 pt-2 border-b-1 border-gray-400">
                                 {/* Image */}
-                                <div className="h-[320px] w-[240px] border-2 border-gray-500 rounded-[20px]">
-                                    <img src="/images/img/p-6.png" alt="player" className="h-full w-full object-cover" />
+                                <div className="h-[210px] w-[130px] mb-3">
+                                    <img
+                                        src="/images/img/p-6.png"
+                                        alt="player"
+                                        className="h-full w-full rounded-[12px] border-1 border-gray-400 object-cover"
+                                    />
                                 </div>
 
                                 <div>
-                                <h3 className="mt-8 text-[16px] sm:text-[22px] md:text-[30px] lg:text-[38px] font-bold uppercase">JOÃO DA SILVA</h3>
+                                    <div className="relative z-10">
+                                        <h3 className="mt-4 text-[16px] font-bold uppercase">
+                                            JOÃO DA SILVA
+                                        </h3>
 
-                                <p className="mt-2 text-[12px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-semibold text-orange-500 uppercase">ATTACKING MIDFIELDER</p>
-
-                                <div className="mt-5 h-[2px] w-[100px] bg-orange-500"></div>
-
-                                <div className="mt-8 space-y-7">
-                                    <div className="flex items-center">
-                                        <User size={20} className="text-orange-500" />
-                                        <p className="text-[10px] text-gray-400 uppercase">
-                                            ID:
-                                            <br />
-                                            <span className="text-[12px] text-white">HLF-00012345</span>
+                                        <p className="text-[10px] text-orange-500 uppercase">
+                                            ATTACKING MIDFIELDER
                                         </p>
+
+                                        <div className="absolute mt-2 h-[1px] bg-orange-500 w-[110%]"></div>
                                     </div>
 
-                                    <div className="flex ">
-                                        <CalendarDays size={20} className="text-orange-500" />
-                                        <p className="text-[10px] text-gray-400 uppercase">
-                                            DATE OF BIRTH:
-                                            <br />
-                                            <span className="text-[12px] text-white">15 / 05 / 2006</span>
-                                        </p>
+                                    <div className="mt-6 space-y-1">
+                                        <div className="flex items-center">
+                                            <User size={16} className="mr-[10px] text-orange-500" />
+                                            <p className="z-10 text-[10px] text-gray-400 uppercase">
+                                                ID:
+                                                <br />
+                                                <span className="text-white">HLF-00012345</span>
+                                            </p>
+                                        </div>
+
+                                        <div className="flex items-center">
+                                            <CalendarDays size={16} className="mr-[10px] text-orange-500" />
+                                            <p className="z-10 text-[10px] text-gray-400 uppercase">
+                                                DATE OF BIRTH:
+                                                <br />
+                                                <span className="text-white">15 / 05 / 2006</span>
+                                            </p>
+                                        </div>
+
+                                        <div className="flex items-center">
+                                            <Flag size={16} className="mr-[10px] text-orange-500" />
+                                            <p className="z-10 text-[10px] text-gray-400 uppercase">
+                                                NATIONALITY:
+                                                <br />
+                                                <span className="text-white">Brazil</span>
+                                            </p>
+                                        </div>
+
+                                        <div className="flex items-center">
+                                            <MapPin size={16} className="mr-[10px] text-orange-500" />
+                                            <p className="z-10 text-[10px] text-gray-400 uppercase">
+                                                CITY:
+                                                <br />
+                                                <span className="text-white">RIO DE JANEIRO - RJ</span>
+                                            </p>
+                                        </div>
                                     </div>
 
-                                    <div className="flex items-center">
-                                        <Flag size={20} className="text-orange-500" />
-                                        <p className="text-[10px] text-gray-400 uppercase">
-                                            NATIONALITY:
-                                            <br />
-                                            <span className="text-[12px] text-white">Brazil</span>
-                                        </p>
+                                    <div className="absolute right-0 bottom-0 z-0">
+                                        <img src="/images/img/orange-img.png" alt="" className="w-[60px]" />
                                     </div>
-
-                                    <div className="flex items-center">
-                                        <MapPin size={20} className="text-orange-500" />
-                                        <p className="text-[10px] text-gray-400 uppercase">
-                                            CITY:
-                                            <br />
-                                            <span className="text-[12px] text-white">RIO DE JANEIRO - RJ</span>
-                                        </p>
-                                    </div>
-                                </div>
                                 </div>
                             </div>
 
                             {/* Orange Side Strip */}
-                            <div className=""></div>
+                            {/* <div className=""></div> */}
                         </div>
+
+
+                        <div className="bg-[#191917] p-6 text-white">
+                            <div className="grid gap-6 grid-cols-2">
+                                {/* Left Side */}
+                                <div className="relative">
+                                <div className="absolute top-0 -right-4 w-[1px] h-full border-r border-white/10"></div>
+                                    <h2 className="mb-2 text-[10px] font-bold text-[#ff6600] uppercase">Player Info</h2>
+
+                                    <div className="space-y-2">
+                                        {playerInfo.map((item, index) => (
+                                            <div key={index} className="flex items-center justify-between border-b border-white/10 pb-4">
+                                                <div className="flex items-center gap-2">
+
+                                                    <span className="">{item.icon}</span>
+
+                                                    <span className="text-[8px] pr-2 text-gray-400 uppercase">{item.label}</span>
+                                                </div>
+
+                                                <span className="text-[8px] font-medium text-white uppercase">{item.value}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Right Side */}
+                                <div className="pl-3">
+                                    <h2 className="text-[10px] font-bold text-[#ff6600] uppercase">Scan To View Profile</h2>
+
+                                    <p className="mt-1 mb-6 text-[8px] text-gray-300 uppercase">Open Your Camera And Scan</p>
+
+                                    {/* QR Area */}
+                                    <div className="w-fit rounded-3xl border-[3px] border-[#ff6600] bg-white p-3">
+                                        <img src="/images/img/qr.png" alt="QR" className="h-[90px] w-[90px] rounded-xl object-cover" />
+                                    </div>
+
+                                    {/* Button */}
+                                    <button className="mt-2 flex items-center rounded-xl bg-[#ff6600] px-2 py-2 font-bold text-black uppercase transition-all hover:bg-[#ff7a1a]">
+                                        <span className="text-[14px]">📱</span>
+
+                                        <span className="text-left text-[8px] leading-tight">
+                                            VIEW FULL PROFILE, VIDEOS,
+                                            <br />
+                                            STATS AND ACHIEVEMENTS
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-between items-center w-full border-t-1 border-gray-600 p-6 bg-[url('/images/img/leyer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[16px] rounded-br-[16px]">
+                          <p className=" flex justify-between items-center text-[8px] text-gray-300">
+                            <Shield className="w-4 h-4 mr-2"/>
+                            
+                            THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br/>
+MEMBER OF HILIGHTS FOOTBALL PLATFORM.
+</p>
+<p className="text-[8px] text-black font-bold translate-x-[10%]"> WWW.HILIGHTSFOOTBALL.COM </p>
+                        </div>
+
                     </div>
                 </section>
 
