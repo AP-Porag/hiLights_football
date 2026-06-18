@@ -125,7 +125,14 @@ const Scout = () => {
                 {/* ━━━ SECTION 1: HERO ━━━ */}
 
 
-    <section className="relative w-full bg-black text-white overflow-hidden">
+    <section className="relative w-full h-[100vh] bg-black text-white overflow-hidden"
+     style={{
+                        backgroundImage: "url('/images/img/scout_hero.jpeg')",
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        backgroundSize: 'cover',
+                    }}
+    >
       <div className="max-w-7xl mx-auto">
         <div className=" grid grid-cols-[270px_1fr] sm:grid-cols-[300px_1fr] md:grid-cols-[380px_1fr] lg:grid-cols-2 mb-26 sm:mb-10">
           
@@ -161,7 +168,7 @@ const Scout = () => {
                     <span className="pl-2">Create A Free<br/> Profile Now</span>
                 </button>
 
-                <button className="border flex justify-center items-center border-gray-600 hover:border-white transition-all duration-300 px-3 py-2 md:px-6 md:py-4 rounded-md font-semibold uppercase text-[10px] md:text-sm">
+                <button className="border flex justify-center items-center bg-black border-gray-600 hover:border-white transition-all duration-300 px-3 py-2 md:px-6 md:py-4 rounded-md font-semibold uppercase text-[10px] md:text-sm">
                     <CirclePlay className="w-6 h-6"/>
                   <span className="pl-2">Learn More</span>
                 </button>
@@ -172,11 +179,6 @@ const Scout = () => {
           </div>
 
           {/* Right Empty Section */}
-          <div className="">
-            <img src="/images/img/player-1.png" alt="" 
-            className="rounded-full mt-10"
-            />
-          </div>
         </div>
       </div>
     </section>
@@ -286,7 +288,7 @@ const Scout = () => {
             </h2>
           </div>
 
-          <button className="flex items-center gap-2 whitespace-nowrap text-[10px] md:text-xs font-bold uppercase text-gray-700 bg-white px-4 py-2 rounded-[10px]">
+          <button className="flex items-center gap-2 whitespace-nowrap text-[10px] md:text-xs font-bold uppercase text-gray-700 bg-white px-4 py-2 rounded-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
             View All
             <ArrowRight size={14} className="text-[#ff6b00]" />
           </button>
@@ -297,7 +299,7 @@ const Scout = () => {
         {players.map((player, index) => (
           <div
             key={index}
-            className="shadow-[0_4px_12px_rgba(0,0,0,0.12)] rounded-[8px] w-[24%]" 
+            className="shadow-[0_4px_12px_rgba(0,0,0,0.10)] rounded-[8px] w-[24%]" 
           >
             {/* Thumbnail */}
             <div className="relative ">

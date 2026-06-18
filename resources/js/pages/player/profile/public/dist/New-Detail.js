@@ -45,16 +45,56 @@ var player = {
     isVerified: true
 };
 var transferHistory = [
-    { year: 2024, club: "São Cristóvão - RJ" },
-    { year: 2023, club: "Bangu - RJ" },
-    { year: 2022, club: "Portuguesa RJ - RJ" },
-    { year: 2021, club: "Madureira - RJ" },
-    { year: 2020, club: "Flamengo U-17 - RJ" },
-    { year: 2019, club: "Fluminense U-15 - RJ" },
-    { year: 2018, club: "Nova Iguaçu - RJ" },
-    { year: 2017, club: "Boa Vista - RJ" },
-    { year: 2016, club: "Serrano - RJ" },
-    { year: 2015, club: "Macaé - RJ" },
+    {
+        year: 2024,
+        club: "São Cristóvão - RJ",
+        img: "/images/club-logo/cl-1.png"
+    },
+    {
+        year: 2023,
+        club: "Bangu - RJ",
+        img: "/images/club-logo/cl-2.png"
+    },
+    {
+        year: 2022,
+        club: "Portuguesa RJ - RJ",
+        img: "/images/club-logo/cl-3.png"
+    },
+    {
+        year: 2021,
+        club: "Madureira - RJ",
+        img: "/images/club-logo/cl-4.png"
+    },
+    {
+        year: 2020,
+        club: "Flamengo U-17 - RJ",
+        img: "/images/club-logo/cl-5.png"
+    },
+    {
+        year: 2019,
+        club: "Fluminense U-15 - RJ",
+        img: "/images/club-logo/cl-6.png"
+    },
+    {
+        year: 2018,
+        club: "Nova Iguaçu - RJ",
+        img: "/images/club-logo/cl-7.png"
+    },
+    {
+        year: 2017,
+        club: "Boa Vista - RJ",
+        img: "/images/club-logo/cl-8.png"
+    },
+    {
+        year: 2016,
+        club: "Serrano - RJ",
+        img: "/images/club-logo/cl-9.png"
+    },
+    {
+        year: 2015,
+        club: "Macaé - RJ",
+        img: "/images/club-logo/cl-10.png"
+    },
 ];
 var achievements = [
     { year: "2024", title: "Copinha" },
@@ -119,9 +159,9 @@ function NewDetail() {
             react_1["default"].createElement("main", { className: "min-w-0 space-y-4 overflow-x-hidden" },
                 react_1["default"].createElement("div", { className: "w-full max-w-7xl text-white overflow-hidden" },
                     react_1["default"].createElement("div", { className: "flex" },
-                        react_1["default"].createElement("div", { className: "md:w-[320px] p-2" },
+                        react_1["default"].createElement("div", { className: "p-2" },
                             react_1["default"].createElement("div", { className: "border border-[#233247] rounded-md overflow-hidden" },
-                                react_1["default"].createElement("img", { src: "/images/img/player-1.png", alt: "Player", className: "w-[100] h-[130px] md:w-full md:h-auto object-cover" }))),
+                                react_1["default"].createElement("img", { src: "/images/img/player-1.png", alt: "Player", className: "w-[100px] h-[200px] sm:w-[200px] sm:h-[250px] md:w-[320px] md:h-auto object-cover" }))),
                         react_1["default"].createElement("div", { className: "flex-1 px-3 sm:px-8" },
                             react_1["default"].createElement("h1", { className: "text-[18px] font-bold md:text-3xl md:font-extrabold uppercase tracking-wide" }, "JO\u00C3O DA SILVA"),
                             react_1["default"].createElement("h3", { className: "text-[#ff7a00] text-[14px] md:text-[16px] uppercase mt-2" }, "Right Winger"),
@@ -230,7 +270,8 @@ function NewDetail() {
                                 react_1["default"].createElement("span", { className: "text-slate-400 font-medium" }, "(Last 10 Years)")),
                             react_1["default"].createElement("div", { className: "space-y-3" }, transferHistory.map(function (item, index) { return (react_1["default"].createElement("div", { key: index, className: "flex items-center gap-2 md:gap-4" },
                                 react_1["default"].createElement("span", { className: "text-slate-300 font-medium w-8 md:w-12 text-[10px] sm:text-[13px] md:text-[16px]" }, item.year),
-                                react_1["default"].createElement("div", { className: "w-6 h-6 md:w-8 md:h-8 rounded-full bg-slate-700 border border-slate-600 flex-shrink-0" }),
+                                react_1["default"].createElement("div", { className: "w-6 h-6 md:w-8 md:h-8 rounded-full bg-slate-700 border border-slate-600 flex-shrink-0" },
+                                    react_1["default"].createElement("img", { src: item.img, alt: "" })),
                                 react_1["default"].createElement("span", { className: "text-white text-[10px] sm:text-[13px] md:text-base" }, item.club))); }))),
                         react_1["default"].createElement("div", { className: "bg-[#06111d] border border-slate-800 rounded-xl p-5" },
                             react_1["default"].createElement("h2", { className: "text-white text-[13px] md:text-[18px] font-bold uppercase mb-6" }, "Positions On The Pitch"),

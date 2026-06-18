@@ -58,7 +58,7 @@ var HomeTwo = function () {
             code: "SN",
             height: "178 cm",
             age: "20 years",
-            image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43f?w=400"
+            image: "/images/img/p-3.jpg"
         },
         {
             name: "Gabriel Gama",
@@ -67,7 +67,7 @@ var HomeTwo = function () {
             code: "BR",
             height: "175 cm",
             age: "21 years",
-            image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400"
+            image: "/images/img/p-6.png"
         },
         {
             name: "Mady Danfaga",
@@ -76,7 +76,7 @@ var HomeTwo = function () {
             code: "GN",
             height: "185 cm",
             age: "22 years",
-            image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43f?w=400"
+            image: "/images/img/p-4.jpg"
         },
         {
             name: "Vinicius Peruchi",
@@ -85,7 +85,7 @@ var HomeTwo = function () {
             code: "BR",
             height: "188 cm",
             age: "21 years",
-            image: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=400"
+            image: "/images/img/p-5.jpg"
         },
     ];
     return (react_1["default"].createElement("div", { className: " bg-white text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]" },
@@ -188,15 +188,15 @@ var HomeTwo = function () {
                         react_1["default"].createElement("div", { className: "flex items-center gap-2 " },
                             react_1["default"].createElement(lucide_react_1.Star, { size: 18, fill: "#ff6b00", className: "text-[#ff6b00]" }),
                             react_1["default"].createElement("h2", { className: "whitespace-nowrap text-[12px] md:text-sm font-extrabold uppercase text-[#222]" }, "Community Highlights")),
-                        react_1["default"].createElement("button", { className: "flex items-center gap-2 whitespace-nowrap text-[10px] md:text-xs font-bold uppercase text-gray-700 bg-white px-4 py-2 rounded-[10px]" },
+                        react_1["default"].createElement("button", { className: "flex items-center gap-2 whitespace-nowrap text-[10px] md:text-xs font-bold uppercase text-gray-700 bg-white px-4 py-2 rounded-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.08)]" },
                             "View All",
                             react_1["default"].createElement(lucide_react_1.ArrowRight, { size: 14, className: "text-[#ff6b00]" }))),
-                    players.map(function (player, index) { return (react_1["default"].createElement("div", { key: index, className: "grid grid-cols-[40px_1fr_70px_70px] sm:grid-cols-[70px_1fr_80px_120px] md:grid-cols-[150px_1fr_120px_170px] items-center p-2 sm:p-4 md:p-6 rounded-[8px] bg-white mb-2" },
-                        react_1["default"].createElement("div", { className: "relative p-1 md:p-2" },
-                            react_1["default"].createElement("img", { src: player.image, alt: player.name, className: "h-[60px] w-[90px] rounded object-cover" }),
+                    players.map(function (player, index) { return (react_1["default"].createElement("div", { key: index, className: "grid grid-cols-[40px_1fr_70px_70px] sm:grid-cols-[70px_1fr_80px_120px] md:grid-cols-[150px_1fr_120px_170px] shadow-[0_4px_20px_rgba(0,0,0,0.08)] items-center bg-white mb-2 pr-4 rounded-[12px]" },
+                        react_1["default"].createElement("div", { className: "relative" },
+                            react_1["default"].createElement("img", { src: player.image, alt: player.name, className: "rounded object-cover rounded-tl-[12px] rounded-bl-[12px]" }),
                             react_1["default"].createElement("button", { className: "absolute bottom-3 right-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00]" },
                                 react_1["default"].createElement(lucide_react_1.Play, { size: 12, fill: "white", className: "text-white" }))),
-                        react_1["default"].createElement("div", { className: "px-1 md:px-2 mr-2" },
+                        react_1["default"].createElement("div", { className: "px-1 md:px-6 mr-2" },
                             react_1["default"].createElement("h3", { className: "whitespace-nowrap text-[12px] md:text-[15px] font-bold text-[#222]" }, player.name),
                             react_1["default"].createElement("p", { className: "whitespace-nowrap text-[10px] md:text-xs text-gray-600" }, player.position),
                             react_1["default"].createElement("div", { className: "mt-1 flex items-center gap-2" },

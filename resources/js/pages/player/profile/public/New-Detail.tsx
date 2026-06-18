@@ -69,16 +69,65 @@ const player = {
 };
 
   const transferHistory = [
-        { year: 2024, club: "São Cristóvão - RJ" },
-        { year: 2023, club: "Bangu - RJ" },
-        { year: 2022, club: "Portuguesa RJ - RJ" },
-        { year: 2021, club: "Madureira - RJ" },
-        { year: 2020, club: "Flamengo U-17 - RJ" },
-        { year: 2019, club: "Fluminense U-15 - RJ" },
-        { year: 2018, club: "Nova Iguaçu - RJ" },
-        { year: 2017, club: "Boa Vista - RJ" },
-        { year: 2016, club: "Serrano - RJ" },
-        { year: 2015, club: "Macaé - RJ" },
+        { 
+            year: 2024, 
+            club: "São Cristóvão - RJ", 
+            img: "/images/club-logo/cl-1.png",
+        },
+        { 
+            year: 2023, 
+            club: "Bangu - RJ", 
+            img: "/images/club-logo/cl-2.png", 
+
+        },
+        { 
+            year: 2022, 
+            club: "Portuguesa RJ - RJ", 
+            img: "/images/club-logo/cl-3.png", 
+
+        },
+        { 
+            year: 2021, 
+            club: "Madureira - RJ", 
+            img: "/images/club-logo/cl-4.png", 
+
+        },
+        { 
+            year: 2020, 
+            club: "Flamengo U-17 - RJ", 
+            img: "/images/club-logo/cl-5.png", 
+
+        },
+        { 
+            year: 2019, 
+            club: "Fluminense U-15 - RJ", 
+            img: "/images/club-logo/cl-6.png", 
+
+        },
+        { 
+            year: 2018, 
+            club: "Nova Iguaçu - RJ", 
+            img: "/images/club-logo/cl-7.png", 
+
+        },
+        { 
+            year: 2017, 
+            club: "Boa Vista - RJ", 
+            img: "/images/club-logo/cl-8.png", 
+
+        },
+        { 
+            year: 2016, 
+            club: "Serrano - RJ", 
+            img: "/images/club-logo/cl-9.png", 
+
+        },
+        { 
+            year: 2015, 
+            club: "Macaé - RJ", 
+            img: "/images/club-logo/cl-10.png", 
+
+        },
     ];
 
  const achievements = [
@@ -205,12 +254,12 @@ export default function NewDetail() {
             <div className="flex">
                 
                 {/* Left Image Section */}
-                <div className="md:w-[320px] p-2">
+                <div className="p-2">
                     <div className="border border-[#233247] rounded-md overflow-hidden">
                         <img
                             src="/images/img/player-1.png"
                             alt="Player"
-                            className="w-[100] h-[130px] md:w-full md:h-auto object-cover"
+                            className="w-[100px] h-[200px] sm:w-[200px] sm:h-[250px] md:w-[320px] md:h-auto object-cover"
                         />
                     </div>
                 </div>
@@ -427,14 +476,7 @@ export default function NewDetail() {
                                         allowFullScreen
                                         className="w-full h-full rounded-[12px] bg-gray-500"
                                     />
-                                    {/* <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pointer-events-none">
-                                        <p className="text-[#FF6B00] text-xs font-bold tracking-widest">
-                                            STRIKER · HIGHLIGHT REEL 2025
-                                        </p>
-                                        <h2 className="font-display font-black text-2xl text-white">
-                                            {player.name}
-                                        </h2>
-                                    </div> */}
+                                    
                                 </>
                             ) : (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -463,14 +505,7 @@ export default function NewDetail() {
                                         allowFullScreen
                                         className="w-full h-full rounded-[12px] bg-gray-500"
                                     />
-                                    {/* <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pointer-events-none">
-                                        <p className="text-[#FF6B00] text-xs font-bold tracking-widest">
-                                            STRIKER · HIGHLIGHT REEL 2025
-                                        </p>
-                                        <h2 className="font-display font-black text-2xl text-white">
-                                            {player.name}
-                                        </h2>
-                                    </div> */}
+                                    
                                 </>
                             ) : (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -550,7 +585,9 @@ export default function NewDetail() {
                             </span>
 
                             {/* Club Logo */}
-                            <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-slate-700 border border-slate-600 flex-shrink-0" />
+                            <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-slate-700 border border-slate-600 flex-shrink-0">
+                                <img src={item.img} alt="" />
+                            </div>
 
                             <span className="text-white text-[10px] sm:text-[13px] md:text-base">
                                 {item.club}
@@ -565,13 +602,6 @@ export default function NewDetail() {
                 <h2 className="text-white text-[13px] md:text-[18px] font-bold uppercase mb-6">
                     Positions On The Pitch
                 </h2>
-
-                {/* Football Field */}
-                {/* <div>
-                    <img src="/images/img/football_field.png" alt=""
-                     className="bg-cover bg-center bg-no-repeat w-full overflow-hidden"
-                      />
-                </div> */}
 
 
                 <Pitch/>

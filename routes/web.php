@@ -7,6 +7,8 @@ use Inertia\Inertia;
 // Route::get('/', function () {
 //     return Inertia::render('web/Home');
 // })->name('home');
+
+
 Route::get('/', function () {
     return Inertia::render('web/HomeTwo');
 })->name('home');

@@ -6,6 +6,8 @@ import { Progress } from '@/components/ui/progress';
 import { Link } from '@inertiajs/react';
 
 import {
+    Share2,
+    Download,
     ArrowRight,
     CalendarDays,
     CheckCircle2,
@@ -151,7 +153,7 @@ export default function PlayerDashboard() {
 
             <main className="mx-auto max-w-[1300px] space-y-6 px-4 py-6 sm:px-8 sm:py-8">
                 {/* WIDGETS ROW */}
-                <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <section className="grid grid-cols-1 gap-2 md:grid-cols-[1fr_450px]">
                     {/* [1] Profile Complete */}
 
                     <div className="grid grid-cols-2 gap-4 h-[500px]">
@@ -249,21 +251,22 @@ export default function PlayerDashboard() {
                     </div>
 
                     {/* right side */}
-                    <div className="w-[420px] border-1 border-gray-600 rounded-[16px] md:translate-x-[20%]">
+                    <div className="mx-auto mb-16">
+                    <div className="w-[300px] sm:w-[420px] border-1 border-gray-600 rounded-[16px]">
                         <div className="overflow-hidden text-white">
                             {/* Left Section */}
                             <div className="flex items-center justify-between">
                                 {/* Logo */}
-                                <div className="pl-4">
-                                    <img src="/images/img/new_logo.png" alt="new-logo" className="w-[130px]" />
+                                <div className="pl-3 sm:pl-4">
+                                    <img src="/images/img/new_logo.png" alt="new-logo" className="w-[95px] sm:w-[130px]" />
                                 </div>
 
-                                <div className="-translate-x-[30%] translate-y-[20%]">
-                                    <h2 className="text-center font-bold uppercase text-[14px]">
+                                <div className="-translate-x-[15%] sm:-translate-x-[30%] translate-y-[20%]">
+                                    <h2 className="text-center font-bold uppercase text-[11px] sm:text-[14px]">
                                         MEMBER CARD
                                     </h2>
 
-                                    <p className="text-center text-[10px] font-semibold text-orange-500 uppercase">Official Member</p>
+                                    <p className="text-center text-[8px] sm:text-[10px] font-semibold text-orange-500 uppercase">Official Member</p>
 
                                     <svg width="130" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />
@@ -278,33 +281,33 @@ export default function PlayerDashboard() {
                                 </div>
                             </div>
 
-                            <div className="relative flex gap-4 pl-4 pt-2 border-b-1 border-gray-400">
+                            <div className="relative flex gap-2 sm:gap-4 pl-4 pt-2 border-b-1 border-gray-400">
                                 {/* Image */}
-                                <div className="h-[210px] w-[130px] mb-3">
+                                <div className="h-[160px] w-[95px] sm:h-[210px] sm:w-[130px] mb-3">
                                     <img
                                         src="/images/img/p-6.png"
                                         alt="player"
-                                        className="h-full w-full rounded-[12px] border-1 border-gray-400 object-cover"
+                                        className="h-full w-full rounded-[10px] sm:rounded-[12px] border-1 border-gray-400 object-cover"
                                     />
                                 </div>
 
                                 <div>
                                     <div className="relative z-10">
-                                        <h3 className="mt-4 text-[16px] font-bold uppercase">
+                                        <h3 className="mt-2 text-[12px] sm:mt-4 sm:text-[16px] font-bold uppercase">
                                             JOÃO DA SILVA
                                         </h3>
 
-                                        <p className="text-[10px] text-orange-500 uppercase">
+                                        <p className="text-[8px] sm:text-[10px] text-orange-500 uppercase">
                                             ATTACKING MIDFIELDER
                                         </p>
 
-                                        <div className="absolute mt-2 h-[1px] bg-orange-500 w-[110%]"></div>
+                                        <div className="absolute mt-2 h-[1px] bg-orange-500 w-[80%] sm:w-[110%]"></div>
                                     </div>
 
                                     <div className="mt-6 space-y-1">
                                         <div className="flex items-center">
-                                            <User size={16} className="mr-[10px] text-orange-500" />
-                                            <p className="z-10 text-[10px] text-gray-400 uppercase">
+                                            <User className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
+                                            <p className="z-10 text-[8px] md:text-[10px] text-gray-400 uppercase">
                                                 ID:
                                                 <br />
                                                 <span className="text-white">HLF-00012345</span>
@@ -312,8 +315,8 @@ export default function PlayerDashboard() {
                                         </div>
 
                                         <div className="flex items-center">
-                                            <CalendarDays size={16} className="mr-[10px] text-orange-500" />
-                                            <p className="z-10 text-[10px] text-gray-400 uppercase">
+                                            <CalendarDays className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
+                                            <p className="z-10 text-[8px] md:text-[10px] text-gray-400 uppercase">
                                                 DATE OF BIRTH:
                                                 <br />
                                                 <span className="text-white">15 / 05 / 2006</span>
@@ -321,8 +324,8 @@ export default function PlayerDashboard() {
                                         </div>
 
                                         <div className="flex items-center">
-                                            <Flag size={16} className="mr-[10px] text-orange-500" />
-                                            <p className="z-10 text-[10px] text-gray-400 uppercase">
+                                            <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
+                                            <p className="z-10 text-[8px] md:text-[10px] text-gray-400 uppercase">
                                                 NATIONALITY:
                                                 <br />
                                                 <span className="text-white">Brazil</span>
@@ -330,8 +333,8 @@ export default function PlayerDashboard() {
                                         </div>
 
                                         <div className="flex items-center">
-                                            <MapPin size={16} className="mr-[10px] text-orange-500" />
-                                            <p className="z-10 text-[10px] text-gray-400 uppercase">
+                                            <MapPin className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
+                                            <p className="z-10 text-[8px] md:text-[10px] text-gray-400 uppercase">
                                                 CITY:
                                                 <br />
                                                 <span className="text-white">RIO DE JANEIRO - RJ</span>
@@ -340,18 +343,15 @@ export default function PlayerDashboard() {
                                     </div>
 
                                     <div className="absolute right-0 bottom-0 z-0">
-                                        <img src="/images/img/orange-img.png" alt="" className="w-[60px]" />
+                                        <img src="/images/img/orange-img.png" alt="" className="w-[50px] sm:w-[60px]" />
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Orange Side Strip */}
-                            {/* <div className=""></div> */}
                         </div>
 
 
-                        <div className="bg-[#191917] p-6 text-white">
-                            <div className="grid gap-6 grid-cols-2">
+                        <div className="bg-[#191917] p-4 sm:p-6 text-white">
+                            <div className="grid gap-3 sm:gap-6 grid-cols-2">
                                 {/* Left Side */}
                                 <div className="relative">
                                     <div className="absolute top-0 -right-4 w-[1px] h-full border-r border-white/10"></div>
@@ -367,28 +367,28 @@ export default function PlayerDashboard() {
                                                     <span className="text-[8px] pr-2 text-gray-400 uppercase">{item.label}</span>
                                                 </div>
 
-                                                <span className="text-[8px] font-medium text-white uppercase">{item.value}</span>
+                                                <span className="text-[7px] sm:text-[8px] font-medium text-white uppercase">{item.value}</span>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
 
                                 {/* Right Side */}
-                                <div className="pl-3">
+                                <div className="pl-4 sm:pl-3">
                                     <h2 className="text-[10px] font-bold text-[#ff6600] uppercase">Scan To View Profile</h2>
 
                                     <p className="mt-1 mb-6 text-[8px] text-gray-300 uppercase">Open Your Camera And Scan</p>
 
                                     {/* QR Area */}
-                                    <div className="w-fit rounded-3xl border-[3px] border-[#ff6600] bg-white p-3">
-                                        <img src="/images/img/qr.png" alt="QR" className="h-[90px] w-[90px] rounded-xl object-cover" />
+                                    <div className="w-fit rounded-[8px] sm:rounded-xl border-2 sm:border-[3px] border-[#ff6600] bg-white sm:p-3 p-2">
+                                        <img src="/images/img/qr.png" alt="QR" className="h-[70px] w-[70px] sm:h-[90px] sm:w-[90px] object-cover" />
                                     </div>
 
                                     {/* Button */}
-                                    <button className="mt-2 flex items-center rounded-xl bg-[#ff6600] px-2 py-2 font-bold text-black uppercase transition-all hover:bg-[#ff7a1a]">
-                                        <span className="text-[14px]">📱</span>
+                                    <button className="mt-2 flex items-center rounded-xl bg-[#ff6600] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#ff7a1a]">
+                                        <span className="text-[10px] sm:text-[14px]">📱</span>
 
-                                        <span className="text-left text-[8px] leading-tight">
+                                        <span className="text-left text-[6px] sm:text-[8px] leading-tight">
                                             VIEW FULL PROFILE, VIDEOS,
                                             <br />
                                             STATS AND ACHIEVEMENTS
@@ -398,16 +398,32 @@ export default function PlayerDashboard() {
                             </div>
                         </div>
 
-                        <div className="flex justify-between items-center w-full border-t-1 border-gray-600 p-6 bg-[url('/images/img/leyer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[16px] rounded-br-[16px]">
+                        <div className="flex justify-between items-center relative w-full border-t-1 border-gray-600 p-3 sm:p-6 bg-[url('/images/img/leyer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[16px] rounded-br-[16px]">
                             <p className=" flex justify-between items-center text-[8px] text-gray-300">
-                                <Shield className="w-4 h-4 mr-2" />
+                                <Shield className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
 
                                 THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br />
                                 MEMBER OF HILIGHTS FOOTBALL PLATFORM.
                             </p>
-                            <p className="text-[8px] text-black font-bold translate-x-[10%]"> WWW.HILIGHTSFOOTBALL.COM </p>
+                            <p className="text-[6px] sm:text-[8px] text-black font-bold translate-x-0 sm:translate-x-[10%]"> WWW.HILIGHTSFOOTBALL.COM </p>
+
+
+                            <div className="absolute -bottom-10 left-0 flex justify-between w-full">
+
+                                <button className="flex items-center rounded-xl bg-[#ff6600] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black text-[8px] sm:text-[10px] transition-all hover:bg-[#ff7a1a]">
+                                    <Share2 className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" />
+                                    share full profile
+                                    </button>
+
+                                <button className="flex items-center rounded-xl bg-[#black] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1 border-gray-300 text-white text-[8px] sm:text-[10px] transition-all">
+                                    
+                                    <Download className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" />
+                                    download member card
+                                    </button>
+                            </div>
                         </div>
 
+                    </div>
                     </div>
                 </section>
 

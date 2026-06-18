@@ -1,7 +1,7 @@
 import { PublicFooter } from '@/components/public/PublicFooter';
 import PublicNavbar from '@/components/public/PublicNavbar';
 import { Link } from '@inertiajs/react';
-import { CalendarDays, CheckCircle2, Flag, Lock, MapPin, User } from 'lucide-react';
+import { BarChart3, Binoculars, CalendarDays,CheckCircle, CheckCircle2, Flag, Globe, Lock, MapPin, ShieldCheck, User, Users } from 'lucide-react';
 import { useState } from 'react';
 
 // TODO: Replace with usePage().props
@@ -71,46 +71,169 @@ const plans = [
     },
 ];
 
+
+
+
+const freePlan = [
+        "Public Profile",
+        "Upload 1 Video",
+        "Club History",
+        "Competitions History",
+        "Achievements",
+    ];
+
+    const premiumPlan = [
+        "Public Profile",
+        "Upload 3 Videos",
+        "Club History",
+        "Competitions History",
+        "Achievements",
+        "HiLights Member Card with exclusive QR code",
+        "Badge of Verified Profile",
+        "Priority in Searches",
+        "Consultancy for profile and video improvements",
+    ];
+
+const items = [
+    {
+        icon: Binoculars,
+        title: 'MORE VISIBILITY',
+        description: 'Get noticed by scouts and clubs worldwide.',
+    },
+    {
+        icon: Users,
+        title: 'BUILD YOUR STORY',
+        description: 'Show your achievements and evolution as an athlete.',
+    },
+    {
+        icon: BarChart3,
+        title: 'ADVANCED STATS',
+        description: 'Track your performance and stand out.',
+    },
+    {
+        icon: Globe,
+        title: 'CONNECT',
+        description: 'Connect with the biggest football network.',
+    },
+    {
+        icon: ShieldCheck,
+        title: 'BE VERIFIED',
+        description: 'Build credibility and boost your career.',
+    },
+];
+
 export default function Plans() {
     const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly');
 
     return (
         <div className="min-h-screen bg-white dark:bg-[#0D0D0D]">
+
             <PublicNavbar />
 
             <main className="pt-16">
                 {/* HEADER — orange band */}
-                <section className="min-h-screen bg-black px-6 py-10 text-white">
-                    <div className="mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-2 lg:px-16">
+          <section
+                    className="bg-black px-6 pt-10 pb-8 text-white"
+                    style={{
+                        backgroundImage: "url('/images/img/plan_hero.jpeg')",
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        backgroundSize: 'cover',
+                    }}
+                >
+                    <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 md:grid-cols-[40%_1fr] lg:px-16">
                         {/* Left Side */}
                         <div className="">
-                            <h1 className="text-[62px] font-extrabold tracking-wide italic md:text-[100px]">PLANS</h1>
+                            <h1 className="font-extrabold tracking-wide italic text-[42px] sm:text-[55px] md:text-[65px] lg:text-[80px]">PLANS</h1>
 
-                            <h2 className="text-[32px] -mt-5 italic font-bold text-orange-500 uppercase">Choose the plan that drives</h2>
+                            <h2 className="-mt-2 md:-mt-3 font-bold text-orange-500 uppercase italic text-[14px] sm:text-[18px] md:text-[22px] lg:text-[24px]">
+                                Choose the plan that drives
+                            </h2>
 
-                            <h3 className="text-[32px] font-bold text-white uppercase">Your football career.</h3>
+                            <h3 className="font-bold text-white uppercase text-[16px] sm:text-[20px] md:text-[20px] lg:text-[22px]">Your football career.</h3>
 
-                            <div className="mt-4 text-[22px] text-gray-300">
-                                <p>More visibility. More connections. More opportunities.</p>
+                            <div className="mt-3 text-[12px] sm:text-[14px] md:text-[16px] lg:text-[18px] text-gray-300">
+                                <p>
+                                    More visibility. More connections. <br />
+                                    More opportunities.
+                                </p>
                             </div>
                         </div>
 
                         {/* Member Card */}
-                        <div className=" rounded-[16px] border-1 border-gray-600">
+                        <div className="relative overflow-hidden rounded-[16px] border border-gray-600 bg-black">
+
+                                <div className="absolute top-0 right-0 h-full w-[40px] sm:w-[48px] lg:w-[60px] overflow-hidden">
+  <svg
+    viewBox="0 0 90 520"
+    preserveAspectRatio="none"
+    className="block w-full h-full"
+  >
+    <path
+      d="
+        M0 520
+        L0 85
+        C0 45 20 15 50 0
+        L72 0
+        C82 0 90 8 90 18
+        L90 485
+        C90 505 75 520 55 520
+        Z
+      "
+      fill="#F54A00"
+    />
+  </svg>
+
+   {/* 2024 */}
+  <p
+    className="
+      absolute
+      -left-[20px]
+      top-[45%]
+      -rotate-90
+      text-white
+      text-[18px]
+      font-bold
+      tracking-[8px]
+      whitespace-nowrap
+    "
+  >
+    2024
+  </p>
+
+  {/* Text */}
+  <p
+    className="
+      absolute
+      left-[70%]
+      top-[45%]
+      -translate-x-1/2
+      -translate-y-1/2
+      -rotate-90
+      text-white
+      text-[10px]
+      uppercase
+      tracking-wider
+      whitespace-nowrap
+    "
+  >
+    HIGHLIGHTS FOOTBALL MEMBER
+  </p>
+</div>
                             <div className="overflow-hidden text-white">
                                 {/* Left Section */}
                                 <div className="flex items-center justify-between">
                                     {/* Logo */}
                                     <div className="pl-4">
-                                        <img src="/images/img/new_logo.png" alt="new-logo" className="w-[130px]" />
+                                        <img src="/images/img/new_logo.png" alt="new-logo" className="w-[90px] sm:w-[110px] lg:w-[130px]" />
                                     </div>
 
-                                    <div className="-translate-x-[30%] translate-y-[20%]">
-                                        <h2 className="text-center text-[14px] font-bold uppercase">MEMBER CARD</h2>
+                                    <div className="-translate-x-[20%] sm:-translate-x-[40%] md:-translate-x-[60%] lg:-translate-x-[120%] translate-y-[30%]">
+                                        <h2 className="text-center text-[10px] sm:text-[12px] lg:text-[14px] font-bold uppercase">MEMBER CARD</h2>
 
-                                        <p className="text-center text-[10px] font-semibold text-orange-500 uppercase">Official Member</p>
+                                        <p className="text-center text-[8px] sm:text-[9px] lg:text-[10px] font-semibold text-orange-500 uppercase">Official Member</p>
 
-                                        <svg width="130" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <svg width="110" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />
 
                                             <path
@@ -123,9 +246,9 @@ export default function Plans() {
                                     </div>
                                 </div>
 
-                                <div className="relative flex gap-4 border-b-1 border-gray-400 pt-2 pl-4">
+                                <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-4 pt-2 px-4">
                                     {/* Image */}
-                                    <div className="mb-3 h-[210px] w-[130px]">
+                                    <div className="mt-4 lg:mx-0 h-[170px] w-[150px] sm:h-[190px] sm:w-[160px] lg:h-[210px] lg:w-[170px]">
                                         <img
                                             src="/images/img/p-6.png"
                                             alt="player"
@@ -133,13 +256,14 @@ export default function Plans() {
                                         />
                                     </div>
 
-                                    <div>
+                                    <div className="sm:grid sm:grid-cols-[50%_40%_1fr] lg:flex">
+                                        <div>
                                         <div className="relative z-10">
-                                            <h3 className="mt-4 text-[16px] font-bold uppercase">JOÃO DA SILVA</h3>
+                                            <h3 className="mt-4 text-[14px] lg:text-[16px] font-bold uppercase">JOÃO DA SILVA</h3>
 
-                                            <p className="text-[10px] text-orange-500 uppercase">ATTACKING MIDFIELDER</p>
+                                            <p className="text-[8px] lg:text-[10px] text-orange-500 uppercase">ATTACKING MIDFIELDER</p>
 
-                                            <div className="absolute mt-2 h-[1px] w-[110%] bg-orange-500"></div>
+                                            <div className="absolute mt-2 h-[1px] w-[32%] md:w-[60%] lg:w-[110%] bg-orange-500"></div>
                                         </div>
 
                                         <div className="mt-6 space-y-1">
@@ -179,124 +303,233 @@ export default function Plans() {
                                                 </p>
                                             </div>
                                         </div>
-
-
-                                        <div className="absolute right-0 bottom-0 z-0">
-                                            <img src="/images/img/orange-img.png" alt="" className="w-[60px]" />
                                         </div>
+
+
+
+                                        {/* QR Area */}
+                                    <div className="mt-10 lg:mt-4 pb-2 flex lg:pl-[80px] flex-col items-center lg:items-start">
+                                    
+                                        <h2 className="text-[8px] lg:text-[10px] pb-2 font-bold text-[#ff6600] uppercase">Scan To View Profile</h2>
+
+                                        {/* QR Area */}
+                                        <div className="rounded-2xl lg:rounded-3xl border-[3px] border-[#ff6600] bg-white p-2 lg:p-3">
+
+                                            <img src="/images/img/qr.png" alt="QR" className="h-[70px] w-[70px] lg:h-[90px] lg:w-[90px] rounded-xl object-cover" />
+                                        </div>
+
+                                        {/* Button */}
+                                        <button className="mt-2 flex items-center justify-center lg:justify-start rounded-xl px-2 py-2 font-bold uppercase">
+                                            <span className="text-[20px] text-[#ff6600]">📱</span>
+
+                                            <span className="text-left text-[8px] leading-tight text-[#ff6600]">
+                                                VIEW FULL PROFILE,
+                                                <br />
+                                                VIDEOS, STATS AND
+                                                <br />
+                                                ACHIEVEMENTS
+                                            </span>
+                                        </button>
+                                    </div>
                                     </div>
 
-
-                                     {/* QR Area */}
-                                         <div className="pl-8 mt-10 pb-4">
-                                                <h2 className="text-[10px] font-bold text-[#ff6600] uppercase">Scan To View Profile</h2>
-
-                                                {/* QR Area */}
-                                                <div className="w-fit rounded-3xl border-[3px] border-[#ff6600] bg-white p-3">
-                                                    <img src="/images/img/qr.png" alt="QR" className="h-[90px] w-[90px] rounded-xl object-cover" />
-                                                </div>
-
-                                                {/* Button */}
-                                                <button className="mt-2 flex items-center rounded-xl  px-2 py-2 font-bold text-black uppercase">
-                                                    <span className="text-[20px] text-[#ff6600]">📱</span>
-
-                                                    <span className="text-left text-[#ff6600] text-[8px] leading-tight">
-                                                        VIEW FULL PROFILE,<br />
-                                                        VIDEOS, STATS AND<br />
-                                                        ACHIEVEMENTS
-                                                    </span>
-                                                </button>
-                                            </div>
+                                    
+                                </div>
+                                <div className="">
+                                    <p className="px-4 sm:px-6 pb-3 pt-4 text-[10px] lg:text-[12px] leading-relaxed text-white uppercase">
+                                        This card identifies the holder as an official
+                                        <br /> member of HiLights Football platform.
+                                    </p>
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
                 </section>
 
                 {/* PLANS */}
-                <section className="bg-[#F8FAFC] px-6 py-16 dark:bg-[#0D0D0D]">
-                    <div className="mx-auto grid max-w-[1100px] grid-cols-1 items-start gap-6 lg:grid-cols-3">
-                        {plans.map((plan) => {
-                            const isPremium = plan.id === 'premium';
-                            const displayPrice = billing === 'annual' ? plan.annualPrice : plan.price;
 
-                            return (
-                                <div
-                                    key={plan.id}
-                                    className={
-                                        isPremium
-                                            ? 'relative rounded-2xl border-2 border-[#FF6B00] bg-white p-8 shadow-[0_8px_40px_rgba(255,107,0,0.2)] lg:scale-[1.02] dark:bg-[#161616]'
-                                            : 'rounded-2xl border border-[#E2E8F0] bg-white p-8 dark:border-[#2A2A2A] dark:bg-[#161616]'
-                                    }
-                                >
-                                    {plan.badge && (
-                                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[#FF6B00] px-5 py-1.5 text-xs font-black tracking-wide text-white uppercase">
-                                            {plan.badge}
-                                        </div>
-                                    )}
 
-                                    {/* Plan name */}
-                                    <div className="text-lg font-bold text-[#0F172A] dark:text-[#F5F5F5]">{plan.name}</div>
+                <section className="bg-black px-4 py-12">
+            <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {/* Free Profile */}
+                <div className="rounded-[20px] border border-gray-700 bg-black p-6">
+                    <div className="mb-6 flex justify-center -translate-y-[85%]">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full border border-gray-600 bg-black ">
+                            <User size={28} />
+                        </div>
+                    </div>
 
-                                    {/* Price */}
-                                    <div className="mt-3 flex items-baseline">
-                                        <span
-                                            className={`font-display text-5xl font-black ${
-                                                isPremium ? 'text-[#FF6B00]' : 'text-[#0F172A] dark:text-[#F5F5F5]'
-                                            }`}
+                    <h3 className="mb-6 text-center text-2xl font-bold uppercase italic text-white">
+                        Free Profile
+                    </h3>
+
+                    <div className="mb-8 space-y-3">
+                        {freePlan.map((item, index) => (
+                            <div key={index} className="flex items-center gap-3">
+                                <CheckCircle size={18} className="text-green-500" />
+                                <span className="text-gray-300">{item}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    <button className="w-full rounded-xl border border-gray-500 py-3 font-bold uppercase text-white transition hover:border-orange-500 hover:text-orange-500">
+                        Create Free Profile
+                    </button>
+                </div>
+
+                {/* Premium Monthly */}
+                <div className="relative rounded-[20px] border border-orange-500 bg-black p-6">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-md bg-orange-500 px-4 py-1 text-xs font-bold uppercase text-white">
+                        Most Popular
+                    </div>
+
+                    <div className="mb-4 flex justify-center">
+                        <img
+                            src="/images/club-logo/hlf_logo.png"
+                            alt="logo"
+                            className="h-12 w-12"
+                        />
+                    </div>
+
+                    <h3 className="text-center text-2xl font-bold uppercase italic text-white">
+                        HiLights Premium
+                    </h3>
+
+                    <p className="mb-6 text-center">
+                        <span className="text-3xl font-bold text-orange-500">
+                            R$ 47
+                        </span>
+                        <span className="ml-2 text-sm text-orange-400">
+                            /month
+                        </span>
+                        <span className="ml-2 text-xs text-orange-500">
+                            (12 months fidelity)
+                        </span>
+                    </p>
+
+                    <div className="mb-8 space-y-3">
+                        {premiumPlan.map((item, index) => (
+                            <div key={index} className="flex items-start gap-3">
+                                <CheckCircle
+                                    size={18}
+                                    className="mt-1 shrink-0 text-green-500"
+                                />
+                                <span className="text-gray-300">{item}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    <button className="w-full rounded-xl bg-orange-500 py-3 font-bold uppercase text-white transition hover:bg-orange-600">
+                        Choose Premium
+                    </button>
+                </div>
+
+                {/* Premium No Fidelity */}
+                <div className="rounded-[20px] border border-orange-500 bg-black p-6">
+                    <div className="mb-4 flex justify-center">
+                        <img
+                            src="/images/club-logo/hlf_logo.png"
+                            alt="logo"
+                            className="h-12 w-12"
+                        />
+                    </div>
+
+                    <h3 className="text-center text-2xl font-bold uppercase italic text-white">
+                        HiLights Premium
+                    </h3>
+
+                    <p className="mb-6 text-center">
+                        <span className="text-3xl font-bold text-orange-500">
+                            R$ 94
+                        </span>
+                        <span className="ml-2 text-sm text-orange-400">
+                            /month
+                        </span>
+                        <span className="ml-2 text-xs text-orange-500">
+                            (no fidelity)
+                        </span>
+                    </p>
+
+                    <div className="mb-8 space-y-3">
+                        {premiumPlan.map((item, index) => (
+                            <div key={index} className="flex items-start gap-3">
+                                <CheckCircle
+                                    size={18}
+                                    className="mt-1 shrink-0 text-green-500"
+                                />
+                                <span className="text-gray-300">{item}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    <button className="w-full rounded-xl bg-orange-500 py-3 font-bold uppercase text-white transition hover:bg-orange-600">
+                        Choose Premium
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+
+                <section className="w-full bg-black px-4 py-8">
+                    <div className="mx-auto max-w-7xl">
+                        <div className="overflow-hidden rounded-3xl border border-zinc-800 bg-[#0b0b0b]">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
+                                {items.map((item, index) => {
+                                    const Icon = item.icon;
+
+                                    return (
+                                        <div
+                                            key={index}
+                                            className={`px-6 py-8 text-center transition-all duration-300 hover:bg-[#121212] ${index !== items.length - 1 ? 'border-zinc-800 lg:border-r' : ''} `}
                                         >
-                                            €{displayPrice.toFixed(displayPrice % 1 === 0 ? 0 : 2)}
-                                        </span>
-                                        <span className="ml-2 text-sm text-[#94A3B8]">/month</span>
-                                    </div>
+                                            {/* Icon */}
+                                            <div className="flex justify-center">
+                                                <Icon size={42} className="text-orange-500" strokeWidth={2} />
+                                            </div>
 
-                                    {/* Tagline */}
-                                    <p className="mt-2 text-sm text-[#475569] dark:text-[#9A9A9A]">{plan.tagline}</p>
+                                            {/* Title */}
+                                            <h3 className="mt-5 text-[18px] font-bold tracking-wide text-white">{item.title}</h3>
 
-                                    {/* Divider */}
-                                    <div className="my-6 border-t border-[#E2E8F0] dark:border-[#2A2A2A]" />
+                                            {/* Description */}
+                                            <p className="mt-3 text-[14px] leading-6 text-zinc-400">{item.description}</p>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-                                    {/* Features */}
-                                    <ul className="space-y-3">
-                                        {plan.features.map((feat) => (
-                                            <li key={feat} className="flex items-start gap-3 text-sm text-[#0F172A] dark:text-[#F5F5F5]">
-                                                <CheckCircle2
-                                                    className={`mt-0.5 h-4 w-4 shrink-0 ${isPremium ? 'text-[#FF6B00]' : 'text-green-500'}`}
-                                                />
-                                                <span>{feat}</span>
-                                            </li>
-                                        ))}
+                <section>
+                    {/* Bottom CTA */}
+                    <div className="flex items-center gap-4 border-b border-[#1f1f1f] py-6 sm:grid sm:grid-cols-[70px_1fr_200px] md:grid-cols-[90px_1fr_400px] lg:grid-cols-[110px_1fr_500px]">
+                        {/* Left Icon */}
+                        <div className="flex justify-center">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#ff6b00] md:h-20 md:w-20">
+                                <Users className="text-white md:h-12 md:w-12" />
+                            </div>
+                        </div>
 
-                                        {plan.locked.map((feat) => (
-                                            <li key={feat} className="flex items-start gap-3 text-sm text-[#94A3B8] dark:text-[#555555]">
-                                                <Lock className="mt-0.5 h-4 w-4 shrink-0" />
-                                                <span className="line-through decoration-[#94A3B8]/30">{feat}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
+                        {/* Text */}
+                        <div>
+                            <h3 className="text-[14px] leading-tight font-bold sm:text-[16px] md:text-[18px] lg:text-[22px]">
+                                TAKE YOUR CAREER TO THE NEXT LEVEL.
+                            </h3>
 
-                                    {/* CTA */}
-                                    <div className="mt-8">
-                                        {isPremium ? (
-                                            <Link
-                                                href="/register?plan=premium"
-                                                className="flex h-12 w-full items-center justify-center rounded-xl bg-[#FF6B00] font-bold text-white transition-colors hover:bg-[#CC5500]"
-                                            >
-                                                {plan.cta}
-                                            </Link>
-                                        ) : (
-                                            <Link
-                                                href={plan.id === 'agent' ? '/contact?plan=agent' : '/register'}
-                                                className="flex h-12 w-full items-center justify-center rounded-xl border border-[#E2E8F0] bg-white font-semibold text-[#0F172A] transition-colors hover:border-[#FF6B00] hover:text-[#FF6B00] dark:border-[#2A2A2A] dark:bg-[#161616] dark:text-[#F5F5F5]"
-                                            >
-                                                {plan.cta}
-                                            </Link>
-                                        )}
-                                    </div>
-                                </div>
-                            );
-                        })}
+                            <p className="mt-3 text-[10px] leading-relaxed text-gray-300 sm:text-[12px] md:text-[14px] lg:text-[16px]">
+                                Join thousands of players using HiLights PRO to showcase their talent and stand out in the football world.
+                            </p>
+                        </div>
+
+                        {/* Button */}
+                        <div className="flex items-end justify-end lg:pr-10">
+                            <button className="sm:-w-45 flex items-center gap-2 rounded-xl border border-[#ff6b00] bg-[#ff6b00] px-4 py-2 transition hover:bg-[#ff6b00]/10 md:gap-4 lg:px-8 lg:py-6">
+                                <span className="text-left text-[10px] font-bold uppercase sm:text-[12px] md:text-[14px] lg:text-[16px]">
+                                    UPGRADE NOW
+                                </span>
+                            </button>
+                        </div>
                     </div>
                 </section>
 
