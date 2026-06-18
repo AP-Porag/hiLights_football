@@ -10,7 +10,8 @@ var react_2 = require("react");
 var NAV_LINKS = [
     { label: 'Home', href: '/', routeName: 'home' },
     { label: 'About', href: '/about', routeName: 'about' },
-    { label: 'Pricing', href: '/pricing', routeName: 'pricing' },
+    // { label: 'Pricing', href: '/pricing', routeName: 'pricing' },
+    { label: 'Plans', href: '/plans', routeName: 'plans' },
     { label: 'Contact', href: '/contact', routeName: 'contact' },
 ];
 function PublicNavbar() {

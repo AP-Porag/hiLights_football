@@ -120,8 +120,7 @@ var HomeTwo = function () {
                             react_1["default"].createElement(lucide_react_1.CirclePlay, { className: "w-6 h-6" }),
                             react_1["default"].createElement("span", { className: "pl-2" }, "Learn More"))))),
             react_1["default"].createElement("aside", { className: "space-y-3 " },
-                react_1["default"].createElement("p", { className: "text-[10px] text-[#94A3B8] uppercase tracking-wider" }, "Sponsored"),
-                react_1["default"].createElement("div", { className: "bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]" },
+                react_1["default"].createElement("div", { className: "bg-[#111] my-6 border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]" },
                     react_1["default"].createElement("div", { className: "absolute inset-0 opacity-20", style: {
                             background: 'radial-gradient(circle at 50% 0%, #FF6B00 0%, transparent 60%)'
                         } }),
@@ -172,8 +171,7 @@ var HomeTwo = function () {
                                     react_1["default"].createElement("br", null),
                                     "Profile Now")))))),
             react_1["default"].createElement("aside", { className: "mb-6 space-y-3" },
-                react_1["default"].createElement("p", { className: "text-[10px] text-[#94A3B8] uppercase tracking-wider" }, "Sponsored"),
-                react_1["default"].createElement("div", { className: "bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]" },
+                react_1["default"].createElement("div", { className: "bg-[#111] my-6 border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]" },
                     react_1["default"].createElement("div", { className: "absolute inset-0 opacity-20", style: {
                             background: 'radial-gradient(circle at 50% 0%, #FF6B00 0%, transparent 60%)'
                         } }),
@@ -184,8 +182,8 @@ var HomeTwo = function () {
                         react_1["default"].createElement("span", { className: "text-white/70 text-sm" }, "2025 Season Boots"),
                         react_1["default"].createElement("span", { className: "text-white/60 text-xs tracking-widest mt-2" }, "MERCURIAL VAPOR"),
                         react_1["default"].createElement("button", { className: "bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-6 py-2 rounded-lg text-sm mt-3 transition-colors" }, "SHOP NOW \u2192")))),
-            react_1["default"].createElement("section", { className: "overflow-x-hidden mb-6" },
-                react_1["default"].createElement("div", { className: "w-[90%] mx-auto rounded-xl p-3 md:p-6 bg-[#f9f9f9]" },
+            react_1["default"].createElement("section", { className: "overflow-x-hidden mb-6 max-w-7xl mx-auto" },
+                react_1["default"].createElement("div", { className: "rounded-xl p-3 md:p-6 bg-[#f9f9f9]" },
                     react_1["default"].createElement("div", { className: "flex items-center justify-between pb-3" },
                         react_1["default"].createElement("div", { className: "flex items-center gap-2 " },
                             react_1["default"].createElement(lucide_react_1.Star, { size: 18, fill: "#ff6b00", className: "text-[#ff6b00]" }),

@@ -3,9 +3,9 @@ import { Link } from '@inertiajs/react';
 import { FaInstagram, FaFacebook, FaTiktok } from "react-icons/fa";
 export const PublicFooter = () => {
   return (
-    <section className="py-12 px-6">
+    <section className="py-12">
 
-        <div className="bg-black text-white">
+        <div className="bg-black text-white pl-6">
     <div className="max-w-7xl mx-auto py-4">
         <div className="grid grid-cols-4 gap-4">
 

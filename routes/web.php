@@ -15,9 +15,14 @@ Route::get('/about', function () {
     return Inertia::render('web/About');
 })->name('about');
 
-Route::get('/pricing', function () {
-    return Inertia::render('web/Pricing');
-})->name('pricing');
+// Route::get('/pricing', function () {
+//     return Inertia::render('web/Pricing');
+// })->name('pricing');
+
+Route::get('/plans', function () {
+    return Inertia::render('web/Plans');
+})->name('plans');
+
 
 Route::get('/contact', function () {
     return Inertia::render('web/Contact');

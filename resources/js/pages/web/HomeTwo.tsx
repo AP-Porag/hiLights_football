@@ -189,12 +189,9 @@ const HomeTwo = () => {
     </section>
 
     <aside className="space-y-3 ">
-                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider">
-                        Sponsored
-                    </p>
 
 
-                     <div className="bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]">
+                     <div className="bg-[#111] my-6 border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]">
                         <div
                             className="absolute inset-0 opacity-20"
                             style={{
@@ -324,12 +321,8 @@ const HomeTwo = () => {
 
     
           <aside className="mb-6 space-y-3">
-                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider">
-                        Sponsored
-                    </p>
 
-
-                     <div className="bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]">
+                     <div className="bg-[#111] my-6 border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]">
                         <div
                             className="absolute inset-0 opacity-20"
                             style={{
@@ -359,8 +352,8 @@ const HomeTwo = () => {
 
 
 
-    <section className="overflow-x-hidden mb-6">
-      <div className="w-[90%] mx-auto rounded-xl p-3 md:p-6 bg-[#f9f9f9]">
+    <section className="overflow-x-hidden mb-6 max-w-7xl mx-auto">
+      <div className="rounded-xl p-3 md:p-6 bg-[#f9f9f9]">
         {/* Header */}
         <div className="flex items-center justify-between pb-3">
           <div className="flex items-center gap-2 ">

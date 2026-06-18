@@ -4,8 +4,8 @@ exports.PublicFooter = void 0;
 var react_1 = require("react");
 var react_2 = require("@inertiajs/react");
 exports.PublicFooter = function () {
-    return (react_1["default"].createElement("section", { className: "py-12 px-6" },
-        react_1["default"].createElement("div", { className: "bg-black text-white" },
+    return (react_1["default"].createElement("section", { className: "py-12" },
+        react_1["default"].createElement("div", { className: "bg-black text-white pl-6" },
             react_1["default"].createElement("div", { className: "max-w-7xl mx-auto py-4" },
                 react_1["default"].createElement("div", { className: "grid grid-cols-4 gap-4" },
                     react_1["default"].createElement("div", { className: "min-w-0" },

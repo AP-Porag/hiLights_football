@@ -6,35 +6,35 @@ import { Progress } from '@/components/ui/progress';
 import { Link } from '@inertiajs/react';
 
 import {
-  ArrowRight, 
-  CalendarDays, 
-  CheckCircle2, 
-  Circle, 
-  Crown, 
-  Eye, 
-  Flag, 
-  History, 
-  Lock, 
-  MapPin, 
-  Star,
-  TrendingUp, 
-  User, 
-  Video,
-  Shirt,
-  Footprints,
-  Ruler,
-  Weight,
-  Shield,
- } from 'lucide-react';
- 
-import { 
-    Bar, 
-    BarChart, 
-    CartesianGrid, 
-    ResponsiveContainer, 
-    Tooltip, 
-    XAxis, 
-    YAxis 
+    ArrowRight,
+    CalendarDays,
+    CheckCircle2,
+    Circle,
+    Crown,
+    Eye,
+    Flag,
+    History,
+    Lock,
+    MapPin,
+    Star,
+    TrendingUp,
+    User,
+    Video,
+    Shirt,
+    Footprints,
+    Ruler,
+    Weight,
+    Shield,
+} from 'lucide-react';
+
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis
 } from 'recharts';
 
 // MOCK DATA (realistic)
@@ -104,32 +104,32 @@ export default function PlayerDashboard() {
 
     const playerInfo = [
         {
-            icon:  <Shirt className="w-4 h-4 text-gray-300" />,
+            icon: <Shirt className="w-4 h-4 text-gray-300" />,
             label: 'POSITION',
             value: 'ATTACKING MIDFIELDER',
         },
         {
-            icon: <Footprints className="w-4 h-4 text-gray-300"/>,
+            icon: <Footprints className="w-4 h-4 text-gray-300" />,
             label: 'PREFERRED FOOT',
             value: 'RIGHT',
         },
         {
-            icon: <Ruler className="w-4 h-4 text-gray-300"/>,
+            icon: <Ruler className="w-4 h-4 text-gray-300" />,
             label: 'HEIGHT',
             value: '178 CM',
         },
         {
-            icon: <Weight className="w-4 h-4 text-gray-300"/>,
+            icon: <Weight className="w-4 h-4 text-gray-300" />,
             label: 'WEIGHT',
             value: '67 KG',
         },
         {
-            icon: <Shield className="w-4 h-4 text-gray-300"/>,
+            icon: <Shield className="w-4 h-4 text-gray-300" />,
             label: 'CLUB',
             value: 'RIO DE JANEIRO FC',
         },
         {
-            icon: <CalendarDays className="w-4 h-4 text-gray-300"/>,
+            icon: <CalendarDays className="w-4 h-4 text-gray-300" />,
             label: 'MEMBER SINCE',
             value: 'MAY 2024',
         },
@@ -354,7 +354,7 @@ export default function PlayerDashboard() {
                             <div className="grid gap-6 grid-cols-2">
                                 {/* Left Side */}
                                 <div className="relative">
-                                <div className="absolute top-0 -right-4 w-[1px] h-full border-r border-white/10"></div>
+                                    <div className="absolute top-0 -right-4 w-[1px] h-full border-r border-white/10"></div>
                                     <h2 className="mb-2 text-[10px] font-bold text-[#ff6600] uppercase">Player Info</h2>
 
                                     <div className="space-y-2">
@@ -399,13 +399,13 @@ export default function PlayerDashboard() {
                         </div>
 
                         <div className="flex justify-between items-center w-full border-t-1 border-gray-600 p-6 bg-[url('/images/img/leyer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[16px] rounded-br-[16px]">
-                          <p className=" flex justify-between items-center text-[8px] text-gray-300">
-                            <Shield className="w-4 h-4 mr-2"/>
-                            
-                            THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br/>
-MEMBER OF HILIGHTS FOOTBALL PLATFORM.
-</p>
-<p className="text-[8px] text-black font-bold translate-x-[10%]"> WWW.HILIGHTSFOOTBALL.COM </p>
+                            <p className=" flex justify-between items-center text-[8px] text-gray-300">
+                                <Shield className="w-4 h-4 mr-2" />
+
+                                THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br />
+                                MEMBER OF HILIGHTS FOOTBALL PLATFORM.
+                            </p>
+                            <p className="text-[8px] text-black font-bold translate-x-[10%]"> WWW.HILIGHTSFOOTBALL.COM </p>
                         </div>
 
                     </div>
