@@ -252,7 +252,7 @@ function Plans() {
                                 React.createElement("p", { className: "mt-3 text-[14px] leading-6 text-zinc-400" }, item.description)));
                         }))))),
             React.createElement("section", null,
-                React.createElement("div", { className: "flex items-center gap-4 border-b border-[#1f1f1f] py-6 sm:grid sm:grid-cols-[70px_1fr_200px] md:grid-cols-[90px_1fr_400px] lg:grid-cols-[110px_1fr_500px]" },
+                React.createElement("div", { className: "flex items-center gap-4 border-b border-[#1f1f1f] py-6 sm:grid sm:grid-cols-[70px_1fr_200px] md:grid-cols-[90px_1fr_400px] lg:grid-cols-[110px_1fr_500px] p-4" },
                     React.createElement("div", { className: "flex justify-center" },
                         React.createElement("div", { className: "flex h-12 w-12 items-center justify-center rounded-full bg-[#ff6b00] md:h-20 md:w-20" },
                             React.createElement(lucide_react_1.Users, { className: "text-white md:h-12 md:w-12" }))),
