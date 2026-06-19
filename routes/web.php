@@ -3,6 +3,21 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+Route::get('/execute-command', function () {
+    //    return redirect()->route('login');
+    //    Artisan::call('storage:link');
+    Artisan::call('migrate:fresh --seed');
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('optimize');
+    dd('All commands executed successfully');
+
+    //deploy command
+    ///opt/alt/php84/usr/bin/php artisan migrate:fresh --seed -vvv
+
+});
+
 // all web routes
 // Route::get('/', function () {
 //     return Inertia::render('web/Home');
@@ -41,8 +56,8 @@ Route::get('/player/profile/{id}', function () {
 
 
 Route::get('/scout', function () {
-        return Inertia::render('player/profile/public/Scout');
-    })->name('scout');
+    return Inertia::render('player/profile/public/Scout');
+})->name('scout');
 
 //all player routes
 Route::prefix('player')->group(function () {
@@ -72,10 +87,9 @@ Route::prefix('scouting')->group(function () {
         return Inertia::render('scouting/player/Detail');
     })->name('player.details');
 
-        Route::get('/player/saved', function () {
-            return Inertia::render('scouting/search/Saved');
-        })->name('player.saved');
-
+    Route::get('/player/saved', function () {
+        return Inertia::render('scouting/search/Saved');
+    })->name('player.saved');
 });
 
 //all admin routes
