@@ -1,122 +1,163 @@
 import React from 'react'
 import { Link } from '@inertiajs/react';
 import { FaInstagram, FaFacebook, FaTiktok } from "react-icons/fa";
+import { Instagram, Facebook, Youtube, Music2 } from 'lucide-react';
 export const PublicFooter = () => {
-  return (
-    <section className="py-12">
+    return (
+        <section className="">
 
-        <div className="bg-black text-white pl-6">
-    <div className="max-w-7xl mx-auto py-4">
-        <div className="grid grid-cols-4 gap-4">
+            <div className="bg-black text-white pl-6">
+                <div className="max-w-7xl mx-auto py-4">
+                    <div className="grid grid-cols-4 gap-4">
 
-            {/* Logo & Description */}
-            <div className="min-w-0">
-                <img
-                   src="/images/logo/hilights_logo_dark_200.png"
-                   className="h-10 w-auto"
-                   alt="HiLights Football"
-                />
+                        {/* Logo & Description */}
+                        <div className="min-w-0">
+                            <img
+                                src="/images/logo/hilights_logo_dark_200.png"
+                                className="h-10 w-auto"
+                                alt="HiLights Football"
+                            />
 
-                <p className="text-[10px] sm:text-[12px] md:text-[14px] leading-[1.5] break-words">
-                    The platform dedicated to promoting and discovering
-                    football talent.
-                </p>
-            </div>
+                            <p className="text-[10px] sm:text-[12px] md:text-[16px] mt-5 leading-[1.5] break-words">
+                                The platform dedicated to promoting and discovering
+                                football talent.
+                            </p>
+                        </div>
 
-            {/* Quick Links */}
-            <div className="min-w-0">
-                <h3 className="text-[#FF6A00] font-bold uppercase mb-3 text-[12px] md:text-[14px] lg:text-[16px]">
-                    Quick Links
-                </h3>
+                        {/* Quick Links */}
+                        <div className="min-w-0">
+                            <h3 className="text-[#FF6A00] font-bold uppercase mb-3 text-[12px] md:text-[14px] lg:text-[16px]">
+                                Quick Links
+                            </h3>
 
-                <ul className="space-y-1 text-[10px] sm:text-[12px] md:text-[14px] ">
-                    <li><Link href="/about" className="hover:text-white">About Us</Link></li>
-                    <li><Link href="/#" className="hover:text-white">How It Works</Link></li>
-                    <li><Link href="/#" className="hover:text-white">Plans</Link></li>
-                    <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
-                    <li><Link href="/#" className="hover:text-white">Terms of Use</Link></li>
-                    <li><Link href="/#" className="hover:text-white">Privacy Policy</Link></li>
-                </ul>
-            </div>
+                            <ul className="space-y-1 text-[10px] sm:text-[12px] md:text-[14px] ">
+                                <li><Link href="/about" className="hover:text-white">About Us</Link></li>
+                                <li><Link href="/#" className="hover:text-white">How It Works</Link></li>
+                                <li><Link href="/#" className="hover:text-white">Plans</Link></li>
+                                <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
+                                <li><Link href="/#" className="hover:text-white">Terms of Use</Link></li>
+                                <li><Link href="/#" className="hover:text-white">Privacy Policy</Link></li>
+                            </ul>
+                        </div>
 
-            {/* Social Links */}
-            <div className="min-w-0">
-                <h3 className="text-[#FF6A00] font-bold uppercase mb-3 text-[12px] md:text-[14px] lg:text-[16px]">
-                    Follow Us
-                </h3>
+                        {/* Social Links */}
+                        {/* <div className="min-w-0">
+                            <h3 className="text-[#FF6A00] font-bold uppercase mb-3 text-[12px] md:text-[14px] lg:text-[16px]">
+                                Follow Us
+                            </h3>
 
-                 <div className="flex flex-wrap gap-3">
-                    <a
-                        href="#"
-                        className="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden"
-                    >
-                        <img
-                            src="/images/img/Insta.png"
-                            alt="Instagram"
-                            className="w-full h-full object-cover"
-                        />
-                    </a>
+                            <div className="flex flex-wrap gap-3">
+                                <a
+                                    href="#"
+                                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden"
+                                >
+                                    <img
+                                        src="/images/img/Insta.png"
+                                        alt="Instagram"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </a>
 
-                    <a
-                        href="#"
-                        className="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden"
-                    >
-                        <img
-                            src="/images/img/Facebook.png"
-                            alt="Facebook"
-                            className="w-full h-full object-cover"
-                        />
-                    </a>
+                                <a
+                                    href="#"
+                                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden"
+                                >
+                                    <img
+                                        src="/images/img/Facebook.png"
+                                        alt="Facebook"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </a>
 
-                    <a
-                        href="#"
-                        className="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden"
-                    >
-                        <img
-                            src="/images/img/Youtube.png"
-                            alt="YouTube"
-                            className="w-full h-full object-cover"
-                        />
-                    </a>
+                                <a
+                                    href="#"
+                                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden"
+                                >
+                                    <img
+                                        src="/images/img/Youtube.png"
+                                        alt="YouTube"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </a>
 
-                    <a
-                        href="#"
-                        className="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden"
-                    >
-                        <img
-                            src="/images/img/Tiktok.png"
-                            alt="TikTok"
-                            className="w-full h-full object-cover"
-                        />
-                    </a>
+                                <a
+                                    href="#"
+                                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden"
+                                >
+                                    <img
+                                        src="/images/img/Tiktok.png"
+                                        alt="TikTok"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </a>
+                            </div>
+                        </div> */}
+
+                        <div className="min-w-0">
+                            <h3 className="text-[#FF6A00] font-bold uppercase mb-3 text-[12px] md:text-[14px] lg:text-[16px]">
+                                Follow Us
+                            </h3>
+
+                            <div className="flex flex-wrap gap-3">
+                                <a
+                                    href="#"
+                                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white hover:scale-110 transition-transform duration-200 shadow-md hover:shadow-lg"
+                                    aria-label="Instagram"
+                                >
+                                    <Instagram className="w-5 h-5 md:w-6 md:h-6" />
+                                </a>
+
+                                <a
+                                    href="#"
+                                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-[#1877F2] flex items-center justify-center text-white hover:scale-110 transition-transform duration-200 shadow-md hover:shadow-lg"
+                                    aria-label="Facebook"
+                                >
+                                    <Facebook className="w-5 h-5 md:w-6 md:h-6" />
+                                </a>
+
+                                <a
+                                    href="#"
+                                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-[#FF0000] flex items-center justify-center text-white hover:scale-110 transition-transform duration-200 shadow-md hover:shadow-lg"
+                                    aria-label="YouTube"
+                                >
+                                    <Youtube className="w-5 h-5 md:w-6 md:h-6" />
+                                </a>
+
+                                <a
+                                    href="#"
+                                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-[#010101] flex items-center justify-center text-white hover:scale-110 transition-transform duration-200 shadow-md hover:shadow-lg"
+                                    aria-label="TikTok"
+                                >
+                                    <Music2 className="w-5 h-5 md:w-6 md:h-6" />
+                                </a>
+                            </div>
+                        </div>
+                        {/* Football Player */}
+                        <div className="flex justify-start items-center">
+                            <img
+                                src="/images/img/dummy-player.png"
+                                alt="Football Player"
+                                className="w-full max-w-[140px] md:max-w-[180px] h-auto object-contain"
+                            />
+                        </div>
+                    </div>
+
                 </div>
             </div>
-              {/* Football Player */}
-            <div className="flex justify-start items-center">
-                <img
-                    src="/images/img/dummy-player.png"
-                    alt="Football Player"
-                    className="w-full max-w-[140px] md:max-w-[180px] h-auto object-contain"
-                />
+
+            {/* Copyright */}
+            <div className="border-t border-[#2B2B2B]">
+                <div className="max-w-7xl mx-auto px-3 py-3 text-center">
+                    <p className="text-[#BFBFBF] text-[12px] sm:text-[12px] md:text-[14px] lg:text-[16px] break-words">
+                        © 2024 HiLights Football. All rights reserved.
+                    </p>
+                </div>
             </div>
+            <div>
             </div>
 
-        </div>
-    </div>
 
-    {/* Copyright */}
-    <div className="border-t border-[#2B2B2B]">
-        <div className="max-w-7xl mx-auto px-3 py-3 text-center">
-            <p className="text-[#BFBFBF] text-[12px] sm:text-[12px] md:text-[14px] lg:text-[16px] break-words">
-                © 2024 HiLights Football. All rights reserved.
-            </p>
-        </div>
-    </div>
-    <div>
-</div>
-
-
-                    {/* <div className="max-w-[1200px] mx-auto">
+            {/* <div className="max-w-[1200px] mx-auto">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                             <div className="col-span-2 md:col-span-1">
                                 <img
@@ -166,6 +207,6 @@ export const PublicFooter = () => {
                             </div>
                         </div>
                     </div> */}
-                </section>
-  )
+        </section>
+    )
 }
