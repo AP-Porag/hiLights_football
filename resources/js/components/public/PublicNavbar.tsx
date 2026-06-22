@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Link, usePage } from '@inertiajs/react';
-import { Menu, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Menu, Search, Shield, User } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 interface NavLink {
     label: string;
@@ -15,9 +15,16 @@ interface NavLink {
 const NAV_LINKS: NavLink[] = [
     { label: 'Home', href: '/', routeName: 'home' },
     { label: 'About', href: '/about', routeName: 'about' },
+    { label: 'Scout', href: '/scout', routeName: 'scout' },
     // { label: 'Pricing', href: '/pricing', routeName: 'pricing' },
     { label: 'Plans', href: '/plans', routeName: 'plans' },
     { label: 'Contact', href: '/contact', routeName: 'contact' },
+];
+
+const NAV_LINKS_MOBILE = [
+    { label: 'Search', href: '#', routeName: '', icon: <Search /> },
+    { label: 'Plans', href: '/plans', routeName: 'plans',icon: <Shield /> },
+    { label: 'Login', href: '/login', routeName: 'login',icon: <User /> },
 ];
 
 export default function PublicNavbar() {
@@ -41,8 +48,7 @@ export default function PublicNavbar() {
         <header
             className={[
                 'fixed top-0 right-0 left-0 z-50 h-16',
-                'bg-white dark:bg-[#0D0D0D]',
-                'border-b border-[#E2E8F0] dark:border-[#2A2A2A]',
+                'bg-black dark:bg-[#0D0D0D]',
                 scrolled ? 'shadow-md' : 'shadow-[0_1px_0_rgba(0,0,0,0.05)] dark:shadow-none',
                 'transition-shadow duration-200',
             ].join(' ')}
@@ -50,13 +56,13 @@ export default function PublicNavbar() {
             <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between gap-4 px-6">
                 {/* LEFT — Logo */}
                 <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football home">
-                    <img src="/images/logo/hilights_logo_transparent_200.png" className="h-9 w-auto dark:hidden" alt="HiLights Football" />
-                    <img src="/images/logo/hilights_logo_dark_200.png" className="hidden h-9 w-auto dark:block" alt="HiLights Football" />
-                    <div className="hidden items-end gap-0.5 leading-none sm:flex">
-                        <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>
-                        <span className="text-xl font-black tracking-tight text-[#FF6B00] italic">Lights</span>
-                        <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.12em] text-[#94A3B8]">FOOTBALL</span>
-                    </div>
+                    <img src="/images/logo/logo_version_2.png" className="h-12 w-auto md:h-20 dark:hidden" alt="HiLights Football" />
+                    <img src="/images/logo/logo_version_2.png" className="hidden h-12 w-auto md:h-20 dark:block" alt="HiLights Football" />
+                    {/*<div className="hidden items-end gap-0.5 leading-none sm:flex">*/}
+                    {/*    <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>*/}
+                    {/*    <span className="text-xl font-black tracking-tight text-[#FF6B00] italic">Lights</span>*/}
+                    {/*    <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.12em] text-[#94A3B8]">FOOTBALL</span>*/}
+                    {/*</div>*/}
                 </Link>
 
                 {/* CENTER — Nav links (desktop) */}
@@ -71,7 +77,7 @@ export default function PublicNavbar() {
                                     'relative text-sm font-medium transition-colors',
                                     active
                                         ? 'text-[#FF6B00] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#FF6B00]'
-                                        : 'text-[#475569] hover:text-[#FF6B00] dark:text-[#9A9A9A]',
+                                        : 'text-white hover:text-[#FF6B00] dark:text-[#9A9A9A]',
                                 ].join(' ')}
                             >
                                 {link.label}
@@ -92,30 +98,59 @@ export default function PublicNavbar() {
 
                 {/* RIGHT — Actions (desktop) */}
                 <div className="hidden shrink-0 items-center gap-2 md:flex">
-                    <ThemeToggle />
+                    {/*<ThemeToggle />*/}
                     <Link href="/login">
                         <Button
                             variant="outline"
                             size="sm"
-                            className="border-[#E2E8F0] bg-transparent text-sm font-medium text-[#0F172A] hover:border-[#FF6B00] hover:bg-transparent hover:text-[#FF6B00] dark:border-[#2A2A2A] dark:text-[#F5F5F5] dark:hover:bg-transparent"
+                            className="border-[#E2E8F0] bg-gray-50 text-sm font-medium text-[#0F172A] hover:border-[#FF6B00] hover:bg-transparent hover:text-[#FF6B00] dark:border-[#2A2A2A] dark:text-[#F5F5F5] dark:hover:bg-transparent"
                         >
                             Login
                         </Button>
                     </Link>
                     <Link href="/register">
                         <Button size="sm" className="bg-[#FF6B00] px-4 text-sm font-semibold text-white hover:bg-[#CC5500]">
-                            Register
+                            Create A Free Profile Now
                         </Button>
                     </Link>
                 </div>
 
                 {/* MOBILE — Hamburger */}
                 <div className="flex items-center gap-1 md:hidden">
-                    <ThemeToggle />
+                    {/*<ThemeToggle />*/}
+                    <div className="flex items-center gap-0.5">
+                        {NAV_LINKS_MOBILE.map((link) => {
+                            const active = isActive(link.href);
+
+                            return (
+                                <Link key={link.href} href={link.href} className="flex w-14 flex-col items-center justify-center">
+                                    <div className={['mb-1 transition-colors', active ? 'text-[#FF6B00]' : 'text-white'].join(' ')}>
+                                        {React.cloneElement(link.icon, {
+                                            className: 'h-7 w-7',
+                                        })}
+                                    </div>
+
+                                    <span
+                                        className={['text-[12px] font-medium whitespace-nowrap', active ? 'text-[#FF6B00]' : 'text-white'].join(' ')}
+                                    >
+                                        {link.label}
+                                    </span>
+                                </Link>
+                            );
+                        })}
+                    </div>
+
+                    <Link href="/register">
+                        <Button className="h-11 rounded-md bg-[#FF6B00] px-4 text-[11px] leading-tight font-bold text-white uppercase hover:bg-[#e65c00]">
+                            Create A Free
+                            <br />
+                            Profile Now
+                        </Button>
+                    </Link>
                     <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
                         <SheetTrigger asChild>
                             <Button
-                                variant="ghost"
+                                variant="secondary"
                                 size="icon"
                                 aria-label="Open menu"
                                 className="h-9 w-9 text-[#0F172A] hover:bg-[#F8FAFC] dark:text-[#F5F5F5] dark:hover:bg-[#1F1F1F]"
@@ -129,21 +164,17 @@ export default function PublicNavbar() {
                         >
                             <SheetHeader className="border-b border-[#E2E8F0] px-6 py-4 dark:border-[#2A2A2A]">
                                 <SheetTitle className="flex items-center gap-2">
+                                    <img src="/images/logo/logo_version_light_2.png" className="h-20 w-auto dark:hidden" alt="HiLights Football" />
                                     <img
-                                        src="/images/logo/hilights_logo_transparent_200.png"
-                                        className="h-9 w-auto dark:hidden"
+                                        src="/images/logo/logo_version_light_2.png"
+                                        className="hidden h-20 w-auto dark:block"
                                         alt="HiLights Football"
                                     />
-                                    <img
-                                        src="/images/logo/hilights_logo_dark_200.png"
-                                        className="hidden h-9 w-auto dark:block"
-                                        alt="HiLights Football"
-                                    />
-                                    <div className="flex items-end gap-0.5 leading-none">
-                                        <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>
-                                        <span className="text-xl font-black tracking-tight text-[#FF6B00] italic">Lights</span>
-                                        <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.12em] text-[#94A3B8]">FOOTBALL</span>
-                                    </div>
+                                    {/*<div className="flex items-end gap-0.5 leading-none">*/}
+                                    {/*    <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>*/}
+                                    {/*    <span className="text-xl font-black tracking-tight text-[#FF6B00] italic">Lights</span>*/}
+                                    {/*    <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.12em] text-[#94A3B8]">FOOTBALL</span>*/}
+                                    {/*</div>*/}
                                 </SheetTitle>
                             </SheetHeader>
 
@@ -187,7 +218,9 @@ export default function PublicNavbar() {
                                     </Button>
                                 </Link>
                                 <Link href="/register" onClick={() => setMobileOpen(false)}>
-                                    <Button className="w-full bg-[#FF6B00] text-sm font-semibold text-white hover:bg-[#CC5500]">Register</Button>
+                                    <Button className="w-full bg-[#FF6B00] text-sm font-semibold text-white hover:bg-[#CC5500]">
+                                        Create A Free Profile Now
+                                    </Button>
                                 </Link>
                             </div>
                         </SheetContent>

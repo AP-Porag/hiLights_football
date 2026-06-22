@@ -5,7 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Link, router, usePage } from '@inertiajs/react';
 import { Bell, ChevronDown, LogOut, Menu, Settings, User } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface PlayerUser {
     id: number;
@@ -97,14 +97,14 @@ export default function PlayerNavbar() {
         >
             <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between gap-4 px-6">
                 {/* LEFT — Logo */}
-                <Link href="/player/dashboard" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football dashboard">
-                    <img src="/images/logo/hilights_logo_transparent_200.png" className="h-9 w-auto dark:hidden" alt="HiLights Football" />
-                    <img src="/images/logo/hilights_logo_dark_200.png" className="hidden h-9 w-auto dark:block" alt="HiLights Football" />
-                    <div className="hidden items-end gap-0.5 leading-none sm:flex">
-                        <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>
-                        <span className="text-xl font-black tracking-tight text-[#FF6B00] italic">Lights</span>
-                        <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.12em] text-[#94A3B8]">FOOTBALL</span>
-                    </div>
+                <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football home">
+                    <img src="/images/logo/logo_version_2.png" className="h-12 w-auto md:h-20 dark:hidden" alt="HiLights Football" />
+                    <img src="/images/logo/logo_version_2.png" className="hidden h-12 w-auto md:h-20 dark:block" alt="HiLights Football" />
+                    {/*<div className="hidden items-end gap-0.5 leading-none sm:flex">*/}
+                    {/*    <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>*/}
+                    {/*    <span className="text-xl font-black tracking-tight text-[#FF6B00] italic">Lights</span>*/}
+                    {/*    <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.12em] text-[#94A3B8]">FOOTBALL</span>*/}
+                    {/*</div>*/}
                 </Link>
 
                 {/* CENTER — Nav links (desktop) */}
@@ -130,7 +130,7 @@ export default function PlayerNavbar() {
 
                 {/* RIGHT — Actions (desktop) */}
                 <div className="hidden shrink-0 items-center gap-3 md:flex">
-                    <ThemeToggle />
+                    {/*<ThemeToggle />*/}
 
                     {/* Notification bell */}
                     <Link

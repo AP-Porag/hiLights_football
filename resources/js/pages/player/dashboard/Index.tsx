@@ -138,7 +138,7 @@ export default function PlayerDashboard() {
     ];
 
     return (
-        <div className="min-h-screen bg-[#F8FAFC] pt-16 dark:bg-[#0D0D0D]">
+        <div className="min-h-screen bg-black pt-16 dark:bg-[#0D0D0D]">
             <PlayerNavbar />
 
             {/* PAGE HEADER */}
@@ -410,13 +410,13 @@ export default function PlayerDashboard() {
 
                             <div className="absolute -bottom-10 left-0 flex justify-between w-full">
 
-                                <button className="flex items-center rounded-xl bg-[#ff6600] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black text-[8px] sm:text-[10px] transition-all hover:bg-[#ff7a1a]">
+                                <button className="capitalize flex items-center rounded-xl bg-[#ff6600] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white text-[16px] sm:text-[10px] transition-all hover:bg-[#ff7a1a]">
                                     <Share2 className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" />
                                     share full profile
                                     </button>
 
-                                <button className="flex items-center rounded-xl bg-[#black] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1 border-gray-300 text-white text-[8px] sm:text-[10px] transition-all">
-                                    
+                                <button className="capitalize flex items-center rounded-xl bg-[#ff6600] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[16px] sm:text-[10px] transition-all">
+
                                     <Download className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" />
                                     download member card
                                     </button>

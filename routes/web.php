@@ -56,7 +56,7 @@ Route::get('/player/profile/{id}', function () {
 
 
 Route::get('/scout', function () {
-    return Inertia::render('player/profile/public/Scout');
+    return Inertia::render('web/Scout');
 })->name('scout');
 
 //all player routes

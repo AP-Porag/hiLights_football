@@ -5,38 +5,60 @@ import { Instagram, Facebook, Youtube, Music2 } from 'lucide-react';
 export const PublicFooter = () => {
     return (
         <section className="">
-
-            <div className="bg-black text-white pl-6">
-                <div className="max-w-7xl mx-auto py-4">
+            <div className="bg-black pl-6 text-white">
+                <div className="mx-auto max-w-7xl py-4">
                     <div className="grid grid-cols-4 gap-4">
-
                         {/* Logo & Description */}
                         <div className="min-w-0">
-                            <img
-                                src="/images/logo/hilights_logo_dark_200.png"
-                                className="h-10 w-auto"
-                                alt="HiLights Football"
-                            />
+                            <img src="/images/logo/logo_version_2.png" className="h-20 w-auto" alt="HiLights Football" />
 
-                            <p className="text-[10px] sm:text-[12px] md:text-[16px] mt-5 leading-[1.5] break-words">
-                                The platform dedicated to promoting and discovering
-                                football talent.
+                            <p className="mt-5 text-[10px] leading-[1.5] break-words sm:text-[12px] md:text-[16px]">
+                                The platform dedicated <br className="md:hidden" /> to promoting and discovering <br className="md:hidden" /> football
+                                talent.
                             </p>
                         </div>
 
                         {/* Quick Links */}
                         <div className="min-w-0">
-                            <h3 className="text-[#FF6A00] font-bold uppercase mb-3 text-[12px] md:text-[14px] lg:text-[16px]">
-                                Quick Links
-                            </h3>
+                            <h3 className="mb-3 text-[12px] font-bold text-[#FF6A00] uppercase md:text-[14px] lg:text-[16px]">Quick Links</h3>
 
-                            <ul className="space-y-1 text-[10px] sm:text-[12px] md:text-[14px] ">
-                                <li><Link href="/about" className="hover:text-white">About Us</Link></li>
-                                <li><Link href="/#" className="hover:text-white">How It Works</Link></li>
-                                <li><Link href="/#" className="hover:text-white">Plans</Link></li>
-                                <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
-                                <li><Link href="/#" className="hover:text-white">Terms of Use</Link></li>
-                                <li><Link href="/#" className="hover:text-white">Privacy Policy</Link></li>
+                            <ul className="space-y-1 text-[10px] sm:text-[12px] md:text-[14px]">
+                                <li>
+                                    <Link href="/about" className="flex items-center gap-2 hover:text-white">
+                                        <span className="h-2 w-2 rounded-full bg-[#FF6A00]" />
+                                        About Us
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/#" className="flex items-center gap-2 hover:text-white">
+                                        <span className="h-2 w-2 rounded-full bg-[#FF6A00]" />
+                                        How It Works
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/#" className="flex items-center gap-2 hover:text-white">
+                                        <span className="h-2 w-2 rounded-full bg-[#FF6A00]" />
+                                        Plans
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/contact" className="flex items-center gap-2 hover:text-white">
+                                        <span className="h-2 w-2 rounded-full bg-[#FF6A00]" />
+                                        Contact
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/#" className="flex items-center gap-2 hover:text-white">
+                                        <span className="h-2 w-2 rounded-full bg-[#FF6A00]" />
+                                        Terms of Use
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/#" className="flex items-center gap-2 hover:text-white">
+                                        <span className="h-2 w-2 rounded-full bg-[#FF6A00]" />
+                                        Privacy Policy
+                                    </Link>
+                                </li>
                             </ul>
                         </div>
 
@@ -94,68 +116,63 @@ export const PublicFooter = () => {
                         </div> */}
 
                         <div className="min-w-0">
-                            <h3 className="text-[#FF6A00] font-bold uppercase mb-3 text-[12px] md:text-[14px] lg:text-[16px]">
-                                Follow Us
-                            </h3>
+                            <h3 className="mb-3 text-[12px] font-bold text-[#FF6A00] uppercase md:text-[14px] lg:text-[16px]">Follow Us</h3>
 
                             <div className="flex flex-wrap gap-3">
                                 <a
                                     href="#"
-                                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white hover:scale-110 transition-transform duration-200 shadow-md hover:shadow-lg"
+                                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-md transition-transform duration-200 hover:scale-110 hover:shadow-lg md:h-12 md:w-12"
                                     aria-label="Instagram"
                                 >
-                                    <Instagram className="w-5 h-5 md:w-6 md:h-6" />
+                                    <Instagram className="h-5 w-5 md:h-6 md:w-6" />
                                 </a>
 
                                 <a
                                     href="#"
-                                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-[#1877F2] flex items-center justify-center text-white hover:scale-110 transition-transform duration-200 shadow-md hover:shadow-lg"
+                                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#1877F2] text-white shadow-md transition-transform duration-200 hover:scale-110 hover:shadow-lg md:h-12 md:w-12"
                                     aria-label="Facebook"
                                 >
-                                    <Facebook className="w-5 h-5 md:w-6 md:h-6" />
+                                    <Facebook className="h-5 w-5 md:h-6 md:w-6" />
                                 </a>
 
                                 <a
                                     href="#"
-                                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-[#FF0000] flex items-center justify-center text-white hover:scale-110 transition-transform duration-200 shadow-md hover:shadow-lg"
+                                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#FF0000] text-white shadow-md transition-transform duration-200 hover:scale-110 hover:shadow-lg md:h-12 md:w-12"
                                     aria-label="YouTube"
                                 >
-                                    <Youtube className="w-5 h-5 md:w-6 md:h-6" />
+                                    <Youtube className="h-5 w-5 md:h-6 md:w-6" />
                                 </a>
 
                                 <a
                                     href="#"
-                                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-[#010101] flex items-center justify-center text-white hover:scale-110 transition-transform duration-200 shadow-md hover:shadow-lg"
+                                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#010101] text-white shadow-md transition-transform duration-200 hover:scale-110 hover:shadow-lg md:h-12 md:w-12"
                                     aria-label="TikTok"
                                 >
-                                    <Music2 className="w-5 h-5 md:w-6 md:h-6" />
+                                    <Music2 className="h-5 w-5 md:h-6 md:w-6" />
                                 </a>
                             </div>
                         </div>
                         {/* Football Player */}
-                        <div className="flex justify-start items-center">
+                        <div className="flex items-center justify-start">
                             <img
                                 src="/images/img/dummy-player.png"
                                 alt="Football Player"
-                                className="w-full max-w-[140px] md:max-w-[180px] h-auto object-contain"
+                                className="h-auto w-full max-w-[140px] object-contain md:max-w-[180px]"
                             />
                         </div>
                     </div>
-
                 </div>
             </div>
 
             {/* Copyright */}
             <div className="border-t border-[#2B2B2B]">
-                <div className="max-w-7xl mx-auto px-3 py-3 text-center">
-                    <p className="text-[#BFBFBF] text-[12px] sm:text-[12px] md:text-[14px] lg:text-[16px] break-words">
+                <div className="mx-auto max-w-7xl px-3 py-3 text-center">
+                    <p className="text-[12px] break-words text-[#BFBFBF] sm:text-[12px] md:text-[14px] lg:text-[16px]">
                         © 2024 HiLights Football. All rights reserved.
                     </p>
                 </div>
             </div>
-            <div>
-            </div>
-
+            <div></div>
 
             {/* <div className="max-w-[1200px] mx-auto">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -208,5 +225,5 @@ export const PublicFooter = () => {
                         </div>
                     </div> */}
         </section>
-    )
+    );
 }
