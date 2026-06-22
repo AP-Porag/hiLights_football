@@ -105,7 +105,7 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-white text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]">
+        <div className="min-h-screen bg-black text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]">
             <PublicNavbar />
 
             <main className="pt-16">
@@ -227,9 +227,8 @@ export default function Home() {
                             ].map((c, i) => (
                                 <div
                                     key={i}
-                                    className={`absolute ${c.pos} ${c.rot} w-[200px] rounded-2xl bg-white p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] transition-all ${c.delay} ${
-                                        mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-                                    }`}
+                                    className={`absolute ${c.pos} ${c.rot} w-[200px] rounded-2xl bg-white p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] transition-all ${c.delay} ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                                        }`}
                                 >
                                     <div className="mb-3 h-1 w-12 rounded bg-[#FF6B00]" />
                                     <div className="flex h-[80px] items-center justify-center rounded-xl bg-gradient-to-br from-slate-200 to-slate-300">

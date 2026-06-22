@@ -26,7 +26,6 @@ const player = {
     id: 247,
     name: 'BENJAMIN SILVA',
     nickname: 'Benja',
-    avatar: 'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250',
     profileId: '#00247',
     isMinor: true,
     dob: '30/01/2009',
@@ -81,11 +80,10 @@ function StarRating({ value, onChange }: StarRatingProps) {
                     aria-label={`Rate ${n} stars`}
                 >
                     <Star
-                        className={`w-5 h-5 ${
-                            n <= value
-                                ? 'fill-[#FF6B00] text-[#FF6B00]'
-                                : 'text-[#FCD9BD] dark:text-[#2A2A2A]'
-                        }`}
+                        className={`w-5 h-5 ${n <= value
+                            ? 'fill-[#FF6B00] text-[#FF6B00]'
+                            : 'text-[#FCD9BD] dark:text-[#2A2A2A]'
+                            }`}
                     />
                 </button>
             ))}
@@ -136,8 +134,8 @@ export default function Detail() {
                     </Link>
                     <ChevronRight className="w-3.5 h-3.5 text-[#CBD5E1] dark:text-[#555]" />
                     <span className="text-[#0F172A] dark:text-[#F5F5F5] font-medium whitespace-nowrap">
-            Benjamin Silva
-          </span>
+                        Benjamin Silva
+                    </span>
                 </nav>
             </div>
 
@@ -148,16 +146,16 @@ export default function Detail() {
                         Sponsored
                     </p>
                     <div className="bg-[#111] rounded-xl h-[90px] max-w-[728px] mx-auto flex items-center px-4 sm:px-6 gap-3 sm:gap-4 relative overflow-hidden">
-            <span className="text-white/5 absolute -right-4 top-1/2 -translate-y-1/2 font-black text-[100px] leading-none select-none">
-              ✓
-            </span>
+                        <span className="text-white/5 absolute -right-4 top-1/2 -translate-y-1/2 font-black text-[100px] leading-none select-none">
+                            ✓
+                        </span>
                         <span className="text-white font-black text-2xl sm:text-4xl relative z-10">
-              NIKE
-            </span>
+                            NIKE
+                        </span>
                         <div className="w-px h-10 bg-white/20 relative z-10" />
                         <span className="text-white font-semibold text-xs sm:text-sm flex-1 relative z-10 line-clamp-2">
-              Just Play. New Season 2025-26 Collection
-            </span>
+                            Just Play. New Season 2025-26 Collection
+                        </span>
                         <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg relative z-10 whitespace-nowrap transition-colors">
                             Shop Now →
                         </button>
@@ -183,20 +181,20 @@ export default function Detail() {
                             }}
                         />
                         <span className="text-white/10 font-black text-[100px] leading-none absolute -top-4 select-none">
-              ✓
-            </span>
+                            ✓
+                        </span>
                         <div className="relative z-10 flex flex-col items-center">
-              <span className="text-white font-black text-2xl tracking-tight">
-                NIKE FC
-              </span>
+                            <span className="text-white font-black text-2xl tracking-tight">
+                                NIKE FC
+                            </span>
                             <div className="bg-[#FF6B00] w-8 h-0.5 mx-auto my-2" />
                             <span className="text-white/70 text-sm">2025 Season Boots</span>
                             <div className="w-20 h-20 bg-[#FF6B00]/20 rounded-full flex items-center justify-center text-4xl my-3">
                                 👟
                             </div>
                             <span className="text-white/60 text-xs tracking-widest">
-                MERCURIAL VAPOR
-              </span>
+                                MERCURIAL VAPOR
+                            </span>
                             <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-6 py-2 rounded-lg text-sm mt-2 transition-colors">
                                 SHOP NOW →
                             </button>
@@ -211,15 +209,15 @@ export default function Detail() {
                             <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
                         </div>
                         <span className="text-[#0F172A] dark:text-[#F5F5F5] font-black text-2xl mt-4">
-              adidas
-            </span>
+                            adidas
+                        </span>
                         <span className="text-[#475569] dark:text-[#9A9A9A] text-sm mt-1">
-              Predator Elite FG
-            </span>
+                            Predator Elite FG
+                        </span>
                         <span className="text-5xl my-3">⚽</span>
                         <span className="text-[#0F172A] dark:text-[#F5F5F5] font-bold text-sm">
-              Precision. Control.
-            </span>
+                            Precision. Control.
+                        </span>
                         <button className="bg-[#0F172A] dark:bg-[#F5F5F5] text-white dark:text-[#0F172A] font-bold px-6 py-2 rounded-lg text-sm mt-3 hover:opacity-90 transition-opacity">
                             EXPLORE
                         </button>
@@ -227,9 +225,9 @@ export default function Detail() {
 
                     {/* PUMA AD */}
                     <div className="h-[100px] bg-gradient-to-r from-[#CC0000] to-[#990000] rounded-2xl flex items-center justify-center flex-col gap-1 px-4">
-            <span className="text-white font-black text-sm tracking-wide">
-              PUMA FOOTBALL
-            </span>
+                        <span className="text-white font-black text-sm tracking-wide">
+                            PUMA FOOTBALL
+                        </span>
                         <span className="text-white/70 text-xs">Future 8 Pro</span>
                         <button className="bg-white text-[#CC0000] font-bold text-xs px-4 py-1 rounded-md hover:bg-white/90 transition-colors">
                             View Boot
@@ -245,13 +243,13 @@ export default function Detail() {
                             {/* PHOTO */}
                             <div className="shrink-0 mx-auto sm:mx-0">
                                 <div className="w-[200px] h-[200px] rounded-2xl bg-gradient-to-br from-[#1E293B] to-[#334155] border-2 border-[#E2E8F0] dark:border-[#2A2A2A] relative flex items-center justify-center">
-                                      <span className="text-white font-display font-black text-5xl tracking-tight">
-                                        {player.avatar === ''?initials: <img className='rounded-2xl' src={player.avatar} alt="" />}
-                                      </span>
+                                    <span className="text-white font-display font-black text-5xl tracking-tight">
+                                        {initials}
+                                    </span>
                                     {player.isPremium && (
                                         <span className="absolute top-2 right-2 bg-gradient-to-r from-[#FF6B00] to-[#CC5500] text-white text-[10px] font-black px-3 py-1 rounded-full tracking-wider">
-                      PREMIUM
-                    </span>
+                                            PREMIUM
+                                        </span>
                                     )}
                                     {player.isVerified && (
                                         <div className="absolute bottom-2 right-2 bg-white rounded-full w-6 h-6 flex items-center justify-center shadow">
@@ -286,50 +284,50 @@ export default function Detail() {
                                         <MapPin className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
                                         <span className="text-xs text-[#94A3B8]">Birthplace:</span>
                                         <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5] truncate">
-                      Rio de Janeiro
-                    </span>
+                                            Rio de Janeiro
+                                        </span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Flag className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
                                         <span className="text-xs text-[#94A3B8]">Nationality:</span>
                                         <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                      {player.flag} {player.nationality}
-                    </span>
+                                            {player.flag} {player.nationality}
+                                        </span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Building2 className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
                                         <span className="text-xs text-[#94A3B8]">Club:</span>
                                         <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5] truncate">
-                      {player.currentClub}
-                    </span>
+                                            {player.currentClub}
+                                        </span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Calendar className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
                                         <span className="text-xs text-[#94A3B8]">Since:</span>
                                         <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                      {player.teamSince}
-                    </span>
+                                            {player.teamSince}
+                                        </span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Calendar className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
                                         <span className="text-xs text-[#94A3B8]">DOB:</span>
                                         <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                      {player.dob} · {player.age} yrs
-                    </span>
+                                            {player.dob} · {player.age} yrs
+                                        </span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Ruler className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
                                         <span className="text-xs text-[#94A3B8]">Physical:</span>
                                         <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                      {player.height} cm · {player.foot}
-                    </span>
+                                            {player.height} cm · {player.foot}
+                                        </span>
                                     </div>
                                     <div className="flex items-center gap-2 sm:col-span-2">
                                         <User className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
                                         <span className="text-xs text-[#94A3B8]">Agent:</span>
                                         <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                      {player.agent}
-                    </span>
+                                            {player.agent}
+                                        </span>
                                     </div>
                                 </div>
 
@@ -340,8 +338,8 @@ export default function Detail() {
                                             key={pos}
                                             className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-sm font-black px-4 py-1.5 rounded-lg tracking-wide"
                                         >
-                      {pos}
-                    </span>
+                                            {pos}
+                                        </span>
                                     ))}
                                 </div>
 
@@ -352,8 +350,8 @@ export default function Detail() {
                                             key={m}
                                             className="bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] text-xs px-3 py-1 rounded-full"
                                         >
-                      {m}
-                    </span>
+                                            {m}
+                                        </span>
                                     ))}
                                 </div>
 
@@ -426,12 +424,12 @@ export default function Detail() {
                             Sponsored
                         </p>
                         <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl min-h-[80px] flex flex-col sm:flex-row items-center px-4 sm:px-6 py-3 sm:py-0 gap-3 sm:gap-4">
-              <span className="text-white font-black text-base tracking-wide shrink-0">
-                TRANSFERROOM
-              </span>
+                            <span className="text-white font-black text-base tracking-wide shrink-0">
+                                TRANSFERROOM
+                            </span>
                             <span className="text-white/70 text-xs sm:text-sm flex-1 text-center sm:text-left">
-                Join 1,200+ clubs on the professional transfer network
-              </span>
+                                Join 1,200+ clubs on the professional transfer network
+                            </span>
                             <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
                                 Start Free Trial →
                             </button>
@@ -459,8 +457,8 @@ export default function Detail() {
                                     >
                                         <span className="text-xs text-[#94A3B8]">{row.k}</span>
                                         <span className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] text-right ml-2">
-                      {row.v}
-                    </span>
+                                            {row.v}
+                                        </span>
                                     </div>
                                 ))}
                             </div>
@@ -480,8 +478,8 @@ export default function Detail() {
                                     >
                                         <span className="text-xs text-[#94A3B8]">{row.k}</span>
                                         <span className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] text-right ml-2">
-                      {row.v}
-                    </span>
+                                            {row.v}
+                                        </span>
                                     </div>
                                 ))}
                             </div>
@@ -491,37 +489,37 @@ export default function Detail() {
                     {/* CLUB HISTORY */}
                     <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden">
                         <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 border-b border-[#E2E8F0] dark:border-[#2A2A2A] flex items-center justify-between">
-              <span className="text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase">
-                Club History
-              </span>
+                            <span className="text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase">
+                                Club History
+                            </span>
                             <span className="text-[10px] text-[#94A3B8] font-mono">
-                2020 — 2026
-              </span>
+                                2020 — 2026
+                            </span>
                         </div>
                         <div className="grid grid-cols-[80px_1fr] px-5 py-2 border-b border-[#E2E8F0] dark:border-[#2A2A2A] bg-[#FAFBFC] dark:bg-[#161616]">
-              <span className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold">
-                Year
-              </span>
                             <span className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold">
-                Club
-              </span>
+                                Year
+                            </span>
+                            <span className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold">
+                                Club
+                            </span>
                         </div>
                         {player.clubHistory.map((entry) => (
                             <div
                                 key={entry.year}
                                 className="grid grid-cols-[80px_1fr] px-5 py-3 border-b border-[#F1F5F9] dark:border-[#1F1F1F] hover:bg-[#FAFBFC] dark:hover:bg-[#1A1A1A] transition-colors last:border-b-0"
                             >
-                <span className="font-mono font-semibold text-sm text-[#0F172A] dark:text-[#F5F5F5]">
-                  {entry.year}
-                </span>
+                                <span className="font-mono font-semibold text-sm text-[#0F172A] dark:text-[#F5F5F5]">
+                                    {entry.year}
+                                </span>
                                 {entry.club ? (
                                     <span className="text-sm text-[#0F172A] dark:text-[#F5F5F5]">
-                    {entry.club}
-                  </span>
+                                        {entry.club}
+                                    </span>
                                 ) : (
                                     <span className="text-sm text-[#CBD5E1] dark:text-[#333]">
-                    —
-                  </span>
+                                        —
+                                    </span>
                                 )}
                             </div>
                         ))}
@@ -530,9 +528,9 @@ export default function Detail() {
                     {/* ABOUT */}
                     <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden">
                         <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 border-b border-[#E2E8F0] dark:border-[#2A2A2A]">
-              <span className="text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase">
-                About This Player
-              </span>
+                            <span className="text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase">
+                                About This Player
+                            </span>
                         </div>
                         <div className="p-6">
                             <p className="text-sm leading-relaxed text-[#475569] dark:text-[#9A9A9A]">
@@ -549,8 +547,8 @@ export default function Detail() {
                                     SCOUT ACTIONS
                                 </h2>
                                 <span className="text-white/80 text-sm font-medium">
-                  ★ {player.avgRating} avg from {player.scoutRatings} ratings
-                </span>
+                                    ★ {player.avgRating} avg from {player.scoutRatings} ratings
+                                </span>
                             </div>
                             <div className="px-6 py-5 space-y-4">
                                 {[
@@ -571,12 +569,12 @@ export default function Detail() {
                                 ))}
 
                                 <div>
-                  <textarea
-                      value={notes}
-                      onChange={(e) => setNotes(e.target.value)}
-                      placeholder="Add scouting notes (optional)..."
-                      className="w-full h-20 bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] placeholder-[#94A3B8] dark:placeholder-[#555] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-800 resize-none"
-                  />
+                                    <textarea
+                                        value={notes}
+                                        onChange={(e) => setNotes(e.target.value)}
+                                        placeholder="Add scouting notes (optional)..."
+                                        className="w-full h-20 bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] placeholder-[#94A3B8] dark:placeholder-[#555] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-800 resize-none"
+                                    />
                                 </div>
 
                                 <div className="flex flex-col sm:flex-row gap-3 pt-1">
@@ -611,8 +609,8 @@ export default function Detail() {
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 bg-[#FF6B00] rounded-full blur-2xl opacity-15" />
                         <Search className="w-10 h-10 text-[#FF6B00] mb-3 relative z-10" />
                         <span className="text-white font-black text-lg relative z-10">
-              ScoutPro Network
-            </span>
+                            ScoutPro Network
+                        </span>
                         <p className="text-white/60 text-xs leading-relaxed mt-2 relative z-10">
                             Discover players across 67 countries. Join 4,000+ professional
                             scouts.
@@ -630,15 +628,15 @@ export default function Detail() {
                             <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
                         </div>
                         <span className="text-[#0F172A] dark:text-[#F5F5F5] font-black text-2xl mt-4">
-              adidas
-            </span>
+                            adidas
+                        </span>
                         <span className="text-[#475569] dark:text-[#9A9A9A] text-sm mt-1">
-              X Crazyfast
-            </span>
+                            X Crazyfast
+                        </span>
                         <span className="text-4xl my-2">⚡</span>
                         <span className="text-[#0F172A] dark:text-[#F5F5F5] font-bold text-sm">
-              Speed Unleashed.
-            </span>
+                            Speed Unleashed.
+                        </span>
                         <button className="bg-[#0F172A] dark:bg-[#F5F5F5] text-white dark:text-[#0F172A] font-bold px-6 py-2 rounded-lg text-sm mt-3 hover:opacity-90 transition-opacity">
                             EXPLORE
                         </button>
@@ -646,9 +644,9 @@ export default function Detail() {
 
                     {/* WYSCOUT AD */}
                     <div className="h-[150px] bg-gradient-to-br from-[#1a1a2e] to-[#16213e] rounded-2xl border border-[#334155] flex flex-col items-center justify-center px-4">
-            <span className="text-[#4FC3F7] font-black text-xl tracking-wide">
-              WYSCOUT
-            </span>
+                        <span className="text-[#4FC3F7] font-black text-xl tracking-wide">
+                            WYSCOUT
+                        </span>
                         <p className="text-white/60 text-xs mt-1 text-center">
                             Professional scouting platform
                         </p>
@@ -674,17 +672,17 @@ export default function Detail() {
                             }}
                         />
                         <span className="text-white/10 font-black text-[100px] leading-none absolute -top-4 select-none">
-              ✓
-            </span>
+                            ✓
+                        </span>
                         <div className="relative z-10 flex flex-col items-center">
-              <span className="text-white font-black text-2xl tracking-tight">
-                NIKE FC
-              </span>
+                            <span className="text-white font-black text-2xl tracking-tight">
+                                NIKE FC
+                            </span>
                             <div className="bg-[#FF6B00] w-8 h-0.5 mx-auto my-2" />
                             <span className="text-white/70 text-sm">2025 Season Boots</span>
                             <span className="text-white/60 text-xs tracking-widest mt-2">
-                MERCURIAL VAPOR
-              </span>
+                                MERCURIAL VAPOR
+                            </span>
                             <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-6 py-2 rounded-lg text-sm mt-3 transition-colors">
                                 SHOP NOW →
                             </button>
@@ -696,8 +694,8 @@ export default function Detail() {
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 bg-[#FF6B00] rounded-full blur-2xl opacity-15" />
                         <Search className="w-10 h-10 text-[#FF6B00] mb-3 relative z-10" />
                         <span className="text-white font-black text-lg relative z-10">
-              ScoutPro Network
-            </span>
+                            ScoutPro Network
+                        </span>
                         <p className="text-white/60 text-xs leading-relaxed mt-2 relative z-10">
                             Discover players across 67 countries.
                         </p>
@@ -708,9 +706,9 @@ export default function Detail() {
 
                     {/* Mobile Puma banner (sticky-style) */}
                     <div className="bg-gradient-to-r from-[#CC0000] to-[#990000] rounded-2xl flex items-center justify-center flex-col gap-1 px-4 py-4">
-            <span className="text-white font-black text-sm tracking-wide">
-              PUMA FOOTBALL
-            </span>
+                        <span className="text-white font-black text-sm tracking-wide">
+                            PUMA FOOTBALL
+                        </span>
                         <span className="text-white/70 text-xs">Future 8 Pro</span>
                         <button className="bg-white text-[#CC0000] font-bold text-xs px-4 py-1 rounded-md mt-1 hover:bg-white/90 transition-colors">
                             View Boot
