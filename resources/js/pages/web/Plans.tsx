@@ -126,7 +126,7 @@ export default function Plans() {
     const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly');
 
     return (
-        <div className="min-h-screen bg-white dark:bg-[#0D0D0D]">
+        <div className="min-h-screen bg-black dark:bg-[#0D0D0D]">
 
             <PublicNavbar />
 
@@ -309,7 +309,7 @@ export default function Plans() {
 
                                         {/* QR Area */}
                                     <div className="mt-10 lg:mt-4 pb-2 flex lg:pl-[80px] flex-col items-center lg:items-start">
-                                    
+
                                         <h2 className="text-[8px] lg:text-[10px] pb-2 font-bold text-[#ff6600] uppercase">Scan To View Profile</h2>
 
                                         {/* QR Area */}
@@ -333,7 +333,7 @@ export default function Plans() {
                                     </div>
                                     </div>
 
-                                    
+
                                 </div>
                                 <div className="">
                                     <p className="px-4 sm:px-6 pb-3 pt-4 text-[10px] lg:text-[12px] leading-relaxed text-white uppercase">
