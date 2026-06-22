@@ -26,6 +26,7 @@ const player = {
     id: 247,
     name: 'BENJAMIN SILVA',
     nickname: 'Benja',
+    avatar: 'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250',
     profileId: '#00247',
     isMinor: true,
     dob: '30/01/2009',
@@ -244,9 +245,9 @@ export default function Detail() {
                             {/* PHOTO */}
                             <div className="shrink-0 mx-auto sm:mx-0">
                                 <div className="w-[200px] h-[200px] rounded-2xl bg-gradient-to-br from-[#1E293B] to-[#334155] border-2 border-[#E2E8F0] dark:border-[#2A2A2A] relative flex items-center justify-center">
-                  <span className="text-white font-display font-black text-5xl tracking-tight">
-                    {initials}
-                  </span>
+                                      <span className="text-white font-display font-black text-5xl tracking-tight">
+                                        {player.avatar === ''?initials: <img className='rounded-2xl' src={player.avatar} alt="" />}
+                                      </span>
                                     {player.isPremium && (
                                         <span className="absolute top-2 right-2 bg-gradient-to-r from-[#FF6B00] to-[#CC5500] text-white text-[10px] font-black px-3 py-1 rounded-full tracking-wider">
                       PREMIUM
