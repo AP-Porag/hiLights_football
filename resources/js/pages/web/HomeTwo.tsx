@@ -126,19 +126,19 @@ const HomeTwo = () => {
                     }}
                 >
                     <div className="mx-auto max-w-7xl">
-                        <div className="mb-10 flex sm:mb-10 md:mb-26 md:grid md:grid-cols-2">
+                        <div className="mb-10 flex sm:mb-10 lg:mb-5 md:grid md:grid-cols-2">
                             {/* Left Content */}
                             <div className="flex px-6 pt-16 sm:px-10 lg:px-16">
                                 <div className="max-w-xl">
                                     <h1 className="text-[18px] leading-tight font-extrabold uppercase md:text-2xl lg:text-4xl">
                                         <span className="block text-white">Be Seen.</span>
 
-                                        <span className="block text-orange-500">
+                                        <span className="block text-[#ee5e00]">
                                             Be Discovered <span className="text-white">!</span>
                                         </span>
                                     </h1>
 
-                                    <p className="mt-6 max-w-lg text-[10px] leading-relaxed text-gray-300 sm:text-[12px] md:text-[14px] lg:text-base">
+                                    <p className="mt-6 max-w-lg text-[10px] leading-relaxed text-[#f4f4f4] sm:text-[12px] md:text-[14px] lg:text-base">
                                         The platform that connects players,
                                         <br className="md:hidden" /> clubs, agents and scouts through <br className="md:hidden" />
                                         videos, statistics and professional
@@ -146,7 +146,7 @@ const HomeTwo = () => {
                                     </p>
 
                                     <div className="relative">
-                                        <p className="mt-4 max-w-lg border-l-2 border-red-500 pl-2 text-[10px] leading-relaxed text-gray-300 sm:text-[12px] md:text-[14px] lg:text-base">
+                                        <p className="mt-4 max-w-lg border-l-2 border-[#b2300e] pl-2 text-[10px] leading-relaxed text-[#f4f4f4] sm:text-[12px] md:text-[14px] lg:text-base">
                                             Show your talent to the world and
                                             <br className="md:hidden" /> increase your opportunities
                                             <br className="md:hidden" /> in football.
@@ -154,16 +154,9 @@ const HomeTwo = () => {
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Right Empty Section */}
-                            {/* <div className="">
-            <img src="/images/img/player-1.png" alt=""
-            className="rounded-full mt-10"
-            />
-          </div> */}
                         </div>
-                        <div className="mb-10 flex w-[200%] flex-row gap-4 pl-6 md:top-15 md:pl-16">
-                            <button className="flex items-center justify-center rounded-md bg-orange-500 px-3 py-2 text-[10px] font-semibold uppercase transition-all duration-300 hover:bg-orange-600 md:px-6 md:py-4 md:text-sm">
+                        <div className="mb-10 flex w-[200%] flex-row gap-4 pl-6 sm:pl-10 lg:pl-16">
+                            <button className="flex items-center justify-center rounded-md bg-[#ea3905] px-3 py-2 text-[10px] font-semibold uppercase transition-all duration-300 hover:bg-orange-600 md:px-6 md:py-2 md:text-sm">
                                 <UserRoundPlus className="h-6 w-6" />
                                 <span className="pl-2">
                                     Create A Free
@@ -179,7 +172,7 @@ const HomeTwo = () => {
                     </div>
                 </section>
 
-                <aside className="space-y-3">
+                <aside className="space-y-3 lg:px-10">
                     <div className="container mx-auto my-6 px-4">
                         <div className="mx-auto flex w-full max-w-7xl items-center justify-center rounded-xl bg-[#464646] px-4 py-8">
                             <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
@@ -191,7 +184,7 @@ const HomeTwo = () => {
                     <div className="">
                         {/* Heading */}
                         <h2 className="mb-6 text-[20px] leading-tight font-extrabold uppercase md:text-3xl">
-                            A SIMPLE. PROFESSIONAL. <span className="text-[#ff6b00]">EFFECTIVE PLATFORM.</span>
+                            A SIMPLE. PROFESSIONAL. <span className="text-[#df5f18]">EFFECTIVE PLATFORM.</span>
                         </h2>
 
                         {/* Steps */}
@@ -208,7 +201,7 @@ const HomeTwo = () => {
                                             {/* Icon */}
                                             <div className="flex justify-center">
                                                 <div className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-500 md:h-14 md:w-14">
-                                                    <Icon className="h-4 w-4 text-[#ff6b00] md:h-6 md:w-6" />
+                                                    <Icon className="h-5 w-5 text-[#ff6100] md:h-8 md:w-8" />
                                                 </div>
                                             </div>
 
@@ -238,7 +231,7 @@ const HomeTwo = () => {
                         <div className="flex items-center gap-4 border-b border-[#1f1f1f] py-6 sm:grid sm:grid-cols-[70px_1fr_200px] md:grid-cols-[90px_1fr_400px] lg:grid-cols-[110px_1fr_500px]">
                             {/* Left Icon */}
                             <div className="flex justify-center">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#ff6b00] md:h-20 md:w-20">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#e63e00] md:h-20 md:w-20">
                                     <Users className="text-white md:h-12 md:w-12" />
                                 </div>
                             </div>
@@ -246,23 +239,23 @@ const HomeTwo = () => {
                             {/* Text */}
                             <div>
                                 <h3 className="text-[14px] leading-tight font-bold sm:text-[16px] md:text-[18px] lg:text-[22px]">
-                                    Not part of the <span className="text-[#ff6b00]">HiLights Football</span>
+                                    Not part of the <span className="text-[#ff6100]">HiLights Football</span>
                                     <br />
                                     community yet?
                                 </h3>
 
-                                <p className="mt-3 text-[10px] leading-relaxed text-gray-300 sm:text-[12px] md:text-[14px] lg:text-[16px]">
+                                <p className="mt-3 text-[10px] leading-relaxed text-[#efefef] sm:text-[12px] md:text-[14px] lg:text-[16px]">
                                     Create your free profile, share your best moments and become visible to coaches, clubs and recruiters worldwide.
                                 </p>
                             </div>
 
                             {/* Button */}
                             <div className="flex items-end justify-end lg:pr-10">
-                                <button className="sm:-w-45 flex items-center gap-2 rounded-xl border border-[#ff6b00] px-4 py-2 transition hover:bg-[#ff6b00]/10 md:gap-4 lg:px-8 lg:py-6">
+                                <button className="sm:-w-45 flex items-center gap-2 rounded-xl border border-[#773a0c] px-4 py-2 transition hover:bg-[#ff6b00]/10 md:gap-4 lg:px-8 lg:py-4">
                                     <UserPlus className="h-6 w-6 text-white md:h-8 md:w-8" />
 
                                     <span className="text-left text-[10px] font-bold uppercase sm:text-[12px] md:text-[14px] lg:text-[16px]">
-                                        Create a Free
+                                        <span className="text-[#dc7936]">Create a Free</span>
                                         <br />
                                         Profile Now
                                     </span>
@@ -272,7 +265,7 @@ const HomeTwo = () => {
                     </div>
                 </section>
 
-                <aside className="space-y-3">
+                <aside className="space-y-3 lg:px-10">
                     <div className="container mx-auto my-6 px-4">
                         <div className="mx-auto flex w-full max-w-7xl items-center justify-center rounded-xl bg-[#464646] px-4 py-8">
                             <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
@@ -280,12 +273,12 @@ const HomeTwo = () => {
                     </div>
                 </aside>
 
-                <section className="mx-auto mb-6 max-w-7xl overflow-x-hidden">
+                <section className="mx-auto px-4 mb-6 max-w-7xl overflow-x-hidden lg:px-13">
                     <div className="rounded-xl bg-[#f9f9f9] p-3 md:p-6">
                         {/* Header */}
                         <div className="flex items-center justify-between pb-3">
                             <div className="flex items-center gap-2">
-                                <Star size={18} fill="#ff6b00" className="text-[#ff6b00]" />
+                                <Star size={18} fill="#ff6b00" className="text-[#f25704]" />
 
                                 <h2 className="text-[12px] font-extrabold whitespace-nowrap text-[#222] uppercase md:text-sm">
                                     Community Highlights

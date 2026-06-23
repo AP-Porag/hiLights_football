@@ -109,7 +109,7 @@ export default function PublicNavbar() {
                         </Button>
                     </Link>
                     <Link href="/register">
-                        <Button size="sm" className="bg-[#FF6B00] px-4 text-sm font-semibold text-white hover:bg-[#CC5500]">
+                        <Button size="sm" className="bg-[#e53f01] px-4 text-sm font-semibold text-white hover:bg-[#ff5e24]">
                             Create A Free Profile Now
                         </Button>
                     </Link>
@@ -126,12 +126,12 @@ export default function PublicNavbar() {
                                 <Link key={link.href} href={link.href} className="flex w-14 flex-col items-center justify-center">
                                     <div className={['mb-1 transition-colors', active ? 'text-[#FF6B00]' : 'text-white'].join(' ')}>
                                         {React.cloneElement(link.icon, {
-                                            className: 'h-7 w-7',
+                                            className: 'h-4 w-4 sm:h-7 sm:w-7',
                                         })}
                                     </div>
 
                                     <span
-                                        className={['text-[12px] font-medium whitespace-nowrap', active ? 'text-[#FF6B00]' : 'text-white'].join(' ')}
+                                        className={[' text-[10px] sm:text-[12px] font-medium whitespace-nowrap', active ? 'text-[#FF6B00]' : 'text-white'].join(' ')}
                                     >
                                         {link.label}
                                     </span>
@@ -141,7 +141,7 @@ export default function PublicNavbar() {
                     </div>
 
                     <Link href="/register">
-                        <Button className="h-11 rounded-md bg-[#FF6B00] px-4 text-[11px] leading-tight font-bold text-white uppercase hover:bg-[#e65c00]">
+                        <Button className="h-11 rounded-md bg-[#FF6B00] px-2 sm:px-4 text-[9px] sm:text-[11px] leading-tight font-bold text-white uppercase hover:bg-[#e65c00]">
                             Create A Free
                             <br />
                             Profile Now

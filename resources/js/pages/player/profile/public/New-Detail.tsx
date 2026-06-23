@@ -256,20 +256,20 @@ export default function NewDetail() {
                             <div className="w-[60%] flex-1 md:w-auto">
                                 <h1 className="text-[18px] font-bold tracking-wide uppercase md:text-3xl md:font-extrabold">JOÃO DA SILVA</h1>
 
-                                <h3 className="mt-2 text-[14px] text-[#ff7a00] uppercase md:text-[16px]">Right Winger</h3>
+                                <h3 className="mt-2 text-[14px] text-[#eb6c0d] uppercase md:text-[16px]">Right Winger</h3>
 
                                 <div className="mt-3 space-y-3 text-[10px] md:text-[16px]">
                                     {/* Row */}
                                     <div className="flex">
-                                        <CalendarDays className="mr-1 h-3 w-3 text-orange-500 md:mr-2 md:h-5 md:w-5" />
-                                        <span className="text-gray-300">Date of Birth / Age:</span>
+                                        <CalendarDays className="mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-5 md:w-5" />
+                                        <span className="text-[#e1e2e6]">Date of Birth / Age:</span>
                                         <span className="pl-2 text-gray-300">Jan 30, 2007 (19)</span>
                                     </div>
 
                                     {/* Row */}
                                     <div className="flex">
-                                        <Users className="mr-1 h-3 w-3 text-orange-500 md:mr-2 md:h-5 md:w-5" />
-                                        <span className="pr-3 text-gray-300">Nationality:</span>
+                                        <Users className="mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-5 md:w-5" />
+                                        <span className="pr-3 text-[#e1e2e6]">Nationality:</span>
                                         <ReactCountryFlag countryCode="BR" svg className="mt-[2px] mr-1 md:mt-1 md:h-[1em] md:w-[1em]" />
                                         <span className="">Brazil</span>
                                         <span className="px-1">/</span>
@@ -279,36 +279,36 @@ export default function NewDetail() {
 
                                     {/* Row */}
                                     <div className="flex">
-                                        <Ruler className="mr-1 h-3 w-3 text-orange-500 md:mr-2 md:h-5 md:w-5" />
-                                        <span className="text-gray-300">Height:</span>
+                                        <Ruler className="mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-5 md:w-5" />
+                                        <span className="text-[#e1e2e6]">Height:</span>
                                         <span className="pl-2 text-gray-100">1.84 m</span>
                                     </div>
 
                                     {/* Row */}
                                     <div className="flex">
-                                        <Crosshair className="mr-1 h-3 w-3 text-orange-500 md:mr-2 md:h-5 md:w-5" />
-                                        <span className="text-gray-300">Position:</span>
+                                        <Crosshair className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-5 md:w-5" />
+                                        <span className="text-[#e1e2e6]">Position:</span>
                                         <span className="pl-2 text-gray-100">Right Winger</span>
                                     </div>
 
                                     {/* Row */}
                                     <div className="flex">
-                                        <Footprints className="mr-1 h-3 w-3 text-orange-500 md:mr-2 md:h-5 md:w-5" />
-                                        <span className="text-gray-300">Dominant Foot:</span>
+                                        <Footprints className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-5 md:w-5" />
+                                        <span className="text-[#e1e2e6]">Dominant Foot:</span>
                                         <span className="pl-2 text-gray-100">Right</span>
                                     </div>
 
                                     {/* Row */}
                                     <div className="flex">
-                                        <Shield className="mr-1 h-3 w-3 text-orange-500 md:mr-2 md:h-5 md:w-5" />
-                                        <span className="text-gray-300">Current Club:</span>
+                                        <Shield className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-5 md:w-5" />
+                                        <span className="text-[#e1e2e6]">Current Club:</span>
                                         <span className="pl-2 text-gray-100">São Cristovão</span>
                                     </div>
 
                                     {/* Row */}
                                     <div className="flex">
-                                        <Shirt className="mr-1 h-3 w-3 text-orange-500 md:mr-2 md:h-5 md:w-5" />
-                                        <span className="text-gray-300">Previous Club:</span>
+                                        <Shirt className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-5 md:w-5" />
+                                        <span className="text-[#e1e2e6]">Previous Club:</span>
                                         <span className="pl-2 text-gray-100">Bangu</span>
                                     </div>
                                 </div>

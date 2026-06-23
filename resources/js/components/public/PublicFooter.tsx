@@ -145,7 +145,7 @@ export const PublicFooter = () => {
 
                                 <a
                                     href="#"
-                                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#010101] text-white shadow-md transition-transform duration-200 hover:scale-110 hover:shadow-lg md:h-12 md:w-12"
+                                    className="flex h-10 w-10 border-2 border-[#221f27] items-center justify-center rounded-lg bg-[#010101] text-white shadow-md transition-transform duration-200 hover:scale-110 hover:shadow-lg md:h-12 md:w-12"
                                     aria-label="TikTok"
                                 >
                                     <Music2 className="h-5 w-5 md:h-6 md:w-6" />
