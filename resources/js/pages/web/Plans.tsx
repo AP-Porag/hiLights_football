@@ -310,9 +310,9 @@ export default function Plans() {
                                         </div>
 
                                 </div>
-                                <div className="flex px-6 items-center justify-start gap-2">
+                                <div className="flex px-6 items-center justify-start gap-2 mb-3">
                                     <Shield className="text-white h-7 w-6"/>
-                                    <p className="pt-4 pb-3 text-[10px] leading-relaxed text-white uppercase lg:text-[12px] lg:-mt-4">
+                                    <p className="text-[10px] leading-relaxed text-white uppercase lg:text-[12px]">
                                         This card identifies the holder as an official
                                         <br /> member of HiLights Football platform.
                                     </p>
