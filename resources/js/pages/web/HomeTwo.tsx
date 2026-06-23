@@ -267,7 +267,7 @@ const HomeTwo = () => {
 
                 <aside className="space-y-3 lg:px-10">
                     <div className="container mx-auto my-6 px-4">
-                        <div className="mx-auto flex w-full max-w-7xl items-center justify-center rounded-xl bg-[#464646] px-4 py-8">
+                        <div className="flex w-full max-w-7xl items-center justify-center rounded-xl bg-[#464646] px-4 py-8">
                             <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
                         </div>
                     </div>
