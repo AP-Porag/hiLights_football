@@ -1,7 +1,7 @@
 import { PublicFooter } from '@/components/public/PublicFooter';
 import PublicNavbar from '@/components/public/PublicNavbar';
 import { Link } from '@inertiajs/react';
-import { BarChart3, Binoculars, CalendarDays,CheckCircle, CheckCircle2, Flag, Globe, Lock, MapPin, ShieldCheck, User, Users } from 'lucide-react';
+import { BarChart3, Binoculars, CalendarDays,CheckCircle, Smartphone, CheckCircle2, Flag, Globe, Lock, MapPin, ShieldCheck, User, Users, Shield } from 'lucide-react';
 import { useState } from 'react';
 
 // TODO: Replace with usePage().props
@@ -145,7 +145,7 @@ export default function Plans() {
                         <div className="">
                             <h1 className="text-[42px] font-extrabold tracking-wide italic sm:text-[55px] md:text-[65px] lg:text-[80px]">PLANS</h1>
 
-                            <h2 className="-mt-2 text-[14px] font-bold text-orange-500 uppercase italic sm:text-[18px] md:-mt-3 md:text-[22px] lg:text-[24px]">
+                            <h2 className="-mt-2 text-[14px] font-bold text-[#f54208] uppercase italic sm:text-[18px] md:-mt-3 md:text-[22px] lg:text-[24px]">
                                 Choose the plan that drives
                             </h2>
 
@@ -153,7 +153,7 @@ export default function Plans() {
                                 Your football career.
                             </h3>
 
-                            <div className="mt-3 text-[12px] text-gray-300 sm:text-[14px] md:text-[16px] lg:text-[18px]">
+                            <div className="mt-6  text-[12px] text-[#feffff]sm:text-[14px] md:text-[16px] lg:text-[18px]">
                                 <p>
                                     More visibility. More connections. <br />
                                     More opportunities.
@@ -176,7 +176,7 @@ export default function Plans() {
         C90 505 75 520 55 520
         Z
       "
-                                        fill="#F54A00"
+                                        fill="#e53f01"
                                     />
                                 </svg>
 
@@ -201,7 +201,7 @@ export default function Plans() {
                                     <div className="-translate-x-[20%] translate-y-[30%] sm:-translate-x-[40%] md:-translate-x-[60%] lg:-translate-x-[120%]">
                                         <h2 className="text-center text-[10px] font-bold uppercase sm:text-[12px] lg:text-[14px]">MEMBER CARD</h2>
 
-                                        <p className="text-center text-[8px] font-semibold text-orange-500 uppercase sm:text-[9px] lg:text-[10px]">
+                                        <p className="text-center text-[8px] font-semibold text-[#e24b12] uppercase sm:text-[9px] lg:text-[10px]">
                                             Official Member
                                         </p>
 
@@ -210,7 +210,7 @@ export default function Plans() {
 
                                             <path
                                                 d="M90 4L92.35 9.15L98 9.8L94 13.6L95.2 19L90 16L84.8 19L86 13.6L82 9.8L87.65 9.15L90 4Z"
-                                                fill="#F97316"
+                                                fill="#e24b12"
                                             />
 
                                             <line x1="110" y1="12" x2="170" y2="12" stroke="#6B7280" strokeWidth="1" />
@@ -218,7 +218,7 @@ export default function Plans() {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col gap-4 px-4 pt-2 sm:flex-row md:flex-col lg:flex-row">
+                                <div className="flex gap-4 px-4 pt-2 sm:flex-row">
                                     {/* Image */}
                                     <div className="mt-4 h-[170px] w-[150px] sm:h-[190px] sm:w-[160px] lg:mx-0 lg:h-[210px] lg:w-[170px]">
                                         <img
@@ -228,20 +228,20 @@ export default function Plans() {
                                         />
                                     </div>
 
-                                    <div className="sm:grid sm:grid-cols-[50%_40%_1fr] lg:flex">
+                                    <div className="">
                                         <div>
                                             <div className="relative z-10">
                                                 <h3 className="mt-4 text-[14px] font-bold uppercase lg:text-[16px]">JOÃO DA SILVA</h3>
 
-                                                <p className="text-[8px] text-orange-500 uppercase lg:text-[10px]">ATTACKING MIDFIELDER</p>
+                                                <p className="text-[8px] text-[#e24b12] uppercase lg:text-[10px]">ATTACKING MIDFIELDER</p>
 
-                                                <div className="absolute mt-2 h-[1px] w-[32%] bg-orange-500 md:w-[60%] lg:w-[110%]"></div>
+                                                <div className="absolute mt-2 h-[1px] w-[32%] bg-[#e24b12] md:w-[60%] lg:w-[110%]"></div>
                                             </div>
 
                                             <div className="mt-6 space-y-1">
                                                 <div className="flex items-center">
-                                                    <User size={16} className="mr-[10px] text-orange-500" />
-                                                    <p className="z-10 text-[10px] text-gray-400 uppercase">
+                                                    <User size={18} className="mr-[10px] text-[#e24b12]" />
+                                                    <p className="z-10 text-[10px] text-[#e2e2e2] uppercase">
                                                         ID:
                                                         <br />
                                                         <span className="text-white">HLF-00012345</span>
@@ -249,8 +249,8 @@ export default function Plans() {
                                                 </div>
 
                                                 <div className="flex items-center">
-                                                    <CalendarDays size={16} className="mr-[10px] text-orange-500" />
-                                                    <p className="z-10 text-[10px] text-gray-400 uppercase">
+                                                    <CalendarDays size={18} className="mr-[10px] text-[#e24b12]" />
+                                                    <p className="z-10 text-[10px] text-[#e2e2e2] uppercase">
                                                         DATE OF BIRTH:
                                                         <br />
                                                         <span className="text-white">15 / 05 / 2006</span>
@@ -258,8 +258,8 @@ export default function Plans() {
                                                 </div>
 
                                                 <div className="flex items-center">
-                                                    <Flag size={16} className="mr-[10px] text-orange-500" />
-                                                    <p className="z-10 text-[10px] text-gray-400 uppercase">
+                                                    <Flag size={18} className="mr-[10px] text-[#e24b12]" />
+                                                    <p className="z-10 text-[10px] text-[#e2e2e2]uppercase">
                                                         NATIONALITY:
                                                         <br />
                                                         <span className="text-white">Brazil</span>
@@ -267,8 +267,8 @@ export default function Plans() {
                                                 </div>
 
                                                 <div className="flex items-center">
-                                                    <MapPin size={16} className="mr-[10px] text-orange-500" />
-                                                    <p className="z-10 text-[10px] text-gray-400 uppercase">
+                                                    <MapPin size={18} className="mr-[10px] text-[#e24b12]" />
+                                                    <p className="z-10 text-[10px] text-[#e2e2e2] uppercase">
                                                         CITY:
                                                         <br />
                                                         <span className="text-white">RIO DE JANEIRO - RJ</span>
@@ -276,15 +276,16 @@ export default function Plans() {
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        {/* QR Area */}
-                                        <div className="mt-10 flex flex-col items-center pb-2 lg:mt-4 lg:items-start lg:pl-[80px]">
-                                            <h2 className="pb-2 text-[8px] font-bold text-[#ff6600] uppercase lg:text-[10px]">
+                                    {/* QR Area */}
+                                        <div className="mt-10 flex flex-col items-center pb-2 lg:items-start lg:pl-[80px]">
+                                            <h2 className="pb-2 text-[8px] font-bold text-[#e24b12] uppercase lg:text-[10px]">
                                                 Scan To View Profile
                                             </h2>
 
                                             {/* QR Area */}
-                                            <div className="rounded-2xl border-[3px] border-[#ff6600] bg-white p-2 lg:rounded-3xl lg:p-3">
+                                            <div className="rounded-2xl border-[3px] border-[#e24b12] bg-white p-2 lg:rounded-[12px] lg:p-2">
                                                 <img
                                                     src="/images/img/qr.png"
                                                     alt="QR"
@@ -294,9 +295,11 @@ export default function Plans() {
 
                                             {/* Button */}
                                             <button className="mt-2 flex items-center justify-center rounded-xl px-2 py-2 font-bold uppercase lg:justify-start">
-                                                <span className="text-[20px] text-[#ff6600]">📱</span>
+                                                <span className=" text-[#e24b12] pr-1">
+                                                    <Smartphone size={20} className=""/>
+                                                </span>
 
-                                                <span className="text-left text-[8px] leading-tight text-[#ff6600]">
+                                                <span className="text-left text-[8px] leading-tight text-[#e24b12]">
                                                     VIEW FULL PROFILE,
                                                     <br />
                                                     VIDEOS, STATS AND
@@ -305,10 +308,11 @@ export default function Plans() {
                                                 </span>
                                             </button>
                                         </div>
-                                    </div>
+
                                 </div>
-                                <div className="">
-                                    <p className="px-4 pt-4 pb-3 text-[10px] leading-relaxed text-white uppercase sm:px-6 lg:text-[12px]">
+                                <div className="flex px-6 items-center justify-start gap-2">
+                                    <Shield className="text-white h-7 w-6"/>
+                                    <p className="pt-4 pb-3 text-[10px] leading-relaxed text-white uppercase lg:text-[12px] lg:-mt-4">
                                         This card identifies the holder as an official
                                         <br /> member of HiLights Football platform.
                                     </p>
@@ -323,10 +327,10 @@ export default function Plans() {
                 <section className="bg-black px-4 py-12">
                     <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {/* Free Profile */}
-                        <div className="rounded-[20px] border border-gray-700 bg-black p-6">
+                        <div className="rounded-[20px] md:relative border border-gray-700 bg-black p-6">
                             <div className="mb-6 flex -translate-y-[85%] justify-center">
                                 <div className="flex h-14 w-14 items-center justify-center rounded-full border border-gray-600 bg-black">
-                                    <User size={28} />
+                                    <User size={32}  className="text-white"/>
                                 </div>
                             </div>
 
@@ -336,19 +340,18 @@ export default function Plans() {
                                 {freePlan.map((item, index) => (
                                     <div key={index} className="flex items-center gap-3">
                                         <CheckCircle size={18} className="text-green-500" />
-                                        <span className="text-gray-300">{item}</span>
+                                        <span className="text-[#ececec]">{item}</span>
                                     </div>
                                 ))}
                             </div>
 
-                            <button className="w-full rounded-xl border border-gray-500 py-3 font-bold text-white uppercase transition hover:border-orange-500 hover:text-orange-500">
+                            <button className=" w-[100%] md:w-[90%] md:absolute md:bottom-6 md:left-1/2 md:-translate-x-1/2 rounded-xl border border-gray-500 py-3 font-bold text-white uppercase transition hover:border-orange-500 hover:text-orange-500">
                                 Create Free Profile
                             </button>
                         </div>
-
                         {/* Premium Monthly */}
                         <div className="relative rounded-[20px] border border-orange-500 bg-black p-6">
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-md bg-orange-500 px-4 py-1 text-xs font-bold text-white uppercase">
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-md bg-[#e53f01] px-4 py-1 text-xs font-bold text-white uppercase">
                                 Most Popular
                             </div>
 
@@ -359,21 +362,21 @@ export default function Plans() {
                             <h3 className="text-center text-2xl font-bold text-white uppercase italic">HiLights Premium</h3>
 
                             <p className="mb-6 text-center">
-                                <span className="text-3xl font-bold text-orange-500">R$ 47</span>
-                                <span className="ml-2 text-sm text-orange-400">/month</span>
-                                <span className="ml-2 text-xs text-orange-500">(12 months fidelity)</span>
+                                <span className="text-[20px] font-semibold text-white">R$ <span className="text-[#e73d00] font-bold text-[30px] pl-1">47</span></span>
+                                <span className="ml-2 text-sm text-white">/month</span>
+                                <span className="ml-4 text-xs text-orange-500">(12 months fidelity)</span>
                             </p>
 
                             <div className="mb-8 space-y-3">
                                 {premiumPlan.map((item, index) => (
                                     <div key={index} className="flex items-start gap-3">
                                         <CheckCircle size={18} className="mt-1 shrink-0 text-green-500" />
-                                        <span className="text-gray-300">{item}</span>
+                                        <span className="text-[#ececec]">{item}</span>
                                     </div>
                                 ))}
                             </div>
 
-                            <button className="w-full rounded-xl bg-orange-500 py-3 font-bold text-white uppercase transition hover:bg-orange-600">
+                            <button className="w-full rounded-xl bg-[#e53f01] py-3 font-bold text-white uppercase transition hover:bg-orange-600">
                                 Choose Premium
                             </button>
                         </div>
@@ -387,49 +390,49 @@ export default function Plans() {
                             <h3 className="text-center text-2xl font-bold text-white uppercase italic">HiLights Premium</h3>
 
                             <p className="mb-6 text-center">
-                                <span className="text-3xl font-bold text-orange-500">R$ 94</span>
-                                <span className="ml-2 text-sm text-orange-400">/month</span>
-                                <span className="ml-2 text-xs text-orange-500">(no fidelity)</span>
+                                <span className="text-[20px] font-semibold text-white">R$ <span className="text-[#e73d00] font-bold text-[30px] pl-1">94</span></span>
+                                <span className="ml-2 text-sm text-white">/month</span>
+                                <span className="ml-6 text-xs text-orange-500">(no fidelity)</span>
                             </p>
 
                             <div className="mb-8 space-y-3">
                                 {premiumPlan.map((item, index) => (
                                     <div key={index} className="flex items-start gap-3">
                                         <CheckCircle size={18} className="mt-1 shrink-0 text-green-500" />
-                                        <span className="text-gray-300">{item}</span>
+                                        <span className="text-[#ececec]">{item}</span>
                                     </div>
                                 ))}
                             </div>
 
-                            <button className="w-full rounded-xl bg-orange-500 py-3 font-bold text-white uppercase transition hover:bg-orange-600">
+                            <button className="w-full rounded-xl bg-[#e53f01] py-3 font-bold text-white uppercase transition hover:bg-orange-600">
                                 Choose Premium
                             </button>
                         </div>
                     </div>
                 </section>
 
-                <section className="w-full bg-black px-4 py-8">
+                <section className="w-full bg-black px-4">
                     <div className="mx-auto max-w-7xl">
                         <div className="overflow-hidden rounded-3xl border border-zinc-800 bg-[#0b0b0b]">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 p-4">
                                 {items.map((item, index) => {
                                     const Icon = item.icon;
 
                                     return (
                                         <div
                                             key={index}
-                                            className={`px-6 py-8 text-center transition-all duration-300 hover:bg-[#121212] ${index !== items.length - 1 ? 'border-zinc-800 lg:border-r' : ''} `}
+                                            className={`px-6 text-center transition-all duration-300 hover:bg-[#121212] ${index !== items.length - 1 ? 'border-zinc-800 lg:border-r-2' : ''} `}
                                         >
                                             {/* Icon */}
                                             <div className="flex justify-center">
-                                                <Icon size={42} className="text-orange-500" strokeWidth={2} />
+                                                <Icon size={42} className="text-[#ff3500]" strokeWidth={2} />
                                             </div>
 
                                             {/* Title */}
                                             <h3 className="mt-5 text-[18px] font-bold tracking-wide text-white">{item.title}</h3>
 
                                             {/* Description */}
-                                            <p className="mt-3 text-[14px] leading-6 text-zinc-400">{item.description}</p>
+                                            <p className="mt-3 text-[14px] leading-6 text-[#d3d3d3]">{item.description}</p>
                                         </div>
                                     );
                                 })}
@@ -438,9 +441,9 @@ export default function Plans() {
                     </div>
                 </section>
 
-                <section>
+                <section className="w-full px-4">
                     <div
-                        className="mx-30 flex items-center gap-4 rounded-3xl border border-zinc-800 p-4 py-6 sm:grid sm:grid-cols-[70px_1fr_200px] md:grid-cols-[90px_1fr_400px] lg:grid-cols-[110px_1fr_500px]"
+                        className="flex items-center mx-auto max-w-7xl gap-2 sm:gap-4 rounded-3xl border border-zinc-800 p-4 py-6 sm:grid sm:grid-cols-[70px_1fr_150px] md:grid-cols-[90px_1fr_250px] lg:grid-cols-[110px_1fr_450px] mt-10"
                         style={{
                             backgroundImage: "url('/images/img/plan_cta_bg.jpeg')",
                             backgroundRepeat: 'no-repeat',
@@ -449,25 +452,25 @@ export default function Plans() {
                         }}
                     >
                         <div className="flex justify-center">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#ff6b00] md:h-20 md:w-20">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#de4400] md:h-20 md:w-20">
                                 <Users className="text-white md:h-12 md:w-12" />
                             </div>
                         </div>
 
                         {/* Text */}
                         <div>
-                            <h3 className="text-[14px] leading-tight font-bold text-white sm:text-[16px] md:text-[18px] lg:text-[22px]">
-                                TAKE YOUR CAREER TO THE NEXT LEVEL.
+                            <h3 className="text-[14px] leading-tight font-bold text-white sm:text-[16px] md:text-[20px] lg:text-[28px]">
+                                TAKE YOUR CAREER TO THE <span className="text-[#fa2e00]">NEXT LEVEL.</span> 
                             </h3>
 
-                            <p className="mt-3 text-[10px] leading-relaxed text-gray-300 sm:text-[12px] md:text-[14px] lg:text-[16px]">
+                            <p className="mt-3 text-[10px] leading-relaxed text-gray-300 sm:text-[12px] md:text-[14px] lg:text-[18px] pr-2 sm:pr-16 lg:pr-24">
                                 Join thousands of players using HiLights PRO to showcase their talent and stand out in the football world.
                             </p>
                         </div>
 
                         {/* Button */}
                         <div className="flex items-end justify-end lg:pr-10">
-                            <Link href="/register" className="sm:-w-45 flex items-center gap-2 rounded-xl border border-[#ff6b00] bg-[#ff6b00] px-4 py-1 transition md:gap-4 lg:px-8 lg:py-6 text-white">
+                            <Link href="/register" className="sm:-w-45 flex items-center gap-2 rounded-[10px] bg-[#ea4100] px-4 py-1 transition md:gap-4 lg:px-8 sm:py-2 lg:py-2 text-white">
                                 <span className="text-left text-[10px] font-bold uppercase sm:text-[12px] md:text-[14px] lg:text-[16px]">
                                     UPGRADE NOW
                                 </span>

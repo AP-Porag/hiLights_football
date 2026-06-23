@@ -11,6 +11,7 @@ import {
     ArrowRight,
     CalendarDays,
     CheckCircle2,
+    Smartphone,
     Circle,
     Crown,
     Eye,
@@ -24,6 +25,7 @@ import {
     Video,
     Shirt,
     Footprints,
+    ShieldCheck ,
     Ruler,
     Weight,
     Shield,
@@ -297,7 +299,7 @@ export default function PlayerDashboard() {
                                             JOÃO DA SILVA
                                         </h3>
 
-                                        <p className="text-[8px] sm:text-[10px] text-orange-500 uppercase">
+                                        <p className="text-[8px] sm:text-[10px] text-[#f05300] uppercase">
                                             ATTACKING MIDFIELDER
                                         </p>
 
@@ -306,8 +308,8 @@ export default function PlayerDashboard() {
 
                                     <div className="mt-6 space-y-1">
                                         <div className="flex items-center">
-                                            <User className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
-                                            <p className="z-10 text-[8px] md:text-[10px] text-gray-400 uppercase">
+                                            <User className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                            <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
                                                 ID:
                                                 <br />
                                                 <span className="text-white">HLF-00012345</span>
@@ -315,8 +317,8 @@ export default function PlayerDashboard() {
                                         </div>
 
                                         <div className="flex items-center">
-                                            <CalendarDays className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
-                                            <p className="z-10 text-[8px] md:text-[10px] text-gray-400 uppercase">
+                                            <CalendarDays className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                            <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
                                                 DATE OF BIRTH:
                                                 <br />
                                                 <span className="text-white">15 / 05 / 2006</span>
@@ -324,8 +326,8 @@ export default function PlayerDashboard() {
                                         </div>
 
                                         <div className="flex items-center">
-                                            <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
-                                            <p className="z-10 text-[8px] md:text-[10px] text-gray-400 uppercase">
+                                            <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                            <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
                                                 NATIONALITY:
                                                 <br />
                                                 <span className="text-white">Brazil</span>
@@ -333,8 +335,8 @@ export default function PlayerDashboard() {
                                         </div>
 
                                         <div className="flex items-center">
-                                            <MapPin className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
-                                            <p className="z-10 text-[8px] md:text-[10px] text-gray-400 uppercase">
+                                            <MapPin className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                            <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
                                                 CITY:
                                                 <br />
                                                 <span className="text-white">RIO DE JANEIRO - RJ</span>
@@ -355,16 +357,16 @@ export default function PlayerDashboard() {
                                 {/* Left Side */}
                                 <div className="relative">
                                     <div className="absolute top-0 -right-4 w-[1px] h-full border-r border-white/10"></div>
-                                    <h2 className="mb-2 text-[10px] font-bold text-[#ff6600] uppercase">Player Info</h2>
+                                    <h2 className="mb-2 text-[10px] font-bold text-[#f4620c] uppercase">Player Info</h2>
 
                                     <div className="space-y-2">
                                         {playerInfo.map((item, index) => (
-                                            <div key={index} className="flex items-center justify-between border-b border-white/10 pb-4">
+                                            <div key={index} className="flex items-center justify-between border-b border-white/10 pb-4 last:border-b-0">
                                                 <div className="flex items-center gap-2">
 
-                                                    <span className="">{item.icon}</span>
+                                                    <span className="text-[#d2d2d2">{item.icon}</span>
 
-                                                    <span className="text-[8px] pr-2 text-gray-400 uppercase">{item.label}</span>
+                                                    <span className="text-[8px] pr-2 text-[#d2d2d2] uppercase">{item.label}</span>
                                                 </div>
 
                                                 <span className="text-[7px] sm:text-[8px] font-medium text-white uppercase">{item.value}</span>
@@ -375,9 +377,9 @@ export default function PlayerDashboard() {
 
                                 {/* Right Side */}
                                 <div className="pl-4 sm:pl-3">
-                                    <h2 className="text-[10px] font-bold text-[#ff6600] uppercase">Scan To View Profile</h2>
+                                    <h2 className="text-[10px] font-bold text-[#f4620c] uppercase">Scan To View Profile</h2>
 
-                                    <p className="mt-1 mb-6 text-[8px] text-gray-300 uppercase">Open Your Camera And Scan</p>
+                                    <p className="mt-1 mb-6 text-[8px] text-[#f1f1f1] uppercase">Open Your Camera And Scan</p>
 
                                     {/* QR Area */}
                                     <div className="w-fit rounded-[8px] sm:rounded-xl border-2 sm:border-[3px] border-[#ff6600] bg-white sm:p-3 p-2">
@@ -386,7 +388,9 @@ export default function PlayerDashboard() {
 
                                     {/* Button */}
                                     <button className="mt-2 flex items-center rounded-xl bg-[#ff6600] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#ff7a1a]">
-                                        <span className="text-[10px] sm:text-[14px]">📱</span>
+                                          <span className=" text-black pr-1">
+                                                    <Smartphone className="h-6 w-4"/>
+                                                </span>
 
                                         <span className="text-left text-[6px] sm:text-[8px] leading-tight">
                                             VIEW FULL PROFILE, VIDEOS,
@@ -398,8 +402,8 @@ export default function PlayerDashboard() {
                             </div>
                         </div>
 
-                        <div className="flex justify-between items-center relative w-full border-t-1 border-gray-600 p-3 sm:p-6 bg-[url('/images/img/leyer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[16px] rounded-br-[16px]">
-                            <p className=" flex justify-between items-center text-[8px] text-gray-300">
+                        <div className="flex justify-between items-center relative w-full -mt-2  border-t-1 border-gray-600 p-3 sm:p-6 bg-[url('/images/img/layer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[16px] rounded-br-[16px]">
+                            <p className=" flex justify-between items-center text-[9px] -ml-3 text-gray-300">
                                 <Shield className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
 
                                 THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br />
@@ -408,20 +412,24 @@ export default function PlayerDashboard() {
                             <p className="text-[6px] sm:text-[8px] text-black font-bold translate-x-0 sm:translate-x-[10%]"> WWW.HILIGHTSFOOTBALL.COM </p>
 
 
+
                             <div className="absolute -bottom-10 left-0 flex justify-between w-full">
 
-                                <button className="capitalize flex items-center rounded-xl bg-[#ff6600] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white text-[16px] sm:text-[10px] transition-all hover:bg-[#ff7a1a]">
+                                <button className="capitalize flex items-center rounded-xl bg-[#e75502] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white text-[16px] sm:text-[10px] transition-all hover:bg-[#ff7a1a]">
                                     <Share2 className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" />
                                     share full profile
                                     </button>
 
-                                <button className="capitalize flex items-center rounded-xl bg-[#ff6600] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[16px] sm:text-[10px] transition-all">
+                                <button className="capitalize flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[16px] sm:text-[10px] transition-all">
 
                                     <Download className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" />
                                     download member card
                                     </button>
                             </div>
                         </div>
+
+
+
 
                     </div>
                     </div>
