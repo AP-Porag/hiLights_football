@@ -625,7 +625,7 @@ export default function NewDetail() {
                             </div>
 
                             <div className="mt-8 flex justify-end">
-                                <button className="flex items-center gap-2 text-[13px] text-[#f97316] transition hover:text-orange-400 md:text-[18px]">
+                                <button className="flex items-center cursor-pointer gap-2 text-[13px] text-[#f97316] transition hover:text-orange-400 md:text-[18px]">
                                     View all competitions
                                     <ChevronRight size={22} />
                                 </button>
@@ -672,7 +672,7 @@ export default function NewDetail() {
                             </div>
 
                             <div className="mt-8 flex justify-end">
-                                <button className="flex items-center gap-2 text-[14px] text-[#f97316] transition hover:text-orange-400 md:text-[18px]">
+                                <button className="flex items-center gap-2 text-[14px] text-[#f97316] transition hover:text-orange-400 cursor-pointer md:text-[18px]">
                                     View all matches
                                     <ChevronRight size={22} />
                                 </button>

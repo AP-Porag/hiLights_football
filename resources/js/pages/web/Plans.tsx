@@ -345,7 +345,7 @@ export default function Plans() {
                                 ))}
                             </div>
 
-                            <button className=" w-[100%] md:w-[90%] md:absolute md:bottom-6 md:left-1/2 md:-translate-x-1/2 rounded-xl border border-gray-500 py-3 font-bold text-white uppercase transition hover:border-orange-500 hover:text-orange-500">
+                            <button className=" w-[100%] md:w-[90%] md:absolute md:bottom-6 md:left-1/2 md:-translate-x-1/2 rounded-xl border border-gray-500 cursor-pointer py-3 font-bold text-white uppercase transition hover:border-orange-500 hover:text-orange-500">
                                 Create Free Profile
                             </button>
                         </div>
@@ -376,7 +376,7 @@ export default function Plans() {
                                 ))}
                             </div>
 
-                            <button className="w-full rounded-xl bg-[#e53f01] py-3 font-bold text-white uppercase transition hover:bg-orange-600">
+                            <button className="w-full rounded-xl bg-[#e53f01] py-3 font-bold cursor-pointer text-white uppercase transition hover:bg-orange-600">
                                 Choose Premium
                             </button>
                         </div>
@@ -404,7 +404,7 @@ export default function Plans() {
                                 ))}
                             </div>
 
-                            <button className="w-full rounded-xl bg-[#e53f01] py-3 font-bold text-white uppercase transition hover:bg-orange-600">
+                            <button className="w-full rounded-xl cursor-pointer bg-[#e53f01] py-3 font-bold text-white uppercase transition hover:bg-orange-600">
                                 Choose Premium
                             </button>
                         </div>

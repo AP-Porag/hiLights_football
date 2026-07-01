@@ -113,7 +113,7 @@ const HomeTwo = () => {
         <div className="bg-black text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]">
             <PublicNavbar />
 
-            <main className="pt-16">
+            <main className="pt-16 w-full max-w-7xl mx-auto">
                 {/* ━━━ SECTION 1: HERO ━━━ */}
 
                 <section
@@ -122,15 +122,15 @@ const HomeTwo = () => {
                         backgroundImage: "url('/images/img/hero.jpg')",
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'center',
-                        backgroundSize: 'contain',
+                        backgroundSize: 'cover',
                     }}
                 >
-                    <div className="mx-auto max-w-7xl">
+                    <div className="mx-auto">
                         <div className="mb-10 flex sm:mb-10 lg:mb-5 md:grid md:grid-cols-2">
                             {/* Left Content */}
                             <div className="flex px-6 pt-16 sm:px-10 lg:px-16">
                                 <div className="max-w-xl">
-                                    <h1 className="text-[18px] leading-tight font-extrabold uppercase md:text-2xl lg:text-4xl">
+                                    <h1 className="sm:text-3xl leading-tight font-extrabold uppercase md:text-4xl lg:text-4xl xl:text-6xl">
                                         <span className="block text-white">Be Seen.</span>
 
                                         <span className="block text-[#ee5e00]">
@@ -156,7 +156,7 @@ const HomeTwo = () => {
                             </div>
                         </div>
                         <div className="mb-10 flex w-[200%] flex-row gap-4 pl-6 sm:pl-10 lg:pl-16">
-                            <button className="flex items-center justify-center rounded-md bg-[#ea3905] px-3 py-2 text-[10px] font-semibold uppercase transition-all duration-300 hover:bg-orange-600 md:px-6 md:py-2 md:text-sm">
+                            <button className="flex items-center justify-center cursor-pointer rounded-md bg-[#ea3905] px-3 py-2 text-[10px] font-semibold uppercase transition-all duration-300 hover:bg-orange-600 md:px-6 md:py-2 md:text-sm">
                                 <UserRoundPlus className="h-6 w-6" />
                                 <span className="pl-2">
                                     Create A Free
@@ -164,7 +164,7 @@ const HomeTwo = () => {
                                 </span>
                             </button>
 
-                            <button className="flex items-center justify-center rounded-md border border-gray-600 px-3 py-2 text-[10px] font-semibold uppercase transition-all duration-300 hover:border-white md:px-6 md:py-4 md:text-sm">
+                            <button className="flex items-center cursor-pointer justify-center rounded-md border border-gray-600 px-3 py-2 text-[10px] font-semibold uppercase transition-all duration-300 hover:border-white md:px-6 md:py-4 md:text-sm">
                                 <CirclePlay className="h-6 w-6" />
                                 <span className="pl-2">Learn More</span>
                             </button>
@@ -251,7 +251,7 @@ const HomeTwo = () => {
 
                             {/* Button */}
                             <div className="flex items-end justify-end lg:pr-10">
-                                <button className="sm:-w-45 flex items-center gap-2 rounded-xl border border-[#773a0c] px-4 py-2 transition hover:bg-[#ff6b00]/10 md:gap-4 lg:px-8 lg:py-4">
+                                <button className="sm:-w-45 flex cursor-pointer items-center gap-2 rounded-xl border border-[#773a0c] px-4 py-2 transition hover:bg-[#ff6b00]/10 md:gap-4 lg:px-8 lg:py-4">
                                     <UserPlus className="h-6 w-6 text-white md:h-8 md:w-8" />
 
                                     <span className="text-left text-[10px] font-bold uppercase sm:text-[12px] md:text-[14px] lg:text-[16px]">
@@ -285,7 +285,7 @@ const HomeTwo = () => {
                                 </h2>
                             </div>
 
-                            <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs">
+                            <button className="flex cursor-pointer items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs">
                                 View All
                                 <ArrowRight size={14} className="text-[#ff6b00]" />
                             </button>
