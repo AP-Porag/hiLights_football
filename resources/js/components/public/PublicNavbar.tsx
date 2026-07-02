@@ -53,11 +53,11 @@ export default function PublicNavbar() {
                 'transition-shadow duration-200',
             ].join(' ')}
         >
-            <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between gap-4 px-6">
+            <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-4 overflow-hidden px-2 sm:px-4 md:px-6">
                 {/* LEFT — Logo */}
                 <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football home">
-                    <img src="/images/logo/logo_version_2.png" className="h-12 w-auto md:h-20 dark:hidden" alt="HiLights Football" />
-                    <img src="/images/logo/logo_version_2.png" className="hidden h-12 w-auto md:h-20 dark:block" alt="HiLights Football" />
+                    <img src="/images/logo/final_logo.png" className="h-6 w-auto sm:h-8 lg:h-10 md:mt-2 lg:mt-3 dark:hidden" alt="HiLights Football" />
+                    {/* <img src="/images/logo/final_logo.png" className="hidden h-12 w-auto md:h-20 dark:block" alt="HiLights Football" /> */}
                     {/*<div className="hidden items-end gap-0.5 leading-none sm:flex">*/}
                     {/*    <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>*/}
                     {/*    <span className="text-xl font-black tracking-tight text-[#FF6B00] italic">Lights</span>*/}
@@ -103,13 +103,13 @@ export default function PublicNavbar() {
                         <Button
                             variant="outline"
                             size="sm"
-                            className="border-[#E2E8F0] bg-gray-50 text-sm font-medium text-[#0F172A] hover:border-[#FF6B00] hover:bg-transparent hover:text-[#FF6B00] dark:border-[#2A2A2A] dark:text-[#F5F5F5] dark:hover:bg-transparent"
+                            className="border-[#E2E8F0] cursor-pointer bg-gray-50 text-sm font-medium text-[#0F172A] hover:border-[#FF6B00] hover:bg-transparent hover:text-[#FF6B00] dark:border-[#2A2A2A] dark:text-[#F5F5F5] dark:hover:bg-transparent"
                         >
                             Login
                         </Button>
                     </Link>
                     <Link href="/register">
-                        <Button size="sm" className="bg-[#e53f01] px-4 text-sm font-semibold text-white hover:bg-[#ff5e24]">
+                        <Button size="sm" className="bg-[#e53f01] px-4 text-sm cursor-pointer font-semibold text-white hover:bg-[#ff5e24]">
                             Create A Free Profile Now
                         </Button>
                     </Link>
@@ -123,15 +123,15 @@ export default function PublicNavbar() {
                             const active = isActive(link.href);
 
                             return (
-                                <Link key={link.href} href={link.href} className="flex w-14 flex-col items-center justify-center">
+                                <Link key={link.href} href={link.href} className="flex w-7 sm:w-12 flex-col items-center justify-center">
                                     <div className={['mb-1 transition-colors', active ? 'text-[#FF6B00]' : 'text-white'].join(' ')}>
                                         {React.cloneElement(link.icon, {
-                                            className: 'h-4 w-4 sm:h-7 sm:w-7',
+                                            className: 'h-4 w-4 sm:h-5 sm:w-5',
                                         })}
                                     </div>
 
                                     <span
-                                        className={[' text-[10px] sm:text-[12px] font-medium whitespace-nowrap', active ? 'text-[#FF6B00]' : 'text-white'].join(' ')}
+                                        className={[' text-[8px] sm:text-[12px] font-medium whitespace-nowrap', active ? 'text-[#FF6B00]' : 'text-white'].join(' ')}
                                     >
                                         {link.label}
                                     </span>
@@ -141,7 +141,7 @@ export default function PublicNavbar() {
                     </div>
 
                     <Link href="/register">
-                        <Button className="h-11 rounded-md bg-[#FF6B00] px-2 sm:px-4 text-[9px] sm:text-[11px] leading-tight font-bold text-white uppercase hover:bg-[#e65c00]">
+                        <Button className="h-9 sm:h-11 rounded-md bg-[#FF6B00] px-2 sm:px-4 text-[8px] sm:text-[11px] leading-tight font-bold text-white uppercase hover:bg-[#e65c00]">
                             Create A Free
                             <br />
                             Profile Now
@@ -153,7 +153,7 @@ export default function PublicNavbar() {
                                 variant="secondary"
                                 size="icon"
                                 aria-label="Open menu"
-                                className="h-9 w-9 text-[#0F172A] hover:bg-[#F8FAFC] dark:text-[#F5F5F5] dark:hover:bg-[#1F1F1F]"
+                                className="h-7 w-7 sm:h-9 sm:w-9 text-[#0F172A] hover:bg-[#F8FAFC] dark:text-[#F5F5F5] dark:hover:bg-[#1F1F1F]"
                             >
                                 <Menu className="h-5 w-5" />
                             </Button>
