@@ -10,7 +10,7 @@ export const PublicFooter = () => {
                     <div className="grid grid-cols-4 gap-4">
                         {/* Logo & Description */}
                         <div className="min-w-0">
-                            <img src="/images/logo/logo_version_2.png" className="h-20 w-auto" alt="HiLights Football" />
+                             <img src="/images/logo/final_logo.png" className="h-8 w-auto sm:h-10 lg:h-14 md:mt-2 lg:mt-3 dark:hidden" alt="HiLights Football" />
 
                             <p className="mt-5 text-[10px] leading-[1.5] break-words sm:text-[12px] md:text-[16px]">
                                 The platform dedicated <br className="md:hidden" /> to promoting and discovering <br className="md:hidden" /> football
@@ -19,7 +19,7 @@ export const PublicFooter = () => {
                         </div>
 
                         {/* Quick Links */}
-                        <div className="min-w-0">
+                        <div className="min-w-0 sm:pl-8 md:pl-10 lg:pl-14">
                             <h3 className="mb-3 text-[12px] font-bold text-[#FF6A00] uppercase md:text-[14px] lg:text-[16px]">Quick Links</h3>
 
                             <ul className="space-y-1 text-[10px] sm:text-[12px] md:text-[14px]">

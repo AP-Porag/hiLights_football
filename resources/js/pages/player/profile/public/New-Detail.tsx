@@ -211,16 +211,13 @@ function StarRating({ value, onChange }: StarRatingProps) {
 
 export default function NewDetail() {
 
-
-
-
     return (
-        <div className="min-h-screen bg-black pt-16 dark:bg-[#0D0D0D]">
+        <div className="min-h-screen bg-black pt-16 dark:bg-[#fae8e8]">
             <PublicNavbar />
 
             {/* BREADCRUMB */}
-            <div className="bg-black px-4 py-3 sm:px-6 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]">
-                <nav className="mx-auto flex max-w-[1400px] items-center gap-1.5 overflow-x-auto text-sm text-[#475569] dark:text-[#9A9A9A]">
+            <div className="bg-black max-w-7xl mx-auto  px-4 py-3 sm:px-6 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]">
+                <nav className="flex  items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A]">
                     <Link href="/" className="whitespace-nowrap hover:text-[#FF6B00] dark:hover:text-[#FF6B00]">
                         Home
                     </Link>
@@ -235,40 +232,38 @@ export default function NewDetail() {
             </div>
 
             {/* 3-COLUMN LAYOUT */}
-            <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6">
+            <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6">
                 {/* CENTER COLUMN */}
                 <main className="min-w-0 space-y-4 overflow-x-hidden">
-                    {/* IDENTITY CARD */}
-                    {/* <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8"> */}
 
                     <div className="w-full max-w-7xl overflow-hidden text-white">
                         <div className="flex flex-row gap-3 md:gap-6">
                             {/* Left Image Section */}
-                                <div className="w-[40%] overflow-hidden rounded-md border border-[#233247] md:w-auto">
+                                <div className="w-[30%] overflow-hidden rounded-md md:w-auto">
                                     <img
                                         src="/images/img/player-1.png"
                                         alt="Player"
-                                        className="object-cover sm:h-[220px] sm:w-[180px] md:h-auto md:w-[320px]"
+                                        className="border border-[#233247] object-cover sm:h-[220px] sm:w-[180px] md:h-[200px] md:w-[180px]"
                                     />
                                 </div>
 
                             {/* Right Content */}
                             <div className="w-[60%] flex-1 md:w-auto">
-                                <h1 className="text-[18px] font-bold tracking-wide uppercase md:text-3xl md:font-extrabold">JOÃO DA SILVA</h1>
+                                <h1 className="text-[18px] font-bold tracking-wide uppercase">JOÃO DA SILVA</h1>
 
-                                <h3 className="mt-2 text-[14px] text-[#eb6c0d] uppercase md:text-[16px]">Right Winger</h3>
+                                <h3 className="mt-1 text-[14px] text-[#eb6c0d] uppercase">Right Winger</h3>
 
-                                <div className="mt-3 space-y-3 text-[10px] md:text-[16px]">
+                                <div className="mt-1 space-y-1 text-[10px] md:text-[13px]">
                                     {/* Row */}
                                     <div className="flex">
-                                        <CalendarDays className="mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-5 md:w-5" />
+                                        <CalendarDays className="mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-4 md:w-4" />
                                         <span className="text-[#e1e2e6]">Date of Birth / Age:</span>
                                         <span className="pl-2 text-gray-300">Jan 30, 2007 (19)</span>
                                     </div>
 
                                     {/* Row */}
                                     <div className="flex">
-                                        <Users className="mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-5 md:w-5" />
+                                        <Users className="mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-4 md:w-4" />
                                         <span className="pr-3 text-[#e1e2e6]">Nationality:</span>
                                         <ReactCountryFlag countryCode="BR" svg className="mt-[2px] mr-1 md:mt-1 md:h-[1em] md:w-[1em]" />
                                         <span className="">Brazil</span>
@@ -279,35 +274,35 @@ export default function NewDetail() {
 
                                     {/* Row */}
                                     <div className="flex">
-                                        <Ruler className="mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-5 md:w-5" />
+                                        <Ruler className="mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-4 md:w-4" />
                                         <span className="text-[#e1e2e6]">Height:</span>
                                         <span className="pl-2 text-gray-100">1.84 m</span>
                                     </div>
 
                                     {/* Row */}
                                     <div className="flex">
-                                        <Crosshair className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-5 md:w-5" />
+                                        <Crosshair className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-4 md:w-4" />
                                         <span className="text-[#e1e2e6]">Position:</span>
                                         <span className="pl-2 text-gray-100">Right Winger</span>
                                     </div>
 
                                     {/* Row */}
                                     <div className="flex">
-                                        <Footprints className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-5 md:w-5" />
+                                        <Footprints className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-4 md:w-4" />
                                         <span className="text-[#e1e2e6]">Dominant Foot:</span>
                                         <span className="pl-2 text-gray-100">Right</span>
                                     </div>
 
                                     {/* Row */}
                                     <div className="flex">
-                                        <Shield className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-5 md:w-5" />
+                                        <Shield className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-4 md:w-4" />
                                         <span className="text-[#e1e2e6]">Current Club:</span>
                                         <span className="pl-2 text-gray-100">São Cristovão</span>
                                     </div>
 
                                     {/* Row */}
                                     <div className="flex">
-                                        <Shirt className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-5 md:w-5" />
+                                        <Shirt className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-4 md:w-4" />
                                         <span className="text-[#e1e2e6]">Previous Club:</span>
                                         <span className="pl-2 text-gray-100">Bangu</span>
                                     </div>
@@ -318,58 +313,26 @@ export default function NewDetail() {
                             <aside className="hidden lg:block">
                                 <p className="text-[10px] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>
 
-                                <div className="relative flex h-[350px] w-[320px] flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 text-center">
+                                <div className="relative flex h-[180px] w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 text-center">
                                     <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
-                                    {/*            <div*/}
-                                    {/*                className="absolute inset-0 opacity-20"*/}
-                                    {/*                style={{*/}
-                                    {/*                    background:*/}
-                                    {/*                        'radial-gradient(circle at 50% 0%, #FF6B00 0%, transparent 60%)',*/}
-                                    {/*                }}*/}
-                                    {/*            />*/}
-                                    {/*            <span className="text-white/10 font-black text-[100px] leading-none absolute -top-4 select-none">*/}
-                                    {/*  ✓*/}
-                                    {/*</span>*/}
-                                    {/*            <div className="relative z-10 flex flex-col items-center">*/}
-                                    {/*              <span className="text-white font-black text-2xl tracking-tight">*/}
-                                    {/*                NIKE FC*/}
-                                    {/*              </span>*/}
-                                    {/*                            <div className="bg-[#FF6B00] w-8 h-0.5 mx-auto my-2" />*/}
-                                    {/*                            <span className="text-white/70 text-sm">2025 Season Boots</span>*/}
-                                    {/*                            <span className="text-white/60 text-xs tracking-widest mt-2">*/}
-                                    {/*                MERCURIAL VAPOR*/}
-                                    {/*              </span>*/}
-                                    {/*                <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-6 py-2 rounded-lg text-sm mt-3 transition-colors">*/}
-                                    {/*                    SHOP NOW →*/}
-                                    {/*                </button>*/}
-                                    {/*            </div>*/}
                                 </div>
                             </aside>
                         </div>
                     </div>
 
                     {/* VIDEO SECTION */}
-                    <section className="mt-6">
-                        <p className="pb-8 text-xl font-bold text-white">HIGHLIGHTS VIDEO</p>
+                    <section className="mt-2">
+                        <p className="-mt-2 mb-3 text-[16px] font-bold text-white">HIGHLIGHTS VIDEO</p>
                         <div className="relative overflow-hidden">
-                            <div className="relative aspect-video w-full">
+                            <div className="relative w-full">
                                 {player.videoUrl ? (
                                     <>
                                         <iframe
                                             src={player.videoUrl}
-                                            // title={`${player.name} highlights`}
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                             allowFullScreen
-                                            className="h-full w-full rounded-2xl bg-gray-500"
+                                            className="h-[300px] w-full rounded-2xl bg-gray-500"
                                         />
-                                        {/* <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pointer-events-none"> */}
-                                        {/* <p className="text-[#FF6B00] text-xs font-bold tracking-widest">
-                                            STRIKER · HIGHLIGHT REEL 2025
-                                        </p> */}
-                                        {/* <h2 className="font-display font-black text-2xl text-white">
-                                            {player.name}
-                                        </h2> */}
-                                        {/* </div> */}
                                     </>
                                 ) : (
                                     <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -379,16 +342,16 @@ export default function NewDetail() {
                                 )}
                             </div>
 
-                            <div className="flex items-center justify-between py-2 text-[16px] text-white">
-                                <h3 className="mt-4">João da Silva - Best Moments 2024/2025</h3>
+                            <div className="flex items-center justify-between text-[14px] text-white">
+                                <h3 className="mt-2">João da Silva - Best Moments 2024/2025</h3>
                                 <span>07:32</span>
                             </div>
                         </div>
 
-                        <div className="relative mt-12 grid grid-cols-3 gap-5 overflow-hidden">
+                        <div className="relative mt-4 grid grid-cols-3 gap-5 overflow-hidden">
                             {/* sub video 1 */}
                             <div>
-                                <div className="relative aspect-video w-full rounded-[16px]">
+                                <div className="relative w-full rounded-[16px]">
                                     {player.videoUrl ? (
                                         <>
                                             <iframe
@@ -398,14 +361,7 @@ export default function NewDetail() {
                                                 allowFullScreen
                                                 className="h-full w-full rounded-[12px] bg-gray-500"
                                             />
-                                            {/* <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pointer-events-none">
-                                        <p className="text-[#FF6B00] text-xs font-bold tracking-widest">
-                                            STRIKER · HIGHLIGHT REEL 2025
-                                        </p>
-                                        <h2 className="font-display font-black text-2xl text-white">
-                                            {player.name}
-                                        </h2>
-                                    </div> */}
+                                           
                                         </>
                                     ) : (
                                         <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -414,12 +370,12 @@ export default function NewDetail() {
                                         </div>
                                     )}
                                 </div>
-                                <p className="bold py-2 text-center text-[16px]">Goals</p>
+                                <p className="bold py-2 text-center text-white text-[16px]">Goals</p>
                             </div>
 
                             {/* sub video 2 */}
                             <div>
-                                <div className="relative aspect-video w-full">
+                                <div className="relative w-full">
                                     {player.videoUrl ? (
                                         <>
                                             <iframe
@@ -437,12 +393,12 @@ export default function NewDetail() {
                                         </div>
                                     )}
                                 </div>
-                                <p className="bold py-2 text-center text-[16px]">Assists</p>
+                                <p className="bold py-2 text-center text-white text-[16px]">Assists</p>
                             </div>
 
                             {/* sub video 3 */}
                             <div>
-                                <div className="relative aspect-video w-full rounded-[16px]">
+                                <div className="relative w-full rounded-[16px]">
                                     {player.videoUrl ? (
                                         <>
                                             <iframe
@@ -460,33 +416,18 @@ export default function NewDetail() {
                                         </div>
                                     )}
                                 </div>
-                                <p className="bold py-2 text-center text-[16px]">Dribbles</p>
+                                <p className="bold py-2 text-center text-white text-[16px]">Dribbles</p>
                             </div>
                         </div>
                     </section>
 
                     {/* IN-CONTENT AD */}
-                    <aside className="block space-y-3 md:hidden">
+                    <aside className="block space-y-3 lg:hidden">
                         <p className="text-[10px] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>
 
                         <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center">
                             <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
-                            {/*<div*/}
-                            {/*    className="absolute inset-0 opacity-20"*/}
-                            {/*    style={{*/}
-                            {/*        background: 'radial-gradient(circle at 50% 0%, #FF6B00 0%, transparent 60%)',*/}
-                            {/*    }}*/}
-                            {/*/>*/}
-                            {/*<span className="absolute -top-4 text-[100px] leading-none font-black text-white/10 select-none">✓</span>*/}
-                            {/*<div className="relative z-10 flex flex-col items-center">*/}
-                            {/*    <span className="text-2xl font-black tracking-tight text-white">NIKE FC</span>*/}
-                            {/*    <div className="mx-auto my-2 h-0.5 w-8 bg-[#FF6B00]" />*/}
-                            {/*    <span className="text-sm text-white/70">2025 Season Boots</span>*/}
-                            {/*    <span className="mt-2 text-xs tracking-widest text-white/60">MERCURIAL VAPOR</span>*/}
-                            {/*    <button className="mt-3 rounded-lg bg-[#FF6B00] px-6 py-2 text-sm font-bold text-white transition-colors hover:bg-[#CC5500]">*/}
-                            {/*        SHOP NOW →*/}
-                            {/*    </button>*/}
-                            {/*</div>*/}
+                           
                         </div>
                     </aside>
 
@@ -586,22 +527,7 @@ export default function NewDetail() {
 
                         <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center">
                             <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
-                            {/*<div*/}
-                            {/*    className="absolute inset-0 opacity-20"*/}
-                            {/*    style={{*/}
-                            {/*        background: 'radial-gradient(circle at 50% 0%, #FF6B00 0%, transparent 60%)',*/}
-                            {/*    }}*/}
-                            {/*/>*/}
-                            {/*<span className="absolute -top-4 text-[100px] leading-none font-black text-white/10 select-none">✓</span>*/}
-                            {/*<div className="relative z-10 flex flex-col items-center">*/}
-                            {/*    <span className="text-2xl font-black tracking-tight text-white">NIKE FC</span>*/}
-                            {/*    <div className="mx-auto my-2 h-0.5 w-8 bg-[#FF6B00]" />*/}
-                            {/*    <span className="text-sm text-white/70">2025 Season Boots</span>*/}
-                            {/*    <span className="mt-2 text-xs tracking-widest text-white/60">MERCURIAL VAPOR</span>*/}
-                            {/*    <button className="mt-3 rounded-lg bg-[#FF6B00] px-6 py-2 text-sm font-bold text-white transition-colors hover:bg-[#CC5500]">*/}
-                            {/*        SHOP NOW →*/}
-                            {/*    </button>*/}
-                            {/*</div>*/}
+                           
                         </div>
                     </aside>
 

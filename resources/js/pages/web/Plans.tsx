@@ -195,7 +195,7 @@ export default function Plans() {
                                 <div className="flex items-center justify-between">
                                     {/* Logo */}
                                     <div className="pl-4">
-                                        <img src="/images/img/new_logo.png" alt="new-logo" className="w-[90px] sm:w-[110px] lg:w-[130px]" />
+                                        <img src="/images/logo/final_logo.png" alt="new-logo" className="w-[90px] sm:w-[110px] lg:w-[130px]" />
                                     </div>
 
                                     <div className="-translate-x-[20%] translate-y-[30%] sm:-translate-x-[40%] md:-translate-x-[60%] lg:-translate-x-[120%]">
