@@ -260,7 +260,7 @@ export default function PlayerDashboard() {
                             <div className="flex items-center justify-between">
                                 {/* Logo */}
                                 <div className="pl-3 sm:pl-4">
-                                    <img src="/images/logo/final_logo.png" alt="new-logo" className="w-[95px] sm:w-[130px]" />
+                                    <img src="/images/logo/final_logo.png" alt="new-logo" className="w-[125px] sm:w-[170px]" />
                                 </div>
 
                                 <div className="-translate-x-[15%] sm:-translate-x-[30%] translate-y-[20%]">
