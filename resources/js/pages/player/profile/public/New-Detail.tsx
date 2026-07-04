@@ -21,14 +21,15 @@ import {
     Globe2,
     Trophy,
     CalendarDays,
-  Users,
-  Crosshair,
-  Shield,
-  Shirt
+    Users,
+    Crosshair,
+    Shield,
+    Shirt
 } from 'lucide-react';
 import PublicNavbar from '@/components/public/PublicNavbar';
 import { PublicFooter } from '@/components/public/PublicFooter';
 import { Pitch } from '@/components/ui/pitch';
+
 // MOCK DATA
 const player = {
     id: 247,
@@ -68,123 +69,47 @@ const player = {
     isVerified: true,
 };
 
-  const transferHistory = [
-        {
-            year: 2024,
-            club: "São Cristóvão - RJ",
-            img: "/images/club-logo/cl-1.png",
-        },
-        {
-            year: 2023,
-            club: "Bangu - RJ",
-            img: "/images/club-logo/cl-2.png",
+const transferHistory = [
+    { year: 2024, club: "São Cristóvão - RJ", img: "/images/club-logo/cl-1.png" },
+    { year: 2023, club: "Bangu - RJ", img: "/images/club-logo/cl-2.png" },
+    { year: 2022, club: "Portuguesa RJ - RJ", img: "/images/club-logo/cl-3.png" },
+    { year: 2021, club: "Madureira - RJ", img: "/images/club-logo/cl-4.png" },
+    { year: 2020, club: "Flamengo U-17 - RJ", img: "/images/club-logo/cl-5.png" },
+    { year: 2019, club: "Fluminense U-15 - RJ", img: "/images/club-logo/cl-6.png" },
+    { year: 2018, club: "Nova Iguaçu - RJ", img: "/images/club-logo/cl-7.png" },
+    { year: 2017, club: "Boa Vista - RJ", img: "/images/club-logo/cl-8.png" },
+    { year: 2016, club: "Serrano - RJ", img: "/images/club-logo/cl-9.png" },
+    { year: 2015, club: "Macaé - RJ", img: "/images/club-logo/cl-10.png" },
+];
 
-        },
-        {
-            year: 2022,
-            club: "Portuguesa RJ - RJ",
-            img: "/images/club-logo/cl-3.png",
-
-        },
-        {
-            year: 2021,
-            club: "Madureira - RJ",
-            img: "/images/club-logo/cl-4.png",
-
-        },
-        {
-            year: 2020,
-            club: "Flamengo U-17 - RJ",
-            img: "/images/club-logo/cl-5.png",
-
-        },
-        {
-            year: 2019,
-            club: "Fluminense U-15 - RJ",
-            img: "/images/club-logo/cl-6.png",
-
-        },
-        {
-            year: 2018,
-            club: "Nova Iguaçu - RJ",
-            img: "/images/club-logo/cl-7.png",
-
-        },
-        {
-            year: 2017,
-            club: "Boa Vista - RJ",
-            img: "/images/club-logo/cl-8.png",
-
-        },
-        {
-            year: 2016,
-            club: "Serrano - RJ",
-            img: "/images/club-logo/cl-9.png",
-
-        },
-        {
-            year: 2015,
-            club: "Macaé - RJ",
-            img: "/images/club-logo/cl-10.png",
-
-        },
-    ];
-
- const achievements = [
+const achievements = [
     { year: "2024", title: "Copinha" },
     { year: "2025", title: "Gaúcho U-20" },
     { year: "2025", title: "BH Cup" },
     { year: "2019", title: "Gazetinha Cup" },
     { year: "2019", title: "Rio Grande do Sul State Championship U11" },
-  ];
+];
 
-
-    const competitions = [
+const competitions = [
     { name: "Copinha", year: "2024" },
     { name: "Gaúcho U-20", year: "2025" },
     { name: "BH Cup", year: "2025" },
     { name: "Gazetinha Cup", year: "2019" },
     { name: "Rio Grande do Sul State Championship U11", year: "2019" },
-  ];
+];
 
-  const matches = [
-    {
-      home: "São Cristóvão",
-      score: "3 x 1",
-      away: "Juventude",
-      goals: 1,
-      assists: 0,
-      minutes: "90'",
-    },
-    {
-      home: "São Cristóvão",
-      score: "2 x 2",
-      away: "Grêmio",
-      goals: 0,
-      assists: 1,
-      minutes: "90'",
-    },
-    {
-      home: "São Cristóvão",
-      score: "4 x 0",
-      away: "Internacional",
-      goals: 2,
-      assists: 0,
-      minutes: "90'",
-    },
-  ];
+const matches = [
+    { home: "São Cristóvão", score: "3 x 1", away: "Juventude", goals: 1, assists: 0, minutes: "90'" },
+    { home: "São Cristóvão", score: "2 x 2", away: "Grêmio", goals: 0, assists: 1, minutes: "90'" },
+    { home: "São Cristóvão", score: "4 x 0", away: "Internacional", goals: 2, assists: 0, minutes: "90'" },
+];
 
-
-
-// TODO: Replace with usePage<PageProps & { player: typeof player, viewerRole?: string, existingRating?: ScoutRating }>().props
-
-const viewerRole = 'scout'; // TODO: usePage().props.viewerRole
+const viewerRole = 'scout';
 
 interface StarRatingProps {
     value: number;
     onChange: (v: number) => void;
 }
-
 function StarRating({ value, onChange }: StarRatingProps) {
     return (
         <div className="flex gap-1">
@@ -196,13 +121,7 @@ function StarRating({ value, onChange }: StarRatingProps) {
                     className="transition-transform hover:scale-110"
                     aria-label={`Rate ${n} stars`}
                 >
-                    <Star
-                        className={`w-5 h-5 ${
-                            n <= value
-                                ? 'fill-[#FF6B00] text-[#FF6B00]'
-                                : 'text-[#FCD9BD] dark:text-[#2A2A2A]'
-                        }`}
-                    />
+                    <Star className={`h-5 w-5 ${n <= value ? 'fill-[#FF6B00] text-[#FF6B00]' : 'text-[#FCD9BD] dark:text-[#2A2A2A]'}`} />
                 </button>
             ))}
         </div>
@@ -210,287 +129,195 @@ function StarRating({ value, onChange }: StarRatingProps) {
 }
 
 export default function NewDetail() {
-
     return (
-        <div className="min-h-screen bg-black pt-16 dark:bg-[#fae8e8]">
+        <div className="min-h-screen bg-black pt-16 xl:pt-20 2xl:pt-24 dark:bg-[#0D0D0D]">
             <PublicNavbar />
 
             {/* BREADCRUMB */}
-            <div className="bg-black max-w-7xl mx-auto  px-4 py-3 sm:px-6 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]">
-                <nav className="flex  items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A]">
-                    <Link href="/" className="whitespace-nowrap hover:text-[#FF6B00] dark:hover:text-[#FF6B00]">
-                        Home
-                    </Link>
+            <div className="mx-auto max-w-7xl bg-black px-4 py-3 sm:px-6 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]">
+                <nav className="flex items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A]">
+                    <Link href="/" className="whitespace-nowrap hover:text-[#FF6B00]">Home</Link>
                     <ChevronRight className="h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" />
-                    <Link href="/players" className="whitespace-nowrap hover:text-[#FF6B00] dark:hover:text-[#FF6B00]">
-                        Players
-                    </Link>
-
+                    <Link href="/players" className="whitespace-nowrap hover:text-[#FF6B00]">Players</Link>
                     <ChevronRight className="h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" />
                     <span className="font-medium whitespace-nowrap text-[#FF6B00] dark:text-[#F5F5F5]">Joao da Silva</span>
                 </nav>
             </div>
 
-            {/* 3-COLUMN LAYOUT */}
             <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6">
-                {/* CENTER COLUMN */}
-                <main className="min-w-0 space-y-4 overflow-x-hidden">
+                <main className="min-w-0 space-y-6 overflow-x-hidden">
 
-                    <div className="w-full max-w-7xl overflow-hidden text-white">
-                        <div className="flex flex-row gap-3 md:gap-6">
-                            {/* Left Image Section */}
-                                <div className="w-[30%] overflow-hidden rounded-md md:w-auto">
-                                    <img
-                                        src="/images/img/player-1.png"
-                                        alt="Player"
-                                        className="border border-[#233247] object-cover sm:h-[220px] sm:w-[180px] md:h-[200px] md:w-[180px]"
-                                    />
-                                </div>
+                    {/* ═══════════ TOP: player info (left) + main video (right) ═══════════ */}
+                    <section className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
 
-                            {/* Right Content */}
-                            <div className="w-[60%] flex-1 md:w-auto">
-                                <h1 className="text-[18px] font-bold tracking-wide uppercase">JOÃO DA SILVA</h1>
+                        {/* Player info */}
+                        <div className="flex gap-4 text-white sm:gap-6">
+                            {/* Smaller photo */}
+                            <div className="shrink-0">
+                                <img
+                                    src="/images/img/player-1.png"
+                                    alt="Player"
+                                    className="h-[160px] w-[120px] rounded-md border border-[#233247] object-cover sm:h-[190px] sm:w-[145px] lg:h-[210px] lg:w-[160px]"
+                                />
+                            </div>
 
-                                <h3 className="mt-1 text-[14px] text-[#eb6c0d] uppercase">Right Winger</h3>
+                            {/* Bigger info text */}
+                            <div className="min-w-0 flex-1">
+                                <h1 className="text-2xl font-bold tracking-wide uppercase md:text-3xl">JOÃO DA SILVA</h1>
+                                <h3 className="mt-1 text-base font-semibold text-[#eb6c0d] uppercase md:text-lg">Right Winger</h3>
 
-                                <div className="mt-1 space-y-1 text-[10px] md:text-[13px]">
-                                    {/* Row */}
-                                    <div className="flex">
-                                        <CalendarDays className="mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-4 md:w-4" />
+                                <div className="mt-3 space-y-1.5 text-sm md:text-base">
+                                    <div className="flex items-center">
+                                        <CalendarDays className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Date of Birth / Age:</span>
                                         <span className="pl-2 text-gray-300">Jan 30, 2007 (19)</span>
                                     </div>
-
-                                    {/* Row */}
-                                    <div className="flex">
-                                        <Users className="mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-4 md:w-4" />
+                                    <div className="flex items-center">
+                                        <Users className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
                                         <span className="pr-3 text-[#e1e2e6]">Nationality:</span>
-                                        <ReactCountryFlag countryCode="BR" svg className="mt-[2px] mr-1 md:mt-1 md:h-[1em] md:w-[1em]" />
-                                        <span className="">Brazil</span>
+                                        <ReactCountryFlag countryCode="BR" svg className="mr-1" />
+                                        <span>Brazil</span>
                                         <span className="px-1">/</span>
-                                        <ReactCountryFlag countryCode="IT" svg className="mt-[2px] mr-1 md:mt-1 md:h-[1em] md:w-[1em]" />
+                                        <ReactCountryFlag countryCode="IT" svg className="mr-1" />
                                         <span>Italy III</span>
                                     </div>
-
-                                    {/* Row */}
-                                    <div className="flex">
-                                        <Ruler className="mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-4 md:w-4" />
+                                    <div className="flex items-center">
+                                        <Ruler className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Height:</span>
                                         <span className="pl-2 text-gray-100">1.84 m</span>
                                     </div>
-
-                                    {/* Row */}
-                                    <div className="flex">
-                                        <Crosshair className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-4 md:w-4" />
+                                    <div className="flex items-center">
+                                        <Crosshair className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Position:</span>
                                         <span className="pl-2 text-gray-100">Right Winger</span>
                                     </div>
-
-                                    {/* Row */}
-                                    <div className="flex">
-                                        <Footprints className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-4 md:w-4" />
+                                    <div className="flex items-center">
+                                        <Footprints className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Dominant Foot:</span>
                                         <span className="pl-2 text-gray-100">Right</span>
                                     </div>
-
-                                    {/* Row */}
-                                    <div className="flex">
-                                        <Shield className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-4 md:w-4" />
+                                    <div className="flex items-center">
+                                        <Shield className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Current Club:</span>
                                         <span className="pl-2 text-gray-100">São Cristovão</span>
                                     </div>
-
-                                    {/* Row */}
-                                    <div className="flex">
-                                        <Shirt className="mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-4 md:w-4" />
+                                    <div className="flex items-center">
+                                        <Shirt className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Previous Club:</span>
                                         <span className="pl-2 text-gray-100">Bangu</span>
                                     </div>
                                 </div>
                             </div>
-
-                            {/* RIGHT AD COLUMN */}
-                            <aside className="hidden lg:block">
-                                <p className="text-[10px] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>
-
-                                <div className="relative flex h-[180px] w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 text-center">
-                                    <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
-                                </div>
-                            </aside>
                         </div>
-                    </div>
 
-                    {/* VIDEO SECTION */}
-                    <section className="mt-2">
-                        <p className="-mt-2 mb-3 text-[16px] font-bold text-white">HIGHLIGHTS VIDEO</p>
-                        <div className="relative overflow-hidden">
-                            <div className="relative w-full">
+                        {/* Main video — visible on first view, no scroll needed */}
+                        <div className="w-full">
+                            <p className="mb-3 text-[16px] font-bold text-white">HIGHLIGHTS VIDEO</p>
+                            <div className="overflow-hidden rounded-2xl">
                                 {player.videoUrl ? (
-                                    <>
-                                        <iframe
-                                            src={player.videoUrl}
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowFullScreen
-                                            className="h-[300px] w-full rounded-2xl bg-gray-500"
-                                        />
-                                    </>
+                                    <iframe
+                                        src={player.videoUrl}
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                        className="aspect-video w-full rounded-2xl bg-gray-800"
+                                    />
                                 ) : (
-                                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                    <div className="flex aspect-video w-full flex-col items-center justify-center rounded-2xl bg-gray-800">
                                         <Video className="mb-2 h-12 w-12 text-white/30" />
                                         <p className="text-sm text-white/40">No highlights uploaded yet</p>
                                     </div>
                                 )}
                             </div>
-
-                            <div className="flex items-center justify-between text-[14px] text-white">
-                                <h3 className="mt-2">João da Silva - Best Moments 2024/2025</h3>
+                            <div className="mt-2 flex items-center justify-between text-[14px] text-white">
+                                <h3>João da Silva - Best Moments 2024/2025</h3>
                                 <span>07:32</span>
-                            </div>
-                        </div>
-
-                        <div className="relative mt-4 grid grid-cols-3 gap-5 overflow-hidden">
-                            {/* sub video 1 */}
-                            <div>
-                                <div className="relative w-full rounded-[16px]">
-                                    {player.videoUrl ? (
-                                        <>
-                                            <iframe
-                                                src={player.videoUrl}
-                                                // title={`${player.name} highlights`}
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                allowFullScreen
-                                                className="h-full w-full rounded-[12px] bg-gray-500"
-                                            />
-                                           
-                                        </>
-                                    ) : (
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                            <Video className="mb-2 h-12 w-12 text-white/30" />
-                                            <p className="text-sm text-white/40">No highlights uploaded yet</p>
-                                        </div>
-                                    )}
-                                </div>
-                                <p className="bold py-2 text-center text-white text-[16px]">Goals</p>
-                            </div>
-
-                            {/* sub video 2 */}
-                            <div>
-                                <div className="relative w-full">
-                                    {player.videoUrl ? (
-                                        <>
-                                            <iframe
-                                                src={player.videoUrl}
-                                                // title={`${player.name} highlights`}
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                allowFullScreen
-                                                className="h-full w-full rounded-[12px] bg-gray-500"
-                                            />
-                                        </>
-                                    ) : (
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                            <Video className="mb-2 h-12 w-12 text-white/30" />
-                                            <p className="text-sm text-white/40">No highlights uploaded yet</p>
-                                        </div>
-                                    )}
-                                </div>
-                                <p className="bold py-2 text-center text-white text-[16px]">Assists</p>
-                            </div>
-
-                            {/* sub video 3 */}
-                            <div>
-                                <div className="relative w-full rounded-[16px]">
-                                    {player.videoUrl ? (
-                                        <>
-                                            <iframe
-                                                src={player.videoUrl}
-                                                // title={`${player.name} highlights`}
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                allowFullScreen
-                                                className="h-full w-full rounded-[12px] bg-gray-500"
-                                            />
-                                        </>
-                                    ) : (
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                            <Video className="mb-2 h-12 w-12 text-white/30" />
-                                            <p className="text-sm text-white/40">No highlights uploaded yet</p>
-                                        </div>
-                                    )}
-                                </div>
-                                <p className="bold py-2 text-center text-white text-[16px]">Dribbles</p>
                             </div>
                         </div>
                     </section>
 
-                    {/* IN-CONTENT AD */}
+                    {/* SUB VIDEOS */}
+                    <section>
+                        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+                            {[
+                                { label: 'Goals' },
+                                { label: 'Assists' },
+                                { label: 'Dribbles' },
+                            ].map((v, i) => (
+                                <div key={i}>
+                                    <div className="overflow-hidden rounded-[12px]">
+                                        {player.videoUrl ? (
+                                            <iframe
+                                                src={player.videoUrl}
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowFullScreen
+                                                className="aspect-video w-full rounded-[12px] bg-gray-800"
+                                            />
+                                        ) : (
+                                            <div className="flex aspect-video w-full flex-col items-center justify-center rounded-[12px] bg-gray-800">
+                                                <Video className="mb-2 h-10 w-10 text-white/30" />
+                                                <p className="text-sm text-white/40">No video yet</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <p className="py-2 text-center text-[16px] font-bold text-white">{v.label}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* IN-CONTENT AD (mobile only) */}
                     <aside className="block space-y-3 lg:hidden">
                         <p className="text-[10px] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>
-
                         <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center">
                             <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
-                           
                         </div>
                     </aside>
 
                     {/* CLUB HISTORY */}
                     <section className="overflow-hidden">
-                        <div className="flex gap-4 md:grid md:grid-cols-2 md:gap-6">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
                             {/* Transfer History */}
                             <div className="rounded-xl border border-slate-800 bg-[#06111d] p-6">
                                 <h2 className="mb-6 text-[13px] font-bold text-white uppercase md:text-[18px]">
                                     Transfer History <span className="font-medium text-slate-400">(Last 10 Years)</span>
                                 </h2>
-
                                 <div className="space-y-3">
                                     {transferHistory.map((item, index) => (
                                         <div key={index} className="flex items-center gap-2 md:gap-4">
-                                            <span className="w-8 text-[10px] font-medium text-slate-300 sm:text-[13px] md:w-12 md:text-[16px]">
-                                                {item.year}
-                                            </span>
-
-                                            {/* Club Logo */}
+                                            <span className="w-8 text-[10px] font-medium text-slate-300 sm:text-[13px] md:w-12 md:text-[16px]">{item.year}</span>
                                             <div className="h-6 w-6 flex-shrink-0 rounded-full border border-slate-600 bg-slate-700 md:h-8 md:w-8">
                                                 <img src={item.img} alt="" />
                                             </div>
-
                                             <span className="text-[10px] text-white sm:text-[13px] md:text-base">{item.club}</span>
                                         </div>
                                     ))}
                                 </div>
                             </div>
-
                             {/* Positions */}
                             <div className="rounded-xl border border-slate-800 bg-[#06111d] p-5">
                                 <h2 className="mb-6 text-[13px] font-bold text-white uppercase md:text-[18px]">Positions On The Pitch</h2>
-
                                 <Pitch />
-
-                                {/* Position Info */}
                                 <div className="mt-6 space-y-2 text-[11px] font-bold text-white uppercase md:text-[16px]">
                                     <p>
-                                        <span className="text-white-400 mb-3 text-[13px] font-bold uppercase md:text-[18px]">Main Position:</span>{' '}
-                                        Right Winger
+                                        <span className="mb-3 text-[13px] font-bold text-white uppercase md:text-[18px]">Main Position:</span> Right Winger
                                     </p>
-
                                     <p>
-                                        <span className="text-[13px] font-bold text-white uppercase md:text-[18px]">Secondary:</span> Attacking
-                                        Midfielder, Central Midfielder
+                                        <span className="text-[13px] font-bold text-white uppercase md:text-[18px]">Secondary:</span> Attacking Midfielder, Central Midfielder
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </section>
 
-                    {/* <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-4"> */}
-                    <div className="flex gap-4 md:grid md:grid-cols-[400px_1fr]">
+                    {/* ACHIEVEMENTS + DESCRIPTION */}
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-[400px_1fr]">
                         {/* Achievements */}
                         <div className="rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5">
                             <h2 className="mb-5 text-[12px] font-semibold text-white uppercase md:text-sm">Achievements</h2>
-
                             <div className="space-y-2 md:space-y-4">
                                 {achievements.map((item, index) => (
                                     <div key={index} className="flex items-start gap-1 md:gap-3">
                                         <span className="text-[12px] text-yellow-500 md:text-sm">🏆</span>
-
                                         <div className="flex gap-3 md:grid md:grid-cols-[100px_1fr]">
                                             <p className="text-[12px] font-medium text-orange-500 md:text-sm">{item.year}</p>
                                             <p className="text-[10px] leading-relaxed text-gray-300 md:text-sm">{item.title}</p>
@@ -498,58 +325,47 @@ export default function NewDetail() {
                                     </div>
                                 ))}
                             </div>
-
                             <button className="mt-6 text-[12px] font-medium text-orange-500 transition hover:text-orange-400 md:text-sm">
                                 View all achievements →
                             </button>
                         </div>
-
                         {/* Player Description */}
                         <div className="rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5">
                             <h2 className="mb-4 text-[12px] font-semibold text-white uppercase md:text-sm">
                                 Player Description <span className="font-normal text-gray-500">(UP TO 500 WORDS)</span>
                             </h2>
-
                             <div className="w-full">
-                                <p className="h-48 w-full resize-none rounded-lg border border-[#1b2a3d] bg-[#08111d] p-2 text-gray-300 outline-none placeholder:text-gray-500 focus:border-orange-500 md:p-4">
-                                    Write a detailed description of the player's qualities, strengths, style of play, mentality, and other relevant
-                                    information...
+                                <p className="min-h-48 w-full rounded-lg border border-[#1b2a3d] bg-[#08111d] p-2 text-gray-300 md:p-4">
+                                    Write a detailed description of the player's qualities, strengths, style of play, mentality, and other relevant information...
                                 </p>
-
-                                <span className="absolute right-4 bottom-3 text-xs text-gray-500">{/* 0 / 500 words */}</span>
                             </div>
                         </div>
                     </div>
 
-                    {/* IN-CONTENT AD */}
+                    {/* IN-CONTENT AD (mobile only) */}
                     <aside className="block space-y-3 lg:hidden">
                         <p className="text-[10px] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>
-
                         <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center">
                             <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
-                           
                         </div>
                     </aside>
 
-                    <div className="grid grid-cols-[1fr_1.25fr] gap-4">
+                    {/* COMPETITIONS + RECENT MATCHES */}
+                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_1.25fr]">
                         {/* Competition History */}
                         <div className="rounded-lg border border-[#152538] bg-[#07111d] p-4 md:p-6">
                             <h2 className="mb-6 text-[14px] font-bold text-white uppercase md:text-xl">Competition History</h2>
-
                             <div className="space-y-2 md:space-y-4">
                                 {competitions.map((item, index) => (
                                     <div key={index} className="flex items-start justify-between gap-2 md:gap-4">
                                         <div className="flex items-start gap-1 md:gap-3">
-                                            <Trophy size={18} strokeWidth={1.5} className="mt-0.5 text-gray-300" />
-
+                                            <Trophy size={18} strokeWidth={1.5} className="mt-0.5 shrink-0 text-gray-300" />
                                             <span className="text-[10px] text-gray-200 md:text-sm">{item.name}</span>
                                         </div>
-
-                                        <span className="text-[10px] text-[#f97316] md:text-sm">{item.year}</span>
+                                        <span className="text-[10px] whitespace-nowrap text-[#f97316] md:text-sm">{item.year}</span>
                                     </div>
                                 ))}
                             </div>
-
                             <div className="mt-8 flex justify-end">
                                 <button className="flex items-center gap-2 text-[13px] text-[#f97316] transition hover:text-orange-400 md:text-[18px]">
                                     View all competitions
@@ -557,46 +373,37 @@ export default function NewDetail() {
                                 </button>
                             </div>
                         </div>
-
                         {/* Recent Matches */}
                         <div className="overflow-hidden rounded-lg border border-[#152538] bg-[#07111d] p-6">
                             <h2 className="mb-6 text-[14px] font-bold text-white uppercase md:text-xl">Recent Matches</h2>
-
                             <div className="overflow-x-auto">
                                 <table className="w-full">
                                     <thead>
-                                        <tr className="border-b-1 border-gray-300/10 text-left text-[12px] text-gray-300 uppercase md:text-sm">
+                                        <tr className="border-b border-gray-300/10 text-left text-[12px] text-gray-300 uppercase md:text-sm">
                                             <th className="pb-4">Match</th>
                                             <th className="pb-4 text-center">Goals</th>
                                             <th className="px-2 pb-4 text-center">Assists</th>
                                             <th className="pb-4 text-center">Minutes</th>
                                         </tr>
                                     </thead>
-
                                     <tbody>
                                         {matches.map((match, index) => (
-                                            <tr key={index} className="border-b-1 border-gray-300/10 text-[10px] text-gray-200 md:text-[14px]">
+                                            <tr key={index} className="border-b border-gray-300/10 text-[10px] text-gray-200 md:text-[14px]">
                                                 <td className="py-3">
                                                     <div className="flex items-center gap-2 md:gap-4">
                                                         <span>{match.home}</span>
-
                                                         <span className="font-semibold">{match.score}</span>
-
                                                         <span>{match.away}</span>
                                                     </div>
                                                 </td>
-
                                                 <td className="py-3 text-center">{match.goals}</td>
-
                                                 <td className="py-3 text-center">{match.assists}</td>
-
                                                 <td className="py-3 text-center">{match.minutes}</td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
-
                             <div className="mt-8 flex justify-end">
                                 <button className="flex items-center gap-2 text-[14px] text-[#f97316] transition hover:text-orange-400 md:text-[18px]">
                                     View all matches
@@ -608,7 +415,6 @@ export default function NewDetail() {
                 </main>
             </div>
 
-            {/* FOOTER SPACING */}
             <PublicFooter />
         </div>
     );
