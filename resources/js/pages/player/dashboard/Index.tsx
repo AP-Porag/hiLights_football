@@ -394,7 +394,7 @@ export default function PlayerDashboard() {
 
                                         <span className="text-left text-[6px] sm:text-[8px] leading-tight">
                                             VIEW FULL PROFILE, VIDEOS,
-                                            <br />
+                                            <br/>
                                             STATS AND ACHIEVEMENTS
                                         </span>
                                     </button>
@@ -403,24 +403,24 @@ export default function PlayerDashboard() {
                         </div>
 
                         <div className="flex justify-between items-center relative w-full -mt-2  border-t-1 border-gray-600 p-3 sm:p-6 bg-[url('/images/img/layer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[16px] rounded-br-[16px]">
-                            <p className=" flex justify-between items-center text-[9px] -ml-3 text-gray-300">
-                                <Shield className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                            <p className=" flex justify-between items-center text-[7px] sm:text-[8px] -ml-3 text-gray-300 pl-1">
+                                <Shield className="w-6 h-6 " />
 
-                                THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br />
-                                MEMBER OF HILIGHTS FOOTBALL PLATFORM.
+                                <span className="pl-2">THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br className="hidden sm:block"/>
+                                MEMBER OF HILIGHTS FOOTBALL PLATFORM.</span>
                             </p>
-                            <p className="text-[6px] sm:text-[8px] text-black font-bold translate-x-0 sm:translate-x-[10%]"> WWW.HILIGHTSFOOTBALL.COM </p>
+                            <p className="text-[6px] sm:text-[8px] text-black font-bold translate-x-[5px] sm:translate-x-[10%]">WWW.HILIGHTSFOOTBALL.COM  </p>
 
 
 
                             <div className="absolute -bottom-10 left-0 flex justify-between w-full">
 
-                                <button className="capitalize flex items-center rounded-xl bg-[#e75502] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white text-[16px] sm:text-[10px] transition-all hover:bg-[#ff7a1a]">
-                                    <Share2 className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" />
+                                <button className="capitalize flex items-center rounded-xl bg-[#e75502] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[16px] text-[10px] transition-all hover:bg-[#ff7a1a]">
+                                    <Share2 className="mr-2 w-[10px] h-[10px] sm:h-[12px]" />
                                     share full profile
                                     </button>
 
-                                <button className="capitalize flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[16px] sm:text-[10px] transition-all">
+                                <button className="capitalize flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[10px] transition-all">
 
                                     <Download className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" />
                                     download member card
