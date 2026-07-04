@@ -165,7 +165,7 @@ function PlayerDashboard() {
                         React.createElement("div", { className: "overflow-hidden text-white" },
                             React.createElement("div", { className: "flex items-center justify-between" },
                                 React.createElement("div", { className: "pl-3 sm:pl-4" },
-                                    React.createElement("img", { src: "/images/logo/final_logo.png", alt: "new-logo", className: "w-[95px] sm:w-[130px]" })),
+                                    React.createElement("img", { src: "/images/logo/final_logo.png", alt: "new-logo", className: "w-[125px] sm:w-[170px]" })),
                                 React.createElement("div", { className: "-translate-x-[15%] sm:-translate-x-[30%] translate-y-[20%]" },
                                     React.createElement("h2", { className: "text-center font-bold uppercase text-[11px] sm:text-[14px]" }, "MEMBER CARD"),
                                     React.createElement("p", { className: "text-center text-[8px] sm:text-[10px] font-semibold text-orange-500 uppercase" }, "Official Member"),
