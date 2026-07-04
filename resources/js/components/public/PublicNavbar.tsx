@@ -163,12 +163,12 @@ export default function PublicNavbar() {
                         >
                             <SheetHeader className="border-b border-[#E2E8F0] px-6 py-4 dark:border-[#2A2A2A]">
                                 <SheetTitle className="flex items-center gap-2">
-                                    <img src="/images/logo/logo_version_light_2.png" className="h-20 w-auto dark:hidden" alt="HiLights Football" />
-                                    <img
+                                    <img src="/images/logo/mobile-nav-logo.png" className="h-10 w-auto dark:hidden" alt="HiLights Football" />
+                                    {/* <img
                                         src="/images/logo/logo_version_light_2.png"
                                         className="hidden h-20 w-auto dark:block"
                                         alt="HiLights Football"
-                                    />
+                                    /> */}
                                 </SheetTitle>
                             </SheetHeader>
                             <div className="px-6 py-4">
