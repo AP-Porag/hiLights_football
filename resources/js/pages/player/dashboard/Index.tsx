@@ -4,8 +4,42 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Link } from '@inertiajs/react';
-import { ArrowRight, CheckCircle2, Circle, Crown, Eye, History, Lock, Star, TrendingUp, Video } from 'lucide-react';
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+
+import {
+    Share2,
+    Download,
+    ArrowRight,
+    CalendarDays,
+    CheckCircle2,
+    Smartphone,
+    Circle,
+    Crown,
+    Eye,
+    Flag,
+    History,
+    Lock,
+    MapPin,
+    Star,
+    TrendingUp,
+    User,
+    Video,
+    Shirt,
+    Footprints,
+    ShieldCheck ,
+    Ruler,
+    Weight,
+    Shield,
+} from 'lucide-react';
+
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis
+} from 'recharts';
 
 // MOCK DATA (realistic)
 // TODO: Replace with usePage<PageProps & {player:typeof player, recentViews:typeof recentViews}>().props
@@ -72,8 +106,41 @@ export default function PlayerDashboard() {
         })
         .join(' ');
 
+    const playerInfo = [
+        {
+            icon: <Shirt className="w-4 h-4 text-gray-300" />,
+            label: 'POSITION',
+            value: 'ATTACKING MIDFIELDER',
+        },
+        {
+            icon: <Footprints className="w-4 h-4 text-gray-300" />,
+            label: 'PREFERRED FOOT',
+            value: 'RIGHT',
+        },
+        {
+            icon: <Ruler className="w-4 h-4 text-gray-300" />,
+            label: 'HEIGHT',
+            value: '178 CM',
+        },
+        {
+            icon: <Weight className="w-4 h-4 text-gray-300" />,
+            label: 'WEIGHT',
+            value: '67 KG',
+        },
+        {
+            icon: <Shield className="w-4 h-4 text-gray-300" />,
+            label: 'CLUB',
+            value: 'RIO DE JANEIRO FC',
+        },
+        {
+            icon: <CalendarDays className="w-4 h-4 text-gray-300" />,
+            label: 'MEMBER SINCE',
+            value: 'MAY 2024',
+        },
+    ];
+
     return (
-        <div className="min-h-screen bg-[#F8FAFC] pt-16 dark:bg-[#0D0D0D]">
+        <div className="min-h-screen bg-black pt-16 dark:bg-[#0D0D0D]">
             <PlayerNavbar />
 
             {/* PAGE HEADER */}
@@ -88,92 +155,283 @@ export default function PlayerDashboard() {
 
             <main className="mx-auto max-w-[1300px] space-y-6 px-4 py-6 sm:px-8 sm:py-8">
                 {/* WIDGETS ROW */}
-                <section className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                <section className="grid grid-cols-1 gap-2 md:grid-cols-[1fr_450px]">
                     {/* [1] Profile Complete */}
-                    <div className="flex flex-col items-center rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
-                        <div className="relative h-[112px] w-[112px]">
-                            <svg width="112" height="112" viewBox="0 0 112 112" className="-rotate-90">
-                                <circle cx="56" cy="56" r="44" fill="none" strokeWidth="10" className="stroke-[#E2E8F0] dark:stroke-[#2A2A2A]" />
-                                <circle
-                                    cx="56"
-                                    cy="56"
-                                    r="44"
-                                    fill="none"
-                                    stroke="#FF6B00"
-                                    strokeWidth="10"
-                                    strokeDasharray={circumference}
-                                    strokeDashoffset={dashOffset}
-                                    strokeLinecap="round"
-                                />
+
+                    <div className="grid grid-cols-2 gap-4 h-[500px]">
+                        <div className="flex flex-col items-center rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
+                            <div className="relative h-[112px] w-[112px]">
+                                <svg width="112" height="112" viewBox="0 0 112 112" className="-rotate-90">
+                                    <circle cx="56" cy="56" r="44" fill="none" strokeWidth="10" className="stroke-[#E2E8F0] dark:stroke-[#2A2A2A]" />
+                                    <circle
+                                        cx="56"
+                                        cy="56"
+                                        r="44"
+                                        fill="none"
+                                        stroke="#FF6B00"
+                                        strokeWidth="10"
+                                        strokeDasharray={circumference}
+                                        strokeDashoffset={dashOffset}
+                                        strokeLinecap="round"
+                                    />
+                                </svg>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <span className="font-display text-3xl font-black text-[#0F172A] dark:text-[#F5F5F5]">
+                                        {player.profileComplete}%
+                                    </span>
+                                </div>
+                            </div>
+                            <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Profile Complete</p>
+                            <p className="mt-2 text-[10px] font-medium text-[#FF6B00]">Add video to reach 80%</p>
+                        </div>
+
+                        {/* [2] Profile Views */}
+                        <div className="rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
+                            <div className="flex items-start justify-between">
+                                <div>
+                                    <p className="font-mono text-3xl font-black text-[#0F172A] dark:text-[#F5F5F5]">
+                                        {player.totalViews.toLocaleString('en-US')}
+                                    </p>
+                                    <p className="mt-1 text-sm text-[#475569] dark:text-[#9A9A9A]">Profile Views</p>
+                                </div>
+                                <Eye className="h-5 w-5 text-[#FF6B00]" />
+                            </div>
+                            <div className="mt-2 flex items-center gap-1">
+                                <TrendingUp className="h-3 w-3 text-green-500 dark:text-green-400" />
+                                <span className="text-xs font-medium text-green-500 dark:text-green-400">{player.trend}% this week</span>
+                            </div>
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="mt-2 h-12 w-full">
+                                <polyline points={sparkPoints} fill="none" stroke="#FF6B00" strokeWidth="2" vectorEffect="non-scaling-stroke" />
                             </svg>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="font-display text-3xl font-black text-[#0F172A] dark:text-[#F5F5F5]">{player.profileComplete}%</span>
-                            </div>
                         </div>
-                        <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Profile Complete</p>
-                        <p className="mt-2 text-[10px] font-medium text-[#FF6B00]">Add video to reach 80%</p>
+
+                        {/* [3] Scout Interest */}
+                        <div className="rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
+                            <div className="flex items-start justify-between">
+                                <div>
+                                    <p className="font-mono text-3xl font-black text-[#0F172A] dark:text-[#F5F5F5]">{player.scoutInterest}</p>
+                                    <p className="mt-1 text-sm text-[#475569] dark:text-[#9A9A9A]">Scout Ratings</p>
+                                </div>
+                                <Star className="h-5 w-5 fill-[#FF6B00] text-[#FF6B00]" />
+                            </div>
+                            <div className="mt-2 flex items-center gap-1">
+                                <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
+                                <span className="text-xs font-medium text-[#475569] dark:text-[#9A9A9A]">Average {player.avgRating} / 5.0</span>
+                            </div>
+                            <Progress value={84} className="mt-3 h-2 bg-[#E2E8F0] dark:bg-[#2A2A2A] [&>div]:bg-[#FF6B00]" />
+                        </div>
+
+                        {/* [4] Subscription */}
+                        <div className="flex flex-col rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
+                            {player.subscription === 'free' ? (
+                                <>
+                                    <Badge className="w-fit border border-[#FF6B00] bg-[#FFF3EB] text-[10px] font-bold tracking-wider text-[#CC5500] hover:bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]">
+                                        FREE PLAN
+                                    </Badge>
+                                    <p className="mt-3 flex-1 text-sm text-[#475569] dark:text-[#9A9A9A]">
+                                        Unlock all features and reach more scouts.
+                                    </p>
+                                    <Link href="/player/upgrade" className="mt-3">
+                                        <Button className="w-full bg-[#FF6B00] p-3 font-semibold text-white hover:bg-[#CC5500]">
+                                            <Crown className="mr-1.5 h-3.5 w-3.5" />
+                                            <span className="text-[12px]">
+                                                Upgrade to <br className="block" /> Premium
+                                            </span>
+                                        </Button>
+                                    </Link>
+                                </>
+                            ) : (
+                                <>
+                                    <Badge className="w-fit border border-green-600 bg-green-100 text-[10px] font-bold tracking-wider text-green-700 hover:bg-green-100 dark:bg-green-950/30 dark:text-green-400">
+                                        PREMIUM ACTIVE
+                                    </Badge>
+                                    <p className="mt-3 flex-1 text-sm text-[#475569] dark:text-[#9A9A9A]">All features unlocked.</p>
+                                    <p className="mt-3 text-xs text-[#94A3B8]">Renews 01/06/2026</p>
+                                </>
+                            )}
+                        </div>
                     </div>
 
-                    {/* [2] Profile Views */}
-                    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
-                        <div className="flex items-start justify-between">
-                            <div>
-                                <p className="font-mono text-3xl font-black text-[#0F172A] dark:text-[#F5F5F5]">
-                                    {player.totalViews.toLocaleString('en-US')}
-                                </p>
-                                <p className="mt-1 text-sm text-[#475569] dark:text-[#9A9A9A]">Profile Views</p>
-                            </div>
-                            <Eye className="h-5 w-5 text-[#FF6B00]" />
-                        </div>
-                        <div className="mt-2 flex items-center gap-1">
-                            <TrendingUp className="h-3 w-3 text-green-500 dark:text-green-400" />
-                            <span className="text-xs font-medium text-green-500 dark:text-green-400">{player.trend}% this week</span>
-                        </div>
-                        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="mt-2 h-12 w-full">
-                            <polyline points={sparkPoints} fill="none" stroke="#FF6B00" strokeWidth="2" vectorEffect="non-scaling-stroke" />
-                        </svg>
-                    </div>
+                    {/* right side */}
+                    <div className="mx-auto mb-16">
+                    <div className="w-[300px] sm:w-[420px] border-1 border-gray-600 rounded-[16px]">
+                        <div className="overflow-hidden text-white">
+                            {/* Left Section */}
+                            <div className="flex items-center justify-between">
+                                {/* Logo */}
+                                <div className="pl-3 sm:pl-4">
+                                    <img src="/images/logo/final_logo.png" alt="new-logo" className="w-[95px] sm:w-[130px]" />
+                                </div>
 
-                    {/* [3] Scout Interest */}
-                    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
-                        <div className="flex items-start justify-between">
-                            <div>
-                                <p className="font-mono text-3xl font-black text-[#0F172A] dark:text-[#F5F5F5]">{player.scoutInterest}</p>
-                                <p className="mt-1 text-sm text-[#475569] dark:text-[#9A9A9A]">Scout Ratings</p>
-                            </div>
-                            <Star className="h-5 w-5 fill-[#FF6B00] text-[#FF6B00]" />
-                        </div>
-                        <div className="mt-2 flex items-center gap-1">
-                            <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
-                            <span className="text-xs font-medium text-[#475569] dark:text-[#9A9A9A]">Average {player.avgRating} / 5.0</span>
-                        </div>
-                        <Progress value={84} className="mt-3 h-2 bg-[#E2E8F0] dark:bg-[#2A2A2A] [&>div]:bg-[#FF6B00]" />
-                    </div>
+                                <div className="-translate-x-[15%] sm:-translate-x-[30%] translate-y-[20%]">
+                                    <h2 className="text-center font-bold uppercase text-[11px] sm:text-[14px]">
+                                        MEMBER CARD
+                                    </h2>
 
-                    {/* [4] Subscription */}
-                    <div className="flex flex-col rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]">
-                        {player.subscription === 'free' ? (
-                            <>
-                                <Badge className="w-fit border border-[#FF6B00] bg-[#FFF3EB] text-[10px] font-bold tracking-wider text-[#CC5500] hover:bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]">
-                                    FREE PLAN
-                                </Badge>
-                                <p className="mt-3 flex-1 text-sm text-[#475569] dark:text-[#9A9A9A]">Unlock all features and reach more scouts.</p>
-                                <Link href="/player/upgrade" className="mt-3">
-                                    <Button size="sm" className="w-full bg-[#FF6B00] font-semibold text-white hover:bg-[#CC5500]">
-                                        <Crown className="mr-1.5 h-3.5 w-3.5" />
-                                        Upgrade to Premium
-                                    </Button>
-                                </Link>
-                            </>
-                        ) : (
-                            <>
-                                <Badge className="w-fit border border-green-600 bg-green-100 text-[10px] font-bold tracking-wider text-green-700 hover:bg-green-100 dark:bg-green-950/30 dark:text-green-400">
-                                    PREMIUM ACTIVE
-                                </Badge>
-                                <p className="mt-3 flex-1 text-sm text-[#475569] dark:text-[#9A9A9A]">All features unlocked.</p>
-                                <p className="mt-3 text-xs text-[#94A3B8]">Renews 01/06/2026</p>
-                            </>
-                        )}
+                                    <p className="text-center text-[8px] sm:text-[10px] font-semibold text-orange-500 uppercase">Official Member</p>
+
+                                    <svg width="130" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />
+
+                                        <path
+                                            d="M90 4L92.35 9.15L98 9.8L94 13.6L95.2 19L90 16L84.8 19L86 13.6L82 9.8L87.65 9.15L90 4Z"
+                                            fill="#F97316"
+                                        />
+
+                                        <line x1="110" y1="12" x2="170" y2="12" stroke="#6B7280" strokeWidth="1" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div className="relative flex gap-2 sm:gap-4 pl-4 pt-2 border-b-1 border-gray-400">
+                                {/* Image */}
+                                <div className="h-[160px] w-[95px] sm:h-[210px] sm:w-[130px] mb-3">
+                                    <img
+                                        src="/images/img/p-6.png"
+                                        alt="player"
+                                        className="h-full w-full rounded-[10px] sm:rounded-[12px] border-1 border-gray-400 object-cover"
+                                    />
+                                </div>
+
+                                <div>
+                                    <div className="relative z-10">
+                                        <h3 className="mt-2 text-[12px] sm:mt-4 sm:text-[16px] font-bold uppercase">
+                                            JOÃO DA SILVA
+                                        </h3>
+
+                                        <p className="text-[8px] sm:text-[10px] text-[#f05300] uppercase">
+                                            ATTACKING MIDFIELDER
+                                        </p>
+
+                                        <div className="absolute mt-2 h-[1px] bg-orange-500 w-[80%] sm:w-[110%]"></div>
+                                    </div>
+
+                                    <div className="mt-6 space-y-1">
+                                        <div className="flex items-center">
+                                            <User className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                            <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
+                                                ID:
+                                                <br />
+                                                <span className="text-white">HLF-00012345</span>
+                                            </p>
+                                        </div>
+
+                                        <div className="flex items-center">
+                                            <CalendarDays className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                            <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
+                                                DATE OF BIRTH:
+                                                <br />
+                                                <span className="text-white">15 / 05 / 2006</span>
+                                            </p>
+                                        </div>
+
+                                        <div className="flex items-center">
+                                            <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                            <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
+                                                NATIONALITY:
+                                                <br />
+                                                <span className="text-white">Brazil</span>
+                                            </p>
+                                        </div>
+
+                                        <div className="flex items-center">
+                                            <MapPin className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                            <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
+                                                CITY:
+                                                <br />
+                                                <span className="text-white">RIO DE JANEIRO - RJ</span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="absolute right-0 bottom-0 z-0">
+                                        <img src="/images/img/orange-img.png" alt="" className="w-[50px] sm:w-[60px]" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div className="bg-[#191917] p-4 sm:p-6 text-white">
+                            <div className="grid gap-3 sm:gap-6 grid-cols-2">
+                                {/* Left Side */}
+                                <div className="relative">
+                                    <div className="absolute top-0 -right-4 w-[1px] h-full border-r border-white/10"></div>
+                                    <h2 className="mb-2 text-[10px] font-bold text-[#f4620c] uppercase">Player Info</h2>
+
+                                    <div className="space-y-2">
+                                        {playerInfo.map((item, index) => (
+                                            <div key={index} className="flex items-center justify-between border-b border-white/10 pb-4 last:border-b-0">
+                                                <div className="flex items-center gap-2">
+
+                                                    <span className="text-[#d2d2d2">{item.icon}</span>
+
+                                                    <span className="text-[8px] pr-2 text-[#d2d2d2] uppercase">{item.label}</span>
+                                                </div>
+
+                                                <span className="text-[7px] sm:text-[8px] font-medium text-white uppercase">{item.value}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Right Side */}
+                                <div className="pl-4 sm:pl-3">
+                                    <h2 className="text-[10px] font-bold text-[#f4620c] uppercase">Scan To View Profile</h2>
+
+                                    <p className="mt-1 mb-6 text-[8px] text-[#f1f1f1] uppercase">Open Your Camera And Scan</p>
+
+                                    {/* QR Area */}
+                                    <div className="w-fit rounded-[8px] sm:rounded-xl border-2 sm:border-[3px] border-[#ff6600] bg-white sm:p-3 p-2">
+                                        <img src="/images/img/qr.png" alt="QR" className="h-[70px] w-[70px] sm:h-[90px] sm:w-[90px] object-cover" />
+                                    </div>
+
+                                    {/* Button */}
+                                    <button className="mt-2 flex items-center rounded-xl bg-[#ff6600] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#ff7a1a]">
+                                          <span className=" text-black pr-1">
+                                                    <Smartphone className="h-6 w-4"/>
+                                                </span>
+
+                                        <span className="text-left text-[6px] sm:text-[8px] leading-tight">
+                                            VIEW FULL PROFILE, VIDEOS,
+                                            <br />
+                                            STATS AND ACHIEVEMENTS
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-between items-center relative w-full -mt-2  border-t-1 border-gray-600 p-3 sm:p-6 bg-[url('/images/img/layer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[16px] rounded-br-[16px]">
+                            <p className=" flex justify-between items-center text-[9px] -ml-3 text-gray-300">
+                                <Shield className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+
+                                THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br />
+                                MEMBER OF HILIGHTS FOOTBALL PLATFORM.
+                            </p>
+                            <p className="text-[6px] sm:text-[8px] text-black font-bold translate-x-0 sm:translate-x-[10%]"> WWW.HILIGHTSFOOTBALL.COM </p>
+
+
+
+                            <div className="absolute -bottom-10 left-0 flex justify-between w-full">
+
+                                <button className="capitalize flex items-center rounded-xl bg-[#e75502] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white text-[16px] sm:text-[10px] transition-all hover:bg-[#ff7a1a]">
+                                    <Share2 className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" />
+                                    share full profile
+                                    </button>
+
+                                <button className="capitalize flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[16px] sm:text-[10px] transition-all">
+
+                                    <Download className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" />
+                                    download member card
+                                    </button>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
                     </div>
                 </section>
 

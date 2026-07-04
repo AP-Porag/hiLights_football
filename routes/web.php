@@ -3,26 +3,61 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-//all web routes
+Route::get('/execute-command', function () {
+    //    return redirect()->route('login');
+    //    Artisan::call('storage:link');
+    Artisan::call('migrate:fresh --seed');
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('optimize');
+    dd('All commands executed successfully');
+
+    //deploy command
+    ///opt/alt/php84/usr/bin/php artisan migrate:fresh --seed -vvv
+
+});
+
+// all web routes
+// Route::get('/', function () {
+//     return Inertia::render('web/Home');
+// })->name('home');
+
+
 Route::get('/', function () {
-    return Inertia::render('web/Home');
+    return Inertia::render('web/HomeTwo');
 })->name('home');
 
 Route::get('/about', function () {
     return Inertia::render('web/About');
 })->name('about');
 
-Route::get('/pricing', function () {
-    return Inertia::render('web/Pricing');
-})->name('pricing');
+// Route::get('/pricing', function () {
+//     return Inertia::render('web/Pricing');
+// })->name('pricing');
+
+Route::get('/plans', function () {
+    return Inertia::render('web/Plans');
+})->name('plans');
+
 
 Route::get('/contact', function () {
     return Inertia::render('web/Contact');
 })->name('contact');
 
+// Route::get('/player/profile/{id}', function () {
+//     return Inertia::render('player/profile/public/Detail');
+// })->name('profile.public.detail');
+
 Route::get('/player/profile/{id}', function () {
-    return Inertia::render('player/profile/public/Detail');
+    return Inertia::render('player/profile/public/New-Detail');
 })->name('profile.public.detail');
+
+
+
+Route::get('/scout', function () {
+    return Inertia::render('web/Scout');
+})->name('scout');
 
 //all player routes
 Route::prefix('player')->group(function () {
@@ -60,7 +95,6 @@ Route::prefix('scouting')->group(function () {
         return Inertia::render('scouting/search/Saved');
     })->name('player.saved');
 });
-
 
 //all admin routes
 //Route::middleware(['auth'])->prefix('admin')->group(function () {
