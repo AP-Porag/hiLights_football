@@ -163,7 +163,7 @@ export default function Plans() {
                                         fill="#e53f01"
                                     />
                                 </svg>
-                                <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90 text-[16px] font-bold tracking-[6px] whitespace-nowrap text-white sm:text-[18px] sm:tracking-[8px]">
+                                <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90 text-[16px] font-bold tracking-[6px] whitespace-nowrap text-white sm:text-[18px] sm:tracking-[8px] pb-2 lg:pb-4">
                                     2024
                                 </p>
                                 <p className="absolute top-1/2 left-[72%] -translate-x-1/2 -translate-y-1/2 -rotate-90 text-[8px] tracking-wider whitespace-nowrap text-white uppercase sm:text-[10px]">
@@ -188,9 +188,10 @@ export default function Plans() {
                                 </div>
 
                                 {/* BODY: photo | details | qr */}
-                                <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                                <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:justify-between sm:items-start sm:gap-4 md:flex-col md:gap-5 lg:flex-row lg:justify-between lg:items-start lg:gap-4">
                                     {/* Photo */}
-                                    <div className="h-[190px] w-full shrink-0 sm:h-[190px] sm:w-[150px] lg:h-[210px] lg:w-[170px]">
+                                    <div className="h-[190px] w- shrink-0 sm:h-[190px] sm:w-[150px]
+                                     md:h-[190px]] md:w-full lg:h-[210px] lg:w-[170px]">
                                         <img
                                             src="/images/img/p-6.png"
                                             alt="player"
@@ -199,7 +200,7 @@ export default function Plans() {
                                     </div>
 
                                     {/* Details */}
-                                    <div className="min-w-0 flex-1 sm:pl-2">
+                                    <div className="min-w-0 flex-1 sm:pl-2 md:pl-0-10 lg:pl-2">
                                         <h3 className="text-[15px] font-bold uppercase lg:text-[17px]">JOÃO DA SILVA</h3>
                                         <p className="text-[9px] text-[#e24b12] uppercase lg:text-[10px]">ATTACKING MIDFIELDER</p>
                                         <div className="mt-1 h-px w-28 bg-[#e24b12]" />
@@ -241,7 +242,7 @@ export default function Plans() {
                                     </div>
 
                                     {/* QR */}
-                                    <div className="flex shrink-0 flex-col items-center sm:items-start">
+                                    <div className="flex shrink-0 flex-col items-center sm:pt-6 sm:items-start md:items-center lg:items-start md:mx-auto">
                                         <h4 className="pb-2 text-[8px] font-bold text-[#e24b12] uppercase lg:text-[10px]">Scan To View Profile</h4>
                                         <div className="rounded-[12px] border-[3px] border-[#e24b12] bg-white p-2">
                                             <img src="/images/img/qr.png" alt="QR" className="h-[70px] w-[70px] rounded-md object-cover lg:h-[90px] lg:w-[90px]" />
