@@ -88,23 +88,23 @@ export default function PlayerNavbar() {
     return (
         <header
             className={[
-                'fixed top-0 right-0 left-0 z-50 h-16',
+                'fixed top-0 right-0 left-0 z-50 h-14 lg:h-18',
                 'bg-white dark:bg-[#0D0D0D]',
                 'border-b border-[#E2E8F0] dark:border-[#2A2A2A]',
                 scrolled ? 'shadow-md' : 'shadow-[0_1px_0_rgba(0,0,0,0.05)] dark:shadow-none',
                 'transition-shadow duration-200',
             ].join(' ')}
         >
-            <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between gap-4 px-6">
+            <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between gap-4 px-2 sm:px-6">
                 {/* LEFT — Logo */}
                 <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football dashboard">
-                    <img src="/images/logo/hilights_logo_transparent_200.png" className="h-9 w-auto dark:hidden" alt="HiLights Football" />
-                    <img src="/images/logo/hilights_logo_dark_200.png" className="hidden h-9 w-auto dark:block" alt="HiLights Football" />
-                    <div className="hidden items-end gap-0.5 leading-none sm:flex">
+                    {/* <img src="/images/logo/hilights_logo_transparent_200.png" className="h-9 w-auto dark:hidden" alt="HiLights Football" /> */}
+                    <img src="/images/logo/final_logo.png" className="hidden h-6 w-auto sm:h-8 lg:h-10 xl:h-12 2xl:h-14 dark:block" alt="HiLights Football" />
+                    {/* <div className="hidden items-end gap-0.5 leading-none sm:flex">
                         <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>
                         <span className="text-xl font-black tracking-tight text-[#FF6B00] italic">Lights</span>
                         <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.12em] text-[#94A3B8]">FOOTBALL</span>
-                    </div>
+                    </div> */}
                 </Link>
 
                 {/* CENTER — Nav links (desktop) */}
