@@ -63,13 +63,10 @@ Route::get('/scout', function () {
 //all player routes
 Route::prefix('player')->group(function () {
 
-    // Route::get('/', function () {
-    //     return Inertia::render('player/dashboard/Index');
-    // })->name('player.dashboard');
-
-    Route::get('/player', function () {
+    Route::get('/', function () {
         return Inertia::render('player/dashboard/Index');
     })->name('player.dashboard');
+
 
     Route::get('/profile', function () {
         return Inertia::render('player/profile/Edit');
