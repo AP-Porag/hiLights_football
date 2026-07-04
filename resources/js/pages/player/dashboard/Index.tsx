@@ -415,7 +415,7 @@ export default function PlayerDashboard() {
 
                             <div className="absolute -bottom-10 left-0 flex justify-between w-full">
 
-                                <button className="capitalize flex items-center rounded-xl bg-[#e75502] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[16px] text-[10px] transition-all hover:bg-[#ff7a1a]">
+                                <button className="capitalize flex items-center rounded-xl bg-[#e75502] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[14px] text-[10px] transition-all hover:bg-[#ff7a1a]">
                                     <Share2 className="mr-2 w-[10px] h-[10px] sm:h-[12px]" />
                                     share full profile
                                     </button>
