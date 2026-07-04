@@ -100,7 +100,7 @@ function Home() {
         var t = setTimeout(function () { return setMounted(true); }, 50);
         return function () { return clearTimeout(t); };
     }, []);
-    return (react_2["default"].createElement("div", { className: "min-h-screen bg-white text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]" },
+    return (react_2["default"].createElement("div", { className: "min-h-screen bg-black text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]" },
         react_2["default"].createElement(PublicNavbar_1["default"], null),
         react_2["default"].createElement("main", { className: "pt-16" },
             react_2["default"].createElement("section", { className: "relative flex min-h-[88vh] items-center overflow-hidden bg-[#FF6B00]" },

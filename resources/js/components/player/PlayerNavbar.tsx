@@ -95,11 +95,11 @@ export default function PlayerNavbar() {
                 'transition-shadow duration-200',
             ].join(' ')}
         >
-            <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between gap-4 px-6">
+            <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between gap-4 px-2 sm:px-6">
                 {/* LEFT — Logo */}
                 <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football home">
-                    <img src="/images/logo/logo_version_2.png" className="h-12 w-auto md:h-20 dark:hidden" alt="HiLights Football" />
-                    <img src="/images/logo/logo_version_2.png" className="hidden h-12 w-auto md:h-20 dark:block" alt="HiLights Football" />
+                    {/* <img src="/images/logo/logo_version_2.png" className="h-12 w-auto md:h-20 dark:hidden" alt="HiLights Football" /> */}
+                    <img src="/images/logo/final_logo.png" className="hidden h-6 w-auto sm:h-8 lg:h-10 md:mt-2 lg:mt-3 dark:block" alt="HiLights Football" />
                     {/*<div className="hidden items-end gap-0.5 leading-none sm:flex">*/}
                     {/*    <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>*/}
                     {/*    <span className="text-xl font-black tracking-tight text-[#FF6B00] italic">Lights</span>*/}

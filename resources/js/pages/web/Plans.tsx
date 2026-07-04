@@ -1,7 +1,7 @@
 import { PublicFooter } from '@/components/public/PublicFooter';
 import PublicNavbar from '@/components/public/PublicNavbar';
 import { Link } from '@inertiajs/react';
-import { BarChart3, Binoculars, CalendarDays,CheckCircle, Smartphone, CheckCircle2, Flag, Globe, Lock, MapPin, ShieldCheck, User, Users, Shield } from 'lucide-react';
+import { BarChart3, Binoculars, CalendarDays, CheckCircle, Smartphone, CheckCircle2, Flag, Globe, Lock, MapPin, ShieldCheck, User, Users, Shield } from 'lucide-react';
 import { useState } from 'react';
 
 // TODO: Replace with usePage().props
@@ -75,24 +75,24 @@ const plans = [
 
 
 const freePlan = [
-        "Public Profile",
-        "Upload 1 Video",
-        "Club History",
-        "Competitions History",
-        "Achievements",
-    ];
+    "Public Profile",
+    "Upload 1 Video",
+    "Club History",
+    "Competitions History",
+    "Achievements",
+];
 
-    const premiumPlan = [
-        "Public Profile",
-        "Upload 3 Videos",
-        "Club History",
-        "Competitions History",
-        "Achievements",
-        "HiLights Member Card with exclusive QR code",
-        "Badge of Verified Profile",
-        "Priority in Searches",
-        "Consultancy for profile and video improvements",
-    ];
+const premiumPlan = [
+    "Public Profile",
+    "Upload 3 Videos",
+    "Club History",
+    "Competitions History",
+    "Achievements",
+    "HiLights Member Card with exclusive QR code",
+    "Badge of Verified Profile",
+    "Priority in Searches",
+    "Consultancy for profile and video improvements",
+];
 
 const items = [
     {
@@ -279,39 +279,39 @@ export default function Plans() {
                                     </div>
 
                                     {/* QR Area */}
-                                        <div className="mt-10 flex flex-col items-center pb-2 lg:items-start lg:pl-[80px]">
-                                            <h2 className="pb-2 text-[8px] font-bold text-[#e24b12] uppercase lg:text-[10px]">
-                                                Scan To View Profile
-                                            </h2>
+                                    <div className="mt-10 flex flex-col items-center pb-2 lg:items-start lg:pl-[80px]">
+                                        <h2 className="pb-2 text-[8px] font-bold text-[#e24b12] uppercase lg:text-[10px]">
+                                            Scan To View Profile
+                                        </h2>
 
-                                            {/* QR Area */}
-                                            <div className="rounded-2xl border-[3px] border-[#e24b12] bg-white p-2 lg:rounded-[12px] lg:p-2">
-                                                <img
-                                                    src="/images/img/qr.png"
-                                                    alt="QR"
-                                                    className="h-[70px] w-[70px] rounded-xl object-cover lg:h-[90px] lg:w-[90px]"
-                                                />
-                                            </div>
-
-                                            {/* Button */}
-                                            <button className="mt-2 flex items-center justify-center rounded-xl px-2 py-2 font-bold uppercase lg:justify-start">
-                                                <span className=" text-[#e24b12] pr-1">
-                                                    <Smartphone size={20} className=""/>
-                                                </span>
-
-                                                <span className="text-left text-[8px] leading-tight text-[#e24b12]">
-                                                    VIEW FULL PROFILE,
-                                                    <br />
-                                                    VIDEOS, STATS AND
-                                                    <br />
-                                                    ACHIEVEMENTS
-                                                </span>
-                                            </button>
+                                        {/* QR Area */}
+                                        <div className="rounded-2xl border-[3px] border-[#e24b12] bg-white p-2 lg:rounded-[12px] lg:p-2">
+                                            <img
+                                                src="/images/img/qr.png"
+                                                alt="QR"
+                                                className="h-[70px] w-[70px] rounded-xl object-cover lg:h-[90px] lg:w-[90px]"
+                                            />
                                         </div>
+
+                                        {/* Button */}
+                                        <button className="mt-2 flex items-center justify-center rounded-xl px-2 py-2 font-bold uppercase lg:justify-start">
+                                            <span className=" text-[#e24b12] pr-1">
+                                                <Smartphone size={20} className="" />
+                                            </span>
+
+                                            <span className="text-left text-[8px] leading-tight text-[#e24b12]">
+                                                VIEW FULL PROFILE,
+                                                <br />
+                                                VIDEOS, STATS AND
+                                                <br />
+                                                ACHIEVEMENTS
+                                            </span>
+                                        </button>
+                                    </div>
 
                                 </div>
                                 <div className="flex px-6 items-center justify-start gap-2 mb-3">
-                                    <Shield className="text-white h-7 w-6"/>
+                                    <Shield className="text-white h-7 w-6" />
                                     <p className="text-[10px] leading-relaxed text-white uppercase lg:text-[12px]">
                                         This card identifies the holder as an official
                                         <br /> member of HiLights Football platform.
@@ -330,7 +330,7 @@ export default function Plans() {
                         <div className="rounded-[20px] md:relative border border-gray-700 bg-black p-6">
                             <div className="mb-6 flex -translate-y-[85%] justify-center">
                                 <div className="flex h-14 w-14 items-center justify-center rounded-full border border-gray-600 bg-black">
-                                    <User size={32}  className="text-white"/>
+                                    <User size={32} className="text-white" />
                                 </div>
                             </div>
 
@@ -460,7 +460,7 @@ export default function Plans() {
                         {/* Text */}
                         <div>
                             <h3 className="text-[14px] leading-tight font-bold text-white sm:text-[16px] md:text-[20px] lg:text-[28px]">
-                                TAKE YOUR CAREER TO THE <span className="text-[#fa2e00]">NEXT LEVEL.</span> 
+                                TAKE YOUR CAREER TO THE <span className="text-[#fa2e00]">NEXT LEVEL.</span>
                             </h3>
 
                             <p className="mt-3 text-[10px] leading-relaxed text-gray-300 sm:text-[12px] md:text-[14px] lg:text-[18px] pr-2 sm:pr-16 lg:pr-24">
