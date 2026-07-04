@@ -172,10 +172,11 @@ export default function Plans() {
                             </div>
 
                             {/* Inner content — right padding clears the band */}
-                            <div className="p-4 pr-[54px] sm:p-5 sm:pr-[64px] lg:pr-[76px]">
+                            <div className="p-3 pr-[54px] sm:p-5 sm:pr-[64px] lg:pr-[76px]">
                                 {/* TOP ROW: logo + title */}
                                 <div className="flex items-start justify-between gap-3">
-                                    <img src="/images/logo/final_logo.png" alt="HiLights Football" className="w-[90px] shrink-0 sm:w-[110px] lg:w-[130px]" />
+                                    <img src="/images/logo/final_logo.png" alt="HiLights Football" className="w-[110px] shrink-0 sm:w-[180px] lg:w-[200px] mt-3" />
+                                    
                                     <div className="pt-1 text-center">
                                         <h2 className="text-[11px] font-bold uppercase sm:text-[13px] lg:text-[15px]">MEMBER CARD</h2>
                                         <p className="text-[8px] font-semibold text-[#e24b12] uppercase sm:text-[9px] lg:text-[10px]">Official Member</p>
@@ -188,10 +189,10 @@ export default function Plans() {
                                 </div>
 
                                 {/* BODY: photo | details | qr */}
-                                <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:justify-between sm:items-start sm:gap-4 md:flex-col md:gap-5 lg:flex-row lg:justify-between lg:items-start lg:gap-4">
+                                <div className="flex flex-col gap-5 sm:flex-row sm:justify-between sm:items-start sm:gap-4 md:flex-col md:gap-5 lg:flex-row lg:justify-between lg:items-start lg:gap-4">
                                     {/* Photo */}
-                                    <div className="h-[190px] w- shrink-0 sm:h-[190px] sm:w-[150px]
-                                     md:h-[190px]] md:w-full lg:h-[210px] lg:w-[170px]">
+                                    <div className="h-[190px] w-full shrink-0 sm:h-[190px] sm:w-[150px]
+                                     md:h-[190px]] md:w-full lg:h-[210px] lg:w-[170px] mt-4 sm:mt-1 md:mt-4 lg:mt-1">
                                         <img
                                             src="/images/img/p-6.png"
                                             alt="player"
@@ -264,7 +265,7 @@ export default function Plans() {
                                 <div className="mt-5 flex items-center gap-2">
                                     <Shield className="h-6 w-6 shrink-0 text-white" />
                                     <p className="text-[10px] leading-relaxed text-white uppercase lg:text-[12px]">
-                                        This card identifies the holder as an official member of HiLights Football platform.
+                                        This card identifies the holder as an official<br className="hidden sm:block lg:block"/> member of HiLights Football platform.
                                     </p>
                                 </div>
                             </div>
