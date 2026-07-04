@@ -142,7 +142,7 @@ export default function PlayerDashboard() {
     return (
         <div className="min-h-screen bg-black pt-16 dark:bg-[#0D0D0D]">
             <PlayerNavbar />
-
+            
             {/* PAGE HEADER */}
             <header className="border-b border-[#E2E8F0] bg-white px-4 py-5 sm:px-8 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]">
                 <div className="mx-auto max-w-[1300px]">
