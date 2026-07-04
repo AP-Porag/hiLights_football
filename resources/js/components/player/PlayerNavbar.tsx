@@ -5,7 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Link, router, usePage } from '@inertiajs/react';
 import { Bell, ChevronDown, LogOut, Menu, Settings, User } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface PlayerUser {
     id: number;
@@ -130,7 +130,7 @@ export default function PlayerNavbar() {
 
                 {/* RIGHT — Actions (desktop) */}
                 <div className="hidden shrink-0 items-center gap-3 md:flex">
-                    <ThemeToggle />
+                    {/*<ThemeToggle />*/}
 
                     {/* Notification bell */}
                     <Link

@@ -1,0 +1,322 @@
+"use strict";
+exports.__esModule = true;
+var react_1 = require("react");
+var react_2 = require("@inertiajs/react");
+var react_country_flag_1 = require("react-country-flag");
+var lucide_react_1 = require("lucide-react");
+var PublicNavbar_1 = require("@/components/public/PublicNavbar");
+var PublicFooter_1 = require("@/components/public/PublicFooter");
+var pitch_1 = require("@/components/ui/pitch");
+// MOCK DATA
+var player = {
+    id: 247,
+    name: 'BENJAMIN SILVA',
+    nickname: 'Benja',
+    profileId: '#00247 rrrr',
+    isMinor: true,
+    dob: '30/01/2009',
+    age: 17,
+    height: 178,
+    nationality: 'Brazil',
+    flag: '🇧🇷',
+    birthplace: 'Rio de Janeiro, Brazil',
+    currentClub: 'Anápolis Sub-15',
+    teamSince: '03/2025',
+    agent: 'Talentos S/A',
+    foot: 'Right',
+    positions: ['ST', 'LW'],
+    modalities: ['Football', 'Futsal', 'Beach Soccer'],
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    profileViews: 1247,
+    countriesCount: 23,
+    scoutRatings: 8,
+    avgRating: 4.2,
+    description: 'Fast, focused player with exceptional game vision and strong ball control. Comfortable in tight spaces, confident in 1v1 situations and excellent at creating chances from wide positions.',
+    clubHistory: [
+        { year: 2026, club: 'Anápolis Sub-15' },
+        { year: 2025, club: '' },
+        { year: 2024, club: '' },
+        { year: 2023, club: 'Flamengo Base' },
+        { year: 2022, club: '' },
+        { year: 2021, club: '' },
+        { year: 2020, club: '' },
+    ],
+    isPremium: true,
+    isVerified: true
+};
+var transferHistory = [
+    {
+        year: 2024,
+        club: "São Cristóvão - RJ",
+        img: "/images/club-logo/cl-1.png"
+    },
+    {
+        year: 2023,
+        club: "Bangu - RJ",
+        img: "/images/club-logo/cl-2.png"
+    },
+    {
+        year: 2022,
+        club: "Portuguesa RJ - RJ",
+        img: "/images/club-logo/cl-3.png"
+    },
+    {
+        year: 2021,
+        club: "Madureira - RJ",
+        img: "/images/club-logo/cl-4.png"
+    },
+    {
+        year: 2020,
+        club: "Flamengo U-17 - RJ",
+        img: "/images/club-logo/cl-5.png"
+    },
+    {
+        year: 2019,
+        club: "Fluminense U-15 - RJ",
+        img: "/images/club-logo/cl-6.png"
+    },
+    {
+        year: 2018,
+        club: "Nova Iguaçu - RJ",
+        img: "/images/club-logo/cl-7.png"
+    },
+    {
+        year: 2017,
+        club: "Boa Vista - RJ",
+        img: "/images/club-logo/cl-8.png"
+    },
+    {
+        year: 2016,
+        club: "Serrano - RJ",
+        img: "/images/club-logo/cl-9.png"
+    },
+    {
+        year: 2015,
+        club: "Macaé - RJ",
+        img: "/images/club-logo/cl-10.png"
+    },
+];
+var achievements = [
+    { year: "2024", title: "Copinha" },
+    { year: "2025", title: "Gaúcho U-20" },
+    { year: "2025", title: "BH Cup" },
+    { year: "2019", title: "Gazetinha Cup" },
+    { year: "2019", title: "Rio Grande do Sul State Championship U11" },
+];
+var competitions = [
+    { name: "Copinha", year: "2024" },
+    { name: "Gaúcho U-20", year: "2025" },
+    { name: "BH Cup", year: "2025" },
+    { name: "Gazetinha Cup", year: "2019" },
+    { name: "Rio Grande do Sul State Championship U11", year: "2019" },
+];
+var matches = [
+    {
+        home: "São Cristóvão",
+        score: "3 x 1",
+        away: "Juventude",
+        goals: 1,
+        assists: 0,
+        minutes: "90'"
+    },
+    {
+        home: "São Cristóvão",
+        score: "2 x 2",
+        away: "Grêmio",
+        goals: 0,
+        assists: 1,
+        minutes: "90'"
+    },
+    {
+        home: "São Cristóvão",
+        score: "4 x 0",
+        away: "Internacional",
+        goals: 2,
+        assists: 0,
+        minutes: "90'"
+    },
+];
+// TODO: Replace with usePage<PageProps & { player: typeof player, viewerRole?: string, existingRating?: ScoutRating }>().props
+var viewerRole = 'scout'; // TODO: usePage().props.viewerRole
+function StarRating(_a) {
+    var value = _a.value, onChange = _a.onChange;
+    return (react_1["default"].createElement("div", { className: "flex gap-1" }, [1, 2, 3, 4, 5].map(function (n) { return (react_1["default"].createElement("button", { key: n, type: "button", onClick: function () { return onChange(n); }, className: "transition-transform hover:scale-110", "aria-label": "Rate " + n + " stars" },
+        react_1["default"].createElement(lucide_react_1.Star, { className: "w-5 h-5 " + (n <= value
+                ? 'fill-[#FF6B00] text-[#FF6B00]'
+                : 'text-[#FCD9BD] dark:text-[#2A2A2A]') }))); })));
+}
+function NewDetail() {
+    return (react_1["default"].createElement("div", { className: "min-h-screen bg-black pt-16 dark:bg-[#fae8e8]" },
+        react_1["default"].createElement(PublicNavbar_1["default"], null),
+        react_1["default"].createElement("div", { className: "bg-black max-w-7xl mx-auto  px-4 py-3 sm:px-6 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]" },
+            react_1["default"].createElement("nav", { className: "flex  items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A]" },
+                react_1["default"].createElement(react_2.Link, { href: "/", className: "whitespace-nowrap hover:text-[#FF6B00] dark:hover:text-[#FF6B00]" }, "Home"),
+                react_1["default"].createElement(lucide_react_1.ChevronRight, { className: "h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" }),
+                react_1["default"].createElement(react_2.Link, { href: "/players", className: "whitespace-nowrap hover:text-[#FF6B00] dark:hover:text-[#FF6B00]" }, "Players"),
+                react_1["default"].createElement(lucide_react_1.ChevronRight, { className: "h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" }),
+                react_1["default"].createElement("span", { className: "font-medium whitespace-nowrap text-[#FF6B00] dark:text-[#F5F5F5]" }, "Joao da Silva"))),
+        react_1["default"].createElement("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6" },
+            react_1["default"].createElement("main", { className: "min-w-0 space-y-4 overflow-x-hidden" },
+                react_1["default"].createElement("div", { className: "w-full max-w-7xl overflow-hidden text-white" },
+                    react_1["default"].createElement("div", { className: "flex flex-row gap-3 md:gap-6" },
+                        react_1["default"].createElement("div", { className: "w-[30%] overflow-hidden rounded-md md:w-auto" },
+                            react_1["default"].createElement("img", { src: "/images/img/player-1.png", alt: "Player", className: "border border-[#233247] object-cover sm:h-[220px] sm:w-[180px] md:h-[200px] md:w-[180px]" })),
+                        react_1["default"].createElement("div", { className: "w-[60%] flex-1 md:w-auto" },
+                            react_1["default"].createElement("h1", { className: "text-[18px] font-bold tracking-wide uppercase" }, "JO\u00C3O DA SILVA"),
+                            react_1["default"].createElement("h3", { className: "mt-1 text-[14px] text-[#eb6c0d] uppercase" }, "Right Winger"),
+                            react_1["default"].createElement("div", { className: "mt-1 space-y-1 text-[10px] md:text-[13px]" },
+                                react_1["default"].createElement("div", { className: "flex" },
+                                    react_1["default"].createElement(lucide_react_1.CalendarDays, { className: "mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-4 md:w-4" }),
+                                    react_1["default"].createElement("span", { className: "text-[#e1e2e6]" }, "Date of Birth / Age:"),
+                                    react_1["default"].createElement("span", { className: "pl-2 text-gray-300" }, "Jan 30, 2007 (19)")),
+                                react_1["default"].createElement("div", { className: "flex" },
+                                    react_1["default"].createElement(lucide_react_1.Users, { className: "mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-4 md:w-4" }),
+                                    react_1["default"].createElement("span", { className: "pr-3 text-[#e1e2e6]" }, "Nationality:"),
+                                    react_1["default"].createElement(react_country_flag_1["default"], { countryCode: "BR", svg: true, className: "mt-[2px] mr-1 md:mt-1 md:h-[1em] md:w-[1em]" }),
+                                    react_1["default"].createElement("span", { className: "" }, "Brazil"),
+                                    react_1["default"].createElement("span", { className: "px-1" }, "/"),
+                                    react_1["default"].createElement(react_country_flag_1["default"], { countryCode: "IT", svg: true, className: "mt-[2px] mr-1 md:mt-1 md:h-[1em] md:w-[1em]" }),
+                                    react_1["default"].createElement("span", null, "Italy III")),
+                                react_1["default"].createElement("div", { className: "flex" },
+                                    react_1["default"].createElement(lucide_react_1.Ruler, { className: "mr-1 h-3 w-3 text-[#ff6100] md:mr-2 md:h-4 md:w-4" }),
+                                    react_1["default"].createElement("span", { className: "text-[#e1e2e6]" }, "Height:"),
+                                    react_1["default"].createElement("span", { className: "pl-2 text-gray-100" }, "1.84 m")),
+                                react_1["default"].createElement("div", { className: "flex" },
+                                    react_1["default"].createElement(lucide_react_1.Crosshair, { className: "mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-4 md:w-4" }),
+                                    react_1["default"].createElement("span", { className: "text-[#e1e2e6]" }, "Position:"),
+                                    react_1["default"].createElement("span", { className: "pl-2 text-gray-100" }, "Right Winger")),
+                                react_1["default"].createElement("div", { className: "flex" },
+                                    react_1["default"].createElement(lucide_react_1.Footprints, { className: "mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-4 md:w-4" }),
+                                    react_1["default"].createElement("span", { className: "text-[#e1e2e6]" }, "Dominant Foot:"),
+                                    react_1["default"].createElement("span", { className: "pl-2 text-gray-100" }, "Right")),
+                                react_1["default"].createElement("div", { className: "flex" },
+                                    react_1["default"].createElement(lucide_react_1.Shield, { className: "mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-4 md:w-4" }),
+                                    react_1["default"].createElement("span", { className: "text-[#e1e2e6]" }, "Current Club:"),
+                                    react_1["default"].createElement("span", { className: "pl-2 text-gray-100" }, "S\u00E3o Cristov\u00E3o")),
+                                react_1["default"].createElement("div", { className: "flex" },
+                                    react_1["default"].createElement(lucide_react_1.Shirt, { className: "mr-1 h-3 w-3 text-[#ff600d] md:mr-2 md:h-4 md:w-4" }),
+                                    react_1["default"].createElement("span", { className: "text-[#e1e2e6]" }, "Previous Club:"),
+                                    react_1["default"].createElement("span", { className: "pl-2 text-gray-100" }, "Bangu")))),
+                        react_1["default"].createElement("aside", { className: "hidden lg:block" },
+                            react_1["default"].createElement("p", { className: "text-[10px] tracking-wider text-[#94A3B8] uppercase" }, "Sponsored"),
+                            react_1["default"].createElement("div", { className: "relative flex h-[180px] w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 text-center" },
+                                react_1["default"].createElement("p", { className: "text-sm font-medium tracking-widest text-white/50 uppercase" }, "ADVERTISING SPACE"))))),
+                react_1["default"].createElement("section", { className: "mt-2" },
+                    react_1["default"].createElement("p", { className: "-mt-2 mb-3 text-[16px] font-bold text-white" }, "HIGHLIGHTS VIDEO"),
+                    react_1["default"].createElement("div", { className: "relative overflow-hidden" },
+                        react_1["default"].createElement("div", { className: "relative w-full" }, player.videoUrl ? (react_1["default"].createElement(react_1["default"].Fragment, null,
+                            react_1["default"].createElement("iframe", { src: player.videoUrl, allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture", allowFullScreen: true, className: "h-[300px] w-full rounded-2xl bg-gray-500" }))) : (react_1["default"].createElement("div", { className: "absolute inset-0 flex flex-col items-center justify-center" },
+                            react_1["default"].createElement(lucide_react_1.Video, { className: "mb-2 h-12 w-12 text-white/30" }),
+                            react_1["default"].createElement("p", { className: "text-sm text-white/40" }, "No highlights uploaded yet")))),
+                        react_1["default"].createElement("div", { className: "flex items-center justify-between text-[14px] text-white" },
+                            react_1["default"].createElement("h3", { className: "mt-2" }, "Jo\u00E3o da Silva - Best Moments 2024/2025"),
+                            react_1["default"].createElement("span", null, "07:32"))),
+                    react_1["default"].createElement("div", { className: "relative mt-4 grid grid-cols-3 gap-5 overflow-hidden" },
+                        react_1["default"].createElement("div", null,
+                            react_1["default"].createElement("div", { className: "relative w-full rounded-[16px]" }, player.videoUrl ? (react_1["default"].createElement(react_1["default"].Fragment, null,
+                                react_1["default"].createElement("iframe", { src: player.videoUrl, 
+                                    // title={`${player.name} highlights`}
+                                    allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture", allowFullScreen: true, className: "h-full w-full rounded-[12px] bg-gray-500" }))) : (react_1["default"].createElement("div", { className: "absolute inset-0 flex flex-col items-center justify-center" },
+                                react_1["default"].createElement(lucide_react_1.Video, { className: "mb-2 h-12 w-12 text-white/30" }),
+                                react_1["default"].createElement("p", { className: "text-sm text-white/40" }, "No highlights uploaded yet")))),
+                            react_1["default"].createElement("p", { className: "bold py-2 text-center text-white text-[16px]" }, "Goals")),
+                        react_1["default"].createElement("div", null,
+                            react_1["default"].createElement("div", { className: "relative w-full" }, player.videoUrl ? (react_1["default"].createElement(react_1["default"].Fragment, null,
+                                react_1["default"].createElement("iframe", { src: player.videoUrl, 
+                                    // title={`${player.name} highlights`}
+                                    allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture", allowFullScreen: true, className: "h-full w-full rounded-[12px] bg-gray-500" }))) : (react_1["default"].createElement("div", { className: "absolute inset-0 flex flex-col items-center justify-center" },
+                                react_1["default"].createElement(lucide_react_1.Video, { className: "mb-2 h-12 w-12 text-white/30" }),
+                                react_1["default"].createElement("p", { className: "text-sm text-white/40" }, "No highlights uploaded yet")))),
+                            react_1["default"].createElement("p", { className: "bold py-2 text-center text-white text-[16px]" }, "Assists")),
+                        react_1["default"].createElement("div", null,
+                            react_1["default"].createElement("div", { className: "relative w-full rounded-[16px]" }, player.videoUrl ? (react_1["default"].createElement(react_1["default"].Fragment, null,
+                                react_1["default"].createElement("iframe", { src: player.videoUrl, 
+                                    // title={`${player.name} highlights`}
+                                    allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture", allowFullScreen: true, className: "h-full w-full rounded-[12px] bg-gray-500" }))) : (react_1["default"].createElement("div", { className: "absolute inset-0 flex flex-col items-center justify-center" },
+                                react_1["default"].createElement(lucide_react_1.Video, { className: "mb-2 h-12 w-12 text-white/30" }),
+                                react_1["default"].createElement("p", { className: "text-sm text-white/40" }, "No highlights uploaded yet")))),
+                            react_1["default"].createElement("p", { className: "bold py-2 text-center text-white text-[16px]" }, "Dribbles")))),
+                react_1["default"].createElement("aside", { className: "block space-y-3 lg:hidden" },
+                    react_1["default"].createElement("p", { className: "text-[10px] tracking-wider text-[#94A3B8] uppercase" }, "Sponsored"),
+                    react_1["default"].createElement("div", { className: "relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center" },
+                        react_1["default"].createElement("p", { className: "text-sm font-medium tracking-widest text-white/50 uppercase" }, "ADVERTISING SPACE"))),
+                react_1["default"].createElement("section", { className: "overflow-hidden" },
+                    react_1["default"].createElement("div", { className: "flex gap-4 md:grid md:grid-cols-2 md:gap-6" },
+                        react_1["default"].createElement("div", { className: "rounded-xl border border-slate-800 bg-[#06111d] p-6" },
+                            react_1["default"].createElement("h2", { className: "mb-6 text-[13px] font-bold text-white uppercase md:text-[18px]" },
+                                "Transfer History ",
+                                react_1["default"].createElement("span", { className: "font-medium text-slate-400" }, "(Last 10 Years)")),
+                            react_1["default"].createElement("div", { className: "space-y-3" }, transferHistory.map(function (item, index) { return (react_1["default"].createElement("div", { key: index, className: "flex items-center gap-2 md:gap-4" },
+                                react_1["default"].createElement("span", { className: "w-8 text-[10px] font-medium text-slate-300 sm:text-[13px] md:w-12 md:text-[16px]" }, item.year),
+                                react_1["default"].createElement("div", { className: "h-6 w-6 flex-shrink-0 rounded-full border border-slate-600 bg-slate-700 md:h-8 md:w-8" },
+                                    react_1["default"].createElement("img", { src: item.img, alt: "" })),
+                                react_1["default"].createElement("span", { className: "text-[10px] text-white sm:text-[13px] md:text-base" }, item.club))); }))),
+                        react_1["default"].createElement("div", { className: "rounded-xl border border-slate-800 bg-[#06111d] p-5" },
+                            react_1["default"].createElement("h2", { className: "mb-6 text-[13px] font-bold text-white uppercase md:text-[18px]" }, "Positions On The Pitch"),
+                            react_1["default"].createElement(pitch_1.Pitch, null),
+                            react_1["default"].createElement("div", { className: "mt-6 space-y-2 text-[11px] font-bold text-white uppercase md:text-[16px]" },
+                                react_1["default"].createElement("p", null,
+                                    react_1["default"].createElement("span", { className: "text-white-400 mb-3 text-[13px] font-bold uppercase md:text-[18px]" }, "Main Position:"),
+                                    ' ',
+                                    "Right Winger"),
+                                react_1["default"].createElement("p", null,
+                                    react_1["default"].createElement("span", { className: "text-[13px] font-bold text-white uppercase md:text-[18px]" }, "Secondary:"),
+                                    " Attacking Midfielder, Central Midfielder"))))),
+                react_1["default"].createElement("div", { className: "flex gap-4 md:grid md:grid-cols-[400px_1fr]" },
+                    react_1["default"].createElement("div", { className: "rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5" },
+                        react_1["default"].createElement("h2", { className: "mb-5 text-[12px] font-semibold text-white uppercase md:text-sm" }, "Achievements"),
+                        react_1["default"].createElement("div", { className: "space-y-2 md:space-y-4" }, achievements.map(function (item, index) { return (react_1["default"].createElement("div", { key: index, className: "flex items-start gap-1 md:gap-3" },
+                            react_1["default"].createElement("span", { className: "text-[12px] text-yellow-500 md:text-sm" }, "\uD83C\uDFC6"),
+                            react_1["default"].createElement("div", { className: "flex gap-3 md:grid md:grid-cols-[100px_1fr]" },
+                                react_1["default"].createElement("p", { className: "text-[12px] font-medium text-orange-500 md:text-sm" }, item.year),
+                                react_1["default"].createElement("p", { className: "text-[10px] leading-relaxed text-gray-300 md:text-sm" }, item.title)))); })),
+                        react_1["default"].createElement("button", { className: "mt-6 text-[12px] font-medium text-orange-500 transition hover:text-orange-400 md:text-sm" }, "View all achievements \u2192")),
+                    react_1["default"].createElement("div", { className: "rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5" },
+                        react_1["default"].createElement("h2", { className: "mb-4 text-[12px] font-semibold text-white uppercase md:text-sm" },
+                            "Player Description ",
+                            react_1["default"].createElement("span", { className: "font-normal text-gray-500" }, "(UP TO 500 WORDS)")),
+                        react_1["default"].createElement("div", { className: "w-full" },
+                            react_1["default"].createElement("p", { className: "h-48 w-full resize-none rounded-lg border border-[#1b2a3d] bg-[#08111d] p-2 text-gray-300 outline-none placeholder:text-gray-500 focus:border-orange-500 md:p-4" }, "Write a detailed description of the player's qualities, strengths, style of play, mentality, and other relevant information..."),
+                            react_1["default"].createElement("span", { className: "absolute right-4 bottom-3 text-xs text-gray-500" })))),
+                react_1["default"].createElement("aside", { className: "block space-y-3 lg:hidden" },
+                    react_1["default"].createElement("p", { className: "text-[10px] tracking-wider text-[#94A3B8] uppercase" }, "Sponsored"),
+                    react_1["default"].createElement("div", { className: "relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center" },
+                        react_1["default"].createElement("p", { className: "text-sm font-medium tracking-widest text-white/50 uppercase" }, "ADVERTISING SPACE"))),
+                react_1["default"].createElement("div", { className: "grid grid-cols-[1fr_1.25fr] gap-4" },
+                    react_1["default"].createElement("div", { className: "rounded-lg border border-[#152538] bg-[#07111d] p-4 md:p-6" },
+                        react_1["default"].createElement("h2", { className: "mb-6 text-[14px] font-bold text-white uppercase md:text-xl" }, "Competition History"),
+                        react_1["default"].createElement("div", { className: "space-y-2 md:space-y-4" }, competitions.map(function (item, index) { return (react_1["default"].createElement("div", { key: index, className: "flex items-start justify-between gap-2 md:gap-4" },
+                            react_1["default"].createElement("div", { className: "flex items-start gap-1 md:gap-3" },
+                                react_1["default"].createElement(lucide_react_1.Trophy, { size: 18, strokeWidth: 1.5, className: "mt-0.5 text-gray-300" }),
+                                react_1["default"].createElement("span", { className: "text-[10px] text-gray-200 md:text-sm" }, item.name)),
+                            react_1["default"].createElement("span", { className: "text-[10px] text-[#f97316] md:text-sm" }, item.year))); })),
+                        react_1["default"].createElement("div", { className: "mt-8 flex justify-end" },
+                            react_1["default"].createElement("button", { className: "flex items-center gap-2 text-[13px] text-[#f97316] transition hover:text-orange-400 md:text-[18px]" },
+                                "View all competitions",
+                                react_1["default"].createElement(lucide_react_1.ChevronRight, { size: 22 })))),
+                    react_1["default"].createElement("div", { className: "overflow-hidden rounded-lg border border-[#152538] bg-[#07111d] p-6" },
+                        react_1["default"].createElement("h2", { className: "mb-6 text-[14px] font-bold text-white uppercase md:text-xl" }, "Recent Matches"),
+                        react_1["default"].createElement("div", { className: "overflow-x-auto" },
+                            react_1["default"].createElement("table", { className: "w-full" },
+                                react_1["default"].createElement("thead", null,
+                                    react_1["default"].createElement("tr", { className: "border-b-1 border-gray-300/10 text-left text-[12px] text-gray-300 uppercase md:text-sm" },
+                                        react_1["default"].createElement("th", { className: "pb-4" }, "Match"),
+                                        react_1["default"].createElement("th", { className: "pb-4 text-center" }, "Goals"),
+                                        react_1["default"].createElement("th", { className: "px-2 pb-4 text-center" }, "Assists"),
+                                        react_1["default"].createElement("th", { className: "pb-4 text-center" }, "Minutes"))),
+                                react_1["default"].createElement("tbody", null, matches.map(function (match, index) { return (react_1["default"].createElement("tr", { key: index, className: "border-b-1 border-gray-300/10 text-[10px] text-gray-200 md:text-[14px]" },
+                                    react_1["default"].createElement("td", { className: "py-3" },
+                                        react_1["default"].createElement("div", { className: "flex items-center gap-2 md:gap-4" },
+                                            react_1["default"].createElement("span", null, match.home),
+                                            react_1["default"].createElement("span", { className: "font-semibold" }, match.score),
+                                            react_1["default"].createElement("span", null, match.away))),
+                                    react_1["default"].createElement("td", { className: "py-3 text-center" }, match.goals),
+                                    react_1["default"].createElement("td", { className: "py-3 text-center" }, match.assists),
+                                    react_1["default"].createElement("td", { className: "py-3 text-center" }, match.minutes))); })))),
+                        react_1["default"].createElement("div", { className: "mt-8 flex justify-end" },
+                            react_1["default"].createElement("button", { className: "flex items-center gap-2 text-[14px] text-[#f97316] transition hover:text-orange-400 md:text-[18px]" },
+                                "View all matches",
+                                react_1["default"].createElement(lucide_react_1.ChevronRight, { size: 22 }))))))),
+        react_1["default"].createElement(PublicFooter_1.PublicFooter, null)));
+}
+exports["default"] = NewDetail;
