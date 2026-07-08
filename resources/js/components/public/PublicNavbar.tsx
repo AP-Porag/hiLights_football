@@ -28,7 +28,7 @@ const NAV_LINKS_MOBILE = [
 ];
 
 export default function PublicNavbar() {
-    const { url } = usePage();
+    const { url, props } = usePage();
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -43,6 +43,15 @@ export default function PublicNavbar() {
         if (href === '/') return url === '/' || url === '';
         return url.startsWith(href);
     };
+    const auth = props.auth as {
+        user?: {
+            id: number;
+            name: string;
+            email: string;
+        } | null;
+    };
+
+    const isLoggedIn = !!auth?.user;
 
     return (
         <header
@@ -97,22 +106,24 @@ export default function PublicNavbar() {
 
                 {/* RIGHT - Actions (desktop) */}
                 <div className="hidden shrink-0 items-center gap-2 lg:flex xl:gap-3">
-                    {/*<ThemeToggle />*/}
-                    <Link href="/login">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className="cursor-pointer border-[#E2E8F0] bg-gray-50 text-sm font-medium text-[#0F172A] hover:border-[#FF6B00] hover:bg-transparent hover:text-[#FF6B00] xl:h-10 xl:text-base 2xl:h-12 2xl:px-6 2xl:text-lg dark:border-[#2A2A2A] dark:text-[#F5F5F5] dark:hover:bg-transparent"
-                        >
-                            Login
-                        </Button>
-                    </Link>
-                    <Link href="/register">
+                    {!isLoggedIn && (
+                        <Link href="/login">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="cursor-pointer border-[#E2E8F0] bg-gray-50 text-sm font-medium text-[#0F172A] hover:border-[#FF6B00] hover:bg-transparent hover:text-[#FF6B00] xl:h-10 xl:text-base 2xl:h-12 2xl:px-6 2xl:text-lg"
+                            >
+                                Login
+                            </Button>
+                        </Link>
+                    )}
+
+                    <Link href={isLoggedIn ? "/player/" : "/register"}>
                         <Button
                             size="sm"
                             className="cursor-pointer bg-[#e53f01] px-4 text-sm font-semibold text-white hover:bg-[#ff5e24] xl:h-10 xl:text-base 2xl:h-12 2xl:px-6 2xl:text-lg"
                         >
-                            Create A Free Profile Now
+                            {isLoggedIn ? "Dashboard" : "Create A Free Profile Now"}
                         </Button>
                     </Link>
                 </div>
@@ -139,11 +150,17 @@ export default function PublicNavbar() {
                             );
                         })}
                     </div>
-                    <Link href="/register">
+                    <Link href={isLoggedIn ? "/player/" : "/register"}>
                         <Button className="h-9 rounded-md bg-[#FF6B00] px-2 text-[8px] leading-tight font-bold text-white uppercase hover:bg-[#e65c00] sm:h-11 sm:px-4 sm:text-[11px]">
-                            Create A Free
-                            <br />
-                            Profile Now
+                            {isLoggedIn ? (
+                                "Dashboard"
+                            ) : (
+                                <>
+                                    Create A Free
+                                    <br />
+                                    Profile Now
+                                </>
+                            )}
                         </Button>
                     </Link>
                     <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -200,17 +217,23 @@ export default function PublicNavbar() {
                                 })}
                             </nav>
                             <div className="mt-4 flex flex-col gap-2 border-t border-[#E2E8F0] px-6 py-4 dark:border-[#2A2A2A]">
-                                <Link href="/login" onClick={() => setMobileOpen(false)}>
-                                    <Button
-                                        variant="outline"
-                                        className="w-full border-[#E2E8F0] bg-transparent text-sm font-medium text-[#0F172A] hover:border-[#FF6B00] hover:bg-transparent hover:text-[#FF6B00] dark:border-[#2A2A2A] dark:text-[#F5F5F5] dark:hover:bg-transparent"
-                                    >
-                                        Login
-                                    </Button>
-                                </Link>
-                                <Link href="/register" onClick={() => setMobileOpen(false)}>
+                                {!isLoggedIn && (
+                                    <Link href="/login" onClick={() => setMobileOpen(false)}>
+                                        <Button
+                                            variant="outline"
+                                            className="w-full border-[#E2E8F0] bg-transparent text-sm font-medium text-[#0F172A] hover:border-[#FF6B00] hover:bg-transparent hover:text-[#FF6B00] dark:border-[#2A2A2A] dark:text-[#F5F5F5] dark:hover:bg-transparent"
+                                        >
+                                            Login
+                                        </Button>
+                                    </Link>
+                                )}
+
+                                <Link
+                                    href={isLoggedIn ? "/player/" : "/register"}
+                                    onClick={() => setMobileOpen(false)}
+                                >
                                     <Button className="w-full bg-[#FF6B00] text-sm font-semibold text-white hover:bg-[#CC5500]">
-                                        Create A Free Profile Now
+                                        {isLoggedIn ? "Dashboard" : "Create A Free Profile Now"}
                                     </Button>
                                 </Link>
                             </div>
