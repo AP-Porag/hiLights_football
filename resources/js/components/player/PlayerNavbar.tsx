@@ -50,13 +50,13 @@ export default function PlayerNavbar() {
     const auth = props.auth?.user
         ? props.auth
         : {
-              user: {
-                  id: 1,
-                  name: 'Lucas Pereira',
-                  email: 'lucas@hilights.fc',
-                  avatar_url: null,
-              },
-          };
+            user: {
+                id: 1,
+                name: 'Lucas Pereira',
+                email: 'lucas@hilights.fc',
+                avatar_url: null,
+            },
+        };
     const notificationCount = props.notificationCount ?? 3;
 
     const [scrolled, setScrolled] = useState(false);
@@ -89,9 +89,9 @@ export default function PlayerNavbar() {
         <header
             className={[
                 'fixed top-0 right-0 left-0 z-50 h-14 lg:h-18',
-                'bg-white dark:bg-[#0D0D0D]',
-                'border-b border-[#E2E8F0] dark:border-[#2A2A2A]',
-                scrolled ? 'shadow-md' : 'shadow-[0_1px_0_rgba(0,0,0,0.05)] dark:shadow-none',
+                'bg-[#0D0D0D]',
+                'border-b border-[#2A2A2A]',
+                scrolled ? 'shadow-md' : 'shadow-none',
                 'transition-shadow duration-200',
             ].join(' ')}
         >
@@ -99,7 +99,11 @@ export default function PlayerNavbar() {
                 {/* LEFT — Logo */}
                 <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football dashboard">
                     {/* <img src="/images/logo/hilights_logo_transparent_200.png" className="h-9 w-auto dark:hidden" alt="HiLights Football" /> */}
-                    <img src="/images/logo/final_logo.png" className="hidden h-6 w-auto sm:h-8 lg:h-10 xl:h-12 2xl:h-14 dark:block" alt="HiLights Football" />
+                    <img
+                        src="/images/logo/final_logo.png"
+                        className="h-6 w-auto sm:h-8 lg:h-10 xl:h-12 2xl:h-14"
+                        alt="HiLights Football"
+                    />
                     {/* <div className="hidden items-end gap-0.5 leading-none sm:flex">
                         <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>
                         <span className="text-xl font-black tracking-tight text-[#FF6B00] italic">Lights</span>
@@ -119,7 +123,7 @@ export default function PlayerNavbar() {
                                     'relative text-sm font-medium transition-colors',
                                     active
                                         ? 'text-[#FF6B00] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#FF6B00]'
-                                        : 'text-[#475569] hover:text-[#FF6B00] dark:text-[#9A9A9A]',
+                                        : 'text-[#9A9A9A] hover:text-[#FF6B00]',
                                 ].join(' ')}
                             >
                                 {link.label}
@@ -162,7 +166,7 @@ export default function PlayerNavbar() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                             align="end"
-                            className="w-56 rounded-xl border border-[#E2E8F0] bg-white p-1 shadow-lg dark:border-[#2A2A2A] dark:bg-[#161616]"
+                            className="w-56 rounded-xl border border-[#E2E8F0] bg-white p-1 shadow-lg dark:border-[#2A2A2A] bg-[#161616]"
                         >
                             <div className="mb-1 border-b border-[#F1F5F9] px-3 py-2 dark:border-[#1F1F1F]">
                                 <div className="flex items-center justify-between gap-2">
@@ -219,7 +223,7 @@ export default function PlayerNavbar() {
                             <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#0D0D0D]" />
                         )}
                     </Link>
-                    <ThemeToggle />
+                    {/* <ThemeToggle /> */}
                     <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
                         <SheetTrigger asChild>
                             <Button
@@ -235,7 +239,7 @@ export default function PlayerNavbar() {
                             side="left"
                             className="flex w-[300px] flex-col border-r border-[#E2E8F0] bg-white p-0 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]"
                         >
-                            <SheetHeader className="border-b border-[#E2E8F0] px-6 py-4 dark:border-[#2A2A2A]">
+                            <SheetHeader className="border-b px-6 py-4 border-[#2A2A2A]">
                                 <SheetTitle className="flex items-center gap-2">
                                     <img
                                         src="/images/logo/hilights_logo_transparent_200.png"
