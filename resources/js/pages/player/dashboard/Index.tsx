@@ -25,7 +25,7 @@ import {
     Video,
     Shirt,
     Footprints,
-    ShieldCheck ,
+    ShieldCheck,
     Ruler,
     Weight,
     Shield,
@@ -142,7 +142,7 @@ export default function PlayerDashboard() {
     return (
         <div className="min-h-screen bg-black pt-16 dark:bg-[#0D0D0D]">
             <PlayerNavbar />
-            
+
             {/* PAGE HEADER */}
             <header className="border-b border-[#E2E8F0] bg-white px-4 py-5 sm:px-8 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]">
                 <div className="mx-auto max-w-[1300px]">
@@ -229,7 +229,7 @@ export default function PlayerDashboard() {
                                         FREE PLAN
                                     </Badge>
                                     <p className="mt-3 flex-1 text-sm text-[#475569] dark:text-[#9A9A9A]">
-                                        Unlock all features and reach more scouts.
+                                        Unlock all features and reach more scoutss.
                                     </p>
                                     <Link href="/player/upgrade" className="mt-3">
                                         <Button className="w-full bg-[#FF6B00] p-3 font-semibold text-white hover:bg-[#CC5500]">
@@ -254,184 +254,184 @@ export default function PlayerDashboard() {
 
                     {/* right side */}
                     <div className="mx-auto mb-16">
-                    <div className="w-[300px] sm:w-[420px] border-1 border-gray-600 rounded-[16px]">
-                        <div className="overflow-hidden text-white">
-                            {/* Left Section */}
-                            <div className="flex items-center justify-between">
-                                {/* Logo */}
-                                <div className="pl-3 sm:pl-4">
-                                    <img src="/images/logo/final_logo.png" alt="new-logo" className="w-[125px] sm:w-[170px]" />
+                        <div className="w-[300px] sm:w-[420px] border-1 border-gray-600 rounded-[16px]">
+                            <div className="overflow-hidden text-white">
+                                {/* Left Section */}
+                                <div className="flex items-center justify-between">
+                                    {/* Logo */}
+                                    <div className="pl-3 sm:pl-4">
+                                        <img src="/images/logo/final_logo.png" alt="new-logo" className="w-[125px] sm:w-[170px]" />
+                                    </div>
+
+                                    <div className="-translate-x-[15%] sm:-translate-x-[30%] translate-y-[20%]">
+                                        <h2 className="text-center font-bold uppercase text-[11px] sm:text-[14px]">
+                                            MEMBER CARD
+                                        </h2>
+
+                                        <p className="text-center text-[8px] sm:text-[10px] font-semibold text-orange-500 uppercase">Official Member</p>
+
+                                        <svg width="130" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />
+
+                                            <path
+                                                d="M90 4L92.35 9.15L98 9.8L94 13.6L95.2 19L90 16L84.8 19L86 13.6L82 9.8L87.65 9.15L90 4Z"
+                                                fill="#F97316"
+                                            />
+
+                                            <line x1="110" y1="12" x2="170" y2="12" stroke="#6B7280" strokeWidth="1" />
+                                        </svg>
+                                    </div>
                                 </div>
 
-                                <div className="-translate-x-[15%] sm:-translate-x-[30%] translate-y-[20%]">
-                                    <h2 className="text-center font-bold uppercase text-[11px] sm:text-[14px]">
-                                        MEMBER CARD
-                                    </h2>
-
-                                    <p className="text-center text-[8px] sm:text-[10px] font-semibold text-orange-500 uppercase">Official Member</p>
-
-                                    <svg width="130" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />
-
-                                        <path
-                                            d="M90 4L92.35 9.15L98 9.8L94 13.6L95.2 19L90 16L84.8 19L86 13.6L82 9.8L87.65 9.15L90 4Z"
-                                            fill="#F97316"
+                                <div className="relative flex gap-2 sm:gap-4 pl-4 pt-2 border-b-1 border-gray-400">
+                                    {/* Image */}
+                                    <div className="h-[160px] w-[95px] sm:h-[210px] sm:w-[130px] mb-3">
+                                        <img
+                                            src="/images/img/p-6.png"
+                                            alt="player"
+                                            className="h-full w-full rounded-[10px] sm:rounded-[12px] border-1 border-gray-400 object-cover"
                                         />
-
-                                        <line x1="110" y1="12" x2="170" y2="12" stroke="#6B7280" strokeWidth="1" />
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <div className="relative flex gap-2 sm:gap-4 pl-4 pt-2 border-b-1 border-gray-400">
-                                {/* Image */}
-                                <div className="h-[160px] w-[95px] sm:h-[210px] sm:w-[130px] mb-3">
-                                    <img
-                                        src="/images/img/p-6.png"
-                                        alt="player"
-                                        className="h-full w-full rounded-[10px] sm:rounded-[12px] border-1 border-gray-400 object-cover"
-                                    />
-                                </div>
-
-                                <div>
-                                    <div className="relative z-10">
-                                        <h3 className="mt-2 text-[12px] sm:mt-4 sm:text-[16px] font-bold uppercase">
-                                            JOÃO DA SILVA
-                                        </h3>
-
-                                        <p className="text-[8px] sm:text-[10px] text-[#f05300] uppercase">
-                                            ATTACKING MIDFIELDER
-                                        </p>
-
-                                        <div className="absolute mt-2 h-[1px] bg-orange-500 w-[80%] sm:w-[110%]"></div>
                                     </div>
 
-                                    <div className="mt-6 space-y-1">
-                                        <div className="flex items-center">
-                                            <User className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
-                                            <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
-                                                ID:
-                                                <br />
-                                                <span className="text-white">HLF-00012345</span>
+                                    <div>
+                                        <div className="relative z-10">
+                                            <h3 className="mt-2 text-[12px] sm:mt-4 sm:text-[16px] font-bold uppercase">
+                                                JOÃO DA SILVA
+                                            </h3>
+
+                                            <p className="text-[8px] sm:text-[10px] text-[#f05300] uppercase">
+                                                ATTACKING MIDFIELDER
                                             </p>
+
+                                            <div className="absolute mt-2 h-[1px] bg-orange-500 w-[80%] sm:w-[110%]"></div>
                                         </div>
 
-                                        <div className="flex items-center">
-                                            <CalendarDays className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
-                                            <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
-                                                DATE OF BIRTH:
-                                                <br />
-                                                <span className="text-white">15 / 05 / 2006</span>
-                                            </p>
-                                        </div>
-
-                                        <div className="flex items-center">
-                                            <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
-                                            <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
-                                                NATIONALITY:
-                                                <br />
-                                                <span className="text-white">Brazil</span>
-                                            </p>
-                                        </div>
-
-                                        <div className="flex items-center">
-                                            <MapPin className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
-                                            <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
-                                                CITY:
-                                                <br />
-                                                <span className="text-white">RIO DE JANEIRO - RJ</span>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="absolute right-0 bottom-0 z-0">
-                                        <img src="/images/img/orange-img.png" alt="" className="w-[50px] sm:w-[60px]" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div className="bg-[#191917] p-4 sm:p-6 text-white">
-                            <div className="grid gap-3 sm:gap-6 grid-cols-2">
-                                {/* Left Side */}
-                                <div className="relative">
-                                    <div className="absolute top-0 -right-4 w-[1px] h-full border-r border-white/10"></div>
-                                    <h2 className="mb-2 text-[10px] font-bold text-[#f4620c] uppercase">Player Info</h2>
-
-                                    <div className="space-y-2">
-                                        {playerInfo.map((item, index) => (
-                                            <div key={index} className="flex items-center justify-between border-b border-white/10 pb-4 last:border-b-0">
-                                                <div className="flex items-center gap-2">
-
-                                                    <span className="text-[#d2d2d2">{item.icon}</span>
-
-                                                    <span className="text-[8px] pr-2 text-[#d2d2d2] uppercase">{item.label}</span>
-                                                </div>
-
-                                                <span className="text-[7px] sm:text-[8px] font-medium text-white uppercase">{item.value}</span>
+                                        <div className="mt-6 space-y-1">
+                                            <div className="flex items-center">
+                                                <User className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                                <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
+                                                    ID:
+                                                    <br />
+                                                    <span className="text-white">HLF-00012345</span>
+                                                </p>
                                             </div>
-                                        ))}
+
+                                            <div className="flex items-center">
+                                                <CalendarDays className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                                <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
+                                                    DATE OF BIRTH:
+                                                    <br />
+                                                    <span className="text-white">15 / 05 / 2006</span>
+                                                </p>
+                                            </div>
+
+                                            <div className="flex items-center">
+                                                <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                                <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
+                                                    NATIONALITY:
+                                                    <br />
+                                                    <span className="text-white">Brazil</span>
+                                                </p>
+                                            </div>
+
+                                            <div className="flex items-center">
+                                                <MapPin className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                                <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
+                                                    CITY:
+                                                    <br />
+                                                    <span className="text-white">RIO DE JANEIRO - RJ</span>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="absolute right-0 bottom-0 z-0">
+                                            <img src="/images/img/orange-img.png" alt="" className="w-[50px] sm:w-[60px]" />
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                {/* Right Side */}
-                                <div className="pl-4 sm:pl-3">
-                                    <h2 className="text-[10px] font-bold text-[#f4620c] uppercase">Scan To View Profile</h2>
 
-                                    <p className="mt-1 mb-6 text-[8px] text-[#f1f1f1] uppercase">Open Your Camera And Scan</p>
+                            <div className="bg-[#191917] p-4 sm:p-6 text-white">
+                                <div className="grid gap-3 sm:gap-6 grid-cols-2">
+                                    {/* Left Side */}
+                                    <div className="relative">
+                                        <div className="absolute top-0 -right-4 w-[1px] h-full border-r border-white/10"></div>
+                                        <h2 className="mb-2 text-[10px] font-bold text-[#f4620c] uppercase">Player Info</h2>
 
-                                    {/* QR Area */}
-                                    <div className="w-fit rounded-[8px] sm:rounded-xl border-2 sm:border-[3px] border-[#ff6600] bg-white sm:p-3 p-2">
-                                        <img src="/images/img/qr.png" alt="QR" className="h-[70px] w-[70px] sm:h-[90px] sm:w-[90px] object-cover" />
+                                        <div className="space-y-2">
+                                            {playerInfo.map((item, index) => (
+                                                <div key={index} className="flex items-center justify-between border-b border-white/10 pb-4 last:border-b-0">
+                                                    <div className="flex items-center gap-2">
+
+                                                        <span className="text-[#d2d2d2">{item.icon}</span>
+
+                                                        <span className="text-[8px] pr-2 text-[#d2d2d2] uppercase">{item.label}</span>
+                                                    </div>
+
+                                                    <span className="text-[7px] sm:text-[8px] font-medium text-white uppercase">{item.value}</span>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
 
-                                    {/* Button */}
-                                    <button className="mt-2 flex items-center rounded-xl bg-[#ff6600] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#ff7a1a]">
-                                          <span className=" text-black pr-1">
-                                                    <Smartphone className="h-6 w-4"/>
-                                                </span>
+                                    {/* Right Side */}
+                                    <div className="pl-4 sm:pl-3">
+                                        <h2 className="text-[10px] font-bold text-[#f4620c] uppercase">Scan To View Profile</h2>
 
-                                        <span className="text-left text-[6px] sm:text-[8px] leading-tight">
-                                            VIEW FULL PROFILE, VIDEOS,
-                                            <br/>
-                                            STATS AND ACHIEVEMENTS
-                                        </span>
+                                        <p className="mt-1 mb-6 text-[8px] text-[#f1f1f1] uppercase">Open Your Camera And Scan</p>
+
+                                        {/* QR Area */}
+                                        <div className="w-fit rounded-[8px] sm:rounded-xl border-2 sm:border-[3px] border-[#ff6600] bg-white sm:p-3 p-2">
+                                            <img src="/images/img/qr.png" alt="QR" className="h-[70px] w-[70px] sm:h-[90px] sm:w-[90px] object-cover" />
+                                        </div>
+
+                                        {/* Button */}
+                                        <button className="mt-2 flex items-center rounded-xl bg-[#ff6600] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#ff7a1a]">
+                                            <span className=" text-black pr-1">
+                                                <Smartphone className="h-6 w-4" />
+                                            </span>
+
+                                            <span className="text-left text-[6px] sm:text-[8px] leading-tight">
+                                                VIEW FULL PROFILE, VIDEOS,
+                                                <br />
+                                                STATS AND ACHIEVEMENTS
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between items-center relative w-full -mt-2  border-t-1 border-gray-600 p-3 sm:p-6 bg-[url('/images/img/layer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[16px] rounded-br-[16px]">
+                                <p className=" flex justify-between items-center text-[7px] sm:text-[8px] -ml-3 text-gray-300 pl-1">
+                                    <Shield className="w-6 h-6 " />
+
+                                    <span className="pl-2">THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br className="hidden sm:block" />
+                                        MEMBER OF HILIGHTS FOOTBALL PLATFORM.</span>
+                                </p>
+                                <p className="text-[6px] sm:text-[8px] text-black font-bold translate-x-[5px] sm:translate-x-[10%]">WWW.HILIGHTSFOOTBALL.COM  </p>
+
+
+
+                                <div className="absolute -bottom-10 left-0 flex justify-between w-full">
+
+                                    <button className="capitalize flex items-center rounded-xl bg-[#e75502] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[16px] text-[10px] transition-all hover:bg-[#ff7a1a]">
+                                        <Share2 className="mr-2 w-[10px] h-[10px] sm:h-[12px]" />
+                                        share full profile
+                                    </button>
+
+                                    <button className="capitalize flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[10px] transition-all">
+
+                                        <Download className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" />
+                                        download member card
                                     </button>
                                 </div>
                             </div>
+
+
+
+
                         </div>
-
-                        <div className="flex justify-between items-center relative w-full -mt-2  border-t-1 border-gray-600 p-3 sm:p-6 bg-[url('/images/img/layer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[16px] rounded-br-[16px]">
-                            <p className=" flex justify-between items-center text-[7px] sm:text-[8px] -ml-3 text-gray-300 pl-1">
-                                <Shield className="w-6 h-6 " />
-
-                                <span className="pl-2">THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br className="hidden sm:block"/>
-                                MEMBER OF HILIGHTS FOOTBALL PLATFORM.</span>
-                            </p>
-                            <p className="text-[6px] sm:text-[8px] text-black font-bold translate-x-[5px] sm:translate-x-[10%]">WWW.HILIGHTSFOOTBALL.COM  </p>
-
-
-
-                            <div className="absolute -bottom-10 left-0 flex justify-between w-full">
-
-                                <button className="capitalize flex items-center rounded-xl bg-[#e75502] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[16px] text-[10px] transition-all hover:bg-[#ff7a1a]">
-                                    <Share2 className="mr-2 w-[10px] h-[10px] sm:h-[12px]" />
-                                    share full profile
-                                    </button>
-
-                                <button className="capitalize flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[10px] transition-all">
-
-                                    <Download className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" />
-                                    download member card
-                                    </button>
-                            </div>
-                        </div>
-
-
-
-
-                    </div>
                     </div>
                 </section>
 
