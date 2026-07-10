@@ -9,7 +9,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Calendar } from '@/components/ui/calendar';
 import {
     Popover,
     PopoverContent,
@@ -396,6 +395,125 @@ function CountryCombobox({
     );
 }
 
+// Self-contained DOB calendar (no react-day-picker — avoids version conflicts)
+function DobCalendar({
+    value,
+    onChange,
+}: {
+    value: string;
+    onChange: (v: string) => void;
+}) {
+    const selectedDate = parseYmd(value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const [viewMonth, setViewMonth] = useState<number>(
+        selectedDate ? selectedDate.getMonth() : 0
+    );
+    const [viewYear, setViewYear] = useState<number>(
+        selectedDate ? selectedDate.getFullYear() : 2005
+    );
+
+    const years = useMemo(() => {
+        const arr: number[] = [];
+        for (let y = today.getFullYear(); y >= 1950; y--) arr.push(y);
+        return arr;
+    }, []);
+
+    const startWeekday = new Date(viewYear, viewMonth, 1).getDay(); // 0 = Sun
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+    const cells: (number | null)[] = [];
+    for (let i = 0; i < startWeekday; i++) cells.push(null);
+    for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+
+    const isSelected = (d: number) =>
+        !!selectedDate &&
+        selectedDate.getFullYear() === viewYear &&
+        selectedDate.getMonth() === viewMonth &&
+        selectedDate.getDate() === d;
+
+    const isToday = (d: number) =>
+        today.getFullYear() === viewYear &&
+        today.getMonth() === viewMonth &&
+        today.getDate() === d;
+
+    const isFuture = (d: number) => new Date(viewYear, viewMonth, d) > today;
+
+    const pick = (d: number) => {
+        const mm = String(viewMonth + 1).padStart(2, '0');
+        const dd = String(d).padStart(2, '0');
+        onChange(`${viewYear}-${mm}-${dd}`);
+    };
+
+    const selectClass =
+        'flex-1 rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] text-[#0F172A] dark:text-[#F5F5F5] text-sm font-medium px-2 py-2 focus:outline-none focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-800 focus:border-[#FF6B00] [color-scheme:light] dark:[color-scheme:dark] cursor-pointer';
+
+    return (
+        <div className="p-4 w-[320px]">
+            {/* Month / Year dropdowns */}
+            <div className="flex items-center gap-2 mb-4">
+                <select
+                    value={viewMonth}
+                    onChange={(e) => setViewMonth(Number(e.target.value))}
+                    className={selectClass}
+                >
+                    {MONTHS.map((m, i) => (
+                        <option key={m.v} value={i}>{m.l}</option>
+                    ))}
+                </select>
+                <select
+                    value={viewYear}
+                    onChange={(e) => setViewYear(Number(e.target.value))}
+                    className={`${selectClass} font-mono max-w-[90px]`}
+                >
+                    {years.map((y) => (
+                        <option key={y} value={y}>{y}</option>
+                    ))}
+                </select>
+            </div>
+
+            {/* Weekday header */}
+            <div className="grid grid-cols-7 gap-1 mb-1">
+                {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((w) => (
+                    <div
+                        key={w}
+                        className="text-center text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold py-1"
+                    >
+                        {w}
+                    </div>
+                ))}
+            </div>
+
+            {/* Day grid */}
+            <div className="grid grid-cols-7 gap-1">
+                {cells.map((d, i) =>
+                    d === null ? (
+                        <div key={`e-${i}`} />
+                    ) : (
+                        <button
+                            key={d}
+                            type="button"
+                            disabled={isFuture(d)}
+                            onClick={() => pick(d)}
+                            className={`h-9 w-9 mx-auto flex items-center justify-center rounded-lg text-sm font-medium transition-colors
+                                ${isSelected(d)
+                                    ? 'bg-[#FF6B00] text-white hover:bg-[#CC5500]'
+                                    : isToday(d)
+                                        ? 'text-[#FF6B00] font-bold hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]'
+                                        : 'text-[#0F172A] dark:text-[#F5F5F5] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]'
+                                }
+                                disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent`}
+                        >
+                            {d}
+                        </button>
+                    )
+                )}
+            </div>
+        </div>
+    );
+}
+
 export default function Edit() {
     const [step, setStep] = useState<number>(0);
     const currentYear = new Date().getFullYear();
@@ -612,28 +730,9 @@ export default function Edit() {
                                                 align="start"
                                                 sideOffset={8}
                                             >
-                                                <Calendar
-                                                    mode="single"
-                                                    selected={parseYmd(data.dob)}
-                                                    onSelect={(d) => setData('dob', d ? format(d, 'yyyy-MM-dd') : '')}
-                                                    captionLayout="dropdown"
-                                                    startMonth={new Date(1950, 0)}
-                                                    endMonth={new Date()}
-                                                    defaultMonth={parseYmd(data.dob) ?? new Date(2005, 0)}
-                                                    disabled={{ after: new Date() }}
-                                                    className="p-4"
-                                                    classNames={{
-                                                        caption_label: 'text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]',
-                                                        dropdowns: 'flex items-center gap-2',
-                                                        dropdown: 'rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] text-[#0F172A] dark:text-[#F5F5F5] text-sm font-medium px-2 py-1 focus:outline-none focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-800',
-                                                        weekday: 'text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold w-9',
-                                                        day: 'text-sm text-[#0F172A] dark:text-[#F5F5F5]',
-                                                        day_button: 'h-9 w-9 rounded-lg font-medium hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)] transition-colors',
-                                                    }}
-                                                    modifiersClassNames={{
-                                                        selected: '!bg-[#FF6B00] [&>button]:!bg-[#FF6B00] [&>button]:!text-white [&>button:hover]:!bg-[#CC5500] rounded-lg',
-                                                        today: '[&>button]:!text-[#FF6B00] [&>button]:!font-bold',
-                                                    }}
+                                                <DobCalendar
+                                                    value={data.dob}
+                                                    onChange={(v) => setData('dob', v)}
                                                 />
                                             </PopoverContent>
                                         </Popover>
