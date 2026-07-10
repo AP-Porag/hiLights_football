@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
+import { format } from 'date-fns';
 import PlayerNavbar from '@/components/player/PlayerNavbar';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Input } from '@/components/ui/input';
@@ -8,6 +9,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Calendar } from '@/components/ui/calendar';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover';
 import {
     Select,
     SelectContent,
@@ -16,6 +23,14 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from '@/components/ui/command';
+import {
     Upload,
     Youtube,
     CheckCircle2,
@@ -23,21 +38,208 @@ import {
     AlertTriangle,
     ArrowLeft,
     ArrowRight,
-    Plus,
+    CalendarIcon,
+    Check,
+    ChevronsUpDown,
 } from 'lucide-react';
 
-// TODO: Replace with usePage().props
+// ── Full country list (alpha-2 codes, matches DB values like "BD") ──
 const COUNTRIES = [
-    { code: 'BR', name: 'Brazil', flag: '🇧🇷' },
+    { code: 'AF', name: 'Afghanistan', flag: '🇦🇫' },
+    { code: 'AL', name: 'Albania', flag: '🇦🇱' },
+    { code: 'DZ', name: 'Algeria', flag: '🇩🇿' },
+    { code: 'AD', name: 'Andorra', flag: '🇦🇩' },
+    { code: 'AO', name: 'Angola', flag: '🇦🇴' },
+    { code: 'AG', name: 'Antigua and Barbuda', flag: '🇦🇬' },
     { code: 'AR', name: 'Argentina', flag: '🇦🇷' },
-    { code: 'PT', name: 'Portugal', flag: '🇵🇹' },
-    { code: 'ES', name: 'Spain', flag: '🇪🇸' },
-    { code: 'GB', name: 'England', flag: '🇬🇧' },
+    { code: 'AM', name: 'Armenia', flag: '🇦🇲' },
+    { code: 'AU', name: 'Australia', flag: '🇦🇺' },
+    { code: 'AT', name: 'Austria', flag: '🇦🇹' },
+    { code: 'AZ', name: 'Azerbaijan', flag: '🇦🇿' },
+    { code: 'BS', name: 'Bahamas', flag: '🇧🇸' },
+    { code: 'BH', name: 'Bahrain', flag: '🇧🇭' },
+    { code: 'BD', name: 'Bangladesh', flag: '🇧🇩' },
+    { code: 'BB', name: 'Barbados', flag: '🇧🇧' },
+    { code: 'BY', name: 'Belarus', flag: '🇧🇾' },
+    { code: 'BE', name: 'Belgium', flag: '🇧🇪' },
+    { code: 'BZ', name: 'Belize', flag: '🇧🇿' },
+    { code: 'BJ', name: 'Benin', flag: '🇧🇯' },
+    { code: 'BT', name: 'Bhutan', flag: '🇧🇹' },
+    { code: 'BO', name: 'Bolivia', flag: '🇧🇴' },
+    { code: 'BA', name: 'Bosnia and Herzegovina', flag: '🇧🇦' },
+    { code: 'BW', name: 'Botswana', flag: '🇧🇼' },
+    { code: 'BR', name: 'Brazil', flag: '🇧🇷' },
+    { code: 'BN', name: 'Brunei', flag: '🇧🇳' },
+    { code: 'BG', name: 'Bulgaria', flag: '🇧🇬' },
+    { code: 'BF', name: 'Burkina Faso', flag: '🇧🇫' },
+    { code: 'BI', name: 'Burundi', flag: '🇧🇮' },
+    { code: 'KH', name: 'Cambodia', flag: '🇰🇭' },
+    { code: 'CM', name: 'Cameroon', flag: '🇨🇲' },
+    { code: 'CA', name: 'Canada', flag: '🇨🇦' },
+    { code: 'CV', name: 'Cape Verde', flag: '🇨🇻' },
+    { code: 'CF', name: 'Central African Republic', flag: '🇨🇫' },
+    { code: 'TD', name: 'Chad', flag: '🇹🇩' },
+    { code: 'CL', name: 'Chile', flag: '🇨🇱' },
+    { code: 'CN', name: 'China', flag: '🇨🇳' },
+    { code: 'CO', name: 'Colombia', flag: '🇨🇴' },
+    { code: 'KM', name: 'Comoros', flag: '🇰🇲' },
+    { code: 'CG', name: 'Congo', flag: '🇨🇬' },
+    { code: 'CD', name: 'Congo (DRC)', flag: '🇨🇩' },
+    { code: 'CR', name: 'Costa Rica', flag: '🇨🇷' },
+    { code: 'CI', name: "Côte d'Ivoire", flag: '🇨🇮' },
+    { code: 'HR', name: 'Croatia', flag: '🇭🇷' },
+    { code: 'CU', name: 'Cuba', flag: '🇨🇺' },
+    { code: 'CY', name: 'Cyprus', flag: '🇨🇾' },
+    { code: 'CZ', name: 'Czechia', flag: '🇨🇿' },
+    { code: 'DK', name: 'Denmark', flag: '🇩🇰' },
+    { code: 'DJ', name: 'Djibouti', flag: '🇩🇯' },
+    { code: 'DM', name: 'Dominica', flag: '🇩🇲' },
+    { code: 'DO', name: 'Dominican Republic', flag: '🇩🇴' },
+    { code: 'EC', name: 'Ecuador', flag: '🇪🇨' },
+    { code: 'EG', name: 'Egypt', flag: '🇪🇬' },
+    { code: 'SV', name: 'El Salvador', flag: '🇸🇻' },
+    { code: 'GQ', name: 'Equatorial Guinea', flag: '🇬🇶' },
+    { code: 'ER', name: 'Eritrea', flag: '🇪🇷' },
+    { code: 'EE', name: 'Estonia', flag: '🇪🇪' },
+    { code: 'SZ', name: 'Eswatini', flag: '🇸🇿' },
+    { code: 'ET', name: 'Ethiopia', flag: '🇪🇹' },
+    { code: 'FJ', name: 'Fiji', flag: '🇫🇯' },
+    { code: 'FI', name: 'Finland', flag: '🇫🇮' },
     { code: 'FR', name: 'France', flag: '🇫🇷' },
+    { code: 'GA', name: 'Gabon', flag: '🇬🇦' },
+    { code: 'GM', name: 'Gambia', flag: '🇬🇲' },
+    { code: 'GE', name: 'Georgia', flag: '🇬🇪' },
     { code: 'DE', name: 'Germany', flag: '🇩🇪' },
+    { code: 'GH', name: 'Ghana', flag: '🇬🇭' },
+    { code: 'GR', name: 'Greece', flag: '🇬🇷' },
+    { code: 'GD', name: 'Grenada', flag: '🇬🇩' },
+    { code: 'GT', name: 'Guatemala', flag: '🇬🇹' },
+    { code: 'GN', name: 'Guinea', flag: '🇬🇳' },
+    { code: 'GW', name: 'Guinea-Bissau', flag: '🇬🇼' },
+    { code: 'GY', name: 'Guyana', flag: '🇬🇾' },
+    { code: 'HT', name: 'Haiti', flag: '🇭🇹' },
+    { code: 'HN', name: 'Honduras', flag: '🇭🇳' },
+    { code: 'HU', name: 'Hungary', flag: '🇭🇺' },
+    { code: 'IS', name: 'Iceland', flag: '🇮🇸' },
+    { code: 'IN', name: 'India', flag: '🇮🇳' },
+    { code: 'ID', name: 'Indonesia', flag: '🇮🇩' },
+    { code: 'IR', name: 'Iran', flag: '🇮🇷' },
+    { code: 'IQ', name: 'Iraq', flag: '🇮🇶' },
+    { code: 'IE', name: 'Ireland', flag: '🇮🇪' },
+    { code: 'IL', name: 'Israel', flag: '🇮🇱' },
     { code: 'IT', name: 'Italy', flag: '🇮🇹' },
+    { code: 'JM', name: 'Jamaica', flag: '🇯🇲' },
+    { code: 'JP', name: 'Japan', flag: '🇯🇵' },
+    { code: 'JO', name: 'Jordan', flag: '🇯🇴' },
+    { code: 'KZ', name: 'Kazakhstan', flag: '🇰🇿' },
+    { code: 'KE', name: 'Kenya', flag: '🇰🇪' },
+    { code: 'KI', name: 'Kiribati', flag: '🇰🇮' },
+    { code: 'KW', name: 'Kuwait', flag: '🇰🇼' },
+    { code: 'KG', name: 'Kyrgyzstan', flag: '🇰🇬' },
+    { code: 'LA', name: 'Laos', flag: '🇱🇦' },
+    { code: 'LV', name: 'Latvia', flag: '🇱🇻' },
+    { code: 'LB', name: 'Lebanon', flag: '🇱🇧' },
+    { code: 'LS', name: 'Lesotho', flag: '🇱🇸' },
+    { code: 'LR', name: 'Liberia', flag: '🇱🇷' },
+    { code: 'LY', name: 'Libya', flag: '🇱🇾' },
+    { code: 'LI', name: 'Liechtenstein', flag: '🇱🇮' },
+    { code: 'LT', name: 'Lithuania', flag: '🇱🇹' },
+    { code: 'LU', name: 'Luxembourg', flag: '🇱🇺' },
+    { code: 'MG', name: 'Madagascar', flag: '🇲🇬' },
+    { code: 'MW', name: 'Malawi', flag: '🇲🇼' },
+    { code: 'MY', name: 'Malaysia', flag: '🇲🇾' },
+    { code: 'MV', name: 'Maldives', flag: '🇲🇻' },
+    { code: 'ML', name: 'Mali', flag: '🇲🇱' },
+    { code: 'MT', name: 'Malta', flag: '🇲🇹' },
+    { code: 'MH', name: 'Marshall Islands', flag: '🇲🇭' },
+    { code: 'MR', name: 'Mauritania', flag: '🇲🇷' },
+    { code: 'MU', name: 'Mauritius', flag: '🇲🇺' },
+    { code: 'MX', name: 'Mexico', flag: '🇲🇽' },
+    { code: 'FM', name: 'Micronesia', flag: '🇫🇲' },
+    { code: 'MD', name: 'Moldova', flag: '🇲🇩' },
+    { code: 'MC', name: 'Monaco', flag: '🇲🇨' },
+    { code: 'MN', name: 'Mongolia', flag: '🇲🇳' },
+    { code: 'ME', name: 'Montenegro', flag: '🇲🇪' },
+    { code: 'MA', name: 'Morocco', flag: '🇲🇦' },
+    { code: 'MZ', name: 'Mozambique', flag: '🇲🇿' },
+    { code: 'MM', name: 'Myanmar', flag: '🇲🇲' },
+    { code: 'NA', name: 'Namibia', flag: '🇳🇦' },
+    { code: 'NR', name: 'Nauru', flag: '🇳🇷' },
+    { code: 'NP', name: 'Nepal', flag: '🇳🇵' },
     { code: 'NL', name: 'Netherlands', flag: '🇳🇱' },
+    { code: 'NZ', name: 'New Zealand', flag: '🇳🇿' },
+    { code: 'NI', name: 'Nicaragua', flag: '🇳🇮' },
+    { code: 'NE', name: 'Niger', flag: '🇳🇪' },
+    { code: 'NG', name: 'Nigeria', flag: '🇳🇬' },
+    { code: 'KP', name: 'North Korea', flag: '🇰🇵' },
+    { code: 'MK', name: 'North Macedonia', flag: '🇲🇰' },
+    { code: 'NO', name: 'Norway', flag: '🇳🇴' },
+    { code: 'OM', name: 'Oman', flag: '🇴🇲' },
+    { code: 'PK', name: 'Pakistan', flag: '🇵🇰' },
+    { code: 'PW', name: 'Palau', flag: '🇵🇼' },
+    { code: 'PS', name: 'Palestine', flag: '🇵🇸' },
+    { code: 'PA', name: 'Panama', flag: '🇵🇦' },
+    { code: 'PG', name: 'Papua New Guinea', flag: '🇵🇬' },
+    { code: 'PY', name: 'Paraguay', flag: '🇵🇾' },
+    { code: 'PE', name: 'Peru', flag: '🇵🇪' },
+    { code: 'PH', name: 'Philippines', flag: '🇵🇭' },
+    { code: 'PL', name: 'Poland', flag: '🇵🇱' },
+    { code: 'PT', name: 'Portugal', flag: '🇵🇹' },
+    { code: 'QA', name: 'Qatar', flag: '🇶🇦' },
+    { code: 'RO', name: 'Romania', flag: '🇷🇴' },
+    { code: 'RU', name: 'Russia', flag: '🇷🇺' },
+    { code: 'RW', name: 'Rwanda', flag: '🇷🇼' },
+    { code: 'KN', name: 'Saint Kitts and Nevis', flag: '🇰🇳' },
+    { code: 'LC', name: 'Saint Lucia', flag: '🇱🇨' },
+    { code: 'VC', name: 'Saint Vincent and the Grenadines', flag: '🇻🇨' },
+    { code: 'WS', name: 'Samoa', flag: '🇼🇸' },
+    { code: 'SM', name: 'San Marino', flag: '🇸🇲' },
+    { code: 'ST', name: 'São Tomé and Príncipe', flag: '🇸🇹' },
+    { code: 'SA', name: 'Saudi Arabia', flag: '🇸🇦' },
+    { code: 'SN', name: 'Senegal', flag: '🇸🇳' },
+    { code: 'RS', name: 'Serbia', flag: '🇷🇸' },
+    { code: 'SC', name: 'Seychelles', flag: '🇸🇨' },
+    { code: 'SL', name: 'Sierra Leone', flag: '🇸🇱' },
+    { code: 'SG', name: 'Singapore', flag: '🇸🇬' },
+    { code: 'SK', name: 'Slovakia', flag: '🇸🇰' },
+    { code: 'SI', name: 'Slovenia', flag: '🇸🇮' },
+    { code: 'SB', name: 'Solomon Islands', flag: '🇸🇧' },
+    { code: 'SO', name: 'Somalia', flag: '🇸🇴' },
+    { code: 'ZA', name: 'South Africa', flag: '🇿🇦' },
+    { code: 'KR', name: 'South Korea', flag: '🇰🇷' },
+    { code: 'SS', name: 'South Sudan', flag: '🇸🇸' },
+    { code: 'ES', name: 'Spain', flag: '🇪🇸' },
+    { code: 'LK', name: 'Sri Lanka', flag: '🇱🇰' },
+    { code: 'SD', name: 'Sudan', flag: '🇸🇩' },
+    { code: 'SR', name: 'Suriname', flag: '🇸🇷' },
+    { code: 'SE', name: 'Sweden', flag: '🇸🇪' },
+    { code: 'CH', name: 'Switzerland', flag: '🇨🇭' },
+    { code: 'SY', name: 'Syria', flag: '🇸🇾' },
+    { code: 'TW', name: 'Taiwan', flag: '🇹🇼' },
+    { code: 'TJ', name: 'Tajikistan', flag: '🇹🇯' },
+    { code: 'TZ', name: 'Tanzania', flag: '🇹🇿' },
+    { code: 'TH', name: 'Thailand', flag: '🇹🇭' },
+    { code: 'TL', name: 'Timor-Leste', flag: '🇹🇱' },
+    { code: 'TG', name: 'Togo', flag: '🇹🇬' },
+    { code: 'TO', name: 'Tonga', flag: '🇹🇴' },
+    { code: 'TT', name: 'Trinidad and Tobago', flag: '🇹🇹' },
+    { code: 'TN', name: 'Tunisia', flag: '🇹🇳' },
+    { code: 'TR', name: 'Türkiye', flag: '🇹🇷' },
+    { code: 'TM', name: 'Turkmenistan', flag: '🇹🇲' },
+    { code: 'TV', name: 'Tuvalu', flag: '🇹🇻' },
+    { code: 'UG', name: 'Uganda', flag: '🇺🇬' },
+    { code: 'UA', name: 'Ukraine', flag: '🇺🇦' },
+    { code: 'AE', name: 'United Arab Emirates', flag: '🇦🇪' },
+    { code: 'GB', name: 'United Kingdom', flag: '🇬🇧' },
     { code: 'US', name: 'United States', flag: '🇺🇸' },
+    { code: 'UY', name: 'Uruguay', flag: '🇺🇾' },
+    { code: 'UZ', name: 'Uzbekistan', flag: '🇺🇿' },
+    { code: 'VU', name: 'Vanuatu', flag: '🇻🇺' },
+    { code: 'VE', name: 'Venezuela', flag: '🇻🇪' },
+    { code: 'VN', name: 'Vietnam', flag: '🇻🇳' },
+    { code: 'YE', name: 'Yemen', flag: '🇾🇪' },
+    { code: 'ZM', name: 'Zambia', flag: '🇿🇲' },
+    { code: 'ZW', name: 'Zimbabwe', flag: '🇿🇼' },
 ];
 
 const STEPS = [
@@ -47,44 +249,65 @@ const STEPS = [
     { id: 3, label: 'History' },
     { id: 4, label: 'About' },
 ];
-
 const MODALITIES = ['Football', 'Futsal', 'Beach Soccer'];
-
 const POSITION_ZONES = [
-    { id: 'GK',    label: 'GK',    cx: 30,  cy: 100 },
-    { id: 'LB',    label: 'LB',    cx: 75,  cy: 40  },
-    { id: 'CB-L',  label: 'CB',    cx: 80,  cy: 80  },
-    { id: 'CB-R',  label: 'CB',    cx: 80,  cy: 120 },
-    { id: 'RB',    label: 'RB',    cx: 75,  cy: 160 },
-    { id: 'LM',    label: 'LM',    cx: 145, cy: 40  },
-    { id: 'CM-L',  label: 'CM',    cx: 145, cy: 80  },
-    { id: 'CM-R',  label: 'CM',    cx: 145, cy: 120 },
-    { id: 'RM',    label: 'RM',    cx: 145, cy: 160 },
-    { id: 'CAM',   label: 'CAM',   cx: 200, cy: 100 },
-    { id: 'LW',    label: 'LW',    cx: 235, cy: 50  },
-    { id: 'ST',    label: 'ST',    cx: 260, cy: 100 },
-    { id: 'RW',    label: 'RW',    cx: 235, cy: 150 },
-    { id: 'CF',    label: 'CF',    cx: 245, cy: 100 },
+    { id: 'GK', label: 'GK', cx: 30, cy: 100 },
+    { id: 'LB', label: 'LB', cx: 75, cy: 40 },
+    { id: 'CB-L', label: 'CB', cx: 80, cy: 80 },
+    { id: 'CB-R', label: 'CB', cx: 80, cy: 120 },
+    { id: 'RB', label: 'RB', cx: 75, cy: 160 },
+    { id: 'LM', label: 'LM', cx: 145, cy: 40 },
+    { id: 'CM-L', label: 'CM', cx: 145, cy: 80 },
+    { id: 'CM-R', label: 'CM', cx: 145, cy: 120 },
+    { id: 'RM', label: 'RM', cx: 145, cy: 160 },
+    { id: 'CAM', label: 'CAM', cx: 200, cy: 100 },
+    { id: 'LW', label: 'LW', cx: 235, cy: 50 },
+    { id: 'ST', label: 'ST', cx: 260, cy: 100 },
+    { id: 'RW', label: 'RW', cx: 235, cy: 150 },
+    { id: 'CF', label: 'CF', cx: 245, cy: 100 },
+];
+const ALL_POSITIONS = ['GK', 'LB', 'CB-L', 'CB-R', 'RB', 'LM', 'CM-L', 'CM-R', 'RM', 'CAM', 'LW', 'ST', 'RW', 'CF'];
+
+const MONTHS = [
+    { v: '01', l: 'January' }, { v: '02', l: 'February' }, { v: '03', l: 'March' },
+    { v: '04', l: 'April' }, { v: '05', l: 'May' }, { v: '06', l: 'June' },
+    { v: '07', l: 'July' }, { v: '08', l: 'August' }, { v: '09', l: 'September' },
+    { v: '10', l: 'October' }, { v: '11', l: 'November' }, { v: '12', l: 'December' },
 ];
 
-const ALL_POSITIONS = ['GK','LB','CB-L','CB-R','RB','LM','CM-L','CM-R','RM','CAM','LW','ST','RW','CF'];
+// kon field kon step-e — error hole oi step-e jump korar jonno
+const FIELD_STEP: Record<string, number> = {
+    full_name: 0, nickname: 0, dob: 0, gender: 0, height: 0,
+    birth_city: 0, birth_country: 0, nationality: 0, current_club: 0,
+    in_team_since: 0, agent: 0, guardian_name: 0,
+    modality: 1, positions: 1, foot: 1,
+    photo: 2, video_url: 2,
+    club_history: 3,
+    description: 4,
+};
+
+// "YYYY-MM-DD" string ke local Date-e convert (timezone shift bache)
+const parseYmd = (s?: string | null): Date | undefined => {
+    if (!s) return undefined;
+    const [y, m, d] = s.split('-').map(Number);
+    if (!y || !m || !d) return undefined;
+    return new Date(y, m - 1, d);
+};
 
 const calculateAge = (dob: string): number | null => {
     if (!dob) return null;
-    const birth = new Date(dob);
-    if (isNaN(birth.getTime())) return null;
+    const birth = parseYmd(dob);
+    if (!birth || isNaN(birth.getTime())) return null;
     const today = new Date();
     let age = today.getFullYear() - birth.getFullYear();
-    const m = today.getMonth() - birth.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+    const mo = today.getMonth() - birth.getMonth();
+    if (mo < 0 || (mo === 0 && today.getDate() < birth.getDate())) age--;
     return age;
 };
-
 const isValidVideoUrl = (url: string): boolean => {
     if (!url) return false;
     return /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be|vimeo\.com)\/.+/i.test(url);
 };
-
 const getEmbedUrl = (url: string): string | null => {
     if (!url) return null;
     const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
@@ -94,35 +317,125 @@ const getEmbedUrl = (url: string): string | null => {
     return null;
 };
 
+interface PageProps {
+    user: { name: string; dob: string | null; nationality: string | null };
+    profile: Record<string, any> | null;
+    [key: string]: any;
+}
+
+const FieldError = ({ msg }: { msg?: string }) =>
+    msg ? <p className="mt-1 text-xs text-red-500 font-sans">{msg}</p> : null;
+
+// Searchable country dropdown (shadcn Combobox: Popover + Command)
+function CountryCombobox({
+    value,
+    onChange,
+    placeholder = 'Select country',
+}: {
+    value: string;
+    onChange: (v: string) => void;
+    placeholder?: string;
+}) {
+    const [open, setOpen] = useState(false);
+    const selected = COUNTRIES.find((c) => c.code === value);
+    return (
+        <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+                <Button
+                    type="button"
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className={`group w-full h-11 justify-between rounded-xl font-normal bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] hover:bg-white dark:hover:bg-[#111111] transition-colors ${selected ? 'text-[#0F172A] dark:text-[#F5F5F5]' : 'text-[#94A3B8]'}`}
+                >
+                    <span className="flex items-center gap-2 truncate">
+                        {selected ? (
+                            <>
+                                <span>{selected.flag}</span>
+                                <span className="truncate font-medium">{selected.name}</span>
+                            </>
+                        ) : (
+                            placeholder
+                        )}
+                    </span>
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-[#94A3B8] group-hover:text-[#FF6B00] transition-colors" />
+                </Button>
+            </PopoverTrigger>
+            <PopoverContent
+                className="w-[--radix-popover-trigger-width] p-0 rounded-2xl border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#161616] shadow-xl shadow-black/5 dark:shadow-black/40 overflow-hidden"
+                align="start"
+                sideOffset={8}
+            >
+                <Command className="bg-transparent">
+                    <CommandInput placeholder="Search country..." className="h-11" />
+                    <CommandList className="max-h-64">
+                        <CommandEmpty className="py-6 text-center text-sm text-[#94A3B8] font-sans">
+                            No country found.
+                        </CommandEmpty>
+                        <CommandGroup>
+                            {COUNTRIES.map((c) => (
+                                <CommandItem
+                                    key={c.code}
+                                    value={c.name}
+                                    onSelect={() => {
+                                        onChange(c.code);
+                                        setOpen(false);
+                                    }}
+                                    className="cursor-pointer rounded-lg text-[#0F172A] dark:text-[#F5F5F5] aria-selected:bg-[#FFF3EB] dark:aria-selected:bg-[rgba(255,107,0,0.12)] aria-selected:text-[#0F172A] dark:aria-selected:text-[#F5F5F5]"
+                                >
+                                    <span className="mr-2">{c.flag}</span>
+                                    <span className="truncate">{c.name}</span>
+                                    <Check className={`ml-auto h-4 w-4 text-[#FF6B00] ${value === c.code ? 'opacity-100' : 'opacity-0'}`} />
+                                </CommandItem>
+                            ))}
+                        </CommandGroup>
+                    </CommandList>
+                </Command>
+            </PopoverContent>
+        </Popover>
+    );
+}
+
 export default function Edit() {
     const [step, setStep] = useState<number>(0);
     const currentYear = new Date().getFullYear();
 
-    // TODO: Replace with usePage().props for initial data
-    const { data, setData, processing } = useForm({
-        full_name: 'Lucas Henrique Silva',
-        nickname: 'Luquinhas',
-        dob: '2008-03-14',
-        gender: 'M',
-        height: '178',
-        birth_city: 'São Paulo',
-        birth_country: 'BR',
-        nationality: 'BR',
-        current_club: 'Santos FC U-17',
-        in_team_since: '2024-01',
-        agent: '',
-        guardian_name: '',
-        modality: 'Football',
-        positions: ['CAM', 'ST'] as string[],
-        foot: 'Right',
+    const page = usePage<PageProps>().props;
+    const user = page.user ?? { name: '', dob: null, nationality: null };
+    const profile = page.profile ?? null;
+
+    const { data, setData, post, processing, errors, transform } = useForm({
+        // users table theke prefill (profile thakle profile priority)
+        full_name: profile?.full_name ?? user.name ?? '',
+        dob: profile?.dob ?? user.dob ?? '',
+        nationality: profile?.nationality ?? user.nationality ?? '',
+        // baki gula profile theke, na thakle default
+        nickname: profile?.nickname ?? '',
+        gender: profile?.gender ?? 'M',
+        height: profile?.height != null ? String(profile.height) : '',
+        birth_city: profile?.birth_city ?? '',
+        birth_country: profile?.birth_country ?? '',
+        current_club: profile?.current_club ?? '',
+        in_team_since: profile?.in_team_since ?? '',
+        agent: profile?.agent ?? '',
+        guardian_name: profile?.guardian_name ?? '',
+        modality: profile?.modality ?? 'Football',
+        positions: (profile?.positions ?? []) as string[],
+        foot: profile?.foot ?? 'Right',
         photo: null as File | null,
-        photo_preview: '',
-        video_url: '',
-        club_history: Array.from({ length: currentYear - 2020 + 1 }, (_, i) => ({
-            year: 2020 + i,
-            club: i === 0 ? 'Portuguesa Santista U-13' : i === 1 ? 'Portuguesa Santista U-14' : i === 2 ? 'Santos FC U-15' : i === 3 ? 'Santos FC U-15' : i === 4 ? 'Santos FC U-16' : 'Santos FC U-17',
-        })),
-        description: '',
+        photo_preview: profile?.photo_url ?? '',
+        video_url: profile?.video_url ?? '',
+        club_history: (profile?.club_history ?? Array.from(
+            { length: currentYear - 2020 + 1 },
+            (_, i) => ({ year: 2020 + i, club: '' })
+        )) as { year: number; club: string }[],
+        description: profile?.description ?? '',
+    });
+
+    // base64 preview server-e pathanor dorkar nei — strip
+    transform((d) => {
+        const { photo_preview, ...rest } = d as any;
+        return rest;
     });
 
     const age = useMemo(() => calculateAge(data.dob), [data.dob]);
@@ -131,6 +444,19 @@ export default function Edit() {
     const videoValid = isValidVideoUrl(data.video_url);
     const embedUrl = useMemo(() => getEmbedUrl(data.video_url), [data.video_url]);
 
+    // in_team_since = "YYYY-MM" -> alada month/year
+    const [itsYear, itsMonth] = data.in_team_since
+        ? data.in_team_since.split('-')
+        : ['', ''];
+    const yearOptions = useMemo(
+        () => Array.from({ length: currentYear - 1990 + 1 }, (_, i) => String(currentYear - i)),
+        [currentYear]
+    );
+    const setInTeamSince = (year: string, month: string) => {
+        if (year && month) setData('in_team_since', `${year}-${month}`);
+        else setData('in_team_since', '');
+    };
+
     const togglePosition = (id: string) => {
         if (data.positions.includes(id)) {
             setData('positions', data.positions.filter(p => p !== id));
@@ -138,19 +464,16 @@ export default function Edit() {
             setData('positions', [...data.positions, id]);
         }
     };
-
     const updateClubHistory = (idx: number, club: string) => {
         const copy = [...data.club_history];
         copy[idx] = { ...copy[idx], club };
         setData('club_history', copy);
     };
-
     const clearClubHistory = (idx: number) => {
         const copy = [...data.club_history];
         copy[idx] = { ...copy[idx], club: '' };
         setData('club_history', copy);
     };
-
     const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -164,10 +487,22 @@ export default function Edit() {
     const goNext = () => setStep(s => Math.min(s + 1, STEPS.length - 1));
     const goBack = () => setStep(s => Math.max(s - 1, 0));
 
+    const submit = () => {
+        post(route('player.profile.update'), {
+            forceFormData: true,   // photo File upload er jonno
+            preserveScroll: true,
+            onError: (errs) => {
+                const steps = Object.keys(errs)
+                    .map((k) => FIELD_STEP[k.split('.')[0]] ?? 99)
+                    .filter((n) => n !== 99);
+                if (steps.length) setStep(Math.min(...steps));
+            },
+        });
+    };
+
     return (
         <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0D0D0D] pt-16 pb-32">
             <PlayerNavbar />
-
             {/* STICKY PROGRESS HEADER */}
             <div className="bg-white dark:bg-[#0D0D0D] border-b border-[#E2E8F0] dark:border-[#2A2A2A] sticky top-16 z-20 px-4 sm:px-8 py-4">
                 <div className="max-w-[720px] mx-auto">
@@ -203,9 +538,8 @@ export default function Edit() {
                         {STEPS.map((s, idx) => (
                             <div
                                 key={s.id}
-                                className={`text-[10px] uppercase tracking-widest font-semibold font-sans ${
-                                    idx === step ? 'text-[#FF6B00]' : 'text-[#94A3B8]'
-                                }`}
+                                className={`text-[10px] uppercase tracking-widest font-semibold font-sans ${idx === step ? 'text-[#FF6B00]' : 'text-[#94A3B8]'
+                                    }`}
                                 style={{ width: `${100 / STEPS.length}%`, textAlign: idx === 0 ? 'left' : idx === STEPS.length - 1 ? 'right' : 'center' }}
                             >
                                 {s.label}
@@ -222,7 +556,6 @@ export default function Edit() {
 
             {/* FORM CONTENT */}
             <div className="max-w-[720px] mx-auto px-4 py-8">
-
                 {/* SECTION A — BASIC INFO */}
                 {step === 0 && (
                     <section>
@@ -231,7 +564,6 @@ export default function Edit() {
                         </div>
                         <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-5">
-
                                 <div>
                                     <Label htmlFor="full_name" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
                                         Full Name <span className="text-[#FF6B00]">*</span>
@@ -243,8 +575,8 @@ export default function Edit() {
                                         placeholder="John Smith"
                                         className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
                                     />
+                                    <FieldError msg={errors.full_name} />
                                 </div>
-
                                 <div>
                                     <Label htmlFor="nickname" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
                                         Nickname
@@ -257,27 +589,62 @@ export default function Edit() {
                                         className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
                                     />
                                 </div>
-
                                 <div>
-                                    <Label htmlFor="dob" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
+                                    <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
                                         Date of Birth <span className="text-[#FF6B00]">*</span>
                                     </Label>
                                     <div className="flex items-center gap-3">
-                                        <Input
-                                            id="dob"
-                                            type="date"
-                                            value={data.dob}
-                                            onChange={(e) => setData('dob', e.target.value)}
-                                            className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00] [color-scheme:light] dark:[color-scheme:dark]"
-                                        />
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    className={`group flex-1 h-11 justify-start text-left font-normal rounded-xl bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] hover:bg-white dark:hover:bg-[#111111] transition-colors ${data.dob ? 'text-[#0F172A] dark:text-[#F5F5F5]' : 'text-[#94A3B8]'}`}
+                                                >
+                                                    <CalendarIcon className="mr-2.5 h-4 w-4 text-[#94A3B8] group-hover:text-[#FF6B00] transition-colors" />
+                                                    <span className={data.dob ? 'font-medium' : ''}>
+                                                        {data.dob ? format(parseYmd(data.dob)!, 'MMMM d, yyyy') : 'Select date of birth'}
+                                                    </span>
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent
+                                                className="w-auto p-0 rounded-2xl border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#161616] shadow-xl shadow-black/5 dark:shadow-black/40 overflow-hidden"
+                                                align="start"
+                                                sideOffset={8}
+                                            >
+                                                <Calendar
+                                                    mode="single"
+                                                    selected={parseYmd(data.dob)}
+                                                    onSelect={(d) => setData('dob', d ? format(d, 'yyyy-MM-dd') : '')}
+                                                    captionLayout="dropdown"
+                                                    startMonth={new Date(1950, 0)}
+                                                    endMonth={new Date()}
+                                                    defaultMonth={parseYmd(data.dob) ?? new Date(2005, 0)}
+                                                    disabled={{ after: new Date() }}
+                                                    className="p-4"
+                                                    classNames={{
+                                                        caption_label: 'text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]',
+                                                        dropdowns: 'flex items-center gap-2',
+                                                        dropdown: 'rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] text-[#0F172A] dark:text-[#F5F5F5] text-sm font-medium px-2 py-1 focus:outline-none focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-800',
+                                                        weekday: 'text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold w-9',
+                                                        day: 'text-sm text-[#0F172A] dark:text-[#F5F5F5]',
+                                                        day_button: 'h-9 w-9 rounded-lg font-medium hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)] transition-colors',
+                                                    }}
+                                                    modifiersClassNames={{
+                                                        selected: '!bg-[#FF6B00] [&>button]:!bg-[#FF6B00] [&>button]:!text-white [&>button:hover]:!bg-[#CC5500] rounded-lg',
+                                                        today: '[&>button]:!text-[#FF6B00] [&>button]:!font-bold',
+                                                    }}
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
                                         {age !== null && (
                                             <div className="flex-shrink-0 bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] rounded-full px-3 py-1 text-xs font-bold font-mono whitespace-nowrap">
                                                 {age} yrs
                                             </div>
                                         )}
                                     </div>
+                                    <FieldError msg={errors.dob} />
                                 </div>
-
                                 <div>
                                     <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
                                         Gender
@@ -296,8 +663,8 @@ export default function Edit() {
                                             </div>
                                         ))}
                                     </RadioGroup>
+                                    <FieldError msg={errors.gender} />
                                 </div>
-
                                 <div>
                                     <Label htmlFor="height" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
                                         Height (cm)
@@ -310,8 +677,8 @@ export default function Edit() {
                                         placeholder="178"
                                         className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
                                     />
+                                    <FieldError msg={errors.height} />
                                 </div>
-
                                 <div>
                                     <Label htmlFor="birth_city" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
                                         Birthplace City
@@ -324,43 +691,27 @@ export default function Edit() {
                                         className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
                                     />
                                 </div>
-
                                 <div>
                                     <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
                                         Birthplace Country
                                     </Label>
-                                    <Select value={data.birth_country} onValueChange={(v) => setData('birth_country', v)}>
-                                        <SelectTrigger className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5]">
-                                            <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent className="bg-white dark:bg-[#161616] border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                            {COUNTRIES.map((c) => (
-                                                <SelectItem key={c.code} value={c.code} className="text-[#0F172A] dark:text-[#F5F5F5]">
-                                                    <span className="mr-2">{c.flag}</span> {c.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                    <CountryCombobox
+                                        value={data.birth_country}
+                                        onChange={(v) => setData('birth_country', v)}
+                                        placeholder="Select country"
+                                    />
                                 </div>
-
                                 <div>
                                     <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
                                         Nationality <span className="text-[#FF6B00]">*</span>
                                     </Label>
-                                    <Select value={data.nationality} onValueChange={(v) => setData('nationality', v)}>
-                                        <SelectTrigger className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5]">
-                                            <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent className="bg-white dark:bg-[#161616] border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                            {COUNTRIES.map((c) => (
-                                                <SelectItem key={c.code} value={c.code} className="text-[#0F172A] dark:text-[#F5F5F5]">
-                                                    <span className="mr-2">{c.flag}</span> {c.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                    <CountryCombobox
+                                        value={data.nationality}
+                                        onChange={(v) => setData('nationality', v)}
+                                        placeholder="Select nationality"
+                                    />
+                                    <FieldError msg={errors.nationality} />
                                 </div>
-
                                 <div>
                                     <Label htmlFor="current_club" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
                                         Current Club
@@ -373,20 +724,38 @@ export default function Edit() {
                                         className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
                                     />
                                 </div>
-
                                 <div>
-                                    <Label htmlFor="in_team_since" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
+                                    <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
                                         In Team Since (MM/YYYY)
                                     </Label>
-                                    <Input
-                                        id="in_team_since"
-                                        type="month"
-                                        value={data.in_team_since}
-                                        onChange={(e) => setData('in_team_since', e.target.value)}
-                                        className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00] [color-scheme:light] dark:[color-scheme:dark]"
-                                    />
+                                    <div className="flex gap-3">
+                                        <Select value={itsMonth || undefined} onValueChange={(v) => setInTeamSince(itsYear, v)}>
+                                            <SelectTrigger className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5]">
+                                                <SelectValue placeholder="Month" />
+                                            </SelectTrigger>
+                                            <SelectContent className="bg-white dark:bg-[#161616] border-[#E2E8F0] dark:border-[#2A2A2A] max-h-72">
+                                                {MONTHS.map((m) => (
+                                                    <SelectItem key={m.v} value={m.v} className="text-[#0F172A] dark:text-[#F5F5F5]">
+                                                        {m.l}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <Select value={itsYear || undefined} onValueChange={(v) => setInTeamSince(v, itsMonth)}>
+                                            <SelectTrigger className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] font-mono w-28">
+                                                <SelectValue placeholder="Year" />
+                                            </SelectTrigger>
+                                            <SelectContent className="bg-white dark:bg-[#161616] border-[#E2E8F0] dark:border-[#2A2A2A] max-h-72">
+                                                {yearOptions.map((y) => (
+                                                    <SelectItem key={y} value={y} className="text-[#0F172A] dark:text-[#F5F5F5] font-mono">
+                                                        {y}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <FieldError msg={errors.in_team_since} />
                                 </div>
-
                                 <div className="lg:col-span-2">
                                     <Label htmlFor="agent" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
                                         Agent / Representative <span className="text-[#94A3B8] font-normal">(optional)</span>
@@ -400,7 +769,6 @@ export default function Edit() {
                                     />
                                 </div>
                             </div>
-
                             {isMinor && (
                                 <div className="mt-6">
                                     <Alert className="bg-amber-50 dark:bg-amber-950 border-amber-300 dark:border-amber-700">
@@ -420,6 +788,7 @@ export default function Edit() {
                                             placeholder="Parent or legal guardian's full name"
                                             className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
                                         />
+                                        <FieldError msg={errors.guardian_name} />
                                     </div>
                                 </div>
                             )}
@@ -434,7 +803,6 @@ export default function Edit() {
                             02 / Football Details
                         </div>
                         <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
-
                             <div className="mb-8">
                                 <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-3 block font-sans">
                                     Modality
@@ -447,11 +815,10 @@ export default function Edit() {
                                                 key={m}
                                                 type="button"
                                                 onClick={() => setData('modality', m)}
-                                                className={`px-5 py-2.5 rounded-full text-sm font-semibold font-sans transition-colors ${
-                                                    selected
-                                                        ? 'bg-[#FF6B00] text-white border-0'
-                                                        : 'bg-white dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] hover:border-[#FF6B00]'
-                                                }`}
+                                                className={`px-5 py-2.5 rounded-full text-sm font-semibold font-sans transition-colors ${selected
+                                                    ? 'bg-[#FF6B00] text-white border-0'
+                                                    : 'bg-white dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] hover:border-[#FF6B00]'
+                                                    }`}
                                             >
                                                 {m}
                                             </button>
@@ -459,12 +826,10 @@ export default function Edit() {
                                     })}
                                 </div>
                             </div>
-
                             <div className="mb-8">
                                 <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-3 block font-sans">
                                     Position <span className="text-[#94A3B8] font-normal">(up to 3)</span>
                                 </Label>
-
                                 {/* SVG pitch — hidden on mobile */}
                                 <div className="hidden md:block">
                                     <div className="flex justify-center bg-[#0F172A] rounded-2xl p-4">
@@ -477,7 +842,6 @@ export default function Edit() {
                                             <rect x="258" y="55" width="40" height="90" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
                                             <rect x="2" y="75" width="15" height="50" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
                                             <rect x="283" y="75" width="15" height="50" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
-
                                             {POSITION_ZONES.map((p) => {
                                                 const selected = data.positions.includes(p.id);
                                                 return (
@@ -514,20 +878,17 @@ export default function Edit() {
                                         </svg>
                                     </div>
                                 </div>
-
                                 {/* Mobile fallback — checkboxes */}
                                 <div className="md:hidden grid grid-cols-3 gap-3">
                                     {ALL_POSITIONS.map((id) => {
                                         const selected = data.positions.includes(id);
-                                        const label = POSITION_ZONES.find(p => p.id === id)?.label || id;
                                         return (
                                             <label
                                                 key={id}
-                                                className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-colors ${
-                                                    selected
-                                                        ? 'bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border-[#FF6B00]'
-                                                        : 'bg-white dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A]'
-                                                }`}
+                                                className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-colors ${selected
+                                                    ? 'bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border-[#FF6B00]'
+                                                    : 'bg-white dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A]'
+                                                    }`}
                                             >
                                                 <Checkbox
                                                     checked={selected}
@@ -535,13 +896,12 @@ export default function Edit() {
                                                     className="border-[#CBD5E1] dark:border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
                                                 />
                                                 <span className={`text-xs font-semibold font-sans ${selected ? 'text-[#CC5500]' : 'text-[#0F172A] dark:text-[#F5F5F5]'}`}>
-                          {id}
-                        </span>
+                                                    {id}
+                                                </span>
                                             </label>
                                         );
                                     })}
                                 </div>
-
                                 {/* Selected position pills */}
                                 <div className="mt-4 flex flex-wrap items-center gap-2">
                                     <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans mr-1">Selected:</span>
@@ -553,15 +913,15 @@ export default function Edit() {
                                             key={id}
                                             className="inline-flex items-center gap-1.5 bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] rounded-full px-3 py-1 text-xs font-bold font-mono"
                                         >
-                      {id}
+                                            {id}
                                             <button type="button" onClick={() => togglePosition(id)} className="hover:opacity-70">
-                        <Trash2 className="w-3 h-3" />
-                      </button>
-                    </span>
+                                                <Trash2 className="w-3 h-3" />
+                                            </button>
+                                        </span>
                                     ))}
                                 </div>
+                                <FieldError msg={errors.positions} />
                             </div>
-
                             <div>
                                 <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-3 block font-sans">
                                     Dominant Foot
@@ -592,12 +952,10 @@ export default function Edit() {
                             03 / Media
                         </div>
                         <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8 space-y-8">
-
                             <div>
                                 <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-3 block font-sans">
                                     Profile Photo
                                 </Label>
-
                                 {data.photo_preview ? (
                                     <div className="flex flex-col sm:flex-row items-center gap-6">
                                         <img
@@ -651,8 +1009,8 @@ export default function Edit() {
                                         />
                                     </label>
                                 )}
+                                <FieldError msg={errors.photo} />
                             </div>
-
                             <div>
                                 <Label htmlFor="video_url" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-3 block font-sans">
                                     Highlight Video URL
@@ -670,7 +1028,6 @@ export default function Edit() {
                                         <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
                                     )}
                                 </div>
-
                                 {videoValid && embedUrl && (
                                     <div className="mt-4 aspect-video bg-[#0F172A] rounded-xl overflow-hidden">
                                         <iframe
@@ -686,6 +1043,7 @@ export default function Edit() {
                                         Please enter a valid YouTube or Vimeo URL.
                                     </div>
                                 )}
+                                <FieldError msg={errors.video_url} />
                             </div>
                         </div>
                     </section>
@@ -698,51 +1056,50 @@ export default function Edit() {
                             04 / Club History
                         </div>
                         <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
-
                             <div className="overflow-hidden rounded-xl border border-[#E2E8F0] dark:border-[#2A2A2A]">
                                 <table className="table-auto w-full">
                                     <thead>
-                                    <tr className="bg-[#F8FAFC] dark:bg-[#1F1F1F]">
-                                        <th className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold py-3 px-4 text-left font-sans w-20">
-                                            Year
-                                        </th>
-                                        <th className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold py-3 px-4 text-left font-sans">
-                                            Club Name
-                                        </th>
-                                        <th className="w-12"></th>
-                                    </tr>
+                                        <tr className="bg-[#F8FAFC] dark:bg-[#1F1F1F]">
+                                            <th className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold py-3 px-4 text-left font-sans w-20">
+                                                Year
+                                            </th>
+                                            <th className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold py-3 px-4 text-left font-sans">
+                                                Club Name
+                                            </th>
+                                            <th className="w-12"></th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    {data.club_history.map((row, idx) => (
-                                        <tr
-                                            key={row.year}
-                                            className="border-t border-[#E2E8F0] dark:border-[#2A2A2A]"
-                                        >
-                                            <td className="py-2 px-4">
-                          <span className="font-mono text-[#475569] dark:text-[#9A9A9A] font-semibold text-sm">
-                            {row.year}
-                          </span>
-                                            </td>
-                                            <td className="py-2 px-4">
-                                                <Input
-                                                    value={row.club}
-                                                    onChange={(e) => updateClubHistory(idx, e.target.value)}
-                                                    placeholder="Club name (optional)"
-                                                    className="w-full bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00] h-9"
-                                                />
-                                            </td>
-                                            <td className="py-2 px-4 text-right">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => clearClubHistory(idx)}
-                                                    disabled={!row.club}
-                                                    className="disabled:opacity-30 disabled:cursor-not-allowed"
-                                                >
-                                                    <Trash2 className="w-4 h-4 text-[#94A3B8] hover:text-red-500 transition-colors" />
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                        {data.club_history.map((row, idx) => (
+                                            <tr
+                                                key={row.year}
+                                                className="border-t border-[#E2E8F0] dark:border-[#2A2A2A]"
+                                            >
+                                                <td className="py-2 px-4">
+                                                    <span className="font-mono text-[#475569] dark:text-[#9A9A9A] font-semibold text-sm">
+                                                        {row.year}
+                                                    </span>
+                                                </td>
+                                                <td className="py-2 px-4">
+                                                    <Input
+                                                        value={row.club}
+                                                        onChange={(e) => updateClubHistory(idx, e.target.value)}
+                                                        placeholder="Club name (optional)"
+                                                        className="w-full bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00] h-9"
+                                                    />
+                                                </td>
+                                                <td className="py-2 px-4 text-right">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => clearClubHistory(idx)}
+                                                        disabled={!row.club}
+                                                        className="disabled:opacity-30 disabled:cursor-not-allowed"
+                                                    >
+                                                        <Trash2 className="w-4 h-4 text-[#94A3B8] hover:text-red-500 transition-colors" />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                             </div>
@@ -772,10 +1129,11 @@ export default function Edit() {
                                 placeholder="Describe your playing style, strengths, and football journey..."
                                 className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00] resize-none"
                             />
-                            <div className="flex justify-end mt-2">
-                <span className={`text-xs font-mono ${descCount > 450 ? 'text-[#FF6B00] font-bold' : 'text-[#94A3B8]'}`}>
-                  {descCount} / 500
-                </span>
+                            <div className="flex justify-between mt-2">
+                                <FieldError msg={errors.description} />
+                                <span className={`text-xs font-mono ${descCount > 450 ? 'text-[#FF6B00] font-bold' : 'text-[#94A3B8]'}`}>
+                                    {descCount} / 500
+                                </span>
                             </div>
                         </div>
                     </section>
@@ -788,7 +1146,6 @@ export default function Edit() {
                     <CheckCircle2 className="text-green-500 w-4 h-4" />
                     <span className="text-xs text-[#94A3B8] font-sans">Draft saved 2 min ago</span>
                 </div>
-
                 <div className="flex items-center gap-2 sm:gap-3 ml-auto">
                     <Button
                         type="button"
@@ -800,7 +1157,6 @@ export default function Edit() {
                         <ArrowLeft className="w-4 h-4 mr-1" />
                         Back
                     </Button>
-
                     <Button
                         type="button"
                         variant="outline"
@@ -808,7 +1164,6 @@ export default function Edit() {
                     >
                         Save Draft
                     </Button>
-
                     {step < STEPS.length - 1 ? (
                         <Button
                             type="button"
@@ -822,6 +1177,7 @@ export default function Edit() {
                         <Button
                             type="button"
                             disabled={processing}
+                            onClick={submit}
                             className="bg-[#FF6B00] text-white hover:bg-[#CC5500]"
                         >
                             Save & Publish

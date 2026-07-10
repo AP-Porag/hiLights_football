@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Player\PlayerProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Artisan;
@@ -50,9 +51,23 @@ Route::get('/contact', function () {
 //     return Inertia::render('player/profile/public/Detail');
 // })->name('profile.public.detail');
 
-Route::get('/player/profile/{id}', function () {
-    return Inertia::render('player/profile/public/New-Detail');
-})->name('profile.public.detail');
+// Route::get('/player/profile/{id}', function () {
+//     return Inertia::render('player/profile/public/New-Detail');
+// })->name('profile.public.detail');
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/player/profile/edit', [PlayerProfileController::class, 'edit'])
+        ->name('player.profile.edit');
+    Route::post('/player/profile', [PlayerProfileController::class, 'update'])
+        ->name('player.profile.update');
+});
+
+
+
+
+
 
 
 
