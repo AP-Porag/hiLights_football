@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nickname')->nullable();
             $table->string('gender')->default('M');           // M / F / Other
             $table->unsignedSmallInteger('height')->nullable(); // cm
+            $table->unsignedSmallInteger('weight')->nullable(); // cm
             $table->string('birth_city')->nullable();
             $table->string('birth_country', 2)->nullable();
             $table->string('current_club')->nullable();

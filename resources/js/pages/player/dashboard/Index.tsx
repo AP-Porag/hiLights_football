@@ -2,6 +2,7 @@ import PlayerNavbar from '@/components/player/PlayerNavbar';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { getPositionName } from '@/utils/helper';
 import { Progress } from '@/components/ui/progress';
 import { Link } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
@@ -56,6 +57,7 @@ const recentViews = [
     { id: 3, type: 'Agent', org: 'Top Eleven Agency', country: 'Spain', flag: '🇪🇸', time: '2 days ago', locked: true },
     { id: 4, type: 'Scout', org: 'Anonymous', country: 'France', flag: '🇫🇷', time: '3 days ago', locked: true },
 ];
+
 const countryData = [
     { country: 'Portugal', views: 412 },
     { country: 'Spain', views: 287 },
@@ -104,11 +106,12 @@ export default function PlayerDashboard() {
             return `${x},${y}`;
         })
         .join(' ');
+
     const playerInfo = [
         {
             icon: <Shirt className="w-4 h-4 text-gray-300" />,
             label: 'POSITION',
-            value: 'ATTACKING MIDFIELDER',
+            value: getPositionName(auth?.user?.player_profile?.positions),
         },
         {
             icon: <Footprints className="w-4 h-4 text-gray-300" />,
@@ -118,7 +121,9 @@ export default function PlayerDashboard() {
         {
             icon: <Ruler className="w-4 h-4 text-gray-300" />,
             label: 'HEIGHT',
-            value: '178 CM',
+            value: auth?.user?.player_profile?.height
+                ? `${auth.user.player_profile.height} cm`
+                : 'Not specified'
         },
         {
             icon: <Weight className="w-4 h-4 text-gray-300" />,
@@ -128,12 +133,14 @@ export default function PlayerDashboard() {
         {
             icon: <Shield className="w-4 h-4 text-gray-300" />,
             label: 'CLUB',
-            value: 'RIO DE JANEIRO FC',
+            value: auth?.user?.player_profile?.current_club
+                ? `${auth.user.player_profile.current_club}`
+                : 'Not specified'
         },
         {
             icon: <CalendarDays className="w-4 h-4 text-gray-300" />,
             label: 'MEMBER SINCE',
-            value: 'MAY 2024',
+            value: auth?.user?.player_profile?.in_team_since ? new Date(auth.user.player_profile.in_team_since).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Not specified'
         },
     ];
     return (
@@ -143,7 +150,7 @@ export default function PlayerDashboard() {
             <header className="border-b border-[#2A2A2A] bg-[#0D0D0D] px-4 py-5 sm:px-8">
                 <div className="mx-auto max-w-[1300px]">
                     <h1 className="font-display text-2xl font-bold text-[#F5F5F5] sm:text-3xl">
-                        {greeting}, {player.name}
+                        {greeting}, {auth?.user?.name}
                     </h1>
                     <p className="mt-1 text-sm text-[#9A9A9A]">{dateStr}</p>
                 </div>
@@ -282,7 +289,7 @@ export default function PlayerDashboard() {
                                                 {auth?.user?.name}
                                             </h3>
                                             <p className="text-[8px] sm:text-[10px] text-[#f05300] uppercase">
-                                                ATTACKING MIDFIELDER
+                                                {getPositionName(auth?.user?.player_profile?.positions)}
                                             </p>
                                             <div className="absolute mt-2 h-[1px] bg-orange-500 w-[80%] sm:w-[110%]"></div>
                                         </div>
@@ -301,7 +308,7 @@ export default function PlayerDashboard() {
                                                     DATE OF BIRTH:
                                                     <br />
                                                     <span className="text-white">{auth?.user?.dob &&
-                                                        new Date(auth.user.dob).toLocaleDateString('en-US', {
+                                                        new Date(auth?.user?.dob).toLocaleDateString('en-US', {
                                                             day: 'numeric',
                                                             month: 'long',
                                                             year: 'numeric'
@@ -322,7 +329,7 @@ export default function PlayerDashboard() {
                                                 <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
                                                     CITY:
                                                     <br />
-                                                    <span className="text-white">{auth.user.player_profile.birth_city}</span>
+                                                    <span className="text-white">{auth?.user?.player_profile?.birth_city || 'N/A'}</span>
                                                 </p>
                                             </div>
                                         </div>
