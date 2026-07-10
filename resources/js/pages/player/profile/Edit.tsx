@@ -40,6 +40,8 @@ import {
     CalendarIcon,
     Check,
     ChevronsUpDown,
+    Plus,
+    X,
 } from 'lucide-react';
 
 // ── Full country list (alpha-2 codes, matches DB values like "BD") ──
@@ -278,7 +280,7 @@ const MONTHS = [
 const FIELD_STEP: Record<string, number> = {
     full_name: 0, nickname: 0, dob: 0, gender: 0, height: 0,
     birth_city: 0, birth_country: 0, nationality: 0, current_club: 0,
-    in_team_since: 0, agent: 0, guardian_name: 0,
+    in_team_since: 0, agent: 0, guardian_name: 0, weight: 0,
     modality: 1, positions: 1, foot: 1,
     photo: 2, video_url: 2,
     club_history: 3,
@@ -531,6 +533,7 @@ export default function Edit() {
         nickname: profile?.nickname ?? '',
         gender: profile?.gender ?? 'M',
         height: profile?.height != null ? String(profile.height) : '',
+        weight: profile?.weight != null ? String(profile.weight) : '',
         birth_city: profile?.birth_city ?? '',
         birth_country: profile?.birth_country ?? '',
         current_club: profile?.current_club ?? '',
@@ -543,10 +546,10 @@ export default function Edit() {
         photo: null as File | null,
         photo_preview: profile?.photo_url ?? '',
         video_url: profile?.video_url ?? '',
-        club_history: (profile?.club_history ?? Array.from(
-            { length: currentYear - 2020 + 1 },
-            (_, i) => ({ year: 2020 + i, club: '' })
-        )) as { year: number; club: string }[],
+        club_history: (profile?.club_history?.length
+            ? profile.club_history
+            : [{ year: new Date().getFullYear(), club: '' }]
+        ) as { year: number | string; club: string }[],
         description: profile?.description ?? '',
     });
 
@@ -562,17 +565,18 @@ export default function Edit() {
     const videoValid = isValidVideoUrl(data.video_url);
     const embedUrl = useMemo(() => getEmbedUrl(data.video_url), [data.video_url]);
 
-    // in_team_since = "YYYY-MM" -> alada month/year
-    const [itsYear, itsMonth] = data.in_team_since
-        ? data.in_team_since.split('-')
-        : ['', ''];
+    // in_team_since = "YYYY-MM" -> alada month/year (local state, jate ekta select korle onno ta na hariye jay)
+    const itsInit = (profile?.in_team_since ?? '').split('-');
+    const [itsYear, setItsYear] = useState<string>(itsInit[0] || '');
+    const [itsMonth, setItsMonth] = useState<string>(itsInit[1] || '');
     const yearOptions = useMemo(
         () => Array.from({ length: currentYear - 1990 + 1 }, (_, i) => String(currentYear - i)),
         [currentYear]
     );
     const setInTeamSince = (year: string, month: string) => {
-        if (year && month) setData('in_team_since', `${year}-${month}`);
-        else setData('in_team_since', '');
+        setItsYear(year);
+        setItsMonth(month);
+        setData('in_team_since', year && month ? `${year}-${month}` : '');
     };
 
     const togglePosition = (id: string) => {
@@ -582,15 +586,16 @@ export default function Edit() {
             setData('positions', [...data.positions, id]);
         }
     };
-    const updateClubHistory = (idx: number, club: string) => {
+    const updateClubHistory = (idx: number, field: 'year' | 'club', value: string) => {
         const copy = [...data.club_history];
-        copy[idx] = { ...copy[idx], club };
+        copy[idx] = { ...copy[idx], [field]: value };
         setData('club_history', copy);
     };
-    const clearClubHistory = (idx: number) => {
-        const copy = [...data.club_history];
-        copy[idx] = { ...copy[idx], club: '' };
-        setData('club_history', copy);
+    const addClubHistoryRow = () => {
+        setData('club_history', [...data.club_history, { year: '', club: '' }]);
+    };
+    const removeClubHistoryRow = (idx: number) => {
+        setData('club_history', data.club_history.filter((_, i) => i !== idx));
     };
     const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -777,6 +782,20 @@ export default function Edit() {
                                         className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
                                     />
                                     <FieldError msg={errors.height} />
+                                </div>
+                                <div>
+                                    <Label htmlFor="weight" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
+                                        Weight (kg)
+                                    </Label>
+                                    <Input
+                                        id="weight"
+                                        type="number"
+                                        value={data.weight}
+                                        onChange={(e) => setData('weight', e.target.value)}
+                                        placeholder="67"
+                                        className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                    />
+                                    <FieldError msg={errors.weight} />
                                 </div>
                                 <div>
                                     <Label htmlFor="birth_city" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
@@ -1155,55 +1174,51 @@ export default function Edit() {
                             04 / Club History
                         </div>
                         <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
-                            <div className="overflow-hidden rounded-xl border border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                <table className="table-auto w-full">
-                                    <thead>
-                                        <tr className="bg-[#F8FAFC] dark:bg-[#1F1F1F]">
-                                            <th className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold py-3 px-4 text-left font-sans w-20">
-                                                Year
-                                            </th>
-                                            <th className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold py-3 px-4 text-left font-sans">
-                                                Club Name
-                                            </th>
-                                            <th className="w-12"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {data.club_history.map((row, idx) => (
-                                            <tr
-                                                key={row.year}
-                                                className="border-t border-[#E2E8F0] dark:border-[#2A2A2A]"
-                                            >
-                                                <td className="py-2 px-4">
-                                                    <span className="font-mono text-[#475569] dark:text-[#9A9A9A] font-semibold text-sm">
-                                                        {row.year}
-                                                    </span>
-                                                </td>
-                                                <td className="py-2 px-4">
-                                                    <Input
-                                                        value={row.club}
-                                                        onChange={(e) => updateClubHistory(idx, e.target.value)}
-                                                        placeholder="Club name (optional)"
-                                                        className="w-full bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00] h-9"
-                                                    />
-                                                </td>
-                                                <td className="py-2 px-4 text-right">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => clearClubHistory(idx)}
-                                                        disabled={!row.club}
-                                                        className="disabled:opacity-30 disabled:cursor-not-allowed"
-                                                    >
-                                                        <Trash2 className="w-4 h-4 text-[#94A3B8] hover:text-red-500 transition-colors" />
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                            <div className="flex items-center gap-3 mb-2">
+                                <span className="w-28 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
+                                <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Club Name</span>
+                                <span className="w-10 flex-shrink-0" />
                             </div>
-                            <div className="text-[10px] text-[#94A3B8] mt-3 font-sans">
-                                Note: Up to 2 clubs per year. Add multiple entries for the same year if needed.
+                            <div className="space-y-3">
+                                {data.club_history.map((row, idx) => (
+                                    <div key={idx} className="flex items-center gap-3">
+                                        <Input
+                                            type="number"
+                                            value={row.year ?? ''}
+                                            onChange={(e) => updateClubHistory(idx, 'year', e.target.value)}
+                                            placeholder="Year"
+                                            className="w-28 flex-shrink-0 bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                        />
+                                        <Input
+                                            value={row.club}
+                                            onChange={(e) => updateClubHistory(idx, 'club', e.target.value)}
+                                            placeholder="Club name"
+                                            className="flex-1 bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                        />
+                                        {idx === 0 ? (
+                                            <button
+                                                type="button"
+                                                onClick={addClubHistoryRow}
+                                                aria-label="Add row"
+                                                className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#FF6B00] hover:border-[#FF6B00] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)] transition-colors"
+                                            >
+                                                <Plus className="w-4 h-4" />
+                                            </button>
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                onClick={() => removeClubHistoryRow(idx)}
+                                                aria-label="Remove row"
+                                                className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500 transition-colors"
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="text-[10px] text-[#94A3B8] mt-4 font-sans">
+                                Note: Add a row for each year and club. Use + to add another, × to remove.
                             </div>
                         </div>
                     </section>

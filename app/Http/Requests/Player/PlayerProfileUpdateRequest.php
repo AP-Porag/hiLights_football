@@ -20,6 +20,7 @@ class PlayerProfileUpdateRequest extends FormRequest
             'dob'               => ['required', 'date', 'before:today'],
             'gender'            => ['required', 'in:M,F,Other'],
             'height'            => ['nullable', 'integer', 'min:100', 'max:250'],
+            'weight' => ['nullable', 'integer', 'min:30', 'max:200'],
             'birth_city'        => ['nullable', 'string', 'max:255'],
             'birth_country'     => ['nullable', 'string', 'size:2'],
             'nationality'       => ['required', 'string', 'size:2'],
