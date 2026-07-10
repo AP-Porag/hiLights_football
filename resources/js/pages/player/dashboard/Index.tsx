@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Link } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import {
     Share2,
     Download,
@@ -62,6 +63,13 @@ const countryData = [
     { country: 'France', views: 156 },
     { country: 'England', views: 94 },
 ];
+const getCountryName = (code?: string) => {
+    if (!code) return '';
+
+    return new Intl.DisplayNames(['en'], {
+        type: 'region',
+    }).of(code) || code;
+};
 const sparklineData = [12, 18, 14, 22, 19, 28, 34];
 function getGreeting(): string {
     const h = new Date().getHours();
@@ -78,6 +86,8 @@ function formatDate(): string {
     });
 }
 export default function PlayerDashboard() {
+    const { auth } = usePage().props as any;
+    console.log(auth)
     const greeting = getGreeting();
     const dateStr = formatDate();
     const circumference = 276.46;
@@ -269,7 +279,7 @@ export default function PlayerDashboard() {
                                     <div>
                                         <div className="relative z-10">
                                             <h3 className="mt-2 text-[12px] sm:mt-4 sm:text-[16px] font-bold uppercase">
-                                                JOÃO DA SILVA
+                                                {auth?.user?.name}
                                             </h3>
                                             <p className="text-[8px] sm:text-[10px] text-[#f05300] uppercase">
                                                 ATTACKING MIDFIELDER
@@ -290,7 +300,13 @@ export default function PlayerDashboard() {
                                                 <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
                                                     DATE OF BIRTH:
                                                     <br />
-                                                    <span className="text-white">15 / 05 / 2006</span>
+                                                    <span className="text-white">{auth?.user?.dob &&
+                                                        new Date(auth.user.dob).toLocaleDateString('en-US', {
+                                                            day: 'numeric',
+                                                            month: 'long',
+                                                            year: 'numeric'
+                                                        })
+                                                    }</span>
                                                 </p>
                                             </div>
                                             <div className="flex items-center">
@@ -298,7 +314,7 @@ export default function PlayerDashboard() {
                                                 <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
                                                     NATIONALITY:
                                                     <br />
-                                                    <span className="text-white">Brazil</span>
+                                                    <span className="text-white">{getCountryName(auth?.user?.nationality)}</span>
                                                 </p>
                                             </div>
                                             <div className="flex items-center">
@@ -306,7 +322,7 @@ export default function PlayerDashboard() {
                                                 <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
                                                     CITY:
                                                     <br />
-                                                    <span className="text-white">RIO DE JANEIRO - RJ</span>
+                                                    <span className="text-white">{auth.user.player_profile.birth_city}</span>
                                                 </p>
                                             </div>
                                         </div>
@@ -577,6 +593,6 @@ export default function PlayerDashboard() {
                     )}
                 </section>
             </main>
-        </div>
+        </div >
     );
 }
