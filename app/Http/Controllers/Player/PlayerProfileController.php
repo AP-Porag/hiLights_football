@@ -13,6 +13,32 @@ use Inertia\Inertia;
 
 class PlayerProfileController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $profile = $user->playerProfile;
+
+        // User এর সাথে সম্পর্কিত ডেটা লোড করুন
+        // যেমন: matches, teams, statistics ইত্যাদি
+
+        return Inertia::render('player/dashboard/Index', [
+            'auth' => [
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'dob' => $user->dob?->format('Y-m-d'),
+                    'nationality' => $user->nationality,
+                    'created_at' => $user->created_at?->format('Y-m-d H:i:s'),
+                    'player_profile' => $user->playerProfile,
+                ]
+            ]
+        ]);
+    }
+
+
+
     public function edit(Request $request)
     {
 
@@ -70,7 +96,8 @@ class PlayerProfileController extends Controller
             $payload
         );
 
-        return back()->with('success', 'Profile saved.');
+        return redirect()->route('player.dashboard')
+            ->with('success', 'Profile saved.');
     }
 
     /**

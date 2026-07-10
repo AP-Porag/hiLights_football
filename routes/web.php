@@ -57,13 +57,6 @@ Route::get('/contact', function () {
 
 
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/player/profile/edit', [PlayerProfileController::class, 'edit'])
-        ->name('player.profile.edit');
-    Route::post('/player/profile', [PlayerProfileController::class, 'update'])
-        ->name('player.profile.update');
-});
-
 
 
 
@@ -76,17 +69,27 @@ Route::get('/scout', function () {
 })->name('scout');
 
 //all player routes
-Route::prefix('player')->group(function () {
+Route::middleware(['auth'])->prefix('player')->group(function () {
+
+
 
     Route::get('/', function () {
         return Inertia::render('player/dashboard/Index');
     })->name('player.dashboard');
+
+    Route::get('/', [PlayerProfileController::class, 'index'])
+        ->name('player.dashboard');
 
 
     Route::get('/profile', function () {
         return Inertia::render('player/profile/Edit');
     })->name('profile.change');
 
+    Route::get('/profile/edit', [PlayerProfileController::class, 'edit'])
+        ->name('player.profile.edit');
+
+    Route::post('/profile', [PlayerProfileController::class, 'update'])
+        ->name('player.profile.update');
 
     Route::get('/subscription', function () {
         return Inertia::render('player/subscription/Index');
