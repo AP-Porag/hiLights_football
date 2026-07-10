@@ -47,6 +47,11 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'dob'               => 'date',
         ];
+    }
+    public function playerProfile(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(PlayerProfile::class);
     }
 }
