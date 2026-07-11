@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('player_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('player_id', 10)->unique();
             $table->string('nickname')->nullable();
             $table->string('gender')->default('M');           // M / F / Other
             $table->unsignedSmallInteger('height')->nullable(); // cm

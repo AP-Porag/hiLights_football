@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect, } from 'react';
 import { Link, useForm } from '@inertiajs/react';
 import Select from 'react-select';
 import { z } from 'zod';
@@ -252,6 +252,18 @@ export default function Register({ countries = [] }: Props) {
         setData('role', role);
         setStep(1);
     };
+    // URL-e ?role=scout thakle direct oi role-e step 1-e jao
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const roleParam = params.get('role');
+        if (roleParam && ['player', 'scout', 'agent', 'club'].includes(roleParam)) {
+            const r = roleParam as RoleId;
+            setSelectedRole(r);
+            setData('role', r);
+            setStep(1);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();

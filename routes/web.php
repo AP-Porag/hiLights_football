@@ -4,6 +4,7 @@ use App\Http\Controllers\Player\PlayerProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\Web\HomeController;
 
 Route::get('/execute-command', function () {
     //    return redirect()->route('login');
@@ -26,9 +27,9 @@ Route::get('/execute-command', function () {
 // })->name('home');
 
 
-Route::get('/', function () {
-    return Inertia::render('web/HomeTwo');
-})->name('home');
+
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/about', function () {
     return Inertia::render('web/About');
@@ -56,13 +57,8 @@ Route::get('/contact', function () {
 // })->name('profile.public.detail');
 
 
-
-
-
-
-
-
-
+Route::get('/player/profile/{id}', [PlayerProfileController::class, 'playerDetails'])
+    ->name('player.public.profile');
 
 Route::get('/scout', function () {
     return Inertia::render('web/Scout');
@@ -85,11 +81,11 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
         ->name('player.dashboard');
 
 
-    Route::get('/profile', function () {
-        return Inertia::render('player/profile/Edit');
-    })->name('profile.change');
+    // Route::get('/profile', function () {
+    //     return Inertia::render('player/profile/Edit');
+    // })->name('profile.change');
 
-    Route::get('/profile/edit', [PlayerProfileController::class, 'edit'])
+    Route::get('/profile/data/edit', [PlayerProfileController::class, 'edit'])
         ->name('player.profile.edit');
 
     Route::post('/profile', [PlayerProfileController::class, 'update'])

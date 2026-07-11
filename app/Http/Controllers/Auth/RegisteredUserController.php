@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\PlayerProfile;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -69,6 +70,15 @@ class RegisteredUserController extends Controller
             'terms_accepted' => true,
         ]);
 
+
+        // Create Player Profile
+        if ($user->role === 'player') {
+            PlayerProfile::create([
+                'user_id' => $user->id,
+                'player_id' => $this->generatePlayerId(),
+            ]);
+        }
+
         event(new Registered($user));
 
         Auth::login($user);
@@ -81,5 +91,13 @@ class RegisteredUserController extends Controller
             'club' => to_route('scouting.dashboard'),
             // default => to_route('home'),
         };
+    }
+    private function generatePlayerId()
+    {
+        do {
+            $id = random_int(1000000000, 9999999999); // 10 digit
+        } while (PlayerProfile::where('player_id', $id)->exists());
+
+        return $id;
     }
 }
