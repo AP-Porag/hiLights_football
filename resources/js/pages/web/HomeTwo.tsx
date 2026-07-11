@@ -2,6 +2,8 @@ import React from 'react'
 import PublicNavbar from '@/components/public/PublicNavbar';
 import { PublicFooter } from '@/components/public/PublicFooter';
 import ReactCountryFlag from "react-country-flag";
+import { usePage } from '@inertiajs/react';
+import { getPositionName } from '@/utils/helper';
 import {
     CirclePlay,
     UserRoundPlus,
@@ -16,6 +18,34 @@ import {
     ArrowRight
 } from "lucide-react";
 import { Link } from '@inertiajs/react';
+
+const getCountryName = (code?: string | null) => {
+    if (!code) return '';
+    return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
+};
+
+interface PlayerItem {
+    id: number;
+    name: string | null;
+    nationality: string | null;
+    positions: string[] | null;
+    current_club: string | null;
+    photo_url: string | null;
+    birth_city: string | null;
+    height: string | null;
+    dob: string | null;
+    video_url: string | null;
+
+}
+
+const getEmbedUrl = (url?: string | null): string | null => {
+    if (!url) return null;
+    const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    if (yt) return `https://www.youtube.com/embed/${yt[1]}?autoplay=1`;
+    const vm = url.match(/vimeo\.com\/(\d+)/);
+    if (vm) return `https://player.vimeo.com/video/${vm[1]}?autoplay=1`;
+    return null;
+};
 
 const HomeTwo = () => {
     const steps = [
@@ -66,44 +96,47 @@ const HomeTwo = () => {
         },
     ];
 
-    const players = [
-        {
-            name: "Mahamadou Balde",
-            position: "Left winger",
-            country: "Senegal",
-            code: "SN",
-            height: "178 cm",
-            age: "20 years",
-            image: "/images/img/p-3.jpg",
-        },
-        {
-            name: "Gabriel Gama",
-            position: "Attacking Midfielder",
-            country: "Brazil",
-            code: "BR",
-            height: "175 cm",
-            age: "21 years",
-            image: "/images/img/p-6.png",
-        },
-        {
-            name: "Mady Danfaga",
-            position: "Striker",
-            country: "Guinea",
-            code: "GN",
-            height: "185 cm",
-            age: "22 years",
-            image: "/images/img/p-4.jpg",
-        },
-        {
-            name: "Vinicius Peruchi",
-            position: "Goal Keeper",
-            country: "Brazil",
-            code: "BR",
-            height: "188 cm",
-            age: "21 years",
-            image: "/images/img/p-5.jpg",
-        },
-    ];
+    const [activeVideo, setActiveVideo] = React.useState<string | null>(null);
+
+    // const players = [
+    //     {
+    //         name: "Mahamadou Balde",
+    //         position: "Left winger",
+    //         country: "Senegal",
+    //         code: "SN",
+    //         height: "178 cm",
+    //         age: "20 years",
+    //         image: "/images/img/p-3.jpg",
+    //     },
+    //     {
+    //         name: "Gabriel Gama",
+    //         position: "Attacking Midfielder",
+    //         country: "Brazil",
+    //         code: "BR",
+    //         height: "175 cm",
+    //         age: "21 years",
+    //         image: "/images/img/p-6.png",
+    //     },
+    //     {
+    //         name: "Mady Danfaga",
+    //         position: "Striker",
+    //         country: "Guinea",
+    //         code: "GN",
+    //         height: "185 cm",
+    //         age: "22 years",
+    //         image: "/images/img/p-4.jpg",
+    //     },
+    //     {
+    //         name: "Vinicius Peruchi",
+    //         position: "Goal Keeper",
+    //         country: "Brazil",
+    //         code: "BR",
+    //         height: "188 cm",
+    //         age: "21 years",
+    //         image: "/images/img/p-5.jpg",
+    //     },
+    // ];
+    const { players } = usePage<{ players: PlayerItem[] }>().props;
 
     return (
         <div className="bg-black text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]">
@@ -268,57 +301,121 @@ const HomeTwo = () => {
                                     Community Highlights
                                 </h2>
                             </div>
-                            <button className="flex cursor-pointer items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs lg:text-sm 2xl:text-base">
-                                View All
-                                <ArrowRight size={14} className="text-[#ff6b00]" />
-                            </button>
+                            <Link href="/register?role=scout">
+                                <button className="flex cursor-pointer items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs lg:text-sm 2xl:text-base">
+                                    View Alll
+                                    <ArrowRight size={14} className="text-[#ff6b00]" />
+                                </button>
+                            </Link>
                         </div>
 
                         {/* Rows */}
                         {players.map((player, index) => (
-                            <Link key={index}>
+
+                            < Link key={player.id} href='' >
                                 {/* <Link key={index} href={route('profile.public.detail', 1)}> */}
-                                <div className="mb-2 grid grid-cols-[40px_1fr_70px_70px] items-center rounded-[12px] bg-white pr-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:grid-cols-[70px_1fr_80px_120px] md:grid-cols-[150px_1fr_120px_170px] 2xl:grid-cols-[180px_1fr_150px_200px]">
+                                < div className="mb-2 grid grid-cols-[40px_1fr_70px_70px] items-center rounded-[12px] bg-white pr-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:grid-cols-[70px_1fr_80px_120px] md:grid-cols-[150px_1fr_120px_170px] 2xl:grid-cols-[180px_1fr_150px_200px]" >
                                     {/* Thumbnail */}
-                                    <div className="relative">
+                                    {/* < div className="relative" >
                                         <img
-                                            src={player.image}
-                                            alt={player.name}
+                                            src={player.photo_url || '/images/img/placeholder.webp'} alt={player.name ?? ''}
                                             className="rounded rounded-tl-[12px] rounded-bl-[12px] object-cover"
                                         />
                                         <button className="absolute right-3 bottom-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00]">
                                             <Play size={12} fill="white" className="text-white" />
                                         </button>
+                                    </div> */}
+                                    <div className="relative">
+                                        <img
+                                            src={player.photo_url || '/images/img/placeholder.webp'} alt={player.name ?? ''}
+                                            className="rounded rounded-tl-[12px] rounded-bl-[12px] object-cover"
+                                        />
+                                        {player.video_url && (
+                                            <button
+                                                type="button"
+                                                onClick={(e) => {
+                                                    e.preventDefault();          // Link navigate bondho koro
+                                                    e.stopPropagation();
+                                                    setActiveVideo(player.video_url);
+                                                }}
+                                                className="absolute right-3 bottom-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00] cursor-pointer"
+                                            >
+                                                <Play size={12} fill="white" className="text-white" />
+                                            </button>
+                                        )}
                                     </div>
                                     {/* Info */}
                                     <div className="mr-2 px-1 md:px-6">
                                         <h3 className="text-sm font-bold whitespace-nowrap text-[#222] md:text-[15px] lg:text-base 2xl:text-lg">{player.name}</h3>
-                                        <p className="text-xs whitespace-nowrap text-gray-600 md:text-sm 2xl:text-base">{player.position}</p>
+                                        <p className="text-xs whitespace-nowrap text-gray-600 md:text-sm 2xl:text-base">
+                                            {getPositionName(player.positions ?? [])}
+                                        </p>
                                         <div className="mt-1 flex items-center gap-2">
-                                            <span className="text-sm">
+                                            {/* <span className="text-sm">
                                                 <ReactCountryFlag countryCode={player.code} svg className="mt-[2px] mr-1 md:mt-1" />
+                                            </span> */}
+                                            <span className="inline-flex items-center gap-1.5 text-xs whitespace-nowrap text-gray-700 md:text-sm 2xl:text-base">
+                                                {player?.nationality && (
+                                                    <ReactCountryFlag
+                                                        countryCode={player.nationality}
+                                                        svg
+                                                        style={{ width: '1.2em', height: '1.2em' }}
+                                                    />
+                                                )}
+                                                <span>{getCountryName(player?.nationality)}</span>
                                             </span>
-                                            <span className="text-xs whitespace-nowrap text-gray-700 md:text-sm 2xl:text-base">{player.country}</span>
                                         </div>
                                     </div>
                                     {/* Height */}
                                     <div className="mr-3 flex items-center justify-center gap-2 text-xs whitespace-nowrap text-[#222] md:text-sm lg:text-base 2xl:text-lg">
                                         <Ruler size={14} />
-                                        <p>{player.height}</p>
+                                        <p>{player.height} cm</p>
                                     </div>
                                     {/* Age */}
                                     <div className="flex items-center justify-end gap-2 text-xs whitespace-nowrap text-[#222] md:ml-4 md:text-sm lg:text-base 2xl:text-lg">
                                         <Clock3 size={14} />
-                                        {player.age}
+                                        {player.dob && new Date().getFullYear() - new Date(player.dob).getFullYear()} years
                                     </div>
                                 </div>
                             </Link>
                         ))}
                     </div>
-                </section>
-            </main>
+                    {activeVideo && (
+                        <div
+                            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+                            onClick={() => setActiveVideo(null)}
+                        >
+                            <div
+                                className="relative w-full max-w-3xl aspect-video"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <button
+                                    onClick={() => setActiveVideo(null)}
+                                    className="absolute -top-10 right-0 text-white text-3xl leading-none hover:text-[#ff6b00]"
+                                    aria-label="Close"
+                                >
+                                    ×
+                                </button>
+                                {getEmbedUrl(activeVideo) ? (
+                                    <iframe
+                                        src={getEmbedUrl(activeVideo)!}
+                                        title="Player video"
+                                        className="w-full h-full rounded-xl"
+                                        allow="autoplay; fullscreen"
+                                        allowFullScreen
+                                    />
+                                ) : (
+                                    <div className="flex h-full items-center justify-center rounded-xl bg-[#161616] text-white">
+                                        Invalid video URL
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </section >
+            </main >
             <PublicFooter />
-        </div>
+        </div >
     );
 }
 

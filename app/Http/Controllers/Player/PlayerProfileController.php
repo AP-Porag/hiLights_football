@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Player;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Player\PlayerProfileUpdateRequest;
+use App\Models\PlayerProfile;
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
@@ -132,5 +133,16 @@ class PlayerProfileController extends Controller
         );
 
         return $dir . '/' . $filename;
+    }
+
+    public function playerDetails($id)
+    {
+        $player = PlayerProfile::with('user')
+            ->where('player_id', $id)
+            ->firstOrFail();
+
+        return Inertia::render('player/profile/public/New-Detail', [
+            'player' => $player,
+        ]);
     }
 }

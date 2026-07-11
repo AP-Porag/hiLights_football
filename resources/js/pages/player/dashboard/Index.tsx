@@ -452,7 +452,7 @@ export default function PlayerDashboard() {
                                                 <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">
                                                     ID:
                                                     <br />
-                                                    <span className="text-white">HLF-00012345</span>
+                                                    <span className="text-white">{auth?.user?.player_profile?.player_id}</span>
                                                 </p>
                                             </div>
                                             <div className="flex items-center">
