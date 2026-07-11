@@ -68,14 +68,18 @@ Route::get('/scout', function () {
     return Inertia::render('web/Scout');
 })->name('scout');
 
+
+// Route::get('/profile/{id}', [ProfileController::class, 'detail'])
+//     ->name('profile.public.detail');
+
 //all player routes
 Route::middleware(['auth'])->prefix('player')->group(function () {
 
 
 
-    Route::get('/', function () {
-        return Inertia::render('player/dashboard/Index');
-    })->name('player.dashboard');
+    // Route::get('/', function () {
+    //     return Inertia::render('player/dashboard/Index');
+    // })->name('player.dashboard');
 
     Route::get('/', [PlayerProfileController::class, 'index'])
         ->name('player.dashboard');

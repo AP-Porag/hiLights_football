@@ -15,12 +15,13 @@ class PlayerProfile extends Model
         'height'       => 'integer',
     ];
 
+    protected $appends = ['photo_url'];   // ← accessor-er naam, column na
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    // frontend-er photo_preview er jonno ready URL
     public function getPhotoUrlAttribute(): ?string
     {
         return $this->photo_path ? asset('storage/' . $this->photo_path) : null;
