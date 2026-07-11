@@ -54,4 +54,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(PlayerProfile::class);
     }
+
+    public function homeRoute(): string
+    {
+        return match ($this->role) {
+            'player'          => '/player',
+            'scout', 'agent', 'club' => '/scouting',
+            'admin'           => '/admin',
+            default           => '/',
+        };
+    }
 }

@@ -6,6 +6,9 @@ import { getPositionName } from '@/utils/helper';
 import { Progress } from '@/components/ui/progress';
 import { Link } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
+import { QRCodeSVG } from 'qrcode.react';
+import { useRef } from 'react';
+import { toPng } from 'html-to-image';
 import {
     Share2,
     Download,
@@ -30,6 +33,9 @@ import {
     Ruler,
     Weight,
     Shield,
+    UserPen,
+    Image as ImageIcon,
+    MapPinned,
 } from 'lucide-react';
 import {
     Bar,
@@ -44,7 +50,6 @@ import {
 // TODO: Replace with usePage<PageProps & {player:typeof player, recentViews:typeof recentViews}>().props
 const player = {
     name: 'Benjamin',
-    profileComplete: 68,
     totalViews: 1247,
     trend: 12,
     scoutInterest: 23,
@@ -57,7 +62,6 @@ const recentViews = [
     { id: 3, type: 'Agent', org: 'Top Eleven Agency', country: 'Spain', flag: '🇪🇸', time: '2 days ago', locked: true },
     { id: 4, type: 'Scout', org: 'Anonymous', country: 'France', flag: '🇫🇷', time: '3 days ago', locked: true },
 ];
-
 const countryData = [
     { country: 'Portugal', views: 412 },
     { country: 'Spain', views: 287 },
@@ -67,7 +71,6 @@ const countryData = [
 ];
 const getCountryName = (code?: string) => {
     if (!code) return '';
-
     return new Intl.DisplayNames(['en'], {
         type: 'region',
     }).of(code) || code;
@@ -87,14 +90,98 @@ function formatDate(): string {
         day: 'numeric',
     });
 }
+// ekta value "filled" kina — null/undefined/khali string na hole true
+const nonEmpty = (v: any): boolean =>
+    v !== null && v !== undefined && String(v).trim() !== '';
+// player profile edit page — sob "add" button ekhane niye jabe
+const EDIT_HREF = '/player/profile/edit';
 export default function PlayerDashboard() {
+
     const { auth } = usePage().props as any;
-    console.log(auth)
+    const pp = auth?.user?.player_profile ?? {};
     const greeting = getGreeting();
     const dateStr = formatDate();
+
+
+    // ── PROFILE COMPLETION ────────────────────────────────────────────
+    // Registration theke: name, dob, nationality. Baki gula profile edit theke.
+    const completionChecks: boolean[] = [
+        nonEmpty(auth?.user?.name),          // registration
+        nonEmpty(auth?.user?.dob),           // registration
+        nonEmpty(auth?.user?.nationality),   // registration
+        nonEmpty(pp.gender),
+        nonEmpty(pp.height),
+        nonEmpty(pp.weight),
+        nonEmpty(pp.birth_city),
+        nonEmpty(pp.birth_country),
+        nonEmpty(pp.current_club),
+        nonEmpty(pp.in_team_since),
+        nonEmpty(pp.modality),
+        nonEmpty(pp.foot),
+        nonEmpty(pp.photo_path),
+        nonEmpty(pp.video_url),
+        nonEmpty(pp.description),
+        Array.isArray(pp.positions) && pp.positions.length > 0,
+        Array.isArray(pp.club_history) && pp.club_history.some((r: any) => nonEmpty(r?.club)),
+    ];
+    const profileComplete = Math.round(
+        (completionChecks.filter(Boolean).length / completionChecks.length) * 100
+    );
+    // ── COMPLETE-YOUR-PROFILE CHECKLIST (dynamic) ─────────────────────
+    // Protiti incomplete item-e "add" button ache — click korle edit page-e giye
+    // field bhorle, save-er por % barbe.
+    const checklist: {
+        label: string;
+        done: boolean;
+        href: string;
+        cta: string;
+        icon?: typeof Video;
+    }[] = [
+            {
+                label: 'Basic information added',
+                done: nonEmpty(auth?.user?.name) && nonEmpty(auth?.user?.dob) && nonEmpty(auth?.user?.nationality),
+                href: EDIT_HREF,
+                cta: 'Complete',
+                icon: UserPen,
+            },
+            {
+                label: 'Profile photo uploaded',
+                done: nonEmpty(pp.photo_path),
+                href: EDIT_HREF,
+                cta: 'Upload Photo',
+                icon: ImageIcon,
+            },
+            {
+                label: 'Position and modality set',
+                done: Array.isArray(pp.positions) && pp.positions.length > 0 && nonEmpty(pp.modality),
+                href: EDIT_HREF,
+                cta: 'Set Position',
+                icon: MapPinned,
+            },
+            {
+                label: 'Add highlight video',
+                done: nonEmpty(pp.video_url),
+                href: EDIT_HREF,
+                cta: 'Add Video',
+                icon: Video,
+            },
+            {
+                label: 'Add club history',
+                done: Array.isArray(pp.club_history) && pp.club_history.some((r: any) => nonEmpty(r?.club)),
+                href: EDIT_HREF,
+                cta: 'Add History',
+                icon: History,
+            },
+            {
+                label: 'Upgrade to Premium',
+                done: player.subscription === 'premium',
+                href: '/player/upgrade',
+                cta: 'Upgrade →',
+                icon: Crown,
+            },
+        ];
     const circumference = 276.46;
-    const dashOffset = circumference - (player.profileComplete / 100) * circumference;
-    const checklistOverall = Math.round((3 / 6) * 100);
+    const dashOffset = circumference - (profileComplete / 100) * circumference;
     // Sparkline path
     const sparkMax = Math.max(...sparklineData);
     const sparkMin = Math.min(...sparklineData);
@@ -106,7 +193,6 @@ export default function PlayerDashboard() {
             return `${x},${y}`;
         })
         .join(' ');
-
     const playerInfo = [
         {
             icon: <Shirt className="w-4 h-4 text-gray-300" />,
@@ -116,33 +202,96 @@ export default function PlayerDashboard() {
         {
             icon: <Footprints className="w-4 h-4 text-gray-300" />,
             label: 'PREFERRED FOOT',
-            value: 'RIGHT',
+            value: pp?.foot ? pp.foot : 'Not specified',
         },
         {
             icon: <Ruler className="w-4 h-4 text-gray-300" />,
             label: 'HEIGHT',
-            value: auth?.user?.player_profile?.height
-                ? `${auth.user.player_profile.height} cm`
-                : 'Not specified'
+            value: pp?.height ? `${pp.height} cm` : 'Not specified',
         },
         {
             icon: <Weight className="w-4 h-4 text-gray-300" />,
             label: 'WEIGHT',
-            value: '67 KG',
+            value: pp?.weight ? `${pp.weight} kg` : 'Not specified',
         },
         {
             icon: <Shield className="w-4 h-4 text-gray-300" />,
             label: 'CLUB',
-            value: auth?.user?.player_profile?.current_club
-                ? `${auth.user.player_profile.current_club}`
-                : 'Not specified'
+            value: pp?.current_club ? `${pp.current_club}` : 'Not specified',
         },
         {
             icon: <CalendarDays className="w-4 h-4 text-gray-300" />,
             label: 'MEMBER SINCE',
-            value: auth?.user?.player_profile?.in_team_since ? new Date(auth.user.player_profile.in_team_since).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Not specified'
+            value: pp?.in_team_since
+                ? new Date(pp.in_team_since).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+                : 'Not specified',
         },
     ];
+
+    const shareProfile = async () => {
+        // const profileUrl = `${window.location.origin}/players/${auth?.user?.id}`;
+        const profileUrl = `${window.location.origin}/player`;
+        const shareData = {
+            title: `${auth?.user?.name} — HiLights Football`,
+            text: `Check out ${auth?.user?.name}'s player profile on HiLights Football`,
+            url: profileUrl,
+        };
+
+        // 1) Native share (mobile / HTTPS)
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData);
+                return;
+            } catch {
+                return; // user cancel korle thamo
+            }
+        }
+
+        // 2) Modern clipboard — SHUDHU secure context-e (nahole undefined)
+        if (navigator.clipboard && window.isSecureContext) {
+            try {
+                await navigator.clipboard.writeText(profileUrl);
+                alert('Profile link copied to clipboard!');
+                return;
+            } catch {
+                // niche fallback-e jabe
+            }
+        }
+
+        // 3) Fallback — HTTP .test-e-o kaj kore (purano execCommand)
+        try {
+            const ta = document.createElement('textarea');
+            ta.value = profileUrl;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            alert('Profile link copied to clipboard!');
+        } catch {
+            prompt('Copy this profile link:', profileUrl); // sesheও na hole
+        }
+    };
+
+    const cardRef = useRef<HTMLDivElement>(null);
+
+    const downloadCard = async () => {
+        if (!cardRef.current) return;
+        try {
+            const dataUrl = await toPng(cardRef.current, {
+                cacheBust: true,
+                pixelRatio: 2, // HD quality
+            });
+            const link = document.createElement('a');
+            link.download = `${auth?.user?.name ?? 'member'}-card.png`;
+            link.href = dataUrl;
+            link.click();
+        } catch (err) {
+            console.error('Card download failed:', err);
+            alert('Could not download card. Please try again.');
+        }
+    };
     return (
         <div className="min-h-screen bg-[#0D0D0D] pt-16">
             <PlayerNavbar />
@@ -178,12 +327,16 @@ export default function PlayerDashboard() {
                                 </svg>
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <span className="font-display text-3xl font-black text-[#F5F5F5]">
-                                        {player.profileComplete}%
+                                        {profileComplete}%
                                     </span>
                                 </div>
                             </div>
                             <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Profile Complete</p>
-                            <p className="mt-2 text-[10px] font-medium text-[#FF6B00]">Add video to reach 80%</p>
+                            <p className="mt-2 text-[10px] font-medium text-[#FF6B00]">
+                                {profileComplete < 100
+                                    ? `${100 - profileComplete}% left to complete your profile`
+                                    : 'Your profile is complete'}
+                            </p>
                         </div>
                         {/* [2] Profile Views */}
                         <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
@@ -251,7 +404,7 @@ export default function PlayerDashboard() {
                     </div>
                     {/* right side */}
                     <div className="mx-auto mb-16">
-                        <div className="w-[300px] sm:w-[420px] border-1 border-gray-600 rounded-[16px]">
+                        <div ref={cardRef} className="w-[300px] sm:w-[420px] border-1 border-gray-600 rounded-[16px] bg-black">
                             <div className="overflow-hidden text-white">
                                 {/* Left Section */}
                                 <div className="flex items-center justify-between">
@@ -278,7 +431,7 @@ export default function PlayerDashboard() {
                                     {/* Image */}
                                     <div className="h-[160px] w-[95px] sm:h-[210px] sm:w-[130px] mb-3">
                                         <img
-                                            src="/images/img/p-6.png"
+                                            src={auth?.user?.player_profile?.photo_url || '/images/img/placeholder.webp'}
                                             alt="player"
                                             className="h-full w-full rounded-[10px] sm:rounded-[12px] border-1 border-gray-400 object-cover"
                                         />
@@ -363,7 +516,14 @@ export default function PlayerDashboard() {
                                         <p className="mt-1 mb-6 text-[8px] text-[#f1f1f1] uppercase">Open Your Camera And Scan</p>
                                         {/* QR Area */}
                                         <div className="w-fit rounded-[8px] sm:rounded-xl border-2 sm:border-[3px] border-[#ff6600] bg-white sm:p-3 p-2">
-                                            <img src="/images/img/qr.png" alt="QR" className="h-[70px] w-[70px] sm:h-[90px] sm:w-[90px] object-cover" />
+                                            <QRCodeSVG
+                                                value={`${typeof window !== 'undefined' ? window.location.origin : ''}/player`}
+                                                size={90}
+                                                level="M"
+                                                bgColor="#ffffff"
+                                                fgColor="#000000"
+                                                className="h-[70px] w-[70px] sm:h-[90px] sm:w-[90px]"
+                                            />
                                         </div>
                                         {/* Button */}
                                         <button className="mt-2 flex items-center rounded-xl bg-[#ff6600] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#ff7a1a]">
@@ -387,11 +547,14 @@ export default function PlayerDashboard() {
                                 </p>
                                 <p className="text-[6px] sm:text-[8px] text-black font-bold translate-x-[5px] sm:translate-x-[10%]">WWW.HILIGHTSFOOTBALL.COM</p>
                                 <div className="absolute -bottom-10 left-0 flex justify-between w-full">
-                                    <button className="capitalize flex items-center rounded-xl bg-[#e75502] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[16px] text-[10px] transition-all hover:bg-[#ff7a1a]">
+                                    <button className="capitalize flex items-center rounded-xl bg-[#e75502] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[16px] text-[10px] transition-all hover:bg-[#ff7a1a]" onClick={shareProfile}>
                                         <Share2 className="mr-2 w-[10px] h-[10px] sm:h-[12px]" />
-                                        share full profile
+                                        Share full profile
                                     </button>
-                                    <button className="capitalize flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[10px] transition-all">
+                                    <button
+                                        onClick={downloadCard}
+                                        className="capitalize flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[10px] transition-all"
+                                    >
                                         <Download className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" />
                                         download member card
                                     </button>
@@ -426,51 +589,33 @@ export default function PlayerDashboard() {
                     <section className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                         <div className="mb-1 flex items-center justify-between">
                             <h2 className="text-lg font-bold text-[#F5F5F5]">Complete Your Profile</h2>
-                            <span className="font-mono text-sm font-bold text-[#FF6B00]">{checklistOverall}%</span>
+                            <span className="font-mono text-sm font-bold text-[#FF6B00]">{profileComplete}%</span>
                         </div>
-                        <Progress value={checklistOverall} className="mb-5 h-2 bg-[#2A2A2A] [&>div]:bg-[#FF6B00]" />
+                        <Progress value={profileComplete} className="mb-5 h-2 bg-[#2A2A2A] [&>div]:bg-[#FF6B00]" />
                         <ul className="space-y-3">
-                            <li className="flex items-center gap-3 py-2">
-                                <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-400" />
-                                <span className="flex-1 text-sm text-[#F5F5F5]">Basic information added</span>
-                            </li>
-                            <li className="flex items-center gap-3 py-2">
-                                <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-400" />
-                                <span className="flex-1 text-sm text-[#F5F5F5]">Profile photo uploaded</span>
-                            </li>
-                            <li className="flex items-center gap-3 py-2">
-                                <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-400" />
-                                <span className="flex-1 text-sm text-[#F5F5F5]">Position and modality set</span>
-                            </li>
-                            <li className="flex items-center gap-3 border-t border-[#2A2A2A] py-2 pt-3">
-                                <Circle className="h-5 w-5 flex-shrink-0 text-[#555555]" />
-                                <span className="flex-1 text-sm text-[#9A9A9A]">Add highlight video</span>
-                                <Link href="/player/videos/new">
-                                    <Button size="sm" className="h-8 bg-[#FF6B00] text-xs text-white hover:bg-[#CC5500]">
-                                        <Video className="mr-1 h-3 w-3" />
-                                        Add Video
-                                    </Button>
-                                </Link>
-                            </li>
-                            <li className="flex items-center gap-3 py-2">
-                                <Circle className="h-5 w-5 flex-shrink-0 text-[#555555]" />
-                                <span className="flex-1 text-sm text-[#9A9A9A]">Add club history</span>
-                                <Link href="/player/history">
-                                    <Button size="sm" className="h-8 bg-[#FF6B00] text-xs text-white hover:bg-[#CC5500]">
-                                        <History className="mr-1 h-3 w-3" />
-                                        Add History
-                                    </Button>
-                                </Link>
-                            </li>
-                            <li className="flex items-center gap-3 py-2">
-                                <Circle className="h-5 w-5 flex-shrink-0 text-[#555555]" />
-                                <span className="flex-1 text-sm text-[#9A9A9A]">Upgrade to Premium</span>
-                                <Link href="/player/upgrade">
-                                    <Button size="sm" className="h-8 bg-[#FF6B00] text-xs text-white hover:bg-[#CC5500]">
-                                        Upgrade →
-                                    </Button>
-                                </Link>
-                            </li>
+                            {checklist.map((item, i) => {
+                                const Icon = item.icon;
+                                return (
+                                    <li key={i} className="flex items-center gap-3 py-2">
+                                        {item.done ? (
+                                            <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-400" />
+                                        ) : (
+                                            <Circle className="h-5 w-5 flex-shrink-0 text-[#555555]" />
+                                        )}
+                                        <span className={`flex-1 text-sm ${item.done ? 'text-[#F5F5F5]' : 'text-[#9A9A9A]'}`}>
+                                            {item.label}
+                                        </span>
+                                        {!item.done && (
+                                            <Link href={item.href}>
+                                                <Button size="sm" className="h-8 bg-[#FF6B00] text-xs text-white hover:bg-[#CC5500]">
+                                                    {Icon && <Icon className="mr-1 h-3 w-3" />}
+                                                    {item.cta}
+                                                </Button>
+                                            </Link>
+                                        )}
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </section>
                     {/* RECENT VIEWS CARD */}

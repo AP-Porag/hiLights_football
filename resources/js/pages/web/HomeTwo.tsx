@@ -276,7 +276,8 @@ const HomeTwo = () => {
 
                         {/* Rows */}
                         {players.map((player, index) => (
-                            <Link key={index} href={route('profile.public.detail', 1)}>
+                            <Link key={index}>
+                                {/* <Link key={index} href={route('profile.public.detail', 1)}> */}
                                 <div className="mb-2 grid grid-cols-[40px_1fr_70px_70px] items-center rounded-[12px] bg-white pr-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:grid-cols-[70px_1fr_80px_120px] md:grid-cols-[150px_1fr_120px_170px] 2xl:grid-cols-[180px_1fr_150px_200px]">
                                     {/* Thumbnail */}
                                     <div className="relative">

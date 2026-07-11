@@ -1,4 +1,9 @@
 export const getPositionName = (positions = []) => {
+
+     // null / undefined / array na hole safe exit
+    if (!Array.isArray(positions) || positions.length === 0) {
+        return 'Not specified';
+    }
     const positionMap = {
         LB: 'LEFT BACK',
         LM: 'LEFT MIDFIELDER',
