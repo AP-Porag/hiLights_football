@@ -315,7 +315,7 @@ export default function Register({ countries = [] }: Props) {
             <div className="py-10 text-center px-6">
                 <Link href="/" className="inline-block">
                     <img
-                        src="/images/logo/hilights_logo_dark_200.png"
+                        src="/images/logo/final_logo.png"
                         className="h-14 w-auto mx-auto"
                         alt="HiLights Football"
                     />

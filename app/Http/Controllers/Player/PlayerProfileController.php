@@ -135,13 +135,129 @@ class PlayerProfileController extends Controller
         return $dir . '/' . $filename;
     }
 
+    public function updateLists(Request $request)
+    {
+        $data = $request->validate([
+            'videos'              => ['sometimes', 'array'],
+            'videos.*.label'      => ['nullable', 'string', 'max:50'],
+            'videos.*.url'        => ['nullable', 'string', 'max:255'],
+
+            'club_history'        => ['sometimes', 'array'],
+            'club_history.*.year' => ['nullable'],
+            'club_history.*.club' => ['nullable', 'string', 'max:255'],
+
+            'transfer_history'        => ['sometimes', 'array'],
+            'transfer_history.*.year' => ['nullable'],
+            'transfer_history.*.club' => ['nullable', 'string', 'max:255'],
+
+            'achievements'            => ['sometimes', 'array'],
+            'achievements.*.year'     => ['nullable'],
+            'achievements.*.title'    => ['nullable', 'string', 'max:255'],
+
+            'competitions'            => ['sometimes', 'array'],
+            'competitions.*.name'     => ['nullable', 'string', 'max:255'],
+            'competitions.*.year'     => ['nullable'],
+
+            'matches'                 => ['sometimes', 'array'],
+            'matches.*.home'          => ['nullable', 'string', 'max:255'],
+            'matches.*.score'         => ['nullable', 'string', 'max:20'],
+            'matches.*.away'          => ['nullable', 'string', 'max:255'],
+            'matches.*.goals'         => ['nullable'],
+            'matches.*.assists'       => ['nullable'],
+            'matches.*.minutes'       => ['nullable', 'string', 'max:20'],
+        ]);
+
+        $profile = $request->user()->playerProfile()->firstOrCreate(
+            ['user_id' => $request->user()->id]
+        );
+
+        $profile->fill($data);
+
+        // videos ashle first url ke video_url-e sync
+        if (array_key_exists('videos', $data)) {
+            $first = collect($data['videos'])->first(fn($v) => !empty($v['url'] ?? null));
+            if ($first) {
+                $profile->video_url = $first['url'];
+            }
+        }
+
+        $profile->save();
+
+        return back();
+    }
+
+    public function updateFields(Request $request)
+    {
+        $data = $request->validate([
+            'full_name'     => ['sometimes', 'nullable', 'string', 'max:255'],
+            'dob'           => ['sometimes', 'nullable', 'date'],
+            'nationality'   => ['sometimes', 'nullable', 'string', 'size:2'],
+            'gender'        => ['sometimes', 'nullable', 'string', 'max:10'],
+            'height'        => ['sometimes', 'nullable', 'integer'],
+            'weight'        => ['sometimes', 'nullable', 'integer'],
+            'birth_city'    => ['sometimes', 'nullable', 'string', 'max:255'],
+            'birth_country' => ['sometimes', 'nullable', 'string', 'size:2'],
+            'current_club'  => ['sometimes', 'nullable', 'string', 'max:255'],
+            'in_team_since' => ['sometimes', 'nullable', 'string', 'max:7'],
+            'agent'         => ['sometimes', 'nullable', 'string', 'max:255'],
+            'modality'      => ['sometimes', 'nullable', 'string', 'max:50'],
+            'positions'     => ['sometimes', 'array'],
+            'positions.*'   => ['string', 'max:10'],
+            'foot'          => ['sometimes', 'nullable', 'string', 'max:20'],
+            'video_url'     => ['sometimes', 'nullable', 'url', 'max:255'],
+            'videos'          => ['sometimes', 'array'],
+            'videos.*.label'  => ['nullable', 'string', 'max:50'],
+            'videos.*.url'    => ['nullable', 'string', 'max:255'],
+            'photo'         => ['sometimes', 'image', 'mimes:jpeg,png', 'max:5120'],
+            'club_history'        => ['sometimes', 'array'],
+            'club_history.*.year' => ['nullable'],
+            'club_history.*.club' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $user = $request->user();
+
+        // user table-er field (name/dob/nationality)
+        if (array_key_exists('full_name', $data)) {
+            $user->name = $data['full_name'];
+        }
+        if (array_key_exists('dob', $data)) {
+            $user->dob = $data['dob'];
+        }
+        if (array_key_exists('nationality', $data)) {
+            $user->nationality = $data['nationality'];
+        }
+        $user->save();
+
+        // player_profile-er field
+        $profile = $user->playerProfile()->firstOrCreate(['user_id' => $user->id]);
+        $profileData = collect($data)->except(['full_name', 'dob', 'nationality', 'photo'])->toArray();
+
+        if ($request->hasFile('photo')) {
+            $profileData['photo_path'] = $this->storeUpload($request->file('photo'), 'players/player-photos');
+        }
+
+        $profile->fill($profileData);
+
+        // videos ashle first url ke video_url-e sync koro (100% + purano video_url binding thik thake)
+        if (array_key_exists('videos', $data)) {
+            $first = collect($data['videos'])->first(fn($v) => !empty($v['url'] ?? null));
+            if ($first) {
+                $profile->video_url = $first['url'];
+            }
+        }
+
+        $profile->save();
+
+        return back();
+    }
+
     public function playerDetails($id)
     {
         $player = PlayerProfile::with('user')
-            ->where('player_id', $id)
+            ->where('id', $id)
             ->firstOrFail();
 
-        return Inertia::render('player/profile/public/New-Detail', [
+        return Inertia::render('player/profile/public/new-detail', [
             'player' => $player,
         ]);
     }

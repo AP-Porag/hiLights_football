@@ -30,6 +30,11 @@ return new class extends Migration
             $table->string('foot')->default('Right');
             $table->string('photo_path')->nullable();
             $table->string('video_url')->nullable();
+            $table->json('videos')->nullable();
+            $table->json('transfer_history')->nullable();
+            $table->json('achievements')->nullable();
+            $table->json('competitions')->nullable();
+            $table->json('matches')->nullable();
             $table->json('club_history')->nullable();         // [{year, club}]
             $table->text('description')->nullable();
             $table->timestamps();
