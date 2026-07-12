@@ -31,7 +31,7 @@ export default function Login() {
     return (
         <div className="relative min-h-screen bg-[#0D0D0D] lg:grid lg:grid-cols-2">
             {/* LEFT PANEL — Orange brand panel (hidden on mobile) */}
-            <div className="relative hidden lg:flex flex-col items-center justify-center bg-[#FF6B00] p-16 overflow-hidden">
+            <div className="relative hidden lg:flex flex-col items-center justify-center bg-[#0D0D0D] p-16 overflow-hidden">
                 {/* Decorative floating player card silhouettes */}
                 <div className="pointer-events-none absolute inset-0 overflow-hidden">
                     <div className="absolute top-16 left-12 w-40 h-56 rounded-2xl bg-white/10 border border-white/10 rotate-[-8deg]" />
@@ -44,7 +44,7 @@ export default function Login() {
                     {/* Logo */}
                     <Link href="/" className="inline-flex items-center gap-3 mb-10">
                         <img
-                            src="/images/logo/hilights_logo_dark_200.png"
+                            src="/images/logo/final_logo.png"
                             alt="HiLights Football"
                             className="h-14 w-auto"
                         />

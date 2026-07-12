@@ -26,7 +26,11 @@ Route::get('/execute-command', function () {
 //     return Inertia::render('web/Home');
 // })->name('home');
 
-
+Route::get('/register/scout', function () {
+    return Inertia::render('auth/Register', [
+        'forceRole' => 'scout',
+    ]);
+})->name('register.scout');
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -90,6 +94,12 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
 
     Route::post('/profile', [PlayerProfileController::class, 'update'])
         ->name('player.profile.update');
+
+    Route::post('/profile/lists', [PlayerProfileController::class, 'updateLists'])
+        ->name('player.profile.lists');
+
+    Route::post('/profile/fields', [PlayerProfileController::class, 'updateFields'])
+        ->name('player.profile.fields');
 
     Route::get('/subscription', function () {
         return Inertia::render('player/subscription/Index');

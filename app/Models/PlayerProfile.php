@@ -13,6 +13,12 @@ class PlayerProfile extends Model
         'positions'    => 'array',
         'club_history' => 'array',
         'height'       => 'integer',
+        'transfer_history' => 'array',
+        'videos' => 'array',
+        'achievements'     => 'array',
+        'competitions'     => 'array',
+        'matches'          => 'array',
+
     ];
 
     protected $appends = ['photo_url'];   // ← accessor-er naam, column na

@@ -430,6 +430,7 @@
 import React, { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import ReactCountryFlag from "react-country-flag";
+import { getPositionName } from '@/utils/helper';
 import {
     MapPin,
     Flag,
@@ -460,43 +461,6 @@ import { PublicFooter } from '@/components/public/PublicFooter';
 import { Pitch } from '@/components/ui/pitch';
 
 // MOCK DATA
-const player = {
-    id: 247,
-    name: 'BENJAMIN SILVA',
-    nickname: 'Benja',
-    profileId: '#00247 rrrr',
-    isMinor: true,
-    dob: '30/01/2009',
-    age: 17,
-    height: 178,
-    nationality: 'Brazil',
-    flag: '🇧🇷',
-    birthplace: 'Rio de Janeiro, Brazil',
-    currentClub: 'Anápolis Sub-15',
-    teamSince: '03/2025',
-    agent: 'Talentos S/A',
-    foot: 'Right',
-    positions: ['ST', 'LW'],
-    modalities: ['Football', 'Futsal', 'Beach Soccer'],
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    profileViews: 1247,
-    countriesCount: 23,
-    scoutRatings: 8,
-    avgRating: 4.2,
-    description:
-        'Fast, focused player with exceptional game vision and strong ball control. Comfortable in tight spaces, confident in 1v1 situations and excellent at creating chances from wide positions.',
-    clubHistory: [
-        { year: 2026, club: 'Anápolis Sub-15' },
-        { year: 2025, club: '' },
-        { year: 2024, club: '' },
-        { year: 2023, club: 'Flamengo Base' },
-        { year: 2022, club: '' },
-        { year: 2021, club: '' },
-        { year: 2020, club: '' },
-    ],
-    isPremium: true,
-    isVerified: true,
-};
 
 const transferHistory = [
     { year: 2024, club: "São Cristóvão - RJ", img: "/images/club-logo/cl-1.png" },
@@ -535,6 +499,31 @@ const matches = [
 
 const viewerRole = 'scout';
 
+const getCountryName = (code?: string | null) => {
+    if (!code) return '';
+    return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
+};
+
+const getEmbedUrl = (url?: string | null): string | null => {
+    if (!url) return null;
+    const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
+    const vm = url.match(/vimeo\.com\/(\d+)/);
+    if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+    return null;
+};
+
+const calcAge = (dob?: string | null): number | null => {
+    if (!dob) return null;
+    const b = new Date(dob);
+    if (isNaN(b.getTime())) return null;
+    const t = new Date();
+    let age = t.getFullYear() - b.getFullYear();
+    const m = t.getMonth() - b.getMonth();
+    if (m < 0 || (m === 0 && t.getDate() < b.getDate())) age--;
+    return age;
+};
+
 interface StarRatingProps {
     value: number;
     onChange: (v: number) => void;
@@ -558,6 +547,7 @@ function StarRating({ value, onChange }: StarRatingProps) {
 }
 
 export default function NewDetail() {
+    const { player } = usePage<{ player: any }>().props;
     return (
         <div className="min-h-screen bg-black pt-16 xl:pt-20 2xl:pt-24 dark:bg-[#0D0D0D]">
             <PublicNavbar />
@@ -569,7 +559,8 @@ export default function NewDetail() {
                     <ChevronRight className="h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" />
                     <Link href="/players" className="whitespace-nowrap hover:text-[#FF6B00]">Players</Link>
                     <ChevronRight className="h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" />
-                    <span className="font-medium whitespace-nowrap text-[#FF6B00] dark:text-[#F5F5F5]">Joao da Silva</span>
+                    <span className="font-medium whitespace-nowrap text-[#FF6B00] dark:text-[#F5F5F5]">{
+                        player?.user?.name}</span>
                 </nav>
             </div>
 
@@ -584,57 +575,64 @@ export default function NewDetail() {
                             {/* Smaller photo */}
                             <div className="shrink-0">
                                 <img
-                                    src="/images/img/player-1.png"
-                                    alt="Player"
+                                    src={player.photo_url || '/images/img/placeholder.webp'}
+                                    alt={player.user?.name ?? ''}
                                     className="h-[160px] w-[120px] rounded-md border border-[#233247] object-cover sm:h-[190px] sm:w-[145px] lg:h-[210px] lg:w-[160px]"
                                 />
+
                             </div>
 
                             {/* Bigger info text */}
                             <div className="min-w-0 flex-1">
-                                <h1 className="text-2xl font-bold tracking-wide uppercase md:text-3xl">JOÃO DA SILVA</h1>
-                                <h3 className="mt-1 text-base font-semibold text-[#eb6c0d] uppercase md:text-lg">Right Winger</h3>
+                                <h1 className="text-2xl font-bold tracking-wide uppercase md:text-3xl">
+                                    {player.user?.name}
+                                </h1>
+                                <h3 className="mt-1 text-base font-semibold text-[#eb6c0d] uppercase md:text-lg">
+                                    {getPositionName(player.positions ?? [])}
+                                </h3>
 
                                 <div className="mt-3 space-y-1.25 text-sm md:text-base">
                                     <div className="flex items-center">
                                         <CalendarDays className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
-                                        <span className="text-[#e1e2e6]">Date of Birth / Age:</span>
-                                        <span className="pl-2 text-gray-300">Jan 30, 2007 (19)</span>
+                                        <span className="pl-2 text-gray-300">
+                                            {player.user?.dob
+                                                ? `${new Date(player.user.dob).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })} (${calcAge(player.user.dob)})`
+                                                : '—'}
+                                        </span>
                                     </div>
                                     <div className="flex items-center">
                                         <Users className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
                                         <span className="pr-3 text-[#e1e2e6]">Nationality:</span>
-                                        <ReactCountryFlag countryCode="BR" svg className="mr-1" />
-                                        <span>Brazil</span>
-                                        <span className="px-1">/</span>
-                                        <ReactCountryFlag countryCode="IT" svg className="mr-1" />
-                                        <span>Italy III</span>
+                                        {player.user?.nationality && (
+                                            <ReactCountryFlag countryCode={player.user.nationality} svg className="mr-1" />
+                                        )}
+                                        <span>{getCountryName(player.user?.nationality)}</span>
                                     </div>
                                     <div className="flex items-center">
                                         <Ruler className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Height:</span>
-                                        <span className="pl-2 text-gray-100">1.84 m</span>
+                                        <span className="pl-2 text-gray-100">{player.height ? `${player.height} cm` : '—'}</span>
                                     </div>
                                     <div className="flex items-center">
                                         <Crosshair className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Position:</span>
-                                        <span className="pl-2 text-gray-100">Right Winger</span>
+                                        <span className="pl-2 text-gray-100">{getPositionName(player.positions ?? [])}</span>
                                     </div>
                                     <div className="flex items-center">
                                         <Footprints className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Dominant Foot:</span>
-                                        <span className="pl-2 text-gray-100">Right</span>
+                                        <span className="pl-2 text-gray-100">{player.foot ?? '—'}</span>
                                     </div>
                                     <div className="flex items-center">
                                         <Shield className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Current Club:</span>
-                                        <span className="pl-2 text-gray-100">São Cristovão</span>
+                                        <span className="pl-2 text-gray-100">{player.current_club ?? '—'}</span>
                                     </div>
-                                    <div className="flex items-center">
+                                    {/* <div className="flex items-center">
                                         <Shirt className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Previous Club:</span>
                                         <span className="pl-2 text-gray-100">Bangu</span>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -643,9 +641,9 @@ export default function NewDetail() {
                         <div className="w-full">
                             <p className="mb-2 text-[16px] font-bold text-white">HIGHLIGHTS VIDEO</p>
                             <div className="overflow-hidden rounded-2xl">
-                                {player.videoUrl ? (
+                                {getEmbedUrl(player.video_url) ? (
                                     <iframe
-                                        src={player.videoUrl}
+                                        src={getEmbedUrl(player.video_url)!}
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowFullScreen
                                         className="aspect-video w-full rounded-2xl bg-gray-800"
@@ -658,7 +656,7 @@ export default function NewDetail() {
                                 )}
                             </div>
                             <div className="mt-2 flex items-center justify-between text-[14px] text-white">
-                                <h3>João da Silva - Best Moments 2024/2025</h3>
+                                <h3>{player?.user?.name} - Best Moments</h3>
                                 <span>07:32</span>
                             </div>
                         </div>
@@ -711,12 +709,9 @@ export default function NewDetail() {
                                     Transfer History <span className="font-medium text-slate-400">(Last 10 Years)</span>
                                 </h2>
                                 <div className="space-y-3">
-                                    {transferHistory.map((item, index) => (
+                                    {(player.transfer_history ?? []).filter((item: any) => item?.club).map((item: any, index: number) => (
                                         <div key={index} className="flex items-center gap-2 md:gap-4">
                                             <span className="w-8 text-[10px] font-medium text-slate-300 sm:text-[13px] md:w-12 md:text-[16px]">{item.year}</span>
-                                            <div className="h-6 w-6 flex-shrink-0 rounded-full border border-slate-600 bg-slate-700 md:h-8 md:w-8">
-                                                <img src={item.img} alt="" />
-                                            </div>
                                             <span className="text-[10px] text-white sm:text-[13px] md:text-base">{item.club}</span>
                                         </div>
                                     ))}
@@ -725,14 +720,18 @@ export default function NewDetail() {
                             {/* Positions */}
                             <div className="rounded-xl border border-slate-800 bg-[#06111d] p-5">
                                 <h2 className="mb-6 text-[13px] font-bold text-white uppercase md:text-[18px]">Positions On The Pitch</h2>
-                                <Pitch />
+                                <Pitch selected={player.positions ?? []} />
                                 <div className="mt-6 space-y-2 text-[11px] font-bold text-white uppercase md:text-[16px]">
                                     <p>
-                                        <span className="mb-3 text-[13px] font-bold text-white uppercase md:text-[18px]">Main Position:</span> Right Winger
+                                        <span className="mb-3 text-[13px] font-bold text-white uppercase md:text-[18px]">Main Position:</span>{' '}
+                                        {player.positions?.length ? getPositionName([player.positions[0]]) : 'Not specified'}
                                     </p>
-                                    <p>
-                                        <span className="text-[13px] font-bold text-white uppercase md:text-[18px]">Secondary:</span> Attacking Midfielder, Central Midfielder
-                                    </p>
+                                    {player.positions?.length > 1 && (
+                                        <p>
+                                            <span className="text-[13px] font-bold text-white uppercase md:text-[18px]">Secondary:</span>{' '}
+                                            {getPositionName(player.positions.slice(1))}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -744,7 +743,7 @@ export default function NewDetail() {
                         <div className="rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5">
                             <h2 className="mb-5 text-[12px] font-semibold text-white uppercase md:text-sm">Achievements</h2>
                             <div className="space-y-2 md:space-y-4">
-                                {achievements.map((item, index) => (
+                                {(player.achievements ?? []).filter((item: any) => item?.title).map((item: any, index: number) => (
                                     <div key={index} className="flex items-start gap-1 md:gap-3">
                                         <span className="text-[12px] text-yellow-500 md:text-sm">🏆</span>
                                         <div className="flex gap-3 md:grid md:grid-cols-[100px_1fr]">
@@ -761,11 +760,11 @@ export default function NewDetail() {
                         {/* Player Description */}
                         <div className="rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5">
                             <h2 className="mb-4 text-[12px] font-semibold text-white uppercase md:text-sm">
-                                Player Description <span className="font-normal text-gray-500">(UP TO 500 WORDS)</span>
+                                Player Description
                             </h2>
                             <div className="w-full">
                                 <p className="min-h-48 w-full rounded-lg border border-[#1b2a3d] bg-[#08111d] p-2 text-gray-300 md:p-4">
-                                    Write a detailed description of the player's qualities, strengths, style of play, mentality, and other relevant information...
+                                    {player?.description}
                                 </p>
                             </div>
                         </div>
@@ -785,7 +784,7 @@ export default function NewDetail() {
                         <div className="rounded-lg border border-[#152538] bg-[#07111d] p-4 md:p-6">
                             <h2 className="mb-6 text-[14px] font-bold text-white uppercase md:text-xl">Competition History</h2>
                             <div className="space-y-2 md:space-y-4">
-                                {competitions.map((item, index) => (
+                                {(player.competitions ?? []).filter((item: any) => item?.name).map((item: any, index: number) => (
                                     <div key={index} className="flex items-start justify-between gap-2 md:gap-4">
                                         <div className="flex items-start gap-1 md:gap-3">
                                             <Trophy size={18} strokeWidth={1.5} className="mt-0.5 shrink-0 text-gray-300" />
@@ -816,7 +815,7 @@ export default function NewDetail() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {matches.map((match, index) => (
+                                        {(player.matches ?? []).filter((match: any) => match?.home).map((match: any, index: number) => (
                                             <tr key={index} className="border-b border-gray-300/10 text-[10px] text-gray-200 md:text-[14px]">
                                                 <td className="py-3">
                                                     <div className="flex items-center gap-2 md:gap-4">
