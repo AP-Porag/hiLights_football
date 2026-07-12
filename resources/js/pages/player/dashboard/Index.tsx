@@ -40,6 +40,12 @@ import {
     ClipboardList,
     Plus,
     X,
+    Facebook,
+    Linkedin,
+    Send,
+    Mail,
+    Copy,
+    MessageCircle,
 } from 'lucide-react';
 import {
     Bar,
@@ -325,6 +331,7 @@ function ListModal({
                     </Button>
                 </div>
             </div>
+
         </div>
     );
 }
@@ -469,8 +476,27 @@ export default function PlayerDashboard() {
     const [activeModal, setActiveModal] = useState<string | null>(null);
 
     const [shareOpen, setShareOpen] = useState(false);
+    // Replace the old profileUrl with this one that uses actual user data
+    // Replace the old profileUrl with this one that uses actual user data
+    const profileUrl = `${window.location.origin}/player/profile/${auth?.user?.player_profile?.id}`;
+    const [copied, setCopied] = useState(false);
 
-    const profileUrl = `${window.location.origin}/player/profile/${player.player_id}`;
+    const copyProfileLink = async () => {
+        // Use the actual user's profile URL
+        const actualProfileUrl = `${window.location.origin}/player/profile/${auth?.user?.player_profile?.id}`;
+
+        try {
+            await navigator.clipboard.writeText(actualProfileUrl);
+            setCopied(true);
+            setTimeout(() => {
+                setCopied(false);
+            }, 2500);
+        } catch (error) {
+            console.error('Failed to copy:', error);
+        }
+    };
+
+
 
     // video: video_url (Edit page) OR videos list (dashboard modal) — dutor jekono ekta thakle done
     const videoDone =
@@ -1041,6 +1067,143 @@ export default function PlayerDashboard() {
                     )
                 )
             }
+            {/* MODAL - SHARE */}
+            {/* Profile Share Modal */}
+            {/* Profile Share Modal */}
+            {shareOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+                    <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+                        {/* Header */}
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-xl font-semibold text-gray-900">
+                                Share Profile
+                            </h2>
+                            <button
+                                onClick={() => setShareOpen(false)}
+                                className="rounded-full p-1 hover:bg-gray-100"
+                            >
+                                <X className="h-6 w-6" />
+                            </button>
+                        </div>
+
+                        {/* Social Icons */}
+                        <div className="mt-6 grid grid-cols-4 gap-5">
+                            {/* WhatsApp */}
+                            <a
+                                href={`https://wa.me/?text=${encodeURIComponent(profileUrl)}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-center"
+                            >
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white">
+                                    <MessageCircle />
+                                </div>
+                                <span className="mt-2 block text-xs">WhatsApp</span>
+                            </a>
+
+                            {/* Facebook */}
+                            <a
+                                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-center"
+                            >
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white">
+                                    <Facebook />
+                                </div>
+                                <span className="mt-2 block text-xs">Facebook</span>
+                            </a>
+
+                            {/* X */}
+                            <a
+                                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(profileUrl)}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-center"
+                            >
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-black text-white">
+                                    X
+                                </div>
+                                <span className="mt-2 block text-xs">Twitter</span>
+                            </a>
+
+                            {/* LinkedIn */}
+                            <a
+                                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(profileUrl)}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-center"
+                            >
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-700 text-white">
+                                    <Linkedin />
+                                </div>
+                                <span className="mt-2 block text-xs">LinkedIn</span>
+                            </a>
+
+                            {/* Telegram */}
+                            <a
+                                href={`https://t.me/share/url?url=${encodeURIComponent(profileUrl)}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-center"
+                            >
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-sky-500 text-white">
+                                    <Send />
+                                </div>
+                                <span className="mt-2 block text-xs">Telegram</span>
+                            </a>
+
+                            {/* Email */}
+                            <a
+                                href={`mailto:?body=${encodeURIComponent(profileUrl)}`}
+                                className="text-center"
+                            >
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gray-700 text-white">
+                                    <Mail />
+                                </div>
+                                <span className="mt-2 block text-xs">Email</span>
+                            </a>
+
+                            {/* Copy */}
+                            <button
+                                onClick={copyProfileLink}
+                                className="text-center"
+                            >
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-gray-300">
+                                    <Copy />
+                                </div>
+                                <span className="mt-2 block text-xs">Copy</span>
+                            </button>
+                        </div>
+
+                        {/* URL Box */}
+                        <div className="mt-7 flex items-center gap-2 rounded-xl border bg-gray-50 p-3">
+                            <input
+                                readOnly
+                                value={profileUrl}
+                                className="flex-1 bg-transparent text-sm outline-none"
+                            />
+                            <button
+                                onClick={() => {
+                                    navigator.clipboard.writeText(profileUrl).then(() => {
+                                        setCopied(true);
+                                        setTimeout(() => setCopied(false), 2500);
+                                    });
+                                }}
+                                className="rounded-lg bg-black px-4 py-2 text-sm text-white"
+                            >
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+
+                    {copied && (
+                        <div className="fixed bottom-8 left-1/2 z-[60] -translate-x-1/2 rounded-lg bg-black px-5 py-3 text-sm text-white shadow-lg transition-all">
+                            Link copied
+                        </div>
+                    )}
+                </div>
+            )}
         </div >
     );
 }
