@@ -823,7 +823,7 @@ export default function PlayerDashboard() {
                         <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <p className="font-mono text-3xl font-black text-[#F5F5F5]">{player.totalViews.toLocaleString('en-US')}</p>
+                                    <p className="font-mono text-3xl font-black text-[#F5F5F5]">{auth?.user?.player_profile?.views}</p>
                                     <p className="mt-1 text-sm text-[#9A9A9A]">Profile Views</p>
                                 </div>
                                 <Eye className="h-5 w-5 text-[#FF6B00]" />

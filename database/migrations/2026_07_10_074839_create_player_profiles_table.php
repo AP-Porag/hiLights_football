@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('player_id')->unique();
+            $table->unsignedBigInteger('views')->default(0);
             $table->string('nickname')->nullable();
             $table->string('gender')->default('M');           // M / F / Other
             $table->unsignedSmallInteger('height')->nullable(); // cm

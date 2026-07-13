@@ -257,6 +257,9 @@ class PlayerProfileController extends Controller
         $player = PlayerProfile::with('user')
             ->where('id', $id)
             ->firstOrFail();
+        // Increase profile view count
+        $player->increment('views');
+
 
         return Inertia::render('player/profile/public/New-Detail', [
             'player' => $player,
