@@ -3,6 +3,7 @@ import PublicNavbar from '@/components/public/PublicNavbar';
 import { Link } from '@inertiajs/react';
 import { BarChart3, Binoculars, CalendarDays, CheckCircle, Smartphone, Flag, Globe, MapPin, ShieldCheck, User, Users, Shield } from 'lucide-react';
 import { useState } from 'react';
+import { router, usePage } from '@inertiajs/react';
 
 const plans = [
     {
@@ -120,6 +121,44 @@ const items = [
 
 export default function Plans() {
     const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly');
+    // const { plan, on_grace_period, is_active } = usePage().props;
+    // const isSubscribed = is_active || on_grace_period;
+    const { current_plan } = usePage<{
+        current_plan: string | null;
+    }>().props;
+
+    const disablePlanOne =
+        current_plan === 'plan_one' ||
+        current_plan === 'plan_two';
+
+    const disablePlanTwo =
+        current_plan === 'plan_two';
+
+    const handleCheckout = async () => {
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            ?.getAttribute('content');
+
+        const response = await fetch(
+            route('subscription.checkout', {
+                name: 'plan_one',
+            }),
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken ?? '',
+                },
+            }
+        );
+
+        const data = await response.json();
+
+        if (data.url) {
+            window.location.href = data.url;
+        }
+    };
 
     return (
         <div className="min-h-screen bg-black dark:bg-[#0D0D0D]">
@@ -176,7 +215,7 @@ export default function Plans() {
                                 {/* TOP ROW: logo + title */}
                                 <div className="flex items-start justify-between gap-3">
                                     <img src="/images/logo/final_logo.png" alt="HiLights Football" className="w-[110px] shrink-0 sm:w-[180px] lg:w-[200px] mt-3" />
-                                    
+
                                     <div className="pt-1 text-center">
                                         <h2 className="text-[11px] font-bold uppercase sm:text-[13px] lg:text-[15px]">MEMBER CARD</h2>
                                         <p className="text-[8px] font-semibold text-[#e24b12] uppercase sm:text-[9px] lg:text-[10px]">Official Member</p>
@@ -265,7 +304,7 @@ export default function Plans() {
                                 <div className="mt-5 flex items-center gap-2">
                                     <Shield className="h-6 w-6 shrink-0 text-white" />
                                     <p className="text-[10px] leading-relaxed text-white uppercase lg:text-[12px]">
-                                        This card identifies the holder as an official<br className="hidden sm:block lg:block"/> member of HiLights Football platform.
+                                        This card identifies the holder as an official<br className="hidden sm:block lg:block" /> member of HiLights Football platform.
                                     </p>
                                 </div>
                             </div>
@@ -320,8 +359,15 @@ export default function Plans() {
                                     </div>
                                 ))}
                             </div>
-                            <button className="w-full rounded-xl bg-[#e53f01] py-3 font-bold text-white uppercase transition hover:bg-orange-600">
-                                Choose Premium
+                            <button
+                                onClick={disablePlanOne ? undefined : handleCheckout}
+                                disabled={disablePlanOne}
+                                className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disablePlanOne
+                                    ? 'cursor-not-allowed bg-gray-600 opacity-50'
+                                    : 'bg-[#e53f01] hover:bg-orange-600'
+                                    }`}
+                            >
+                                {disablePlanOne ? 'Already Subscribed' : 'Choose Premium 1'}
                             </button>
                         </div>
 
@@ -344,8 +390,15 @@ export default function Plans() {
                                     </div>
                                 ))}
                             </div>
-                            <button className="w-full rounded-xl bg-[#e53f01] py-3 font-bold text-white uppercase transition hover:bg-orange-600">
-                                Choose Premium
+                            <button
+                                onClick={disablePlanTwo ? undefined : handleCheckout}
+                                disabled={disablePlanTwo}
+                                className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disablePlanTwo
+                                    ? 'cursor-not-allowed bg-gray-600 opacity-50'
+                                    : 'bg-[#e53f01] hover:bg-orange-600'
+                                    }`}
+                            >
+                                {disablePlanTwo ? 'Already Subscribed' : 'Choose Premium 2'}
                             </button>
                         </div>
                     </div>

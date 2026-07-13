@@ -158,27 +158,25 @@ export default function Pricing() {
                         <button
                             type="button"
                             onClick={() => setBilling('monthly')}
-                            className={`px-5 py-2 rounded-full text-sm transition-colors ${
-                                billing === 'monthly'
+                            className={`px-5 py-2 rounded-full text-sm transition-colors ${billing === 'monthly'
                                     ? 'bg-white text-[#FF6B00] font-semibold'
                                     : 'text-white font-medium'
-                            }`}
+                                }`}
                         >
                             Monthly
                         </button>
                         <button
                             type="button"
                             onClick={() => setBilling('annual')}
-                            className={`px-5 py-2 rounded-full text-sm transition-colors flex items-center ${
-                                billing === 'annual'
+                            className={`px-5 py-2 rounded-full text-sm transition-colors flex items-center ${billing === 'annual'
                                     ? 'bg-white text-[#FF6B00] font-semibold'
                                     : 'text-white font-medium'
-                            }`}
+                                }`}
                         >
                             Annual
                             <span className="bg-green-400 text-green-900 text-xs font-bold px-2 py-0.5 rounded-full ml-2">
-                Save 20%
-              </span>
+                                Save 20%
+                            </span>
                         </button>
                     </div>
                 </section>
@@ -212,15 +210,14 @@ export default function Pricing() {
 
                                     {/* Price */}
                                     <div className="mt-3 flex items-baseline">
-                    <span
-                        className={`font-display text-5xl font-black ${
-                            isPremium
-                                ? 'text-[#FF6B00]'
-                                : 'text-[#0F172A] dark:text-[#F5F5F5]'
-                        }`}
-                    >
-                      €{displayPrice.toFixed(displayPrice % 1 === 0 ? 0 : 2)}
-                    </span>
+                                        <span
+                                            className={`font-display text-5xl font-black ${isPremium
+                                                    ? 'text-[#FF6B00]'
+                                                    : 'text-[#0F172A] dark:text-[#F5F5F5]'
+                                                }`}
+                                        >
+                                            €{displayPrice.toFixed(displayPrice % 1 === 0 ? 0 : 2)}
+                                        </span>
                                         <span className="text-[#94A3B8] text-sm ml-2">/month</span>
                                     </div>
 
@@ -240,9 +237,8 @@ export default function Pricing() {
                                                 className="flex items-start gap-3 text-sm text-[#0F172A] dark:text-[#F5F5F5]"
                                             >
                                                 <CheckCircle2
-                                                    className={`w-4 h-4 mt-0.5 shrink-0 ${
-                                                        isPremium ? 'text-[#FF6B00]' : 'text-green-500'
-                                                    }`}
+                                                    className={`w-4 h-4 mt-0.5 shrink-0 ${isPremium ? 'text-[#FF6B00]' : 'text-green-500'
+                                                        }`}
                                                 />
                                                 <span>{feat}</span>
                                             </li>
@@ -255,8 +251,8 @@ export default function Pricing() {
                                             >
                                                 <Lock className="w-4 h-4 mt-0.5 shrink-0" />
                                                 <span className="line-through decoration-[#94A3B8]/30">
-                          {feat}
-                        </span>
+                                                    {feat}
+                                                </span>
                                             </li>
                                         ))}
                                     </ul>
@@ -467,9 +463,8 @@ function renderCell(value: boolean | string, highlight = false) {
     if (typeof value === 'boolean') {
         return value ? (
             <Check
-                className={`w-5 h-5 mx-auto ${
-                    highlight ? 'text-[#FF6B00]' : 'text-green-500'
-                }`}
+                className={`w-5 h-5 mx-auto ${highlight ? 'text-[#FF6B00]' : 'text-green-500'
+                    }`}
             />
         ) : (
             <XCircle className="w-5 h-5 mx-auto text-[#94A3B8] dark:text-[#555555]" />
@@ -477,13 +472,12 @@ function renderCell(value: boolean | string, highlight = false) {
     }
     return (
         <span
-            className={`font-mono text-xs font-semibold ${
-                highlight
+            className={`font-mono text-xs font-semibold ${highlight
                     ? 'text-[#FF6B00]'
                     : 'text-[#0F172A] dark:text-[#F5F5F5]'
-            }`}
+                }`}
         >
-      {value}
-    </span>
+            {value}
+        </span>
     );
 }
