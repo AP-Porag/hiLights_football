@@ -105,9 +105,9 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
     Route::post('/profile/upload-logo', [PlayerProfileController::class, 'uploadLogo'])
         ->name('player.profile.upload-logo');
 
-    // Route::get('/subscription', function () {
-    //     return Inertia::render('player/subscription/Index');
-    // })->name('subscription');
+    Route::get('/subscription', function () {
+        return Inertia::render('player/subscription/Index');
+    })->name('subscription');
     Route::post(
         '/subscription/checkout/{name}',
         [SubscriptionController::class, 'checkout']
