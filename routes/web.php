@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Player\PlayerProfileController;
+use App\Http\Controllers\Player\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Artisan;
@@ -104,9 +105,16 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
     Route::post('/profile/upload-logo', [PlayerProfileController::class, 'uploadLogo'])
         ->name('player.profile.upload-logo');
 
-    Route::get('/subscription', function () {
-        return Inertia::render('player/subscription/Index');
-    })->name('subscription');
+    // Route::get('/subscription', function () {
+    //     return Inertia::render('player/subscription/Index');
+    // })->name('subscription');
+    Route::post(
+        '/subscription/checkout/{name}',
+        [SubscriptionController::class, 'checkout']
+    )->name('subscription.checkout');
+
+    Route::get('subscription/checkout/success', [SubscriptionController::class, 'success'])
+        ->name('checkout.success');
 });
 
 //all Scouts / Agents / Clubs routes
