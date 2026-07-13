@@ -82,6 +82,11 @@ const getCountryName = (code?: string) => {
     if (!code) return '';
     return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
 };
+// CSRF cookie theke token (logo file upload er jonno fetch-e lagbe)
+const getCookie = (name: string): string => {
+    const row = document.cookie.split('; ').find((r) => r.startsWith(name + '='));
+    return row ? decodeURIComponent(row.split('=')[1]) : '';
+};
 const sparklineData = [12, 18, 14, 22, 19, 28, 34];
 function getGreeting(): string {
     const h = new Date().getHours();
@@ -113,7 +118,7 @@ const COUNTRY_CODES = [
 ];
 const ALL_POSITIONS = ['GK', 'LB', 'CB-L', 'CB-R', 'RB', 'LM', 'CM-L', 'CM-R', 'RM', 'CAM', 'LW', 'ST', 'RW', 'CF'];
 // ════════ LIST MODAL CONFIG (repeatable rows) ════════
-type FieldDef = { name: string; label: string; type: 'text' | 'number' };
+type FieldDef = { name: string; label: string; type: 'text' | 'number' | 'file' };
 type ListConfig = {
     title: string;
     storageKey: string;
@@ -158,8 +163,9 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
         fields: [
             { name: 'year', label: 'Year', type: 'number' },
             { name: 'club', label: 'Club', type: 'text' },
+            { name: 'logo', label: 'Club Logo', type: 'file' },
         ],
-        empty: { year: '', club: '' },
+        empty: { year: '', club: '', logo: '' },
     },
     achievements: {
         title: 'Achievements',
@@ -249,10 +255,39 @@ function ListModal({
         return [{ ...cfg.empty }];
     });
     const [saving, setSaving] = useState(false);
+    const [uploadingKey, setUploadingKey] = useState<string | null>(null);
     const update = (i: number, name: string, val: string) => {
-        const copy = [...rows];
-        copy[i] = { ...copy[i], [name]: val };
-        setRows(copy);
+        setRows((prev) => {
+            const copy = [...prev];
+            copy[i] = { ...copy[i], [name]: val };
+            return copy;
+        });
+    };
+    // logo file upload — alada endpoint-e pathiye URL peye row-e boshai
+    const uploadFile = async (i: number, name: string, file: File) => {
+        const key = `${i}-${name}`;
+        setUploadingKey(key);
+        try {
+            const fd = new FormData();
+            fd.append('logo', file);
+            const res = await fetch('/player/profile/upload-logo', {
+                method: 'POST',
+                headers: {
+                    'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
+                    Accept: 'application/json',
+                },
+                credentials: 'same-origin',
+                body: fd,
+            });
+            const data = await res.json();
+            if (data?.url) update(i, name, data.url);
+            else alert('Logo upload failed. Please try again.');
+        } catch (e) {
+            console.error('Logo upload failed', e);
+            alert('Logo upload failed. Please try again.');
+        } finally {
+            setUploadingKey(null);
+        }
     };
     const addRow = () => setRows([...rows, { ...cfg.empty }]);
     const removeRow = (i: number) => {
@@ -292,12 +327,40 @@ function ListModal({
                                     <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-[#94A3B8]">
                                         {f.label}
                                     </label>
-                                    <input
-                                        type={f.type}
-                                        value={row[f.name] ?? ''}
-                                        onChange={(e) => update(i, f.name, e.target.value)}
-                                        className={inputClass}
-                                    />
+                                    {f.type === 'file' ? (
+                                        <div className="flex items-center gap-2">
+                                            {nonEmpty(row[f.name]) && (
+                                                <img
+                                                    src={row[f.name]}
+                                                    alt="logo"
+                                                    className="h-9 w-9 flex-shrink-0 rounded-md border border-[#2A2A2A] object-cover"
+                                                />
+                                            )}
+                                            <label className="flex h-9 flex-1 cursor-pointer items-center justify-center rounded-lg border border-dashed border-[#2A2A2A] bg-[#0D0D0D] px-2 text-xs text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00]">
+                                                {uploadingKey === `${i}-${f.name}`
+                                                    ? 'Uploading...'
+                                                    : nonEmpty(row[f.name])
+                                                        ? 'Change'
+                                                        : 'Upload'}
+                                                <input
+                                                    type="file"
+                                                    accept="image/jpeg,image/png,image/webp"
+                                                    className="hidden"
+                                                    onChange={(e) => {
+                                                        const file = e.target.files?.[0];
+                                                        if (file) uploadFile(i, f.name, file);
+                                                    }}
+                                                />
+                                            </label>
+                                        </div>
+                                    ) : (
+                                        <input
+                                            type={f.type}
+                                            value={row[f.name] ?? ''}
+                                            onChange={(e) => update(i, f.name, e.target.value)}
+                                            className={inputClass}
+                                        />
+                                    )}
                                 </div>
                             ))}
                             {cfg.firstFixed && i === 0 ? (
@@ -331,7 +394,6 @@ function ListModal({
                     </Button>
                 </div>
             </div>
-
         </div>
     );
 }
@@ -474,30 +536,36 @@ export default function PlayerDashboard() {
     const greeting = getGreeting();
     const dateStr = formatDate();
     const [activeModal, setActiveModal] = useState<string | null>(null);
-
     const [shareOpen, setShareOpen] = useState(false);
-    // Replace the old profileUrl with this one that uses actual user data
-    // Replace the old profileUrl with this one that uses actual user data
     const profileUrl = `${window.location.origin}/player/profile/${auth?.user?.player_profile?.id}`;
     const [copied, setCopied] = useState(false);
-
     const copyProfileLink = async () => {
-        // Use the actual user's profile URL
-        const actualProfileUrl = `${window.location.origin}/player/profile/${auth?.user?.player_profile?.id}`;
-
         try {
-            await navigator.clipboard.writeText(actualProfileUrl);
+            await navigator.clipboard.writeText(profileUrl);
             setCopied(true);
             setTimeout(() => {
                 setCopied(false);
             }, 2500);
         } catch (error) {
             console.error('Failed to copy:', error);
+            // ব্যাকআপ পদ্ধতি (যদি Clipboard API কাজ না করে)
+            try {
+                const textarea = document.createElement('textarea');
+                textarea.value = profileUrl;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2500);
+            } catch (fallbackError) {
+                console.error('Fallback copy failed:', fallbackError);
+                alert('লিংক কপি করা সম্ভব হয়নি। দয়া করে ম্যানুয়ালি কপি করুন।');
+            }
         }
     };
-
-
-
     // video: video_url (Edit page) OR videos list (dashboard modal) — dutor jekono ekta thakle done
     const videoDone =
         nonEmpty(pp.video_url) ||
@@ -537,7 +605,7 @@ export default function PlayerDashboard() {
         modal?: string;
         cta: string;
         icon?: typeof Video;
-        alwaysShow?: boolean;   // done howar por-o button dekhabe (video-r jonno)
+        alwaysShow?: boolean;   // done howar por-o button dekhabe
     }[] = [
             {
                 label: 'Basic information added',
@@ -666,28 +734,22 @@ export default function PlayerDashboard() {
         },
     ];
     const shareProfile = async () => {
-        const profileUrl = `${window.location.origin}/player/profile/${player.id}`;
 
         const shareData = {
             title: `${player.user?.name} — HiLights Football`,
             text: `Check out ${player.user?.name}'s player profile on HiLights Football`,
             url: profileUrl,
         };
-
-        // Native share (Mobile browsers)
         if (navigator.share) {
             try {
                 await navigator.share(shareData);
                 return;
             } catch (error) {
-                // user cancel করলে কিছু করবেন না
                 if (error instanceof Error && error.name === 'AbortError') {
                     return;
                 }
             }
         }
-
-        // Copy link fallback
         if (navigator.clipboard && window.isSecureContext) {
             try {
                 await navigator.clipboard.writeText(profileUrl);
@@ -697,21 +759,15 @@ export default function PlayerDashboard() {
                 console.log(error);
             }
         }
-
-        // Old browser fallback
         try {
             const textarea = document.createElement('textarea');
             textarea.value = profileUrl;
             textarea.style.position = 'fixed';
             textarea.style.opacity = '0';
-
             document.body.appendChild(textarea);
             textarea.select();
-
             document.execCommand('copy');
-
             document.body.removeChild(textarea);
-
             alert('Profile link copied!');
         } catch {
             prompt('Copy this profile link:', profileUrl);
@@ -1068,12 +1124,10 @@ export default function PlayerDashboard() {
                 )
             }
             {/* MODAL - SHARE */}
-            {/* Profile Share Modal */}
-            {/* Profile Share Modal */}
             {shareOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
                     <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-                        {/* Header */}
+                        {/* হেডার */}
                         <div className="flex items-center justify-between">
                             <h2 className="text-xl font-semibold text-gray-900">
                                 Share Profile
@@ -1086,9 +1140,9 @@ export default function PlayerDashboard() {
                             </button>
                         </div>
 
-                        {/* Social Icons */}
+                        {/* Social Icon */}
                         <div className="mt-6 grid grid-cols-4 gap-5">
-                            {/* WhatsApp */}
+                            {/* Whats App */}
                             <a
                                 href={`https://wa.me/?text=${encodeURIComponent(profileUrl)}`}
                                 target="_blank"
@@ -1100,7 +1154,6 @@ export default function PlayerDashboard() {
                                 </div>
                                 <span className="mt-2 block text-xs">WhatsApp</span>
                             </a>
-
                             {/* Facebook */}
                             <a
                                 href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}`}
@@ -1113,8 +1166,7 @@ export default function PlayerDashboard() {
                                 </div>
                                 <span className="mt-2 block text-xs">Facebook</span>
                             </a>
-
-                            {/* X */}
+                            {/* Twitter */}
                             <a
                                 href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(profileUrl)}`}
                                 target="_blank"
@@ -1122,12 +1174,11 @@ export default function PlayerDashboard() {
                                 className="text-center"
                             >
                                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-black text-white">
-                                    X
+                                    <span className="font-bold">X</span>
                                 </div>
                                 <span className="mt-2 block text-xs">Twitter</span>
                             </a>
-
-                            {/* LinkedIn */}
+                            {/* Linked In */}
                             <a
                                 href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(profileUrl)}`}
                                 target="_blank"
@@ -1139,7 +1190,6 @@ export default function PlayerDashboard() {
                                 </div>
                                 <span className="mt-2 block text-xs">LinkedIn</span>
                             </a>
-
                             {/* Telegram */}
                             <a
                                 href={`https://t.me/share/url?url=${encodeURIComponent(profileUrl)}`}
@@ -1152,7 +1202,6 @@ export default function PlayerDashboard() {
                                 </div>
                                 <span className="mt-2 block text-xs">Telegram</span>
                             </a>
-
                             {/* Email */}
                             <a
                                 href={`mailto:?body=${encodeURIComponent(profileUrl)}`}
@@ -1163,20 +1212,9 @@ export default function PlayerDashboard() {
                                 </div>
                                 <span className="mt-2 block text-xs">Email</span>
                             </a>
-
-                            {/* Copy */}
-                            <button
-                                onClick={copyProfileLink}
-                                className="text-center"
-                            >
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-gray-300">
-                                    <Copy />
-                                </div>
-                                <span className="mt-2 block text-xs">Copy</span>
-                            </button>
                         </div>
 
-                        {/* URL Box */}
+                        {/* URL বক্স */}
                         <div className="mt-7 flex items-center gap-2 rounded-xl border bg-gray-50 p-3">
                             <input
                                 readOnly
@@ -1184,22 +1222,18 @@ export default function PlayerDashboard() {
                                 className="flex-1 bg-transparent text-sm outline-none"
                             />
                             <button
-                                onClick={() => {
-                                    navigator.clipboard.writeText(profileUrl).then(() => {
-                                        setCopied(true);
-                                        setTimeout(() => setCopied(false), 2500);
-                                    });
-                                }}
-                                className="rounded-lg bg-black px-4 py-2 text-sm text-white"
+                                onClick={copyProfileLink}
+                                className="rounded-lg cursor-pointer bg-black px-4 py-2 text-sm text-white hover:bg-gray-800 transition-colors"
                             >
-                                Copy
+                                {copied ? 'Copied!' : 'Copy'}
                             </button>
                         </div>
                     </div>
 
+                    {/* কপি করা হলে নোটিফিকেশন */}
                     {copied && (
                         <div className="fixed bottom-8 left-1/2 z-[60] -translate-x-1/2 rounded-lg bg-black px-5 py-3 text-sm text-white shadow-lg transition-all">
-                            Link copied
+                            ✅ Link Copied
                         </div>
                     )}
                 </div>

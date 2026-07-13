@@ -95,7 +95,7 @@ class RegisteredUserController extends Controller
     private function generatePlayerId()
     {
         do {
-            $id = random_int(1000000000, 9999999999); // 10 digit
+            $id = "HLF-" . random_int(1000000000, 9999999999); // 10 digit
         } while (PlayerProfile::where('player_id', $id)->exists());
 
         return $id;

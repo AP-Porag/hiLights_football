@@ -149,6 +149,7 @@ class PlayerProfileController extends Controller
             'transfer_history'        => ['sometimes', 'array'],
             'transfer_history.*.year' => ['nullable'],
             'transfer_history.*.club' => ['nullable', 'string', 'max:255'],
+            'transfer_history.*.logo' => ['nullable', 'string', 'max:255'],
 
             'achievements'            => ['sometimes', 'array'],
             'achievements.*.year'     => ['nullable'],
@@ -257,8 +258,21 @@ class PlayerProfileController extends Controller
             ->where('id', $id)
             ->firstOrFail();
 
-        return Inertia::render('player/profile/public/new-detail', [
+        return Inertia::render('player/profile/public/New-Detail', [
             'player' => $player,
+        ]);
+    }
+    public function uploadLogo(Request $request)
+    {
+        $request->validate([
+            'logo' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+        ]);
+
+        $path = $this->storeUpload($request->file('logo'), 'players/club-logos');
+
+        return response()->json([
+            'path' => $path,
+            'url'  => asset('storage/' . $path),
         ]);
     }
 }

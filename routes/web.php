@@ -101,6 +101,9 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
     Route::post('/profile/fields', [PlayerProfileController::class, 'updateFields'])
         ->name('player.profile.fields');
 
+    Route::post('/profile/upload-logo', [PlayerProfileController::class, 'uploadLogo'])
+        ->name('player.profile.upload-logo');
+
     Route::get('/subscription', function () {
         return Inertia::render('player/subscription/Index');
     })->name('subscription');
