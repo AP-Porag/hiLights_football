@@ -128,20 +128,20 @@ export default function Plans() {
     }>().props;
 
     const disablePlanOne =
-        current_plan === 'plan_one' ||
-        current_plan === 'plan_two';
+        current_plan === 'price_1TsfD5HKtXG9R7bGyzR4H6C9' ||
+        current_plan === 'price_1TsfDtHKtXG9R7bGVsNxRTT6';
 
     const disablePlanTwo =
-        current_plan === 'plan_two';
+        current_plan === 'price_1TsfDtHKtXG9R7bGVsNxRTT6';
 
-    const handleCheckout = async () => {
+    const handleCheckout = async (planName: string) => {
         const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
             ?.getAttribute('content');
 
         const response = await fetch(
             route('subscription.checkout', {
-                name: 'plan_one',
+                name: planName,
             }),
             {
                 method: 'POST',
@@ -360,7 +360,7 @@ export default function Plans() {
                                 ))}
                             </div>
                             <button
-                                onClick={disablePlanOne ? undefined : handleCheckout}
+                                onClick={disablePlanOne ? undefined : () => handleCheckout('plan_one')}
                                 disabled={disablePlanOne}
                                 className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disablePlanOne
                                     ? 'cursor-not-allowed bg-gray-600 opacity-50'
@@ -391,7 +391,7 @@ export default function Plans() {
                                 ))}
                             </div>
                             <button
-                                onClick={disablePlanTwo ? undefined : handleCheckout}
+                                onClick={disablePlanTwo ? undefined : () => handleCheckout('plan_two')}
                                 disabled={disablePlanTwo}
                                 className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disablePlanTwo
                                     ? 'cursor-not-allowed bg-gray-600 opacity-50'

@@ -53,7 +53,7 @@ class SubscriptionController extends Controller
             ->first();
 
 
-        $currentPlan = $subscription?->type;
+        $currentPlan = $subscription?->stripe_price;
         // $plan = Plan::whereName($request->plan)->firstOrFail();
         if ($subscription) {
 
@@ -62,7 +62,7 @@ class SubscriptionController extends Controller
                 $subscription->stripe_status === 'active' ||
                 $subscription->onGracePeriod()
             ) {
-                $currentPlan = $subscription->type;
+                $currentPlan = $subscription->stripe_price;
             }
         }
         return Inertia::render(
