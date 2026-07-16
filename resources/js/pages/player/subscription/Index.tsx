@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, usePage, router } from '@inertiajs/react';
 import {
     Check,
     X,
@@ -251,7 +251,12 @@ function renderCell(value: string | boolean) {
     );
 }
 export default function SubscriptionIndex() {
-    const { current_plan } = usePage<{ current_plan: string | null }>().props;
+    const { current_plan, on_grace_period, is_cancelled, subscription_ends_at } = usePage<{
+        current_plan: string | null;
+        on_grace_period?: boolean;
+        is_cancelled?: boolean;
+        subscription_ends_at?: string | null;
+    }>().props;
     // premium = plan_one, elite = plan_two
     const disablePremium =
         current_plan === PLAN_ONE_PRICE || current_plan === PLAN_TWO_PRICE;
@@ -269,13 +274,14 @@ export default function SubscriptionIndex() {
             : currentPlanId === 'premium'
                 ? 'Premium plan'
                 : 'Free plan';
-    // Stripe checkout — Plans page-er moto
+    const hasPlan = current_plan !== null;
+    // Stripe checkout — from=subscription pathacchi (success-e ei page-e fire ashbe)
     const handleCheckout = async (planName: string) => {
         const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
             ?.getAttribute('content');
         const response = await fetch(
-            route('subscription.checkout', { name: planName }),
+            route('subscription.checkout', { name: planName, from: 'subscription' }),
             {
                 method: 'POST',
                 credentials: 'same-origin',
@@ -290,6 +296,15 @@ export default function SubscriptionIndex() {
         if (data.url) {
             window.location.href = data.url;
         }
+    };
+    // subscription cancel — grace period-e jabe
+    const handleCancel = () => {
+        if (!confirm('Are you sure you want to cancel your subscription?')) return;
+        router.post(route('subscription.cancel'), {}, { preserveScroll: true });
+    };
+    // grace period theke abar resume
+    const handleResume = () => {
+        router.post(route('subscription.resume'), {}, { preserveScroll: true });
     };
     // pricing card-er CTA button (per plan)
     const renderPlanCta = (plan: Plan, isCurrent: boolean) => {
@@ -364,6 +379,36 @@ export default function SubscriptionIndex() {
                             </span>
                             . Upgrade to unlock your full potential.
                         </p>
+                        {/* ── Cancel / Resume action (plan state onujayi) ── */}
+                        {on_grace_period ? (
+                            <div className="mx-auto mt-6 flex max-w-xl flex-col items-center justify-center gap-3 rounded-xl bg-white/15 px-5 py-3 backdrop-blur-sm sm:flex-row">
+                                <span className="font-sans text-sm text-white">
+                                    Your subscription is cancelled
+                                    {subscription_ends_at
+                                        ? ` — access until ${new Date(subscription_ends_at).toLocaleDateString()}`
+                                        : ''}
+                                    .
+                                </span>
+                                <button
+                                    onClick={handleResume}
+                                    className="rounded-lg bg-white px-4 py-1.5 font-sans text-sm font-semibold text-[#FF6B00] hover:bg-white/90"
+                                >
+                                    Resume Subscription
+                                </button>
+                            </div>
+                        ) : hasPlan ? (
+                            <div className="mx-auto mt-6 flex max-w-xl flex-col items-center justify-center gap-3 rounded-xl bg-white/15 px-5 py-3 backdrop-blur-sm sm:flex-row">
+                                <span className="font-sans text-sm text-white">
+                                    You're subscribed to the <strong>{currentPlanName}</strong>.
+                                </span>
+                                <button
+                                    onClick={handleCancel}
+                                    className="rounded-lg border border-white/60 bg-transparent px-4 py-1.5 font-sans text-sm font-semibold text-white hover:bg-white/10"
+                                >
+                                    Cancel Subscription
+                                </button>
+                            </div>
+                        ) : null}
                         <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-sans text-xs text-white/90 sm:text-sm">
                             <div className="flex items-center gap-1.5">
                                 <Check className="h-4 w-4" strokeWidth={3} />
