@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Web\HomeController;
+use Laravel\Cashier\Http\Controllers\WebhookController;
 
 Route::get('/execute-command', function () {
     //    return redirect()->route('login');
@@ -161,6 +162,9 @@ Route::prefix('admin')->group(function () {
         return Inertia::render('admin/scouting/Index');
     })->name('scouting.index');
 });
+
+Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])
+    ->name('cashier.webhook');
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';

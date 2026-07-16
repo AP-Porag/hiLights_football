@@ -145,6 +145,7 @@ export default function Plans() {
             }),
             {
                 method: 'POST',
+                credentials: 'same-origin', // <-- এটা যোগ করুন
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
