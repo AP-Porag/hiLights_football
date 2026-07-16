@@ -66,7 +66,7 @@ class SubscriptionController extends Controller
             }
         }
         return Inertia::render(
-            'web/Plans',
+            'player/subscription/Index',
             [
                 // 'plan' => $plan->name,
                 // 'on_grace_period' => $subscription?->onGracePeriod(),

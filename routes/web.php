@@ -116,6 +116,10 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
 
     Route::get('subscription/checkout/success', [SubscriptionController::class, 'success'])
         ->name('checkout.success');
+
+    Route::post('/subscription/cancel', [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
+
+    Route::post('/subscription/resume', [SubscriptionController::class, 'resume'])->name('subscription.resume');
 });
 
 //all Scouts / Agents / Clubs routes

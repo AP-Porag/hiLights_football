@@ -322,6 +322,4 @@ const Scout = () => {
     );
 }
 
-
-
 export default Scout;

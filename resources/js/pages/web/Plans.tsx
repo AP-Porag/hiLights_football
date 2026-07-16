@@ -361,14 +361,14 @@ export default function Plans() {
                                 ))}
                             </div>
                             <button
-                                onClick={disablePlanOne ? undefined : () => handleCheckout('plan_one')}
+                                onClick={() => router.visit(route('subscription'))}
                                 disabled={disablePlanOne}
                                 className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disablePlanOne
                                     ? 'cursor-not-allowed bg-gray-600 opacity-50'
                                     : 'bg-[#e53f01] hover:bg-orange-600'
                                     }`}
                             >
-                                {disablePlanOne ? 'Already Subscribed' : 'Choose Premium 1'}
+                                Choose Prmium
                             </button>
                         </div>
 
@@ -392,14 +392,14 @@ export default function Plans() {
                                 ))}
                             </div>
                             <button
-                                onClick={disablePlanTwo ? undefined : () => handleCheckout('plan_two')}
+                                onClick={() => router.visit(route('subscription'))}
                                 disabled={disablePlanTwo}
                                 className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disablePlanTwo
                                     ? 'cursor-not-allowed bg-gray-600 opacity-50'
                                     : 'bg-[#e53f01] hover:bg-orange-600'
                                     }`}
                             >
-                                {disablePlanTwo ? 'Already Subscribed' : 'Choose Premium 2'}
+                                {disablePlanTwo ? 'Already Subscribed' : 'Choose Premium'}
                             </button>
                         </div>
                     </div>
