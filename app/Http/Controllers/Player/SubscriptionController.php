@@ -45,7 +45,6 @@ class SubscriptionController extends Controller
 
     public function success(Request $request)
     {
-        // $user = $request->user();
         $subscription = $request->user()
             ->subscriptions()
             ->where('stripe_status', 'active')
@@ -54,7 +53,6 @@ class SubscriptionController extends Controller
 
 
         $currentPlan = $subscription?->stripe_price;
-        // $plan = Plan::whereName($request->plan)->firstOrFail();
         if ($subscription) {
 
             // Current active subscription
@@ -68,41 +66,26 @@ class SubscriptionController extends Controller
         return Inertia::render(
             'player/subscription/Index',
             [
-                // 'plan' => $plan->name,
-                // 'on_grace_period' => $subscription?->onGracePeriod(),
-                // 'subscription_ends_at' => $subscription?->ends_at,
-                // 'is_cancelled' => $subscription?->stripe_status === 'canceled',
-                // 'is_active' => $subscription?->stripe_status === 'active',
-                // 'is_expired' => $subscription?->ends_at?->isPast(),
                 'current_plan' => $currentPlan,
                 'is_cancelled' => $subscription?->ends_at !== null,
             ]
         );
+    }
+    public function cancel(Request $request)
+    {
+        $subscription = $request->user()->subscription('default');
+        if ($subscription && $subscription->active()) {
+            $subscription->cancel(); // grace period-e jabe, period shesh porjonto access thakbe
+        }
+        return back();
+    }
 
-        // $user = $request->user();
-
-        // $plan = Plan::whereName($request->plan)->firstOrFail();
-
-        // // ✅ Update local subscription state
-        // $user->update([
-        //     'subscription_status' => 'active',
-        //     'subscription_tier' => $plan->name,
-
-        //     // optional cleanup (important)
-        //     'trial_ends_at' => null,
-        // ]);
-        // $subscription = $user->subscription('default');
-
-        // return Inertia::render('app/subscriptions/success', [
-        //     'plan' => $plan->name,
-        //     // 'subscription_status' => $user->subscription_status,
-        //     'subscription_status' => $user->subscription('default')?->stripe_status,
-        //     'subscription_tier' => $user->subscription_tier,
-        //     'on_grace_period' => $subscription?->onGracePeriod(),
-        //     'subscription_ends_at' => $subscription?->ends_at,
-        //     'is_cancelled' => $subscription?->stripe_status === 'canceled',
-        //     'is_active' => $subscription?->stripe_status === 'active',
-        //     'is_expired' => $subscription?->ends_at?->isPast(),
-        // ]);
+    public function resume(Request $request)
+    {
+        $subscription = $request->user()->subscription('default');
+        if ($subscription && $subscription->onGracePeriod()) {
+            $subscription->resume();
+        }
+        return back();
     }
 }
