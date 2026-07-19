@@ -125,7 +125,7 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
 });
 
 //all Scouts / Agents / Clubs routes
-Route::prefix('scouting')->group(function () {
+Route::middleware(['auth'])->prefix('scouting')->group(function () {
 
     Route::get('/', function () {
         return Inertia::render('scouting/dashboard/Index');
