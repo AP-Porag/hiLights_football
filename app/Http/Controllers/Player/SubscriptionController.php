@@ -24,6 +24,17 @@ class SubscriptionController extends Controller
     //             // 'payment_method_types' => ['card'],
     //         ]);
     // }
+    public function index(Request $request)
+    {
+        $subscription = $request->user()->subscription('default');
+
+        return Inertia::render('player/subscription/Index', [
+            'current_plan' => $subscription?->stripe_price,
+            'on_grace_period' => $subscription?->onGracePeriod() ?? false,
+            'is_cancelled' => $subscription?->onGracePeriod() ?? false,
+            'subscription_ends_at' => $subscription?->ends_at?->toDateTimeString(),
+        ]);
+    }
 
     public function checkout($name, Request $request)
     {
@@ -74,18 +85,22 @@ class SubscriptionController extends Controller
     public function cancel(Request $request)
     {
         $subscription = $request->user()->subscription('default');
+
         if ($subscription && $subscription->active()) {
-            $subscription->cancel(); // grace period-e jabe, period shesh porjonto access thakbe
+            $subscription->cancel();
         }
-        return back();
+
+        return redirect()->route('subscription');
     }
 
     public function resume(Request $request)
     {
         $subscription = $request->user()->subscription('default');
+
         if ($subscription && $subscription->onGracePeriod()) {
             $subscription->resume();
         }
-        return back();
+
+        return redirect()->route('subscription');
     }
 }

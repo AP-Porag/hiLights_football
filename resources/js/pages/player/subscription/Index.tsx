@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
 import {
     Check,
@@ -19,6 +19,8 @@ import {
     Globe,
     Headphones,
     TrendingUp,
+    AlertTriangle,
+    RotateCcw,
 } from 'lucide-react';
 import PlayerNavbar from '@/components/player/PlayerNavbar';
 // ── Stripe price IDs (nijer real price ID diye replace koro) ──
@@ -257,6 +259,12 @@ export default function SubscriptionIndex() {
         is_cancelled?: boolean;
         subscription_ends_at?: string | null;
     }>().props;
+    // cancel confirmation modal
+    const [cancelOpen, setCancelOpen] = useState(false);
+    const [cancelling, setCancelling] = useState(false);
+    // resume confirmation modal
+    const [resumeOpen, setResumeOpen] = useState(false);
+    const [resuming, setResuming] = useState(false);
     // premium = plan_one, elite = plan_two
     const disablePremium =
         current_plan === PLAN_ONE_PRICE || current_plan === PLAN_TWO_PRICE;
@@ -275,12 +283,21 @@ export default function SubscriptionIndex() {
                 ? 'Premium plan'
                 : 'Free plan';
     const hasPlan = current_plan !== null;
+    const endsAtText = subscription_ends_at
+        ? new Date(subscription_ends_at).toLocaleDateString('en-US', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+        })
+        : null;
     // Stripe checkout — from=subscription pathacchi (success-e ei page-e fire ashbe)
     const handleCheckout = async (planName: string) => {
+        console.log("Checkout clicked");
         const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
             ?.getAttribute('content');
         const response = await fetch(
+
             route('subscription.checkout', { name: planName, from: 'subscription' }),
             {
                 method: 'POST',
@@ -293,18 +310,40 @@ export default function SubscriptionIndex() {
             }
         );
         const data = await response.json();
+        console.log(data);
         if (data.url) {
             window.location.href = data.url;
         }
     };
-    // subscription cancel — grace period-e jabe
+    // subscription cancel — grace period-e jabe (modal theke confirm hoy)
     const handleCancel = () => {
-        if (!confirm('Are you sure you want to cancel your subscription?')) return;
-        router.post(route('subscription.cancel'), {}, { preserveScroll: true });
+        setCancelling(true);
+        router.post(
+            route('subscription.cancel'),
+            {},
+            {
+                preserveScroll: true,
+                onFinish: () => {
+                    setCancelling(false);
+                    setCancelOpen(false);
+                },
+            }
+        );
     };
-    // grace period theke abar resume
+    // grace period theke abar resume (modal theke confirm hoy)
     const handleResume = () => {
-        router.post(route('subscription.resume'), {}, { preserveScroll: true });
+        setResuming(true);
+        router.post(
+            route('subscription.resume'),
+            {},
+            {
+                preserveScroll: true,
+                onFinish: () => {
+                    setResuming(false);
+                    setResumeOpen(false);
+                },
+            }
+        );
     };
     // pricing card-er CTA button (per plan)
     const renderPlanCta = (plan: Plan, isCurrent: boolean) => {
@@ -381,17 +420,15 @@ export default function SubscriptionIndex() {
                         </p>
                         {/* ── Cancel / Resume action (plan state onujayi) ── */}
                         {on_grace_period ? (
-                            <div className="mx-auto mt-6 flex max-w-xl flex-col items-center justify-center gap-3 rounded-xl bg-white/15 px-5 py-3 backdrop-blur-sm sm:flex-row">
+                            <div className="mx-auto mt-6 flex max-w-2xl flex-col items-center justify-center gap-3 rounded-xl bg-white/15 px-5 py-4 backdrop-blur-sm sm:flex-row">
                                 <span className="font-sans text-sm text-white">
-                                    Your subscription is cancelled
-                                    {subscription_ends_at
-                                        ? ` — access until ${new Date(subscription_ends_at).toLocaleDateString()}`
-                                        : ''}
-                                    .
+                                    Your subscription has been cancelled. You'll keep full access
+                                    {endsAtText ? ` until ${endsAtText}` : ' until the end of your billing period'}
+                                    . You can resume anytime before then.
                                 </span>
                                 <button
-                                    onClick={handleResume}
-                                    className="rounded-lg bg-white px-4 py-1.5 font-sans text-sm font-semibold text-[#FF6B00] hover:bg-white/90"
+                                    onClick={() => setResumeOpen(true)}
+                                    className="shrink-0 rounded-lg bg-white px-4 py-1.5 font-sans text-sm font-semibold text-[#FF6B00] hover:bg-white/90"
                                 >
                                     Resume Subscription
                                 </button>
@@ -402,8 +439,8 @@ export default function SubscriptionIndex() {
                                     You're subscribed to the <strong>{currentPlanName}</strong>.
                                 </span>
                                 <button
-                                    onClick={handleCancel}
-                                    className="rounded-lg border border-white/60 bg-transparent px-4 py-1.5 font-sans text-sm font-semibold text-white hover:bg-white/10"
+                                    onClick={() => setCancelOpen(true)}
+                                    className="shrink-0 rounded-lg border border-white/60 bg-transparent px-4 py-1.5 font-sans text-sm font-semibold text-white hover:bg-white/10"
                                 >
                                     Cancel Subscription
                                 </button>
@@ -787,6 +824,119 @@ export default function SubscriptionIndex() {
                     </div>
                 </section>
             </main>
+            {/* ====================== CANCEL CONFIRMATION MODAL ====================== */}
+            {cancelOpen && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+                    onClick={() => !cancelling && setCancelOpen(false)}
+                >
+                    <div
+                        className="w-full max-w-md rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-xl dark:border-[#2A2A2A] dark:bg-[#161616]"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="flex items-start justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]">
+                                    <AlertTriangle className="h-5 w-5 text-[#FF6B00]" />
+                                </div>
+                                <h3 className="font-display text-lg font-bold uppercase tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">
+                                    Cancel Subscription
+                                </h3>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => !cancelling && setCancelOpen(false)}
+                                className="text-[#94A3B8] hover:text-[#0F172A] dark:hover:text-[#F5F5F5]"
+                                aria-label="Close"
+                            >
+                                <X className="h-5 w-5" />
+                            </button>
+                        </div>
+                        <p className="mt-4 font-sans text-sm leading-relaxed text-[#475569] dark:text-[#9A9A9A]">
+                            Are you sure you want to cancel your subscription? You will keep full
+                            access to all your plan features
+                            {endsAtText ? ` until ${endsAtText}` : ' until the end of your current billing period'}
+                            . After that, your account will move back to the Free plan.
+                        </p>
+                        <p className="mt-3 font-sans text-sm leading-relaxed text-[#475569] dark:text-[#9A9A9A]">
+                            You can resume your subscription anytime before it ends.
+                        </p>
+                        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                            <button
+                                type="button"
+                                onClick={() => setCancelOpen(false)}
+                                disabled={cancelling}
+                                className="rounded-lg border border-[#E2E8F0] bg-white px-5 py-2.5 font-sans text-sm font-semibold text-[#0F172A] hover:bg-[#F8FAFC] disabled:opacity-60 dark:border-[#2A2A2A] dark:bg-transparent dark:text-[#F5F5F5] dark:hover:bg-[#1F1F1F]"
+                            >
+                                Keep Subscription
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleCancel}
+                                disabled={cancelling}
+                                className="rounded-lg bg-[#FF6B00] px-5 py-2.5 font-sans text-sm font-semibold text-white hover:bg-[#CC5500] disabled:opacity-60"
+                            >
+                                {cancelling ? 'Cancelling...' : 'Yes, Cancel Subscription'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {/* ====================== RESUME CONFIRMATION MODAL ====================== */}
+            {resumeOpen && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+                    onClick={() => !resuming && setResumeOpen(false)}
+                >
+                    <div
+                        className="w-full max-w-md rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-xl dark:border-[#2A2A2A] dark:bg-[#161616]"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="flex items-start justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]">
+                                    <RotateCcw className="h-5 w-5 text-[#FF6B00]" />
+                                </div>
+                                <h3 className="font-display text-lg font-bold uppercase tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">
+                                    Resume Subscription
+                                </h3>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => !resuming && setResumeOpen(false)}
+                                className="text-[#94A3B8] hover:text-[#0F172A] dark:hover:text-[#F5F5F5]"
+                                aria-label="Close"
+                            >
+                                <X className="h-5 w-5" />
+                            </button>
+                        </div>
+                        <p className="mt-4 font-sans text-sm leading-relaxed text-[#475569] dark:text-[#9A9A9A]">
+                            Do you want to resume your subscription? Your plan will stay active and
+                            billing will continue as normal
+                            {endsAtText ? ` from ${endsAtText}` : ' from your next billing date'}
+                            . You won't be charged anything extra right now.
+                        </p>
+                        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                            <button
+                                type="button"
+                                onClick={() => setResumeOpen(false)}
+                                disabled={resuming}
+                                className="rounded-lg border border-[#E2E8F0] bg-white px-5 py-2.5 font-sans text-sm font-semibold text-[#0F172A] hover:bg-[#F8FAFC] disabled:opacity-60 dark:border-[#2A2A2A] dark:bg-transparent dark:text-[#F5F5F5] dark:hover:bg-[#1F1F1F]"
+                            >
+                                Not Now
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleResume}
+                                disabled={resuming}
+                                className="rounded-lg bg-[#FF6B00] px-5 py-2.5 font-sans text-sm font-semibold text-white hover:bg-[#CC5500] disabled:opacity-60"
+                            >
+                                {resuming ? 'Resuming...' : 'Yes, Resume Subscription'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
