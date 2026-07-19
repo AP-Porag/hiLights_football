@@ -665,7 +665,7 @@ export default function SubscriptionIndex() {
                                             </React.Fragment>
                                         ))}
                                         {/* Final row — upgrade CTAs */}
-                                        <tr className="border-t-2 border-[#E2E8F0] bg-[#F8FAFC] dark:border-[#2A2A2A] dark:bg-[#1F1F1F]">
+                                        {/* <tr className="border-t-2 border-[#E2E8F0] bg-[#F8FAFC] dark:border-[#2A2A2A] dark:bg-[#1F1F1F]">
                                             <td className="px-6 py-5"></td>
                                             <td className="px-4 py-5 text-center">
                                                 <span className="font-mono text-[10px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555]">
@@ -696,7 +696,7 @@ export default function SubscriptionIndex() {
                                                     {disableElite ? 'Subscribed' : 'Upgrade'}
                                                 </button>
                                             </td>
-                                        </tr>
+                                        </tr> */}
                                     </tbody>
                                 </table>
                             </div>
@@ -764,14 +764,14 @@ export default function SubscriptionIndex() {
                                         </span>
                                     </div>
                                     {/* PayPal */}
-                                    <div className="flex items-center gap-1 rounded-md border border-[#E2E8F0] bg-white px-4 py-2.5 dark:border-[#2A2A2A] dark:bg-[#1F1F1F]">
+                                    {/* <div className="flex items-center gap-1 rounded-md border border-[#E2E8F0] bg-white px-4 py-2.5 dark:border-[#2A2A2A] dark:bg-[#1F1F1F]">
                                         <span className="font-display text-lg font-bold italic tracking-tight text-[#003087]">
                                             Pay
                                         </span>
                                         <span className="font-display text-lg font-bold italic tracking-tight text-[#0070BA]">
                                             Pal
                                         </span>
-                                    </div>
+                                    </div> */}
                                     {/* Visa */}
                                     <div className="flex items-center justify-center rounded-md border border-[#E2E8F0] bg-white px-4 py-2.5 dark:border-[#2A2A2A] dark:bg-[#1F1F1F]">
                                         <span className="font-display text-base font-bold italic tracking-wider text-[#1A1F71]">
@@ -787,11 +787,11 @@ export default function SubscriptionIndex() {
                                         </span>
                                     </div>
                                     {/* Amex */}
-                                    <div className="flex items-center justify-center rounded-md bg-[#006FCF] px-4 py-2.5">
+                                    {/* <div className="flex items-center justify-center rounded-md bg-[#006FCF] px-4 py-2.5">
                                         <span className="font-display text-xs font-bold uppercase tracking-widest text-white">
                                             Amex
                                         </span>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                             {/* Final reassurance */}

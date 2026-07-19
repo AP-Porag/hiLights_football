@@ -65,4 +65,8 @@ class User extends Authenticatable
             default           => '/',
         };
     }
+    public function scoutProfile()
+    {
+        return $this->hasOne(ScoutProfile::class);
+    }
 }

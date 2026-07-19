@@ -65,12 +65,12 @@ const player = {
     avgRating: 4.2,
     subscription: 'free' as 'free' | 'premium',
 };
-const recentViews = [
-    { id: 1, type: 'Scout', org: 'FC Porto Scouting', country: 'Portugal', flag: '🇵🇹', time: '2 hours ago', locked: false },
-    { id: 2, type: 'Club', org: 'Sporting Lisboa B', country: 'Portugal', flag: '🇵🇹', time: 'Yesterday', locked: false },
-    { id: 3, type: 'Agent', org: 'Top Eleven Agency', country: 'Spain', flag: '🇪🇸', time: '2 days ago', locked: true },
-    { id: 4, type: 'Scout', org: 'Anonymous', country: 'France', flag: '🇫🇷', time: '3 days ago', locked: true },
-];
+// const recentViews = [
+//     { id: 1, type: 'Scout', org: 'FC Porto Scouting', country: 'Portugal', flag: '🇵🇹', time: '2 hours ago', locked: false },
+//     { id: 2, type: 'Club', org: 'Sporting Lisboa B', country: 'Portugal', flag: '🇵🇹', time: 'Yesterday', locked: false },
+//     { id: 3, type: 'Agent', org: 'Top Eleven Agency', country: 'Spain', flag: '🇪🇸', time: '2 days ago', locked: true },
+//     { id: 4, type: 'Scout', org: 'Anonymous', country: 'France', flag: '🇫🇷', time: '3 days ago', locked: true },
+// ];
 const countryData = [
     { country: 'Portugal', views: 412 },
     { country: 'Spain', views: 287 },
@@ -532,8 +532,10 @@ function FormModal({
 }
 export default function PlayerDashboard() {
     const { auth } = usePage().props as any;
+    const { recentViews, subscription } = usePage().props;
     const pp = auth?.user?.player_profile ?? {};
     const greeting = getGreeting();
+    const hasSubscription = !!subscription?.current_plan;
     const dateStr = formatDate();
     const [activeModal, setActiveModal] = useState<string | null>(null);
     const [shareOpen, setShareOpen] = useState(false);
@@ -1041,31 +1043,50 @@ export default function PlayerDashboard() {
                             <Link href="/player/views" className="text-xs font-semibold text-[#FF6B00] hover:text-[#CC5500]">View all →</Link>
                         </div>
                         <ul className="space-y-3">
-                            {recentViews.map((view) => {
-                                const initials = view.org.split(' ').slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+                            {recentViews.map((view, index) => {
+                                const locked = !hasSubscription && index >= 2;
+                                const initials = view.name
+                                    .split(' ')
+                                    .slice(0, 2)
+                                    .map((w) => w[0])
+                                    .join('')
+                                    .toUpperCase();
+
                                 return (
-                                    <li key={view.id} className="relative flex items-center gap-3 rounded-xl border border-[#2A2A2A] p-3 transition-colors hover:border-[#FF6B00]">
-                                        <div className={view.locked ? 'flex flex-1 items-center gap-3 blur-sm filter' : 'flex flex-1 items-center gap-3'}>
+                                    <li
+                                        key={view.id}
+                                        className="relative flex items-center gap-3 rounded-xl border border-[#2A2A2A] p-3 transition-colors hover:border-[#FF6B00]"
+                                    >
+                                        <div className={locked ? 'flex flex-1 items-center gap-3 blur-sm filter' : 'flex flex-1 items-center gap-3'}>
                                             <Avatar className="h-10 w-10 flex-shrink-0">
-                                                <AvatarFallback className="bg-[rgba(255,107,0,0.12)] text-xs font-bold text-[#FF6B00]">{initials}</AvatarFallback>
+                                                <AvatarFallback className="bg-[rgba(255,107,0,0.12)] text-xs font-bold text-[#FF6B00]">
+                                                    {initials}
+                                                </AvatarFallback>
                                             </Avatar>
+
                                             <div className="min-w-0 flex-1">
-                                                <p className="truncate text-sm font-semibold text-[#F5F5F5]">{view.type} from {view.org}</p>
-                                                <div className="mt-0.5 flex items-center gap-2">
-                                                    <span className="text-xs text-[#9A9A9A]">{view.flag} {view.country}</span>
-                                                    <span className="text-[#94A3B8]">•</span>
-                                                    <span className="text-xs text-[#94A3B8]">{view.time}</span>
-                                                </div>
+                                                <p className="truncate text-sm font-semibold text-[#F5F5F5]">
+                                                    {view.name}
+                                                </p>
                                             </div>
-                                            {!view.locked && (
-                                                <Link href={`/player/views/${view.id}`} className="flex-shrink-0 text-xs font-semibold text-[#FF6B00] hover:text-[#CC5500]">View →</Link>
+
+                                            {!locked && (
+                                                <Link
+                                                    href={`/player/views/${view.id}`}
+                                                    className="flex-shrink-0 text-xs font-semibold text-[#FF6B00] hover:text-[#CC5500]"
+                                                >
+                                                    View →
+                                                </Link>
                                             )}
                                         </div>
-                                        {view.locked && (
+
+                                        {locked && (
                                             <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-[#161616]/60">
                                                 <div className="flex items-center gap-2 rounded-lg border border-[#2A2A2A] bg-[#1F1F1F] px-3 py-1.5">
                                                     <Lock className="h-3.5 w-3.5 text-[#FF6B00]" />
-                                                    <span className="text-xs font-medium text-[#9A9A9A]">Upgrade to Premium to unlock</span>
+                                                    <span className="text-xs font-medium text-[#9A9A9A]">
+                                                        Upgrade to Premium to unlock
+                                                    </span>
                                                 </div>
                                             </div>
                                         )}
