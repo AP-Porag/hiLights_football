@@ -26,26 +26,18 @@ class SubscriptionController extends Controller
     // }
     public function index(Request $request)
     {
-        $subscription = $request->user()->subscription('default');
-
-        return Inertia::render('player/subscription/Index', [
-            'current_plan' => $subscription?->stripe_price,
-            'on_grace_period' => $subscription?->onGracePeriod() ?? false,
-            'is_cancelled' => $subscription?->onGracePeriod() ?? false,
-            'subscription_ends_at' => $subscription?->ends_at?->toDateTimeString(),
-        ]);
+        return Inertia::render('player/subscription/Index', $this->subscriptionState($request));
     }
 
     public function checkout($name, Request $request)
     {
         $plan = Plan::whereName($name)->firstOrFail();
+        $from = $request->input('from', 'plans');
 
         $checkout = $request->user()
             ->newSubscription('default', $plan->stripe_price_id)
             ->checkout([
-                'success_url' => route('checkout.success', [
-                    'plan' => $plan->name,
-                ]),
+                'success_url' => route('checkout.success', ['from' => $from]),
                 // 'cancel_url' => route('app.myplan'),
             ]);
 
@@ -63,32 +55,15 @@ class SubscriptionController extends Controller
 
     public function success(Request $request)
     {
-        $subscription = $request->user()
-            ->subscriptions()
-            ->where('stripe_status', 'active')
-            ->latest()
-            ->first();
+        $from = $request->query('from', 'plans');
 
+        $component = $from === 'subscription'
+            ? 'player/subscription/Index'
+            : 'web/Plans';
 
-        $currentPlan = $subscription?->stripe_price;
-        if ($subscription) {
-
-            // Current active subscription
-            if (
-                $subscription->stripe_status === 'active' ||
-                $subscription->onGracePeriod()
-            ) {
-                $currentPlan = $subscription->stripe_price;
-            }
-        }
-        return Inertia::render(
-            'player/subscription/Index',
-            [
-                'current_plan' => $currentPlan,
-                'is_cancelled' => $subscription?->ends_at !== null,
-            ]
-        );
+        return Inertia::render($component, $this->subscriptionState($request));
     }
+
     public function cancel(Request $request)
     {
         $subscription = $request->user()->subscription('default');
@@ -109,5 +84,37 @@ class SubscriptionController extends Controller
         }
 
         return redirect()->route('subscription');
+    }
+
+    /**
+     * Subscription state — index / plans / success shob jaygায় ei same state pathabo
+     */
+    private function subscriptionState(Request $request): array
+    {
+        $subscription = $request->user()?->subscription('default');
+
+        $currentPlan   = null;
+        $onGracePeriod = false;
+        $isCancelled   = false;
+        $endsAt        = null;
+
+        if ($subscription) {
+            $onGracePeriod = $subscription->onGracePeriod();
+            $isCancelled   = $subscription->ends_at !== null;
+            $endsAt        = $subscription->ends_at;
+
+            // valid() = active / trial / grace period
+            // ends_at past hoye gele valid() false → currentPlan null → button abar enable
+            if ($subscription->valid()) {
+                $currentPlan = $subscription->stripe_price;
+            }
+        }
+
+        return [
+            'current_plan'         => $currentPlan,
+            'on_grace_period'      => $onGracePeriod,
+            'is_cancelled'         => $isCancelled,
+            'subscription_ends_at' => $endsAt,
+        ];
     }
 }
