@@ -23,6 +23,7 @@ import {
     RotateCcw,
 } from 'lucide-react';
 import PlayerNavbar from '@/components/player/PlayerNavbar';
+import { useForm } from '@inertiajs/react';
 // ── Stripe price IDs (nijer real price ID diye replace koro) ──
 const PLAN_ONE_PRICE = 'price_1TsfD5HKtXG9R7bGyzR4H6C9'; // Premium
 const PLAN_TWO_PRICE = 'price_1TsfDtHKtXG9R7bGVsNxRTT6'; // Elite
@@ -259,6 +260,7 @@ export default function SubscriptionIndex() {
         is_cancelled?: boolean;
         subscription_ends_at?: string | null;
     }>().props;
+    const { post, processing } = useForm({});
     // cancel confirmation modal
     const [cancelOpen, setCancelOpen] = useState(false);
     const [cancelling, setCancelling] = useState(false);
@@ -291,29 +293,12 @@ export default function SubscriptionIndex() {
         })
         : null;
     // Stripe checkout — from=subscription pathacchi (success-e ei page-e fire ashbe)
-    const handleCheckout = async (planName: string) => {
+    const handleCheckout = (planName: string) => {
         console.log("Checkout clicked");
-        const csrfToken = document
-            .querySelector('meta[name="csrf-token"]')
-            ?.getAttribute('content');
-        const response = await fetch(
-
-            route('subscription.checkout', { name: planName, from: 'subscription' }),
-            {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                    'X-CSRF-TOKEN': csrfToken ?? '',
-                },
-            }
-        );
-        const data = await response.json();
-        console.log(data);
-        if (data.url) {
-            window.location.href = data.url;
-        }
+        post(route('subscription.checkout', { name: planName, from: 'subscription' }), {
+            preserveScroll: true,
+            // No need for onSuccess - Inertia::location() handles the redirect automatically
+        });
     };
     // subscription cancel — grace period-e jabe (modal theke confirm hoy)
     const handleCancel = () => {

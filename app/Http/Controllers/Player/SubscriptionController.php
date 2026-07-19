@@ -49,6 +49,13 @@ class SubscriptionController extends Controller
                 // 'cancel_url' => route('app.myplan'),
             ]);
 
+        // Check if it's an Inertia request
+        if ($request->header('X-Inertia')) {
+            // For Inertia, return a location redirect
+            return Inertia::location($checkout->url);
+        }
+
+        // For regular AJAX/API requests (keep this if you have other clients)
         return response()->json([
             'url' => $checkout->url
         ]);
