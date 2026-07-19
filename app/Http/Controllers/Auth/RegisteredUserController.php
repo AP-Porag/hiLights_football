@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\PlayerProfile;
+use App\Models\ScoutProfile;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -53,6 +54,8 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'dob' => ['nullable', 'date'],
             'nationality' => ['nullable', 'string', 'max:3'],
+            'country' => ['nullable', 'string', 'max:3'],
+            'organization_name' => ['nullable', 'string', 'max:255'],
             'terms' => ['accepted'],
         ]);
 
@@ -76,6 +79,15 @@ class RegisteredUserController extends Controller
             PlayerProfile::create([
                 'user_id' => $user->id,
                 'player_id' => $this->generatePlayerId(),
+            ]);
+        }
+
+        // Create Scout Profile
+        if ($user->role === 'scout') {
+            ScoutProfile::create([
+                'user_id' => $user->id,
+                'country' => $validated['country'] ?? null,
+                'organization_name' => $validated['organization_name'] ?? null,
             ]);
         }
 

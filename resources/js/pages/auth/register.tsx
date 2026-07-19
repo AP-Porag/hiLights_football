@@ -17,56 +17,46 @@ import {
 } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
-
 type RoleId = 'player' | 'scout' | 'agent' | 'club';
-
 interface RoleOption {
     id: RoleId;
     title: string;
     description: string;
     Icon: typeof Zap;
 }
-
 const ROLES: RoleOption[] = [
     {
         id: 'player',
         title: 'Player',
-        description:
-            'Build your profile, upload highlights, and get discovered by scouts and clubs worldwide.',
+        description: 'Build your profile, upload highlights, and get discovered by scouts and clubs worldwide.',
         Icon: Zap,
     },
     {
         id: 'scout',
         title: 'Scout',
-        description:
-            'Access advanced player search, performance data, and recruitment tools to find talent.',
+        description: 'Access advanced player search, performance data, and recruitment tools to find talent.',
         Icon: Search,
     },
     {
         id: 'agent',
         title: 'Agent',
-        description:
-            'Manage your roster, track market value, and connect with clubs to negotiate transfers.',
+        description: 'Manage your roster, track market value, and connect with clubs to negotiate transfers.',
         Icon: Briefcase,
     },
     {
         id: 'club',
         title: 'Club',
-        description:
-            'Scout players, run recruitment campaigns, and integrate with your existing scouting workflow.',
+        description: 'Scout players, run recruitment campaigns, and integrate with your existing scouting workflow.',
         Icon: Building2,
     },
 ];
-
 interface Country {
     code: string;
     name: string;
 }
-
 type Props = {
     countries: Country[];
 };
-
 const registerSchema = z.object({
     role: z.enum(['player', 'scout', 'agent', 'club']),
     name: z.string().min(2, 'Name is required'),
@@ -75,6 +65,8 @@ const registerSchema = z.object({
     password_confirmation: z.string(),
     dob: z.string().optional(),
     nationality: z.string().optional(),
+    country: z.string().optional(),
+    organization_name: z.string().optional(),
     terms: z.boolean().refine((val) => val === true, {
         message: 'You must accept terms',
     }),
@@ -82,13 +74,11 @@ const registerSchema = z.object({
     message: "Passwords don't match",
     path: ['password_confirmation'],
 });
-
 const MONTHS = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December',
 ];
 const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-
 // ── Custom professional date-of-birth calendar ──────────────────────────
 function DobCalendar({
     value,
@@ -100,36 +90,27 @@ function DobCalendar({
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const minDate = new Date(1950, 0, 1);
-
     const [viewDate, setViewDate] = useState<Date>(
         value ?? new Date(2005, 0, 1)
     );
-
     const year = viewDate.getFullYear();
     const month = viewDate.getMonth();
-
     const years: number[] = [];
     for (let y = today.getFullYear(); y >= 1950; y--) years.push(y);
-
     const firstDayOffset = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-
     const cells: (Date | null)[] = [];
     for (let i = 0; i < firstDayOffset; i++) cells.push(null);
     for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
-
     const isDisabled = (d: Date) => d > today || d < minDate;
     const isSelected = (d: Date) =>
         value ? d.toDateString() === value.toDateString() : false;
     const isToday = (d: Date) => d.toDateString() === today.toDateString();
-
     const goPrev = () => setViewDate(new Date(year, month - 1, 1));
     const goNext = () => setViewDate(new Date(year, month + 1, 1));
-
     const nextMonthStart = new Date(year, month + 1, 1);
     const canGoNext = nextMonthStart <= today;
     const canGoPrev = new Date(year, month, 1) > minDate;
-
     return (
         <div className="w-[320px] p-4">
             {/* Header — month/year dropdowns + arrows */}
@@ -142,7 +123,6 @@ function DobCalendar({
                 >
                     <ChevronLeft className="h-4 w-4" />
                 </button>
-
                 <div className="flex items-center gap-2">
                     <select
                         value={month}
@@ -171,7 +151,6 @@ function DobCalendar({
                         ))}
                     </select>
                 </div>
-
                 <button
                     type="button"
                     onClick={goNext}
@@ -181,7 +160,6 @@ function DobCalendar({
                     <ChevronRight className="h-4 w-4" />
                 </button>
             </div>
-
             {/* Weekday header */}
             <div className="grid grid-cols-7 mb-2">
                 {WEEKDAYS.map((w) => (
@@ -193,7 +171,6 @@ function DobCalendar({
                     </div>
                 ))}
             </div>
-
             {/* Day grid */}
             <div className="grid grid-cols-7 gap-1">
                 {cells.map((d, i) => {
@@ -227,7 +204,6 @@ function DobCalendar({
     );
 }
 // ────────────────────────────────────────────────────────────────────────
-
 export default function Register({ countries = [] }: Props) {
     const [step, setStep] = useState<0 | 1>(0);
     const [selectedRole, setSelectedRole] = useState<RoleId | null>(null);
@@ -235,7 +211,6 @@ export default function Register({ countries = [] }: Props) {
     const [showConfirm, setShowConfirm] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
     const [openCalendar, setOpenCalendar] = useState(false);
-
     const { data, setData, post, processing, errors } = useForm({
         role: '' as RoleId | '',
         name: '',
@@ -244,9 +219,10 @@ export default function Register({ countries = [] }: Props) {
         password_confirmation: '',
         dob: '',
         nationality: '',
+        country: '',
+        organization_name: '',
         terms: false as boolean,
     });
-
     const handleSelectRole = (role: RoleId) => {
         setSelectedRole(role);
         setData('role', role);
@@ -264,7 +240,6 @@ export default function Register({ countries = [] }: Props) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         console.log('SUBMIT CLICKED', data);
@@ -290,12 +265,48 @@ export default function Register({ countries = [] }: Props) {
         setClientErrors({});
         post('/register');
     };
-
     const options = countries.map((c) => ({
         value: c.code,
         label: `${c.name} ${c.code ?? ''}`,
     }));
-
+    // react-select dark theme styles (nationality ar country dutoi te use hobe)
+    const selectStyles = {
+        control: (base: any) => ({
+            ...base,
+            backgroundColor: '#111111',
+            borderColor: '#2A2A2A',
+            color: '#F5F5F5',
+            minHeight: '44px',
+            borderRadius: '12px',
+        }),
+        menu: (base: any) => ({
+            ...base,
+            backgroundColor: '#1F1F1F',
+            borderColor: '#2A2A2A',
+            borderRadius: '12px',
+            marginTop: '8px',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
+        }),
+        option: (base: any, state: any) => ({
+            ...base,
+            backgroundColor: state.isSelected
+                ? '#FF6B00'
+                : state.isFocused
+                    ? '#2A2A2A'
+                    : '#1F1F1F',
+            color: state.isSelected ? '#0D0D0D' : '#F5F5F5',
+            fontWeight: state.isSelected ? '600' : '400',
+            padding: '10px 12px',
+        }),
+        input: (base: any) => ({
+            ...base,
+            color: '#F5F5F5',
+        }),
+        singleValue: (base: any) => ({
+            ...base,
+            color: '#F5F5F5',
+        }),
+    };
     const calcAge = (dob: string): number | null => {
         if (!dob) return null;
         const d = new Date(dob);
@@ -304,11 +315,9 @@ export default function Register({ countries = [] }: Props) {
         const age = new Date(diff).getUTCFullYear() - 1970;
         return age >= 0 ? age : null;
     };
-
     const age = calcAge(data.dob);
     const selectedRoleObj = ROLES.find((r) => r.id === selectedRole);
     const dobDate = data.dob ? new Date(data.dob) : undefined;
-
     return (
         <div className="relative min-h-screen bg-[#0D0D0D] font-sans antialiased">
             {/* TOP — Logo + heading */}
@@ -324,25 +333,20 @@ export default function Register({ countries = [] }: Props) {
                     Join HiLights Football
                 </h1>
                 <p className="text-[#9A9A9A] text-sm sm:text-base mt-2 max-w-md mx-auto">
-                    Build your profile, get discovered, and unlock the world's
-                    leading football talent network.
+                    Build your profile, get discovered, and unlock the world's leading football talent network.
                 </p>
                 {/* Step dots */}
                 <div className="flex items-center justify-center gap-2 mt-6">
                     <span
                         className={
                             'h-2.5 rounded-full transition-all duration-300 ' +
-                            (step === 0
-                                ? 'w-8 bg-[#FF6B00]'
-                                : 'w-2.5 bg-[#FF6B00]')
+                            (step === 0 ? 'w-8 bg-[#FF6B00]' : 'w-2.5 bg-[#FF6B00]')
                         }
                     />
                     <span
                         className={
                             'h-2.5 rounded-full transition-all duration-300 ' +
-                            (step === 1
-                                ? 'w-8 bg-[#FF6B00]'
-                                : 'w-2.5 bg-[#2A2A2A]')
+                            (step === 1 ? 'w-8 bg-[#FF6B00]' : 'w-2.5 bg-[#2A2A2A]')
                         }
                     />
                 </div>
@@ -351,13 +355,11 @@ export default function Register({ countries = [] }: Props) {
                     {step === 0 ? 'Choose your role' : 'Your details'}
                 </p>
             </div>
-
             {clientErrors.role && (
                 <p className="text-xs text-red-500 mt-2 text-center">
                     {clientErrors.role}
                 </p>
             )}
-
             {/* STEP 1 — ROLE CARDS */}
             {step === 0 && (
                 <div className="max-w-[860px] mx-auto px-6 pb-16">
@@ -404,7 +406,6 @@ export default function Register({ countries = [] }: Props) {
                     </p>
                 </div>
             )}
-
             {/* STEP 2 — FORM */}
             {step === 1 && selectedRoleObj && (
                 <div className="max-w-[440px] mx-auto px-6 pb-16">
@@ -429,7 +430,6 @@ export default function Register({ countries = [] }: Props) {
                                 Change
                             </button>
                         </div>
-
                         {/* Full Name */}
                         <div className="mb-4">
                             <label
@@ -454,7 +454,6 @@ export default function Register({ countries = [] }: Props) {
                                 </p>
                             )}
                         </div>
-
                         {/* Email */}
                         <div className="mb-4">
                             <label
@@ -479,7 +478,6 @@ export default function Register({ countries = [] }: Props) {
                                 </p>
                             )}
                         </div>
-
                         {/* Password */}
                         <div className="mb-4">
                             <label
@@ -524,7 +522,6 @@ export default function Register({ countries = [] }: Props) {
                                 </p>
                             )}
                         </div>
-
                         {/* Confirm Password */}
                         <div className="mb-4">
                             <label
@@ -566,13 +563,14 @@ export default function Register({ countries = [] }: Props) {
                                     )}
                                 </button>
                             </div>
-                            {(clientErrors.password_confirmation || errors.password_confirmation) && (
-                                <p className="text-xs text-[#DC2626] mt-1.5">
-                                    {clientErrors.password_confirmation || errors.password_confirmation}
-                                </p>
-                            )}
+                            {(clientErrors.password_confirmation ||
+                                errors.password_confirmation) && (
+                                    <p className="text-xs text-[#DC2626] mt-1.5">
+                                        {clientErrors.password_confirmation ||
+                                            errors.password_confirmation}
+                                    </p>
+                                )}
                         </div>
-
                         {/* Player-specific fields */}
                         {selectedRole === 'player' && (
                             <>
@@ -592,7 +590,9 @@ export default function Register({ countries = [] }: Props) {
                                                 className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] hover:border-[#3A3A3A] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition flex items-center justify-between group"
                                             >
                                                 <span className={data.dob ? 'text-[#F5F5F5]' : 'text-[#555555]'}>
-                                                    {data.dob ? format(new Date(data.dob), 'MMMM dd, yyyy') : 'Select your date of birth'}
+                                                    {data.dob
+                                                        ? format(new Date(data.dob), 'MMMM dd, yyyy')
+                                                        : 'Select your date of birth'}
                                                 </span>
                                                 <Calendar className="h-4 w-4 text-[#FF6B00] group-hover:text-[#FF8533] transition" />
                                             </button>
@@ -616,7 +616,6 @@ export default function Register({ countries = [] }: Props) {
                                         </p>
                                     )}
                                 </div>
-
                                 <div className="mb-4">
                                     <label
                                         htmlFor="nationality"
@@ -633,39 +632,7 @@ export default function Register({ countries = [] }: Props) {
                                         placeholder="Select your country"
                                         isSearchable
                                         className="text-sm"
-                                        styles={{
-                                            control: (base) => ({
-                                                ...base,
-                                                backgroundColor: '#111111',
-                                                borderColor: '#2A2A2A',
-                                                color: '#F5F5F5',
-                                                minHeight: '44px',
-                                                borderRadius: '12px',
-                                            }),
-                                            menu: (base) => ({
-                                                ...base,
-                                                backgroundColor: '#1F1F1F',
-                                                borderColor: '#2A2A2A',
-                                                borderRadius: '12px',
-                                                marginTop: '8px',
-                                                boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
-                                            }),
-                                            option: (base, state) => ({
-                                                ...base,
-                                                backgroundColor: state.isSelected ? '#FF6B00' : state.isFocused ? '#2A2A2A' : '#1F1F1F',
-                                                color: state.isSelected ? '#0D0D0D' : '#F5F5F5',
-                                                fontWeight: state.isSelected ? '600' : '400',
-                                                padding: '10px 12px',
-                                            }),
-                                            input: (base) => ({
-                                                ...base,
-                                                color: '#F5F5F5',
-                                            }),
-                                            singleValue: (base) => ({
-                                                ...base,
-                                                color: '#F5F5F5',
-                                            }),
-                                        }}
+                                        styles={selectStyles}
                                     />
                                     {(clientErrors.nationality || errors.nationality) && (
                                         <p className="text-xs text-[#DC2626] mt-1.5">
@@ -675,7 +642,58 @@ export default function Register({ countries = [] }: Props) {
                                 </div>
                             </>
                         )}
-
+                        {/* Scout-specific fields */}
+                        {selectedRole === 'scout' && (
+                            <>
+                                <div className="mb-4">
+                                    <label
+                                        htmlFor="country"
+                                        className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
+                                    >
+                                        Country
+                                    </label>
+                                    <Select
+                                        options={options}
+                                        value={options.find((o) => o.value === data.country)}
+                                        onChange={(selected) =>
+                                            setData('country', selected?.value || '')
+                                        }
+                                        placeholder="Select your country"
+                                        isSearchable
+                                        className="text-sm"
+                                        styles={selectStyles}
+                                    />
+                                    {(clientErrors.country || errors.country) && (
+                                        <p className="text-xs text-[#DC2626] mt-1.5">
+                                            {clientErrors.country || errors.country}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="mb-4">
+                                    <label
+                                        htmlFor="organization_name"
+                                        className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
+                                    >
+                                        Organization Name
+                                    </label>
+                                    <input
+                                        id="organization_name"
+                                        type="text"
+                                        value={data.organization_name}
+                                        onChange={(e) =>
+                                            setData('organization_name', e.target.value)
+                                        }
+                                        placeholder="e.g. FC Porto Scouting"
+                                        className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                    />
+                                    {(clientErrors.organization_name || errors.organization_name) && (
+                                        <p className="text-xs text-[#DC2626] mt-1.5">
+                                            {clientErrors.organization_name || errors.organization_name}
+                                        </p>
+                                    )}
+                                </div>
+                            </>
+                        )}
                         {/* Terms */}
                         <label className="flex items-start gap-3 mt-5 mb-6 cursor-pointer group">
                             <span className="relative flex-shrink-0 mt-0.5">
@@ -707,7 +725,6 @@ export default function Register({ countries = [] }: Props) {
                                 .
                             </span>
                         </label>
-
                         <div>
                             {(clientErrors.terms || errors.terms) && (
                                 <p className="text-xs text-[#DC2626] mt-1.5">
@@ -715,19 +732,15 @@ export default function Register({ countries = [] }: Props) {
                                 </p>
                             )}
                         </div>
-
                         {/* Submit */}
                         <button
                             type="submit"
                             disabled={processing}
                             className="w-full h-12 cursor-pointer rounded-xl bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold text-sm uppercase tracking-wider transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                         >
-                            {processing
-                                ? 'Creating account…'
-                                : 'Create my account'}
+                            {processing ? 'Creating account…' : 'Create my account'}
                         </button>
                     </form>
-
                     <p className="text-center text-sm text-[#9A9A9A] mt-4">
                         Already have an account?{' '}
                         <Link

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Player;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Player\PlayerProfileUpdateRequest;
 use App\Models\PlayerProfile;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
@@ -19,9 +20,25 @@ class PlayerProfileController extends Controller
     {
         $user = $request->user();
         $profile = $user->playerProfile;
+        $subscription = $this->subscriptionState($request);
 
         // User এর সাথে সম্পর্কিত ডেটা লোড করুন
         // যেমন: matches, teams, statistics ইত্যাদি
+        $recentViews = User::where('role', 'scout')
+            ->latest()
+            ->take(10)
+            ->get()
+            ->map(function ($scout) {
+                return [
+                    'id' => $scout->id,
+                    'name' => $scout->name,
+                    // 'type' => 'Scout',
+                    // 'org' => $scout->organization_name ?? $scout->name,
+                    // 'country' => $scout->country,
+                    // 'time' => $scout->created_at->diffForHumans(),
+                    // 'locked' => false,
+                ];
+            });
 
         return Inertia::render('player/dashboard/Index', [
             'auth' => [
@@ -34,7 +51,9 @@ class PlayerProfileController extends Controller
                     'created_at' => $user->created_at?->format('Y-m-d H:i:s'),
                     'player_profile' => $user->playerProfile,
                 ]
-            ]
+            ],
+            'recentViews' => $recentViews,
+            'subscription' => $subscription,
         ]);
     }
 
@@ -277,5 +296,34 @@ class PlayerProfileController extends Controller
             'path' => $path,
             'url'  => asset('storage/' . $path),
         ]);
+    }
+
+    private function subscriptionState(Request $request): array
+    {
+        $subscription = $request->user()?->subscription('default');
+
+        $currentPlan   = null;
+        $onGracePeriod = false;
+        $isCancelled   = false;
+        $endsAt        = null;
+
+        if ($subscription) {
+            $onGracePeriod = $subscription->onGracePeriod();
+            $isCancelled   = $subscription->ends_at !== null;
+            $endsAt        = $subscription->ends_at;
+
+            // valid() = active / trial / grace period
+            // ends_at past hoye gele valid() false → currentPlan null → button abar enable
+            if ($subscription->valid()) {
+                $currentPlan = $subscription->stripe_price;
+            }
+        }
+
+        return [
+            'current_plan'         => $currentPlan,
+            'on_grace_period'      => $onGracePeriod,
+            'is_cancelled'         => $isCancelled,
+            'subscription_ends_at' => $endsAt,
+        ];
     }
 }
