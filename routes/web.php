@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Player\PlayerProfileController;
 use App\Http\Controllers\Player\SubscriptionController;
+use App\Http\Controllers\Scout\ScoutController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Artisan;
@@ -127,13 +128,14 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
 //all Scouts / Agents / Clubs routes
 Route::middleware(['auth'])->prefix('scouting')->group(function () {
 
-    Route::get('/', function () {
-        return Inertia::render('scouting/dashboard/Index');
-    })->name('scouting.dashboard');
+    Route::get('/', [ScoutController::class, 'index'])->name('scouting.dashboard');
 
-    Route::get('/player', function () {
-        return Inertia::render('scouting/player/Detail');
-    })->name('player.details');
+    Route::get('/player/{id}', [ScoutController::class, 'playerDetails'])->name('player.details');
+    Route::post('/player/{id}/rating', [ScoutController::class, 'storeRating'])->name('player.rating.store');
+
+
+    Route::get('/player/{id}/report', [ScoutController::class, 'playerReport'])->name('player.report');
+    Route::post('/player/{id}/report', [ScoutController::class, 'storeReport'])->name('player.report.store');
 
     Route::get('/player/saved', function () {
         return Inertia::render('scouting/search/Saved');

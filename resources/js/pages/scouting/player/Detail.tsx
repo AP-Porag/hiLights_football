@@ -1,6 +1,6 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage, router } from '@inertiajs/react';
 import ScoutNavbar from '@/components/scout/ScoutNavbar';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
     MapPin,
     Calendar,
@@ -10,7 +10,6 @@ import {
     TrendingUp,
     Play,
     Bookmark,
-    Flag,
     Eye,
     Award,
     Target,
@@ -19,7 +18,6 @@ import {
     Zap,
     Mail,
     MessageCircle,
-    Lock,
     CheckCircle2,
     BarChart3,
     Clock,
@@ -27,59 +25,56 @@ import {
     Plus,
     Send,
     FileText,
+    ClipboardList,
+    History,
+    Footprints,
 } from 'lucide-react';
-import {
-    RadarChart,
-    PolarGrid,
-    PolarAngleAxis,
-    PolarRadiusAxis,
-    Radar,
-    ResponsiveContainer,
-} from 'recharts';
-
-interface Player {
-    id: number;
-    slug: string;
-    fullName: string;
-    position: string;
-    positionDetail: string;
-    age: number;
-    birthDate: string;
-    nationality: string;
-    nationalityFlag: string;
-    city: string;
-    height: number;
-    weight: number;
-    preferredFoot: string;
-    currentClub: string;
-    clubLogo: string;
-    marketValue: string;
-    contractUntil: string;
-    isPremium: boolean;
-    isVerified: boolean;
-    profileImage: string;
-    coverImage: string;
-    bio: string;
-    stats: {
-        appearances: number;
-        goals: number;
-        assists: number;
-        minutesPlayed: number;
-        yellowCards: number;
-        redCards: number;
-    };
-    attributes: {
-        pace: number;
-        shooting: number;
-        passing: number;
-        dribbling: number;
-        defending: number;
-        physical: number;
-    };
-    highlightCount: number;
-    profileViews: number;
+// ── DB shape ──
+interface VideoRow { label?: string | null; url?: string | null }
+interface ClubHistoryRow { year?: string | number | null; club?: string | null }
+interface TransferRow { year?: string | number | null; club?: string | null; logo?: string | null }
+interface AchievementRow { year?: string | number | null; title?: string | null }
+interface CompetitionRow { name?: string | null; year?: string | number | null }
+interface MatchRow {
+    home?: string | null;
+    score?: string | null;
+    away?: string | null;
+    goals?: string | number | null;
+    assists?: string | number | null;
+    minutes?: string | number | null;
 }
-
+interface PlayerProfileRow {
+    id: number;
+    player_id: string | null;
+    nickname: string | null;
+    gender: string | null;
+    height: number | null;
+    weight: number | null;
+    birth_city: string | null;
+    birth_country: string | null;
+    current_club: string | null;
+    in_team_since: string | null;
+    agent: string | null;
+    modality: string | null;
+    positions: string[] | null;
+    foot: string | null;
+    photo_url: string | null;
+    video_url: string | null;
+    videos: VideoRow[] | null;
+    club_history: ClubHistoryRow[] | null;
+    transfer_history: TransferRow[] | null;
+    achievements: AchievementRow[] | null;
+    competitions: CompetitionRow[] | null;
+    matches: MatchRow[] | null;
+    description: string | null;
+    user?: {
+        id: number;
+        name: string | null;
+        email: string | null;
+        dob: string | null;
+        nationality: string | null;
+    } | null;
+}
 interface ScoutRating {
     technical: number;
     physical: number;
@@ -87,110 +82,56 @@ interface ScoutRating {
     mental: number;
     notes: string;
 }
-
-const player: Player = {
-    id: 1,
-    slug: 'lucas-silva',
-    fullName: 'Lucas Silva',
-    position: 'CAM',
-    positionDetail: 'Attacking Midfielder',
-    age: 19,
-    birthDate: '2006-03-14',
-    nationality: 'Brazil',
-    nationalityFlag: '🇧🇷',
-    city: 'São Paulo',
-    height: 178,
-    weight: 72,
-    preferredFoot: 'Right',
-    currentClub: 'Santos FC U-20',
-    clubLogo: 'https://placehold.co/40x40/000/fff?text=SFC',
-    marketValue: '€450K',
-    contractUntil: 'Jun 2026',
-    isPremium: true,
-    isVerified: true,
-    profileImage: 'https://placehold.co/400x400/FF6B00/ffffff?text=LS',
-    coverImage: 'https://placehold.co/1920x600/0F172A/FF6B00?text=Stadium',
-    bio: 'Creative attacking midfielder with excellent vision and dribbling ability. Currently captaining Santos FC U-20 squad with 12 goals and 18 assists this season.',
-    stats: {
-        appearances: 28,
-        goals: 12,
-        assists: 18,
-        minutesPlayed: 2340,
-        yellowCards: 3,
-        redCards: 0,
-    },
-    attributes: {
-        pace: 82,
-        shooting: 78,
-        passing: 88,
-        dribbling: 91,
-        defending: 54,
-        physical: 71,
-    },
-    highlightCount: 24,
-    profileViews: 14820,
+// ── helpers ──
+const POSITION_NAMES: Record<string, string> = {
+    GK: 'Goalkeeper',
+    LB: 'Left Back', 'CB-L': 'Centre Back (L)', 'CB-R': 'Centre Back (R)', RB: 'Right Back',
+    LM: 'Left Midfielder', 'CM-L': 'Centre Midfielder (L)', 'CM-R': 'Centre Midfielder (R)',
+    RM: 'Right Midfielder', CAM: 'Attacking Midfielder',
+    LW: 'Left Winger', ST: 'Striker', RW: 'Right Winger', CF: 'Centre Forward',
 };
-
-const existingRating: ScoutRating | undefined = undefined;
-
-const similarPlayers: Player[] = [
-    {
-        ...player,
-        id: 2,
-        slug: 'rafael-costa',
-        fullName: 'Rafael Costa',
-        age: 18,
-        currentClub: 'Palmeiras U-20',
-        marketValue: '€380K',
-        profileImage: 'https://placehold.co/200x200/FF6B00/ffffff?text=RC',
-    },
-    {
-        ...player,
-        id: 3,
-        slug: 'pedro-almeida',
-        fullName: 'Pedro Almeida',
-        age: 19,
-        currentClub: 'Flamengo U-20',
-        marketValue: '€520K',
-        profileImage: 'https://placehold.co/200x200/FF6B00/ffffff?text=PA',
-    },
-    {
-        ...player,
-        id: 4,
-        slug: 'gabriel-santos',
-        fullName: 'Gabriel Santos',
-        age: 18,
-        currentClub: 'Corinthians U-20',
-        marketValue: '€340K',
-        profileImage: 'https://placehold.co/200x200/FF6B00/ffffff?text=GS',
-    },
-];
-
-const highlights = [
-    { id: 1, title: 'Hat-trick vs Palmeiras U-20', date: '2 weeks ago', views: 4820, duration: '2:34', thumbnail: 'https://placehold.co/400x225/0F172A/FF6B00?text=GOAL' },
-    { id: 2, title: 'Assist Compilation - October 2025', date: '1 month ago', views: 3120, duration: '3:12', thumbnail: 'https://placehold.co/400x225/0F172A/FF6B00?text=ASSIST' },
-    { id: 3, title: 'Free Kick Goal vs Flamengo', date: '1 month ago', views: 5640, duration: '0:48', thumbnail: 'https://placehold.co/400x225/0F172A/FF6B00?text=FK' },
-    { id: 4, title: 'Solo Run & Finish vs Corinthians', date: '2 months ago', views: 2890, duration: '1:22', thumbnail: 'https://placehold.co/400x225/0F172A/FF6B00?text=SOLO' },
-];
-
-const radarData = [
-    { attribute: 'PAC', value: player.attributes.pace, fullMark: 100 },
-    { attribute: 'SHO', value: player.attributes.shooting, fullMark: 100 },
-    { attribute: 'PAS', value: player.attributes.passing, fullMark: 100 },
-    { attribute: 'DRI', value: player.attributes.dribbling, fullMark: 100 },
-    { attribute: 'DEF', value: player.attributes.defending, fullMark: 100 },
-    { attribute: 'PHY', value: player.attributes.physical, fullMark: 100 },
-];
-
-const careerHistory = [
-    { club: 'Santos FC U-20', period: '2023 — Present', role: 'Captain', achievement: 'Top scorer 2024' },
-    { club: 'Santos FC U-17', period: '2021 — 2023', role: 'Starter', achievement: 'State Champion' },
-    { club: 'Santos FC Academy', period: '2018 — 2021', role: 'Youth', achievement: 'Joined at age 12' },
-];
-
+const getCountryName = (code?: string | null): string => {
+    if (!code) return '';
+    try {
+        return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
+    } catch {
+        return code;
+    }
+};
+const codeToFlag = (code?: string | null): string => {
+    if (!code || code.length !== 2) return '🏳️';
+    return String.fromCodePoint(
+        ...code.toUpperCase().split('').map((c) => 0x1f1a5 + c.charCodeAt(0))
+    );
+};
+const calcAge = (dob?: string | null): number | null => {
+    if (!dob) return null;
+    const d = new Date(dob);
+    if (isNaN(d.getTime())) return null;
+    const age = new Date(Date.now() - d.getTime()).getUTCFullYear() - 1970;
+    return age >= 0 ? age : null;
+};
+const nonEmpty = (v: any): boolean =>
+    v !== null && v !== undefined && String(v).trim() !== '';
+const toNum = (v: any): number => {
+    const n = Number(v);
+    return isNaN(n) ? 0 : n;
+};
+// YouTube / Vimeo theke thumbnail
+const videoThumb = (url?: string | null): string | null => {
+    if (!url) return null;
+    const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+    if (yt) return `https://img.youtube.com/vi/${yt[1]}/hqdefault.jpg`;
+    return null;
+};
+const initials = (name: string) =>
+    name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase();
 export default function Detail() {
-    // TODO: usePage<PageProps & {player:Player, existingRating?:ScoutRating, similarPlayers:Player[]}>().props
-
+    const { player, similarPlayers = [], existingRating } = usePage<{
+        player: PlayerProfileRow;
+        similarPlayers: PlayerProfileRow[];
+        existingRating?: ScoutRating | null;
+    }>().props;
     const [rating, setRating] = useState<ScoutRating>({
         technical: existingRating?.technical ?? 0,
         physical: existingRating?.physical ?? 0,
@@ -198,21 +139,98 @@ export default function Detail() {
         mental: existingRating?.mental ?? 0,
         notes: existingRating?.notes ?? '',
     });
-
+    const [savingRating, setSavingRating] = useState(false);
+    const [toast, setToast] = useState<string | null>(null);
     const [isShortlisted, setIsShortlisted] = useState(false);
-
+    // toast dekhao, 3 second por nijei chole jabe
+    const showToast = (message: string) => {
+        setToast(message);
+        setTimeout(() => setToast(null), 3000);
+    };
+    // rating save — thakle update, na thakle notun create
+    // const handleSaveRating = () => {
+    //     setSavingRating(true);
+    //     router.post(
+    //         `/scouting/player/${player?.id}/rating`,
+    //         { ...rating },
+    //         {
+    //             preserveScroll: true,
+    //             onSuccess: () => showToast('Rating submitted'),
+    //             onFinish: () => setSavingRating(false),
+    //         }
+    //     );
+    // };
+    // rating save — thakle update, na thakle notun create
+    // goToReport = true hole save howar por report page-e niye jabe
+    const handleSaveRating = (goToReport = false) => {
+        setSavingRating(true);
+        router.post(
+            `/scouting/player/${player?.id}/rating`,
+            { ...rating },
+            {
+                preserveScroll: true,
+                // preserveState na dile component remount hoy ar toast saathe saathe hariye jay
+                preserveState: true,
+                onSuccess: () => {
+                    if (goToReport) {
+                        router.visit(`/scouting/player/${player?.id}/report`);
+                    } else {
+                        showToast('Rating submitted');
+                    }
+                },
+                onFinish: () => setSavingRating(false),
+            }
+        );
+    };
     const handleRatingChange = (category: keyof Omit<ScoutRating, 'notes'>, value: number) => {
         setRating((prev) => ({ ...prev, [category]: value }));
     };
-
     const averageRating =
         (rating.technical + rating.physical + rating.tactical + rating.mental) / 4 || 0;
-
+    // ── derived data ──
+    const fullName = player?.user?.name ?? 'Unnamed player';
+    const age = calcAge(player?.user?.dob);
+    const positions = Array.isArray(player?.positions) ? player.positions : [];
+    const mainPosition = positions[0] ?? null;
+    const positionDetail = mainPosition ? POSITION_NAMES[mainPosition] ?? mainPosition : null;
+    const nationality = getCountryName(player?.user?.nationality);
+    const nationalityFlag = codeToFlag(player?.user?.nationality);
+    const videos = (Array.isArray(player?.videos) ? player.videos : []).filter((v) => nonEmpty(v?.url));
+    const clubHistory = (Array.isArray(player?.club_history) ? player.club_history : []).filter((c) => nonEmpty(c?.club));
+    const transferHistory = (Array.isArray(player?.transfer_history) ? player.transfer_history : []).filter((c) => nonEmpty(c?.club));
+    const achievements = (Array.isArray(player?.achievements) ? player.achievements : []).filter((a) => nonEmpty(a?.title));
+    const competitions = (Array.isArray(player?.competitions) ? player.competitions : []).filter((c) => nonEmpty(c?.name));
+    const matches = (Array.isArray(player?.matches) ? player.matches : []).filter((m) => nonEmpty(m?.home));
+    // matches theke season stats
+    const stats = useMemo(() => {
+        return matches.reduce(
+            (acc, m) => ({
+                appearances: acc.appearances + 1,
+                goals: acc.goals + toNum(m.goals),
+                assists: acc.assists + toNum(m.assists),
+                minutes: acc.minutes + toNum(m.minutes),
+            }),
+            { appearances: 0, goals: 0, assists: 0, minutes: 0 }
+        );
+    }, [matches]);
+    const memberSince = player?.in_team_since
+        ? new Date(`${player.in_team_since}-01`).toLocaleDateString('en-US', {
+            month: 'short',
+            year: 'numeric',
+        })
+        : null;
     return (
         <div className="min-h-screen bg-white dark:bg-[#0D0D0D] text-[#0F172A] dark:text-[#F5F5F5] font-sans">
             <ScoutNavbar />
-
-            {/* LEADERBOARD AD - TOP */}
+            {/* TOAST */}
+            {toast && (
+                <div className="fixed bottom-6 right-6 z-[100] flex items-center gap-3 rounded-xl bg-[#0F172A] px-5 py-3.5 shadow-2xl border border-white/10">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-green-500/20 flex-shrink-0">
+                        <CheckCircle2 className="h-4 w-4 text-green-400" />
+                    </div>
+                    <span className="text-sm font-semibold text-white">{toast}</span>
+                </div>
+            )}
             {/* LEADERBOARD AD - TOP */}
             <div className="w-full bg-[#F8FAFC] dark:bg-[#111111] border-b border-[#E2E8F0] dark:border-[#2A2A2A] pt-20 pb-3">
                 <div className="max-w-7xl mx-auto px-4">
@@ -232,66 +250,85 @@ export default function Detail() {
                     </div>
                 </div>
             </div>
-
             {/* HERO HEADER */}
             <section className="relative bg-[#0F172A] text-white overflow-hidden">
-                <div className="absolute inset-0 opacity-10 bg-cover bg-center" style={{ backgroundImage: `url(${player.coverImage})` }} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-[#0F172A]/80 to-transparent" />
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
                     <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-end">
-                        <img src={player.profileImage} alt={player.fullName} className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-2xl border-4 border-[#FF6B00] object-cover" />
+                        {player?.photo_url ? (
+                            <img
+                                src={player.photo_url}
+                                alt={fullName}
+                                className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-2xl border-4 border-[#FF6B00] object-cover"
+                            />
+                        ) : (
+                            <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-2xl border-4 border-[#FF6B00] bg-white/10 flex items-center justify-center font-display text-5xl font-black text-white/70">
+                                {initials(fullName)}
+                            </div>
+                        )}
                         <div className="flex-1 w-full">
                             <div className="flex flex-wrap items-center gap-3 mb-3">
-                                <span className="inline-flex items-center px-3 py-1 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#FF6B00] text-xs font-bold uppercase tracking-wider">{player.position}</span>
-                                {player.isVerified && (
+                                {mainPosition && (
+                                    <span className="inline-flex items-center px-3 py-1 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#FF6B00] text-xs font-bold uppercase tracking-wider">
+                                        {mainPosition}
+                                    </span>
+                                )}
+                                {player?.player_id && (
+                                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white/10 border border-white/20 text-white/80 text-xs font-mono">
+                                        {player.player_id}
+                                    </span>
+                                )}
+                                {player?.modality && (
                                     <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-blue-500/20 border border-blue-400 text-blue-300 text-xs font-semibold">
-                                        <CheckCircle2 className="w-3 h-3" />
-                                        Verified
-                                    </span>
-                                )}
-                                {player.isPremium && (
-                                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-amber-500/20 border border-amber-400 text-amber-300 text-xs font-semibold">
                                         <Award className="w-3 h-3" />
-                                        Premium
+                                        {player.modality}
                                     </span>
                                 )}
                             </div>
-                            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold uppercase leading-none mb-2">{player.fullName}</h1>
+                            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold uppercase leading-none mb-2">{fullName}</h1>
+                            {positionDetail && (
+                                <p className="text-sm text-[#FF6B00] uppercase tracking-wider font-semibold mb-3">{positionDetail}</p>
+                            )}
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-white/70 mb-4">
-                                <span className="flex items-center gap-1.5"><span className="text-base">{player.nationalityFlag}</span>{player.nationality}</span>
-                                <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4" />{player.city}</span>
-                                <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" />{player.age} years</span>
-                                <span className="flex items-center gap-1.5"><img src={player.clubLogo} alt="" className="w-4 h-4 rounded" />{player.currentClub}</span>
+                                {nationality && (
+                                    <span className="flex items-center gap-1.5"><span className="text-base">{nationalityFlag}</span>{nationality}</span>
+                                )}
+                                {player?.birth_city && (
+                                    <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4" />{player.birth_city}</span>
+                                )}
+                                {age !== null && (
+                                    <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" />{age} years</span>
+                                )}
+                                {player?.current_club && (
+                                    <span className="flex items-center gap-1.5"><Shield className="w-4 h-4" />{player.current_club}</span>
+                                )}
                             </div>
-
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                                 <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4">
-                                    <div className="text-[10px] uppercase tracking-wider text-white/50 mb-1">Market Value</div>
-                                    <div className="font-mono text-xl sm:text-2xl font-bold text-[#FF6B00]">{player.marketValue}</div>
-                                </div>
-                                <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4">
                                     <div className="text-[10px] uppercase tracking-wider text-white/50 mb-1">Goals / Assists</div>
-                                    <div className="font-mono text-xl sm:text-2xl font-bold">{player.stats.goals}/{player.stats.assists}</div>
+                                    <div className="font-mono text-xl sm:text-2xl font-bold text-[#FF6B00]">{stats.goals}/{stats.assists}</div>
                                 </div>
                                 <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4">
                                     <div className="text-[10px] uppercase tracking-wider text-white/50 mb-1">Appearances</div>
-                                    <div className="font-mono text-xl sm:text-2xl font-bold">{player.stats.appearances}</div>
+                                    <div className="font-mono text-xl sm:text-2xl font-bold">{stats.appearances}</div>
                                 </div>
                                 <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4">
-                                    <div className="text-[10px] uppercase tracking-wider text-white/50 mb-1">Profile Views</div>
-                                    <div className="font-mono text-xl sm:text-2xl font-bold">{(player.profileViews / 1000).toFixed(1)}K</div>
+                                    <div className="text-[10px] uppercase tracking-wider text-white/50 mb-1">Videos</div>
+                                    <div className="font-mono text-xl sm:text-2xl font-bold">{videos.length}</div>
+                                </div>
+                                <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4">
+                                    <div className="text-[10px] uppercase tracking-wider text-white/50 mb-1">Trophies</div>
+                                    <div className="font-mono text-xl sm:text-2xl font-bold">{achievements.length}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-
             {/* MAIN CONTENT */}
             <section className="bg-[#F8FAFC] dark:bg-[#111111] py-8 sm:py-12">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
                         {/* LEFT SIDEBAR AD */}
                         <aside className="hidden lg:block lg:col-span-3">
                             <div className="sticky top-24 space-y-6">
@@ -322,10 +359,8 @@ export default function Detail() {
                                 </div>
                             </div>
                         </aside>
-
                         {/* MAIN COLUMN */}
                         <main className="lg:col-span-6 space-y-6 min-w-0">
-
                             {/* SCOUT ACTIONS */}
                             <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
                                 <div className="flex items-center justify-between gap-3 mb-5">
@@ -338,39 +373,38 @@ export default function Detail() {
                                         Scout View
                                     </span>
                                 </div>
-
                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
                                     <button
                                         onClick={() => setIsShortlisted(!isShortlisted)}
-                                        className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-colors ${
-                                            isShortlisted
-                                                ? 'bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border-[#FF6B00] text-[#CC5500]'
-                                                : 'bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00]'
-                                        }`}
+                                        className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-colors ${isShortlisted
+                                            ? 'bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border-[#FF6B00] text-[#CC5500]'
+                                            : 'bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00]'
+                                            }`}
                                     >
                                         <Bookmark className={`w-5 h-5 ${isShortlisted ? 'fill-current' : ''}`} />
                                         <span className="text-xs font-semibold text-center">{isShortlisted ? 'Shortlisted' : 'Add to List'}</span>
                                     </button>
-                                    <Link href={`/scout/players/${player.slug}/report`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
+                                    <Link href={`/scouting/player/${player?.id}/report`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
                                         <FileText className="w-5 h-5" />
                                         <span className="text-xs font-semibold text-center">Write Report</span>
                                     </Link>
-                                    <Link href={`/scout/players/${player.slug}/contact`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
+                                    <Link href={`/scouting/player/${player?.id}/contact`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
                                         <Send className="w-5 h-5" />
                                         <span className="text-xs font-semibold text-center">Contact</span>
                                     </Link>
-                                    <Link href={`/scout/players/${player.slug}/compare`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
+                                    <Link href={`/scouting/player/${player?.id}/compare`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
                                         <BarChart3 className="w-5 h-5" />
                                         <span className="text-xs font-semibold text-center">Compare</span>
                                     </Link>
                                 </div>
-
                                 {/* RATING WIDGET */}
                                 <div className="border-t border-[#E2E8F0] dark:border-[#2A2A2A] pt-6">
                                     <div className="flex items-center justify-between mb-5">
                                         <div>
                                             <h3 className="font-display text-lg font-bold uppercase">Your Rating</h3>
-                                            <p className="text-xs text-[#475569] dark:text-[#9A9A9A] mt-0.5">Rate on a scale of 1 to 10</p>
+                                            <p className="text-xs text-[#475569] dark:text-[#9A9A9A] mt-0.5">
+                                                {existingRating ? 'You already rated this player — update anytime' : 'Rate on a scale of 1 to 10'}
+                                            </p>
                                         </div>
                                         {averageRating > 0 && (
                                             <div className="text-right">
@@ -379,7 +413,6 @@ export default function Detail() {
                                             </div>
                                         )}
                                     </div>
-
                                     <div className="space-y-5">
                                         {[
                                             { key: 'technical', label: 'Technical', icon: Target, desc: 'Ball control, passing, finishing' },
@@ -408,11 +441,10 @@ export default function Detail() {
                                                                 <button
                                                                     key={i}
                                                                     onClick={() => handleRatingChange(cat.key as keyof Omit<ScoutRating, 'notes'>, score)}
-                                                                    className={`flex-1 h-8 rounded-md text-xs font-bold transition-colors ${
-                                                                        value >= score
-                                                                            ? 'bg-[#FF6B00] text-white'
-                                                                            : 'bg-[#F8FAFC] dark:bg-[#1F1F1F] text-[#94A3B8] dark:text-[#555555] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]'
-                                                                    }`}
+                                                                    className={`flex-1 h-8 rounded-md text-xs font-bold transition-colors ${value >= score
+                                                                        ? 'bg-[#FF6B00] text-white'
+                                                                        : 'bg-[#F8FAFC] dark:bg-[#1F1F1F] text-[#94A3B8] dark:text-[#555555] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]'
+                                                                        }`}
                                                                 >
                                                                     {score}
                                                                 </button>
@@ -423,7 +455,6 @@ export default function Detail() {
                                             );
                                         })}
                                     </div>
-
                                     <div className="mt-6">
                                         <label className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2 block">Scout Notes</label>
                                         <textarea
@@ -434,46 +465,72 @@ export default function Detail() {
                                             className="w-full px-4 py-3 bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-orange-800 resize-none"
                                         />
                                     </div>
-
                                     <div className="flex flex-col sm:flex-row gap-3 mt-5">
-                                        <button className="flex-1 bg-[#FF6B00] hover:bg-[#CC5500] text-white px-6 py-3 rounded-xl font-semibold text-sm transition-colors">Save Rating</button>
-                                        <button className="flex-1 bg-white dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] text-[#0F172A] dark:text-[#F5F5F5] px-6 py-3 rounded-xl font-semibold text-sm transition-colors">Save & Add to Report</button>
+                                        <button
+                                            onClick={() => handleSaveRating(false)}
+                                            disabled={savingRating}
+                                            className="flex-1 bg-[#FF6B00] hover:bg-[#CC5500] disabled:opacity-60 text-white px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
+                                        >
+                                            {savingRating ? 'Saving...' : existingRating ? 'Update Rating' : 'Save Rating'}
+                                        </button>
+                                        <button
+                                            onClick={() => handleSaveRating(true)}
+                                            disabled={savingRating}
+                                            className="flex-1 bg-white dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] disabled:opacity-60 text-[#0F172A] dark:text-[#F5F5F5] px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
+                                        >
+                                            Save & Add to Report
+                                        </button>
                                     </div>
+
                                 </div>
                             </div>
-
                             {/* BIO */}
                             <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
                                 <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">About</div>
                                 <h2 className="font-display text-2xl font-bold uppercase mb-3">Player Profile</h2>
-                                <p className="text-sm text-[#475569] dark:text-[#9A9A9A] leading-relaxed mb-6">{player.bio}</p>
-
+                                <p className="text-sm text-[#475569] dark:text-[#9A9A9A] leading-relaxed mb-6">
+                                    {player?.description || 'No description added yet.'}
+                                </p>
                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                                     <div>
                                         <div className="text-[10px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] mb-1">Height</div>
                                         <div className="font-mono text-base font-bold flex items-center gap-1.5">
                                             <Ruler className="w-4 h-4 text-[#FF6B00]" />
-                                            {player.height} cm
+                                            {player?.height ? `${player.height} cm` : '—'}
                                         </div>
                                     </div>
                                     <div>
                                         <div className="text-[10px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] mb-1">Weight</div>
                                         <div className="font-mono text-base font-bold flex items-center gap-1.5">
                                             <Weight className="w-4 h-4 text-[#FF6B00]" />
-                                            {player.weight} kg
+                                            {player?.weight ? `${player.weight} kg` : '—'}
                                         </div>
                                     </div>
                                     <div>
                                         <div className="text-[10px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] mb-1">Foot</div>
-                                        <div className="font-mono text-base font-bold">{player.preferredFoot}</div>
+                                        <div className="font-mono text-base font-bold flex items-center gap-1.5">
+                                            <Footprints className="w-4 h-4 text-[#FF6B00]" />
+                                            {player?.foot || '—'}
+                                        </div>
                                     </div>
                                     <div>
-                                        <div className="text-[10px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] mb-1">Contract</div>
-                                        <div className="font-mono text-base font-bold">{player.contractUntil}</div>
+                                        <div className="text-[10px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] mb-1">In Team Since</div>
+                                        <div className="font-mono text-base font-bold">{memberSince || '—'}</div>
                                     </div>
                                 </div>
+                                {positions.length > 0 && (
+                                    <div className="mt-5 pt-5 border-t border-[#E2E8F0] dark:border-[#2A2A2A]">
+                                        <div className="text-[10px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] mb-2">Positions</div>
+                                        <div className="flex flex-wrap gap-2">
+                                            {positions.map((p) => (
+                                                <span key={p} className="inline-flex items-center px-2.5 py-1 rounded-md bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-xs font-bold uppercase tracking-wider">
+                                                    {p}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-
                             {/* IN-CONTENT AD */}
                             <div className="relative w-full h-[100px] bg-black rounded-2xl overflow-hidden flex items-center justify-between gap-3 px-6">
                                 <span className="absolute top-1 right-2 text-[10px] text-white/40 uppercase tracking-wider">Ad</span>
@@ -490,191 +547,209 @@ export default function Detail() {
                                 </div>
                                 <button className="bg-white hover:bg-white/90 text-black px-4 sm:px-6 py-2 rounded-xl font-bold text-sm transition-colors flex-shrink-0">Discover</button>
                             </div>
-
-                            {/* ATTRIBUTES */}
-                            <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
-                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">Performance Profile</div>
-                                <h2 className="font-display text-2xl font-bold uppercase mb-6">Player Attributes</h2>
-
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                    <div className="h-64">
-                                        <ResponsiveContainer width="100%" height="100%">
-                                            <RadarChart data={radarData}>
-                                                <PolarGrid stroke="#CBD5E1" strokeOpacity={0.3} />
-                                                <PolarAngleAxis dataKey="attribute" tick={{ fill: '#475569', fontSize: 12, fontWeight: 600 }} />
-                                                <PolarRadiusAxis domain={[0, 100]} tick={{ fill: '#94A3B8', fontSize: 10 }} />
-                                                <Radar name="Attributes" dataKey="value" stroke="#FF6B00" fill="#FF6B00" fillOpacity={0.3} strokeWidth={2} />
-                                            </RadarChart>
-                                        </ResponsiveContainer>
+                            {/* HIGHLIGHTS */}
+                            {videos.length > 0 && (
+                                <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
+                                    <div className="flex items-center justify-between mb-5">
+                                        <div>
+                                            <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-1">Video Library</div>
+                                            <h2 className="font-display text-2xl font-bold uppercase">Highlights</h2>
+                                        </div>
+                                        <span className="font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">{videos.length} videos</span>
                                     </div>
-
-                                    <div className="space-y-3">
-                                        {Object.entries(player.attributes).map(([key, value]) => (
-                                            <div key={key}>
-                                                <div className="flex items-center justify-between mb-1.5">
-                                                    <span className="text-xs uppercase tracking-wider font-semibold text-[#475569] dark:text-[#9A9A9A]">{key}</span>
-                                                    <span className="font-mono text-sm font-bold">{value}</span>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {videos.map((clip, i) => {
+                                            const thumb = videoThumb(clip.url);
+                                            return (
+                                                <a
+                                                    key={i}
+                                                    href={clip.url ?? '#'}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="group block"
+                                                >
+                                                    <div className="relative aspect-video bg-[#0F172A] rounded-xl overflow-hidden mb-2">
+                                                        {thumb && (
+                                                            <img src={thumb} alt={clip.label ?? 'Highlight'} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                                                        )}
+                                                        <div className="absolute inset-0 flex items-center justify-center">
+                                                            <div className="w-12 h-12 bg-[#FF6B00] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                                                                <Play className="w-5 h-5 text-white fill-white ml-0.5" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <h3 className="text-sm font-semibold line-clamp-1">{clip.label || 'Highlight'}</h3>
+                                                </a>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+                            {/* SEASON STATS */}
+                            {matches.length > 0 && (
+                                <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
+                                    <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">From Recent Matches</div>
+                                    <h2 className="font-display text-2xl font-bold uppercase mb-5">Statistics</h2>
+                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                                        {[
+                                            { label: 'Appearances', value: stats.appearances, icon: Trophy },
+                                            { label: 'Goals', value: stats.goals, icon: Target },
+                                            { label: 'Assists', value: stats.assists, icon: TrendingUp },
+                                            { label: 'Minutes', value: stats.minutes, icon: Clock },
+                                        ].map((stat) => {
+                                            const Icon = stat.icon;
+                                            return (
+                                                <div key={stat.label} className="bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl p-4">
+                                                    <Icon className="w-4 h-4 text-[#FF6B00] mb-2" />
+                                                    <div className="font-mono text-2xl font-bold">{stat.value}</div>
+                                                    <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mt-1">{stat.label}</div>
                                                 </div>
-                                                <div className="h-2 bg-[#F8FAFC] dark:bg-[#1F1F1F] rounded-full overflow-hidden">
-                                                    <div className="h-full bg-[#FF6B00]" style={{ width: `${value}%` }} />
+                                            );
+                                        })}
+                                    </div>
+                                    {/* Match list */}
+                                    <div className="space-y-2">
+                                        {matches.map((m, i) => (
+                                            <div key={i} className="flex flex-wrap items-center justify-between gap-2 bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl px-4 py-3">
+                                                <div className="flex items-center gap-2 text-sm font-semibold min-w-0">
+                                                    <span className="truncate">{m.home}</span>
+                                                    <span className="font-mono text-[#FF6B00]">{m.score || 'vs'}</span>
+                                                    <span className="truncate">{m.away}</span>
+                                                </div>
+                                                <div className="flex items-center gap-3 font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">
+                                                    <span>G {toNum(m.goals)}</span>
+                                                    <span>A {toNum(m.assists)}</span>
+                                                    <span>{toNum(m.minutes)}'</span>
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
-                            </div>
-
-                            {/* HIGHLIGHTS */}
-                            <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
-                                <div className="flex items-center justify-between mb-5">
-                                    <div>
-                                        <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-1">Video Library</div>
-                                        <h2 className="font-display text-2xl font-bold uppercase">Highlights</h2>
+                            )}
+                            {/* ACHIEVEMENTS */}
+                            {achievements.length > 0 && (
+                                <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
+                                    <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">Honours</div>
+                                    <h2 className="font-display text-2xl font-bold uppercase mb-5">Achievements</h2>
+                                    <div className="space-y-3">
+                                        {achievements.map((a, i) => (
+                                            <div key={i} className="flex items-center gap-4 pb-3 border-b border-[#E2E8F0] dark:border-[#2A2A2A] last:border-0 last:pb-0">
+                                                <div className="w-10 h-10 rounded-lg bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
+                                                    <Award className="w-5 h-5 text-[#FF6B00]" />
+                                                </div>
+                                                <div className="flex-1 min-w-0 flex flex-wrap items-baseline justify-between gap-2">
+                                                    <span className="text-sm font-semibold">{a.title}</span>
+                                                    <span className="font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">{a.year}</span>
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
-                                    <span className="font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">{player.highlightCount} videos</span>
                                 </div>
-
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    {highlights.map((clip) => (
-                                        <Link key={clip.id} href={`/scout/highlights/${clip.id}`} className="group block">
-                                            <div className="relative aspect-video bg-[#0F172A] rounded-xl overflow-hidden mb-2">
-                                                <img src={clip.thumbnail} alt={clip.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
-                                                <div className="absolute inset-0 flex items-center justify-center">
-                                                    <div className="w-12 h-12 bg-[#FF6B00] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                        <Play className="w-5 h-5 text-white fill-white ml-0.5" />
+                            )}
+                            {/* COMPETITIONS */}
+                            {competitions.length > 0 && (
+                                <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
+                                    <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">Experience</div>
+                                    <h2 className="font-display text-2xl font-bold uppercase mb-5">Competitions</h2>
+                                    <div className="space-y-3">
+                                        {competitions.map((c, i) => (
+                                            <div key={i} className="flex items-center gap-4 pb-3 border-b border-[#E2E8F0] dark:border-[#2A2A2A] last:border-0 last:pb-0">
+                                                <div className="w-10 h-10 rounded-lg bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
+                                                    <ClipboardList className="w-5 h-5 text-[#FF6B00]" />
+                                                </div>
+                                                <div className="flex-1 min-w-0 flex flex-wrap items-baseline justify-between gap-2">
+                                                    <span className="text-sm font-semibold">{c.name}</span>
+                                                    <span className="font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">{c.year}</span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                            {/* CAREER — club history */}
+                            {clubHistory.length > 0 && (
+                                <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
+                                    <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">Trajectory</div>
+                                    <h2 className="font-display text-2xl font-bold uppercase mb-5">Career History</h2>
+                                    <div className="space-y-4">
+                                        {clubHistory.map((entry, i) => (
+                                            <div key={i} className="flex items-start gap-4 pb-4 border-b border-[#E2E8F0] dark:border-[#2A2A2A] last:border-0 last:pb-0">
+                                                <div className="w-10 h-10 rounded-lg bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
+                                                    <Trophy className="w-5 h-5 text-[#FF6B00]" />
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                                                        <h3 className="font-display text-lg font-bold uppercase">{entry.club}</h3>
+                                                        <span className="font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">{entry.year}</span>
                                                     </div>
                                                 </div>
-                                                <span className="absolute bottom-2 right-2 bg-black/70 text-white text-xs font-mono px-2 py-0.5 rounded">{clip.duration}</span>
                                             </div>
-                                            <h3 className="text-sm font-semibold line-clamp-1 mb-1">{clip.title}</h3>
-                                            <div className="flex items-center gap-3 text-xs text-[#94A3B8] dark:text-[#555555]">
-                                                <span className="flex items-center gap-1"><Eye className="w-3 h-3" />{clip.views.toLocaleString()}</span>
-                                                <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{clip.date}</span>
-                                            </div>
-                                        </Link>
-                                    ))}
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-
-                            {/* SEASON STATS */}
-                            <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
-                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">2024/25 Season</div>
-                                <h2 className="font-display text-2xl font-bold uppercase mb-5">Statistics</h2>
-
-                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                    {[
-                                        { label: 'Appearances', value: player.stats.appearances, icon: Trophy },
-                                        { label: 'Goals', value: player.stats.goals, icon: Target },
-                                        { label: 'Assists', value: player.stats.assists, icon: TrendingUp },
-                                        { label: 'Minutes', value: player.stats.minutesPlayed, icon: Clock },
-                                        { label: 'Yellow Cards', value: player.stats.yellowCards, icon: Flag },
-                                        { label: 'Red Cards', value: player.stats.redCards, icon: Flag },
-                                    ].map((stat) => {
-                                        const Icon = stat.icon;
-                                        return (
-                                            <div key={stat.label} className="bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl p-4">
-                                                <Icon className="w-4 h-4 text-[#FF6B00] mb-2" />
-                                                <div className="font-mono text-2xl font-bold">{stat.value}</div>
-                                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mt-1">{stat.label}</div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-
-                            {/* CAREER */}
-                            <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
-                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">Trajectory</div>
-                                <h2 className="font-display text-2xl font-bold uppercase mb-5">Career History</h2>
-                                <div className="space-y-4">
-                                    {careerHistory.map((entry, i) => (
-                                        <div key={i} className="flex items-start gap-4 pb-4 border-b border-[#E2E8F0] dark:border-[#2A2A2A] last:border-0 last:pb-0">
-                                            <div className="w-10 h-10 rounded-lg bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
-                                                <Trophy className="w-5 h-5 text-[#FF6B00]" />
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex flex-wrap items-baseline justify-between gap-2 mb-1">
+                            )}
+                            {/* TRANSFER HISTORY */}
+                            {transferHistory.length > 0 && (
+                                <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
+                                    <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">Movements</div>
+                                    <h2 className="font-display text-2xl font-bold uppercase mb-5">Transfer History</h2>
+                                    <div className="space-y-4">
+                                        {transferHistory.map((entry, i) => (
+                                            <div key={i} className="flex items-center gap-4 pb-4 border-b border-[#E2E8F0] dark:border-[#2A2A2A] last:border-0 last:pb-0">
+                                                {entry.logo ? (
+                                                    <img src={entry.logo} alt={entry.club ?? ''} className="w-10 h-10 rounded-lg object-cover border border-[#E2E8F0] dark:border-[#2A2A2A] flex-shrink-0" />
+                                                ) : (
+                                                    <div className="w-10 h-10 rounded-lg bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
+                                                        <History className="w-5 h-5 text-[#FF6B00]" />
+                                                    </div>
+                                                )}
+                                                <div className="flex-1 min-w-0 flex flex-wrap items-baseline justify-between gap-2">
                                                     <h3 className="font-display text-lg font-bold uppercase">{entry.club}</h3>
-                                                    <span className="font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">{entry.period}</span>
-                                                </div>
-                                                <div className="flex items-center gap-3 text-xs text-[#475569] dark:text-[#9A9A9A]">
-                                                    <span>{entry.role}</span>
-                                                    <span className="text-[#FF6B00]">•</span>
-                                                    <span>{entry.achievement}</span>
+                                                    <span className="font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">{entry.year}</span>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-
+                            )}
                         </main>
-
                         {/* RIGHT SIDEBAR */}
                         <aside className="lg:col-span-3 space-y-6">
-
                             {/* CONTACT INFO */}
-                            <div className={`relative ${player.isPremium ? 'bg-[#F0FDF4] dark:bg-[rgba(22,163,74,0.08)] border border-green-200 dark:border-green-800' : 'bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A]'} rounded-2xl p-6`}>
+                            <div className="relative bg-[#F0FDF4] dark:bg-[rgba(22,163,74,0.08)] border border-green-200 dark:border-green-800 rounded-2xl p-6">
                                 <div className="flex items-center justify-between mb-4">
                                     <div className="text-[10px] uppercase font-bold tracking-wider text-green-700 dark:text-green-400">Player Contact</div>
-                                    {player.isPremium && (
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-green-600 text-white text-[10px] font-bold uppercase tracking-wider">Unlocked</span>
-                                    )}
+                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-green-600 text-white text-[10px] font-bold uppercase tracking-wider">Available</span>
                                 </div>
-
-                                {player.isPremium ? (
-                                    <div className="space-y-3">
-                                        <a href="mailto:agent@talentos.com.br" className="flex items-center gap-3 p-3 bg-white dark:bg-[#161616] border border-green-200 dark:border-green-800 rounded-xl hover:border-green-400 transition-colors">
+                                <div className="space-y-3">
+                                    {player?.user?.email && (
+                                        <a href={`mailto:${player.user.email}`} className="flex items-center gap-3 p-3 bg-white dark:bg-[#161616] border border-green-200 dark:border-green-800 rounded-xl hover:border-green-400 transition-colors">
                                             <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
                                                 <Mail className="w-5 h-5 text-green-600 dark:text-green-400" />
                                             </div>
                                             <div className="min-w-0 flex-1">
                                                 <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold">Email</div>
-                                                <div className="font-mono text-sm font-semibold truncate">agent@talentos.com.br</div>
+                                                <div className="font-mono text-sm font-semibold truncate">{player.user.email}</div>
                                             </div>
                                         </a>
-
-                                        <a href="https://wa.me/5511999990000" className="flex items-center gap-3 p-3 bg-white dark:bg-[#161616] border border-green-200 dark:border-green-800 rounded-xl hover:border-green-400 transition-colors">
+                                    )}
+                                    {player?.agent && (
+                                        <div className="flex items-center gap-3 p-3 bg-white dark:bg-[#161616] border border-green-200 dark:border-green-800 rounded-xl">
                                             <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
                                                 <MessageCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold">WhatsApp</div>
-                                                <div className="font-mono text-sm font-semibold">+55 11 99999-0000</div>
-                                            </div>
-                                        </a>
-
-                                        <div className="text-[11px] text-green-700 dark:text-green-400 px-1 pt-1 leading-relaxed">Direct line to player's agent. Please be professional and verify your scouting credentials.</div>
-                                    </div>
-                                ) : (
-                                    <div className="relative">
-                                        <div className="space-y-3 blur-sm pointer-events-none select-none">
-                                            <div className="flex items-center gap-3 p-3 bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl">
-                                                <div className="w-10 h-10 rounded-lg bg-[#F8FAFC] dark:bg-[#1F1F1F]" />
-                                                <div className="flex-1">
-                                                    <div className="h-2 bg-[#E2E8F0] dark:bg-[#2A2A2A] rounded w-1/3 mb-1.5" />
-                                                    <div className="h-3 bg-[#E2E8F0] dark:bg-[#2A2A2A] rounded w-2/3" />
-                                                </div>
-                                            </div>
-                                            <div className="flex items-center gap-3 p-3 bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl">
-                                                <div className="w-10 h-10 rounded-lg bg-[#F8FAFC] dark:bg-[#1F1F1F]" />
-                                                <div className="flex-1">
-                                                    <div className="h-2 bg-[#E2E8F0] dark:bg-[#2A2A2A] rounded w-1/3 mb-1.5" />
-                                                    <div className="h-3 bg-[#E2E8F0] dark:bg-[#2A2A2A] rounded w-2/3" />
-                                                </div>
+                                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold">Agent</div>
+                                                <div className="font-mono text-sm font-semibold truncate">{player.agent}</div>
                                             </div>
                                         </div>
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-                                            <div className="w-12 h-12 rounded-full bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] flex items-center justify-center mb-3">
-                                                <Lock className="w-5 h-5 text-[#475569] dark:text-[#9A9A9A]" />
-                                            </div>
-                                            <p className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-1">Player needs Premium to show contact info</p>
-                                            <p className="text-[11px] text-[#475569] dark:text-[#9A9A9A]">Use the Contact Player button to send a scouting inquiry.</p>
-                                        </div>
-                                    </div>
-                                )}
+                                    )}
+                                    {!player?.user?.email && !player?.agent && (
+                                        <p className="text-xs text-[#475569] dark:text-[#9A9A9A]">No contact details added yet.</p>
+                                    )}
+                                    <div className="text-[11px] text-green-700 dark:text-green-400 px-1 pt-1 leading-relaxed">Please be professional and verify your scouting credentials before reaching out.</div>
+                                </div>
                             </div>
-
                             {/* RIGHT SIDEBAR AD */}
                             <div className="hidden md:block">
                                 <div className="relative w-full max-w-[300px] mx-auto h-[600px] bg-[#1A0F0A] rounded-2xl overflow-hidden">
@@ -706,7 +781,6 @@ export default function Detail() {
                                     </div>
                                 </div>
                             </div>
-
                             {/* HALF PAGE AD */}
                             <div className="relative w-full max-w-[300px] mx-auto h-[250px] bg-[#001E2E] rounded-2xl overflow-hidden">
                                 <span className="absolute top-2 right-2 text-[10px] text-white/40 uppercase tracking-wider z-10">Ad</span>
@@ -722,67 +796,80 @@ export default function Detail() {
                                     <button className="w-full bg-[#0091EA] hover:bg-[#0277BD] text-white py-2.5 rounded-lg font-semibold text-xs transition-colors">Explore Solutions</button>
                                 </div>
                             </div>
-
                         </aside>
-
                     </div>
                 </div>
             </section>
-
             {/* SIMILAR PLAYERS */}
-            <section className="bg-white dark:bg-[#0D0D0D] py-12 border-t border-[#E2E8F0] dark:border-[#2A2A2A]">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
-                        <div>
-                            <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-1">Discover More Talent</div>
-                            <h2 className="font-display text-3xl sm:text-4xl font-bold uppercase">Similar Players</h2>
-                        </div>
-                        <Link href="/scout/players" className="inline-flex items-center gap-1.5 text-[#FF6B00] hover:text-[#CC5500] text-sm font-semibold">
-                            View all
-                            <ArrowRight className="w-4 h-4" />
-                        </Link>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                        {similarPlayers.map((sp) => (
-                            <Link key={sp.id} href={`/scout/players/${sp.slug}`} className="group bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 hover:border-[#FF6B00] transition-colors">
-                                <div className="flex items-start gap-4 mb-4">
-                                    <img src={sp.profileImage} alt={sp.fullName} className="w-16 h-16 rounded-xl border-2 border-[#E2E8F0] dark:border-[#2A2A2A] group-hover:border-[#FF6B00] transition-colors object-cover" />
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-2 mb-1.5">
-                                            <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-bold uppercase tracking-wider">{sp.position}</span>
-                                            <span className="text-xs">{sp.nationalityFlag}</span>
-                                        </div>
-                                        <h3 className="font-display text-lg font-bold uppercase leading-tight truncate">{sp.fullName}</h3>
-                                        <p className="text-xs text-[#475569] dark:text-[#9A9A9A] truncate">{sp.currentClub}</p>
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                    <div>
-                                        <div className="text-[9px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] font-bold">Age</div>
-                                        <div className="font-mono text-sm font-bold">{sp.age}</div>
-                                    </div>
-                                    <div>
-                                        <div className="text-[9px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] font-bold">G/A</div>
-                                        <div className="font-mono text-sm font-bold">{sp.stats.goals}/{sp.stats.assists}</div>
-                                    </div>
-                                    <div>
-                                        <div className="text-[9px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] font-bold">Value</div>
-                                        <div className="font-mono text-sm font-bold text-[#FF6B00]">{sp.marketValue}</div>
-                                    </div>
-                                </div>
-
-                                <button className="w-full mt-4 inline-flex items-center justify-center gap-1.5 bg-[#F8FAFC] dark:bg-[#1F1F1F] group-hover:bg-[#FF6B00] group-hover:text-white text-[#0F172A] dark:text-[#F5F5F5] py-2.5 rounded-xl text-xs font-semibold transition-colors">
-                                    <Plus className="w-3.5 h-3.5" />
-                                    View Profile
-                                </button>
+            {similarPlayers.length > 0 && (
+                <section className="bg-white dark:bg-[#0D0D0D] py-12 border-t border-[#E2E8F0] dark:border-[#2A2A2A]">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
+                            <div>
+                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-1">Discover More Talent</div>
+                                <h2 className="font-display text-3xl sm:text-4xl font-bold uppercase">Similar Players</h2>
+                            </div>
+                            <Link href="/scouting/dashboard" className="inline-flex items-center gap-1.5 text-[#FF6B00] hover:text-[#CC5500] text-sm font-semibold">
+                                View all
+                                <ArrowRight className="w-4 h-4" />
                             </Link>
-                        ))}
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                            {similarPlayers.map((sp) => {
+                                const spName = sp.user?.name ?? 'Unnamed player';
+                                const spAge = calcAge(sp.user?.dob);
+                                const spPositions = Array.isArray(sp.positions) ? sp.positions : [];
+                                const spMatches = (Array.isArray(sp.matches) ? sp.matches : []).filter((m) => nonEmpty(m?.home));
+                                const spGoals = spMatches.reduce((s, m) => s + toNum(m.goals), 0);
+                                const spAssists = spMatches.reduce((s, m) => s + toNum(m.assists), 0);
+                                return (
+                                    <Link key={sp.id} href={`/scouting/player/${sp.id}`} className="group bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 hover:border-[#FF6B00] transition-colors">
+                                        <div className="flex items-start gap-4 mb-4">
+                                            {sp.photo_url ? (
+                                                <img src={sp.photo_url} alt={spName} className="w-16 h-16 rounded-xl border-2 border-[#E2E8F0] dark:border-[#2A2A2A] group-hover:border-[#FF6B00] transition-colors object-cover" />
+                                            ) : (
+                                                <div className="w-16 h-16 rounded-xl border-2 border-[#E2E8F0] dark:border-[#2A2A2A] group-hover:border-[#FF6B00] transition-colors bg-[#F8FAFC] dark:bg-[#1F1F1F] flex items-center justify-center font-display text-lg font-black text-[#94A3B8]">
+                                                    {initials(spName)}
+                                                </div>
+                                            )}
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2 mb-1.5">
+                                                    {spPositions[0] && (
+                                                        <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-bold uppercase tracking-wider">
+                                                            {spPositions[0]}
+                                                        </span>
+                                                    )}
+                                                    <span className="text-xs">{codeToFlag(sp.user?.nationality)}</span>
+                                                </div>
+                                                <h3 className="font-display text-lg font-bold uppercase leading-tight truncate">{spName}</h3>
+                                                <p className="text-xs text-[#475569] dark:text-[#9A9A9A] truncate">{sp.current_club || '—'}</p>
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-3 gap-2 pt-4 border-t border-[#E2E8F0] dark:border-[#2A2A2A]">
+                                            <div>
+                                                <div className="text-[9px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] font-bold">Age</div>
+                                                <div className="font-mono text-sm font-bold">{spAge ?? '—'}</div>
+                                            </div>
+                                            <div>
+                                                <div className="text-[9px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] font-bold">G/A</div>
+                                                <div className="font-mono text-sm font-bold">{spGoals}/{spAssists}</div>
+                                            </div>
+                                            <div>
+                                                <div className="text-[9px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] font-bold">Height</div>
+                                                <div className="font-mono text-sm font-bold text-[#FF6B00]">{sp.height ? `${sp.height}` : '—'}</div>
+                                            </div>
+                                        </div>
+                                        <button className="w-full mt-4 inline-flex items-center justify-center gap-1.5 bg-[#F8FAFC] dark:bg-[#1F1F1F] group-hover:bg-[#FF6B00] group-hover:text-white text-[#0F172A] dark:text-[#F5F5F5] py-2.5 rounded-xl text-xs font-semibold transition-colors">
+                                            <Plus className="w-3.5 h-3.5" />
+                                            View Profile
+                                        </button>
+                                    </Link>
+                                );
+                            })}
+                        </div>
                     </div>
-                </div>
-            </section>
-
+                </section>
+            )}
             {/* ORANGE CTA BAND */}
             <section className="bg-[#FF6B00] py-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -793,12 +880,11 @@ export default function Detail() {
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                             <Link href="/scout/shortlist" className="bg-white hover:bg-white/90 text-[#FF6B00] px-6 py-3 rounded-xl font-bold text-sm text-center transition-colors">Open My Shortlist</Link>
-                            <Link href="/scout/players" className="bg-[#0F172A] hover:bg-[#1F1F1F] text-white px-6 py-3 rounded-xl font-bold text-sm text-center transition-colors">Browse Players</Link>
+                            <Link href="/scouting/dashboard" className="bg-[#0F172A] hover:bg-[#1F1F1F] text-white px-6 py-3 rounded-xl font-bold text-sm text-center transition-colors">Browse Players</Link>
                         </div>
                     </div>
                 </div>
             </section>
-
             {/* FOOTER */}
             <footer className="bg-[#0F172A] text-white py-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -811,7 +897,7 @@ export default function Detail() {
                         <div>
                             <div className="text-[10px] uppercase tracking-wider text-white/40 font-bold mb-3">Scout</div>
                             <ul className="space-y-2 text-sm">
-                                <li><Link href="/scout/players" className="text-white/70 hover:text-white">Browse Players</Link></li>
+                                <li><Link href="/scouting/dashboard" className="text-white/70 hover:text-white">Browse Players</Link></li>
                                 <li><Link href="/scout/shortlist" className="text-white/70 hover:text-white">My Shortlist</Link></li>
                                 <li><Link href="/scout/reports" className="text-white/70 hover:text-white">Reports</Link></li>
                             </ul>
