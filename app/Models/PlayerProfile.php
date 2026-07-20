@@ -32,4 +32,12 @@ class PlayerProfile extends Model
     {
         return $this->photo_path ? asset('storage/' . $this->photo_path) : null;
     }
+    public function ratings()
+    {
+        return $this->hasMany(PlayerRating::class);
+    }
+    public function reports()
+    {
+        return $this->hasMany(PlayerReport::class);
+    }
 }

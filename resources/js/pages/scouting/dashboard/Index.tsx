@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from '@inertiajs/react';
 import ScoutNavbar from '@/components/scout/ScoutNavbar';
 import { Input } from '@/components/ui/input';
@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { usePage } from "@inertiajs/react";
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import {
@@ -42,67 +43,91 @@ import {
     ChevronRight,
     Eye,
 } from 'lucide-react';
-
-// TODO: Replace with usePage<PageProps & {players:Player[], total:number, filters:object}>().props
-
+// ── DB theke asha PlayerProfile (with user) ──
+interface PlayerProfileRow {
+    id: number;
+    user_id: number;
+    player_id: string | null;
+    height: number | null;
+    weight: number | null;
+    current_club: string | null;
+    modality: string | null;
+    positions: string[] | null;
+    foot: string | null;
+    photo_url: string | null;
+    user?: {
+        id: number;
+        name: string | null;
+        dob: string | null;
+        nationality: string | null;
+    } | null;
+}
+// UI-te je shape lage
 interface Player {
     id: number;
     name: string;
     club: string;
-    position: 'GK' | 'DEF' | 'MID' | 'FWD';
-    age: number;
-    height: number;
-    foot: 'R' | 'L' | 'B';
+    position: 'GK' | 'DEF' | 'MID' | 'FWD' | '—';
+    age: number | null;
+    height: number | null;
+    foot: 'R' | 'L' | 'B' | '—';
     country: string;
     flag: string;
-    subscription: 'Premium' | 'Free';
-    rating: number;
-    views: number;
+    modality: string;
+    photoUrl: string | null;
 }
-
-const MOCK_PLAYERS: Player[] = [
-    { id: 1, name: 'Lucas Pereira', club: 'Santos FC U-20', position: 'FWD', age: 19, height: 178, foot: 'R', country: 'Brazil', flag: '🇧🇷', subscription: 'Premium', rating: 8.4, views: 12480 },
-    { id: 2, name: 'Mateo Álvarez', club: 'River Plate Reserves', position: 'MID', age: 21, height: 182, foot: 'L', country: 'Argentina', flag: '🇦🇷', subscription: 'Premium', rating: 8.1, views: 9870 },
-    { id: 3, name: 'Diego Fernández', club: 'Atlético Madrid B', position: 'DEF', age: 23, height: 188, foot: 'R', country: 'Spain', flag: '🇪🇸', subscription: 'Free', rating: 7.6, views: 5210 },
-    { id: 4, name: 'Kwame Asante', club: 'Hearts of Oak', position: 'FWD', age: 20, height: 181, foot: 'R', country: 'Ghana', flag: '🇬🇭', subscription: 'Premium', rating: 8.2, views: 11240 },
-    { id: 5, name: 'Yuki Tanaka', club: 'Kashima Antlers U-23', position: 'MID', age: 22, height: 175, foot: 'B', country: 'Japan', flag: '🇯🇵', subscription: 'Premium', rating: 7.9, views: 7430 },
-    { id: 6, name: 'Oliver Schmidt', club: 'Bayern Munich II', position: 'GK', age: 24, height: 192, foot: 'R', country: 'Germany', flag: '🇩🇪', subscription: 'Premium', rating: 8.0, views: 8120 },
-    { id: 7, name: 'Rafael Costa', club: 'Palmeiras U-20', position: 'MID', age: 18, height: 176, foot: 'L', country: 'Brazil', flag: '🇧🇷', subscription: 'Premium', rating: 8.6, views: 15670 },
-    { id: 8, name: 'Adama Diallo', club: 'Stade Rennais B', position: 'DEF', age: 22, height: 186, foot: 'R', country: 'Senegal', flag: '🇸🇳', subscription: 'Free', rating: 7.4, views: 4320 },
-    { id: 9, name: 'Mason Whitfield', club: 'Manchester City EDS', position: 'FWD', age: 19, height: 179, foot: 'R', country: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', subscription: 'Premium', rating: 8.5, views: 18920 },
-    { id: 10, name: 'Carlos Ramírez', club: 'Club América Sub-20', position: 'FWD', age: 20, height: 180, foot: 'R', country: 'Mexico', flag: '🇲🇽', subscription: 'Premium', rating: 7.8, views: 6890 },
-    { id: 11, name: 'Tomáš Novák', club: 'Slavia Praha B', position: 'MID', age: 23, height: 184, foot: 'R', country: 'Czechia', flag: '🇨🇿', subscription: 'Free', rating: 7.5, views: 3210 },
-    { id: 12, name: 'João Silva', club: 'Benfica B', position: 'DEF', age: 21, height: 187, foot: 'L', country: 'Portugal', flag: '🇵🇹', subscription: 'Premium', rating: 8.0, views: 9450 },
-    { id: 13, name: 'Khalid Al-Rashid', club: 'Al-Hilal U-23', position: 'GK', age: 22, height: 190, foot: 'R', country: 'Saudi Arabia', flag: '🇸🇦', subscription: 'Free', rating: 7.3, views: 2870 },
-    { id: 14, name: 'Marco Bianchi', club: 'Juventus Next Gen', position: 'FWD', age: 21, height: 183, foot: 'L', country: 'Italy', flag: '🇮🇹', subscription: 'Premium', rating: 8.3, views: 13240 },
-    { id: 15, name: 'Erik Lindqvist', club: 'AIK U-21', position: 'MID', age: 19, height: 181, foot: 'R', country: 'Sweden', flag: '🇸🇪', subscription: 'Free', rating: 7.6, views: 4180 },
-    { id: 16, name: 'Hugo Martín', club: 'Real Sociedad B', position: 'DEF', age: 24, height: 189, foot: 'R', country: 'Spain', flag: '🇪🇸', subscription: 'Premium', rating: 7.9, views: 7620 },
-    { id: 17, name: 'Tariq Mohammed', club: 'Wydad AC', position: 'MID', age: 22, height: 177, foot: 'B', country: 'Morocco', flag: '🇲🇦', subscription: 'Premium', rating: 8.1, views: 10340 },
-    { id: 18, name: 'Bruno Cardoso', club: 'Flamengo Sub-20', position: 'FWD', age: 18, height: 175, foot: 'R', country: 'Brazil', flag: '🇧🇷', subscription: 'Premium', rating: 8.7, views: 19850 },
-    { id: 19, name: 'Daniel Petrović', club: 'Red Star Belgrade II', position: 'GK', age: 25, height: 193, foot: 'R', country: 'Serbia', flag: '🇷🇸', subscription: 'Free', rating: 7.5, views: 3540 },
-    { id: 20, name: 'Pierre Lefèvre', club: 'Lyon Reserves', position: 'MID', age: 20, height: 178, foot: 'L', country: 'France', flag: '🇫🇷', subscription: 'Premium', rating: 8.2, views: 11680 },
-    { id: 21, name: 'Antonio López', club: 'Boca Juniors Reserves', position: 'DEF', age: 23, height: 185, foot: 'R', country: 'Argentina', flag: '🇦🇷', subscription: 'Premium', rating: 7.8, views: 6740 },
-    { id: 22, name: 'Felix Müller', club: 'Borussia Dortmund II', position: 'FWD', age: 22, height: 182, foot: 'R', country: 'Germany', flag: '🇩🇪', subscription: 'Premium', rating: 8.4, views: 14210 },
-    { id: 23, name: 'Sergei Ivanov', club: 'CSKA Moscow II', position: 'MID', age: 24, height: 180, foot: 'L', country: 'Russia', flag: '🇷🇺', subscription: 'Free', rating: 7.4, views: 2980 },
-    { id: 24, name: 'Idris Bello', club: 'Enyimba FC', position: 'FWD', age: 21, height: 184, foot: 'R', country: 'Nigeria', flag: '🇳🇬', subscription: 'Premium', rating: 8.0, views: 8930 },
-];
-
-const POSITIONS = [
-    { code: 'GK', label: 'Goalkeeper', count: 142 },
-    { code: 'DEF', label: 'Defender', count: 387 },
-    { code: 'MID', label: 'Midfielder', count: 421 },
-    { code: 'FWD', label: 'Forward', count: 297 },
-];
-
-const COUNTRIES = [
-    { name: 'Brazil', flag: '🇧🇷', count: 184 },
-    { name: 'Argentina', flag: '🇦🇷', count: 142 },
-    { name: 'Spain', flag: '🇪🇸', count: 98 },
-    { name: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', count: 87 },
-    { name: 'Germany', flag: '🇩🇪', count: 76 },
-    { name: 'France', flag: '🇫🇷', count: 71 },
-];
-
+// positions[] theke main group ber kora
+const POSITION_GROUP: Record<string, 'GK' | 'DEF' | 'MID' | 'FWD'> = {
+    GK: 'GK',
+    LB: 'DEF', 'CB-L': 'DEF', 'CB-R': 'DEF', RB: 'DEF',
+    LM: 'MID', 'CM-L': 'MID', 'CM-R': 'MID', RM: 'MID', CAM: 'MID',
+    LW: 'FWD', ST: 'FWD', RW: 'FWD', CF: 'FWD',
+};
+const FOOT_MAP: Record<string, 'R' | 'L' | 'B'> = {
+    Right: 'R',
+    Left: 'L',
+    Ambidextrous: 'B',
+};
+const getCountryName = (code?: string | null): string => {
+    if (!code) return '';
+    try {
+        return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
+    } catch {
+        return code;
+    }
+};
+// alpha-2 code theke flag emoji
+const codeToFlag = (code?: string | null): string => {
+    if (!code || code.length !== 2) return '🏳️';
+    return String.fromCodePoint(
+        ...code.toUpperCase().split('').map((c) => 0x1f1a5 + c.charCodeAt(0))
+    );
+};
+const calcAge = (dob?: string | null): number | null => {
+    if (!dob) return null;
+    const d = new Date(dob);
+    if (isNaN(d.getTime())) return null;
+    const age = new Date(Date.now() - d.getTime()).getUTCFullYear() - 1970;
+    return age >= 0 ? age : null;
+};
+// DB row → UI Player
+const normalizePlayer = (p: PlayerProfileRow): Player => {
+    const positions = Array.isArray(p.positions) ? p.positions : [];
+    const firstPos = positions.find((x) => POSITION_GROUP[x]);
+    return {
+        id: p.id,
+        name: p.user?.name ?? 'Unnamed player',
+        club: p.current_club ?? '—',
+        position: firstPos ? POSITION_GROUP[firstPos] : '—',
+        age: calcAge(p.user?.dob),
+        height: p.height ?? null,
+        foot: p.foot ? (FOOT_MAP[p.foot] ?? '—') : '—',
+        country: getCountryName(p.user?.nationality),
+        flag: codeToFlag(p.user?.nationality),
+        modality: p.modality ?? 'Football',
+        photoUrl: p.photo_url ?? null,
+    };
+};
 function positionGradient(position: string): string {
     switch (position) {
         case 'GK':
@@ -117,21 +142,46 @@ function positionGradient(position: string): string {
             return 'bg-gradient-to-br from-slate-400/20 to-slate-700/20';
     }
 }
-
+const POSITION_LABELS: Record<string, string> = {
+    GK: 'Goalkeeper',
+    DEF: 'Defender',
+    MID: 'Midfielder',
+    FWD: 'Forward',
+};
+const PER_PAGE = 24;
 function FilterPanel({
-                         ageMin,
-                         ageMax,
-                         setAgeMin,
-                         setAgeMax,
-                         heightMin,
-                         setHeightMin,
-                         heightMax,
-                         setHeightMax,
-                         preferredFoot,
-                         setPreferredFoot,
-                         countrySearch,
-                         setCountrySearch,
-                     }: {
+    positionOptions,
+    countryOptions,
+    modalityOptions,
+    selectedPositions,
+    togglePosition,
+    selectedCountries,
+    toggleCountry,
+    selectedModalities,
+    toggleModality,
+    ageMin,
+    ageMax,
+    setAgeMin,
+    setAgeMax,
+    heightMin,
+    setHeightMin,
+    heightMax,
+    setHeightMax,
+    preferredFoot,
+    setPreferredFoot,
+    countrySearch,
+    setCountrySearch,
+    clearAll,
+}: {
+    positionOptions: { code: string; label: string; count: number }[];
+    countryOptions: { name: string; flag: string; count: number }[];
+    modalityOptions: string[];
+    selectedPositions: string[];
+    togglePosition: (code: string) => void;
+    selectedCountries: string[];
+    toggleCountry: (name: string) => void;
+    selectedModalities: string[];
+    toggleModality: (m: string) => void;
     ageMin: number;
     ageMax: number;
     setAgeMin: (n: number) => void;
@@ -144,6 +194,7 @@ function FilterPanel({
     setPreferredFoot: (s: string) => void;
     countrySearch: string;
     setCountrySearch: (s: string) => void;
+    clearAll: () => void;
 }) {
     return (
         <div className="space-y-6">
@@ -151,44 +202,48 @@ function FilterPanel({
                 <h3 className="text-xs font-bold text-[#0F172A] dark:text-[#F5F5F5] tracking-widest uppercase">
                     Filters
                 </h3>
-                <button className="text-[#FF6B00] text-xs hover:underline font-semibold">
+                <button
+                    onClick={clearAll}
+                    className="text-[#FF6B00] text-xs hover:underline font-semibold"
+                >
                     Clear All
                 </button>
             </div>
-
             <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
-
             {/* POSITION */}
             <div className="space-y-3">
                 <h4 className="text-[11px] font-bold text-[#475569] dark:text-[#9A9A9A] tracking-widest uppercase">
                     Position
                 </h4>
                 <div className="space-y-2.5">
-                    {POSITIONS.map((p) => (
+                    {positionOptions.map((p) => (
                         <div key={p.code} className="flex items-center gap-2.5">
                             <Checkbox
                                 id={`pos-${p.code}`}
+                                checked={selectedPositions.includes(p.code)}
+                                onCheckedChange={() => togglePosition(p.code)}
                                 className="border-[#CBD5E1] dark:border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
                             />
                             <Label
                                 htmlFor={`pos-${p.code}`}
                                 className="flex-1 flex items-center justify-between text-sm font-normal text-[#0F172A] dark:text-[#F5F5F5] cursor-pointer"
                             >
-                <span>
-                  <span className="font-mono font-bold text-[#FF6B00]">{p.code}</span>
-                  <span className="text-[#475569] dark:text-[#9A9A9A]"> — {p.label}</span>
-                </span>
+                                <span>
+                                    <span className="font-mono font-bold text-[#FF6B00]">{p.code}</span>
+                                    <span className="text-[#475569] dark:text-[#9A9A9A]"> — {p.label}</span>
+                                </span>
                                 <span className="text-[10px] font-mono text-[#94A3B8] dark:text-[#555555]">
-                  {p.count}
-                </span>
+                                    {p.count}
+                                </span>
                             </Label>
                         </div>
                     ))}
+                    {positionOptions.length === 0 && (
+                        <p className="text-xs text-[#94A3B8] dark:text-[#555555]">No data yet</p>
+                    )}
                 </div>
             </div>
-
             <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
-
             {/* AGE RANGE */}
             <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -196,8 +251,8 @@ function FilterPanel({
                         Age Range
                     </h4>
                     <span className="font-mono text-[#FF6B00] text-sm font-semibold">
-            {ageMin} – {ageMax}
-          </span>
+                        {ageMin} – {ageMax}
+                    </span>
                 </div>
                 <div className="space-y-2 pt-1">
                     <input
@@ -222,9 +277,7 @@ function FilterPanel({
                     <span>40</span>
                 </div>
             </div>
-
             <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
-
             {/* NATIONALITY */}
             <div className="space-y-3">
                 <h4 className="text-[11px] font-bold text-[#475569] dark:text-[#9A9A9A] tracking-widest uppercase">
@@ -240,33 +293,36 @@ function FilterPanel({
                     />
                 </div>
                 <div className="space-y-1.5 max-h-44 overflow-y-auto pr-1">
-                    {COUNTRIES.filter((c) =>
+                    {countryOptions.filter((c) =>
                         c.name.toLowerCase().includes(countrySearch.toLowerCase())
                     ).map((c) => (
                         <div key={c.name} className="flex items-center gap-2.5">
                             <Checkbox
                                 id={`country-${c.name}`}
+                                checked={selectedCountries.includes(c.name)}
+                                onCheckedChange={() => toggleCountry(c.name)}
                                 className="border-[#CBD5E1] dark:border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
                             />
                             <Label
                                 htmlFor={`country-${c.name}`}
                                 className="flex-1 flex items-center justify-between text-sm font-normal text-[#0F172A] dark:text-[#F5F5F5] cursor-pointer"
                             >
-                <span className="flex items-center gap-2">
-                  <span className="text-base leading-none">{c.flag}</span>
-                  <span>{c.name}</span>
-                </span>
+                                <span className="flex items-center gap-2">
+                                    <span className="text-base leading-none">{c.flag}</span>
+                                    <span>{c.name}</span>
+                                </span>
                                 <span className="text-[10px] font-mono text-[#94A3B8] dark:text-[#555555]">
-                  {c.count}
-                </span>
+                                    {c.count}
+                                </span>
                             </Label>
                         </div>
                     ))}
+                    {countryOptions.length === 0 && (
+                        <p className="text-xs text-[#94A3B8] dark:text-[#555555]">No data yet</p>
+                    )}
                 </div>
             </div>
-
             <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
-
             {/* PREFERRED FOOT */}
             <div className="space-y-3">
                 <h4 className="text-[11px] font-bold text-[#475569] dark:text-[#9A9A9A] tracking-widest uppercase">
@@ -290,20 +346,19 @@ function FilterPanel({
                     ))}
                 </RadioGroup>
             </div>
-
             <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
-
             {/* MODALITY */}
             <div className="space-y-3">
                 <h4 className="text-[11px] font-bold text-[#475569] dark:text-[#9A9A9A] tracking-widest uppercase">
                     Modality
                 </h4>
                 <div className="space-y-2.5">
-                    {['Football', 'Futsal', 'Beach Soccer'].map((m) => (
+                    {modalityOptions.map((m) => (
                         <div key={m} className="flex items-center gap-2.5">
                             <Checkbox
                                 id={`mod-${m}`}
-                                defaultChecked={m === 'Football'}
+                                checked={selectedModalities.includes(m)}
+                                onCheckedChange={() => toggleModality(m)}
                                 className="border-[#CBD5E1] dark:border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
                             />
                             <Label
@@ -316,9 +371,7 @@ function FilterPanel({
                     ))}
                 </div>
             </div>
-
             <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
-
             {/* HEIGHT */}
             <div className="space-y-3">
                 <h4 className="text-[11px] font-bold text-[#475569] dark:text-[#9A9A9A] tracking-widest uppercase">
@@ -342,33 +395,6 @@ function FilterPanel({
                     />
                 </div>
             </div>
-
-            <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
-
-            {/* SUBSCRIPTION */}
-            <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#475569] dark:text-[#9A9A9A] tracking-widest uppercase">
-                    Subscription
-                </h4>
-                <div className="flex items-center gap-2.5">
-                    <Checkbox
-                        id="premium-only"
-                        className="border-[#CBD5E1] dark:border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
-                    />
-                    <Label
-                        htmlFor="premium-only"
-                        className="text-sm font-normal text-[#0F172A] dark:text-[#F5F5F5] cursor-pointer flex items-center gap-1.5"
-                    >
-                        <Star className="w-3.5 h-3.5 text-[#FF6B00] fill-[#FF6B00]" />
-                        Premium players only
-                    </Label>
-                </div>
-            </div>
-
-            <Button className="w-full h-11 bg-[#FF6B00] hover:bg-[#CC5500] text-white rounded-xl font-semibold mt-2">
-                Apply Filters
-            </Button>
-
             {/* AD ZONE - ScoutPro */}
             <div className="space-y-2 pt-2">
                 <p className="text-[10px] uppercase tracking-widest text-[#94A3B8] dark:text-[#555555] text-center">
@@ -396,43 +422,168 @@ function FilterPanel({
         </div>
     );
 }
-
 export default function Index() {
+    const { players: rawPlayers = [] } = usePage<{ players: PlayerProfileRow[] }>().props;
     const [view, setView] = useState<'grid' | 'list'>('grid');
     const [ageMin, setAgeMin] = useState(16);
-    const [ageMax, setAgeMax] = useState(30);
+    const [ageMax, setAgeMax] = useState(40);
     const [heightMin, setHeightMin] = useState('');
     const [heightMax, setHeightMax] = useState('');
     const [preferredFoot, setPreferredFoot] = useState('any');
     const [countrySearch, setCountrySearch] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
-
-    const totalPlayers = 1247;
-    const players = MOCK_PLAYERS;
-
+    const [selectedPositions, setSelectedPositions] = useState<string[]>([]);
+    const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+    const [selectedModalities, setSelectedModalities] = useState<string[]>([]);
+    const [sortBy, setSortBy] = useState('newest');
+    const [page, setPage] = useState(1);
+    // DB row → UI shape
+    const allPlayers: Player[] = useMemo(
+        () => (Array.isArray(rawPlayers) ? rawPlayers.map(normalizePlayer) : []),
+        [rawPlayers]
+    );
+    // filter options — real data theke count soho
+    const positionOptions = useMemo(() => {
+        return (['GK', 'DEF', 'MID', 'FWD'] as const)
+            .map((code) => ({
+                code,
+                label: POSITION_LABELS[code],
+                count: allPlayers.filter((p) => p.position === code).length,
+            }))
+            .filter((o) => o.count > 0);
+    }, [allPlayers]);
+    const countryOptions = useMemo(() => {
+        const map = new Map<string, { name: string; flag: string; count: number }>();
+        allPlayers.forEach((p) => {
+            if (!p.country) return;
+            const existing = map.get(p.country);
+            if (existing) existing.count += 1;
+            else map.set(p.country, { name: p.country, flag: p.flag, count: 1 });
+        });
+        return Array.from(map.values()).sort((a, b) => b.count - a.count);
+    }, [allPlayers]);
+    const modalityOptions = useMemo(() => {
+        const set = new Set<string>();
+        allPlayers.forEach((p) => p.modality && set.add(p.modality));
+        return Array.from(set);
+    }, [allPlayers]);
+    const togglePosition = (code: string) => {
+        setPage(1);
+        setSelectedPositions((prev) =>
+            prev.includes(code) ? prev.filter((x) => x !== code) : [...prev, code]
+        );
+    };
+    const toggleCountry = (name: string) => {
+        setPage(1);
+        setSelectedCountries((prev) =>
+            prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name]
+        );
+    };
+    const toggleModality = (m: string) => {
+        setPage(1);
+        setSelectedModalities((prev) =>
+            prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]
+        );
+    };
+    const clearAll = () => {
+        setSelectedPositions([]);
+        setSelectedCountries([]);
+        setSelectedModalities([]);
+        setAgeMin(16);
+        setAgeMax(40);
+        setHeightMin('');
+        setHeightMax('');
+        setPreferredFoot('any');
+        setCountrySearch('');
+        setPage(1);
+    };
+    // filtering
+    const filtered = useMemo(() => {
+        const q = searchQuery.trim().toLowerCase();
+        const hMin = heightMin ? Number(heightMin) : null;
+        const hMax = heightMax ? Number(heightMax) : null;
+        const footWanted =
+            preferredFoot === 'right' ? 'R' : preferredFoot === 'left' ? 'L' : preferredFoot === 'both' ? 'B' : null;
+        return allPlayers.filter((p) => {
+            if (q) {
+                const haystack = `${p.name} ${p.club} ${p.country}`.toLowerCase();
+                if (!haystack.includes(q)) return false;
+            }
+            if (selectedPositions.length && !selectedPositions.includes(p.position)) return false;
+            if (selectedCountries.length && !selectedCountries.includes(p.country)) return false;
+            if (selectedModalities.length && !selectedModalities.includes(p.modality)) return false;
+            if (p.age !== null && (p.age < ageMin || p.age > ageMax)) return false;
+            if (hMin !== null && (p.height === null || p.height < hMin)) return false;
+            if (hMax !== null && (p.height === null || p.height > hMax)) return false;
+            if (footWanted && p.foot !== footWanted) return false;
+            return true;
+        });
+    }, [
+        allPlayers, searchQuery, selectedPositions, selectedCountries, selectedModalities,
+        ageMin, ageMax, heightMin, heightMax, preferredFoot,
+    ]);
+    // sorting
+    const sorted = useMemo(() => {
+        const arr = [...filtered];
+        switch (sortBy) {
+            case 'age-asc':
+                return arr.sort((a, b) => (a.age ?? 999) - (b.age ?? 999));
+            case 'age-desc':
+                return arr.sort((a, b) => (b.age ?? -1) - (a.age ?? -1));
+            case 'name':
+                return arr.sort((a, b) => a.name.localeCompare(b.name));
+            default:
+                return arr.sort((a, b) => b.id - a.id); // newest
+        }
+    }, [filtered, sortBy]);
+    const totalPlayers = sorted.length;
+    const totalPages = Math.max(1, Math.ceil(totalPlayers / PER_PAGE));
+    const currentPage = Math.min(page, totalPages);
+    const players = sorted.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+    const rangeStart = totalPlayers === 0 ? 0 : (currentPage - 1) * PER_PAGE + 1;
+    const rangeEnd = Math.min(currentPage * PER_PAGE, totalPlayers);
+    // pagination page numbers
+    const pageNumbers = useMemo(() => {
+        const nums: number[] = [];
+        const start = Math.max(1, currentPage - 1);
+        const end = Math.min(totalPages, start + 2);
+        for (let i = start; i <= end; i++) nums.push(i);
+        return nums;
+    }, [currentPage, totalPages]);
+    const filterProps = {
+        positionOptions,
+        countryOptions,
+        modalityOptions,
+        selectedPositions,
+        togglePosition,
+        selectedCountries,
+        toggleCountry,
+        selectedModalities,
+        toggleModality,
+        ageMin,
+        ageMax,
+        setAgeMin,
+        setAgeMax,
+        heightMin,
+        setHeightMin,
+        heightMax,
+        setHeightMax,
+        preferredFoot,
+        setPreferredFoot,
+        countrySearch,
+        setCountrySearch,
+        clearAll,
+    };
+    const initials = (name: string) =>
+        name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase();
     return (
         <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0D0D0D]">
             <ScoutNavbar />
-
             <div className="pt-16 flex min-h-screen">
                 {/* DESKTOP FILTER PANEL */}
                 <aside className="hidden lg:block w-72 shrink-0 bg-white dark:bg-[#0D0D0D] border-r border-[#E2E8F0] dark:border-[#2A2A2A] px-6 py-6 sticky top-16 h-[calc(100vh-64px)] overflow-y-auto">
-                    <FilterPanel
-                        ageMin={ageMin}
-                        ageMax={ageMax}
-                        setAgeMin={setAgeMin}
-                        setAgeMax={setAgeMax}
-                        heightMin={heightMin}
-                        setHeightMin={setHeightMin}
-                        heightMax={heightMax}
-                        setHeightMax={setHeightMax}
-                        preferredFoot={preferredFoot}
-                        setPreferredFoot={setPreferredFoot}
-                        countrySearch={countrySearch}
-                        setCountrySearch={setCountrySearch}
-                    />
+                    <FilterPanel {...filterProps} />
                 </aside>
-
                 {/* MAIN CONTENT */}
                 <main className="flex-1 min-w-0 p-4 sm:p-6">
                     {/* TOP BAR */}
@@ -441,12 +592,11 @@ export default function Index() {
                             <SearchIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
                             <Input
                                 value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
                                 placeholder="Search by name, club, or nationality..."
                                 className="pl-10 h-11 bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 dark:focus-visible:ring-1"
                             />
                         </div>
-
                         <div className="flex items-center gap-3 flex-wrap">
                             {/* Mobile filter trigger */}
                             <Sheet>
@@ -468,80 +618,59 @@ export default function Index() {
                                             Refine Search
                                         </SheetTitle>
                                     </SheetHeader>
-                                    <FilterPanel
-                                        ageMin={ageMin}
-                                        ageMax={ageMax}
-                                        setAgeMin={setAgeMin}
-                                        setAgeMax={setAgeMax}
-                                        heightMin={heightMin}
-                                        setHeightMin={setHeightMin}
-                                        heightMax={heightMax}
-                                        setHeightMax={setHeightMax}
-                                        preferredFoot={preferredFoot}
-                                        setPreferredFoot={setPreferredFoot}
-                                        countrySearch={countrySearch}
-                                        setCountrySearch={setCountrySearch}
-                                    />
+                                    <FilterPanel {...filterProps} />
                                 </SheetContent>
                             </Sheet>
-
                             <p className="hidden sm:block text-sm text-[#475569] dark:text-[#9A9A9A] font-mono whitespace-nowrap">
-                <span className="font-bold text-[#0F172A] dark:text-[#F5F5F5]">
-                  {totalPlayers.toLocaleString()}
-                </span>{' '}
+                                <span className="font-bold text-[#0F172A] dark:text-[#F5F5F5]">
+                                    {totalPlayers.toLocaleString()}
+                                </span>{' '}
                                 players found
                             </p>
-
                             {/* View toggle */}
                             <div className="flex items-center gap-1 bg-[#F8FAFC] dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-lg p-1">
                                 <button
                                     onClick={() => setView('grid')}
-                                    className={`p-1.5 rounded-md transition-colors ${
-                                        view === 'grid'
-                                            ? 'text-[#FF6B00] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]'
-                                            : 'text-[#94A3B8] dark:text-[#555555] hover:text-[#475569]'
-                                    }`}
+                                    className={`p-1.5 rounded-md transition-colors ${view === 'grid'
+                                        ? 'text-[#FF6B00] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]'
+                                        : 'text-[#94A3B8] dark:text-[#555555] hover:text-[#475569]'
+                                        }`}
                                     aria-label="Grid view"
                                 >
                                     <LayoutGrid className="w-4 h-4" />
                                 </button>
                                 <button
                                     onClick={() => setView('list')}
-                                    className={`p-1.5 rounded-md transition-colors ${
-                                        view === 'list'
-                                            ? 'text-[#FF6B00] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]'
-                                            : 'text-[#94A3B8] dark:text-[#555555] hover:text-[#475569]'
-                                    }`}
+                                    className={`p-1.5 rounded-md transition-colors ${view === 'list'
+                                        ? 'text-[#FF6B00] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]'
+                                        : 'text-[#94A3B8] dark:text-[#555555] hover:text-[#475569]'
+                                        }`}
                                     aria-label="List view"
                                 >
                                     <List className="w-4 h-4" />
                                 </button>
                             </div>
-
                             {/* Sort */}
-                            <Select defaultValue="newest">
+                            <Select value={sortBy} onValueChange={(v) => { setSortBy(v); setPage(1); }}>
                                 <SelectTrigger className="h-10 w-[140px] bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] text-sm">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white dark:bg-[#161616] border-[#E2E8F0] dark:border-[#2A2A2A]">
                                     <SelectItem value="newest">Newest</SelectItem>
-                                    <SelectItem value="viewed">Most Viewed</SelectItem>
+                                    <SelectItem value="name">Name A–Z</SelectItem>
                                     <SelectItem value="age-asc">Age ↑</SelectItem>
                                     <SelectItem value="age-desc">Age ↓</SelectItem>
-                                    <SelectItem value="rating-asc">Rating ↑</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
                     </div>
-
                     {/* Mobile count display */}
                     <p className="sm:hidden mb-3 text-sm text-[#475569] dark:text-[#9A9A9A] font-mono px-1">
-            <span className="font-bold text-[#0F172A] dark:text-[#F5F5F5]">
-              {totalPlayers.toLocaleString()}
-            </span>{' '}
+                        <span className="font-bold text-[#0F172A] dark:text-[#F5F5F5]">
+                            {totalPlayers.toLocaleString()}
+                        </span>{' '}
                         players found
                     </p>
-
                     {/* AD ZONE - TransferRoom Leaderboard */}
                     <div className="mb-4">
                         <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl min-h-[80px] flex flex-col sm:flex-row items-center px-6 py-3 sm:py-0 gap-3 sm:gap-4 border border-[#334155] relative overflow-hidden">
@@ -568,15 +697,21 @@ export default function Index() {
                             </button>
                         </div>
                     </div>
-
+                    {/* EMPTY STATE */}
+                    {totalPlayers === 0 && (
+                        <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-12 text-center">
+                            <p className="text-sm text-[#475569] dark:text-[#9A9A9A]">
+                                No players match your search.
+                            </p>
+                        </div>
+                    )}
                     {/* GRID VIEW */}
-                    {view === 'grid' && (
+                    {totalPlayers > 0 && view === 'grid' && (
                         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                             {players.map((p) => (
                                 <Link
                                     key={p.id}
-                                    // href={`/scouting/player/${p.id}`}
-                                    href={`/scouting/player`}
+                                    href={`/scouting/player/${p.id}`}
                                     className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden cursor-pointer group transition-all hover:-translate-y-1 hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_4px_20px_rgba(255,107,0,0.08)] hover:border-[#FF6B00]"
                                 >
                                     {/* Photo area */}
@@ -585,38 +720,24 @@ export default function Index() {
                                             p.position
                                         )} bg-[#F8FAFC] dark:bg-[#1F1F1F] relative flex items-center justify-center`}
                                     >
-                                        {/* Silhouette placeholder */}
-                                        <div className="w-24 h-24 rounded-full bg-white/20 dark:bg-black/20 flex items-center justify-center font-display text-3xl font-black text-white/70">
-                                            {p.name
-                                                .split(' ')
-                                                .map((n) => n[0])
-                                                .join('')
-                                                .slice(0, 2)}
-                                        </div>
-
+                                        {p.photoUrl ? (
+                                            <img
+                                                src={p.photoUrl}
+                                                alt={p.name}
+                                                className="absolute inset-0 h-full w-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-24 h-24 rounded-full bg-white/20 dark:bg-black/20 flex items-center justify-center font-display text-3xl font-black text-white/70">
+                                                {initials(p.name)}
+                                            </div>
+                                        )}
                                         {/* Position badge */}
                                         <span className="absolute top-3 left-3 bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-black px-2.5 py-0.5 rounded-full tracking-wider">
-                      {p.position}
-                    </span>
-
-                                        {/* Premium badge */}
-                                        {p.subscription === 'Premium' && (
-                                            <span className="absolute top-3 right-3 bg-[#FF6B00] text-white text-[9px] font-black px-2 py-0.5 rounded-full tracking-wider flex items-center gap-1">
-                        <Star className="w-2.5 h-2.5 fill-white" />
-                        PREMIUM
-                      </span>
-                                        )}
-
+                                            {p.position}
+                                        </span>
                                         {/* Flag */}
                                         <span className="absolute bottom-3 left-3 text-lg leading-none">{p.flag}</span>
-
-                                        {/* Views */}
-                                        <span className="absolute bottom-3 right-3 flex items-center gap-1 bg-black/30 backdrop-blur-[2px] text-white text-[10px] font-mono px-2 py-0.5 rounded-full">
-                      <Eye className="w-2.5 h-2.5" />
-                                            {p.views > 1000 ? `${(p.views / 1000).toFixed(1)}k` : p.views}
-                    </span>
                                     </div>
-
                                     {/* Info */}
                                     <div className="p-5">
                                         <h3 className="font-bold text-base text-[#0F172A] dark:text-[#F5F5F5] leading-tight truncate">
@@ -625,7 +746,6 @@ export default function Index() {
                                         <p className="text-sm text-[#475569] dark:text-[#9A9A9A] mt-0.5 truncate">
                                             {p.club}
                                         </p>
-
                                         {/* Stats */}
                                         <div className="grid grid-cols-3 mt-3 text-center border-t border-[#F1F5F9] dark:border-[#1F1F1F] pt-3">
                                             <div>
@@ -633,7 +753,7 @@ export default function Index() {
                                                     Age
                                                 </p>
                                                 <p className="text-xs font-semibold font-mono text-[#0F172A] dark:text-[#F5F5F5] mt-0.5">
-                                                    {p.age}
+                                                    {p.age ?? '—'}
                                                 </p>
                                             </div>
                                             <div className="border-x border-[#F1F5F9] dark:border-[#1F1F1F]">
@@ -641,7 +761,7 @@ export default function Index() {
                                                     Height
                                                 </p>
                                                 <p className="text-xs font-semibold font-mono text-[#0F172A] dark:text-[#F5F5F5] mt-0.5">
-                                                    {p.height}
+                                                    {p.height ?? '—'}
                                                 </p>
                                             </div>
                                             <div>
@@ -653,7 +773,6 @@ export default function Index() {
                                                 </p>
                                             </div>
                                         </div>
-
                                         <p className="mt-3 text-[#FF6B00] text-xs font-bold tracking-wider group-hover:underline flex items-center gap-1">
                                             VIEW PROFILE
                                             <ChevronRight className="w-3 h-3" />
@@ -663,9 +782,8 @@ export default function Index() {
                             ))}
                         </div>
                     )}
-
                     {/* LIST VIEW */}
-                    {view === 'list' && (
+                    {totalPlayers > 0 && view === 'list' && (
                         <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden">
                             <div className="overflow-x-auto">
                                 <Table>
@@ -690,7 +808,7 @@ export default function Index() {
                                                 Foot
                                             </TableHead>
                                             <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#475569] dark:text-[#9A9A9A]">
-                                                Plan
+                                                Modality
                                             </TableHead>
                                             <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#475569] dark:text-[#9A9A9A] text-right">
                                                 Action
@@ -705,17 +823,21 @@ export default function Index() {
                                             >
                                                 <TableCell className="py-3">
                                                     <div className="flex items-center gap-3">
-                                                        <div
-                                                            className={`w-10 h-10 rounded-full ${positionGradient(
-                                                                p.position
-                                                            )} flex items-center justify-center font-display font-black text-white text-xs shrink-0`}
-                                                        >
-                                                            {p.name
-                                                                .split(' ')
-                                                                .map((n) => n[0])
-                                                                .join('')
-                                                                .slice(0, 2)}
-                                                        </div>
+                                                        {p.photoUrl ? (
+                                                            <img
+                                                                src={p.photoUrl}
+                                                                alt={p.name}
+                                                                className="w-10 h-10 rounded-full object-cover shrink-0"
+                                                            />
+                                                        ) : (
+                                                            <div
+                                                                className={`w-10 h-10 rounded-full ${positionGradient(
+                                                                    p.position
+                                                                )} flex items-center justify-center font-display font-black text-white text-xs shrink-0`}
+                                                            >
+                                                                {initials(p.name)}
+                                                            </div>
+                                                        )}
                                                         <div className="min-w-0">
                                                             <p className="font-bold text-sm text-[#0F172A] dark:text-[#F5F5F5] truncate">
                                                                 {p.name}
@@ -727,40 +849,31 @@ export default function Index() {
                                                     </div>
                                                 </TableCell>
                                                 <TableCell>
-                          <span className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-black px-2 py-0.5 rounded-full tracking-wider">
-                            {p.position}
-                          </span>
+                                                    <span className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-black px-2 py-0.5 rounded-full tracking-wider">
+                                                        {p.position}
+                                                    </span>
                                                 </TableCell>
                                                 <TableCell className="font-mono text-sm text-[#0F172A] dark:text-[#F5F5F5]">
-                                                    {p.age}
+                                                    {p.age ?? '—'}
                                                 </TableCell>
                                                 <TableCell>
                                                     <div className="flex items-center gap-1.5 text-sm text-[#0F172A] dark:text-[#F5F5F5]">
                                                         <span className="text-base leading-none">{p.flag}</span>
-                                                        <span className="hidden md:inline">{p.country}</span>
+                                                        <span className="hidden md:inline">{p.country || '—'}</span>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="font-mono text-sm text-[#0F172A] dark:text-[#F5F5F5]">
-                                                    {p.height}
+                                                    {p.height ?? '—'}
                                                 </TableCell>
                                                 <TableCell className="font-mono text-sm text-[#0F172A] dark:text-[#F5F5F5]">
                                                     {p.foot}
                                                 </TableCell>
-                                                <TableCell>
-                                                    {p.subscription === 'Premium' ? (
-                                                        <span className="inline-flex items-center gap-1 bg-[#FF6B00] text-white text-[9px] font-black px-2 py-0.5 rounded-full tracking-wider">
-                              <Star className="w-2.5 h-2.5 fill-white" />
-                              PRO
-                            </span>
-                                                    ) : (
-                                                        <span className="text-[10px] text-[#94A3B8] dark:text-[#555555] uppercase tracking-wider font-bold">
-                              Free
-                            </span>
-                                                    )}
+                                                <TableCell className="text-sm text-[#475569] dark:text-[#9A9A9A]">
+                                                    {p.modality}
                                                 </TableCell>
                                                 <TableCell className="text-right">
                                                     <Link
-                                                        href={`/scout/players/${p.id}`}
+                                                        href={`/scouting/player/${p.id}`}
                                                         className="inline-flex items-center gap-1 text-[#FF6B00] text-xs font-bold tracking-wider hover:underline"
                                                     >
                                                         VIEW
@@ -774,70 +887,71 @@ export default function Index() {
                             </div>
                         </div>
                     )}
-
                     {/* PAGINATION */}
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-6 gap-3">
-                        <p className="text-sm text-[#475569] dark:text-[#9A9A9A] font-mono">
-                            Showing{' '}
-                            <span className="font-bold text-[#0F172A] dark:text-[#F5F5F5]">1–24</span> of{' '}
-                            <span className="font-bold text-[#0F172A] dark:text-[#F5F5F5]">
-                {totalPlayers.toLocaleString()}
-              </span>
-                        </p>
-
-                        <Pagination className="mx-0 w-auto justify-end">
-                            <PaginationContent>
-                                <PaginationItem>
-                                    <PaginationPrevious
-                                        href="#"
-                                        className="text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] hover:text-[#0F172A] dark:hover:text-[#F5F5F5] border-[#E2E8F0] dark:border-[#2A2A2A]"
-                                    />
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <PaginationLink
-                                        href="#"
-                                        isActive
-                                        className="bg-[#FF6B00] text-white border-[#FF6B00] hover:bg-[#CC5500] hover:text-white"
-                                    >
-                                        1
-                                    </PaginationLink>
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <PaginationLink
-                                        href="#"
-                                        className="text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] border-[#E2E8F0] dark:border-[#2A2A2A]"
-                                    >
-                                        2
-                                    </PaginationLink>
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <PaginationLink
-                                        href="#"
-                                        className="text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] border-[#E2E8F0] dark:border-[#2A2A2A]"
-                                    >
-                                        3
-                                    </PaginationLink>
-                                </PaginationItem>
-                                <PaginationItem className="hidden sm:list-item">
-                                    <PaginationEllipsis className="text-[#94A3B8]" />
-                                </PaginationItem>
-                                <PaginationItem className="hidden sm:list-item">
-                                    <PaginationLink
-                                        href="#"
-                                        className="text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] border-[#E2E8F0] dark:border-[#2A2A2A]"
-                                    >
-                                        52
-                                    </PaginationLink>
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <PaginationNext
-                                        href="#"
-                                        className="text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] hover:text-[#0F172A] dark:hover:text-[#F5F5F5] border-[#E2E8F0] dark:border-[#2A2A2A]"
-                                    />
-                                </PaginationItem>
-                            </PaginationContent>
-                        </Pagination>
-                    </div>
+                    {totalPlayers > 0 && (
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-6 gap-3">
+                            <p className="text-sm text-[#475569] dark:text-[#9A9A9A] font-mono">
+                                Showing{' '}
+                                <span className="font-bold text-[#0F172A] dark:text-[#F5F5F5]">
+                                    {rangeStart}–{rangeEnd}
+                                </span>{' '}
+                                of{' '}
+                                <span className="font-bold text-[#0F172A] dark:text-[#F5F5F5]">
+                                    {totalPlayers.toLocaleString()}
+                                </span>
+                            </p>
+                            <Pagination className="mx-0 w-auto justify-end">
+                                <PaginationContent>
+                                    <PaginationItem>
+                                        <PaginationPrevious
+                                            href="#"
+                                            onClick={(e) => { e.preventDefault(); setPage(Math.max(1, currentPage - 1)); }}
+                                            className="text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] hover:text-[#0F172A] dark:hover:text-[#F5F5F5] border-[#E2E8F0] dark:border-[#2A2A2A]"
+                                        />
+                                    </PaginationItem>
+                                    {pageNumbers.map((n) => (
+                                        <PaginationItem key={n}>
+                                            <PaginationLink
+                                                href="#"
+                                                isActive={n === currentPage}
+                                                onClick={(e) => { e.preventDefault(); setPage(n); }}
+                                                className={
+                                                    n === currentPage
+                                                        ? 'bg-[#FF6B00] text-white border-[#FF6B00] hover:bg-[#CC5500] hover:text-white'
+                                                        : 'text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] border-[#E2E8F0] dark:border-[#2A2A2A]'
+                                                }
+                                            >
+                                                {n}
+                                            </PaginationLink>
+                                        </PaginationItem>
+                                    ))}
+                                    {totalPages > pageNumbers[pageNumbers.length - 1] && (
+                                        <>
+                                            <PaginationItem className="hidden sm:list-item">
+                                                <PaginationEllipsis className="text-[#94A3B8]" />
+                                            </PaginationItem>
+                                            <PaginationItem className="hidden sm:list-item">
+                                                <PaginationLink
+                                                    href="#"
+                                                    onClick={(e) => { e.preventDefault(); setPage(totalPages); }}
+                                                    className="text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] border-[#E2E8F0] dark:border-[#2A2A2A]"
+                                                >
+                                                    {totalPages}
+                                                </PaginationLink>
+                                            </PaginationItem>
+                                        </>
+                                    )}
+                                    <PaginationItem>
+                                        <PaginationNext
+                                            href="#"
+                                            onClick={(e) => { e.preventDefault(); setPage(Math.min(totalPages, currentPage + 1)); }}
+                                            className="text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] hover:text-[#0F172A] dark:hover:text-[#F5F5F5] border-[#E2E8F0] dark:border-[#2A2A2A]"
+                                        />
+                                    </PaginationItem>
+                                </PaginationContent>
+                            </Pagination>
+                        </div>
+                    )}
                 </main>
             </div>
         </div>
