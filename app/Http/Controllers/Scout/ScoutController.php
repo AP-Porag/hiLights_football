@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PlayerProfile;
 use App\Models\PlayerRating;
 use App\Models\PlayerReport;
+use App\Models\ProfileView;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,15 @@ class ScoutController extends Controller
     public function playerDetails(Request $request, $id)
     {
         $player = PlayerProfile::with('user')->findOrFail($id);
+        // ke dekhlo record koro (nijer profile chhara)
+        if ($request->user() && $request->user()->id !== $player->user_id) {
+            ProfileView::create([
+                'player_profile_id' => $player->id,
+                'viewer_id' => $request->user()->id,
+            ]);
+
+            $player->increment('views');
+        }
 
         // same modality-r onno player (similar section-er jonno)
         $similarPlayers = PlayerProfile::with('user')

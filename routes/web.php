@@ -123,6 +123,8 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
     Route::post('/subscription/cancel', [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
 
     Route::post('/subscription/resume', [SubscriptionController::class, 'resume'])->name('subscription.resume');
+
+    Route::get('/views', [PlayerProfileController::class, 'views'])->name('player.views');
 });
 
 //all Scouts / Agents / Clubs routes
