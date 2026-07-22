@@ -56,44 +56,45 @@ import {
     XAxis,
     YAxis
 } from 'recharts';
-// MOCK DATA (realistic)
+
+// MOCK DATA (realistic) – subscription সরানো হয়েছে
 const player = {
     name: 'Benjamin',
     totalViews: 1247,
     trend: 12,
     scoutInterest: 23,
     avgRating: 4.2,
-    subscription: 'free' as 'free' | 'premium',
 };
-// const recentViews = [
-//     { id: 1, type: 'Scout', org: 'FC Porto Scouting', country: 'Portugal', flag: '🇵🇹', time: '2 hours ago', locked: false },
-//     { id: 2, type: 'Club', org: 'Sporting Lisboa B', country: 'Portugal', flag: '🇵🇹', time: 'Yesterday', locked: false },
-//     { id: 3, type: 'Agent', org: 'Top Eleven Agency', country: 'Spain', flag: '🇪🇸', time: '2 days ago', locked: true },
-//     { id: 4, type: 'Scout', org: 'Anonymous', country: 'France', flag: '🇫🇷', time: '3 days ago', locked: true },
-// ];
-const countryData = [
+
+// ডিফল্ট কান্ট্রি ডেটা (যদি ব্যাকএন্ড থেকে না আসে)
+const defaultCountryData = [
     { country: 'Portugal', views: 412 },
     { country: 'Spain', views: 287 },
     { country: 'Brazil', views: 198 },
     { country: 'France', views: 156 },
     { country: 'England', views: 94 },
 ];
+
 const getCountryName = (code?: string) => {
     if (!code) return '';
     return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
 };
+
 // CSRF cookie theke token (logo file upload er jonno fetch-e lagbe)
 const getCookie = (name: string): string => {
     const row = document.cookie.split('; ').find((r) => r.startsWith(name + '='));
     return row ? decodeURIComponent(row.split('=')[1]) : '';
 };
+
 const sparklineData = [12, 18, 14, 22, 19, 28, 34];
+
 function getGreeting(): string {
     const h = new Date().getHours();
     if (h < 12) return 'Good morning';
     if (h < 18) return 'Good afternoon';
     return 'Good evening';
 }
+
 function formatDate(): string {
     return new Date().toLocaleDateString('en-US', {
         weekday: 'long',
@@ -102,8 +103,10 @@ function formatDate(): string {
         day: 'numeric',
     });
 }
+
 const nonEmpty = (v: any): boolean =>
     v !== null && v !== undefined && String(v).trim() !== '';
+
 const COUNTRY_CODES = [
     'AF', 'AL', 'DZ', 'AD', 'AO', 'AG', 'AR', 'AM', 'AU', 'AT', 'AZ', 'BS', 'BH', 'BD', 'BB', 'BY', 'BE', 'BZ', 'BJ', 'BT',
     'BO', 'BA', 'BW', 'BR', 'BN', 'BG', 'BF', 'BI', 'KH', 'CM', 'CA', 'CV', 'CF', 'TD', 'CL', 'CN', 'CO', 'KM', 'CG', 'CD',
@@ -116,7 +119,9 @@ const COUNTRY_CODES = [
     'ZA', 'KR', 'SS', 'ES', 'LK', 'SD', 'SR', 'SE', 'CH', 'SY', 'TW', 'TJ', 'TZ', 'TH', 'TL', 'TG', 'TO', 'TT', 'TN', 'TR',
     'TM', 'TV', 'UG', 'UA', 'AE', 'GB', 'US', 'UY', 'UZ', 'VU', 'VE', 'VN', 'YE', 'ZM', 'ZW',
 ];
+
 const ALL_POSITIONS = ['GK', 'LB', 'CB-L', 'CB-R', 'RB', 'LM', 'CM-L', 'CM-R', 'RM', 'CAM', 'LW', 'ST', 'RW', 'CF'];
+
 // ════════ LIST MODAL CONFIG (repeatable rows) ════════
 type FieldDef = { name: string; label: string; type: 'text' | 'number' | 'file' };
 type ListConfig = {
@@ -125,9 +130,10 @@ type ListConfig = {
     primary: string;
     fields: FieldDef[];
     empty: Record<string, any>;
-    firstFixed?: boolean;                 // first row remove kora jabe na
-    defaultRows?: Record<string, any>[];  // khali thakle ei default row gula dekhabe
+    firstFixed?: boolean;
+    defaultRows?: Record<string, any>[];
 };
+
 const LIST_CONFIGS: Record<string, ListConfig> = {
     videos: {
         title: 'Videos',
@@ -202,10 +208,12 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
         empty: { home: '', score: '', away: '', goals: '', assists: '', minutes: '' },
     },
 };
+
 // ════════ FORM MODAL CONFIG (single record) ════════
 type FormFieldType = 'text' | 'number' | 'date' | 'select' | 'country' | 'positions' | 'file';
 type FormField = { name: string; label: string; type: FormFieldType; options?: string[] };
 type FormConfig = { title: string; fields: FormField[] };
+
 const FORM_CONFIGS: Record<string, FormConfig> = {
     basic_info: {
         title: 'Basic Information',
@@ -236,8 +244,10 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
         ],
     },
 };
+
 const inputClass =
     'h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none';
+
 // ── Generic list modal (repeatable rows) ──
 function ListModal({
     configKey,
@@ -256,6 +266,7 @@ function ListModal({
     });
     const [saving, setSaving] = useState(false);
     const [uploadingKey, setUploadingKey] = useState<string | null>(null);
+
     const update = (i: number, name: string, val: string) => {
         setRows((prev) => {
             const copy = [...prev];
@@ -263,7 +274,7 @@ function ListModal({
             return copy;
         });
     };
-    // logo file upload — alada endpoint-e pathiye URL peye row-e boshai
+
     const uploadFile = async (i: number, name: string, file: File) => {
         const key = `${i}-${name}`;
         setUploadingKey(key);
@@ -289,11 +300,13 @@ function ListModal({
             setUploadingKey(null);
         }
     };
+
     const addRow = () => setRows([...rows, { ...cfg.empty }]);
     const removeRow = (i: number) => {
-        if (cfg.firstFixed && i === 0) return; // first row fixed
+        if (cfg.firstFixed && i === 0) return;
         setRows(rows.filter((_, idx) => idx !== i));
     };
+
     const save = () => {
         const cleaned = rows.filter((r) => nonEmpty(r[cfg.primary]));
         setSaving(true);
@@ -307,6 +320,7 @@ function ListModal({
             }
         );
     };
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
             <div
@@ -397,6 +411,7 @@ function ListModal({
         </div>
     );
 }
+
 // ── Generic form modal (single record) ──
 function FormModal({
     configKey,
@@ -423,12 +438,15 @@ function FormModal({
     });
     const [preview, setPreview] = useState<string>(pp?.photo_url ?? '');
     const [saving, setSaving] = useState(false);
+
     const setField = (name: string, val: any) => setValues((prev) => ({ ...prev, [name]: val }));
+
     const togglePos = (id: string) => {
         const cur: string[] = values.positions || [];
         if (cur.includes(id)) setField('positions', cur.filter((p) => p !== id));
         else if (cur.length < 3) setField('positions', [...cur, id]);
     };
+
     const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -438,6 +456,7 @@ function FormModal({
             r.readAsDataURL(file);
         }
     };
+
     const save = () => {
         const payload: Record<string, any> = { ...values };
         if (!payload.photo) delete payload.photo;
@@ -449,6 +468,7 @@ function FormModal({
             onFinish: () => setSaving(false),
         });
     };
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
             <div
@@ -530,9 +550,19 @@ function FormModal({
         </div>
     );
 }
+
 export default function PlayerDashboard() {
     const { auth } = usePage().props as any;
-    const { recentViews, subscription } = usePage().props;
+    const {
+        recentViews = [],
+        subscription,
+        viewsTrend = 0,
+        viewsThisWeek = 0,
+        viewsDaily = [],
+        totalViews = 0,
+        countryAnalytics = [] // ← নতুন প্রপস: ব্যাকএন্ড থেকে আসা কান্ট্রি ডেটা
+    } = usePage().props as any;
+
     const pp = auth?.user?.player_profile ?? {};
     const greeting = getGreeting();
     const hasSubscription = !!subscription?.current_plan;
@@ -541,6 +571,10 @@ export default function PlayerDashboard() {
     const [shareOpen, setShareOpen] = useState(false);
     const profileUrl = `${window.location.origin}/player/profile/${auth?.user?.player_profile?.id}`;
     const [copied, setCopied] = useState(false);
+
+    // কান্ট্রি ডেটা – যদি ব্যাকএন্ড থেকে আসে তাহলে সেটা ব্যবহার করব, না হলে ডিফল্ট
+    const countryData = countryAnalytics.length > 0 ? countryAnalytics : defaultCountryData;
+
     const copyProfileLink = async () => {
         try {
             await navigator.clipboard.writeText(profileUrl);
@@ -550,7 +584,6 @@ export default function PlayerDashboard() {
             }, 2500);
         } catch (error) {
             console.error('Failed to copy:', error);
-            // ব্যাকআপ পদ্ধতি (যদি Clipboard API কাজ না করে)
             try {
                 const textarea = document.createElement('textarea');
                 textarea.value = profileUrl;
@@ -568,15 +601,17 @@ export default function PlayerDashboard() {
             }
         }
     };
-    // video: video_url (Edit page) OR videos list (dashboard modal) — dutor jekono ekta thakle done
+
+    // video: video_url (Edit page) OR videos list (dashboard modal)
     const videoDone =
         nonEmpty(pp.video_url) ||
         (Array.isArray(pp.videos) && pp.videos.some((v: any) => nonEmpty(v?.url)));
-    // ── PROFILE COMPLETION (registration theke shuru kore sob — 21 check) ──
+
+    // ── PROFILE COMPLETION (21 checks) ──
     const completionChecks: boolean[] = [
-        nonEmpty(auth?.user?.name),          // registration
-        nonEmpty(auth?.user?.dob),           // registration
-        nonEmpty(auth?.user?.nationality),   // registration
+        nonEmpty(auth?.user?.name),
+        nonEmpty(auth?.user?.dob),
+        nonEmpty(auth?.user?.nationality),
         nonEmpty(pp.gender),
         nonEmpty(pp.height),
         nonEmpty(pp.weight),
@@ -599,6 +634,7 @@ export default function PlayerDashboard() {
     const profileComplete = Math.round(
         (completionChecks.filter(Boolean).length / completionChecks.length) * 100
     );
+
     // ── CHECKLIST ──
     const checklist: {
         label: string;
@@ -607,7 +643,7 @@ export default function PlayerDashboard() {
         modal?: string;
         cta: string;
         icon?: typeof Video;
-        alwaysShow?: boolean;   // done howar por-o button dekhabe
+        alwaysShow?: boolean;
     }[] = [
             {
                 label: 'Basic information added',
@@ -683,14 +719,16 @@ export default function PlayerDashboard() {
             },
             {
                 label: 'Upgrade to Premium',
-                done: player.subscription === 'premium',
-                href: '/player/upgrade',
+                done: hasSubscription,
+                href: '/player/subscription',
                 cta: 'Upgrade →',
                 icon: Crown,
             },
         ];
+
     const circumference = 276.46;
     const dashOffset = circumference - (profileComplete / 100) * circumference;
+
     const sparkMax = Math.max(...sparklineData);
     const sparkMin = Math.min(...sparklineData);
     const sparkRange = sparkMax - sparkMin || 1;
@@ -701,6 +739,7 @@ export default function PlayerDashboard() {
             return `${x},${y}`;
         })
         .join(' ');
+
     const playerInfo = [
         {
             icon: <Shirt className="w-4 h-4 text-gray-300" />,
@@ -735,11 +774,11 @@ export default function PlayerDashboard() {
                 : 'Not specified',
         },
     ];
-    const shareProfile = async () => {
 
+    const shareProfile = async () => {
         const shareData = {
-            title: `${player.user?.name} — HiLights Football`,
-            text: `Check out ${player.user?.name}'s player profile on HiLights Football`,
+            title: `${auth?.user?.name || 'Player'} — HiLights Football`,
+            text: `Check out ${auth?.user?.name || 'this player'}'s profile on HiLights Football`,
             url: profileUrl,
         };
         if (navigator.share) {
@@ -775,6 +814,7 @@ export default function PlayerDashboard() {
             prompt('Copy this profile link:', profileUrl);
         }
     };
+
     const cardRef = useRef<HTMLDivElement>(null);
     const downloadCard = async () => {
         if (!cardRef.current) return;
@@ -789,6 +829,7 @@ export default function PlayerDashboard() {
             alert('Could not download card. Please try again.');
         }
     };
+
     return (
         <div className="min-h-screen bg-[#0D0D0D] pt-16">
             <PlayerNavbar />
@@ -831,8 +872,15 @@ export default function PlayerDashboard() {
                                 <Eye className="h-5 w-5 text-[#FF6B00]" />
                             </div>
                             <div className="mt-2 flex items-center gap-1">
-                                <TrendingUp className="h-3 w-3 text-green-400" />
-                                <span className="text-xs font-medium text-green-400">{player.trend}% this week</span>
+                                <TrendingUp
+                                    className={`h-3 w-3 ${viewsTrend < 0 ? 'rotate-180 text-red-400' : 'text-green-400'}`}
+                                />
+                                <span
+                                    className={`text-xs font-medium ${viewsTrend < 0 ? 'text-red-400' : viewsTrend > 0 ? 'text-green-400' : 'text-[#9A9A9A]'
+                                        }`}
+                                >
+                                    {viewsTrend > 0 ? '+' : ''}{viewsTrend}% this week
+                                </span>
                             </div>
                             <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="mt-2 h-12 w-full">
                                 <polyline points={sparkPoints} fill="none" stroke="#FF6B00" strokeWidth="2" vectorEffect="non-scaling-stroke" />
@@ -855,11 +903,11 @@ export default function PlayerDashboard() {
                         </div>
                         {/* [4] Subscription */}
                         <div className="flex flex-col rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
-                            {player.subscription === 'free' ? (
+                            {!hasSubscription ? (
                                 <>
                                     <Badge className="w-fit border border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[10px] font-bold tracking-wider text-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]">FREE PLAN</Badge>
                                     <p className="mt-3 flex-1 text-sm text-[#9A9A9A]">Unlock all features and reach more scouts.</p>
-                                    <Link href="/player/upgrade" className="mt-3">
+                                    <Link href="/player/subscription" className="mt-3">
                                         <Button className="w-full bg-[#FF6B00] p-3 font-semibold text-white hover:bg-[#CC5500]">
                                             <Crown className="mr-1.5 h-3.5 w-3.5" />
                                             <span className="text-[12px]">Upgrade to <br className="block" /> Premium</span>
@@ -1042,6 +1090,11 @@ export default function PlayerDashboard() {
                             </div>
                             <Link href="/player/views" className="text-xs font-semibold text-[#FF6B00] hover:text-[#CC5500]">View all →</Link>
                         </div>
+                        {recentViews.length === 0 && (
+                            <p className="rounded-xl border border-[#2A2A2A] p-6 text-center text-sm text-[#9A9A9A]">
+                                No one has viewed your profile yet.
+                            </p>
+                        )}
                         <ul className="space-y-3">
                             {recentViews.map((view, index) => {
                                 const locked = !hasSubscription && index >= 2;
@@ -1071,12 +1124,16 @@ export default function PlayerDashboard() {
                                             </div>
 
                                             {!locked && (
-                                                <Link
-                                                    href={`/player/views/${view.id}`}
-                                                    className="flex-shrink-0 text-xs font-semibold text-[#FF6B00] hover:text-[#CC5500]"
-                                                >
-                                                    View →
-                                                </Link>
+                                                view.player_profile_id ? (
+                                                    <Link
+                                                        href={`/player/profile/${view.player_profile_id}`}
+                                                        className="flex-shrink-0 text-xs font-semibold text-[#FF6B00] hover:text-[#CC5500]"
+                                                    >
+                                                        View →
+                                                    </Link>
+                                                ) : (
+                                                    <span className="text-xs text-[#94A3B8]">No profile</span>
+                                                )
                                             )}
                                         </div>
 
@@ -1096,37 +1153,43 @@ export default function PlayerDashboard() {
                         </ul>
                     </section>
                 </div>
-                {/* COUNTRY ANALYTICS */}
+                {/* COUNTRY ANALYTICS - ডাইনামিক ডেটা সহ */}
                 <section className="relative overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                     <div className="mb-5 flex items-start justify-between">
                         <div>
                             <h2 className="text-lg font-bold text-[#F5F5F5]">Country Analytics</h2>
                             <p className="mt-1 text-xs text-[#94A3B8]">Where your profile views come from</p>
                         </div>
-                        {player.subscription === 'premium' && (
+                        {hasSubscription && (
                             <Badge className="border border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[10px] font-bold tracking-wider text-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]">PREMIUM</Badge>
                         )}
                     </div>
-                    <div className={player.subscription === 'free' ? 'pointer-events-none blur-md filter select-none' : ''}>
-                        <div className="h-[280px] w-full">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={countryData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" vertical={false} />
-                                    <XAxis dataKey="country" stroke="#94A3B8" style={{ fontSize: '12px' }} tickLine={false} axisLine={false} />
-                                    <YAxis stroke="#94A3B8" style={{ fontSize: '12px' }} tickLine={false} axisLine={false} />
-                                    <Tooltip contentStyle={{ background: '#161616', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#F5F5F5', fontSize: '12px' }} cursor={{ fill: 'rgba(255,107,0,0.08)' }} />
-                                    <Bar dataKey="views" fill="#FF6B00" radius={[6, 6, 0, 0]} />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </div>
+                    <div className={!hasSubscription ? 'pointer-events-none blur-md filter select-none' : ''}>
+                        {countryData.length > 0 ? (
+                            <div className="h-[280px] w-full">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart data={countryData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                                        <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" vertical={false} />
+                                        <XAxis dataKey="country" stroke="#94A3B8" style={{ fontSize: '12px' }} tickLine={false} axisLine={false} />
+                                        <YAxis stroke="#94A3B8" style={{ fontSize: '12px' }} tickLine={false} axisLine={false} />
+                                        <Tooltip contentStyle={{ background: '#161616', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#F5F5F5', fontSize: '12px' }} cursor={{ fill: 'rgba(255,107,0,0.08)' }} />
+                                        <Bar dataKey="views" fill="#FF6B00" radius={[6, 6, 0, 0]} />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        ) : (
+                            <div className="flex h-[280px] items-center justify-center text-sm text-[#9A9A9A]">
+                                No country data available yet.
+                            </div>
+                        )}
                     </div>
-                    {player.subscription === 'free' && (
+                    {!hasSubscription && (
                         <div className="absolute inset-0 flex items-center justify-center bg-[#0D0D0D]/40">
                             <div className="mx-4 max-w-md rounded-2xl border border-[#2A2A2A] bg-[#1F1F1F] p-8 text-center shadow-xl">
                                 <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[rgba(255,107,0,0.12)]"><Lock className="h-6 w-6 text-[#FF6B00]" /></div>
                                 <h3 className="text-base font-bold text-[#F5F5F5]">Country Analytics — Premium Feature</h3>
                                 <p className="mt-2 text-sm text-[#9A9A9A]">See exactly which countries are watching your highlights.</p>
-                                <Link href="/player/upgrade" className="mt-4 inline-block">
+                                <Link href="/player/subscription" className="mt-4 inline-block">
                                     <Button className="bg-[#FF6B00] font-semibold text-white hover:bg-[#CC5500]"><Crown className="mr-2 h-4 w-4" /> Upgrade to Premium</Button>
                                 </Link>
                             </div>
@@ -1148,110 +1211,45 @@ export default function PlayerDashboard() {
             {shareOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
                     <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-                        {/* হেডার */}
                         <div className="flex items-center justify-between">
-                            <h2 className="text-xl font-semibold text-gray-900">
-                                Share Profile
-                            </h2>
-                            <button
-                                onClick={() => setShareOpen(false)}
-                                className="rounded-full p-1 hover:bg-gray-100"
-                            >
+                            <h2 className="text-xl font-semibold text-gray-900">Share Profile</h2>
+                            <button onClick={() => setShareOpen(false)} className="rounded-full p-1 hover:bg-gray-100">
                                 <X className="h-6 w-6" />
                             </button>
                         </div>
-
-                        {/* Social Icon */}
                         <div className="mt-6 grid grid-cols-4 gap-5">
-                            {/* Whats App */}
-                            <a
-                                href={`https://wa.me/?text=${encodeURIComponent(profileUrl)}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-center"
-                            >
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white">
-                                    <MessageCircle />
-                                </div>
+                            <a href={`https://wa.me/?text=${encodeURIComponent(profileUrl)}`} target="_blank" rel="noreferrer" className="text-center">
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white"><MessageCircle /></div>
                                 <span className="mt-2 block text-xs">WhatsApp</span>
                             </a>
-                            {/* Facebook */}
-                            <a
-                                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-center"
-                            >
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white">
-                                    <Facebook />
-                                </div>
+                            <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}`} target="_blank" rel="noreferrer" className="text-center">
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white"><Facebook /></div>
                                 <span className="mt-2 block text-xs">Facebook</span>
                             </a>
-                            {/* Twitter */}
-                            <a
-                                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(profileUrl)}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-center"
-                            >
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-black text-white">
-                                    <span className="font-bold">X</span>
-                                </div>
+                            <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(profileUrl)}`} target="_blank" rel="noreferrer" className="text-center">
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-black text-white"><span className="font-bold">X</span></div>
                                 <span className="mt-2 block text-xs">Twitter</span>
                             </a>
-                            {/* Linked In */}
-                            <a
-                                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(profileUrl)}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-center"
-                            >
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-700 text-white">
-                                    <Linkedin />
-                                </div>
+                            <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(profileUrl)}`} target="_blank" rel="noreferrer" className="text-center">
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-700 text-white"><Linkedin /></div>
                                 <span className="mt-2 block text-xs">LinkedIn</span>
                             </a>
-                            {/* Telegram */}
-                            <a
-                                href={`https://t.me/share/url?url=${encodeURIComponent(profileUrl)}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-center"
-                            >
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-sky-500 text-white">
-                                    <Send />
-                                </div>
+                            <a href={`https://t.me/share/url?url=${encodeURIComponent(profileUrl)}`} target="_blank" rel="noreferrer" className="text-center">
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-sky-500 text-white"><Send /></div>
                                 <span className="mt-2 block text-xs">Telegram</span>
                             </a>
-                            {/* Email */}
-                            <a
-                                href={`mailto:?body=${encodeURIComponent(profileUrl)}`}
-                                className="text-center"
-                            >
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gray-700 text-white">
-                                    <Mail />
-                                </div>
+                            <a href={`mailto:?body=${encodeURIComponent(profileUrl)}`} className="text-center">
+                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gray-700 text-white"><Mail /></div>
                                 <span className="mt-2 block text-xs">Email</span>
                             </a>
                         </div>
-
-                        {/* URL বক্স */}
                         <div className="mt-7 flex items-center gap-2 rounded-xl border bg-gray-50 p-3">
-                            <input
-                                readOnly
-                                value={profileUrl}
-                                className="flex-1 bg-transparent text-sm outline-none"
-                            />
-                            <button
-                                onClick={copyProfileLink}
-                                className="rounded-lg cursor-pointer bg-black px-4 py-2 text-sm text-white hover:bg-gray-800 transition-colors"
-                            >
+                            <input readOnly value={profileUrl} className="flex-1 bg-transparent text-sm outline-none" />
+                            <button onClick={copyProfileLink} className="rounded-lg cursor-pointer bg-black px-4 py-2 text-sm text-white hover:bg-gray-800 transition-colors">
                                 {copied ? 'Copied!' : 'Copy'}
                             </button>
                         </div>
                     </div>
-
-                    {/* কপি করা হলে নোটিফিকেশন */}
                     {copied && (
                         <div className="fixed bottom-8 left-1/2 z-[60] -translate-x-1/2 rounded-lg bg-black px-5 py-3 text-sm text-white shadow-lg transition-all">
                             ✅ Link Copied
@@ -1259,6 +1257,6 @@ export default function PlayerDashboard() {
                     )}
                 </div>
             )}
-        </div >
+        </div>
     );
 }

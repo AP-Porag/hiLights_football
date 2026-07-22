@@ -6,12 +6,14 @@ namespace App\Http\Controllers\Player;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Player\PlayerProfileUpdateRequest;
 use App\Models\PlayerProfile;
+use App\Models\ProfileView;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class PlayerProfileController extends Controller
 {
@@ -22,38 +24,83 @@ class PlayerProfileController extends Controller
         $profile = $user->playerProfile;
         $subscription = $this->subscriptionState($request);
 
-        // User এর সাথে সম্পর্কিত ডেটা লোড করুন
-        // যেমন: matches, teams, statistics ইত্যাদি
-        $recentViews = User::where('role', 'scout')
+        // Recent Views (আগের মতো)
+        $recentViews = ProfileView::with('viewer:id,name,role', 'viewer.playerProfile:id,user_id')
+            ->where('player_profile_id', $profile->id)
             ->latest()
-            ->take(10)
             ->get()
-            ->map(function ($scout) {
+            ->unique('viewer_id')
+            ->take(10)
+            ->map(fn($v) => [
+                'id'        => $v->viewer_id,
+                'name'      => $v->viewer?->name ?? 'Unknown',
+                'role'      => $v->viewer?->role,
+                'viewed_at' => $v->created_at->diffForHumans(),
+                // নতুন: ভিউয়ারের প্লেয়ার প্রোফাইল আইডি (যদি থাকে)
+                'player_profile_id' => $v->viewer?->playerProfile?->id ?? null,
+            ])
+            ->values();
+
+        // ── এই সপ্তাহ vs গত সপ্তাহ ──
+        $thisWeek = ProfileView::where('player_profile_id', $profile->id)
+            ->where('created_at', '>=', Carbon::now()->subDays(7))
+            ->count();
+
+        $lastWeek = ProfileView::where('player_profile_id', $profile->id)
+            ->whereBetween('created_at', [Carbon::now()->subDays(14), Carbon::now()->subDays(7)])
+            ->count();
+
+        $trend = $lastWeek > 0
+            ? round((($thisWeek - $lastWeek) / $lastWeek) * 100)
+            : ($thisWeek > 0 ? 100 : 0);
+
+        // ── গত ৭ দিনের ডেইলি কাউন্ট (স্পার্কলাইন) ──
+        $daily = collect(range(6, 0))->map(function ($daysAgo) use ($profile) {
+            return ProfileView::where('player_profile_id', $profile->id)
+                ->whereDate('created_at', Carbon::now()->subDays($daysAgo)->toDateString())
+                ->count();
+        })->values();
+
+        $totalViews = ProfileView::where('player_profile_id', $profile->id)->count();
+
+        // ── কান্ট্রি অ্যানালিটিক্স (নতুন) ──
+        $countryAnalytics = ProfileView::where('player_profile_id', $profile->id)
+            ->whereNotNull('viewer_id')               // শুধু লগইন করা ইউজারের ভিউ
+            ->with('viewer')                          // viewer রিলেশন লোড
+            ->get()
+            ->groupBy(function ($view) {
+                return $view->viewer?->nationality ?? 'Unknown';
+            })
+            ->map(function ($group, $countryCode) {
                 return [
-                    'id' => $scout->id,
-                    'name' => $scout->name,
-                    // 'type' => 'Scout',
-                    // 'org' => $scout->organization_name ?? $scout->name,
-                    // 'country' => $scout->country,
-                    // 'time' => $scout->created_at->diffForHumans(),
-                    // 'locked' => false,
+                    'country' => $countryCode,        // 'BD', 'US', 'GB' ইত্যাদি
+                    'views'   => $group->count(),
                 ];
-            });
+            })
+            ->values()
+            ->sortByDesc('views')
+            ->take(10)                                // সর্বোচ্চ ১০টি দেশ
+            ->toArray();
 
         return Inertia::render('player/dashboard/Index', [
             'auth' => [
                 'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'dob' => $user->dob?->format('Y-m-d'),
-                    'nationality' => $user->nationality,
-                    'created_at' => $user->created_at?->format('Y-m-d H:i:s'),
-                    'player_profile' => $user->playerProfile,
+                    'id'              => $user->id,
+                    'name'            => $user->name,
+                    'email'           => $user->email,
+                    'dob'             => $user->dob?->format('Y-m-d'),
+                    'nationality'     => $user->nationality,
+                    'created_at'      => $user->created_at?->format('Y-m-d H:i:s'),
+                    'player_profile'  => $user->playerProfile,
                 ]
             ],
-            'recentViews' => $recentViews,
-            'subscription' => $subscription,
+            'recentViews'       => $recentViews,
+            'subscription'      => $subscription,
+            'viewsThisWeek'     => $thisWeek,
+            'viewsTrend'        => $trend,
+            'viewsDaily'        => $daily,
+            'totalViews'        => $totalViews,
+            'countryAnalytics'  => $countryAnalytics, // ← নতুন প্রপস
         ]);
     }
 
@@ -273,12 +320,15 @@ class PlayerProfileController extends Controller
 
     public function playerDetails($id)
     {
-        $player = PlayerProfile::with('user')
-            ->where('id', $id)
-            ->firstOrFail();
-        // Increase profile view count
+        $player = PlayerProfile::with('user')->findOrFail($id);
         $player->increment('views');
 
+        // Log the view if user is authenticated, else can still log with null viewer
+        $viewer = auth()->user();
+        ProfileView::create([
+            'viewer_id' => $viewer ? $viewer->id : null,
+            'player_profile_id' => $player->id,
+        ]);
 
         return Inertia::render('player/profile/public/New-Detail', [
             'player' => $player,
@@ -325,5 +375,37 @@ class PlayerProfileController extends Controller
             'is_cancelled'         => $isCancelled,
             'subscription_ends_at' => $endsAt,
         ];
+    }
+
+    public function views(Request $request)
+    {
+        $user = $request->user();
+        $profile = $user->playerProfile;
+
+        // পেজিনেটেড ভিউ লিস্ট (প্রতি পেজে ১৫টি)
+        $views = ProfileView::with('viewer:id,name,role', 'viewer.playerProfile:id,user_id')
+            ->where('player_profile_id', $profile->id)
+            ->latest()
+            ->paginate(15);
+
+        // Inertia-তে পাস করার জন্য ডেটা ফরম্যাট করুন
+        $viewsData = $views->map(fn($v) => [
+            'id'        => $v->viewer_id,
+            'name'      => $v->viewer?->name ?? 'Unknown',
+            'role'      => $v->viewer?->role,
+            'viewed_at' => $v->created_at->diffForHumans(),
+            // নতুন: ভিউয়ারের প্লেয়ার প্রোফাইল আইডি (যদি থাকে)
+            'player_profile_id' => $v->viewer?->playerProfile?->id ?? null,
+        ]);
+
+        return Inertia::render('player/views/Index', [
+            'views' => $viewsData,
+            'pagination' => [
+                'current_page' => $views->currentPage(),
+                'last_page'    => $views->lastPage(),
+                'per_page'     => $views->perPage(),
+                'total'        => $views->total(),
+            ],
+        ]);
     }
 }

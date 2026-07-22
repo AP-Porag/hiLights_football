@@ -48,11 +48,11 @@ interface PlayerProfileRow {
     id: number;
     user_id: number;
     player_id: string | null;
-    height: number | null;
-    weight: number | null;
+    height: number | string | null;
+    weight: number | string | null;
     current_club: string | null;
     modality: string | null;
-    positions: string[] | null;
+    positions: string[] | string | null;
     foot: string | null;
     photo_url: string | null;
     user?: {
@@ -88,6 +88,25 @@ const FOOT_MAP: Record<string, 'R' | 'L' | 'B'> = {
     Left: 'L',
     Ambidextrous: 'B',
 };
+// positions column jodi model-e 'array' cast na thake, Inertia JSON string pathay —
+// duitai handle korchi
+const toArray = (v: unknown): string[] => {
+    if (Array.isArray(v)) return v as string[];
+    if (typeof v === 'string' && v.trim() !== '') {
+        try {
+            const parsed = JSON.parse(v);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch {
+            return [];
+        }
+    }
+    return [];
+};
+const toNumOrNull = (v: unknown): number | null => {
+    if (v === null || v === undefined || v === '') return null;
+    const n = Number(v);
+    return isNaN(n) ? null : n;
+};
 const getCountryName = (code?: string | null): string => {
     if (!code) return '';
     try {
@@ -112,7 +131,7 @@ const calcAge = (dob?: string | null): number | null => {
 };
 // DB row → UI Player
 const normalizePlayer = (p: PlayerProfileRow): Player => {
-    const positions = Array.isArray(p.positions) ? p.positions : [];
+    const positions = toArray(p.positions);
     const firstPos = positions.find((x) => POSITION_GROUP[x]);
     return {
         id: p.id,
@@ -120,7 +139,7 @@ const normalizePlayer = (p: PlayerProfileRow): Player => {
         club: p.current_club ?? '—',
         position: firstPos ? POSITION_GROUP[firstPos] : '—',
         age: calcAge(p.user?.dob),
-        height: p.height ?? null,
+        height: toNumOrNull(p.height),
         foot: p.foot ? (FOOT_MAP[p.foot] ?? '—') : '—',
         country: getCountryName(p.user?.nationality),
         flag: codeToFlag(p.user?.nationality),
@@ -149,6 +168,8 @@ const POSITION_LABELS: Record<string, string> = {
     FWD: 'Forward',
 };
 const PER_PAGE = 24;
+const AGE_FLOOR = 16;
+const AGE_CEIL = 40;
 function FilterPanel({
     positionOptions,
     countryOptions,
@@ -163,6 +184,7 @@ function FilterPanel({
     ageMax,
     setAgeMin,
     setAgeMax,
+    ageActive,
     heightMin,
     setHeightMin,
     heightMax,
@@ -186,6 +208,7 @@ function FilterPanel({
     ageMax: number;
     setAgeMin: (n: number) => void;
     setAgeMax: (n: number) => void;
+    ageActive: boolean;
     heightMin: string;
     setHeightMin: (s: string) => void;
     heightMax: string;
@@ -251,30 +274,30 @@ function FilterPanel({
                         Age Range
                     </h4>
                     <span className="font-mono text-[#FF6B00] text-sm font-semibold">
-                        {ageMin} – {ageMax}
+                        {ageActive ? `${ageMin} – ${ageMax}` : 'Any'}
                     </span>
                 </div>
                 <div className="space-y-2 pt-1">
                     <input
                         type="range"
-                        min={16}
-                        max={40}
+                        min={AGE_FLOOR}
+                        max={AGE_CEIL}
                         value={ageMin}
                         onChange={(e) => setAgeMin(Math.min(Number(e.target.value), ageMax))}
                         className="w-full h-1.5 bg-[#E2E8F0] dark:bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-[#FF6B00]"
                     />
                     <input
                         type="range"
-                        min={16}
-                        max={40}
+                        min={AGE_FLOOR}
+                        max={AGE_CEIL}
                         value={ageMax}
                         onChange={(e) => setAgeMax(Math.max(Number(e.target.value), ageMin))}
                         className="w-full h-1.5 bg-[#E2E8F0] dark:bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-[#FF6B00]"
                     />
                 </div>
                 <div className="flex justify-between text-[10px] font-mono text-[#94A3B8] dark:text-[#555555]">
-                    <span>16</span>
-                    <span>40</span>
+                    <span>{AGE_FLOOR}</span>
+                    <span>{AGE_CEIL}</span>
                 </div>
             </div>
             <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
@@ -369,6 +392,9 @@ function FilterPanel({
                             </Label>
                         </div>
                     ))}
+                    {modalityOptions.length === 0 && (
+                        <p className="text-xs text-[#94A3B8] dark:text-[#555555]">No data yet</p>
+                    )}
                 </div>
             </div>
             <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
@@ -422,11 +448,18 @@ function FilterPanel({
         </div>
     );
 }
-export default function Index() {
-    const { players: rawPlayers = [] } = usePage<{ players: PlayerProfileRow[] }>().props;
+export default function Index({ players: playersProp }: { players?: PlayerProfileRow[] }) {
+    // prop hisebe ashuk ba usePage theke — duitai kaj korbe
+    const pageProps = usePage<{ players?: PlayerProfileRow[] }>().props;
+    const rawPlayers: PlayerProfileRow[] = Array.isArray(playersProp)
+        ? playersProp
+        : Array.isArray(pageProps.players)
+            ? pageProps.players
+            : [];
     const [view, setView] = useState<'grid' | 'list'>('grid');
-    const [ageMin, setAgeMin] = useState(16);
-    const [ageMax, setAgeMax] = useState(40);
+    const [ageMin, setAgeMinRaw] = useState(AGE_FLOOR);
+    const [ageMax, setAgeMaxRaw] = useState(AGE_CEIL);
+    const [ageActive, setAgeActive] = useState(false); // slider na chhuley age filter off
     const [heightMin, setHeightMin] = useState('');
     const [heightMax, setHeightMax] = useState('');
     const [preferredFoot, setPreferredFoot] = useState('any');
@@ -437,9 +470,11 @@ export default function Index() {
     const [selectedModalities, setSelectedModalities] = useState<string[]>([]);
     const [sortBy, setSortBy] = useState('newest');
     const [page, setPage] = useState(1);
+    const setAgeMin = (n: number) => { setAgeActive(true); setPage(1); setAgeMinRaw(n); };
+    const setAgeMax = (n: number) => { setAgeActive(true); setPage(1); setAgeMaxRaw(n); };
     // DB row → UI shape
     const allPlayers: Player[] = useMemo(
-        () => (Array.isArray(rawPlayers) ? rawPlayers.map(normalizePlayer) : []),
+        () => rawPlayers.map(normalizePlayer),
         [rawPlayers]
     );
     // filter options — real data theke count soho
@@ -489,12 +524,14 @@ export default function Index() {
         setSelectedPositions([]);
         setSelectedCountries([]);
         setSelectedModalities([]);
-        setAgeMin(16);
-        setAgeMax(40);
+        setAgeMinRaw(AGE_FLOOR);
+        setAgeMaxRaw(AGE_CEIL);
+        setAgeActive(false);
         setHeightMin('');
         setHeightMax('');
         setPreferredFoot('any');
         setCountrySearch('');
+        setSearchQuery('');
         setPage(1);
     };
     // filtering
@@ -512,7 +549,8 @@ export default function Index() {
             if (selectedPositions.length && !selectedPositions.includes(p.position)) return false;
             if (selectedCountries.length && !selectedCountries.includes(p.country)) return false;
             if (selectedModalities.length && !selectedModalities.includes(p.modality)) return false;
-            if (p.age !== null && (p.age < ageMin || p.age > ageMax)) return false;
+            // age filter shudhu tokhon-i chalu, jokhon user slider naracche
+            if (ageActive && p.age !== null && (p.age < ageMin || p.age > ageMax)) return false;
             if (hMin !== null && (p.height === null || p.height < hMin)) return false;
             if (hMax !== null && (p.height === null || p.height > hMax)) return false;
             if (footWanted && p.foot !== footWanted) return false;
@@ -520,7 +558,7 @@ export default function Index() {
         });
     }, [
         allPlayers, searchQuery, selectedPositions, selectedCountries, selectedModalities,
-        ageMin, ageMax, heightMin, heightMax, preferredFoot,
+        ageActive, ageMin, ageMax, heightMin, heightMax, preferredFoot,
     ]);
     // sorting
     const sorted = useMemo(() => {
@@ -564,6 +602,7 @@ export default function Index() {
         ageMax,
         setAgeMin,
         setAgeMax,
+        ageActive,
         heightMin,
         setHeightMin,
         heightMax,
@@ -700,9 +739,29 @@ export default function Index() {
                     {/* EMPTY STATE */}
                     {totalPlayers === 0 && (
                         <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-12 text-center">
-                            <p className="text-sm text-[#475569] dark:text-[#9A9A9A]">
-                                No players match your search.
-                            </p>
+                            {rawPlayers.length === 0 ? (
+                                <>
+                                    <p className="text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]">
+                                        No players received from the server.
+                                    </p>
+                                    <p className="text-xs text-[#475569] dark:text-[#9A9A9A] mt-2">
+                                        Check that the controller is passing a <span className="font-mono">players</span> prop
+                                        to this page and that <span className="font-mono">player_profiles</span> has rows.
+                                    </p>
+                                </>
+                            ) : (
+                                <>
+                                    <p className="text-sm text-[#475569] dark:text-[#9A9A9A]">
+                                        No players match your filters.
+                                    </p>
+                                    <button
+                                        onClick={clearAll}
+                                        className="mt-3 text-[#FF6B00] text-xs font-bold hover:underline"
+                                    >
+                                        Clear all filters
+                                    </button>
+                                </>
+                            )}
                         </div>
                     )}
                     {/* GRID VIEW */}
