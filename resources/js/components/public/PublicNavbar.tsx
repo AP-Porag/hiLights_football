@@ -32,6 +32,7 @@ export default function PublicNavbar() {
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
 
+
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 8);
         onScroll();
@@ -48,10 +49,13 @@ export default function PublicNavbar() {
             id: number;
             name: string;
             email: string;
+            role: string
         } | null;
     };
 
     const isLoggedIn = !!auth?.user;
+    const dashboardHref =
+        auth?.user?.role === 'player' ? '/player' : '/scouting';
 
     return (
         <header
@@ -118,7 +122,7 @@ export default function PublicNavbar() {
                         </Link>
                     )}
 
-                    <Link href={isLoggedIn ? "/player/" : "/register"}>
+                    <Link href={isLoggedIn ? dashboardHref : "/register"}>
                         <Button
                             size="sm"
                             className="cursor-pointer bg-[#e53f01] px-4 text-sm font-semibold text-white hover:bg-[#ff5e24] xl:h-10 xl:text-base 2xl:h-12 2xl:px-6 2xl:text-lg"

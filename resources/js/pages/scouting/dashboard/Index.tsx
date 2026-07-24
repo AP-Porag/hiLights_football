@@ -37,11 +37,10 @@ import {
     Search as SearchIcon,
     LayoutGrid,
     List,
-    Star,
     SlidersHorizontal,
     Network,
     ChevronRight,
-    Eye,
+    X,
 } from 'lucide-react';
 // ── DB theke asha PlayerProfile (with user) ──
 interface PlayerProfileRow {
@@ -194,10 +193,11 @@ function FilterPanel({
     countrySearch,
     setCountrySearch,
     clearAll,
+    activeFilterCount,
 }: {
     positionOptions: { code: string; label: string; count: number }[];
     countryOptions: { name: string; flag: string; count: number }[];
-    modalityOptions: string[];
+    modalityOptions: { name: string; count: number }[];
     selectedPositions: string[];
     togglePosition: (code: string) => void;
     selectedCountries: string[];
@@ -218,16 +218,23 @@ function FilterPanel({
     countrySearch: string;
     setCountrySearch: (s: string) => void;
     clearAll: () => void;
+    activeFilterCount: number;
 }) {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <h3 className="text-xs font-bold text-[#0F172A] dark:text-[#F5F5F5] tracking-widest uppercase">
                     Filters
+                    {activeFilterCount > 0 && (
+                        <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[#FF6B00] px-1.5 py-0.5 text-[9px] font-black text-white">
+                            {activeFilterCount}
+                        </span>
+                    )}
                 </h3>
                 <button
                     onClick={clearAll}
-                    className="text-[#FF6B00] text-xs hover:underline font-semibold"
+                    disabled={activeFilterCount === 0}
+                    className="text-[#FF6B00] text-xs hover:underline font-semibold disabled:opacity-40 disabled:cursor-not-allowed disabled:no-underline"
                 >
                     Clear All
                 </button>
@@ -343,6 +350,12 @@ function FilterPanel({
                     {countryOptions.length === 0 && (
                         <p className="text-xs text-[#94A3B8] dark:text-[#555555]">No data yet</p>
                     )}
+                    {countryOptions.length > 0 &&
+                        countryOptions.filter((c) =>
+                            c.name.toLowerCase().includes(countrySearch.toLowerCase())
+                        ).length === 0 && (
+                            <p className="text-xs text-[#94A3B8] dark:text-[#555555]">No country matched</p>
+                        )}
                 </div>
             </div>
             <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
@@ -377,18 +390,21 @@ function FilterPanel({
                 </h4>
                 <div className="space-y-2.5">
                     {modalityOptions.map((m) => (
-                        <div key={m} className="flex items-center gap-2.5">
+                        <div key={m.name} className="flex items-center gap-2.5">
                             <Checkbox
-                                id={`mod-${m}`}
-                                checked={selectedModalities.includes(m)}
-                                onCheckedChange={() => toggleModality(m)}
+                                id={`mod-${m.name}`}
+                                checked={selectedModalities.includes(m.name)}
+                                onCheckedChange={() => toggleModality(m.name)}
                                 className="border-[#CBD5E1] dark:border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
                             />
                             <Label
-                                htmlFor={`mod-${m}`}
-                                className="text-sm font-normal text-[#0F172A] dark:text-[#F5F5F5] cursor-pointer"
+                                htmlFor={`mod-${m.name}`}
+                                className="flex-1 flex items-center justify-between text-sm font-normal text-[#0F172A] dark:text-[#F5F5F5] cursor-pointer"
                             >
-                                {m}
+                                <span>{m.name}</span>
+                                <span className="text-[10px] font-mono text-[#94A3B8] dark:text-[#555555]">
+                                    {m.count}
+                                </span>
                             </Label>
                         </div>
                     ))}
@@ -460,9 +476,9 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
     const [ageMin, setAgeMinRaw] = useState(AGE_FLOOR);
     const [ageMax, setAgeMaxRaw] = useState(AGE_CEIL);
     const [ageActive, setAgeActive] = useState(false); // slider na chhuley age filter off
-    const [heightMin, setHeightMin] = useState('');
-    const [heightMax, setHeightMax] = useState('');
-    const [preferredFoot, setPreferredFoot] = useState('any');
+    const [heightMin, setHeightMinRaw] = useState('');
+    const [heightMax, setHeightMaxRaw] = useState('');
+    const [preferredFoot, setPreferredFootRaw] = useState('any');
     const [countrySearch, setCountrySearch] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedPositions, setSelectedPositions] = useState<string[]>([]);
@@ -470,8 +486,12 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
     const [selectedModalities, setSelectedModalities] = useState<string[]>([]);
     const [sortBy, setSortBy] = useState('newest');
     const [page, setPage] = useState(1);
+    // filter bodlalei page 1-e fire jabe
     const setAgeMin = (n: number) => { setAgeActive(true); setPage(1); setAgeMinRaw(n); };
     const setAgeMax = (n: number) => { setAgeActive(true); setPage(1); setAgeMaxRaw(n); };
+    const setHeightMin = (s: string) => { setPage(1); setHeightMinRaw(s); };
+    const setHeightMax = (s: string) => { setPage(1); setHeightMaxRaw(s); };
+    const setPreferredFoot = (s: string) => { setPage(1); setPreferredFootRaw(s); };
     // DB row → UI shape
     const allPlayers: Player[] = useMemo(
         () => rawPlayers.map(normalizePlayer),
@@ -498,9 +518,14 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
         return Array.from(map.values()).sort((a, b) => b.count - a.count);
     }, [allPlayers]);
     const modalityOptions = useMemo(() => {
-        const set = new Set<string>();
-        allPlayers.forEach((p) => p.modality && set.add(p.modality));
-        return Array.from(set);
+        const map = new Map<string, number>();
+        allPlayers.forEach((p) => {
+            if (!p.modality) return;
+            map.set(p.modality, (map.get(p.modality) ?? 0) + 1);
+        });
+        return Array.from(map.entries())
+            .map(([name, count]) => ({ name, count }))
+            .sort((a, b) => b.count - a.count);
     }, [allPlayers]);
     const togglePosition = (code: string) => {
         setPage(1);
@@ -527,13 +552,23 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
         setAgeMinRaw(AGE_FLOOR);
         setAgeMaxRaw(AGE_CEIL);
         setAgeActive(false);
-        setHeightMin('');
-        setHeightMax('');
-        setPreferredFoot('any');
+        setHeightMinRaw('');
+        setHeightMaxRaw('');
+        setPreferredFootRaw('any');
         setCountrySearch('');
         setSearchQuery('');
         setPage(1);
     };
+    // koyta filter chalu ache
+    const activeFilterCount =
+        selectedPositions.length +
+        selectedCountries.length +
+        selectedModalities.length +
+        (ageActive ? 1 : 0) +
+        (heightMin ? 1 : 0) +
+        (heightMax ? 1 : 0) +
+        (preferredFoot !== 'any' ? 1 : 0) +
+        (searchQuery.trim() ? 1 : 0);
     // filtering
     const filtered = useMemo(() => {
         const q = searchQuery.trim().toLowerCase();
@@ -570,6 +605,8 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                 return arr.sort((a, b) => (b.age ?? -1) - (a.age ?? -1));
             case 'name':
                 return arr.sort((a, b) => a.name.localeCompare(b.name));
+            case 'height-desc':
+                return arr.sort((a, b) => (b.height ?? -1) - (a.height ?? -1));
             default:
                 return arr.sort((a, b) => b.id - a.id); // newest
         }
@@ -583,9 +620,9 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
     // pagination page numbers
     const pageNumbers = useMemo(() => {
         const nums: number[] = [];
-        const start = Math.max(1, currentPage - 1);
+        const start = Math.max(1, Math.min(currentPage - 1, totalPages - 2));
         const end = Math.min(totalPages, start + 2);
-        for (let i = start; i <= end; i++) nums.push(i);
+        for (let i = Math.max(1, start); i <= end; i++) nums.push(i);
         return nums;
     }, [currentPage, totalPages]);
     const filterProps = {
@@ -612,9 +649,30 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
         countrySearch,
         setCountrySearch,
         clearAll,
+        activeFilterCount,
     };
     const initials = (name: string) =>
         name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase();
+    // upore-r active filter chip gulo
+    const chips: { label: string; onRemove: () => void }[] = [
+        ...selectedPositions.map((c) => ({
+            label: POSITION_LABELS[c] ?? c,
+            onRemove: () => togglePosition(c),
+        })),
+        ...selectedCountries.map((c) => ({ label: c, onRemove: () => toggleCountry(c) })),
+        ...selectedModalities.map((m) => ({ label: m, onRemove: () => toggleModality(m) })),
+        ...(ageActive
+            ? [{
+                label: `Age ${ageMin}–${ageMax}`,
+                onRemove: () => { setAgeActive(false); setAgeMinRaw(AGE_FLOOR); setAgeMaxRaw(AGE_CEIL); setPage(1); },
+            }]
+            : []),
+        ...(heightMin ? [{ label: `Min ${heightMin} cm`, onRemove: () => setHeightMin('') }] : []),
+        ...(heightMax ? [{ label: `Max ${heightMax} cm`, onRemove: () => setHeightMax('') }] : []),
+        ...(preferredFoot !== 'any'
+            ? [{ label: `${preferredFoot} foot`, onRemove: () => setPreferredFoot('any') }]
+            : []),
+    ];
     return (
         <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0D0D0D]">
             <ScoutNavbar />
@@ -633,8 +691,17 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                 value={searchQuery}
                                 onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
                                 placeholder="Search by name, club, or nationality..."
-                                className="pl-10 h-11 bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 dark:focus-visible:ring-1"
+                                className="pl-10 pr-10 h-11 bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 dark:focus-visible:ring-1"
                             />
+                            {searchQuery && (
+                                <button
+                                    onClick={() => { setSearchQuery(''); setPage(1); }}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#FF6B00]"
+                                    aria-label="Clear search"
+                                >
+                                    <X className="w-4 h-4" />
+                                </button>
+                            )}
                         </div>
                         <div className="flex items-center gap-3 flex-wrap">
                             {/* Mobile filter trigger */}
@@ -646,6 +713,11 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                     >
                                         <SlidersHorizontal className="w-4 h-4 mr-2" />
                                         Filters
+                                        {activeFilterCount > 0 && (
+                                            <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[#FF6B00] px-1.5 py-0.5 text-[10px] font-black text-white">
+                                                {activeFilterCount}
+                                            </span>
+                                        )}
                                     </Button>
                                 </SheetTrigger>
                                 <SheetContent
@@ -699,10 +771,32 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                     <SelectItem value="name">Name A–Z</SelectItem>
                                     <SelectItem value="age-asc">Age ↑</SelectItem>
                                     <SelectItem value="age-desc">Age ↓</SelectItem>
+                                    <SelectItem value="height-desc">Tallest</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
                     </div>
+                    {/* ACTIVE FILTER CHIPS */}
+                    {chips.length > 0 && (
+                        <div className="flex flex-wrap items-center gap-2 mb-4">
+                            {chips.map((chip, i) => (
+                                <button
+                                    key={`${chip.label}-${i}`}
+                                    onClick={chip.onRemove}
+                                    className="inline-flex items-center gap-1.5 rounded-full border border-[#FF6B00] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] px-3 py-1 text-xs font-semibold text-[#CC5500] hover:bg-[#FF6B00] hover:text-white transition-colors"
+                                >
+                                    {chip.label}
+                                    <X className="w-3 h-3" />
+                                </button>
+                            ))}
+                            <button
+                                onClick={clearAll}
+                                className="text-xs font-bold text-[#475569] dark:text-[#9A9A9A] hover:text-[#FF6B00] hover:underline"
+                            >
+                                Clear all
+                            </button>
+                        </div>
+                    )}
                     {/* Mobile count display */}
                     <p className="sm:hidden mb-3 text-sm text-[#475569] dark:text-[#9A9A9A] font-mono px-1">
                         <span className="font-bold text-[#0F172A] dark:text-[#F5F5F5]">
@@ -740,15 +834,9 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                     {totalPlayers === 0 && (
                         <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-12 text-center">
                             {rawPlayers.length === 0 ? (
-                                <>
-                                    <p className="text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]">
-                                        No players received from the server.
-                                    </p>
-                                    <p className="text-xs text-[#475569] dark:text-[#9A9A9A] mt-2">
-                                        Check that the controller is passing a <span className="font-mono">players</span> prop
-                                        to this page and that <span className="font-mono">player_profiles</span> has rows.
-                                    </p>
-                                </>
+                                <p className="text-sm text-[#475569] dark:text-[#9A9A9A]">
+                                    No players in the directory yet.
+                                </p>
                             ) : (
                                 <>
                                     <p className="text-sm text-[#475569] dark:text-[#9A9A9A]">
@@ -947,7 +1035,7 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                         </div>
                     )}
                     {/* PAGINATION */}
-                    {totalPlayers > 0 && (
+                    {totalPlayers > 0 && totalPages > 1 && (
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-6 gap-3">
                             <p className="text-sm text-[#475569] dark:text-[#9A9A9A] font-mono">
                                 Showing{' '}
@@ -965,7 +1053,7 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                         <PaginationPrevious
                                             href="#"
                                             onClick={(e) => { e.preventDefault(); setPage(Math.max(1, currentPage - 1)); }}
-                                            className="text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] hover:text-[#0F172A] dark:hover:text-[#F5F5F5] border-[#E2E8F0] dark:border-[#2A2A2A]"
+                                            className={`text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] hover:text-[#0F172A] dark:hover:text-[#F5F5F5] border-[#E2E8F0] dark:border-[#2A2A2A] ${currentPage === 1 ? 'pointer-events-none opacity-40' : ''}`}
                                         />
                                     </PaginationItem>
                                     {pageNumbers.map((n) => (
@@ -1004,7 +1092,7 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                         <PaginationNext
                                             href="#"
                                             onClick={(e) => { e.preventDefault(); setPage(Math.min(totalPages, currentPage + 1)); }}
-                                            className="text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] hover:text-[#0F172A] dark:hover:text-[#F5F5F5] border-[#E2E8F0] dark:border-[#2A2A2A]"
+                                            className={`text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] hover:text-[#0F172A] dark:hover:text-[#F5F5F5] border-[#E2E8F0] dark:border-[#2A2A2A] ${currentPage === totalPages ? 'pointer-events-none opacity-40' : ''}`}
                                         />
                                     </PaginationItem>
                                 </PaginationContent>
