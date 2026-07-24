@@ -70,8 +70,8 @@ export default function PlayerNavbar() {
     }, []);
 
     const isActive = (href: string) => {
-        if (href === '/') return url === '/' || url === '';
-        return url.startsWith(href);
+        const normalize = (path: string) => path.replace(/\/$/, '');
+        return normalize(url) === normalize(href);
     };
 
     const handleLogout = (e: React.MouseEvent) => {
@@ -181,7 +181,7 @@ export default function PlayerNavbar() {
                             <DropdownMenuItem asChild className="cursor-pointer rounded-md focus:bg-[#F8FAFC] dark:focus:bg-[#1F1F1F]">
                                 <Link
                                     href={`/players/${auth.user.id}`}
-                                    className="flex items-center gap-2 px-3 py-2 text-sm text-[#0F172A] dark:text-[#F5F5F5]"
+                                    className="flex items-center gap-2 px-3 py-2 text-sm text-[#94A3B8]"
                                 >
                                     <User className="h-4 w-4 text-[#94A3B8]" />
                                     View Public Profile
@@ -191,9 +191,9 @@ export default function PlayerNavbar() {
                             <DropdownMenuItem asChild className="cursor-pointer rounded-md focus:bg-[#F8FAFC] dark:focus:bg-[#1F1F1F]">
                                 <Link
                                     href="/player/settings"
-                                    className="flex items-center gap-2 px-3 py-2 text-sm text-[#0F172A] dark:text-[#F5F5F5]"
+                                    className="flex items-center gap-2 px-3 py-2 text-sm text-[#94A3B8]"
                                 >
-                                    <Settings className="h-4 w-4 text-[#94A3B8]" />
+                                    <Settings className="h-4 w-4 text-[#94A3B8] " />
                                     Account Settings
                                 </Link>
                             </DropdownMenuItem>

@@ -54,9 +54,13 @@ const HomeTwo = () => {
             id: number;
             name: string;
             email: string;
+            role: string
         } | null;
     };
     const isLoggedIn = !!auth?.user;
+    const dashboardHref =
+        auth?.user?.role === 'player' ? '/player' : '/scouting';
+
     const steps = [
         {
             icon: User,
@@ -185,7 +189,7 @@ const HomeTwo = () => {
 
                                 {/* Buttons */}
                                 <div className="mt-8 flex flex-wrap items-center gap-4 2xl:mt-10">
-                                    <Link href={isLoggedIn ? "/player/" : "/register"}>
+                                    <Link href={isLoggedIn ? dashboardHref : "/register"}>
                                         <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#ea3905] px-4 py-3 text-xs font-semibold uppercase transition-all duration-300 hover:bg-orange-600 sm:text-sm lg:px-6 lg:py-3 lg:text-base 2xl:px-8 2xl:py-4 2xl:text-lg">
                                             <UserRoundPlus className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
                                             <span className="text-left leading-tight">
@@ -286,7 +290,7 @@ const HomeTwo = () => {
                             </div>
                             {/* Button */}
                             <div className="flex items-end justify-end lg:pr-4">
-                                <Link href={isLoggedIn ? "/player/" : "/register"}>
+                                <Link href={isLoggedIn ? dashboardHref : "/register"}>
                                     <button className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#773a0c] px-4 py-2 transition hover:bg-[#ff6b00]/10 md:gap-4 lg:px-8 lg:py-4 2xl:px-10">
                                         <UserPlus className="h-6 w-6 shrink-0 text-white md:h-8 md:w-8 2xl:h-9 2xl:w-9" />
                                         <span className="text-left text-xs font-bold uppercase sm:text-sm lg:text-base 2xl:text-lg">
