@@ -69,13 +69,13 @@ export default function ScoutNavbar() {
     const auth = props.auth?.user
         ? props.auth
         : {
-              user: {
-                  id: 1,
-                  name: 'Lucas Pereira',
-                  email: 'lucas@hilights.fc',
-                  avatar_url: null,
-              },
-          };
+            user: {
+                id: 1,
+                name: 'Lucas Pereira',
+                email: 'lucas@hilights.fc',
+                avatar_url: null,
+            },
+        };
     const notificationCount = props.notificationCount ?? 2;
 
     const [scrolled, setScrolled] = useState(false);
@@ -115,13 +115,8 @@ export default function ScoutNavbar() {
             <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between gap-4 px-6">
                 {/* LEFT — Logo */}
                 <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football">
-                    <img src="/images/logo/hilights_logo_transparent_200.png" className="h-9 w-auto dark:hidden" alt="HiLights Football" />
-                    <img src="/images/logo/hilights_logo_dark_200.png" className="hidden h-9 w-auto dark:block" alt="HiLights Football" />
-                    <div className="hidden items-end gap-0.5 leading-none sm:flex">
-                        <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>
-                        <span className="text-xl font-black tracking-tight text-[#FF6B00] italic">Lights</span>
-                        <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.12em] text-[#94A3B8]">FOOTBALL</span>
-                    </div>
+                    <img src="/images/logo/mobile-nav-logo.png" className="h-9 w-auto dark:hidden" alt="HiLights Football" />
+                    {/* <img src="/images/logo/hilights_logo_dark_200.png" className="hidden h-9 w-auto dark:block" alt="HiLights Football" /> */}
                 </Link>
 
                 {/* CENTER — Nav links (desktop) */}
@@ -148,7 +143,7 @@ export default function ScoutNavbar() {
 
                 {/* RIGHT — Actions (desktop) */}
                 <div className="hidden shrink-0 items-center gap-3 md:flex">
-                    <ThemeToggle />
+                    {/* <ThemeToggle /> */}
 
                     {/* Notification bell */}
                     <Link

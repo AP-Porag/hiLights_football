@@ -392,10 +392,10 @@ export default function Detail() {
                                         <Send className="w-5 h-5" />
                                         <span className="text-xs font-semibold text-center">Contact</span>
                                     </Link>
-                                    <Link href={`/scouting/player/${player?.id}/compare`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
+                                    {/* <Link href={`/scouting/player/${player?.id}/compare`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
                                         <BarChart3 className="w-5 h-5" />
                                         <span className="text-xs font-semibold text-center">Compare</span>
-                                    </Link>
+                                    </Link> */}
                                 </div>
                                 {/* RATING WIDGET */}
                                 <div className="border-t border-[#E2E8F0] dark:border-[#2A2A2A] pt-6">
@@ -886,7 +886,7 @@ export default function Detail() {
                 </div>
             </section>
             {/* FOOTER */}
-            <footer className="bg-[#0F172A] text-white py-10">
+            {/* <footer className="bg-[#0F172A] text-white py-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6">
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
                         <div className="col-span-2">
@@ -913,7 +913,7 @@ export default function Detail() {
                     </div>
                     <div className="pt-6 border-t border-white/10 text-xs text-white/40 text-center sm:text-left">© 2025 HiLights Football. All rights reserved.</div>
                 </div>
-            </footer>
+            </footer> */}
         </div>
     );
 }
