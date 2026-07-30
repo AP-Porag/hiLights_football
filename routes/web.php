@@ -67,9 +67,7 @@ Route::get('/contact', function () {
 Route::get('/player/profile/{id}', [PlayerProfileController::class, 'playerDetails'])
     ->name('player.public.profile');
 
-Route::get('/scout', function () {
-    return Inertia::render('web/Scout');
-})->name('scout');
+Route::get('/scout', [HomeController::class, 'scout'])->name('scout');
 
 
 // Route::get('/profile/{id}', [ProfileController::class, 'detail'])
