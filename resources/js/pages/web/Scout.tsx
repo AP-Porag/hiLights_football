@@ -3,7 +3,6 @@ import PublicNavbar from '@/components/public/PublicNavbar';
 import { PublicFooter } from '@/components/public/PublicFooter';
 import ReactCountryFlag from "react-country-flag";
 import { getPositionName } from '@/utils/helper';
-
 import {
     CirclePlay,
     UserRoundPlus,
@@ -286,7 +285,7 @@ const Scout = () => {
 
                         {/* Rows */}
                         <div className="flex items-center justify-between overflow-x-auto pb-4">
-                            {players.map((player, index) => (
+                            {players.map((player: any, index: number) => (
                                 <div key={index} className="w-[24%] rounded-[8px] shadow-[0_4px_12px_rgba(0,0,0,0.10)]">
                                     <Link key={index} href={auth?.user
                                         ? `/player/profile/${player.id}`
@@ -393,5 +392,4 @@ const Scout = () => {
         </div>
     );
 }
-
 export default Scout;
