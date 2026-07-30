@@ -2,6 +2,8 @@ import React from 'react'
 import PublicNavbar from '@/components/public/PublicNavbar';
 import { PublicFooter } from '@/components/public/PublicFooter';
 import ReactCountryFlag from "react-country-flag";
+import { getPositionName } from '@/utils/helper';
+
 import {
     CirclePlay,
     UserRoundPlus,
@@ -18,7 +20,11 @@ import {
     Send,
     ArrowRight
 } from "lucide-react";
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
+const getCountryName = (code?: string | null) => {
+    if (!code) return '';
+    return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
+};
 
 const Scout = () => {
 
@@ -76,46 +82,16 @@ const Scout = () => {
             ),
         }
     ];
-
-
-    const players = [
-        {
-            name: "Mahamadou Balde",
-            position: "Left winger",
-            country: "Senegal",
-            code: "SN",
-            height: "178 cm",
-            age: "20 years",
-            image: "/images/img/p-3.jpg",
-        },
-        {
-            name: "Gabriel Gama",
-            position: "Attacking Midfielder",
-            country: "Brazil",
-            code: "BR",
-            height: "175 cm",
-            age: "21 years",
-            image: "/images/img/p-6.png",
-        },
-        {
-            name: "Mady Danfaga",
-            position: "Striker",
-            country: "Guinea",
-            code: "GN",
-            height: "185 cm",
-            age: "22 years",
-            image: "/images/img/p-4.jpg",
-        },
-        {
-            name: "Vinicius Peruchi",
-            position: "Goal Keeper",
-            country: "Brazil",
-            code: "BR",
-            height: "188 cm",
-            age: "21 years",
-            image: "/images/img/p-5.jpg",
-        },
-    ];
+    const { auth, players } = usePage().props as any;
+    const [activeVideo, setActiveVideo] = React.useState<string | null>(null);
+    const getEmbedUrl = (url?: string | null): string | null => {
+        if (!url) return null;
+        const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+        if (yt) return `https://www.youtube.com/embed/${yt[1]}?autoplay=1`;
+        const vm = url.match(/vimeo\.com\/(\d+)/);
+        if (vm) return `https://player.vimeo.com/video/${vm[1]}?autoplay=1`;
+        return null;
+    };
 
 
     return (
@@ -155,11 +131,31 @@ const Scout = () => {
                                         </p>
                                         <div className="absolute top-17 left-0 z-0 flex w-[200%] flex-row gap-4 md:top-22 lg:top-25">
                                             <button className="flex items-center justify-center rounded-md bg-[#dd3e06] px-3 py-2 text-[10px] font-semibold uppercase transition-all duration-300 hover:bg-orange-600 md:px-6 md:text-sm">
-                                                <UserRoundPlus className="h-6 w-6" />
-                                                <span className="pl-2">
-                                                    Create A Free
-                                                    <br /> Profile Now
-                                                </span>
+
+                                                <Link
+                                                    href={
+                                                        auth?.user
+                                                            ? auth.user.role === "player"
+                                                                ? "/player"
+                                                                : "/scouting"
+                                                            : "/register?role=scout"
+                                                    }
+                                                >
+                                                    <span className="pl-2 inline-flex items-center gap-2">
+                                                        {auth?.user ? (
+                                                            "Dashboard"
+                                                        ) : (
+                                                            <>
+                                                                <UserRoundPlus className="h-5 w-5 shrink-0" />
+                                                                <span>
+                                                                    Create A Free
+                                                                    <br />
+                                                                    Profile Now
+                                                                </span>
+                                                            </>
+                                                        )}
+                                                    </span>
+                                                </Link>
                                             </button>
 
                                             <button className="flex items-center justify-center rounded-md border border-gray-600 bg-black px-3 py-2 text-[10px] font-semibold uppercase transition-all duration-300 hover:border-white md:px-6 md:py-4 md:text-sm">
@@ -236,13 +232,33 @@ const Scout = () => {
                             {/* Button */}
                             <div className="flex items-end justify-end lg:pr-10">
                                 <button className="sm:-w-45 flex items-center gap-2 rounded-xl bg-[#dc4108] px-4 py-2 transition md:gap-4 lg:px-6 lg:py-2">
-                                    <UserPlus className="h-6 w-6 text-white md:h-8 md:w-8" />
 
-                                    <span className="text-left text-[10px] font-bold uppercase sm:text-[12px] md:text-[14px] lg:text-[16px]">
-                                        Create a Free
-                                        <br />
-                                        Profile Now
-                                    </span>
+
+                                    <Link
+                                        href={
+                                            auth?.user
+                                                ? auth.user.role === "player"
+                                                    ? "/player"
+                                                    : "/scouting"
+                                                : "/register?role=scout"
+                                        }
+                                    >
+
+                                        <span className="pl-2 inline-flex items-center gap-2">
+                                            {auth?.user ? (
+                                                "Dashboard"
+                                            ) : (
+                                                <>
+                                                    <UserRoundPlus className="h-5 w-5 shrink-0" />
+                                                    <span>
+                                                        Create A Free
+                                                        <br />
+                                                        Profile Now
+                                                    </span>
+                                                </>
+                                            )}
+                                        </span>
+                                    </Link>
                                 </button>
                             </div>
                         </div>
@@ -260,36 +276,60 @@ const Scout = () => {
                                     TOP TALENTS YOU CAN DISCOVER TODAY
                                 </h2>
                             </div>
-
-                            <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs">
-                                View All
-                                <ArrowRight size={18} className="text-[#ff6b00] font-bold" />
-                            </button>
+                            <Link href="/register?role=scout">
+                                <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs">
+                                    View All
+                                    <ArrowRight size={18} className="text-[#ff6b00] font-bold" />
+                                </button>
+                            </Link>
                         </div>
 
                         {/* Rows */}
                         <div className="flex items-center justify-between overflow-x-auto pb-4">
                             {players.map((player, index) => (
                                 <div key={index} className="w-[24%] rounded-[8px] shadow-[0_4px_12px_rgba(0,0,0,0.10)]">
-                                    <Link key={index} href={'#'}>
+                                    <Link key={index} href={auth?.user
+                                        ? `/player/profile/${player.id}`
+                                        : "/register?role=scout"}>
                                         {/* Thumbnail */}
                                         <div className="relative">
-                                            <img src={player.image} alt={player.name} className="h-[150px] w-full rounded object-cover" />
+                                            <img src={player.photo_url || '/images/img/placeholder.webp'} className="h-[150px] w-full rounded object-cover" />
 
-                                            <button className="absolute right-3 bottom-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00]">
+                                            {/* <button className="absolute right-3 bottom-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00]">
                                                 <Play size={12} fill="white" className="text-white" />
-                                            </button>
+                                            </button> */}
+                                            {player.video_url && (
+                                                <button
+                                                    type="button"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();          // Link navigate bondho koro
+                                                        e.stopPropagation();
+                                                        setActiveVideo(player.video_url);
+                                                    }}
+                                                    className="absolute right-3 bottom-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00] cursor-pointer"
+                                                >
+                                                    <Play size={12} fill="white" className="text-white" />
+                                                </button>
+                                            )}
+
                                         </div>
 
                                         {/* Info */}
                                         <div className="mr-2 px-4 md:px-6">
                                             <h3 className="mt-2 text-[12px] font-bold whitespace-nowrap text-[#222] md:text-[15px]">{player.name}</h3>
 
-                                            <p className="mt-1 text-[10px] whitespace-nowrap text-[#1a1a1a] md:text-xs">{player.position}</p>
+                                            <p className="mt-1 text-[10px] whitespace-nowrap text-[#1a1a1a] md:text-xs">{getPositionName(player.positions ?? [])}</p>
 
                                             <div className="mt-2 flex items-center gap-2">
-                                                <span className="text-sm">
-                                                    <ReactCountryFlag countryCode={player.code} svg className="m[1em] -mt-[2px] mr-1" />
+                                                <span className="inline-flex items-center gap-1.5 text-xs whitespace-nowrap text-gray-700 md:text-sm 2xl:text-base">
+                                                    {player?.nationality && (
+                                                        <ReactCountryFlag
+                                                            countryCode={player.nationality}
+                                                            svg
+                                                            style={{ width: '1.2em', height: '1.2em' }}
+                                                        />
+                                                    )}
+                                                    <span>{getCountryName(player?.nationality)}</span>
                                                 </span>
 
                                                 <span className="text-[10px] whitespace-nowrap text-[#545454] md:text-xs">{player.country}</span>
@@ -306,7 +346,7 @@ const Scout = () => {
                                             {/* Age */}
                                             <div className="flex gap-2 text-[12px] whitespace-nowrap text-[#222] md:ml-4 md:text-sm">
                                                 <Clock3 size={14} className="mt-[2px]" />
-                                                {player.age}
+                                                {player.dob && new Date().getFullYear() - new Date(player.dob).getFullYear()} years
                                             </div>
                                         </div>
                                     </Link>
@@ -314,6 +354,38 @@ const Scout = () => {
                             ))}
                         </div>
                     </div>
+                    {activeVideo && (
+                        <div
+                            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+                            onClick={() => setActiveVideo(null)}
+                        >
+                            <div
+                                className="relative w-full max-w-3xl aspect-video"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <button
+                                    onClick={() => setActiveVideo(null)}
+                                    className="absolute -top-10 right-0 text-white text-3xl leading-none hover:text-[#ff6b00]"
+                                    aria-label="Close"
+                                >
+                                    ×
+                                </button>
+                                {getEmbedUrl(activeVideo) ? (
+                                    <iframe
+                                        src={getEmbedUrl(activeVideo)!}
+                                        title="Player video"
+                                        className="w-full h-full rounded-xl"
+                                        allow="autoplay; fullscreen"
+                                        allowFullScreen
+                                    />
+                                ) : (
+                                    <div className="flex h-full items-center justify-center rounded-xl bg-[#161616] text-white">
+                                        Invalid video URL
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
                 </section>
             </main>
 
