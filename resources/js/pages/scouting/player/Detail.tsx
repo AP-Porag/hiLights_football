@@ -220,7 +220,7 @@ export default function Detail() {
         })
         : null;
     return (
-        <div className="min-h-screen bg-white dark:bg-[#0D0D0D] text-[#0F172A] dark:text-[#F5F5F5] font-sans">
+        <div className="min-h-screen bg-[#0D0D0D] text-[#F5F5F5] font-sans">
             <ScoutNavbar />
             {/* TOAST */}
             {toast && (
@@ -232,7 +232,7 @@ export default function Detail() {
                 </div>
             )}
             {/* LEADERBOARD AD - TOP */}
-            <div className="w-full bg-[#F8FAFC] dark:bg-[#111111] border-b border-[#E2E8F0] dark:border-[#2A2A2A] pt-20 pb-3">
+            <div className="w-full bg-[#111111] border-b border-[#2A2A2A] pt-20 pb-3">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="flex justify-center">
                         <div className="relative w-full max-w-[728px] h-[90px] bg-black rounded-2xl overflow-hidden flex items-center justify-between px-6">
@@ -326,7 +326,7 @@ export default function Detail() {
                 </div>
             </section>
             {/* MAIN CONTENT */}
-            <section className="bg-[#F8FAFC] dark:bg-[#111111] py-8 sm:py-12">
+            <section className="bg-[#111111] py-8 sm:py-12">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                         {/* LEFT SIDEBAR AD */}
@@ -362,13 +362,13 @@ export default function Detail() {
                         {/* MAIN COLUMN */}
                         <main className="lg:col-span-6 space-y-6 min-w-0">
                             {/* SCOUT ACTIONS */}
-                            <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
+                            <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                                 <div className="flex items-center justify-between gap-3 mb-5">
                                     <div className="min-w-0">
-                                        <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-1">Scout Toolkit</div>
+                                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">Scout Toolkit</div>
                                         <h2 className="font-display text-2xl font-bold uppercase">Scout Actions</h2>
                                     </div>
-                                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] uppercase font-bold tracking-wider flex-shrink-0">
+                                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] uppercase font-bold tracking-wider flex-shrink-0">
                                         <Eye className="w-3 h-3" />
                                         Scout View
                                     </span>
@@ -377,38 +377,38 @@ export default function Detail() {
                                     <button
                                         onClick={() => setIsShortlisted(!isShortlisted)}
                                         className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-colors ${isShortlisted
-                                            ? 'bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border-[#FF6B00] text-[#CC5500]'
-                                            : 'bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00]'
+                                            ? 'bg-[rgba(255,107,0,0.12)] border-[#FF6B00] text-[#CC5500]'
+                                            : 'bg-[#1F1F1F] border-[#2A2A2A] hover:border-[#FF6B00]'
                                             }`}
                                     >
                                         <Bookmark className={`w-5 h-5 ${isShortlisted ? 'fill-current' : ''}`} />
                                         <span className="text-xs font-semibold text-center">{isShortlisted ? 'Shortlisted' : 'Add to List'}</span>
                                     </button>
-                                    <Link href={`/scouting/player/${player?.id}/report`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
+                                    <Link href={`/scouting/player/${player?.id}/report`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#1F1F1F] border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
                                         <FileText className="w-5 h-5" />
                                         <span className="text-xs font-semibold text-center">Write Report</span>
                                     </Link>
-                                    <Link href={`/scouting/player/${player?.id}/contact`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
+                                    <Link href={`/scouting/player/${player?.id}/contact`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#1F1F1F] border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
                                         <Send className="w-5 h-5" />
                                         <span className="text-xs font-semibold text-center">Contact</span>
                                     </Link>
-                                    {/* <Link href={`/scouting/player/${player?.id}/compare`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
+                                    {/* <Link href={`/scouting/player/${player?.id}/compare`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#1F1F1F] border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
                                         <BarChart3 className="w-5 h-5" />
                                         <span className="text-xs font-semibold text-center">Compare</span>
                                     </Link> */}
                                 </div>
                                 {/* RATING WIDGET */}
-                                <div className="border-t border-[#E2E8F0] dark:border-[#2A2A2A] pt-6">
+                                <div className="border-t border-[#2A2A2A] pt-6">
                                     <div className="flex items-center justify-between mb-5">
                                         <div>
                                             <h3 className="font-display text-lg font-bold uppercase">Your Rating</h3>
-                                            <p className="text-xs text-[#475569] dark:text-[#9A9A9A] mt-0.5">
+                                            <p className="text-xs text-[#9A9A9A] mt-0.5">
                                                 {existingRating ? 'You already rated this player — update anytime' : 'Rate on a scale of 1 to 10'}
                                             </p>
                                         </div>
                                         {averageRating > 0 && (
                                             <div className="text-right">
-                                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold">Overall</div>
+                                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold">Overall</div>
                                                 <div className="font-mono text-2xl font-bold text-[#FF6B00]">{averageRating.toFixed(1)}</div>
                                             </div>
                                         )}
@@ -429,7 +429,7 @@ export default function Detail() {
                                                             <Icon className="w-4 h-4 text-[#FF6B00] flex-shrink-0" />
                                                             <div className="min-w-0">
                                                                 <div className="text-sm font-semibold">{cat.label}</div>
-                                                                <div className="text-[11px] text-[#94A3B8] dark:text-[#555555] truncate">{cat.desc}</div>
+                                                                <div className="text-[11px] text-[#555555] truncate">{cat.desc}</div>
                                                             </div>
                                                         </div>
                                                         <div className="font-mono text-lg font-bold text-[#FF6B00] w-10 text-right flex-shrink-0">{value || '—'}</div>
@@ -443,7 +443,7 @@ export default function Detail() {
                                                                     onClick={() => handleRatingChange(cat.key as keyof Omit<ScoutRating, 'notes'>, score)}
                                                                     className={`flex-1 h-8 rounded-md text-xs font-bold transition-colors ${value >= score
                                                                         ? 'bg-[#FF6B00] text-white'
-                                                                        : 'bg-[#F8FAFC] dark:bg-[#1F1F1F] text-[#94A3B8] dark:text-[#555555] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]'
+                                                                        : 'bg-[#1F1F1F] text-[#555555] hover:bg-[rgba(255,107,0,0.12)]'
                                                                         }`}
                                                                 >
                                                                     {score}
@@ -456,13 +456,13 @@ export default function Detail() {
                                         })}
                                     </div>
                                     <div className="mt-6">
-                                        <label className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2 block">Scout Notes</label>
+                                        <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">Scout Notes</label>
                                         <textarea
                                             value={rating.notes}
                                             onChange={(e) => setRating({ ...rating, notes: e.target.value })}
                                             rows={4}
                                             placeholder="Write your observations, strengths, weaknesses, and recommendations..."
-                                            className="w-full px-4 py-3 bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-orange-800 resize-none"
+                                            className="w-full px-4 py-3 bg-[#111111] border border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-orange-800 resize-none"
                                         />
                                     </div>
                                     <div className="flex flex-col sm:flex-row gap-3 mt-5">
@@ -476,54 +476,53 @@ export default function Detail() {
                                         <button
                                             onClick={() => handleSaveRating(true)}
                                             disabled={savingRating}
-                                            className="flex-1 bg-white dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] disabled:opacity-60 text-[#0F172A] dark:text-[#F5F5F5] px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
+                                            className="flex-1 bg-[#1F1F1F] border border-[#2A2A2A] hover:border-[#FF6B00] disabled:opacity-60 text-[#F5F5F5] px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
                                         >
                                             Save & Add to Report
                                         </button>
                                     </div>
-
                                 </div>
                             </div>
                             {/* BIO */}
-                            <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
-                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">About</div>
+                            <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
+                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">About</div>
                                 <h2 className="font-display text-2xl font-bold uppercase mb-3">Player Profile</h2>
-                                <p className="text-sm text-[#475569] dark:text-[#9A9A9A] leading-relaxed mb-6">
+                                <p className="text-sm text-[#9A9A9A] leading-relaxed mb-6">
                                     {player?.description || 'No description added yet.'}
                                 </p>
                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                                     <div>
-                                        <div className="text-[10px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] mb-1">Height</div>
+                                        <div className="text-[10px] uppercase tracking-wider text-[#555555] mb-1">Height</div>
                                         <div className="font-mono text-base font-bold flex items-center gap-1.5">
                                             <Ruler className="w-4 h-4 text-[#FF6B00]" />
                                             {player?.height ? `${player.height} cm` : '—'}
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="text-[10px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] mb-1">Weight</div>
+                                        <div className="text-[10px] uppercase tracking-wider text-[#555555] mb-1">Weight</div>
                                         <div className="font-mono text-base font-bold flex items-center gap-1.5">
                                             <Weight className="w-4 h-4 text-[#FF6B00]" />
                                             {player?.weight ? `${player.weight} kg` : '—'}
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="text-[10px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] mb-1">Foot</div>
+                                        <div className="text-[10px] uppercase tracking-wider text-[#555555] mb-1">Foot</div>
                                         <div className="font-mono text-base font-bold flex items-center gap-1.5">
                                             <Footprints className="w-4 h-4 text-[#FF6B00]" />
                                             {player?.foot || '—'}
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="text-[10px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] mb-1">In Team Since</div>
+                                        <div className="text-[10px] uppercase tracking-wider text-[#555555] mb-1">In Team Since</div>
                                         <div className="font-mono text-base font-bold">{memberSince || '—'}</div>
                                     </div>
                                 </div>
                                 {positions.length > 0 && (
-                                    <div className="mt-5 pt-5 border-t border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                        <div className="text-[10px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] mb-2">Positions</div>
+                                    <div className="mt-5 pt-5 border-t border-[#2A2A2A]">
+                                        <div className="text-[10px] uppercase tracking-wider text-[#555555] mb-2">Positions</div>
                                         <div className="flex flex-wrap gap-2">
                                             {positions.map((p) => (
-                                                <span key={p} className="inline-flex items-center px-2.5 py-1 rounded-md bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-xs font-bold uppercase tracking-wider">
+                                                <span key={p} className="inline-flex items-center px-2.5 py-1 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-xs font-bold uppercase tracking-wider">
                                                     {p}
                                                 </span>
                                             ))}
@@ -549,13 +548,13 @@ export default function Detail() {
                             </div>
                             {/* HIGHLIGHTS */}
                             {videos.length > 0 && (
-                                <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
+                                <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                                     <div className="flex items-center justify-between mb-5">
                                         <div>
-                                            <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-1">Video Library</div>
+                                            <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">Video Library</div>
                                             <h2 className="font-display text-2xl font-bold uppercase">Highlights</h2>
                                         </div>
-                                        <span className="font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">{videos.length} videos</span>
+                                        <span className="font-mono text-xs text-[#9A9A9A]">{videos.length} videos</span>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         {videos.map((clip, i) => {
@@ -587,8 +586,8 @@ export default function Detail() {
                             )}
                             {/* SEASON STATS */}
                             {matches.length > 0 && (
-                                <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
-                                    <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">From Recent Matches</div>
+                                <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
+                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">From Recent Matches</div>
                                     <h2 className="font-display text-2xl font-bold uppercase mb-5">Statistics</h2>
                                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
                                         {[
@@ -599,10 +598,10 @@ export default function Detail() {
                                         ].map((stat) => {
                                             const Icon = stat.icon;
                                             return (
-                                                <div key={stat.label} className="bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl p-4">
+                                                <div key={stat.label} className="bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl p-4">
                                                     <Icon className="w-4 h-4 text-[#FF6B00] mb-2" />
                                                     <div className="font-mono text-2xl font-bold">{stat.value}</div>
-                                                    <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mt-1">{stat.label}</div>
+                                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mt-1">{stat.label}</div>
                                                 </div>
                                             );
                                         })}
@@ -610,13 +609,13 @@ export default function Detail() {
                                     {/* Match list */}
                                     <div className="space-y-2">
                                         {matches.map((m, i) => (
-                                            <div key={i} className="flex flex-wrap items-center justify-between gap-2 bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl px-4 py-3">
+                                            <div key={i} className="flex flex-wrap items-center justify-between gap-2 bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl px-4 py-3">
                                                 <div className="flex items-center gap-2 text-sm font-semibold min-w-0">
                                                     <span className="truncate">{m.home}</span>
                                                     <span className="font-mono text-[#FF6B00]">{m.score || 'vs'}</span>
                                                     <span className="truncate">{m.away}</span>
                                                 </div>
-                                                <div className="flex items-center gap-3 font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">
+                                                <div className="flex items-center gap-3 font-mono text-xs text-[#9A9A9A]">
                                                     <span>G {toNum(m.goals)}</span>
                                                     <span>A {toNum(m.assists)}</span>
                                                     <span>{toNum(m.minutes)}'</span>
@@ -628,18 +627,18 @@ export default function Detail() {
                             )}
                             {/* ACHIEVEMENTS */}
                             {achievements.length > 0 && (
-                                <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
-                                    <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">Honours</div>
+                                <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
+                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Honours</div>
                                     <h2 className="font-display text-2xl font-bold uppercase mb-5">Achievements</h2>
                                     <div className="space-y-3">
                                         {achievements.map((a, i) => (
-                                            <div key={i} className="flex items-center gap-4 pb-3 border-b border-[#E2E8F0] dark:border-[#2A2A2A] last:border-0 last:pb-0">
-                                                <div className="w-10 h-10 rounded-lg bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
+                                            <div key={i} className="flex items-center gap-4 pb-3 border-b border-[#2A2A2A] last:border-0 last:pb-0">
+                                                <div className="w-10 h-10 rounded-lg bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
                                                     <Award className="w-5 h-5 text-[#FF6B00]" />
                                                 </div>
                                                 <div className="flex-1 min-w-0 flex flex-wrap items-baseline justify-between gap-2">
                                                     <span className="text-sm font-semibold">{a.title}</span>
-                                                    <span className="font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">{a.year}</span>
+                                                    <span className="font-mono text-xs text-[#9A9A9A]">{a.year}</span>
                                                 </div>
                                             </div>
                                         ))}
@@ -648,18 +647,18 @@ export default function Detail() {
                             )}
                             {/* COMPETITIONS */}
                             {competitions.length > 0 && (
-                                <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
-                                    <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">Experience</div>
+                                <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
+                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Experience</div>
                                     <h2 className="font-display text-2xl font-bold uppercase mb-5">Competitions</h2>
                                     <div className="space-y-3">
                                         {competitions.map((c, i) => (
-                                            <div key={i} className="flex items-center gap-4 pb-3 border-b border-[#E2E8F0] dark:border-[#2A2A2A] last:border-0 last:pb-0">
-                                                <div className="w-10 h-10 rounded-lg bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
+                                            <div key={i} className="flex items-center gap-4 pb-3 border-b border-[#2A2A2A] last:border-0 last:pb-0">
+                                                <div className="w-10 h-10 rounded-lg bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
                                                     <ClipboardList className="w-5 h-5 text-[#FF6B00]" />
                                                 </div>
                                                 <div className="flex-1 min-w-0 flex flex-wrap items-baseline justify-between gap-2">
                                                     <span className="text-sm font-semibold">{c.name}</span>
-                                                    <span className="font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">{c.year}</span>
+                                                    <span className="font-mono text-xs text-[#9A9A9A]">{c.year}</span>
                                                 </div>
                                             </div>
                                         ))}
@@ -668,19 +667,19 @@ export default function Detail() {
                             )}
                             {/* CAREER — club history */}
                             {clubHistory.length > 0 && (
-                                <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
-                                    <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">Trajectory</div>
+                                <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
+                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Trajectory</div>
                                     <h2 className="font-display text-2xl font-bold uppercase mb-5">Career History</h2>
                                     <div className="space-y-4">
                                         {clubHistory.map((entry, i) => (
-                                            <div key={i} className="flex items-start gap-4 pb-4 border-b border-[#E2E8F0] dark:border-[#2A2A2A] last:border-0 last:pb-0">
-                                                <div className="w-10 h-10 rounded-lg bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
+                                            <div key={i} className="flex items-start gap-4 pb-4 border-b border-[#2A2A2A] last:border-0 last:pb-0">
+                                                <div className="w-10 h-10 rounded-lg bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
                                                     <Trophy className="w-5 h-5 text-[#FF6B00]" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex flex-wrap items-baseline justify-between gap-2">
                                                         <h3 className="font-display text-lg font-bold uppercase">{entry.club}</h3>
-                                                        <span className="font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">{entry.year}</span>
+                                                        <span className="font-mono text-xs text-[#9A9A9A]">{entry.year}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -690,22 +689,22 @@ export default function Detail() {
                             )}
                             {/* TRANSFER HISTORY */}
                             {transferHistory.length > 0 && (
-                                <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
-                                    <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">Movements</div>
+                                <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
+                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Movements</div>
                                     <h2 className="font-display text-2xl font-bold uppercase mb-5">Transfer History</h2>
                                     <div className="space-y-4">
                                         {transferHistory.map((entry, i) => (
-                                            <div key={i} className="flex items-center gap-4 pb-4 border-b border-[#E2E8F0] dark:border-[#2A2A2A] last:border-0 last:pb-0">
+                                            <div key={i} className="flex items-center gap-4 pb-4 border-b border-[#2A2A2A] last:border-0 last:pb-0">
                                                 {entry.logo ? (
-                                                    <img src={entry.logo} alt={entry.club ?? ''} className="w-10 h-10 rounded-lg object-cover border border-[#E2E8F0] dark:border-[#2A2A2A] flex-shrink-0" />
+                                                    <img src={entry.logo} alt={entry.club ?? ''} className="w-10 h-10 rounded-lg object-cover border border-[#2A2A2A] flex-shrink-0" />
                                                 ) : (
-                                                    <div className="w-10 h-10 rounded-lg bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
+                                                    <div className="w-10 h-10 rounded-lg bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
                                                         <History className="w-5 h-5 text-[#FF6B00]" />
                                                     </div>
                                                 )}
                                                 <div className="flex-1 min-w-0 flex flex-wrap items-baseline justify-between gap-2">
                                                     <h3 className="font-display text-lg font-bold uppercase">{entry.club}</h3>
-                                                    <span className="font-mono text-xs text-[#475569] dark:text-[#9A9A9A]">{entry.year}</span>
+                                                    <span className="font-mono text-xs text-[#9A9A9A]">{entry.year}</span>
                                                 </div>
                                             </div>
                                         ))}
@@ -716,38 +715,38 @@ export default function Detail() {
                         {/* RIGHT SIDEBAR */}
                         <aside className="lg:col-span-3 space-y-6">
                             {/* CONTACT INFO */}
-                            <div className="relative bg-[#F0FDF4] dark:bg-[rgba(22,163,74,0.08)] border border-green-200 dark:border-green-800 rounded-2xl p-6">
+                            <div className="relative bg-[rgba(22,163,74,0.08)] border border-green-800 rounded-2xl p-6">
                                 <div className="flex items-center justify-between mb-4">
-                                    <div className="text-[10px] uppercase font-bold tracking-wider text-green-700 dark:text-green-400">Player Contact</div>
+                                    <div className="text-[10px] uppercase font-bold tracking-wider text-green-400">Player Contact</div>
                                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-green-600 text-white text-[10px] font-bold uppercase tracking-wider">Available</span>
                                 </div>
                                 <div className="space-y-3">
                                     {player?.user?.email && (
-                                        <a href={`mailto:${player.user.email}`} className="flex items-center gap-3 p-3 bg-white dark:bg-[#161616] border border-green-200 dark:border-green-800 rounded-xl hover:border-green-400 transition-colors">
-                                            <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                                                <Mail className="w-5 h-5 text-green-600 dark:text-green-400" />
+                                        <a href={`mailto:${player.user.email}`} className="flex items-center gap-3 p-3 bg-[#161616] border border-green-800 rounded-xl hover:border-green-400 transition-colors">
+                                            <div className="w-10 h-10 rounded-lg bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                                                <Mail className="w-5 h-5 text-green-400" />
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold">Email</div>
+                                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold">Email</div>
                                                 <div className="font-mono text-sm font-semibold truncate">{player.user.email}</div>
                                             </div>
                                         </a>
                                     )}
                                     {player?.agent && (
-                                        <div className="flex items-center gap-3 p-3 bg-white dark:bg-[#161616] border border-green-200 dark:border-green-800 rounded-xl">
-                                            <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                                                <MessageCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                                        <div className="flex items-center gap-3 p-3 bg-[#161616] border border-green-800 rounded-xl">
+                                            <div className="w-10 h-10 rounded-lg bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                                                <MessageCircle className="w-5 h-5 text-green-400" />
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold">Agent</div>
+                                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold">Agent</div>
                                                 <div className="font-mono text-sm font-semibold truncate">{player.agent}</div>
                                             </div>
                                         </div>
                                     )}
                                     {!player?.user?.email && !player?.agent && (
-                                        <p className="text-xs text-[#475569] dark:text-[#9A9A9A]">No contact details added yet.</p>
+                                        <p className="text-xs text-[#9A9A9A]">No contact details added yet.</p>
                                     )}
-                                    <div className="text-[11px] text-green-700 dark:text-green-400 px-1 pt-1 leading-relaxed">Please be professional and verify your scouting credentials before reaching out.</div>
+                                    <div className="text-[11px] text-green-400 px-1 pt-1 leading-relaxed">Please be professional and verify your scouting credentials before reaching out.</div>
                                 </div>
                             </div>
                             {/* RIGHT SIDEBAR AD */}
@@ -802,11 +801,11 @@ export default function Detail() {
             </section>
             {/* SIMILAR PLAYERS */}
             {similarPlayers.length > 0 && (
-                <section className="bg-white dark:bg-[#0D0D0D] py-12 border-t border-[#E2E8F0] dark:border-[#2A2A2A]">
+                <section className="bg-[#0D0D0D] py-12 border-t border-[#2A2A2A]">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6">
                         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
                             <div>
-                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-1">Discover More Talent</div>
+                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">Discover More Talent</div>
                                 <h2 className="font-display text-3xl sm:text-4xl font-bold uppercase">Similar Players</h2>
                             </div>
                             <Link href="/scouting/dashboard" className="inline-flex items-center gap-1.5 text-[#FF6B00] hover:text-[#CC5500] text-sm font-semibold">
@@ -823,43 +822,43 @@ export default function Detail() {
                                 const spGoals = spMatches.reduce((s, m) => s + toNum(m.goals), 0);
                                 const spAssists = spMatches.reduce((s, m) => s + toNum(m.assists), 0);
                                 return (
-                                    <Link key={sp.id} href={`/scouting/player/${sp.id}`} className="group bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 hover:border-[#FF6B00] transition-colors">
+                                    <Link key={sp.id} href={`/scouting/player/${sp.id}`} className="group bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 hover:border-[#FF6B00] transition-colors">
                                         <div className="flex items-start gap-4 mb-4">
                                             {sp.photo_url ? (
-                                                <img src={sp.photo_url} alt={spName} className="w-16 h-16 rounded-xl border-2 border-[#E2E8F0] dark:border-[#2A2A2A] group-hover:border-[#FF6B00] transition-colors object-cover" />
+                                                <img src={sp.photo_url} alt={spName} className="w-16 h-16 rounded-xl border-2 border-[#2A2A2A] group-hover:border-[#FF6B00] transition-colors object-cover" />
                                             ) : (
-                                                <div className="w-16 h-16 rounded-xl border-2 border-[#E2E8F0] dark:border-[#2A2A2A] group-hover:border-[#FF6B00] transition-colors bg-[#F8FAFC] dark:bg-[#1F1F1F] flex items-center justify-center font-display text-lg font-black text-[#94A3B8]">
+                                                <div className="w-16 h-16 rounded-xl border-2 border-[#2A2A2A] group-hover:border-[#FF6B00] transition-colors bg-[#1F1F1F] flex items-center justify-center font-display text-lg font-black text-[#94A3B8]">
                                                     {initials(spName)}
                                                 </div>
                                             )}
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2 mb-1.5">
                                                     {spPositions[0] && (
-                                                        <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-bold uppercase tracking-wider">
+                                                        <span className="inline-flex items-center px-2 py-0.5 rounded bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-bold uppercase tracking-wider">
                                                             {spPositions[0]}
                                                         </span>
                                                     )}
                                                     <span className="text-xs">{codeToFlag(sp.user?.nationality)}</span>
                                                 </div>
                                                 <h3 className="font-display text-lg font-bold uppercase leading-tight truncate">{spName}</h3>
-                                                <p className="text-xs text-[#475569] dark:text-[#9A9A9A] truncate">{sp.current_club || '—'}</p>
+                                                <p className="text-xs text-[#9A9A9A] truncate">{sp.current_club || '—'}</p>
                                             </div>
                                         </div>
-                                        <div className="grid grid-cols-3 gap-2 pt-4 border-t border-[#E2E8F0] dark:border-[#2A2A2A]">
+                                        <div className="grid grid-cols-3 gap-2 pt-4 border-t border-[#2A2A2A]">
                                             <div>
-                                                <div className="text-[9px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] font-bold">Age</div>
+                                                <div className="text-[9px] uppercase tracking-wider text-[#555555] font-bold">Age</div>
                                                 <div className="font-mono text-sm font-bold">{spAge ?? '—'}</div>
                                             </div>
                                             <div>
-                                                <div className="text-[9px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] font-bold">G/A</div>
+                                                <div className="text-[9px] uppercase tracking-wider text-[#555555] font-bold">G/A</div>
                                                 <div className="font-mono text-sm font-bold">{spGoals}/{spAssists}</div>
                                             </div>
                                             <div>
-                                                <div className="text-[9px] uppercase tracking-wider text-[#94A3B8] dark:text-[#555555] font-bold">Height</div>
+                                                <div className="text-[9px] uppercase tracking-wider text-[#555555] font-bold">Height</div>
                                                 <div className="font-mono text-sm font-bold text-[#FF6B00]">{sp.height ? `${sp.height}` : '—'}</div>
                                             </div>
                                         </div>
-                                        <button className="w-full mt-4 inline-flex items-center justify-center gap-1.5 bg-[#F8FAFC] dark:bg-[#1F1F1F] group-hover:bg-[#FF6B00] group-hover:text-white text-[#0F172A] dark:text-[#F5F5F5] py-2.5 rounded-xl text-xs font-semibold transition-colors">
+                                        <button className="w-full mt-4 inline-flex items-center justify-center gap-1.5 bg-[#1F1F1F] group-hover:bg-[#FF6B00] group-hover:text-white text-[#F5F5F5] py-2.5 rounded-xl text-xs font-semibold transition-colors">
                                             <Plus className="w-3.5 h-3.5" />
                                             View Profile
                                         </button>
