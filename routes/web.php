@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Player\PlayerProfileController;
 use App\Http\Controllers\Player\SubscriptionController;
 use App\Http\Controllers\Scout\ScoutController;
@@ -173,6 +174,10 @@ Route::prefix('admin')->group(function () {
 
 Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])
     ->name('cashier.webhook');
+
+// Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
