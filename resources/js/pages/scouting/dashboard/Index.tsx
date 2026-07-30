@@ -223,7 +223,7 @@ function FilterPanel({
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold text-[#0F172A] dark:text-[#F5F5F5] tracking-widest uppercase">
+                <h3 className="text-xs font-bold text-[#F5F5F5] tracking-widest uppercase">
                     Filters
                     {activeFilterCount > 0 && (
                         <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[#FF6B00] px-1.5 py-0.5 text-[9px] font-black text-white">
@@ -239,10 +239,10 @@ function FilterPanel({
                     Clear All
                 </button>
             </div>
-            <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
+            <Separator className="bg-[#2A2A2A]" />
             {/* POSITION */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#475569] dark:text-[#9A9A9A] tracking-widest uppercase">
+                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">
                     Position
                 </h4>
                 <div className="space-y-2.5">
@@ -252,32 +252,32 @@ function FilterPanel({
                                 id={`pos-${p.code}`}
                                 checked={selectedPositions.includes(p.code)}
                                 onCheckedChange={() => togglePosition(p.code)}
-                                className="border-[#CBD5E1] dark:border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
+                                className="border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
                             />
                             <Label
                                 htmlFor={`pos-${p.code}`}
-                                className="flex-1 flex items-center justify-between text-sm font-normal text-[#0F172A] dark:text-[#F5F5F5] cursor-pointer"
+                                className="flex-1 flex items-center justify-between text-sm font-normal text-[#F5F5F5] cursor-pointer"
                             >
                                 <span>
                                     <span className="font-mono font-bold text-[#FF6B00]">{p.code}</span>
-                                    <span className="text-[#475569] dark:text-[#9A9A9A]"> — {p.label}</span>
+                                    <span className="text-[#9A9A9A]"> — {p.label}</span>
                                 </span>
-                                <span className="text-[10px] font-mono text-[#94A3B8] dark:text-[#555555]">
+                                <span className="text-[10px] font-mono text-[#555555]">
                                     {p.count}
                                 </span>
                             </Label>
                         </div>
                     ))}
                     {positionOptions.length === 0 && (
-                        <p className="text-xs text-[#94A3B8] dark:text-[#555555]">No data yet</p>
+                        <p className="text-xs text-[#555555]">No data yet</p>
                     )}
                 </div>
             </div>
-            <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
+            <Separator className="bg-[#2A2A2A]" />
             {/* AGE RANGE */}
             <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                    <h4 className="text-[11px] font-bold text-[#475569] dark:text-[#9A9A9A] tracking-widest uppercase">
+                    <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">
                         Age Range
                     </h4>
                     <span className="font-mono text-[#FF6B00] text-sm font-semibold">
@@ -291,7 +291,7 @@ function FilterPanel({
                         max={AGE_CEIL}
                         value={ageMin}
                         onChange={(e) => setAgeMin(Math.min(Number(e.target.value), ageMax))}
-                        className="w-full h-1.5 bg-[#E2E8F0] dark:bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-[#FF6B00]"
+                        className="w-full h-1.5 bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-[#FF6B00]"
                     />
                     <input
                         type="range"
@@ -299,18 +299,18 @@ function FilterPanel({
                         max={AGE_CEIL}
                         value={ageMax}
                         onChange={(e) => setAgeMax(Math.max(Number(e.target.value), ageMin))}
-                        className="w-full h-1.5 bg-[#E2E8F0] dark:bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-[#FF6B00]"
+                        className="w-full h-1.5 bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-[#FF6B00]"
                     />
                 </div>
-                <div className="flex justify-between text-[10px] font-mono text-[#94A3B8] dark:text-[#555555]">
+                <div className="flex justify-between text-[10px] font-mono text-[#555555]">
                     <span>{AGE_FLOOR}</span>
                     <span>{AGE_CEIL}</span>
                 </div>
             </div>
-            <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
+            <Separator className="bg-[#2A2A2A]" />
             {/* NATIONALITY */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#475569] dark:text-[#9A9A9A] tracking-widest uppercase">
+                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">
                     Nationality
                 </h4>
                 <div className="relative">
@@ -319,7 +319,7 @@ function FilterPanel({
                         value={countrySearch}
                         onChange={(e) => setCountrySearch(e.target.value)}
                         placeholder="Search country..."
-                        className="pl-9 h-9 text-sm bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 dark:focus-visible:ring-1"
+                        className="pl-9 h-9 text-sm bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-orange-800"
                     />
                 </div>
                 <div className="space-y-1.5 max-h-44 overflow-y-auto pr-1">
@@ -331,37 +331,37 @@ function FilterPanel({
                                 id={`country-${c.name}`}
                                 checked={selectedCountries.includes(c.name)}
                                 onCheckedChange={() => toggleCountry(c.name)}
-                                className="border-[#CBD5E1] dark:border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
+                                className="border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
                             />
                             <Label
                                 htmlFor={`country-${c.name}`}
-                                className="flex-1 flex items-center justify-between text-sm font-normal text-[#0F172A] dark:text-[#F5F5F5] cursor-pointer"
+                                className="flex-1 flex items-center justify-between text-sm font-normal text-[#F5F5F5] cursor-pointer"
                             >
                                 <span className="flex items-center gap-2">
                                     <span className="text-base leading-none">{c.flag}</span>
                                     <span>{c.name}</span>
                                 </span>
-                                <span className="text-[10px] font-mono text-[#94A3B8] dark:text-[#555555]">
+                                <span className="text-[10px] font-mono text-[#555555]">
                                     {c.count}
                                 </span>
                             </Label>
                         </div>
                     ))}
                     {countryOptions.length === 0 && (
-                        <p className="text-xs text-[#94A3B8] dark:text-[#555555]">No data yet</p>
+                        <p className="text-xs text-[#555555]">No data yet</p>
                     )}
                     {countryOptions.length > 0 &&
                         countryOptions.filter((c) =>
                             c.name.toLowerCase().includes(countrySearch.toLowerCase())
                         ).length === 0 && (
-                            <p className="text-xs text-[#94A3B8] dark:text-[#555555]">No country matched</p>
+                            <p className="text-xs text-[#555555]">No country matched</p>
                         )}
                 </div>
             </div>
-            <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
+            <Separator className="bg-[#2A2A2A]" />
             {/* PREFERRED FOOT */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#475569] dark:text-[#9A9A9A] tracking-widest uppercase">
+                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">
                     Preferred Foot
                 </h4>
                 <RadioGroup value={preferredFoot} onValueChange={setPreferredFoot} className="space-y-2">
@@ -370,11 +370,11 @@ function FilterPanel({
                             <RadioGroupItem
                                 id={`foot-${foot}`}
                                 value={foot}
-                                className="border-[#CBD5E1] dark:border-[#2A2A2A] text-[#FF6B00]"
+                                className="border-[#2A2A2A] text-[#FF6B00]"
                             />
                             <Label
                                 htmlFor={`foot-${foot}`}
-                                className="text-sm font-normal text-[#0F172A] dark:text-[#F5F5F5] capitalize cursor-pointer"
+                                className="text-sm font-normal text-[#F5F5F5] capitalize cursor-pointer"
                             >
                                 {foot}
                             </Label>
@@ -382,10 +382,10 @@ function FilterPanel({
                     ))}
                 </RadioGroup>
             </div>
-            <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
+            <Separator className="bg-[#2A2A2A]" />
             {/* MODALITY */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#475569] dark:text-[#9A9A9A] tracking-widest uppercase">
+                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">
                     Modality
                 </h4>
                 <div className="space-y-2.5">
@@ -395,28 +395,28 @@ function FilterPanel({
                                 id={`mod-${m.name}`}
                                 checked={selectedModalities.includes(m.name)}
                                 onCheckedChange={() => toggleModality(m.name)}
-                                className="border-[#CBD5E1] dark:border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
+                                className="border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
                             />
                             <Label
                                 htmlFor={`mod-${m.name}`}
-                                className="flex-1 flex items-center justify-between text-sm font-normal text-[#0F172A] dark:text-[#F5F5F5] cursor-pointer"
+                                className="flex-1 flex items-center justify-between text-sm font-normal text-[#F5F5F5] cursor-pointer"
                             >
                                 <span>{m.name}</span>
-                                <span className="text-[10px] font-mono text-[#94A3B8] dark:text-[#555555]">
+                                <span className="text-[10px] font-mono text-[#555555]">
                                     {m.count}
                                 </span>
                             </Label>
                         </div>
                     ))}
                     {modalityOptions.length === 0 && (
-                        <p className="text-xs text-[#94A3B8] dark:text-[#555555]">No data yet</p>
+                        <p className="text-xs text-[#555555]">No data yet</p>
                     )}
                 </div>
             </div>
-            <Separator className="bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
+            <Separator className="bg-[#2A2A2A]" />
             {/* HEIGHT */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#475569] dark:text-[#9A9A9A] tracking-widest uppercase">
+                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">
                     Height (cm)
                 </h4>
                 <div className="flex items-center gap-2">
@@ -425,7 +425,7 @@ function FilterPanel({
                         value={heightMin}
                         onChange={(e) => setHeightMin(e.target.value)}
                         placeholder="Min"
-                        className="h-9 text-sm font-mono bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 dark:focus-visible:ring-1"
+                        className="h-9 text-sm font-mono bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-orange-800"
                     />
                     <span className="text-[#94A3B8] text-sm">–</span>
                     <Input
@@ -433,13 +433,13 @@ function FilterPanel({
                         value={heightMax}
                         onChange={(e) => setHeightMax(e.target.value)}
                         placeholder="Max"
-                        className="h-9 text-sm font-mono bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 dark:focus-visible:ring-1"
+                        className="h-9 text-sm font-mono bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-orange-800"
                     />
                 </div>
             </div>
             {/* AD ZONE - ScoutPro */}
             <div className="space-y-2 pt-2">
-                <p className="text-[10px] uppercase tracking-widest text-[#94A3B8] dark:text-[#555555] text-center">
+                <p className="text-[10px] uppercase tracking-widest text-[#555555] text-center">
                     Sponsored
                 </p>
                 <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-xl h-[240px] p-5 flex flex-col items-center justify-center text-center border border-[#334155] relative overflow-hidden">
@@ -674,24 +674,24 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
             : []),
     ];
     return (
-        <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0D0D0D]">
+        <div className="min-h-screen bg-[#0D0D0D]">
             <ScoutNavbar />
             <div className="pt-16 flex min-h-screen">
                 {/* DESKTOP FILTER PANEL */}
-                <aside className="hidden lg:block w-72 shrink-0 bg-white dark:bg-[#0D0D0D] border-r border-[#E2E8F0] dark:border-[#2A2A2A] px-6 py-6 sticky top-16 h-[calc(100vh-64px)] overflow-y-auto">
+                <aside className="hidden lg:block w-72 shrink-0 bg-[#0D0D0D] border-r border-[#2A2A2A] px-6 py-6 sticky top-16 h-[calc(100vh-64px)] overflow-y-auto">
                     <FilterPanel {...filterProps} />
                 </aside>
                 {/* MAIN CONTENT */}
                 <main className="flex-1 min-w-0 p-4 sm:p-6">
                     {/* TOP BAR */}
-                    <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-4 mb-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-4 mb-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                         <div className="relative flex-1">
                             <SearchIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
                             <Input
                                 value={searchQuery}
                                 onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
                                 placeholder="Search by name, club, or nationality..."
-                                className="pl-10 pr-10 h-11 bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 dark:focus-visible:ring-1"
+                                className="pl-10 pr-10 h-11 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-orange-800"
                             />
                             {searchQuery && (
                                 <button
@@ -709,7 +709,7 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                 <SheetTrigger asChild>
                                     <Button
                                         variant="outline"
-                                        className="lg:hidden h-10 border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] bg-white dark:bg-[#111111]"
+                                        className="lg:hidden h-10 border-[#2A2A2A] text-[#F5F5F5] bg-[#111111]"
                                     >
                                         <SlidersHorizontal className="w-4 h-4 mr-2" />
                                         Filters
@@ -722,29 +722,29 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                 </SheetTrigger>
                                 <SheetContent
                                     side="left"
-                                    className="w-[300px] sm:w-[340px] bg-white dark:bg-[#0D0D0D] border-r border-[#E2E8F0] dark:border-[#2A2A2A] overflow-y-auto p-6"
+                                    className="w-[300px] sm:w-[340px] bg-[#0D0D0D] border-r border-[#2A2A2A] overflow-y-auto p-6"
                                 >
                                     <SheetHeader className="mb-4">
-                                        <SheetTitle className="text-[#0F172A] dark:text-[#F5F5F5] font-display text-xl">
+                                        <SheetTitle className="text-[#F5F5F5] font-display text-xl">
                                             Refine Search
                                         </SheetTitle>
                                     </SheetHeader>
                                     <FilterPanel {...filterProps} />
                                 </SheetContent>
                             </Sheet>
-                            <p className="hidden sm:block text-sm text-[#475569] dark:text-[#9A9A9A] font-mono whitespace-nowrap">
-                                <span className="font-bold text-[#0F172A] dark:text-[#F5F5F5]">
+                            <p className="hidden sm:block text-sm text-[#9A9A9A] font-mono whitespace-nowrap">
+                                <span className="font-bold text-[#F5F5F5]">
                                     {totalPlayers.toLocaleString()}
                                 </span>{' '}
                                 players found
                             </p>
                             {/* View toggle */}
-                            <div className="flex items-center gap-1 bg-[#F8FAFC] dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-lg p-1">
+                            <div className="flex items-center gap-1 bg-[#111111] border border-[#2A2A2A] rounded-lg p-1">
                                 <button
                                     onClick={() => setView('grid')}
                                     className={`p-1.5 rounded-md transition-colors ${view === 'grid'
-                                        ? 'text-[#FF6B00] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]'
-                                        : 'text-[#94A3B8] dark:text-[#555555] hover:text-[#475569]'
+                                        ? 'text-[#FF6B00] bg-[rgba(255,107,0,0.12)]'
+                                        : 'text-[#555555] hover:text-[#9A9A9A]'
                                         }`}
                                     aria-label="Grid view"
                                 >
@@ -753,8 +753,8 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                 <button
                                     onClick={() => setView('list')}
                                     className={`p-1.5 rounded-md transition-colors ${view === 'list'
-                                        ? 'text-[#FF6B00] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]'
-                                        : 'text-[#94A3B8] dark:text-[#555555] hover:text-[#475569]'
+                                        ? 'text-[#FF6B00] bg-[rgba(255,107,0,0.12)]'
+                                        : 'text-[#555555] hover:text-[#9A9A9A]'
                                         }`}
                                     aria-label="List view"
                                 >
@@ -763,10 +763,10 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                             </div>
                             {/* Sort */}
                             <Select value={sortBy} onValueChange={(v) => { setSortBy(v); setPage(1); }}>
-                                <SelectTrigger className="h-10 w-[140px] bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] text-sm">
+                                <SelectTrigger className="h-10 w-[140px] bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] text-sm">
                                     <SelectValue />
                                 </SelectTrigger>
-                                <SelectContent className="bg-white dark:bg-[#161616] border-[#E2E8F0] dark:border-[#2A2A2A]">
+                                <SelectContent className="bg-[#161616] border-[#2A2A2A]">
                                     <SelectItem value="newest">Newest</SelectItem>
                                     <SelectItem value="name">Name A–Z</SelectItem>
                                     <SelectItem value="age-asc">Age ↑</SelectItem>
@@ -783,7 +783,7 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                 <button
                                     key={`${chip.label}-${i}`}
                                     onClick={chip.onRemove}
-                                    className="inline-flex items-center gap-1.5 rounded-full border border-[#FF6B00] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] px-3 py-1 text-xs font-semibold text-[#CC5500] hover:bg-[#FF6B00] hover:text-white transition-colors"
+                                    className="inline-flex items-center gap-1.5 rounded-full border border-[#FF6B00] bg-[rgba(255,107,0,0.12)] px-3 py-1 text-xs font-semibold text-[#CC5500] hover:bg-[#FF6B00] hover:text-white transition-colors"
                                 >
                                     {chip.label}
                                     <X className="w-3 h-3" />
@@ -791,15 +791,15 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                             ))}
                             <button
                                 onClick={clearAll}
-                                className="text-xs font-bold text-[#475569] dark:text-[#9A9A9A] hover:text-[#FF6B00] hover:underline"
+                                className="text-xs font-bold text-[#9A9A9A] hover:text-[#FF6B00] hover:underline"
                             >
                                 Clear all
                             </button>
                         </div>
                     )}
                     {/* Mobile count display */}
-                    <p className="sm:hidden mb-3 text-sm text-[#475569] dark:text-[#9A9A9A] font-mono px-1">
-                        <span className="font-bold text-[#0F172A] dark:text-[#F5F5F5]">
+                    <p className="sm:hidden mb-3 text-sm text-[#9A9A9A] font-mono px-1">
+                        <span className="font-bold text-[#F5F5F5]">
                             {totalPlayers.toLocaleString()}
                         </span>{' '}
                         players found
@@ -832,14 +832,14 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                     </div>
                     {/* EMPTY STATE */}
                     {totalPlayers === 0 && (
-                        <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-12 text-center">
+                        <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-12 text-center">
                             {rawPlayers.length === 0 ? (
-                                <p className="text-sm text-[#475569] dark:text-[#9A9A9A]">
+                                <p className="text-sm text-[#9A9A9A]">
                                     No players in the directory yet.
                                 </p>
                             ) : (
                                 <>
-                                    <p className="text-sm text-[#475569] dark:text-[#9A9A9A]">
+                                    <p className="text-sm text-[#9A9A9A]">
                                         No players match your filters.
                                     </p>
                                     <button
@@ -859,13 +859,13 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                 <Link
                                     key={p.id}
                                     href={`/scouting/player/${p.id}`}
-                                    className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden cursor-pointer group transition-all hover:-translate-y-1 hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_4px_20px_rgba(255,107,0,0.08)] hover:border-[#FF6B00]"
+                                    className="bg-[#161616] border border-[#2A2A2A] rounded-2xl overflow-hidden cursor-pointer group transition-all hover:-translate-y-1 hover:shadow-[0_4px_20px_rgba(255,107,0,0.08)] hover:border-[#FF6B00]"
                                 >
                                     {/* Photo area */}
                                     <div
                                         className={`h-48 ${positionGradient(
                                             p.position
-                                        )} bg-[#F8FAFC] dark:bg-[#1F1F1F] relative flex items-center justify-center`}
+                                        )} bg-[#1F1F1F] relative flex items-center justify-center`}
                                     >
                                         {p.photoUrl ? (
                                             <img
@@ -874,12 +874,12 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                                 className="absolute inset-0 h-full w-full object-cover"
                                             />
                                         ) : (
-                                            <div className="w-24 h-24 rounded-full bg-white/20 dark:bg-black/20 flex items-center justify-center font-display text-3xl font-black text-white/70">
+                                            <div className="w-24 h-24 rounded-full bg-black/20 flex items-center justify-center font-display text-3xl font-black text-white/70">
                                                 {initials(p.name)}
                                             </div>
                                         )}
                                         {/* Position badge */}
-                                        <span className="absolute top-3 left-3 bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-black px-2.5 py-0.5 rounded-full tracking-wider">
+                                        <span className="absolute top-3 left-3 bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-black px-2.5 py-0.5 rounded-full tracking-wider">
                                             {p.position}
                                         </span>
                                         {/* Flag */}
@@ -887,35 +887,35 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                     </div>
                                     {/* Info */}
                                     <div className="p-5">
-                                        <h3 className="font-bold text-base text-[#0F172A] dark:text-[#F5F5F5] leading-tight truncate">
+                                        <h3 className="font-bold text-base text-[#F5F5F5] leading-tight truncate">
                                             {p.name}
                                         </h3>
-                                        <p className="text-sm text-[#475569] dark:text-[#9A9A9A] mt-0.5 truncate">
+                                        <p className="text-sm text-[#9A9A9A] mt-0.5 truncate">
                                             {p.club}
                                         </p>
                                         {/* Stats */}
-                                        <div className="grid grid-cols-3 mt-3 text-center border-t border-[#F1F5F9] dark:border-[#1F1F1F] pt-3">
+                                        <div className="grid grid-cols-3 mt-3 text-center border-t border-[#1F1F1F] pt-3">
                                             <div>
-                                                <p className="text-[9px] text-[#94A3B8] dark:text-[#555555] uppercase tracking-wider">
+                                                <p className="text-[9px] text-[#555555] uppercase tracking-wider">
                                                     Age
                                                 </p>
-                                                <p className="text-xs font-semibold font-mono text-[#0F172A] dark:text-[#F5F5F5] mt-0.5">
+                                                <p className="text-xs font-semibold font-mono text-[#F5F5F5] mt-0.5">
                                                     {p.age ?? '—'}
                                                 </p>
                                             </div>
-                                            <div className="border-x border-[#F1F5F9] dark:border-[#1F1F1F]">
-                                                <p className="text-[9px] text-[#94A3B8] dark:text-[#555555] uppercase tracking-wider">
+                                            <div className="border-x border-[#1F1F1F]">
+                                                <p className="text-[9px] text-[#555555] uppercase tracking-wider">
                                                     Height
                                                 </p>
-                                                <p className="text-xs font-semibold font-mono text-[#0F172A] dark:text-[#F5F5F5] mt-0.5">
+                                                <p className="text-xs font-semibold font-mono text-[#F5F5F5] mt-0.5">
                                                     {p.height ?? '—'}
                                                 </p>
                                             </div>
                                             <div>
-                                                <p className="text-[9px] text-[#94A3B8] dark:text-[#555555] uppercase tracking-wider">
+                                                <p className="text-[9px] text-[#555555] uppercase tracking-wider">
                                                     Foot
                                                 </p>
-                                                <p className="text-xs font-semibold font-mono text-[#0F172A] dark:text-[#F5F5F5] mt-0.5">
+                                                <p className="text-xs font-semibold font-mono text-[#F5F5F5] mt-0.5">
                                                     {p.foot}
                                                 </p>
                                             </div>
@@ -931,33 +931,33 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                     )}
                     {/* LIST VIEW */}
                     {totalPlayers > 0 && view === 'list' && (
-                        <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden">
+                        <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl overflow-hidden">
                             <div className="overflow-x-auto">
                                 <Table>
                                     <TableHeader>
-                                        <TableRow className="border-b border-[#E2E8F0] dark:border-[#2A2A2A] hover:bg-transparent">
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#475569] dark:text-[#9A9A9A] py-4">
+                                        <TableRow className="border-b border-[#2A2A2A] hover:bg-transparent">
+                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A] py-4">
                                                 Player
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#475569] dark:text-[#9A9A9A]">
+                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
                                                 Position
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#475569] dark:text-[#9A9A9A]">
+                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
                                                 Age
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#475569] dark:text-[#9A9A9A]">
+                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
                                                 Country
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#475569] dark:text-[#9A9A9A]">
+                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
                                                 Height
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#475569] dark:text-[#9A9A9A]">
+                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
                                                 Foot
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#475569] dark:text-[#9A9A9A]">
+                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
                                                 Modality
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#475569] dark:text-[#9A9A9A] text-right">
+                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A] text-right">
                                                 Action
                                             </TableHead>
                                         </TableRow>
@@ -966,7 +966,7 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                         {players.map((p) => (
                                             <TableRow
                                                 key={p.id}
-                                                className="border-b border-[#F1F5F9] dark:border-[#1F1F1F] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] transition-colors cursor-pointer"
+                                                className="border-b border-[#1F1F1F] hover:bg-[#1A1A1A] transition-colors cursor-pointer"
                                             >
                                                 <TableCell className="py-3">
                                                     <div className="flex items-center gap-3">
@@ -986,36 +986,36 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                                             </div>
                                                         )}
                                                         <div className="min-w-0">
-                                                            <p className="font-bold text-sm text-[#0F172A] dark:text-[#F5F5F5] truncate">
+                                                            <p className="font-bold text-sm text-[#F5F5F5] truncate">
                                                                 {p.name}
                                                             </p>
-                                                            <p className="text-xs text-[#475569] dark:text-[#9A9A9A] truncate">
+                                                            <p className="text-xs text-[#9A9A9A] truncate">
                                                                 {p.club}
                                                             </p>
                                                         </div>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell>
-                                                    <span className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-black px-2 py-0.5 rounded-full tracking-wider">
+                                                    <span className="bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-black px-2 py-0.5 rounded-full tracking-wider">
                                                         {p.position}
                                                     </span>
                                                 </TableCell>
-                                                <TableCell className="font-mono text-sm text-[#0F172A] dark:text-[#F5F5F5]">
+                                                <TableCell className="font-mono text-sm text-[#F5F5F5]">
                                                     {p.age ?? '—'}
                                                 </TableCell>
                                                 <TableCell>
-                                                    <div className="flex items-center gap-1.5 text-sm text-[#0F172A] dark:text-[#F5F5F5]">
+                                                    <div className="flex items-center gap-1.5 text-sm text-[#F5F5F5]">
                                                         <span className="text-base leading-none">{p.flag}</span>
                                                         <span className="hidden md:inline">{p.country || '—'}</span>
                                                     </div>
                                                 </TableCell>
-                                                <TableCell className="font-mono text-sm text-[#0F172A] dark:text-[#F5F5F5]">
+                                                <TableCell className="font-mono text-sm text-[#F5F5F5]">
                                                     {p.height ?? '—'}
                                                 </TableCell>
-                                                <TableCell className="font-mono text-sm text-[#0F172A] dark:text-[#F5F5F5]">
+                                                <TableCell className="font-mono text-sm text-[#F5F5F5]">
                                                     {p.foot}
                                                 </TableCell>
-                                                <TableCell className="text-sm text-[#475569] dark:text-[#9A9A9A]">
+                                                <TableCell className="text-sm text-[#9A9A9A]">
                                                     {p.modality}
                                                 </TableCell>
                                                 <TableCell className="text-right">
@@ -1037,13 +1037,13 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                     {/* PAGINATION */}
                     {totalPlayers > 0 && totalPages > 1 && (
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-6 gap-3">
-                            <p className="text-sm text-[#475569] dark:text-[#9A9A9A] font-mono">
+                            <p className="text-sm text-[#9A9A9A] font-mono">
                                 Showing{' '}
-                                <span className="font-bold text-[#0F172A] dark:text-[#F5F5F5]">
+                                <span className="font-bold text-[#F5F5F5]">
                                     {rangeStart}–{rangeEnd}
                                 </span>{' '}
                                 of{' '}
-                                <span className="font-bold text-[#0F172A] dark:text-[#F5F5F5]">
+                                <span className="font-bold text-[#F5F5F5]">
                                     {totalPlayers.toLocaleString()}
                                 </span>
                             </p>
@@ -1053,7 +1053,7 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                         <PaginationPrevious
                                             href="#"
                                             onClick={(e) => { e.preventDefault(); setPage(Math.max(1, currentPage - 1)); }}
-                                            className={`text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] hover:text-[#0F172A] dark:hover:text-[#F5F5F5] border-[#E2E8F0] dark:border-[#2A2A2A] ${currentPage === 1 ? 'pointer-events-none opacity-40' : ''}`}
+                                            className={`text-[#9A9A9A] hover:bg-[#1A1A1A] hover:text-[#F5F5F5] border-[#2A2A2A] ${currentPage === 1 ? 'pointer-events-none opacity-40' : ''}`}
                                         />
                                     </PaginationItem>
                                     {pageNumbers.map((n) => (
@@ -1065,7 +1065,7 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                                 className={
                                                     n === currentPage
                                                         ? 'bg-[#FF6B00] text-white border-[#FF6B00] hover:bg-[#CC5500] hover:text-white'
-                                                        : 'text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] border-[#E2E8F0] dark:border-[#2A2A2A]'
+                                                        : 'text-[#9A9A9A] hover:bg-[#1A1A1A] border-[#2A2A2A]'
                                                 }
                                             >
                                                 {n}
@@ -1081,7 +1081,7 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                                 <PaginationLink
                                                     href="#"
                                                     onClick={(e) => { e.preventDefault(); setPage(totalPages); }}
-                                                    className="text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] border-[#E2E8F0] dark:border-[#2A2A2A]"
+                                                    className="text-[#9A9A9A] hover:bg-[#1A1A1A] border-[#2A2A2A]"
                                                 >
                                                     {totalPages}
                                                 </PaginationLink>
@@ -1092,7 +1092,7 @@ export default function Index({ players: playersProp }: { players?: PlayerProfil
                                         <PaginationNext
                                             href="#"
                                             onClick={(e) => { e.preventDefault(); setPage(Math.min(totalPages, currentPage + 1)); }}
-                                            className={`text-[#475569] dark:text-[#9A9A9A] hover:bg-[#F8FAFC] dark:hover:bg-[#1A1A1A] hover:text-[#0F172A] dark:hover:text-[#F5F5F5] border-[#E2E8F0] dark:border-[#2A2A2A] ${currentPage === totalPages ? 'pointer-events-none opacity-40' : ''}`}
+                                            className={`text-[#9A9A9A] hover:bg-[#1A1A1A] hover:text-[#F5F5F5] border-[#2A2A2A] ${currentPage === totalPages ? 'pointer-events-none opacity-40' : ''}`}
                                         />
                                     </PaginationItem>
                                 </PaginationContent>

@@ -133,7 +133,7 @@ export default function Report() {
         })
         : null;
     return (
-        <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#111111] text-[#0F172A] dark:text-[#F5F5F5] font-sans">
+        <div className="min-h-screen bg-[#111111] text-[#F5F5F5] font-sans">
             <ScoutNavbar />
             {/* TOAST */}
             {toast && (
@@ -221,15 +221,15 @@ export default function Report() {
             <section className="py-8 sm:py-10">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-6">
                     {/* SAVED RATING SUMMARY */}
-                    <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
+                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                         <div className="flex items-center justify-between gap-3 mb-5">
                             <div>
-                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-1">From your profile rating</div>
+                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">From your profile rating</div>
                                 <h2 className="font-display text-2xl font-bold uppercase">Rating Summary</h2>
                             </div>
                             {averageRating > 0 && (
                                 <div className="text-right flex-shrink-0">
-                                    <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold">Overall</div>
+                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold">Overall</div>
                                     <div className="font-mono text-3xl font-bold text-[#FF6B00]">{averageRating.toFixed(1)}</div>
                                 </div>
                             )}
@@ -241,24 +241,24 @@ export default function Report() {
                                         const Icon = cat.icon;
                                         const value = rating[cat.key as keyof RatingRow] as number;
                                         return (
-                                            <div key={cat.key} className="bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl p-4">
+                                            <div key={cat.key} className="bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl p-4">
                                                 <Icon className="w-4 h-4 text-[#FF6B00] mb-2" />
                                                 <div className="font-mono text-2xl font-bold">{value || '—'}</div>
-                                                <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mt-1">{cat.label}</div>
+                                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mt-1">{cat.label}</div>
                                             </div>
                                         );
                                     })}
                                 </div>
                                 {rating.notes && (
-                                    <div className="mt-4 bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl p-4">
-                                        <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-1.5">Scout Notes</div>
-                                        <p className="text-sm text-[#475569] dark:text-[#9A9A9A] leading-relaxed whitespace-pre-line">{rating.notes}</p>
+                                    <div className="mt-4 bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl p-4">
+                                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1.5">Scout Notes</div>
+                                        <p className="text-sm text-[#9A9A9A] leading-relaxed whitespace-pre-line">{rating.notes}</p>
                                     </div>
                                 )}
                             </>
                         ) : (
-                            <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl p-5 text-center">
-                                <p className="text-sm text-[#475569] dark:text-[#9A9A9A] mb-3">
+                            <div className="bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl p-5 text-center">
+                                <p className="text-sm text-[#9A9A9A] mb-3">
                                     You haven't rated this player yet.
                                 </p>
                                 <Link
@@ -272,8 +272,8 @@ export default function Report() {
                         )}
                     </div>
                     {/* RECOMMENDATION */}
-                    <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
-                        <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">Your verdict</div>
+                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
+                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Your verdict</div>
                         <h2 className="font-display text-2xl font-bold uppercase mb-5">Recommendation</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             {RECOMMENDATIONS.map((rec) => {
@@ -285,15 +285,15 @@ export default function Report() {
                                         type="button"
                                         onClick={() => setData('recommendation', rec.value)}
                                         className={`text-left p-4 rounded-xl border transition-colors ${active
-                                            ? 'bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border-[#FF6B00]'
-                                            : 'bg-[#F8FAFC] dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00]'
+                                            ? 'bg-[rgba(255,107,0,0.12)] border-[#FF6B00]'
+                                            : 'bg-[#1F1F1F] border-[#2A2A2A] hover:border-[#FF6B00]'
                                             }`}
                                     >
-                                        <Icon className={`w-5 h-5 mb-2 ${active ? 'text-[#FF6B00]' : 'text-[#475569] dark:text-[#9A9A9A]'}`} />
-                                        <div className={`font-display text-lg font-bold uppercase ${active ? 'text-[#CC5500] dark:text-[#FF6B00]' : ''}`}>
+                                        <Icon className={`w-5 h-5 mb-2 ${active ? 'text-[#FF6B00]' : 'text-[#9A9A9A]'}`} />
+                                        <div className={`font-display text-lg font-bold uppercase ${active ? 'text-[#FF6B00]' : ''}`}>
                                             {rec.label}
                                         </div>
-                                        <div className="text-[11px] text-[#475569] dark:text-[#9A9A9A] leading-snug mt-0.5">{rec.desc}</div>
+                                        <div className="text-[11px] text-[#9A9A9A] leading-snug mt-0.5">{rec.desc}</div>
                                     </button>
                                 );
                             })}
@@ -303,7 +303,7 @@ export default function Report() {
                         )}
                         {/* MATCH CONTEXT */}
                         <div className="mt-6">
-                            <label className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2 block">
+                            <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">
                                 Match / Observation Context
                             </label>
                             <input
@@ -311,7 +311,7 @@ export default function Report() {
                                 value={data.match_context}
                                 onChange={(e) => setData('match_context', e.target.value)}
                                 placeholder="e.g. Santos U-20 vs Palmeiras U-20, 12 Mar 2026 — live"
-                                className="w-full h-11 px-4 bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-orange-800"
+                                className="w-full h-11 px-4 bg-[#111111] border border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-orange-800"
                             />
                             {errors.match_context && (
                                 <p className="text-xs text-[#DC2626] mt-1.5">{errors.match_context}</p>
@@ -319,12 +319,12 @@ export default function Report() {
                         </div>
                     </div>
                     {/* WRITTEN REPORT */}
-                    <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
-                        <div className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2">Observations</div>
+                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
+                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Observations</div>
                         <h2 className="font-display text-2xl font-bold uppercase mb-5">Written Report</h2>
                         <div className="space-y-5">
                             <div>
-                                <label className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2 block">
+                                <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">
                                     Strengths
                                 </label>
                                 <textarea
@@ -332,14 +332,14 @@ export default function Report() {
                                     onChange={(e) => setData('strengths', e.target.value)}
                                     rows={5}
                                     placeholder="What stands out — technical qualities, decision-making, movement off the ball..."
-                                    className="w-full px-4 py-3 bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-orange-800 resize-none"
+                                    className="w-full px-4 py-3 bg-[#111111] border border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-orange-800 resize-none"
                                 />
                                 {errors.strengths && (
                                     <p className="text-xs text-[#DC2626] mt-1.5">{errors.strengths}</p>
                                 )}
                             </div>
                             <div>
-                                <label className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2 block">
+                                <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">
                                     Weaknesses / Development Areas
                                 </label>
                                 <textarea
@@ -347,14 +347,14 @@ export default function Report() {
                                     onChange={(e) => setData('weaknesses', e.target.value)}
                                     rows={5}
                                     placeholder="Where does he need to improve — physicality, consistency, defensive work rate..."
-                                    className="w-full px-4 py-3 bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-orange-800 resize-none"
+                                    className="w-full px-4 py-3 bg-[#111111] border border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-orange-800 resize-none"
                                 />
                                 {errors.weaknesses && (
                                     <p className="text-xs text-[#DC2626] mt-1.5">{errors.weaknesses}</p>
                                 )}
                             </div>
                             <div>
-                                <label className="text-[10px] uppercase tracking-wider text-[#475569] dark:text-[#9A9A9A] font-bold mb-2 block">
+                                <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">
                                     Summary & Conclusion
                                 </label>
                                 <textarea
@@ -362,7 +362,7 @@ export default function Report() {
                                     onChange={(e) => setData('summary', e.target.value)}
                                     rows={6}
                                     placeholder="Overall assessment, projected ceiling, and what you'd recommend as next steps..."
-                                    className="w-full px-4 py-3 bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-orange-800 resize-none"
+                                    className="w-full px-4 py-3 bg-[#111111] border border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-orange-800 resize-none"
                                 />
                                 {errors.summary && (
                                     <p className="text-xs text-[#DC2626] mt-1.5">{errors.summary}</p>
@@ -371,13 +371,13 @@ export default function Report() {
                         </div>
                     </div>
                     {/* ACTIONS */}
-                    <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6">
+                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                         <div className="flex flex-col sm:flex-row gap-3">
                             <button
                                 type="button"
                                 onClick={() => submitWith('draft')}
                                 disabled={processing}
-                                className="flex-1 inline-flex items-center justify-center gap-2 bg-white dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] disabled:opacity-60 text-[#0F172A] dark:text-[#F5F5F5] px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
+                                className="flex-1 inline-flex items-center justify-center gap-2 bg-[#1F1F1F] border border-[#2A2A2A] hover:border-[#FF6B00] disabled:opacity-60 text-[#F5F5F5] px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
                             >
                                 <Save className="w-4 h-4" />
                                 {processing ? 'Saving...' : 'Save Draft'}
@@ -392,7 +392,7 @@ export default function Report() {
                                 {processing ? 'Submitting...' : 'Submit Report'}
                             </button>
                         </div>
-                        <p className="text-[11px] text-[#94A3B8] dark:text-[#555555] mt-3 text-center">
+                        <p className="text-[11px] text-[#555555] mt-3 text-center">
                             Drafts stay private to you. Submitted reports are marked final and can still be updated.
                         </p>
                     </div>
