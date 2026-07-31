@@ -1,3 +1,4 @@
+// Full updated PlayerDashboard component with added completion checks
 import PlayerNavbar from '@/components/player/PlayerNavbar';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +10,7 @@ import { usePage } from '@inertiajs/react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useRef, useState } from 'react';
 import { toPng } from 'html-to-image';
+import { Upload } from "lucide-react";
 import {
     Share2,
     Download,
@@ -56,8 +58,7 @@ import {
     XAxis,
     YAxis
 } from 'recharts';
-
-// MOCK DATA (realistic) – subscription সরানো হয়েছে
+// MOCK DATA (realistic) – subscription সরানো হয়েছে
 const player = {
     name: 'Benjamin',
     totalViews: 1247,
@@ -65,7 +66,6 @@ const player = {
     scoutInterest: 23,
     avgRating: 4.2,
 };
-
 // ডিফল্ট কান্ট্রি ডেটা (যদি ব্যাকএন্ড থেকে না আসে)
 const defaultCountryData = [
     { country: 'Portugal', views: 412 },
@@ -74,27 +74,29 @@ const defaultCountryData = [
     { country: 'France', views: 156 },
     { country: 'England', views: 94 },
 ];
-
 const getCountryName = (code?: string) => {
     if (!code) return '';
     return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
 };
-
+// alpha-2 code theke flag emoji
+const codeToFlag = (code?: string): string => {
+    if (!code || code.length !== 2) return '';
+    return String.fromCodePoint(
+        ...code.toUpperCase().split('').map((c) => 0x1f1a5 + c.charCodeAt(0))
+    );
+};
 // CSRF cookie theke token (logo file upload er jonno fetch-e lagbe)
 const getCookie = (name: string): string => {
     const row = document.cookie.split('; ').find((r) => r.startsWith(name + '='));
     return row ? decodeURIComponent(row.split('=')[1]) : '';
 };
-
 const sparklineData = [12, 18, 14, 22, 19, 28, 34];
-
 function getGreeting(): string {
     const h = new Date().getHours();
     if (h < 12) return 'Good morning';
     if (h < 18) return 'Good afternoon';
     return 'Good evening';
 }
-
 function formatDate(): string {
     return new Date().toLocaleDateString('en-US', {
         weekday: 'long',
@@ -103,27 +105,11 @@ function formatDate(): string {
         day: 'numeric',
     });
 }
-
 const nonEmpty = (v: any): boolean =>
     v !== null && v !== undefined && String(v).trim() !== '';
-
-const COUNTRY_CODES = [
-    'AF', 'AL', 'DZ', 'AD', 'AO', 'AG', 'AR', 'AM', 'AU', 'AT', 'AZ', 'BS', 'BH', 'BD', 'BB', 'BY', 'BE', 'BZ', 'BJ', 'BT',
-    'BO', 'BA', 'BW', 'BR', 'BN', 'BG', 'BF', 'BI', 'KH', 'CM', 'CA', 'CV', 'CF', 'TD', 'CL', 'CN', 'CO', 'KM', 'CG', 'CD',
-    'CR', 'CI', 'HR', 'CU', 'CY', 'CZ', 'DK', 'DJ', 'DM', 'DO', 'EC', 'EG', 'SV', 'GQ', 'ER', 'EE', 'SZ', 'ET', 'FJ', 'FI',
-    'FR', 'GA', 'GM', 'GE', 'DE', 'GH', 'GR', 'GD', 'GT', 'GN', 'GW', 'GY', 'HT', 'HN', 'HU', 'IS', 'IN', 'ID', 'IR', 'IQ',
-    'IE', 'IL', 'IT', 'JM', 'JP', 'JO', 'KZ', 'KE', 'KI', 'KW', 'KG', 'LA', 'LV', 'LB', 'LS', 'LR', 'LY', 'LI', 'LT', 'LU',
-    'MG', 'MW', 'MY', 'MV', 'ML', 'MT', 'MH', 'MR', 'MU', 'MX', 'FM', 'MD', 'MC', 'MN', 'ME', 'MA', 'MZ', 'MM', 'NA', 'NR',
-    'NP', 'NL', 'NZ', 'NI', 'NE', 'NG', 'KP', 'MK', 'NO', 'OM', 'PK', 'PW', 'PS', 'PA', 'PG', 'PY', 'PE', 'PH', 'PL', 'PT',
-    'QA', 'RO', 'RU', 'RW', 'KN', 'LC', 'VC', 'WS', 'SM', 'ST', 'SA', 'SN', 'RS', 'SC', 'SL', 'SG', 'SK', 'SI', 'SB', 'SO',
-    'ZA', 'KR', 'SS', 'ES', 'LK', 'SD', 'SR', 'SE', 'CH', 'SY', 'TW', 'TJ', 'TZ', 'TH', 'TL', 'TG', 'TO', 'TT', 'TN', 'TR',
-    'TM', 'TV', 'UG', 'UA', 'AE', 'GB', 'US', 'UY', 'UZ', 'VU', 'VE', 'VN', 'YE', 'ZM', 'ZW',
-];
-
 const ALL_POSITIONS = ['GK', 'LB', 'CB-L', 'CB-R', 'RB', 'LM', 'CM-L', 'CM-R', 'RM', 'CAM', 'LW', 'ST', 'RW', 'CF'];
-
 // ════════ LIST MODAL CONFIG (repeatable rows) ════════
-type FieldDef = { name: string; label: string; type: 'text' | 'number' | 'file' };
+type FieldDef = { name: string; label: string; type: 'text' | 'number' | 'file' | 'country' };
 type ListConfig = {
     title: string;
     storageKey: string;
@@ -133,7 +119,6 @@ type ListConfig = {
     firstFixed?: boolean;
     defaultRows?: Record<string, any>[];
 };
-
 const LIST_CONFIGS: Record<string, ListConfig> = {
     videos: {
         title: 'Videos',
@@ -159,8 +144,9 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
         fields: [
             { name: 'year', label: 'Year', type: 'number' },
             { name: 'club', label: 'Club', type: 'text' },
+            { name: 'country', label: 'Country', type: 'country' },
         ],
-        empty: { year: '', club: '' },
+        empty: { year: '', club: '', country: '' },
     },
     transfer_history: {
         title: 'Transfer History',
@@ -169,9 +155,10 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
         fields: [
             { name: 'year', label: 'Year', type: 'number' },
             { name: 'club', label: 'Club', type: 'text' },
+            { name: 'country', label: 'Country', type: 'country' },
             { name: 'logo', label: 'Club Logo', type: 'file' },
         ],
-        empty: { year: '', club: '', logo: '' },
+        empty: { year: '', club: '', country: '', logo: '' },
     },
     achievements: {
         title: 'Achievements',
@@ -208,12 +195,10 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
         empty: { home: '', score: '', away: '', goals: '', assists: '', minutes: '' },
     },
 };
-
 // ════════ FORM MODAL CONFIG (single record) ════════
-type FormFieldType = 'text' | 'number' | 'date' | 'select' | 'country' | 'positions' | 'file';
+type FormFieldType = 'text' | 'number' | 'date' | 'select' | 'country' | 'positions' | 'file' | 'textarea';
 type FormField = { name: string; label: string; type: FormFieldType; options?: string[] };
 type FormConfig = { title: string; fields: FormField[] };
-
 const FORM_CONFIGS: Record<string, FormConfig> = {
     basic_info: {
         title: 'Basic Information',
@@ -227,13 +212,16 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
             { name: 'birth_city', label: 'Birth City', type: 'text' },
             { name: 'birth_country', label: 'Birth Country', type: 'country' },
             { name: 'current_club', label: 'Current Club', type: 'text' },
+            { name: 'current_club_country', label: 'Club Country', type: 'country' },
             { name: 'in_team_since', label: 'In Team Since (YYYY-MM)', type: 'text' },
             { name: 'agent', label: 'Agent', type: 'text' },
+            { name: 'whatsapp', label: 'WhatsApp Number', type: 'text' },
+            { name: 'description', label: 'About / Bio', type: 'textarea' },
         ],
     },
     photo: {
         title: 'Profile Photo',
-        fields: [{ name: 'photo', label: 'Profile Photo (JPG/PNG)', type: 'file' }],
+        fields: [{ name: 'photo', label: '', type: 'file' }],
     },
     position_modality: {
         title: 'Position & Modality',
@@ -244,19 +232,19 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
         ],
     },
 };
-
 const inputClass =
     'h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none';
-
 // ── Generic list modal (repeatable rows) ──
 function ListModal({
     configKey,
     initialRows,
     onClose,
+    countries,
 }: {
     configKey: string;
     initialRows: any[];
     onClose: () => void;
+    countries?: any[];
 }) {
     const cfg = LIST_CONFIGS[configKey];
     const [rows, setRows] = useState<any[]>(() => {
@@ -266,7 +254,6 @@ function ListModal({
     });
     const [saving, setSaving] = useState(false);
     const [uploadingKey, setUploadingKey] = useState<string | null>(null);
-
     const update = (i: number, name: string, val: string) => {
         setRows((prev) => {
             const copy = [...prev];
@@ -274,7 +261,6 @@ function ListModal({
             return copy;
         });
     };
-
     const uploadFile = async (i: number, name: string, file: File) => {
         const key = `${i}-${name}`;
         setUploadingKey(key);
@@ -300,13 +286,11 @@ function ListModal({
             setUploadingKey(null);
         }
     };
-
     const addRow = () => setRows([...rows, { ...cfg.empty }]);
     const removeRow = (i: number) => {
         if (cfg.firstFixed && i === 0) return;
         setRows(rows.filter((_, idx) => idx !== i));
     };
-
     const save = () => {
         const cleaned = rows.filter((r) => nonEmpty(r[cfg.primary]));
         setSaving(true);
@@ -320,7 +304,6 @@ function ListModal({
             }
         );
     };
-
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
             <div
@@ -367,6 +350,27 @@ function ListModal({
                                                 />
                                             </label>
                                         </div>
+                                    ) : f.type === 'country' ? (
+                                        <div className="flex items-center gap-2 w-full">
+                                            <select
+                                                value={row[f.name] ?? ''}
+                                                onChange={(e) => update(i, f.name, e.target.value)}
+                                                className={`${inputClass} flex-1`}
+                                            >
+                                                <option value="">Country...</option>
+                                                {countries.map((country: any) => (
+                                                    <option key={country.code} value={country.code}>
+                                                        {country.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+
+                                            {row[f.name] && (
+                                                <span className="text-xl leading-none whitespace-nowrap">
+                                                    {codeToFlag(row[f.name])}
+                                                </span>
+                                            )}
+                                        </div>
                                     ) : (
                                         <input
                                             type={f.type}
@@ -411,24 +415,26 @@ function ListModal({
         </div>
     );
 }
-
 // ── Generic form modal (single record) ──
 function FormModal({
     configKey,
     user,
     pp,
     onClose,
+    countries,
 }: {
     configKey: string;
     user: any;
     pp: any;
     onClose: () => void;
+    countries: { code: string; name: string; flag?: string }[];
 }) {
     const cfg = FORM_CONFIGS[configKey];
     const [values, setValues] = useState<Record<string, any>>(() => {
         const init: Record<string, any> = {};
         cfg.fields.forEach((f) => {
             if (f.name === 'full_name') init[f.name] = user?.name ?? '';
+            else if (f.name === 'whatsapp') init[f.name] = user?.whatsapp ?? '';
             else if (f.name === 'dob' || f.name === 'nationality') init[f.name] = user?.[f.name] ?? '';
             else if (f.name === 'positions') init[f.name] = Array.isArray(pp?.positions) ? pp.positions : [];
             else if (f.name === 'photo') init[f.name] = null;
@@ -438,15 +444,12 @@ function FormModal({
     });
     const [preview, setPreview] = useState<string>(pp?.photo_url ?? '');
     const [saving, setSaving] = useState(false);
-
     const setField = (name: string, val: any) => setValues((prev) => ({ ...prev, [name]: val }));
-
     const togglePos = (id: string) => {
         const cur: string[] = values.positions || [];
         if (cur.includes(id)) setField('positions', cur.filter((p) => p !== id));
         else if (cur.length < 3) setField('positions', [...cur, id]);
     };
-
     const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -456,7 +459,7 @@ function FormModal({
             r.readAsDataURL(file);
         }
     };
-
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const save = () => {
         const payload: Record<string, any> = { ...values };
         if (!payload.photo) delete payload.photo;
@@ -468,7 +471,6 @@ function FormModal({
             onFinish: () => setSaving(false),
         });
     };
-
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
             <div
@@ -483,12 +485,15 @@ function FormModal({
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {cfg.fields.map((f) => (
-                        <div key={f.name} className={f.type === 'positions' || f.type === 'file' ? 'sm:col-span-2' : ''}>
+                        <div key={f.name} className={f.type === 'positions' || f.type === 'file' || f.type === 'textarea' ? 'sm:col-span-2' : ''}>
                             <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-wider text-[#94A3B8]">
                                 {f.label}
                             </label>
                             {f.type === 'text' && (
                                 <input type="text" value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass} />
+                            )}
+                            {f.type === 'textarea' && (
+                                <textarea value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} rows={4} className="w-full rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] px-2 py-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none resize-none" />
                             )}
                             {f.type === 'number' && (
                                 <input type="number" value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass} />
@@ -505,12 +510,21 @@ function FormModal({
                                 </select>
                             )}
                             {f.type === 'country' && (
-                                <select value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass}>
-                                    <option value="">Select country...</option>
-                                    {COUNTRY_CODES.map((c) => (
-                                        <option key={c} value={c}>{getCountryName(c)}</option>
-                                    ))}
-                                </select>
+                                <div className="flex items-center gap-2">
+                                    <div className="min-w-0 flex-1">
+                                        <select value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass}>
+                                            <option value="">Select country...</option>
+                                            {countries.map((c) => (
+                                                <option key={c.code} value={c.code}>
+                                                    {c.flag ?? ''} {c.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    {nonEmpty(values[f.name]) && (
+                                        <span className="shrink-0 text-2xl leading-none">{codeToFlag(values[f.name])}</span>
+                                    )}
+                                </div>
                             )}
                             {f.type === 'positions' && (
                                 <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
@@ -531,8 +545,35 @@ function FormModal({
                             )}
                             {f.type === 'file' && (
                                 <div className="flex items-center gap-4">
-                                    {preview && <img src={preview} alt="preview" className="h-16 w-16 rounded-full border-2 border-[#FF6B00] object-cover" />}
-                                    <input type="file" accept="image/jpeg,image/png" onChange={onFile} className="text-sm text-[#9A9A9A]" />
+                                    <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-[#FF6B00] bg-[#111111]">
+                                        <img
+                                            src={preview || "/images/img/placeholder.webp"}
+                                            alt="Preview"
+                                            className="h-full w-full object-cover"
+                                        />
+                                    </div>
+                                    <input
+                                        ref={fileInputRef}
+                                        type="file"
+                                        accept="image/jpeg,image/png,image/webp"
+                                        onChange={onFile}
+                                        className="hidden"
+                                    />
+                                    <div>
+                                        <button
+                                            type="button"
+                                            onClick={() => fileInputRef.current?.click()}
+                                            className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-[#FF6B00] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#E55F00]"
+                                        >
+                                            <Upload className="h-4 w-4" />
+                                            {preview ? "Change Photo" : "Upload Photo"}
+                                        </button>
+                                        <p className="mt-2 text-xs text-[#9A9A9A]">
+                                            Recommended size: <span className="text-white">200 × 300 px</span>
+                                            <br />
+                                            JPG, PNG or WEBP
+                                        </p>
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -550,7 +591,6 @@ function FormModal({
         </div>
     );
 }
-
 export default function PlayerDashboard() {
     const { auth } = usePage().props as any;
     const {
@@ -560,9 +600,9 @@ export default function PlayerDashboard() {
         viewsThisWeek = 0,
         viewsDaily = [],
         totalViews = 0,
-        countryAnalytics = [] // ← নতুন প্রপস: ব্যাকএন্ড থেকে আসা কান্ট্রি ডেটা
+        countries = [],
+        countryAnalytics = []
     } = usePage().props as any;
-
     const pp = auth?.user?.player_profile ?? {};
     const greeting = getGreeting();
     const hasSubscription = !!subscription?.current_plan;
@@ -571,17 +611,12 @@ export default function PlayerDashboard() {
     const [shareOpen, setShareOpen] = useState(false);
     const profileUrl = `${window.location.origin}/player/profile/${auth?.user?.player_profile?.id}`;
     const [copied, setCopied] = useState(false);
-
-    // কান্ট্রি ডেটা – যদি ব্যাকএন্ড থেকে আসে তাহলে সেটা ব্যবহার করব, না হলে ডিফল্ট
     const countryData = countryAnalytics.length > 0 ? countryAnalytics : defaultCountryData;
-
     const copyProfileLink = async () => {
         try {
             await navigator.clipboard.writeText(profileUrl);
             setCopied(true);
-            setTimeout(() => {
-                setCopied(false);
-            }, 2500);
+            setTimeout(() => { setCopied(false); }, 2500);
         } catch (error) {
             console.error('Failed to copy:', error);
             try {
@@ -601,13 +636,10 @@ export default function PlayerDashboard() {
             }
         }
     };
-
-    // video: video_url (Edit page) OR videos list (dashboard modal)
     const videoDone =
         nonEmpty(pp.video_url) ||
         (Array.isArray(pp.videos) && pp.videos.some((v: any) => nonEmpty(v?.url)));
-
-    // ── PROFILE COMPLETION (21 checks) ──
+    // ── PROFILE COMPLETION (now 24 checks after adding current_club_country, agent, whatsapp) ──
     const completionChecks: boolean[] = [
         nonEmpty(auth?.user?.name),
         nonEmpty(auth?.user?.dob),
@@ -618,7 +650,10 @@ export default function PlayerDashboard() {
         nonEmpty(pp.birth_city),
         nonEmpty(pp.birth_country),
         nonEmpty(pp.current_club),
+        nonEmpty(pp.current_club_country),   // ← নতুন
         nonEmpty(pp.in_team_since),
+        nonEmpty(pp.agent),                 // ← নতুন
+        nonEmpty(auth?.user?.whatsapp),              // ← নতুন
         nonEmpty(pp.modality),
         nonEmpty(pp.foot),
         nonEmpty(pp.photo_path),
@@ -634,7 +669,6 @@ export default function PlayerDashboard() {
     const profileComplete = Math.round(
         (completionChecks.filter(Boolean).length / completionChecks.length) * 100
     );
-
     // ── CHECKLIST ──
     const checklist: {
         label: string;
@@ -647,7 +681,12 @@ export default function PlayerDashboard() {
     }[] = [
             {
                 label: 'Basic information added',
-                done: nonEmpty(auth?.user?.name) && nonEmpty(auth?.user?.dob) && nonEmpty(auth?.user?.nationality),
+                done: nonEmpty(auth?.user?.name) && nonEmpty(auth?.user?.dob) && nonEmpty(auth?.user?.nationality)
+                    && nonEmpty(pp.gender) && nonEmpty(pp.height) && nonEmpty(pp.weight)
+                    && nonEmpty(pp.birth_city) && nonEmpty(pp.birth_country)
+                    && nonEmpty(pp.current_club) && nonEmpty(pp.current_club_country)
+                    && nonEmpty(pp.in_team_since) && nonEmpty(pp.agent) && nonEmpty(auth?.user?.whatsapp)
+                    && nonEmpty(pp.description),
                 modal: 'basic_info',
                 cta: 'Edit',
                 icon: UserPen,
@@ -725,10 +764,8 @@ export default function PlayerDashboard() {
                 icon: Crown,
             },
         ];
-
     const circumference = 276.46;
     const dashOffset = circumference - (profileComplete / 100) * circumference;
-
     const sparkMax = Math.max(...sparklineData);
     const sparkMin = Math.min(...sparklineData);
     const sparkRange = sparkMax - sparkMin || 1;
@@ -739,7 +776,6 @@ export default function PlayerDashboard() {
             return `${x},${y}`;
         })
         .join(' ');
-
     const playerInfo = [
         {
             icon: <Shirt className="w-4 h-4 text-gray-300" />,
@@ -774,7 +810,6 @@ export default function PlayerDashboard() {
                 : 'Not specified',
         },
     ];
-
     const shareProfile = async () => {
         const shareData = {
             title: `${auth?.user?.name || 'Player'} — HiLights Football`,
@@ -814,7 +849,6 @@ export default function PlayerDashboard() {
             prompt('Copy this profile link:', profileUrl);
         }
     };
-
     const cardRef = useRef<HTMLDivElement>(null);
     const downloadCard = async () => {
         if (!cardRef.current) return;
@@ -829,7 +863,6 @@ export default function PlayerDashboard() {
             alert('Could not download card. Please try again.');
         }
     };
-
     return (
         <div className="min-h-screen bg-[#0D0D0D] pt-16">
             <PlayerNavbar />
@@ -876,8 +909,7 @@ export default function PlayerDashboard() {
                                     className={`h-3 w-3 ${viewsTrend < 0 ? 'rotate-180 text-red-400' : 'text-green-400'}`}
                                 />
                                 <span
-                                    className={`text-xs font-medium ${viewsTrend < 0 ? 'text-red-400' : viewsTrend > 0 ? 'text-green-400' : 'text-[#9A9A9A]'
-                                        }`}
+                                    className={`text-xs font-medium ${viewsTrend < 0 ? 'text-red-400' : viewsTrend > 0 ? 'text-green-400' : 'text-[#9A9A9A]'}`}
                                 >
                                     {viewsTrend > 0 ? '+' : ''}{viewsTrend}% this week
                                 </span>
@@ -943,12 +975,12 @@ export default function PlayerDashboard() {
                                 </div>
                                 <div className="relative flex gap-2 sm:gap-4 pl-4 pt-2 border-b-1 border-gray-400">
                                     <div className="h-[160px] w-[95px] sm:h-[210px] sm:w-[130px] mb-3">
-                                        <img src={auth?.user?.player_profile?.photo_url || '/images/img/placeholder.webp'} alt="player" className="h-full w-full rounded-[10px] sm:rounded-[12px] border-1 border-gray-400 object-cover" />
+                                        <img src={auth?.user?.player_profile?.photo_url || '/images/img/placeholder.webp'} alt="player" className="h-full w-full rounded-[10px] sm:rounded-[12px] border-1 border-gray-400" />
                                     </div>
                                     <div>
                                         <div className="relative z-10">
                                             <h3 className="mt-2 text-[12px] sm:mt-4 sm:text-[16px] font-bold uppercase">{auth?.user?.name}</h3>
-                                            <p className="text-[8px] sm:text-[10px] text-[#f05300] uppercase">{getPositionName(auth?.user?.player_profile?.positions)}</p>
+                                            {/* <p className="text-[8px] sm:text-[10px] text-[#f05300] uppercase">{getPositionName(auth?.user?.player_profile?.positions)}</p> */}
                                             <div className="absolute mt-2 h-[1px] bg-orange-500 w-[80%] sm:w-[110%]"></div>
                                         </div>
                                         <div className="mt-6 space-y-1">
@@ -1017,7 +1049,7 @@ export default function PlayerDashboard() {
                                     <Shield className="w-6 h-6 " />
                                     <span className="pl-2">THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br className="hidden sm:block" />MEMBER OF HILIGHTS FOOTBALL PLATFORM.</span>
                                 </p>
-                                <p className="text-[6px] sm:text-[8px] text-black font-bold translate-x-[5px] sm:translate-x-[10%]">WWW.HILIGHTSFOOTBALL.COM</p>
+                                <p className="text-[6px] sm:text-[8px] text-black font-bold translate-x-[5px] sm:translate-x-[10%]">[WWW.HILIGHTSFOOTBALL.COM](https://WWW.HILIGHTSFOOTBALL.COM)</p>
                                 <div className="absolute -bottom-16 left-0 flex justify-between w-full">
                                     <button className="capitalize flex items-center rounded-xl bg-[#e75502] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[16px] cursor-pointer text-[10px] transition-all hover:bg-[#ff7a1a]" onClick={() => setShareOpen(true)}>
                                         <Share2 className="mr-2 w-[10px] h-[10px] sm:h-[12px]" /> Share full profile
@@ -1104,7 +1136,6 @@ export default function PlayerDashboard() {
                                     .map((w) => w[0])
                                     .join('')
                                     .toUpperCase();
-
                                 return (
                                     <li
                                         key={view.id}
@@ -1116,13 +1147,11 @@ export default function PlayerDashboard() {
                                                     {initials}
                                                 </AvatarFallback>
                                             </Avatar>
-
                                             <div className="min-w-0 flex-1">
                                                 <p className="truncate text-sm font-semibold text-[#F5F5F5]">
                                                     {view.name}
                                                 </p>
                                             </div>
-
                                             {!locked && (
                                                 view.player_profile_id ? (
                                                     <Link
@@ -1136,7 +1165,6 @@ export default function PlayerDashboard() {
                                                 )
                                             )}
                                         </div>
-
                                         {locked && (
                                             <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-[#161616]/60">
                                                 <div className="flex items-center gap-2 rounded-lg border border-[#2A2A2A] bg-[#1F1F1F] px-3 py-1.5">
@@ -1201,9 +1229,9 @@ export default function PlayerDashboard() {
             {
                 activeModal && (
                     LIST_CONFIGS[activeModal] ? (
-                        <ListModal configKey={activeModal} initialRows={pp[activeModal] ?? []} onClose={() => setActiveModal(null)} />
+                        <ListModal configKey={activeModal} initialRows={pp[activeModal] ?? []} onClose={() => setActiveModal(null)} countries={countries} />
                     ) : (
-                        <FormModal configKey={activeModal} user={auth?.user} pp={pp} onClose={() => setActiveModal(null)} />
+                        <FormModal configKey={activeModal} user={auth?.user} pp={pp} onClose={() => setActiveModal(null)} countries={countries} />
                     )
                 )
             }

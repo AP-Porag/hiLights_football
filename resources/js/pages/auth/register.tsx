@@ -1,4 +1,4 @@
-import { useState, FormEvent, useEffect, } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { Link, useForm } from '@inertiajs/react';
 import Select from 'react-select';
 import { z } from 'zod';
@@ -17,13 +17,16 @@ import {
 } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
+
 type RoleId = 'player' | 'scout' | 'agent' | 'club';
+
 interface RoleOption {
     id: RoleId;
     title: string;
     description: string;
     Icon: typeof Zap;
 }
+
 const ROLES: RoleOption[] = [
     {
         id: 'player',
@@ -50,13 +53,16 @@ const ROLES: RoleOption[] = [
         Icon: Building2,
     },
 ];
+
 interface Country {
     code: string;
     name: string;
 }
+
 type Props = {
     countries: Country[];
 };
+
 const registerSchema = z.object({
     role: z.enum(['player', 'scout', 'agent', 'club']),
     name: z.string().min(2, 'Name is required'),
@@ -67,6 +73,7 @@ const registerSchema = z.object({
     nationality: z.string().optional(),
     country: z.string().optional(),
     organization_name: z.string().optional(),
+    whatsapp: z.string().optional(),   // added
     terms: z.boolean().refine((val) => val === true, {
         message: 'You must accept terms',
     }),
@@ -74,11 +81,13 @@ const registerSchema = z.object({
     message: "Passwords don't match",
     path: ['password_confirmation'],
 });
+
 const MONTHS = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December',
 ];
 const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
 // ── Custom professional date-of-birth calendar ──────────────────────────
 function DobCalendar({
     value,
@@ -203,6 +212,7 @@ function DobCalendar({
         </div>
     );
 }
+
 // ────────────────────────────────────────────────────────────────────────
 export default function Register({ countries = [] }: Props) {
     const [step, setStep] = useState<0 | 1>(0);
@@ -211,6 +221,7 @@ export default function Register({ countries = [] }: Props) {
     const [showConfirm, setShowConfirm] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
     const [openCalendar, setOpenCalendar] = useState(false);
+
     const { data, setData, post, processing, errors } = useForm({
         role: '' as RoleId | '',
         name: '',
@@ -221,13 +232,16 @@ export default function Register({ countries = [] }: Props) {
         nationality: '',
         country: '',
         organization_name: '',
+        whatsapp: '',   // added WhatsApp field
         terms: false as boolean,
     });
+
     const handleSelectRole = (role: RoleId) => {
         setSelectedRole(role);
         setData('role', role);
         setStep(1);
     };
+
     // URL-e ?role=scout thakle direct oi role-e step 1-e jao
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -240,6 +254,7 @@ export default function Register({ countries = [] }: Props) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         console.log('SUBMIT CLICKED', data);
@@ -265,10 +280,12 @@ export default function Register({ countries = [] }: Props) {
         setClientErrors({});
         post('/register');
     };
+
     const options = countries.map((c) => ({
         value: c.code,
         label: `${c.name} ${c.code ?? ''}`,
     }));
+
     // react-select dark theme styles (nationality ar country dutoi te use hobe)
     const selectStyles = {
         control: (base: any) => ({
@@ -307,6 +324,7 @@ export default function Register({ countries = [] }: Props) {
             color: '#F5F5F5',
         }),
     };
+
     const calcAge = (dob: string): number | null => {
         if (!dob) return null;
         const d = new Date(dob);
@@ -316,8 +334,10 @@ export default function Register({ countries = [] }: Props) {
         return age >= 0 ? age : null;
     };
     const age = calcAge(data.dob);
+
     const selectedRoleObj = ROLES.find((r) => r.id === selectedRole);
     const dobDate = data.dob ? new Date(data.dob) : undefined;
+
     return (
         <div className="relative min-h-screen bg-[#0D0D0D] font-sans antialiased">
             {/* TOP — Logo + heading */}
@@ -571,6 +591,32 @@ export default function Register({ countries = [] }: Props) {
                                     </p>
                                 )}
                         </div>
+
+                        {/* ── WhatsApp Number (all roles) ── */}
+                        <div className="mb-4">
+                            <label
+                                htmlFor="whatsapp"
+                                className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
+                            >
+                                WhatsApp Number (optional)
+                            </label>
+                            <input
+                                id="whatsapp"
+                                type="text"
+                                value={data.whatsapp}
+                                onChange={(e) =>
+                                    setData('whatsapp', e.target.value)
+                                }
+                                placeholder="+8801700000000"
+                                className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                            />
+                            {(clientErrors.whatsapp || errors.whatsapp) && (
+                                <p className="text-xs text-[#DC2626] mt-1.5">
+                                    {clientErrors.whatsapp || errors.whatsapp}
+                                </p>
+                            )}
+                        </div>
+
                         {/* Player-specific fields */}
                         {selectedRole === 'player' && (
                             <>
@@ -694,6 +740,9 @@ export default function Register({ countries = [] }: Props) {
                                 </div>
                             </>
                         )}
+
+                        {/* Agent / Club have no extra fields for now, only WhatsApp shown above */}
+
                         {/* Terms */}
                         <label className="flex items-start gap-3 mt-5 mb-6 cursor-pointer group">
                             <span className="relative flex-shrink-0 mt-0.5">

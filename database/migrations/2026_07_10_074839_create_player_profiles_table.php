@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('player_profiles', function (Blueprint $table) {
@@ -19,10 +16,11 @@ return new class extends Migration
             $table->string('nickname')->nullable();
             $table->string('gender')->default('M');           // M / F / Other
             $table->unsignedSmallInteger('height')->nullable(); // cm
-            $table->unsignedSmallInteger('weight')->nullable(); // cm
+            $table->unsignedSmallInteger('weight')->nullable(); // kg
             $table->string('birth_city')->nullable();
             $table->string('birth_country', 2)->nullable();
             $table->string('current_club')->nullable();
+            $table->string('current_club_country', 2)->nullable(); // club kon country-te (alpha-2, e.g. 'PT')
             $table->string('in_team_since', 7)->nullable();   // "YYYY-MM"
             $table->string('agent')->nullable();
             $table->string('guardian_name')->nullable();
@@ -36,15 +34,12 @@ return new class extends Migration
             $table->json('achievements')->nullable();
             $table->json('competitions')->nullable();
             $table->json('matches')->nullable();
-            $table->json('club_history')->nullable();         // [{year, club}]
+            $table->json('club_history')->nullable();         // [{year, club, country}]
             $table->text('description')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('player_profiles');
