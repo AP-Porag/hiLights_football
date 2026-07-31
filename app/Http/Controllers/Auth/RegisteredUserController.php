@@ -23,20 +23,18 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        $countries = new Countries();
-
-        $list = $countries->all()
+        $countries = (new Countries())
+            ->all()
             ->map(function ($country) {
                 return [
-                    'name' => $country->name->common ?? '',
-                    'code' => $country->cca2 ?? '',
+                    'code' => $country->cca2,
+                    'name' => $country->name->common,
                 ];
             })
             ->values();
 
-
         return Inertia::render('auth/register', [
-            'countries' => $list
+            'countries' => $countries,
         ]);
     }
 
@@ -53,6 +51,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'email', 'lowercase', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'dob' => ['nullable', 'date'],
+            'whatsapp'          => ['nullable', 'string', 'max:30'],   // ← new validation
             'nationality' => ['nullable', 'string', 'max:3'],
             'country' => ['nullable', 'string', 'max:3'],
             'organization_name' => ['nullable', 'string', 'max:255'],
@@ -68,6 +67,7 @@ class RegisteredUserController extends Controller
             // extra fields
             'dob' => $validated['dob'] ?? null,
             'nationality' => $validated['nationality'] ?? null,
+            'whatsapp'          => $validated['whatsapp'] ?? null,
 
             // important fix
             'terms_accepted' => true,

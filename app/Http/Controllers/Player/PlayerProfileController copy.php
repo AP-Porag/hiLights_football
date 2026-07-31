@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers\Player;
 
 use App\Http\Controllers\Controller;
@@ -13,27 +14,17 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Carbon\Carbon;
-use PragmaRX\Countries\Package\Countries;
 
 class PlayerProfileController extends Controller
 {
+
     public function index(Request $request)
     {
         $user = $request->user();
         $profile = $user->playerProfile;
         $subscription = $this->subscriptionState($request);
-        $countries = (new Countries())
-            ->all()
-            ->map(function ($country) {
-                return [
-                    'code' => $country->cca2,
-                    'name' => $country->name->common,
-                ];
-            })
-            ->values();
 
-
-        // Recent Views (unchanged)
+        // Recent Views (আগের মতো)
         $recentViews = ProfileView::with('viewer:id,name,role', 'viewer.playerProfile:id,user_id')
             ->where('player_profile_id', $profile->id)
             ->latest()
@@ -41,26 +32,29 @@ class PlayerProfileController extends Controller
             ->unique('viewer_id')
             ->take(10)
             ->map(fn($v) => [
-                'id'                => $v->viewer_id,
-                'name'              => $v->viewer?->name ?? 'Unknown',
-                'role'              => $v->viewer?->role,
-                'viewed_at'         => $v->created_at->diffForHumans(),
+                'id'        => $v->viewer_id,
+                'name'      => $v->viewer?->name ?? 'Unknown',
+                'role'      => $v->viewer?->role,
+                'viewed_at' => $v->created_at->diffForHumans(),
+                // নতুন: ভিউয়ারের প্লেয়ার প্রোফাইল আইডি (যদি থাকে)
                 'player_profile_id' => $v->viewer?->playerProfile?->id ?? null,
             ])
             ->values();
 
-        // This week vs last week
+        // ── এই সপ্তাহ vs গত সপ্তাহ ──
         $thisWeek = ProfileView::where('player_profile_id', $profile->id)
             ->where('created_at', '>=', Carbon::now()->subDays(7))
             ->count();
+
         $lastWeek = ProfileView::where('player_profile_id', $profile->id)
             ->whereBetween('created_at', [Carbon::now()->subDays(14), Carbon::now()->subDays(7)])
             ->count();
+
         $trend = $lastWeek > 0
             ? round((($thisWeek - $lastWeek) / $lastWeek) * 100)
             : ($thisWeek > 0 ? 100 : 0);
 
-        // Daily counts for sparkline (last 7 days)
+        // ── গত ৭ দিনের ডেইলি কাউন্ট (স্পার্কলাইন) ──
         $daily = collect(range(6, 0))->map(function ($daysAgo) use ($profile) {
             return ProfileView::where('player_profile_id', $profile->id)
                 ->whereDate('created_at', Carbon::now()->subDays($daysAgo)->toDateString())
@@ -69,23 +63,23 @@ class PlayerProfileController extends Controller
 
         $totalViews = ProfileView::where('player_profile_id', $profile->id)->count();
 
-        // Country analytics
+        // ── কান্ট্রি অ্যানালিটিক্স (নতুন) ──
         $countryAnalytics = ProfileView::where('player_profile_id', $profile->id)
-            ->whereNotNull('viewer_id')
-            ->with('viewer')
+            ->whereNotNull('viewer_id')               // শুধু লগইন করা ইউজারের ভিউ
+            ->with('viewer')                          // viewer রিলেশন লোড
             ->get()
             ->groupBy(function ($view) {
                 return $view->viewer?->nationality ?? 'Unknown';
             })
             ->map(function ($group, $countryCode) {
                 return [
-                    'country' => $countryCode,
+                    'country' => $countryCode,        // 'BD', 'US', 'GB' ইত্যাদি
                     'views'   => $group->count(),
                 ];
             })
             ->values()
             ->sortByDesc('views')
-            ->take(10)
+            ->take(10)                                // সর্বোচ্চ ১০টি দেশ
             ->toArray();
 
         return Inertia::render('player/dashboard/Index', [
@@ -96,7 +90,6 @@ class PlayerProfileController extends Controller
                     'email'           => $user->email,
                     'dob'             => $user->dob?->format('Y-m-d'),
                     'nationality'     => $user->nationality,
-                    'whatsapp'     => $user->whatsapp,
                     'created_at'      => $user->created_at?->format('Y-m-d H:i:s'),
                     'player_profile'  => $user->playerProfile,
                 ]
@@ -107,38 +100,28 @@ class PlayerProfileController extends Controller
             'viewsTrend'        => $trend,
             'viewsDaily'        => $daily,
             'totalViews'        => $totalViews,
-            'countryAnalytics'  => $countryAnalytics,
-            'countries'         => $countries
+            'countryAnalytics'  => $countryAnalytics, // ← নতুন প্রপস
         ]);
     }
 
+
+
     public function edit(Request $request)
     {
+
         $user = $request->user();
         $profile = $user->playerProfile;
-
-        $countries = (new Countries())
-            ->all()
-            ->map(function ($country) {
-                return [
-                    'code' => $country->cca2,
-                    'name' => $country->name->common,
-                ];
-            })
-            ->values();
 
         return Inertia::render('player/profile/Edit', [
             'user' => [
                 'name'        => $user->name,
                 'dob'         => $user->dob?->format('Y-m-d'),
                 'nationality' => $user->nationality,
-                'whatsapp' => $user->whatsapp
             ],
             'profile' => $profile ? [
                 ...$profile->toArray(),
-                'photo_url' => $profile->photo_url,
+                'photo_url' => $profile->photo_url, // accessor
             ] : null,
-            'countries' => $countries
         ]);
     }
 
@@ -147,40 +130,32 @@ class PlayerProfileController extends Controller
         $data = $request->validated();
         $user = $request->user();
 
+        // shared field gula users table-e sync
         $user->update([
             'name'        => $data['full_name'],
             'dob'         => $data['dob'],
             'nationality' => $data['nationality'],
-            'whatsapp' => $data['whatsapp']
         ]);
 
+        // profile payload (shared field + photo bad diye)
         $payload = collect($data)->except([
             'full_name',
             'dob',
             'nationality',
             'photo',
-            'wahtsapp'
-        ])->toArray();
+        ])->all();
 
+        // photo upload -> photo_path column-e set (payload banano-r POR)
         if ($request->hasFile('photo')) {
+            // purano photo delete (thakle)
             if ($user->playerProfile?->photo_path) {
                 Storage::disk('public')->delete($user->playerProfile->photo_path);
             }
+
             $payload['photo_path'] = $this->storeUpload(
                 $request->file('photo'),
                 'players/player-photos'
             );
-        }
-
-        // Casting JSON fields to array (Laravel will auto-cast if model has $casts, but ensure they're arrays)
-        $jsonFields = ['positions', 'videos', 'club_history', 'transfer_history', 'achievements', 'competitions', 'matches'];
-        foreach ($jsonFields as $field) {
-            if (isset($payload[$field]) && is_array($payload[$field])) {
-                $payload[$field] = $payload[$field]; // stay as array, model will encode
-            } else {
-                // If not sent or empty, ensure it's null or array
-                unset($payload[$field]); // or set to null if you prefer
-            }
         }
 
         $user->playerProfile()->updateOrCreate(
@@ -194,7 +169,16 @@ class PlayerProfileController extends Controller
 
     /**
      * Store an uploaded file without any path resolution issues.
+     *
+     * Uses move_uploaded_file() which is designed for temp uploads and never
+     * calls getRealPath(), fopen(), or any path resolution that fails on Windows.
+     * Works with all file types: PDFs, JPEGs, PNGs, WebP, etc.
+     *
+     * @param UploadedFile|null $file
+     * @param string $dir Directory path relative to storage/app/public (e.g. 'providers/photos')
+     * @return string|null Stored file path relative to public disk, or null if invalid
      */
+
     private function storeUpload(?UploadedFile $file, string $dir): ?string
     {
         if (!$file || !$file->isValid()) {
@@ -202,12 +186,17 @@ class PlayerProfileController extends Controller
         }
 
         $photo_path = storage_path('app/public/' . $dir);
+
         if (!is_dir($photo_path)) {
             mkdir($photo_path, 0755, true);
         }
 
         $filename = $file->hashName();
-        $file->move($photo_path, $filename);
+
+        $file->move(
+            $photo_path,
+            $filename
+        );
 
         return $dir . '/' . $filename;
     }
@@ -215,31 +204,34 @@ class PlayerProfileController extends Controller
     public function updateLists(Request $request)
     {
         $data = $request->validate([
-            'videos'                     => ['sometimes', 'array'],
-            'videos.*.label'             => ['nullable', 'string', 'max:50'],
-            'videos.*.url'               => ['nullable', 'string', 'max:255'],
-            'club_history'               => ['sometimes', 'array'],
-            'club_history.*.year'        => ['nullable'],
-            'club_history.*.club'        => ['nullable', 'string', 'max:255'],
-            'club_history.*.country'     => ['nullable', 'string', 'size:2'],
-            'transfer_history'           => ['sometimes', 'array'],
-            'transfer_history.*.year'    => ['nullable'],
-            'transfer_history.*.club'    => ['nullable', 'string', 'max:255'],
-            'transfer_history.*.country' => ['nullable', 'string', 'size:2'],
-            'transfer_history.*.logo'    => ['nullable', 'string', 'max:255'],
-            'achievements'               => ['sometimes', 'array'],
-            'achievements.*.year'        => ['nullable'],
-            'achievements.*.title'       => ['nullable', 'string', 'max:255'],
-            'competitions'               => ['sometimes', 'array'],
-            'competitions.*.name'        => ['nullable', 'string', 'max:255'],
-            'competitions.*.year'        => ['nullable'],
-            'matches'                    => ['sometimes', 'array'],
-            'matches.*.home'             => ['nullable', 'string', 'max:255'],
-            'matches.*.score'            => ['nullable', 'string', 'max:20'],
-            'matches.*.away'             => ['nullable', 'string', 'max:255'],
-            'matches.*.goals'            => ['nullable'],
-            'matches.*.assists'          => ['nullable'],
-            'matches.*.minutes'          => ['nullable', 'string', 'max:20'],
+            'videos'              => ['sometimes', 'array'],
+            'videos.*.label'      => ['nullable', 'string', 'max:50'],
+            'videos.*.url'        => ['nullable', 'string', 'max:255'],
+
+            'club_history'        => ['sometimes', 'array'],
+            'club_history.*.year' => ['nullable'],
+            'club_history.*.club' => ['nullable', 'string', 'max:255'],
+
+            'transfer_history'        => ['sometimes', 'array'],
+            'transfer_history.*.year' => ['nullable'],
+            'transfer_history.*.club' => ['nullable', 'string', 'max:255'],
+            'transfer_history.*.logo' => ['nullable', 'string', 'max:255'],
+
+            'achievements'            => ['sometimes', 'array'],
+            'achievements.*.year'     => ['nullable'],
+            'achievements.*.title'    => ['nullable', 'string', 'max:255'],
+
+            'competitions'            => ['sometimes', 'array'],
+            'competitions.*.name'     => ['nullable', 'string', 'max:255'],
+            'competitions.*.year'     => ['nullable'],
+
+            'matches'                 => ['sometimes', 'array'],
+            'matches.*.home'          => ['nullable', 'string', 'max:255'],
+            'matches.*.score'         => ['nullable', 'string', 'max:20'],
+            'matches.*.away'          => ['nullable', 'string', 'max:255'],
+            'matches.*.goals'         => ['nullable'],
+            'matches.*.assists'       => ['nullable'],
+            'matches.*.minutes'       => ['nullable', 'string', 'max:20'],
         ]);
 
         $profile = $request->user()->playerProfile()->firstOrCreate(
@@ -248,6 +240,7 @@ class PlayerProfileController extends Controller
 
         $profile->fill($data);
 
+        // videos ashle first url ke video_url-e sync
         if (array_key_exists('videos', $data)) {
             $first = collect($data['videos'])->first(fn($v) => !empty($v['url'] ?? null));
             if ($first) {
@@ -263,37 +256,34 @@ class PlayerProfileController extends Controller
     public function updateFields(Request $request)
     {
         $data = $request->validate([
-            'full_name'              => ['sometimes', 'nullable', 'string', 'max:255'],
-            'dob'                    => ['sometimes', 'nullable', 'date'],
-            'nationality'            => ['sometimes', 'nullable', 'string', 'size:2'],
-            'gender'                 => ['sometimes', 'nullable', 'string', 'max:10'],
-            'height'                 => ['sometimes', 'nullable', 'integer'],
-            'weight'                 => ['sometimes', 'nullable', 'integer'],
-            'birth_city'             => ['sometimes', 'nullable', 'string', 'max:255'],
-            'birth_country'          => ['sometimes', 'nullable', 'string', 'size:2'],
-            'current_club'           => ['sometimes', 'nullable', 'string', 'max:255'],
-            'current_club_country'   => ['sometimes', 'nullable', 'string', 'size:2'],
-            'in_team_since'          => ['sometimes', 'nullable', 'string', 'max:7'],
-            'agent'                  => ['sometimes', 'nullable', 'string', 'max:255'],
-            'whatsapp'               => ['sometimes', 'nullable', 'string', 'max:30'],
-            'description'            => ['sometimes', 'nullable', 'string', 'max:5000'],
-            'modality'               => ['sometimes', 'nullable', 'string', 'max:50'],
-            'positions'              => ['sometimes', 'array'],
-            'positions.*'            => ['string', 'max:10'],
-            'foot'                   => ['sometimes', 'nullable', 'string', 'max:20'],
-            'video_url'              => ['sometimes', 'nullable', 'url', 'max:255'],
-            'videos'                 => ['sometimes', 'array'],
-            'videos.*.label'         => ['nullable', 'string', 'max:50'],
-            'videos.*.url'           => ['nullable', 'string', 'max:255'],
-            'photo'                  => ['sometimes', 'image', 'mimes:jpeg,png', 'max:5120'],
-            'club_history'           => ['sometimes', 'array'],
-            'club_history.*.year'    => ['nullable'],
-            'club_history.*.club'    => ['nullable', 'string', 'max:255'],
-            'club_history.*.country' => ['nullable', 'string', 'size:2'],
+            'full_name'     => ['sometimes', 'nullable', 'string', 'max:255'],
+            'dob'           => ['sometimes', 'nullable', 'date'],
+            'nationality'   => ['sometimes', 'nullable', 'string', 'size:2'],
+            'gender'        => ['sometimes', 'nullable', 'string', 'max:10'],
+            'height'        => ['sometimes', 'nullable', 'integer'],
+            'weight'        => ['sometimes', 'nullable', 'integer'],
+            'birth_city'    => ['sometimes', 'nullable', 'string', 'max:255'],
+            'birth_country' => ['sometimes', 'nullable', 'string', 'size:2'],
+            'current_club'  => ['sometimes', 'nullable', 'string', 'max:255'],
+            'in_team_since' => ['sometimes', 'nullable', 'string', 'max:7'],
+            'agent'         => ['sometimes', 'nullable', 'string', 'max:255'],
+            'modality'      => ['sometimes', 'nullable', 'string', 'max:50'],
+            'positions'     => ['sometimes', 'array'],
+            'positions.*'   => ['string', 'max:10'],
+            'foot'          => ['sometimes', 'nullable', 'string', 'max:20'],
+            'video_url'     => ['sometimes', 'nullable', 'url', 'max:255'],
+            'videos'          => ['sometimes', 'array'],
+            'videos.*.label'  => ['nullable', 'string', 'max:50'],
+            'videos.*.url'    => ['nullable', 'string', 'max:255'],
+            'photo'         => ['sometimes', 'image', 'mimes:jpeg,png', 'max:5120'],
+            'club_history'        => ['sometimes', 'array'],
+            'club_history.*.year' => ['nullable'],
+            'club_history.*.club' => ['nullable', 'string', 'max:255'],
         ]);
 
         $user = $request->user();
 
+        // user table-er field (name/dob/nationality)
         if (array_key_exists('full_name', $data)) {
             $user->name = $data['full_name'];
         }
@@ -303,14 +293,9 @@ class PlayerProfileController extends Controller
         if (array_key_exists('nationality', $data)) {
             $user->nationality = $data['nationality'];
         }
-
-        if (array_key_exists('whatsapp', $data)) {
-            $user->whatsapp = $data['whatsapp'];
-        }
-
-
         $user->save();
 
+        // player_profile-er field
         $profile = $user->playerProfile()->firstOrCreate(['user_id' => $user->id]);
         $profileData = collect($data)->except(['full_name', 'dob', 'nationality', 'photo'])->toArray();
 
@@ -320,6 +305,7 @@ class PlayerProfileController extends Controller
 
         $profile->fill($profileData);
 
+        // videos ashle first url ke video_url-e sync koro (100% + purano video_url binding thik thake)
         if (array_key_exists('videos', $data)) {
             $first = collect($data['videos'])->first(fn($v) => !empty($v['url'] ?? null));
             if ($first) {
@@ -337,9 +323,10 @@ class PlayerProfileController extends Controller
         $player = PlayerProfile::with('user')->findOrFail($id);
         $player->increment('views');
 
+        // Log the view if user is authenticated, else can still log with null viewer
         $viewer = auth()->user();
         ProfileView::create([
-            'viewer_id'         => $viewer ? $viewer->id : null,
+            'viewer_id' => $viewer ? $viewer->id : null,
             'player_profile_id' => $player->id,
         ]);
 
@@ -347,7 +334,6 @@ class PlayerProfileController extends Controller
             'player' => $player,
         ]);
     }
-
     public function uploadLogo(Request $request)
     {
         $request->validate([
@@ -365,6 +351,7 @@ class PlayerProfileController extends Controller
     private function subscriptionState(Request $request): array
     {
         $subscription = $request->user()?->subscription('default');
+
         $currentPlan   = null;
         $onGracePeriod = false;
         $isCancelled   = false;
@@ -375,6 +362,8 @@ class PlayerProfileController extends Controller
             $isCancelled   = $subscription->ends_at !== null;
             $endsAt        = $subscription->ends_at;
 
+            // valid() = active / trial / grace period
+            // ends_at past hoye gele valid() false → currentPlan null → button abar enable
             if ($subscription->valid()) {
                 $currentPlan = $subscription->stripe_price;
             }
@@ -393,21 +382,24 @@ class PlayerProfileController extends Controller
         $user = $request->user();
         $profile = $user->playerProfile;
 
+        // পেজিনেটেড ভিউ লিস্ট (প্রতি পেজে ১৫টি)
         $views = ProfileView::with('viewer:id,name,role', 'viewer.playerProfile:id,user_id')
             ->where('player_profile_id', $profile->id)
             ->latest()
             ->paginate(15);
 
+        // Inertia-তে পাস করার জন্য ডেটা ফরম্যাট করুন
         $viewsData = $views->map(fn($v) => [
-            'id'                => $v->viewer_id,
-            'name'              => $v->viewer?->name ?? 'Unknown',
-            'role'              => $v->viewer?->role,
-            'viewed_at'         => $v->created_at->diffForHumans(),
+            'id'        => $v->viewer_id,
+            'name'      => $v->viewer?->name ?? 'Unknown',
+            'role'      => $v->viewer?->role,
+            'viewed_at' => $v->created_at->diffForHumans(),
+            // নতুন: ভিউয়ারের প্লেয়ার প্রোফাইল আইডি (যদি থাকে)
             'player_profile_id' => $v->viewer?->playerProfile?->id ?? null,
         ]);
 
         return Inertia::render('player/views/Index', [
-            'views'      => $viewsData,
+            'views' => $viewsData,
             'pagination' => [
                 'current_page' => $views->currentPage(),
                 'last_page'    => $views->lastPage(),

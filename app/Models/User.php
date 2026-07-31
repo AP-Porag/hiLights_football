@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'whatsapp',
         'dob',
         'nationality',
         'remember_token',

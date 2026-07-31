@@ -44,210 +44,11 @@ import {
     X,
 } from 'lucide-react';
 
-// ── Full country list (alpha-2 codes, matches DB values like "BD") ──
-const COUNTRIES = [
-    { code: 'AF', name: 'Afghanistan', flag: '🇦🇫' },
-    { code: 'AL', name: 'Albania', flag: '🇦🇱' },
-    { code: 'DZ', name: 'Algeria', flag: '🇩🇿' },
-    { code: 'AD', name: 'Andorra', flag: '🇦🇩' },
-    { code: 'AO', name: 'Angola', flag: '🇦🇴' },
-    { code: 'AG', name: 'Antigua and Barbuda', flag: '🇦🇬' },
-    { code: 'AR', name: 'Argentina', flag: '🇦🇷' },
-    { code: 'AM', name: 'Armenia', flag: '🇦🇲' },
-    { code: 'AU', name: 'Australia', flag: '🇦🇺' },
-    { code: 'AT', name: 'Austria', flag: '🇦🇹' },
-    { code: 'AZ', name: 'Azerbaijan', flag: '🇦🇿' },
-    { code: 'BS', name: 'Bahamas', flag: '🇧🇸' },
-    { code: 'BH', name: 'Bahrain', flag: '🇧🇭' },
-    { code: 'BD', name: 'Bangladesh', flag: '🇧🇩' },
-    { code: 'BB', name: 'Barbados', flag: '🇧🇧' },
-    { code: 'BY', name: 'Belarus', flag: '🇧🇾' },
-    { code: 'BE', name: 'Belgium', flag: '🇧🇪' },
-    { code: 'BZ', name: 'Belize', flag: '🇧🇿' },
-    { code: 'BJ', name: 'Benin', flag: '🇧🇯' },
-    { code: 'BT', name: 'Bhutan', flag: '🇧🇹' },
-    { code: 'BO', name: 'Bolivia', flag: '🇧🇴' },
-    { code: 'BA', name: 'Bosnia and Herzegovina', flag: '🇧🇦' },
-    { code: 'BW', name: 'Botswana', flag: '🇧🇼' },
-    { code: 'BR', name: 'Brazil', flag: '🇧🇷' },
-    { code: 'BN', name: 'Brunei', flag: '🇧🇳' },
-    { code: 'BG', name: 'Bulgaria', flag: '🇧🇬' },
-    { code: 'BF', name: 'Burkina Faso', flag: '🇧🇫' },
-    { code: 'BI', name: 'Burundi', flag: '🇧🇮' },
-    { code: 'KH', name: 'Cambodia', flag: '🇰🇭' },
-    { code: 'CM', name: 'Cameroon', flag: '🇨🇲' },
-    { code: 'CA', name: 'Canada', flag: '🇨🇦' },
-    { code: 'CV', name: 'Cape Verde', flag: '🇨🇻' },
-    { code: 'CF', name: 'Central African Republic', flag: '🇨🇫' },
-    { code: 'TD', name: 'Chad', flag: '🇹🇩' },
-    { code: 'CL', name: 'Chile', flag: '🇨🇱' },
-    { code: 'CN', name: 'China', flag: '🇨🇳' },
-    { code: 'CO', name: 'Colombia', flag: '🇨🇴' },
-    { code: 'KM', name: 'Comoros', flag: '🇰🇲' },
-    { code: 'CG', name: 'Congo', flag: '🇨🇬' },
-    { code: 'CD', name: 'Congo (DRC)', flag: '🇨🇩' },
-    { code: 'CR', name: 'Costa Rica', flag: '🇨🇷' },
-    { code: 'CI', name: "Côte d'Ivoire", flag: '🇨🇮' },
-    { code: 'HR', name: 'Croatia', flag: '🇭🇷' },
-    { code: 'CU', name: 'Cuba', flag: '🇨🇺' },
-    { code: 'CY', name: 'Cyprus', flag: '🇨🇾' },
-    { code: 'CZ', name: 'Czechia', flag: '🇨🇿' },
-    { code: 'DK', name: 'Denmark', flag: '🇩🇰' },
-    { code: 'DJ', name: 'Djibouti', flag: '🇩🇯' },
-    { code: 'DM', name: 'Dominica', flag: '🇩🇲' },
-    { code: 'DO', name: 'Dominican Republic', flag: '🇩🇴' },
-    { code: 'EC', name: 'Ecuador', flag: '🇪🇨' },
-    { code: 'EG', name: 'Egypt', flag: '🇪🇬' },
-    { code: 'SV', name: 'El Salvador', flag: '🇸🇻' },
-    { code: 'GQ', name: 'Equatorial Guinea', flag: '🇬🇶' },
-    { code: 'ER', name: 'Eritrea', flag: '🇪🇷' },
-    { code: 'EE', name: 'Estonia', flag: '🇪🇪' },
-    { code: 'SZ', name: 'Eswatini', flag: '🇸🇿' },
-    { code: 'ET', name: 'Ethiopia', flag: '🇪🇹' },
-    { code: 'FJ', name: 'Fiji', flag: '🇫🇯' },
-    { code: 'FI', name: 'Finland', flag: '🇫🇮' },
-    { code: 'FR', name: 'France', flag: '🇫🇷' },
-    { code: 'GA', name: 'Gabon', flag: '🇬🇦' },
-    { code: 'GM', name: 'Gambia', flag: '🇬🇲' },
-    { code: 'GE', name: 'Georgia', flag: '🇬🇪' },
-    { code: 'DE', name: 'Germany', flag: '🇩🇪' },
-    { code: 'GH', name: 'Ghana', flag: '🇬🇭' },
-    { code: 'GR', name: 'Greece', flag: '🇬🇷' },
-    { code: 'GD', name: 'Grenada', flag: '🇬🇩' },
-    { code: 'GT', name: 'Guatemala', flag: '🇬🇹' },
-    { code: 'GN', name: 'Guinea', flag: '🇬🇳' },
-    { code: 'GW', name: 'Guinea-Bissau', flag: '🇬🇼' },
-    { code: 'GY', name: 'Guyana', flag: '🇬🇾' },
-    { code: 'HT', name: 'Haiti', flag: '🇭🇹' },
-    { code: 'HN', name: 'Honduras', flag: '🇭🇳' },
-    { code: 'HU', name: 'Hungary', flag: '🇭🇺' },
-    { code: 'IS', name: 'Iceland', flag: '🇮🇸' },
-    { code: 'IN', name: 'India', flag: '🇮🇳' },
-    { code: 'ID', name: 'Indonesia', flag: '🇮🇩' },
-    { code: 'IR', name: 'Iran', flag: '🇮🇷' },
-    { code: 'IQ', name: 'Iraq', flag: '🇮🇶' },
-    { code: 'IE', name: 'Ireland', flag: '🇮🇪' },
-    { code: 'IL', name: 'Israel', flag: '🇮🇱' },
-    { code: 'IT', name: 'Italy', flag: '🇮🇹' },
-    { code: 'JM', name: 'Jamaica', flag: '🇯🇲' },
-    { code: 'JP', name: 'Japan', flag: '🇯🇵' },
-    { code: 'JO', name: 'Jordan', flag: '🇯🇴' },
-    { code: 'KZ', name: 'Kazakhstan', flag: '🇰🇿' },
-    { code: 'KE', name: 'Kenya', flag: '🇰🇪' },
-    { code: 'KI', name: 'Kiribati', flag: '🇰🇮' },
-    { code: 'KW', name: 'Kuwait', flag: '🇰🇼' },
-    { code: 'KG', name: 'Kyrgyzstan', flag: '🇰🇬' },
-    { code: 'LA', name: 'Laos', flag: '🇱🇦' },
-    { code: 'LV', name: 'Latvia', flag: '🇱🇻' },
-    { code: 'LB', name: 'Lebanon', flag: '🇱🇧' },
-    { code: 'LS', name: 'Lesotho', flag: '🇱🇸' },
-    { code: 'LR', name: 'Liberia', flag: '🇱🇷' },
-    { code: 'LY', name: 'Libya', flag: '🇱🇾' },
-    { code: 'LI', name: 'Liechtenstein', flag: '🇱🇮' },
-    { code: 'LT', name: 'Lithuania', flag: '🇱🇹' },
-    { code: 'LU', name: 'Luxembourg', flag: '🇱🇺' },
-    { code: 'MG', name: 'Madagascar', flag: '🇲🇬' },
-    { code: 'MW', name: 'Malawi', flag: '🇲🇼' },
-    { code: 'MY', name: 'Malaysia', flag: '🇲🇾' },
-    { code: 'MV', name: 'Maldives', flag: '🇲🇻' },
-    { code: 'ML', name: 'Mali', flag: '🇲🇱' },
-    { code: 'MT', name: 'Malta', flag: '🇲🇹' },
-    { code: 'MH', name: 'Marshall Islands', flag: '🇲🇭' },
-    { code: 'MR', name: 'Mauritania', flag: '🇲🇷' },
-    { code: 'MU', name: 'Mauritius', flag: '🇲🇺' },
-    { code: 'MX', name: 'Mexico', flag: '🇲🇽' },
-    { code: 'FM', name: 'Micronesia', flag: '🇫🇲' },
-    { code: 'MD', name: 'Moldova', flag: '🇲🇩' },
-    { code: 'MC', name: 'Monaco', flag: '🇲🇨' },
-    { code: 'MN', name: 'Mongolia', flag: '🇲🇳' },
-    { code: 'ME', name: 'Montenegro', flag: '🇲🇪' },
-    { code: 'MA', name: 'Morocco', flag: '🇲🇦' },
-    { code: 'MZ', name: 'Mozambique', flag: '🇲🇿' },
-    { code: 'MM', name: 'Myanmar', flag: '🇲🇲' },
-    { code: 'NA', name: 'Namibia', flag: '🇳🇦' },
-    { code: 'NR', name: 'Nauru', flag: '🇳🇷' },
-    { code: 'NP', name: 'Nepal', flag: '🇳🇵' },
-    { code: 'NL', name: 'Netherlands', flag: '🇳🇱' },
-    { code: 'NZ', name: 'New Zealand', flag: '🇳🇿' },
-    { code: 'NI', name: 'Nicaragua', flag: '🇳🇮' },
-    { code: 'NE', name: 'Niger', flag: '🇳🇪' },
-    { code: 'NG', name: 'Nigeria', flag: '🇳🇬' },
-    { code: 'KP', name: 'North Korea', flag: '🇰🇵' },
-    { code: 'MK', name: 'North Macedonia', flag: '🇲🇰' },
-    { code: 'NO', name: 'Norway', flag: '🇳🇴' },
-    { code: 'OM', name: 'Oman', flag: '🇴🇲' },
-    { code: 'PK', name: 'Pakistan', flag: '🇵🇰' },
-    { code: 'PW', name: 'Palau', flag: '🇵🇼' },
-    { code: 'PS', name: 'Palestine', flag: '🇵🇸' },
-    { code: 'PA', name: 'Panama', flag: '🇵🇦' },
-    { code: 'PG', name: 'Papua New Guinea', flag: '🇵🇬' },
-    { code: 'PY', name: 'Paraguay', flag: '🇵🇾' },
-    { code: 'PE', name: 'Peru', flag: '🇵🇪' },
-    { code: 'PH', name: 'Philippines', flag: '🇵🇭' },
-    { code: 'PL', name: 'Poland', flag: '🇵🇱' },
-    { code: 'PT', name: 'Portugal', flag: '🇵🇹' },
-    { code: 'QA', name: 'Qatar', flag: '🇶🇦' },
-    { code: 'RO', name: 'Romania', flag: '🇷🇴' },
-    { code: 'RU', name: 'Russia', flag: '🇷🇺' },
-    { code: 'RW', name: 'Rwanda', flag: '🇷🇼' },
-    { code: 'KN', name: 'Saint Kitts and Nevis', flag: '🇰🇳' },
-    { code: 'LC', name: 'Saint Lucia', flag: '🇱🇨' },
-    { code: 'VC', name: 'Saint Vincent and the Grenadines', flag: '🇻🇨' },
-    { code: 'WS', name: 'Samoa', flag: '🇼🇸' },
-    { code: 'SM', name: 'San Marino', flag: '🇸🇲' },
-    { code: 'ST', name: 'São Tomé and Príncipe', flag: '🇸🇹' },
-    { code: 'SA', name: 'Saudi Arabia', flag: '🇸🇦' },
-    { code: 'SN', name: 'Senegal', flag: '🇸🇳' },
-    { code: 'RS', name: 'Serbia', flag: '🇷🇸' },
-    { code: 'SC', name: 'Seychelles', flag: '🇸🇨' },
-    { code: 'SL', name: 'Sierra Leone', flag: '🇸🇱' },
-    { code: 'SG', name: 'Singapore', flag: '🇸🇬' },
-    { code: 'SK', name: 'Slovakia', flag: '🇸🇰' },
-    { code: 'SI', name: 'Slovenia', flag: '🇸🇮' },
-    { code: 'SB', name: 'Solomon Islands', flag: '🇸🇧' },
-    { code: 'SO', name: 'Somalia', flag: '🇸🇴' },
-    { code: 'ZA', name: 'South Africa', flag: '🇿🇦' },
-    { code: 'KR', name: 'South Korea', flag: '🇰🇷' },
-    { code: 'SS', name: 'South Sudan', flag: '🇸🇸' },
-    { code: 'ES', name: 'Spain', flag: '🇪🇸' },
-    { code: 'LK', name: 'Sri Lanka', flag: '🇱🇰' },
-    { code: 'SD', name: 'Sudan', flag: '🇸🇩' },
-    { code: 'SR', name: 'Suriname', flag: '🇸🇷' },
-    { code: 'SE', name: 'Sweden', flag: '🇸🇪' },
-    { code: 'CH', name: 'Switzerland', flag: '🇨🇭' },
-    { code: 'SY', name: 'Syria', flag: '🇸🇾' },
-    { code: 'TW', name: 'Taiwan', flag: '🇹🇼' },
-    { code: 'TJ', name: 'Tajikistan', flag: '🇹🇯' },
-    { code: 'TZ', name: 'Tanzania', flag: '🇹🇿' },
-    { code: 'TH', name: 'Thailand', flag: '🇹🇭' },
-    { code: 'TL', name: 'Timor-Leste', flag: '🇹🇱' },
-    { code: 'TG', name: 'Togo', flag: '🇹🇬' },
-    { code: 'TO', name: 'Tonga', flag: '🇹🇴' },
-    { code: 'TT', name: 'Trinidad and Tobago', flag: '🇹🇹' },
-    { code: 'TN', name: 'Tunisia', flag: '🇹🇳' },
-    { code: 'TR', name: 'Türkiye', flag: '🇹🇷' },
-    { code: 'TM', name: 'Turkmenistan', flag: '🇹🇲' },
-    { code: 'TV', name: 'Tuvalu', flag: '🇹🇻' },
-    { code: 'UG', name: 'Uganda', flag: '🇺🇬' },
-    { code: 'UA', name: 'Ukraine', flag: '🇺🇦' },
-    { code: 'AE', name: 'United Arab Emirates', flag: '🇦🇪' },
-    { code: 'GB', name: 'United Kingdom', flag: '🇬🇧' },
-    { code: 'US', name: 'United States', flag: '🇺🇸' },
-    { code: 'UY', name: 'Uruguay', flag: '🇺🇾' },
-    { code: 'UZ', name: 'Uzbekistan', flag: '🇺🇿' },
-    { code: 'VU', name: 'Vanuatu', flag: '🇻🇺' },
-    { code: 'VE', name: 'Venezuela', flag: '🇻🇪' },
-    { code: 'VN', name: 'Vietnam', flag: '🇻🇳' },
-    { code: 'YE', name: 'Yemen', flag: '🇾🇪' },
-    { code: 'ZM', name: 'Zambia', flag: '🇿🇲' },
-    { code: 'ZW', name: 'Zimbabwe', flag: '🇿🇼' },
-];
-
 const STEPS = [
     { id: 0, label: 'Basic Info' },
     { id: 1, label: 'Football' },
     { id: 2, label: 'Media' },
-    { id: 3, label: 'History' },
+    { id: 3, label: 'Career History' },  // renamed
     { id: 4, label: 'About' },
 ];
 const MODALITIES = ['Football', 'Futsal', 'Beach Soccer'];
@@ -276,25 +77,23 @@ const MONTHS = [
     { v: '10', l: 'October' }, { v: '11', l: 'November' }, { v: '12', l: 'December' },
 ];
 
-// kon field kon step-e — error hole oi step-e jump korar jonno
 const FIELD_STEP: Record<string, number> = {
     full_name: 0, nickname: 0, dob: 0, gender: 0, height: 0,
     birth_city: 0, birth_country: 0, nationality: 0, current_club: 0,
-    in_team_since: 0, agent: 0, guardian_name: 0, weight: 0,
+    current_club_country: 0, in_team_since: 0, agent: 0, guardian_name: 0,
+    weight: 0, whatsapp: 0,
     modality: 1, positions: 1, foot: 1,
     photo: 2, video_url: 2,
-    club_history: 3,
+    club_history: 3, transfer_history: 3, achievements: 3, competitions: 3, matches: 3,
     description: 4,
 };
 
-// "YYYY-MM-DD" string ke local Date-e convert (timezone shift bache)
 const parseYmd = (s?: string | null): Date | undefined => {
     if (!s) return undefined;
     const [y, m, d] = s.split('-').map(Number);
     if (!y || !m || !d) return undefined;
     return new Date(y, m - 1, d);
 };
-
 const calculateAge = (dob: string): number | null => {
     if (!dob) return null;
     const birth = parseYmd(dob);
@@ -305,10 +104,7 @@ const calculateAge = (dob: string): number | null => {
     if (mo < 0 || (mo === 0 && today.getDate() < birth.getDate())) age--;
     return age;
 };
-const isValidVideoUrl = (url: string): boolean => {
-    if (!url) return false;
-    return /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be|vimeo\.com)\/.+/i.test(url);
-};
+const isValidVideoUrl = (url: string): boolean => /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be|vimeo\.com)\/.+/i.test(url);
 const getEmbedUrl = (url: string): string | null => {
     if (!url) return null;
     const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
@@ -319,26 +115,27 @@ const getEmbedUrl = (url: string): string | null => {
 };
 
 interface PageProps {
-    user: { name: string; dob: string | null; nationality: string | null };
+    user: { name: string; dob: string | null; nationality: string | null; whatsapp: string | null };
     profile: Record<string, any> | null;
-    [key: string]: any;
+    countries?: { code: string; name: string; flag?: string }[];
 }
 
 const FieldError = ({ msg }: { msg?: string }) =>
     msg ? <p className="mt-1 text-xs text-red-500 font-sans">{msg}</p> : null;
 
-// Searchable country dropdown (shadcn Combobox: Popover + Command)
 function CountryCombobox({
     value,
     onChange,
+    countries,
     placeholder = 'Select country',
 }: {
     value: string;
     onChange: (v: string) => void;
+    countries: { code: string; name: string; flag?: string }[];
     placeholder?: string;
 }) {
     const [open, setOpen] = useState(false);
-    const selected = COUNTRIES.find((c) => c.code === value);
+    const selected = countries.find((c) => c.code === value);
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -352,7 +149,7 @@ function CountryCombobox({
                     <span className="flex items-center gap-2 truncate">
                         {selected ? (
                             <>
-                                <span>{selected.flag}</span>
+                                <span>{selected.flag ?? ''}</span>
                                 <span className="truncate font-medium">{selected.name}</span>
                             </>
                         ) : (
@@ -374,17 +171,14 @@ function CountryCombobox({
                             No country found.
                         </CommandEmpty>
                         <CommandGroup>
-                            {COUNTRIES.map((c) => (
+                            {countries.map((c) => (
                                 <CommandItem
                                     key={c.code}
                                     value={c.name}
-                                    onSelect={() => {
-                                        onChange(c.code);
-                                        setOpen(false);
-                                    }}
+                                    onSelect={() => { onChange(c.code); setOpen(false); }}
                                     className="cursor-pointer rounded-lg text-[#0F172A] dark:text-[#F5F5F5] aria-selected:bg-[#FFF3EB] dark:aria-selected:bg-[rgba(255,107,0,0.12)] aria-selected:text-[#0F172A] dark:aria-selected:text-[#F5F5F5]"
                                 >
-                                    <span className="mr-2">{c.flag}</span>
+                                    <span className="mr-2">{c.flag ?? ''}</span>
                                     <span className="truncate">{c.name}</span>
                                     <Check className={`ml-auto h-4 w-4 text-[#FF6B00] ${value === c.code ? 'opacity-100' : 'opacity-0'}`} />
                                 </CommandItem>
@@ -397,120 +191,49 @@ function CountryCombobox({
     );
 }
 
-// Self-contained DOB calendar (no react-day-picker — avoids version conflicts)
-function DobCalendar({
-    value,
-    onChange,
-}: {
-    value: string;
-    onChange: (v: string) => void;
-}) {
+function DobCalendar({ value, onChange }: { value: string; onChange: (v: string) => void }) {
     const selectedDate = parseYmd(value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const [viewMonth, setViewMonth] = useState<number>(
-        selectedDate ? selectedDate.getMonth() : 0
-    );
-    const [viewYear, setViewYear] = useState<number>(
-        selectedDate ? selectedDate.getFullYear() : 2005
-    );
-
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const [viewMonth, setViewMonth] = useState<number>(selectedDate ? selectedDate.getMonth() : 0);
+    const [viewYear, setViewYear] = useState<number>(selectedDate ? selectedDate.getFullYear() : 2005);
     const years = useMemo(() => {
         const arr: number[] = [];
         for (let y = today.getFullYear(); y >= 1950; y--) arr.push(y);
         return arr;
     }, []);
-
-    const startWeekday = new Date(viewYear, viewMonth, 1).getDay(); // 0 = Sun
+    const startWeekday = new Date(viewYear, viewMonth, 1).getDay();
     const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-
     const cells: (number | null)[] = [];
     for (let i = 0; i < startWeekday; i++) cells.push(null);
     for (let d = 1; d <= daysInMonth; d++) cells.push(d);
-
-    const isSelected = (d: number) =>
-        !!selectedDate &&
-        selectedDate.getFullYear() === viewYear &&
-        selectedDate.getMonth() === viewMonth &&
-        selectedDate.getDate() === d;
-
-    const isToday = (d: number) =>
-        today.getFullYear() === viewYear &&
-        today.getMonth() === viewMonth &&
-        today.getDate() === d;
-
+    const isSelected = (d: number) => !!selectedDate && selectedDate.getFullYear() === viewYear && selectedDate.getMonth() === viewMonth && selectedDate.getDate() === d;
+    const isToday = (d: number) => today.getFullYear() === viewYear && today.getMonth() === viewMonth && today.getDate() === d;
     const isFuture = (d: number) => new Date(viewYear, viewMonth, d) > today;
-
-    const pick = (d: number) => {
-        const mm = String(viewMonth + 1).padStart(2, '0');
-        const dd = String(d).padStart(2, '0');
-        onChange(`${viewYear}-${mm}-${dd}`);
-    };
-
-    const selectClass =
-        'flex-1 rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] text-[#0F172A] dark:text-[#F5F5F5] text-sm font-medium px-2 py-2 focus:outline-none focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-800 focus:border-[#FF6B00] [color-scheme:light] dark:[color-scheme:dark] cursor-pointer';
-
+    const pick = (d: number) => { const mm = String(viewMonth + 1).padStart(2, '0'); const dd = String(d).padStart(2, '0'); onChange(`${viewYear}-${mm}-${dd}`); };
+    const selectClass = 'flex-1 rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] text-[#0F172A] dark:text-[#F5F5F5] text-sm font-medium px-2 py-2 focus:outline-none focus:ring-2 focus:ring-orange-100 dark:focus-ring-orange-800 focus:border-[#FF6B00] [color-scheme:light] dark:[color-scheme:dark] cursor-pointer';
     return (
         <div className="p-4 w-[320px]">
-            {/* Month / Year dropdowns */}
             <div className="flex items-center gap-2 mb-4">
-                <select
-                    value={viewMonth}
-                    onChange={(e) => setViewMonth(Number(e.target.value))}
-                    className={selectClass}
-                >
-                    {MONTHS.map((m, i) => (
-                        <option key={m.v} value={i}>{m.l}</option>
-                    ))}
+                <select value={viewMonth} onChange={(e) => setViewMonth(Number(e.target.value))} className={selectClass}>
+                    {MONTHS.map((m, i) => <option key={m.v} value={i}>{m.l}</option>)}
                 </select>
-                <select
-                    value={viewYear}
-                    onChange={(e) => setViewYear(Number(e.target.value))}
-                    className={`${selectClass} font-mono max-w-[90px]`}
-                >
-                    {years.map((y) => (
-                        <option key={y} value={y}>{y}</option>
-                    ))}
+                <select value={viewYear} onChange={(e) => setViewYear(Number(e.target.value))} className={`${selectClass} font-mono max-w-[90px]`}>
+                    {years.map((y) => <option key={y} value={y}>{y}</option>)}
                 </select>
             </div>
-
-            {/* Weekday header */}
             <div className="grid grid-cols-7 gap-1 mb-1">
-                {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((w) => (
-                    <div
-                        key={w}
-                        className="text-center text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold py-1"
-                    >
-                        {w}
-                    </div>
+                {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(w => (
+                    <div key={w} className="text-center text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold py-1">{w}</div>
                 ))}
             </div>
-
-            {/* Day grid */}
             <div className="grid grid-cols-7 gap-1">
-                {cells.map((d, i) =>
-                    d === null ? (
-                        <div key={`e-${i}`} />
-                    ) : (
-                        <button
-                            key={d}
-                            type="button"
-                            disabled={isFuture(d)}
-                            onClick={() => pick(d)}
-                            className={`h-9 w-9 mx-auto flex items-center justify-center rounded-lg text-sm font-medium transition-colors
-                                ${isSelected(d)
-                                    ? 'bg-[#FF6B00] text-white hover:bg-[#CC5500]'
-                                    : isToday(d)
-                                        ? 'text-[#FF6B00] font-bold hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]'
-                                        : 'text-[#0F172A] dark:text-[#F5F5F5] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]'
-                                }
-                                disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent`}
-                        >
-                            {d}
-                        </button>
-                    )
-                )}
+                {cells.map((d, i) => d === null ? <div key={`e-${i}`} /> : (
+                    <button key={d} type="button" disabled={isFuture(d)} onClick={() => pick(d)}
+                        className={`h-9 w-9 mx-auto flex items-center justify-center rounded-lg text-sm font-medium transition-colors
+                            ${isSelected(d) ? 'bg-[#FF6B00] text-white hover:bg-[#CC5500]' : isToday(d) ? 'text-[#FF6B00] font-bold hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]' : 'text-[#0F172A] dark:text-[#F5F5F5] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]'}
+                            disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent`}
+                    >{d}</button>
+                ))}
             </div>
         </div>
     );
@@ -519,17 +242,15 @@ function DobCalendar({
 export default function Edit() {
     const [step, setStep] = useState<number>(0);
     const currentYear = new Date().getFullYear();
-
     const page = usePage<PageProps>().props;
     const user = page.user ?? { name: '', dob: null, nationality: null };
     const profile = page.profile ?? null;
+    const countries = page.countries ?? [];
 
     const { data, setData, post, processing, errors, transform } = useForm({
-        // users table theke prefill (profile thakle profile priority)
         full_name: profile?.full_name ?? user.name ?? '',
         dob: profile?.dob ?? user.dob ?? '',
         nationality: profile?.nationality ?? user.nationality ?? '',
-        // baki gula profile theke, na thakle default
         nickname: profile?.nickname ?? '',
         gender: profile?.gender ?? 'M',
         height: profile?.height != null ? String(profile.height) : '',
@@ -537,27 +258,26 @@ export default function Edit() {
         birth_city: profile?.birth_city ?? '',
         birth_country: profile?.birth_country ?? '',
         current_club: profile?.current_club ?? '',
+        current_club_country: profile?.current_club_country ?? '',
         in_team_since: profile?.in_team_since ?? '',
         agent: profile?.agent ?? '',
         guardian_name: profile?.guardian_name ?? '',
+        whatsapp: user?.whatsapp ?? profile?.whatsapp ?? '',
         modality: profile?.modality ?? 'Football',
         positions: (profile?.positions ?? []) as string[],
         foot: profile?.foot ?? 'Right',
         photo: null as File | null,
         photo_preview: profile?.photo_url ?? '',
         video_url: profile?.video_url ?? '',
-        club_history: (profile?.club_history?.length
-            ? profile.club_history
-            : [{ year: new Date().getFullYear(), club: '' }]
-        ) as { year: number | string; club: string }[],
+        club_history: (profile?.club_history?.length ? profile.club_history.map((h: any) => ({ year: h.year ?? '', club: h.club ?? '', country: h.country ?? '' })) : [{ year: new Date().getFullYear(), club: '', country: '' }]) as any[],
+        transfer_history: (profile?.transfer_history?.length ? profile.transfer_history.map((h: any) => ({ year: h.year ?? '', club: h.club ?? '', country: h.country ?? '' })) : []) as any[],
+        achievements: (profile?.achievements?.length ? profile.achievements.map((a: any) => ({ year: a.year ?? '', title: a.title ?? '' })) : []) as any[],
+        competitions: (profile?.competitions?.length ? profile.competitions.map((c: any) => ({ name: c.name ?? '', year: c.year ?? '' })) : []) as any[],
+        matches: (profile?.matches?.length ? profile.matches.map((m: any) => ({ home: m.home ?? '', score: m.score ?? '', away: m.away ?? '', goals: m.goals ?? '', assists: m.assists ?? '', minutes: m.minutes ?? '' })) : []) as any[],
         description: profile?.description ?? '',
     });
 
-    // base64 preview server-e pathanor dorkar nei — strip
-    transform((d) => {
-        const { photo_preview, ...rest } = d as any;
-        return rest;
-    });
+    transform((d) => { const { photo_preview, ...rest } = d as any; return rest; });
 
     const age = useMemo(() => calculateAge(data.dob), [data.dob]);
     const isMinor = age !== null && age < 18;
@@ -565,46 +285,41 @@ export default function Edit() {
     const videoValid = isValidVideoUrl(data.video_url);
     const embedUrl = useMemo(() => getEmbedUrl(data.video_url), [data.video_url]);
 
-    // in_team_since = "YYYY-MM" -> alada month/year (local state, jate ekta select korle onno ta na hariye jay)
     const itsInit = (profile?.in_team_since ?? '').split('-');
     const [itsYear, setItsYear] = useState<string>(itsInit[0] || '');
     const [itsMonth, setItsMonth] = useState<string>(itsInit[1] || '');
-    const yearOptions = useMemo(
-        () => Array.from({ length: currentYear - 1990 + 1 }, (_, i) => String(currentYear - i)),
-        [currentYear]
-    );
-    const setInTeamSince = (year: string, month: string) => {
-        setItsYear(year);
-        setItsMonth(month);
-        setData('in_team_since', year && month ? `${year}-${month}` : '');
-    };
+    const yearOptions = useMemo(() => Array.from({ length: currentYear - 1990 + 1 }, (_, i) => String(currentYear - i)), [currentYear]);
+    const setInTeamSince = (year: string, month: string) => { setItsYear(year); setItsMonth(month); setData('in_team_since', year && month ? `${year}-${month}` : ''); };
 
     const togglePosition = (id: string) => {
-        if (data.positions.includes(id)) {
-            setData('positions', data.positions.filter(p => p !== id));
-        } else if (data.positions.length < 3) {
-            setData('positions', [...data.positions, id]);
-        }
+        if (data.positions.includes(id)) setData('positions', data.positions.filter(p => p !== id));
+        else if (data.positions.length < 3) setData('positions', [...data.positions, id]);
     };
-    const updateClubHistory = (idx: number, field: 'year' | 'club', value: string) => {
-        const copy = [...data.club_history];
-        copy[idx] = { ...copy[idx], [field]: value };
-        setData('club_history', copy);
-    };
-    const addClubHistoryRow = () => {
-        setData('club_history', [...data.club_history, { year: '', club: '' }]);
-    };
-    const removeClubHistoryRow = (idx: number) => {
-        setData('club_history', data.club_history.filter((_, i) => i !== idx));
-    };
+
+    // generic updaters for each list
+    const updateClubHistory = (idx: number, field: string, value: string) => { const copy = [...data.club_history]; copy[idx] = { ...copy[idx], [field]: value }; setData('club_history', copy); };
+    const addClubRow = () => setData('club_history', [...data.club_history, { year: '', club: '', country: '' }]);
+    const removeClubRow = (idx: number) => setData('club_history', data.club_history.filter((_, i) => i !== idx));
+
+    const updateTransferHistory = (idx: number, field: string, value: string) => { const copy = [...data.transfer_history]; copy[idx] = { ...copy[idx], [field]: value }; setData('transfer_history', copy); };
+    const addTransferRow = () => setData('transfer_history', [...data.transfer_history, { year: '', club: '', country: '' }]);
+    const removeTransferRow = (idx: number) => setData('transfer_history', data.transfer_history.filter((_, i) => i !== idx));
+
+    const updateAchievement = (idx: number, field: string, value: string) => { const copy = [...data.achievements]; copy[idx] = { ...copy[idx], [field]: value }; setData('achievements', copy); };
+    const addAchievementRow = () => setData('achievements', [...data.achievements, { year: '', title: '' }]);
+    const removeAchievementRow = (idx: number) => setData('achievements', data.achievements.filter((_, i) => i !== idx));
+
+    const updateCompetition = (idx: number, field: string, value: string) => { const copy = [...data.competitions]; copy[idx] = { ...copy[idx], [field]: value }; setData('competitions', copy); };
+    const addCompetitionRow = () => setData('competitions', [...data.competitions, { name: '', year: '' }]);
+    const removeCompetitionRow = (idx: number) => setData('competitions', data.competitions.filter((_, i) => i !== idx));
+
+    const updateMatch = (idx: number, field: string, value: string) => { const copy = [...data.matches]; copy[idx] = { ...copy[idx], [field]: value }; setData('matches', copy); };
+    const addMatchRow = () => setData('matches', [...data.matches, { home: '', score: '', away: '', goals: '', assists: '', minutes: '' }]);
+    const removeMatchRow = (idx: number) => setData('matches', data.matches.filter((_, i) => i !== idx));
+
     const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
-            setData('photo', file);
-            const reader = new FileReader();
-            reader.onload = (ev) => setData('photo_preview', ev.target?.result as string);
-            reader.readAsDataURL(file);
-        }
+        if (file) { setData('photo', file); const reader = new FileReader(); reader.onload = (ev) => setData('photo_preview', ev.target?.result as string); reader.readAsDataURL(file); }
     };
 
     const goNext = () => setStep(s => Math.min(s + 1, STEPS.length - 1));
@@ -612,22 +327,19 @@ export default function Edit() {
 
     const submit = () => {
         post(route('player.profile.update'), {
-            forceFormData: true,   // photo File upload er jonno
+            forceFormData: true,
             preserveScroll: true,
             onError: (errs) => {
-                const steps = Object.keys(errs)
-                    .map((k) => FIELD_STEP[k.split('.')[0]] ?? 99)
-                    .filter((n) => n !== 99);
+                const steps = Object.keys(errs).map((k) => FIELD_STEP[k.split('.')[0]] ?? 99).filter((n) => n !== 99);
                 if (steps.length) setStep(Math.min(...steps));
             },
         });
     };
 
     return (
-        <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0D0D0D] pt-16 pb-32">
+        <div className="min-h-screen bg-[#0D0D0D] pt-16 pb-32">
             <PlayerNavbar />
-            {/* STICKY PROGRESS HEADER */}
-            <div className="bg-white dark:bg-[#0D0D0D] border-b border-[#E2E8F0] dark:border-[#2A2A2A] sticky top-16 z-20 px-4 sm:px-8 py-4">
+            <div className="bg-[#0D0D0D] border-b border-[#2A2A2A] sticky top-16 z-20 px-4 sm:px-8 py-4">
                 <div className="max-w-[720px] mx-auto">
                     <div className="flex items-center">
                         {STEPS.map((s, idx) => {
@@ -635,23 +347,17 @@ export default function Edit() {
                             const active = idx === step;
                             return (
                                 <React.Fragment key={s.id}>
-                                    <button
-                                        onClick={() => setStep(idx)}
-                                        className="flex-shrink-0 focus:outline-none"
-                                        type="button"
-                                    >
+                                    <button onClick={() => setStep(idx)} className="flex-shrink-0 focus:outline-none" type="button">
                                         {completed || active ? (
                                             <div className="w-7 h-7 bg-[#FF6B00] text-white rounded-full flex items-center justify-center text-xs font-bold font-sans">
                                                 {completed ? <CheckCircle2 className="w-4 h-4" /> : idx + 1}
                                             </div>
                                         ) : (
-                                            <div className="w-7 h-7 border-2 border-[#E2E8F0] dark:border-[#2A2A2A] text-[#94A3B8] rounded-full flex items-center justify-center text-xs font-bold font-sans">
-                                                {idx + 1}
-                                            </div>
+                                            <div className="w-7 h-7 border-2 border-[#2A2A2A] text-[#94A3B8] rounded-full flex items-center justify-center text-xs font-bold font-sans">{idx + 1}</div>
                                         )}
                                     </button>
                                     {idx < STEPS.length - 1 && (
-                                        <div className={`flex-1 h-0.5 mx-1 sm:mx-2 ${idx < step ? 'bg-[#FF6B00]' : 'bg-[#E2E8F0] dark:bg-[#2A2A2A]'}`} />
+                                        <div className={`flex-1 h-0.5 mx-1 sm:mx-2 ${idx < step ? 'bg-[#FF6B00]' : 'bg-[#2A2A2A]'}`} />
                                     )}
                                 </React.Fragment>
                             );
@@ -659,12 +365,8 @@ export default function Edit() {
                     </div>
                     <div className="hidden sm:flex items-center justify-between mt-3">
                         {STEPS.map((s, idx) => (
-                            <div
-                                key={s.id}
-                                className={`text-[10px] uppercase tracking-widest font-semibold font-sans ${idx === step ? 'text-[#FF6B00]' : 'text-[#94A3B8]'
-                                    }`}
-                                style={{ width: `${100 / STEPS.length}%`, textAlign: idx === 0 ? 'left' : idx === STEPS.length - 1 ? 'right' : 'center' }}
-                            >
+                            <div key={s.id} className={`text-[10px] uppercase tracking-widest font-semibold font-sans ${idx === step ? 'text-[#FF6B00]' : 'text-[#94A3B8]'}`}
+                                style={{ width: `${100 / STEPS.length}%`, textAlign: idx === 0 ? 'left' : idx === STEPS.length - 1 ? 'right' : 'center' }}>
                                 {s.label}
                             </div>
                         ))}
@@ -677,235 +379,115 @@ export default function Edit() {
                 </div>
             </div>
 
-            {/* FORM CONTENT */}
             <div className="max-w-[720px] mx-auto px-4 py-8">
-                {/* SECTION A — BASIC INFO */}
                 {step === 0 && (
                     <section>
-                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">
-                            01 / Basic Information
-                        </div>
-                        <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
+                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">01 / Basic Information</div>
+                        <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-5">
                                 <div>
-                                    <Label htmlFor="full_name" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
-                                        Full Name <span className="text-[#FF6B00]">*</span>
-                                    </Label>
-                                    <Input
-                                        id="full_name"
-                                        value={data.full_name}
-                                        onChange={(e) => setData('full_name', e.target.value)}
-                                        placeholder="John Smith"
-                                        className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
-                                    />
+                                    <Label htmlFor="full_name" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Full Name <span className="text-[#FF6B00]">*</span></Label>
+                                    <Input id="full_name" value={data.full_name} onChange={(e) => setData('full_name', e.target.value)} placeholder="John Smith" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
                                     <FieldError msg={errors.full_name} />
                                 </div>
                                 <div>
-                                    <Label htmlFor="nickname" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
-                                        Nickname
-                                    </Label>
-                                    <Input
-                                        id="nickname"
-                                        value={data.nickname}
-                                        onChange={(e) => setData('nickname', e.target.value)}
-                                        placeholder="Optional"
-                                        className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
-                                    />
+                                    <Label htmlFor="nickname" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Nickname</Label>
+                                    <Input id="nickname" value={data.nickname} onChange={(e) => setData('nickname', e.target.value)} placeholder="Optional" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
                                 </div>
                                 <div>
-                                    <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
-                                        Date of Birth <span className="text-[#FF6B00]">*</span>
-                                    </Label>
+                                    <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Date of Birth <span className="text-[#FF6B00]">*</span></Label>
                                     <div className="flex items-center gap-3">
                                         <Popover>
                                             <PopoverTrigger asChild>
-                                                <Button
-                                                    type="button"
-                                                    variant="outline"
-                                                    className={`group flex-1 h-11 justify-start text-left font-normal rounded-xl bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] hover:bg-white dark:hover:bg-[#111111] transition-colors ${data.dob ? 'text-[#0F172A] dark:text-[#F5F5F5]' : 'text-[#94A3B8]'}`}
-                                                >
+                                                <Button type="button" variant="outline" className={`group flex-1 h-11 justify-start text-left font-normal rounded-xl bg-[#111111] border-[#2A2A2A] hover:border-[#FF6B00] hover:bg-[#111111] transition-colors ${data.dob ? 'text-[#F5F5F5]' : 'text-[#94A3B8]'}`}>
                                                     <CalendarIcon className="mr-2.5 h-4 w-4 text-[#94A3B8] group-hover:text-[#FF6B00] transition-colors" />
-                                                    <span className={data.dob ? 'font-medium' : ''}>
-                                                        {data.dob ? format(parseYmd(data.dob)!, 'MMMM d, yyyy') : 'Select date of birth'}
-                                                    </span>
+                                                    <span className={data.dob ? 'font-medium' : ''}>{data.dob ? format(parseYmd(data.dob)!, 'MMMM d, yyyy') : 'Select date of birth'}</span>
                                                 </Button>
                                             </PopoverTrigger>
-                                            <PopoverContent
-                                                className="w-auto p-0 rounded-2xl border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#161616] shadow-xl shadow-black/5 dark:shadow-black/40 overflow-hidden"
-                                                align="start"
-                                                sideOffset={8}
-                                            >
-                                                <DobCalendar
-                                                    value={data.dob}
-                                                    onChange={(v) => setData('dob', v)}
-                                                />
+                                            <PopoverContent className="w-auto p-0 rounded-2xl border-[#2A2A2A] bg-[#161616] shadow-xl shadow-black/40 overflow-hidden" align="start" sideOffset={8}>
+                                                <DobCalendar value={data.dob} onChange={(v) => setData('dob', v)} />
                                             </PopoverContent>
                                         </Popover>
-                                        {age !== null && (
-                                            <div className="flex-shrink-0 bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] rounded-full px-3 py-1 text-xs font-bold font-mono whitespace-nowrap">
-                                                {age} yrs
-                                            </div>
-                                        )}
+                                        {age !== null && <div className="flex-shrink-0 bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] rounded-full px-3 py-1 text-xs font-bold font-mono whitespace-nowrap">{age} yrs</div>}
                                     </div>
                                     <FieldError msg={errors.dob} />
                                 </div>
                                 <div>
-                                    <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
-                                        Gender
-                                    </Label>
-                                    <RadioGroup
-                                        value={data.gender}
-                                        onValueChange={(v) => setData('gender', v)}
-                                        className="flex gap-4 h-10 items-center"
-                                    >
+                                    <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Gender</Label>
+                                    <RadioGroup value={data.gender} onValueChange={(v) => setData('gender', v)} className="flex gap-4 h-10 items-center">
                                         {['M', 'F', 'Other'].map((g) => (
                                             <div key={g} className="flex items-center gap-2">
-                                                <RadioGroupItem value={g} id={`gender-${g}`} className="border-[#CBD5E1] dark:border-[#2A2A2A] text-[#FF6B00]" />
-                                                <Label htmlFor={`gender-${g}`} className="text-sm text-[#0F172A] dark:text-[#F5F5F5] font-sans cursor-pointer">
-                                                    {g}
-                                                </Label>
+                                                <RadioGroupItem value={g} id={`gender-${g}`} className="border-[#2A2A2A] text-[#FF6B00]" />
+                                                <Label htmlFor={`gender-${g}`} className="text-sm text-[#F5F5F5] font-sans cursor-pointer">{g}</Label>
                                             </div>
                                         ))}
                                     </RadioGroup>
                                     <FieldError msg={errors.gender} />
                                 </div>
                                 <div>
-                                    <Label htmlFor="height" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
-                                        Height (cm)
-                                    </Label>
-                                    <Input
-                                        id="height"
-                                        type="number"
-                                        value={data.height}
-                                        onChange={(e) => setData('height', e.target.value)}
-                                        placeholder="178"
-                                        className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
-                                    />
+                                    <Label htmlFor="height" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Height (cm)</Label>
+                                    <Input id="height" type="number" value={data.height} onChange={(e) => setData('height', e.target.value)} placeholder="178" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
                                     <FieldError msg={errors.height} />
                                 </div>
                                 <div>
-                                    <Label htmlFor="weight" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
-                                        Weight (kg)
-                                    </Label>
-                                    <Input
-                                        id="weight"
-                                        type="number"
-                                        value={data.weight}
-                                        onChange={(e) => setData('weight', e.target.value)}
-                                        placeholder="67"
-                                        className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
-                                    />
+                                    <Label htmlFor="weight" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Weight (kg)</Label>
+                                    <Input id="weight" type="number" value={data.weight} onChange={(e) => setData('weight', e.target.value)} placeholder="67" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
                                     <FieldError msg={errors.weight} />
                                 </div>
                                 <div>
-                                    <Label htmlFor="birth_city" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
-                                        Birthplace City
-                                    </Label>
-                                    <Input
-                                        id="birth_city"
-                                        value={data.birth_city}
-                                        onChange={(e) => setData('birth_city', e.target.value)}
-                                        placeholder="City"
-                                        className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
-                                    />
+                                    <Label htmlFor="birth_city" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Birthplace City</Label>
+                                    <Input id="birth_city" value={data.birth_city} onChange={(e) => setData('birth_city', e.target.value)} placeholder="City" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
                                 </div>
                                 <div>
-                                    <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
-                                        Birthplace Country
-                                    </Label>
-                                    <CountryCombobox
-                                        value={data.birth_country}
-                                        onChange={(v) => setData('birth_country', v)}
-                                        placeholder="Select country"
-                                    />
+                                    <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Birthplace Country</Label>
+                                    <CountryCombobox value={data.birth_country} onChange={(v) => setData('birth_country', v)} countries={countries} placeholder="Select country" />
                                 </div>
                                 <div>
-                                    <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
-                                        Nationality <span className="text-[#FF6B00]">*</span>
-                                    </Label>
-                                    <CountryCombobox
-                                        value={data.nationality}
-                                        onChange={(v) => setData('nationality', v)}
-                                        placeholder="Select nationality"
-                                    />
+                                    <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Nationality <span className="text-[#FF6B00]">*</span></Label>
+                                    <CountryCombobox value={data.nationality} onChange={(v) => setData('nationality', v)} countries={countries} placeholder="Select nationality" />
                                     <FieldError msg={errors.nationality} />
                                 </div>
                                 <div>
-                                    <Label htmlFor="current_club" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
-                                        Current Club
-                                    </Label>
-                                    <Input
-                                        id="current_club"
-                                        value={data.current_club}
-                                        onChange={(e) => setData('current_club', e.target.value)}
-                                        placeholder="Club name"
-                                        className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
-                                    />
+                                    <Label htmlFor="current_club" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Current Club</Label>
+                                    <Input id="current_club" value={data.current_club} onChange={(e) => setData('current_club', e.target.value)} placeholder="Club name" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
                                 </div>
                                 <div>
-                                    <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
-                                        In Team Since (MM/YYYY)
-                                    </Label>
+                                    <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Club Country</Label>
+                                    <CountryCombobox value={data.current_club_country} onChange={(v) => setData('current_club_country', v)} countries={countries} placeholder="Select country" />
+                                </div>
+                                <div>
+                                    <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">In Team Since (MM/YYYY)</Label>
                                     <div className="flex gap-3">
                                         <Select value={itsMonth || undefined} onValueChange={(v) => setInTeamSince(itsYear, v)}>
-                                            <SelectTrigger className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5]">
-                                                <SelectValue placeholder="Month" />
-                                            </SelectTrigger>
-                                            <SelectContent className="bg-white dark:bg-[#161616] border-[#E2E8F0] dark:border-[#2A2A2A] max-h-72">
-                                                {MONTHS.map((m) => (
-                                                    <SelectItem key={m.v} value={m.v} className="text-[#0F172A] dark:text-[#F5F5F5]">
-                                                        {m.l}
-                                                    </SelectItem>
-                                                ))}
+                                            <SelectTrigger className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]"><SelectValue placeholder="Month" /></SelectTrigger>
+                                            <SelectContent className="bg-[#161616] border-[#2A2A2A] max-h-72">
+                                                {MONTHS.map((m) => <SelectItem key={m.v} value={m.v} className="text-[#F5F5F5]">{m.l}</SelectItem>)}
                                             </SelectContent>
                                         </Select>
                                         <Select value={itsYear || undefined} onValueChange={(v) => setInTeamSince(v, itsMonth)}>
-                                            <SelectTrigger className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] font-mono w-28">
-                                                <SelectValue placeholder="Year" />
-                                            </SelectTrigger>
-                                            <SelectContent className="bg-white dark:bg-[#161616] border-[#E2E8F0] dark:border-[#2A2A2A] max-h-72">
-                                                {yearOptions.map((y) => (
-                                                    <SelectItem key={y} value={y} className="text-[#0F172A] dark:text-[#F5F5F5] font-mono">
-                                                        {y}
-                                                    </SelectItem>
-                                                ))}
+                                            <SelectTrigger className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono w-28"><SelectValue placeholder="Year" /></SelectTrigger>
+                                            <SelectContent className="bg-[#161616] border-[#2A2A2A] max-h-72">
+                                                {yearOptions.map((y) => <SelectItem key={y} value={y} className="text-[#F5F5F5] font-mono">{y}</SelectItem>)}
                                             </SelectContent>
                                         </Select>
                                     </div>
                                     <FieldError msg={errors.in_team_since} />
                                 </div>
+                                <div>
+                                    <Label htmlFor="whatsapp" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">WhatsApp Number</Label>
+                                    <Input id="whatsapp" value={data.whatsapp} onChange={(e) => setData('whatsapp', e.target.value)} placeholder="+8801700000000" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
+                                </div>
                                 <div className="lg:col-span-2">
-                                    <Label htmlFor="agent" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
-                                        Agent / Representative <span className="text-[#94A3B8] font-normal">(optional)</span>
-                                    </Label>
-                                    <Input
-                                        id="agent"
-                                        value={data.agent}
-                                        onChange={(e) => setData('agent', e.target.value)}
-                                        placeholder="Agent or agency name"
-                                        className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
-                                    />
+                                    <Label htmlFor="agent" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Agent / Representative <span className="text-[#94A3B8] font-normal">(optional)</span></Label>
+                                    <Input id="agent" value={data.agent} onChange={(e) => setData('agent', e.target.value)} placeholder="Agent or agency name" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
                                 </div>
                             </div>
                             {isMinor && (
                                 <div className="mt-6">
-                                    <Alert className="bg-amber-50 dark:bg-amber-950 border-amber-300 dark:border-amber-700">
-                                        <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                                        <AlertDescription className="text-amber-800 dark:text-amber-200 text-sm font-sans">
-                                            Player is under 18. This profile must be managed by a parent or legal guardian.
-                                        </AlertDescription>
-                                    </Alert>
+                                    <Alert className="bg-amber-950 border-amber-700"><AlertTriangle className="h-4 w-4 text-amber-400" /><AlertDescription className="text-amber-200 text-sm font-sans">Player is under 18. This profile must be managed by a parent or legal guardian.</AlertDescription></Alert>
                                     <div className="mt-4">
-                                        <Label htmlFor="guardian_name" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-2 block font-sans">
-                                            Guardian Name <span className="text-[#FF6B00]">*</span>
-                                        </Label>
-                                        <Input
-                                            id="guardian_name"
-                                            value={data.guardian_name}
-                                            onChange={(e) => setData('guardian_name', e.target.value)}
-                                            placeholder="Parent or legal guardian's full name"
-                                            className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
-                                        />
+                                        <Label htmlFor="guardian_name" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Guardian Name <span className="text-[#FF6B00]">*</span></Label>
+                                        <Input id="guardian_name" value={data.guardian_name} onChange={(e) => setData('guardian_name', e.target.value)} placeholder="Parent or legal guardian's full name" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
                                         <FieldError msg={errors.guardian_name} />
                                     </div>
                                 </div>
@@ -914,30 +496,18 @@ export default function Edit() {
                     </section>
                 )}
 
-                {/* SECTION B — FOOTBALL DETAILS */}
                 {step === 1 && (
                     <section>
-                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">
-                            02 / Football Details
-                        </div>
-                        <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
+                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">02 / Football Details</div>
+                        <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                             <div className="mb-8">
-                                <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-3 block font-sans">
-                                    Modality
-                                </Label>
+                                <Label className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Modality</Label>
                                 <div className="flex flex-wrap gap-3">
                                     {MODALITIES.map((m) => {
                                         const selected = data.modality === m;
                                         return (
-                                            <button
-                                                key={m}
-                                                type="button"
-                                                onClick={() => setData('modality', m)}
-                                                className={`px-5 py-2.5 rounded-full text-sm font-semibold font-sans transition-colors ${selected
-                                                    ? 'bg-[#FF6B00] text-white border-0'
-                                                    : 'bg-white dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] hover:border-[#FF6B00]'
-                                                    }`}
-                                            >
+                                            <button key={m} type="button" onClick={() => setData('modality', m)}
+                                                className={`px-5 py-2.5 rounded-full text-sm font-semibold font-sans transition-colors ${selected ? 'bg-[#FF6B00] text-white border-0' : 'bg-[#1F1F1F] border border-[#2A2A2A] text-[#F5F5F5] hover:border-[#FF6B00]'}`}>
                                                 {m}
                                             </button>
                                         );
@@ -945,10 +515,8 @@ export default function Edit() {
                                 </div>
                             </div>
                             <div className="mb-8">
-                                <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-3 block font-sans">
-                                    Position <span className="text-[#94A3B8] font-normal">(up to 3)</span>
-                                </Label>
-                                {/* SVG pitch — hidden on mobile */}
+                                <Label className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Position <span className="text-[#94A3B8] font-normal">(up to 3)</span></Label>
+                                {/* pitch SVG same as before */}
                                 <div className="hidden md:block">
                                     <div className="flex justify-center bg-[#0F172A] rounded-2xl p-4">
                                         <svg viewBox="0 0 300 200" className="w-full max-w-[400px] h-auto">
@@ -963,98 +531,45 @@ export default function Edit() {
                                             {POSITION_ZONES.map((p) => {
                                                 const selected = data.positions.includes(p.id);
                                                 return (
-                                                    <g
-                                                        key={p.id}
-                                                        onClick={() => togglePosition(p.id)}
-                                                        style={{ cursor: 'pointer' }}
-                                                        className="group"
-                                                    >
-                                                        <circle
-                                                            cx={p.cx}
-                                                            cy={p.cy}
-                                                            r="14"
-                                                            fill={selected ? 'rgba(255,107,0,0.85)' : 'transparent'}
-                                                            stroke={selected ? '#FF6B00' : 'rgba(255,255,255,0.4)'}
-                                                            strokeWidth="1.5"
-                                                            className="group-hover:fill-[rgba(255,107,0,0.3)] transition-colors"
-                                                        />
-                                                        <text
-                                                            x={p.cx}
-                                                            y={p.cy}
-                                                            textAnchor="middle"
-                                                            dominantBaseline="central"
-                                                            fontSize="8"
-                                                            fontWeight="700"
-                                                            fill={selected ? '#FFFFFF' : 'rgba(255,255,255,0.7)'}
-                                                            style={{ pointerEvents: 'none' }}
-                                                        >
-                                                            {p.label}
-                                                        </text>
+                                                    <g key={p.id} onClick={() => togglePosition(p.id)} style={{ cursor: 'pointer' }} className="group">
+                                                        <circle cx={p.cx} cy={p.cy} r="14" fill={selected ? 'rgba(255,107,0,0.85)' : 'transparent'} stroke={selected ? '#FF6B00' : 'rgba(255,255,255,0.4)'} strokeWidth="1.5" className="group-hover:fill-[rgba(255,107,0,0.3)] transition-colors" />
+                                                        <text x={p.cx} y={p.cy} textAnchor="middle" dominantBaseline="central" fontSize="8" fontWeight="700" fill={selected ? '#FFFFFF' : 'rgba(255,255,255,0.7)'} style={{ pointerEvents: 'none' }}>{p.label}</text>
                                                     </g>
                                                 );
                                             })}
                                         </svg>
                                     </div>
                                 </div>
-                                {/* Mobile fallback — checkboxes */}
                                 <div className="md:hidden grid grid-cols-3 gap-3">
                                     {ALL_POSITIONS.map((id) => {
                                         const selected = data.positions.includes(id);
                                         return (
-                                            <label
-                                                key={id}
-                                                className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-colors ${selected
-                                                    ? 'bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border-[#FF6B00]'
-                                                    : 'bg-white dark:bg-[#1F1F1F] border-[#E2E8F0] dark:border-[#2A2A2A]'
-                                                    }`}
-                                            >
-                                                <Checkbox
-                                                    checked={selected}
-                                                    onCheckedChange={() => togglePosition(id)}
-                                                    className="border-[#CBD5E1] dark:border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
-                                                />
-                                                <span className={`text-xs font-semibold font-sans ${selected ? 'text-[#CC5500]' : 'text-[#0F172A] dark:text-[#F5F5F5]'}`}>
-                                                    {id}
-                                                </span>
+                                            <label key={id} className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-colors ${selected ? 'bg-[rgba(255,107,0,0.12)] border-[#FF6B00]' : 'bg-[#1F1F1F] border-[#2A2A2A]'}`}>
+                                                <Checkbox checked={selected} onCheckedChange={() => togglePosition(id)} className="border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]" />
+                                                <span className={`text-xs font-semibold font-sans ${selected ? 'text-[#CC5500]' : 'text-[#F5F5F5]'}`}>{id}</span>
                                             </label>
                                         );
                                     })}
                                 </div>
-                                {/* Selected position pills */}
                                 <div className="mt-4 flex flex-wrap items-center gap-2">
                                     <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans mr-1">Selected:</span>
-                                    {data.positions.length === 0 && (
-                                        <span className="text-xs text-[#94A3B8] italic font-sans">None — up to 3 positions</span>
-                                    )}
+                                    {data.positions.length === 0 && <span className="text-xs text-[#94A3B8] italic font-sans">None — up to 3 positions</span>}
                                     {data.positions.map((id) => (
-                                        <span
-                                            key={id}
-                                            className="inline-flex items-center gap-1.5 bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] rounded-full px-3 py-1 text-xs font-bold font-mono"
-                                        >
+                                        <span key={id} className="inline-flex items-center gap-1.5 bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] rounded-full px-3 py-1 text-xs font-bold font-mono">
                                             {id}
-                                            <button type="button" onClick={() => togglePosition(id)} className="hover:opacity-70">
-                                                <Trash2 className="w-3 h-3" />
-                                            </button>
+                                            <button type="button" onClick={() => togglePosition(id)} className="hover:opacity-70"><Trash2 className="w-3 h-3" /></button>
                                         </span>
                                     ))}
                                 </div>
                                 <FieldError msg={errors.positions} />
                             </div>
                             <div>
-                                <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-3 block font-sans">
-                                    Dominant Foot
-                                </Label>
-                                <RadioGroup
-                                    value={data.foot}
-                                    onValueChange={(v) => setData('foot', v)}
-                                    className="flex flex-col sm:flex-row gap-4"
-                                >
+                                <Label className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Dominant Foot</Label>
+                                <RadioGroup value={data.foot} onValueChange={(v) => setData('foot', v)} className="flex flex-col sm:flex-row gap-4">
                                     {['Right', 'Left', 'Ambidextrous'].map((f) => (
                                         <div key={f} className="flex items-center gap-2">
-                                            <RadioGroupItem value={f} id={`foot-${f}`} className="border-[#CBD5E1] dark:border-[#2A2A2A] text-[#FF6B00]" />
-                                            <Label htmlFor={`foot-${f}`} className="text-sm text-[#0F172A] dark:text-[#F5F5F5] font-sans cursor-pointer">
-                                                {f}
-                                            </Label>
+                                            <RadioGroupItem value={f} id={`foot-${f}`} className="border-[#2A2A2A] text-[#FF6B00]" />
+                                            <Label htmlFor={`foot-${f}`} className="text-sm text-[#F5F5F5] font-sans cursor-pointer">{f}</Label>
                                         </div>
                                     ))}
                                 </RadioGroup>
@@ -1063,103 +578,50 @@ export default function Edit() {
                     </section>
                 )}
 
-                {/* SECTION C — MEDIA */}
                 {step === 2 && (
                     <section>
-                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">
-                            03 / Media
-                        </div>
-                        <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8 space-y-8">
+                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">03 / Media</div>
+                        <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8 space-y-8">
                             <div>
-                                <Label className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-3 block font-sans">
-                                    Profile Photo
-                                </Label>
+                                <Label className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Profile Photo</Label>
                                 {data.photo_preview ? (
                                     <div className="flex flex-col sm:flex-row items-center gap-6">
-                                        <img
-                                            src={data.photo_preview}
-                                            alt="Preview"
-                                            className="w-24 h-24 rounded-full object-cover border-2 border-[#FF6B00]"
-                                        />
+                                        <img src={data.photo_preview} alt="Preview" className="w-24 h-24 rounded-full object-cover border-2 border-[#FF6B00]" />
                                         <div className="flex flex-col gap-2">
                                             <label className="cursor-pointer">
-                                                <Button
-                                                    type="button"
-                                                    variant="outline"
-                                                    className="border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] hover:border-[#FF6B00] hover:text-[#FF6B00] bg-white dark:bg-[#1F1F1F]"
-                                                    onClick={() => document.getElementById('photo-input')?.click()}
-                                                >
-                                                    Change Photo
-                                                </Button>
-                                                <input
-                                                    id="photo-input"
-                                                    type="file"
-                                                    accept="image/jpeg,image/png"
-                                                    onChange={handlePhotoUpload}
-                                                    className="hidden"
-                                                />
+                                                <Button type="button" variant="outline" className="border-[#2A2A2A] text-[#F5F5F5] hover:border-[#FF6B00] hover:text-[#FF6B00] bg-[#1F1F1F]" onClick={() => document.getElementById('photo-input')?.click()}>Change Photo</Button>
+                                                <input id="photo-input" type="file" accept="image/jpeg,image/png" onChange={handlePhotoUpload} className="hidden" />
                                             </label>
-                                            <button
-                                                type="button"
-                                                onClick={() => { setData('photo', null); setData('photo_preview', ''); }}
-                                                className="text-xs text-[#94A3B8] hover:text-red-500 font-sans"
-                                            >
-                                                Remove
-                                            </button>
+                                            <button type="button" onClick={() => { setData('photo', null); setData('photo_preview', ''); }} className="text-xs text-[#94A3B8] hover:text-red-500 font-sans">Remove</button>
                                         </div>
                                     </div>
                                 ) : (
                                     <label className="block cursor-pointer">
-                                        <div className="border-2 border-dashed border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] rounded-2xl p-12 text-center transition-colors">
+                                        <div className="border-2 border-dashed border-[#2A2A2A] hover:border-[#FF6B00] rounded-2xl p-12 text-center transition-colors">
                                             <Upload className="w-8 h-8 text-[#94A3B8] mx-auto mb-3" />
-                                            <div className="font-semibold text-[#0F172A] dark:text-[#F5F5F5] font-sans mb-1">
-                                                Upload Profile Photo
-                                            </div>
-                                            <div className="text-xs text-[#94A3B8] font-sans">
-                                                JPG, PNG up to 5MB
-                                            </div>
+                                            <div className="font-semibold text-[#F5F5F5] font-sans mb-1">Upload Profile Photo</div>
+                                            <div className="text-xs text-[#94A3B8] font-sans">JPG, PNG up to 5MB</div>
                                         </div>
-                                        <input
-                                            type="file"
-                                            accept="image/jpeg,image/png"
-                                            onChange={handlePhotoUpload}
-                                            className="hidden"
-                                        />
+                                        <input type="file" accept="image/jpeg,image/png" onChange={handlePhotoUpload} className="hidden" />
                                     </label>
                                 )}
                                 <FieldError msg={errors.photo} />
                             </div>
                             <div>
-                                <Label htmlFor="video_url" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-3 block font-sans">
-                                    Highlight Video URL
-                                </Label>
+                                <Label htmlFor="video_url" className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Highlight Video URL</Label>
                                 <div className="relative">
                                     <Youtube className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#FF6B00] pointer-events-none" />
-                                    <Input
-                                        id="video_url"
-                                        value={data.video_url}
-                                        onChange={(e) => setData('video_url', e.target.value)}
-                                        placeholder="YouTube or Vimeo URL"
-                                        className="pl-10 pr-10 bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
-                                    />
-                                    {videoValid && (
-                                        <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
-                                    )}
+                                    <Input id="video_url" value={data.video_url} onChange={(e) => setData('video_url', e.target.value)} placeholder="YouTube or Vimeo URL"
+                                        className="pl-10 pr-10 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
+                                    {videoValid && <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />}
                                 </div>
                                 {videoValid && embedUrl && (
                                     <div className="mt-4 aspect-video bg-[#0F172A] rounded-xl overflow-hidden">
-                                        <iframe
-                                            src={embedUrl}
-                                            title="Highlight preview"
-                                            className="w-full h-full"
-                                            allowFullScreen
-                                        />
+                                        <iframe src={embedUrl} title="Highlight preview" className="w-full h-full" allowFullScreen />
                                     </div>
                                 )}
                                 {!videoValid && data.video_url.length > 0 && (
-                                    <div className="mt-2 text-xs text-red-500 font-sans">
-                                        Please enter a valid YouTube or Vimeo URL.
-                                    </div>
+                                    <div className="mt-2 text-xs text-red-500 font-sans">Please enter a valid YouTube or Vimeo URL.</div>
                                 )}
                                 <FieldError msg={errors.video_url} />
                             </div>
@@ -1167,136 +629,152 @@ export default function Edit() {
                     </section>
                 )}
 
-                {/* SECTION D — CLUB HISTORY */}
                 {step === 3 && (
                     <section>
-                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">
-                            04 / Club History
-                        </div>
-                        <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
-                            <div className="flex items-center gap-3 mb-2">
-                                <span className="w-28 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
-                                <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Club Name</span>
-                                <span className="w-10 flex-shrink-0" />
-                            </div>
-                            <div className="space-y-3">
-                                {data.club_history.map((row, idx) => (
-                                    <div key={idx} className="flex items-center gap-3">
-                                        <Input
-                                            type="number"
-                                            value={row.year ?? ''}
-                                            onChange={(e) => updateClubHistory(idx, 'year', e.target.value)}
-                                            placeholder="Year"
-                                            className="w-28 flex-shrink-0 bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
-                                        />
-                                        <Input
-                                            value={row.club}
-                                            onChange={(e) => updateClubHistory(idx, 'club', e.target.value)}
-                                            placeholder="Club name"
-                                            className="flex-1 bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
-                                        />
+                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">04 / Career History</div>
+                        <div className="space-y-8">
+                            {/* Club History */}
+                            <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
+                                <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Club History</h3>
+                                <div className="flex items-center gap-3 mb-2">
+                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
+                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Club Name</span>
+                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Country</span>
+                                    <span className="w-10 flex-shrink-0" />
+                                </div>
+                                {data.club_history.map((row: any, idx: number) => (
+                                    <div key={idx} className="flex items-center gap-3 mb-2">
+                                        <Input type="number" value={row.year ?? ''} onChange={(e) => updateClubHistory(idx, 'year', e.target.value)} placeholder="Year" className="w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
+                                        <Input value={row.club} onChange={(e) => updateClubHistory(idx, 'club', e.target.value)} placeholder="Club name" className="flex-1 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
+                                        <select value={row.country ?? ''} onChange={(e) => updateClubHistory(idx, 'country', e.target.value)} className="flex-1 h-10 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none font-sans">
+                                            <option value="">Country...</option>
+                                            {countries.map((c) => <option key={c.code} value={c.code}>{c.flag ?? ''} {c.name}</option>)}
+                                        </select>
                                         {idx === 0 ? (
-                                            <button
-                                                type="button"
-                                                onClick={addClubHistoryRow}
-                                                aria-label="Add row"
-                                                className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#FF6B00] hover:border-[#FF6B00] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)] transition-colors"
-                                            >
-                                                <Plus className="w-4 h-4" />
-                                            </button>
+                                            <button type="button" onClick={addClubRow} className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#FF6B00] hover:border-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]"><Plus className="w-4 h-4" /></button>
                                         ) : (
-                                            <button
-                                                type="button"
-                                                onClick={() => removeClubHistoryRow(idx)}
-                                                aria-label="Remove row"
-                                                className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500 transition-colors"
-                                            >
-                                                <X className="w-4 h-4" />
-                                            </button>
+                                            <button type="button" onClick={() => removeClubRow(idx)} className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"><X className="w-4 h-4" /></button>
                                         )}
                                     </div>
                                 ))}
                             </div>
-                            <div className="text-[10px] text-[#94A3B8] mt-4 font-sans">
-                                Note: Add a row for each year and club. Use + to add another, × to remove.
+
+                            {/* Transfer History */}
+                            <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
+                                <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Transfer History</h3>
+                                <div className="flex items-center gap-3 mb-2">
+                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
+                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Club</span>
+                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Country</span>
+                                    <span className="w-10 flex-shrink-0" />
+                                </div>
+                                {data.transfer_history.map((row: any, idx: number) => (
+                                    <div key={idx} className="flex items-center gap-3 mb-2">
+                                        <Input type="number" value={row.year ?? ''} onChange={(e) => updateTransferHistory(idx, 'year', e.target.value)} placeholder="Year" className="w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono" />
+                                        <Input value={row.club} onChange={(e) => updateTransferHistory(idx, 'club', e.target.value)} placeholder="Club" className="flex-1 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <select value={row.country ?? ''} onChange={(e) => updateTransferHistory(idx, 'country', e.target.value)} className="flex-1 h-10 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none">
+                                            <option value="">Country...</option>
+                                            {countries.map((c) => <option key={c.code} value={c.code}>{c.flag ?? ''} {c.name}</option>)}
+                                        </select>
+                                        <button type="button" onClick={() => removeTransferRow(idx)} className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"><X className="w-4 h-4" /></button>
+                                    </div>
+                                ))}
+                                <button type="button" onClick={addTransferRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#FF6B00] hover:text-[#CC5500]"><Plus className="w-4 h-4" /> Add row</button>
+                            </div>
+
+                            {/* Achievements */}
+                            <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
+                                <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Achievements</h3>
+                                <div className="flex items-center gap-3 mb-2">
+                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
+                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Title</span>
+                                    <span className="w-10 flex-shrink-0" />
+                                </div>
+                                {data.achievements.map((row: any, idx: number) => (
+                                    <div key={idx} className="flex items-center gap-3 mb-2">
+                                        <Input value={row.year ?? ''} onChange={(e) => updateAchievement(idx, 'year', e.target.value)} placeholder="Year" className="w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.title ?? ''} onChange={(e) => updateAchievement(idx, 'title', e.target.value)} placeholder="Title" className="flex-1 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <button type="button" onClick={() => removeAchievementRow(idx)} className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"><X className="w-4 h-4" /></button>
+                                    </div>
+                                ))}
+                                <button type="button" onClick={addAchievementRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#FF6B00] hover:text-[#CC5500]"><Plus className="w-4 h-4" /> Add row</button>
+                            </div>
+
+                            {/* Competition History */}
+                            <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
+                                <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Competition History</h3>
+                                <div className="flex items-center gap-3 mb-2">
+                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
+                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Competition</span>
+                                    <span className="w-10 flex-shrink-0" />
+                                </div>
+                                {data.competitions.map((row: any, idx: number) => (
+                                    <div key={idx} className="flex items-center gap-3 mb-2">
+                                        <Input value={row.year ?? ''} onChange={(e) => updateCompetition(idx, 'year', e.target.value)} placeholder="Year" className="w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.name ?? ''} onChange={(e) => updateCompetition(idx, 'name', e.target.value)} placeholder="Competition" className="flex-1 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <button type="button" onClick={() => removeCompetitionRow(idx)} className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"><X className="w-4 h-4" /></button>
+                                    </div>
+                                ))}
+                                <button type="button" onClick={addCompetitionRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#FF6B00] hover:text-[#CC5500]"><Plus className="w-4 h-4" /> Add row</button>
+                            </div>
+
+                            {/* Recent Matches */}
+                            <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
+                                <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Recent Matches</h3>
+                                <div className="flex items-center gap-3 mb-2">
+                                    <span className="w-20 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Home</span>
+                                    <span className="w-16 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Score</span>
+                                    <span className="w-20 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Away</span>
+                                    <span className="w-12 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">G</span>
+                                    <span className="w-12 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">A</span>
+                                    <span className="w-16 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Min</span>
+                                    <span className="w-6" />
+                                </div>
+                                {data.matches.map((row: any, idx: number) => (
+                                    <div key={idx} className="flex items-center gap-2 mb-2">
+                                        <Input value={row.home ?? ''} onChange={(e) => updateMatch(idx, 'home', e.target.value)} placeholder="Home" className="w-20 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.score ?? ''} onChange={(e) => updateMatch(idx, 'score', e.target.value)} placeholder="0-0" className="w-16 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.away ?? ''} onChange={(e) => updateMatch(idx, 'away', e.target.value)} placeholder="Away" className="w-20 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.goals ?? ''} onChange={(e) => updateMatch(idx, 'goals', e.target.value)} placeholder="0" type="number" className="w-12 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.assists ?? ''} onChange={(e) => updateMatch(idx, 'assists', e.target.value)} placeholder="0" type="number" className="w-12 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.minutes ?? ''} onChange={(e) => updateMatch(idx, 'minutes', e.target.value)} placeholder="90'" className="w-16 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <button type="button" onClick={() => removeMatchRow(idx)} className="flex-shrink-0 h-10 w-6 flex items-center justify-center text-[#94A3B8] hover:text-red-500"><X className="w-3 h-3" /></button>
+                                    </div>
+                                ))}
+                                <button type="button" onClick={addMatchRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#FF6B00] hover:text-[#CC5500]"><Plus className="w-4 h-4" /> Add match</button>
                             </div>
                         </div>
                     </section>
                 )}
 
-                {/* SECTION E — DESCRIPTION */}
                 {step === 4 && (
                     <section>
-                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">
-                            05 / About You
-                        </div>
-                        <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
-                            <Label htmlFor="description" className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] mb-3 block font-sans">
-                                Description
-                            </Label>
-                            <Textarea
-                                id="description"
-                                rows={5}
-                                maxLength={500}
-                                value={data.description}
-                                onChange={(e) => setData('description', e.target.value)}
-                                placeholder="Describe your playing style, strengths, and football journey..."
-                                className="bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00] resize-none"
-                            />
+                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">05 / About You</div>
+                        <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
+                            <Label htmlFor="description" className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Description</Label>
+                            <Textarea id="description" rows={5} maxLength={500} value={data.description} onChange={(e) => setData('description', e.target.value)} placeholder="Describe your playing style, strengths, and football journey..." className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00] resize-none" />
                             <div className="flex justify-between mt-2">
                                 <FieldError msg={errors.description} />
-                                <span className={`text-xs font-mono ${descCount > 450 ? 'text-[#FF6B00] font-bold' : 'text-[#94A3B8]'}`}>
-                                    {descCount} / 500
-                                </span>
+                                <span className={`text-xs font-mono ${descCount > 450 ? 'text-[#FF6B00] font-bold' : 'text-[#94A3B8]'}`}>{descCount} / 500</span>
                             </div>
                         </div>
                     </section>
                 )}
             </div>
 
-            {/* STICKY BOTTOM */}
-            <div className="bg-white dark:bg-[#0D0D0D] border-t border-[#E2E8F0] dark:border-[#2A2A2A] fixed bottom-0 left-0 right-0 z-20 h-[68px] px-4 sm:px-8 flex items-center justify-between">
+            {/* Sticky Bottom */}
+            <div className="bg-[#0D0D0D] border-t border-[#2A2A2A] fixed bottom-0 left-0 right-0 z-20 h-[68px] px-4 sm:px-8 flex items-center justify-between">
                 <div className="hidden sm:flex items-center gap-2">
                     <CheckCircle2 className="text-green-500 w-4 h-4" />
                     <span className="text-xs text-[#94A3B8] font-sans">Draft saved 2 min ago</span>
                 </div>
                 <div className="flex items-center gap-2 sm:gap-3 ml-auto">
-                    <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={goBack}
-                        disabled={step === 0}
-                        className="text-[#475569] dark:text-[#9A9A9A] hover:text-[#0F172A] dark:hover:text-[#F5F5F5] hover:bg-[#F8FAFC] dark:hover:bg-[#1F1F1F] disabled:opacity-30"
-                    >
-                        <ArrowLeft className="w-4 h-4 mr-1" />
-                        Back
-                    </Button>
-                    <Button
-                        type="button"
-                        variant="outline"
-                        className="border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] hover:border-[#FF6B00] hover:text-[#FF6B00] bg-white dark:bg-[#1F1F1F]"
-                    >
-                        Save Draft
-                    </Button>
+                    <Button type="button" variant="ghost" onClick={goBack} disabled={step === 0} className="text-[#9A9A9A] hover:text-[#F5F5F5] hover:bg-[#1F1F1F] disabled:opacity-30"><ArrowLeft className="w-4 h-4 mr-1" /> Back</Button>
+                    <Button type="button" variant="outline" className="border-[#2A2A2A] text-[#F5F5F5] hover:border-[#FF6B00] hover:text-[#FF6B00] bg-[#1F1F1F]">Save Draft</Button>
                     {step < STEPS.length - 1 ? (
-                        <Button
-                            type="button"
-                            onClick={goNext}
-                            className="bg-[#FF6B00] text-white hover:bg-[#CC5500]"
-                        >
-                            Next
-                            <ArrowRight className="w-4 h-4 ml-1" />
-                        </Button>
+                        <Button type="button" onClick={goNext} className="bg-[#FF6B00] text-white hover:bg-[#CC5500]">Next <ArrowRight className="w-4 h-4 ml-1" /></Button>
                     ) : (
-                        <Button
-                            type="button"
-                            disabled={processing}
-                            onClick={submit}
-                            className="bg-[#FF6B00] text-white hover:bg-[#CC5500]"
-                        >
-                            Save & Publish
-                            <ArrowRight className="w-4 h-4 ml-1" />
-                        </Button>
+                        <Button type="button" disabled={processing} onClick={submit} className="bg-[#FF6B00] text-white hover:bg-[#CC5500]">Save & Publish <ArrowRight className="w-4 h-4 ml-1" /></Button>
                     )}
                 </div>
             </div>

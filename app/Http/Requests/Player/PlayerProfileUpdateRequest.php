@@ -23,6 +23,7 @@ class PlayerProfileUpdateRequest extends FormRequest
             'weight' => ['nullable', 'integer', 'min:30', 'max:200'],
             'birth_city'        => ['nullable', 'string', 'max:255'],
             'birth_country'     => ['nullable', 'string', 'size:2'],
+            'whatsapp'           => ['nullable', 'string'],
             'nationality'       => ['required', 'string', 'size:2'],
             'current_club'      => ['nullable', 'string', 'max:255'],
             'in_team_since'     => ['nullable', 'string', 'max:7'],
@@ -38,6 +39,28 @@ class PlayerProfileUpdateRequest extends FormRequest
             'club_history.*.year' => ['required', 'integer'],
             'club_history.*.club' => ['nullable', 'string', 'max:255'],
             'description'       => ['nullable', 'string', 'max:500'],
+            'club_history.*.country' => ['nullable', 'string', 'size:2'],
+
+            'transfer_history' => ['sometimes', 'array'],
+            'transfer_history.*.year' => ['nullable', 'string'],
+            'transfer_history.*.club' => ['nullable', 'string', 'max:255'],
+            'transfer_history.*.country' => ['nullable', 'string', 'size:2'],
+
+            'achievements' => ['sometimes', 'array'],
+            'achievements.*.year' => ['nullable', 'string'],
+            'achievements.*.title' => ['nullable', 'string', 'max:255'],
+
+            'competitions' => ['sometimes', 'array'],
+            'competitions.*.name' => ['nullable', 'string', 'max:255'],
+            'competitions.*.year' => ['nullable', 'string'],
+
+            'matches' => ['sometimes', 'array'],
+            'matches.*.home' => ['nullable', 'string', 'max:255'],
+            'matches.*.score' => ['nullable', 'string', 'max:20'],
+            'matches.*.away' => ['nullable', 'string', 'max:255'],
+            'matches.*.goals' => ['nullable', 'integer'],
+            'matches.*.assists' => ['nullable', 'integer'],
+            'matches.*.minutes' => ['nullable', 'string', 'max:20'],
         ];
     }
 
