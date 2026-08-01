@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class ProfileView extends Model
 {
     protected $fillable = [
-        'viewer_id',
         'player_profile_id',
+        'viewer_id',
+        'country',
+        'country_code',
+        'ip_address',
+        'user_agent',
     ];
 
     // রিলেশন (যদি না থাকে)

@@ -594,6 +594,7 @@ export default function Edit() {
                                             </label>
                                             <button type="button" onClick={() => { setData('photo', null); setData('photo_preview', ''); }} className="text-xs text-[#94A3B8] hover:text-red-500 font-sans">Remove</button>
                                         </div>
+
                                     </div>
                                 ) : (
                                     <label className="block cursor-pointer">
@@ -601,6 +602,7 @@ export default function Edit() {
                                             <Upload className="w-8 h-8 text-[#94A3B8] mx-auto mb-3" />
                                             <div className="font-semibold text-[#F5F5F5] font-sans mb-1">Upload Profile Photo</div>
                                             <div className="text-xs text-[#94A3B8] font-sans">JPG, PNG up to 5MB</div>
+                                            <span className='text-white'>Recommended Image Size: 200 × 300 px </span>
                                         </div>
                                         <input type="file" accept="image/jpeg,image/png" onChange={handlePhotoUpload} className="hidden" />
                                     </label>
@@ -765,8 +767,8 @@ export default function Edit() {
             {/* Sticky Bottom */}
             <div className="bg-[#0D0D0D] border-t border-[#2A2A2A] fixed bottom-0 left-0 right-0 z-20 h-[68px] px-4 sm:px-8 flex items-center justify-between">
                 <div className="hidden sm:flex items-center gap-2">
-                    <CheckCircle2 className="text-green-500 w-4 h-4" />
-                    <span className="text-xs text-[#94A3B8] font-sans">Draft saved 2 min ago</span>
+                    {/* <CheckCircle2 className="text-green-500 w-4 h-4" />
+                    <span className="text-xs text-[#94A3B8] font-sans">Draft saved 2 min ago</span> */}
                 </div>
                 <div className="flex items-center gap-2 sm:gap-3 ml-auto">
                     <Button type="button" variant="ghost" onClick={goBack} disabled={step === 0} className="text-[#9A9A9A] hover:text-[#F5F5F5] hover:bg-[#1F1F1F] disabled:opacity-30"><ArrowLeft className="w-4 h-4 mr-1" /> Back</Button>
