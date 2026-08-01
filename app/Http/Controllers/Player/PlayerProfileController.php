@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Player;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Player\PlayerProfileUpdateRequest;
+use Stevebauman\Location\Facades\Location;
 use App\Models\PlayerProfile;
 use App\Models\ProfileView;
 use App\Models\User;
@@ -71,22 +72,18 @@ class PlayerProfileController extends Controller
 
         // Country analytics
         $countryAnalytics = ProfileView::where('player_profile_id', $profile->id)
-            ->whereNotNull('viewer_id')
-            ->with('viewer')
+            ->selectRaw('country_code as country, COUNT(*) as views')
+            ->whereNotNull('country_code')
+            ->groupBy('country_code')
+            ->orderByDesc('views')
             ->get()
-            ->groupBy(function ($view) {
-                return $view->viewer?->nationality ?? 'Unknown';
-            })
-            ->map(function ($group, $countryCode) {
+            ->map(function ($item) {
                 return [
-                    'country' => $countryCode,
-                    'views'   => $group->count(),
+                    'country' => $item->country,
+                    'views'   => (int) $item->views,
                 ];
             })
-            ->values()
-            ->sortByDesc('views')
-            ->take(10)
-            ->toArray();
+            ->values();
 
         return Inertia::render('player/dashboard/Index', [
             'auth' => [
@@ -104,9 +101,9 @@ class PlayerProfileController extends Controller
             'recentViews'       => $recentViews,
             'subscription'      => $subscription,
             'viewsThisWeek'     => $thisWeek,
+            'viewsDaily'        => $daily,        // ← ADD (sparkline er jonno)
+            'totalViews'        => $totalViews,   // ← ADD (real total, optional but valo)
             'viewsTrend'        => $trend,
-            'viewsDaily'        => $daily,
-            'totalViews'        => $totalViews,
             'countryAnalytics'  => $countryAnalytics,
             'countries'         => $countries
         ]);
@@ -335,15 +332,23 @@ class PlayerProfileController extends Controller
         return back();
     }
 
-    public function playerDetails($id)
+    public function playerDetails($id, Request $request)
     {
         $player = PlayerProfile::with('user')->findOrFail($id);
+
         $player->increment('views');
 
         $viewer = auth()->user();
+
+        $ip = $request->ip();
+        $location = Location::get($ip);
+
         ProfileView::create([
-            'viewer_id'         => $viewer ? $viewer->id : null,
             'player_profile_id' => $player->id,
+            'viewer_id'         => $viewer?->id,
+            'country'           => $location?->countryName,
+            'country_code'      => $location?->countryCode,
+            'ip_address'        => $ip,
         ]);
 
         return Inertia::render('player/profile/public/New-Detail', [
@@ -417,6 +422,36 @@ class PlayerProfileController extends Controller
                 'per_page'     => $views->perPage(),
                 'total'        => $views->total(),
             ],
+        ]);
+    }
+
+    public function publicPlayerDetails(Request $request, $id)
+    {
+        $player = PlayerProfile::with('user')->findOrFail($id);
+
+        // Increase profile views
+        $player->increment('views');
+
+        $viewer = auth()->user();
+
+        // Visitor IP
+        $ip = app()->environment('local')
+            ? '8.8.8.8' // Localhost testing
+            : $request->ip();
+
+        $location = Location::get($ip);
+
+        ProfileView::create([
+            'player_profile_id' => $player->id,
+            'viewer_id'         => $viewer?->id,
+            'country'           => $location?->countryName,
+            'country_code'      => $location?->countryCode,
+            'ip_address'        => $ip,
+            // 'user_agent'        => $request->userAgent(),
+        ]);
+
+        return Inertia::render('player/profile/public/New-Detail', [
+            'player' => $player,
         ]);
     }
 }

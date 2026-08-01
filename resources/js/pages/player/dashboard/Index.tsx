@@ -67,13 +67,7 @@ const player = {
     avgRating: 4.2,
 };
 // ডিফল্ট কান্ট্রি ডেটা (যদি ব্যাকএন্ড থেকে না আসে)
-const defaultCountryData = [
-    { country: 'Portugal', views: 412 },
-    { country: 'Spain', views: 287 },
-    { country: 'Brazil', views: 198 },
-    { country: 'France', views: 156 },
-    { country: 'England', views: 94 },
-];
+
 const getCountryName = (code?: string) => {
     if (!code) return '';
     return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
@@ -90,7 +84,6 @@ const getCookie = (name: string): string => {
     const row = document.cookie.split('; ').find((r) => r.startsWith(name + '='));
     return row ? decodeURIComponent(row.split('=')[1]) : '';
 };
-const sparklineData = [12, 18, 14, 22, 19, 28, 34];
 function getGreeting(): string {
     const h = new Date().getHours();
     if (h < 12) return 'Good morning';
@@ -599,10 +592,18 @@ export default function PlayerDashboard() {
         viewsTrend = 0,
         viewsThisWeek = 0,
         viewsDaily = [],
-        totalViews = 0,
         countries = [],
         countryAnalytics = []
     } = usePage().props as any;
+    const countryData = countryAnalytics ?? [];
+
+    // sparkline = last 7 days er daily views (time trend) — country data noy
+    const sparklineData: number[] = (viewsDaily ?? []).map((v: any) => Number(v) || 0);
+    const totalViews = countryData.reduce(
+        (sum: number, item: any) => sum + Number(item.views),
+        0
+    );
+    const hasCountryData = countryData.length > 0;
     const pp = auth?.user?.player_profile ?? {};
     const greeting = getGreeting();
     const hasSubscription = !!subscription?.current_plan;
@@ -611,9 +612,6 @@ export default function PlayerDashboard() {
     const [shareOpen, setShareOpen] = useState(false);
     const profileUrl = `${window.location.origin}/player/profile/${auth?.user?.player_profile?.id}`;
     const [copied, setCopied] = useState(false);
-    const countryData = countryAnalytics.length > 0
-        ? countryAnalytics
-        : [];
     const copyProfileLink = async () => {
         try {
             await navigator.clipboard.writeText(profileUrl);
@@ -768,16 +766,21 @@ export default function PlayerDashboard() {
         ];
     const circumference = 276.46;
     const dashOffset = circumference - (profileComplete / 100) * circumference;
-    const sparkMax = Math.max(...sparklineData);
-    const sparkMin = Math.min(...sparklineData);
+    const sparkMax = Math.max(...sparklineData, 1);
+    const sparkMin = Math.min(...sparklineData, 0);
     const sparkRange = sparkMax - sparkMin || 1;
-    const sparkPoints = sparklineData
-        .map((v, i) => {
-            const x = (i / (sparklineData.length - 1)) * 100;
-            const y = 100 - ((v - sparkMin) / sparkRange) * 80 - 10;
-            return `${x},${y}`;
-        })
-        .join(' ');
+    const sparkPoints =
+        sparklineData.length <= 1
+            ? "0,50 100,50"
+            : sparklineData
+                .map((v, i) => {
+                    const x = (i / (sparklineData.length - 1)) * 100;
+                    const y =
+                        100 - ((v - sparkMin) / sparkRange) * 80 - 10;
+
+                    return `${x},${y}`;
+                })
+                .join(" ");
     const playerInfo = [
         {
             icon: <Shirt className="w-4 h-4 text-gray-300" />,
@@ -901,7 +904,7 @@ export default function PlayerDashboard() {
                         <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <p className="font-mono text-3xl font-black text-[#F5F5F5]">{auth?.user?.player_profile?.views}</p>
+                                    <p className="font-mono text-3xl font-black text-[#F5F5F5]"> {totalViews}</p>
                                     <p className="mt-1 text-sm text-[#9A9A9A]">Profile Views</p>
                                 </div>
                                 <Eye className="h-5 w-5 text-[#FF6B00]" />
@@ -1195,14 +1198,37 @@ export default function PlayerDashboard() {
                         )}
                     </div>
                     <div className={!hasSubscription ? 'pointer-events-none blur-md filter select-none' : ''}>
-                        {countryData.length > 0 ? (
+                        {hasCountryData ? (
                             <div className="h-[280px] w-full">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart data={countryData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                                    <BarChart
+                                        data={countryData}
+                                        margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                                    >
                                         <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" vertical={false} />
-                                        <XAxis dataKey="country" stroke="#94A3B8" style={{ fontSize: '12px' }} tickLine={false} axisLine={false} />
-                                        <YAxis stroke="#94A3B8" style={{ fontSize: '12px' }} tickLine={false} axisLine={false} />
-                                        <Tooltip contentStyle={{ background: '#161616', border: '1px solid #2A2A2A', borderRadius: '8px', color: '#F5F5F5', fontSize: '12px' }} cursor={{ fill: 'rgba(255,107,0,0.08)' }} />
+                                        <XAxis
+                                            dataKey="country"
+                                            stroke="#94A3B8"
+                                            style={{ fontSize: '12px' }}
+                                            tickLine={false}
+                                            axisLine={false}
+                                        />
+                                        <YAxis
+                                            stroke="#94A3B8"
+                                            style={{ fontSize: '12px' }}
+                                            tickLine={false}
+                                            axisLine={false}
+                                        />
+                                        <Tooltip
+                                            contentStyle={{
+                                                background: '#161616',
+                                                border: '1px solid #2A2A2A',
+                                                borderRadius: '8px',
+                                                color: '#F5F5F5',
+                                                fontSize: '12px',
+                                            }}
+                                            cursor={{ fill: 'rgba(255,107,0,0.08)' }}
+                                        />
                                         <Bar dataKey="views" fill="#FF6B00" radius={[6, 6, 0, 0]} />
                                     </BarChart>
                                 </ResponsiveContainer>

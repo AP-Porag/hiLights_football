@@ -65,7 +65,7 @@ Route::get('/contact', function () {
 // })->name('profile.public.detail');
 
 
-Route::get('/player/profile/{id}', [PlayerProfileController::class, 'playerDetails'])
+Route::get('/player/profile/{id}', [PlayerProfileController::class, 'publicPlayerDetails'])
     ->name('player.public.profile');
 
 Route::get('/scout', [HomeController::class, 'scout'])->name('scout');
