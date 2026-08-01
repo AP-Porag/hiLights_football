@@ -144,6 +144,7 @@ class PlayerProfileController extends Controller
 
     public function update(PlayerProfileUpdateRequest $request)
     {
+
         $data = $request->validated();
         $user = $request->user();
 
@@ -159,8 +160,10 @@ class PlayerProfileController extends Controller
             'dob',
             'nationality',
             'photo',
-            'wahtsapp'
+            'whatsapp'
         ])->toArray();
+
+
 
         if ($request->hasFile('photo')) {
             if ($user->playerProfile?->photo_path) {
