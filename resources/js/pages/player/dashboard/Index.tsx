@@ -924,7 +924,7 @@ export default function PlayerDashboard() {
                             </svg>
                         </div>
                         {/* [3] Scout Interest */}
-                        <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
+                        {/* <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                             <div className="flex items-start justify-between">
                                 <div>
                                     <p className="font-mono text-3xl font-black text-[#F5F5F5]">{player.scoutInterest}</p>
@@ -937,7 +937,7 @@ export default function PlayerDashboard() {
                                 <span className="text-xs font-medium text-[#9A9A9A]">Average {player.avgRating} / 5.0</span>
                             </div>
                             <Progress value={84} className="mt-3 h-2 bg-[#2A2A2A] [&>div]:bg-[#FF6B00]" />
-                        </div>
+                        </div> */}
                         {/* [4] Subscription */}
                         <div className="flex flex-col rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                             {!hasSubscription ? (
