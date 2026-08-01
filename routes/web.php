@@ -37,6 +37,14 @@ Route::get('/register/scout', function () {
 })->name('register.scout');
 
 
+Route::get('/ip', function (Illuminate\Http\Request $request) {
+    return [
+        'request_ip' => $request->ip(),
+        'server_remote_addr' => $_SERVER['REMOTE_ADDR'] ?? null,
+    ];
+});
+
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/about', function () {
