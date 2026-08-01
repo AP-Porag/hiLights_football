@@ -71,7 +71,6 @@ const registerSchema = z.object({
     password_confirmation: z.string(),
     dob: z.string().optional(),
     nationality: z.string().optional(),
-    country: z.string().optional(),
     organization_name: z.string().optional(),
     whatsapp: z.string().optional(),   // added
     terms: z.boolean().refine((val) => val === true, {
@@ -693,23 +692,23 @@ export default function Register({ countries = [] }: Props) {
                             <>
                                 <div className="mb-4">
                                     <label
-                                        htmlFor="country"
+                                        htmlFor="nationality"
                                         className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
                                     >
                                         Country
                                     </label>
                                     <Select
                                         options={options}
-                                        value={options.find((o) => o.value === data.country)}
+                                        value={options.find((o) => o.value === data.nationality)}
                                         onChange={(selected) =>
-                                            setData('country', selected?.value || '')
+                                            setData('nationality', selected?.value || '')
                                         }
                                         placeholder="Select your country"
                                         isSearchable
                                         className="text-sm"
                                         styles={selectStyles}
                                     />
-                                    {(clientErrors.country || errors.country) && (
+                                    {(clientErrors.nationality || errors.nationality) && (
                                         <p className="text-xs text-[#DC2626] mt-1.5">
                                             {clientErrors.country || errors.country}
                                         </p>

@@ -102,11 +102,11 @@ const items = [
         title: 'BUILD YOUR STORY',
         description: 'Show your achievements and evolution as an athlete.',
     },
-    {
-        icon: BarChart3,
-        title: 'ADVANCED STATS',
-        description: 'Track your performance and stand out.',
-    },
+    // {
+    //     icon: BarChart3,
+    //     title: 'ADVANCED STATS',
+    //     description: 'Track your performance and stand out.',
+    // },
     {
         icon: Globe,
         title: 'CONNECT',
@@ -409,7 +409,7 @@ export default function Plans() {
                 <section className="w-full bg-black px-4">
                     <div className="mx-auto max-w-7xl">
                         <div className="overflow-hidden rounded-3xl border border-zinc-800 bg-[#0b0b0b]">
-                            <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-5">
+                            <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-4">
                                 {items.map((item, index) => {
                                     const Icon = item.icon;
                                     return (

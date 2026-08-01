@@ -611,7 +611,9 @@ export default function PlayerDashboard() {
     const [shareOpen, setShareOpen] = useState(false);
     const profileUrl = `${window.location.origin}/player/profile/${auth?.user?.player_profile?.id}`;
     const [copied, setCopied] = useState(false);
-    const countryData = countryAnalytics.length > 0 ? countryAnalytics : defaultCountryData;
+    const countryData = countryAnalytics.length > 0
+        ? countryAnalytics
+        : [];
     const copyProfileLink = async () => {
         try {
             await navigator.clipboard.writeText(profileUrl);
@@ -1077,7 +1079,7 @@ export default function PlayerDashboard() {
                         <span className="absolute top-1 right-2 text-[10px] text-white/30">Sponsored</span>
                     </div>
                 </section>
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">
                     {/* COMPLETION CHECKLIST */}
                     <section className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                         <div className="mb-1 flex items-center justify-between">
@@ -1114,7 +1116,7 @@ export default function PlayerDashboard() {
                         </ul>
                     </section>
                     {/* RECENT VIEWS CARD */}
-                    <section className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
+                    {/* <section className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                         <div className="mb-5 flex items-start justify-between">
                             <div>
                                 <h2 className="text-lg font-bold text-[#F5F5F5]">Recent Profile Views</h2>
@@ -1179,7 +1181,7 @@ export default function PlayerDashboard() {
                                 );
                             })}
                         </ul>
-                    </section>
+                    </section> */}
                 </div>
                 {/* COUNTRY ANALYTICS - ডাইনামিক ডেটা সহ */}
                 <section className="relative overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">

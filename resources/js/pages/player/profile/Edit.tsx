@@ -230,7 +230,7 @@ function DobCalendar({ value, onChange }: { value: string; onChange: (v: string)
                 {cells.map((d, i) => d === null ? <div key={`e-${i}`} /> : (
                     <button key={d} type="button" disabled={isFuture(d)} onClick={() => pick(d)}
                         className={`h-9 w-9 mx-auto flex items-center justify-center rounded-lg text-sm font-medium transition-colors
-                            ${isSelected(d) ? 'bg-[#FF6B00] text-white hover:bg-[#CC5500]' : isToday(d) ? 'text-[#FF6B00] font-bold hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]' : 'text-[#0F172A] dark:text-[#F5F5F5] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]'}
+                            ${isSelected(d) ? 'bg-[#FF6B00] text-white hover:bg-[#CC5500]' : isToday(d) ? 'text-[#FF6B00] font-bold  hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]' : 'text-white dark:text-[#F5F5F5] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]'}
                             disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent`}
                     >{d}</button>
                 ))}
@@ -399,12 +399,12 @@ export default function Edit() {
                                     <div className="flex items-center gap-3">
                                         <Popover>
                                             <PopoverTrigger asChild>
-                                                <Button type="button" variant="outline" className={`group flex-1 h-11 justify-start text-left font-normal rounded-xl bg-[#111111] border-[#2A2A2A] hover:border-[#FF6B00] hover:bg-[#111111] transition-colors ${data.dob ? 'text-[#F5F5F5]' : 'text-[#94A3B8]'}`}>
+                                                <Button type="button" variant="outline" className={`group flex-1 h-11 justify-start text-left font-normal rounded-xl bg-[#111111] border-[#2A2A2A] text-white`}>
                                                     <CalendarIcon className="mr-2.5 h-4 w-4 text-[#94A3B8] group-hover:text-[#FF6B00] transition-colors" />
                                                     <span className={data.dob ? 'font-medium' : ''}>{data.dob ? format(parseYmd(data.dob)!, 'MMMM d, yyyy') : 'Select date of birth'}</span>
                                                 </Button>
                                             </PopoverTrigger>
-                                            <PopoverContent className="w-auto p-0 rounded-2xl border-[#2A2A2A] bg-[#161616] shadow-xl shadow-black/40 overflow-hidden" align="start" sideOffset={8}>
+                                            <PopoverContent className="w-auto p-0 rounded-2xl border-[#2A2A2A] bg-[#1e1e1e] shadow-xl shadow-black/40 overflow-hidden" align="start" sideOffset={8}>
                                                 <DobCalendar value={data.dob} onChange={(v) => setData('dob', v)} />
                                             </PopoverContent>
                                         </Popover>

@@ -26,6 +26,7 @@ class PlayerProfileUpdateRequest extends FormRequest
             'whatsapp'           => ['nullable', 'string'],
             'nationality'       => ['required', 'string', 'size:2'],
             'current_club'      => ['nullable', 'string', 'max:255'],
+            'current_club_country'      => ['nullable', 'string', 'max:255'],
             'in_team_since'     => ['nullable', 'string', 'max:7'],
             'agent'             => ['nullable', 'string', 'max:255'],
             'guardian_name'     => ['nullable', 'string', 'max:255'],

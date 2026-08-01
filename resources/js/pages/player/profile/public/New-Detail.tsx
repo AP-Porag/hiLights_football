@@ -166,9 +166,16 @@ export default function NewDetail() {
                                 <div className="mt-3 space-y-1.25 text-sm md:text-base">
                                     <div className="flex items-center">
                                         <CalendarDays className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
-                                        <span className="pl-2 text-gray-300">
+                                        <span className="">
+                                            <span className=" text-white">Date of Birth:</span>{' '}
                                             {player.user?.dob
-                                                ? `${new Date(player.user.dob).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })} (${calcAge(player.user.dob)})`
+                                                ? calcAge(player.user.dob) < 18
+                                                    ? new Date(player.user.dob).getFullYear()
+                                                    : `${new Date(player.user.dob).toLocaleDateString('en-US', {
+                                                        day: 'numeric',
+                                                        month: 'short',
+                                                        year: 'numeric',
+                                                    })} (${calcAge(player.user.dob)})`
                                                 : '—'}
                                         </span>
                                     </div>
@@ -198,7 +205,10 @@ export default function NewDetail() {
                                     <div className="flex items-center">
                                         <Shield className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Current Club:</span>
-                                        <span className="pl-2 text-gray-100">{player.current_club ?? '—'}</span>
+
+                                        <span className="pl-2 text-gray-100">{player.user?.nationality && (
+                                            <ReactCountryFlag countryCode={player.current_club_country} svg className="mr-1" />
+                                        )}{player.current_club ?? '—'}</span>
                                     </div>
                                     {/* <div className="flex items-center">
                                         <Shirt className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />

@@ -45,6 +45,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'role' => ['required', 'in:player,scout,agent,club'],
             'name' => ['required', 'string', 'min:2', 'max:255'],
@@ -53,7 +54,6 @@ class RegisteredUserController extends Controller
             'dob' => ['nullable', 'date'],
             'whatsapp'          => ['nullable', 'string', 'max:30'],   // ← new validation
             'nationality' => ['nullable', 'string', 'max:3'],
-            'country' => ['nullable', 'string', 'max:3'],
             'organization_name' => ['nullable', 'string', 'max:255'],
             'terms' => ['accepted'],
         ]);
