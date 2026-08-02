@@ -191,7 +191,7 @@ function CountryCombobox({
     );
 }
 
-function DobCalendar({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+function DobCalendar({ value, onChange, onClose }: { value: string; onChange: (v: string) => void }) {
     const selectedDate = parseYmd(value);
     const today = new Date(); today.setHours(0, 0, 0, 0);
     const [viewMonth, setViewMonth] = useState<number>(selectedDate ? selectedDate.getMonth() : 0);
@@ -209,7 +209,7 @@ function DobCalendar({ value, onChange }: { value: string; onChange: (v: string)
     const isSelected = (d: number) => !!selectedDate && selectedDate.getFullYear() === viewYear && selectedDate.getMonth() === viewMonth && selectedDate.getDate() === d;
     const isToday = (d: number) => today.getFullYear() === viewYear && today.getMonth() === viewMonth && today.getDate() === d;
     const isFuture = (d: number) => new Date(viewYear, viewMonth, d) > today;
-    const pick = (d: number) => { const mm = String(viewMonth + 1).padStart(2, '0'); const dd = String(d).padStart(2, '0'); onChange(`${viewYear}-${mm}-${dd}`); };
+    const pick = (d: number) => { const mm = String(viewMonth + 1).padStart(2, '0'); const dd = String(d).padStart(2, '0'); onChange(`${viewYear}-${mm}-${dd}`); onClose(); };
     const selectClass = 'flex-1 rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] text-[#0F172A] dark:text-[#F5F5F5] text-sm font-medium px-2 py-2 focus:outline-none focus:ring-2 focus:ring-orange-100 dark:focus-ring-orange-800 focus:border-[#FF6B00] [color-scheme:light] dark:[color-scheme:dark] cursor-pointer';
     return (
         <div className="p-4 w-[320px]">
@@ -230,7 +230,7 @@ function DobCalendar({ value, onChange }: { value: string; onChange: (v: string)
                 {cells.map((d, i) => d === null ? <div key={`e-${i}`} /> : (
                     <button key={d} type="button" disabled={isFuture(d)} onClick={() => pick(d)}
                         className={`h-9 w-9 mx-auto flex items-center justify-center rounded-lg text-sm font-medium transition-colors
-                            ${isSelected(d) ? 'bg-[#FF6B00] text-white hover:bg-[#CC5500]' : isToday(d) ? 'text-[#FF6B00] font-bold  hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]' : 'text-white dark:text-[#F5F5F5] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]'}
+                            ${isSelected(d) ? 'bg-[#FF6B00] text-white hover:bg-[#CC5500]' : isToday(d) ? 'text-[#FF6B00] font-bold  hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]' : 'text-white dark:text-[#F5F5F5] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)] hover:text-black dark:hover:text-black'}
                             disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent`}
                     >{d}</button>
                 ))}
@@ -246,6 +246,7 @@ export default function Edit() {
     const user = page.user ?? { name: '', dob: null, nationality: null };
     const profile = page.profile ?? null;
     const countries = page.countries ?? [];
+    const [dobOpen, setDobOpen] = useState(false);
 
     const { data, setData, post, processing, errors, transform } = useForm({
         full_name: profile?.full_name ?? user.name ?? '',
@@ -397,7 +398,7 @@ export default function Edit() {
                                 <div>
                                     <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Date of Birth <span className="text-[#FF6B00]">*</span></Label>
                                     <div className="flex items-center gap-3">
-                                        <Popover>
+                                        <Popover open={dobOpen} onOpenChange={setDobOpen}>
                                             <PopoverTrigger asChild>
                                                 <Button type="button" variant="outline" className={`group flex-1 h-11 justify-start text-left font-normal rounded-xl bg-[#111111] border-[#2A2A2A] text-white`}>
                                                     <CalendarIcon className="mr-2.5 h-4 w-4 text-[#94A3B8] group-hover:text-[#FF6B00] transition-colors" />
@@ -405,7 +406,7 @@ export default function Edit() {
                                                 </Button>
                                             </PopoverTrigger>
                                             <PopoverContent className="w-auto p-0 rounded-2xl border-[#2A2A2A] bg-[#1e1e1e] shadow-xl shadow-black/40 overflow-hidden" align="start" sideOffset={8}>
-                                                <DobCalendar value={data.dob} onChange={(v) => setData('dob', v)} />
+                                                <DobCalendar value={data.dob} onChange={(v) => setData('dob', v)} onClose={() => setDobOpen(false)} />
                                             </PopoverContent>
                                         </Popover>
                                         {age !== null && <div className="flex-shrink-0 bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] rounded-full px-3 py-1 text-xs font-bold font-mono whitespace-nowrap">{age} yrs</div>}
@@ -724,21 +725,21 @@ export default function Edit() {
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Recent Matches</h3>
                                 <div className="flex items-center gap-3 mb-2">
-                                    <span className="w-20 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Home</span>
-                                    <span className="w-16 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Score</span>
-                                    <span className="w-20 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Away</span>
-                                    <span className="w-12 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">G</span>
-                                    <span className="w-12 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">A</span>
-                                    <span className="w-16 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Min</span>
+                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Home</span>
+                                    <span className="w-20 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Score</span>
+                                    <span className="w-24 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Away</span>
+                                    <span className="w-14 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">G</span>
+                                    <span className="w-14 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">A</span>
+                                    <span className="w-20 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Min</span>
                                     <span className="w-6" />
                                 </div>
                                 {data.matches.map((row: any, idx: number) => (
                                     <div key={idx} className="flex items-center gap-2 mb-2">
-                                        <Input value={row.home ?? ''} onChange={(e) => updateMatch(idx, 'home', e.target.value)} placeholder="Home" className="w-20 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <Input value={row.score ?? ''} onChange={(e) => updateMatch(idx, 'score', e.target.value)} placeholder="0-0" className="w-16 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <Input value={row.away ?? ''} onChange={(e) => updateMatch(idx, 'away', e.target.value)} placeholder="Away" className="w-20 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <Input value={row.goals ?? ''} onChange={(e) => updateMatch(idx, 'goals', e.target.value)} placeholder="0" type="number" className="w-12 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <Input value={row.assists ?? ''} onChange={(e) => updateMatch(idx, 'assists', e.target.value)} placeholder="0" type="number" className="w-12 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.home ?? ''} onChange={(e) => updateMatch(idx, 'home', e.target.value)} placeholder="Home" className="w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.score ?? ''} onChange={(e) => updateMatch(idx, 'score', e.target.value)} placeholder="0-0" className="w-20 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.away ?? ''} onChange={(e) => updateMatch(idx, 'away', e.target.value)} placeholder="Away" className="w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.goals ?? ''} onChange={(e) => updateMatch(idx, 'goals', e.target.value)} placeholder="0" type="number" className="w-14 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.assists ?? ''} onChange={(e) => updateMatch(idx, 'assists', e.target.value)} placeholder="0" type="number" className="w-14 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
                                         <Input value={row.minutes ?? ''} onChange={(e) => updateMatch(idx, 'minutes', e.target.value)} placeholder="90'" className="w-16 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
                                         <button type="button" onClick={() => removeMatchRow(idx)} className="flex-shrink-0 h-10 w-6 flex items-center justify-center text-[#94A3B8] hover:text-red-500"><X className="w-3 h-3" /></button>
                                     </div>
