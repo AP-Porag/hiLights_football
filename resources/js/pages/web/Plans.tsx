@@ -333,9 +333,12 @@ export default function Plans() {
                                     </div>
                                 ))}
                             </div>
-                            <button className="w-full rounded-xl border border-gray-500 py-3 font-bold text-white uppercase transition hover:border-orange-500 hover:text-orange-500 md:absolute md:bottom-6 md:left-1/2 md:w-[90%] md:-translate-x-1/2">
+                            <Link
+                                href="/register"
+                                className="block w-full rounded-xl border border-gray-500 py-3 text-center font-bold uppercase text-white transition hover:border-orange-500 hover:text-orange-500 md:absolute md:bottom-6 md:left-1/2 md:w-[90%] md:-translate-x-1/2"
+                            >
                                 Create Free Profile
-                            </button>
+                            </Link>
                         </div>
 
                         {/* Premium Monthly */}

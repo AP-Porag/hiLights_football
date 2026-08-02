@@ -71,7 +71,7 @@ export default function PublicNavbar() {
                 <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football home">
                     <img
                         src="/images/logo/final_logo.png"
-                        className="h-6 w-auto sm:h-8 lg:h-10 xl:h-12 2xl:h-14 md:mt-2 lg:mt-3 dark:hidden"
+                        className="h-6 w-auto sm:h-8 lg:h-10 xl:h-12 2xl:h-14 md:mt-2 lg:mt-3"
                         alt="HiLights Football"
                     />
                     {/* <img src="/images/logo/final_logo.png" className="hidden h-12 w-auto md:h-20 dark:block" alt="HiLights Football" /> */}
