@@ -257,12 +257,12 @@ export default function SubscriptionIndex() {
                                         </div>
                                     ))}
                                 </div>
-                                <button
+                                {/* <button
                                     disabled
                                     className="w-full cursor-not-allowed rounded-xl border border-gray-500 py-3 font-bold uppercase text-white opacity-70 md:absolute md:bottom-6 md:left-1/2 md:w-[90%] md:-translate-x-1/2"
                                 >
                                     {currentPlanId === 'free' ? 'Current Plan' : 'Free Plan'}
-                                </button>
+                                </button> */}
                             </div>
                             {/* Premium — 12 months fidelity (plan_one) */}
                             <div className="relative rounded-[20px] border border-orange-500 bg-black p-6">
