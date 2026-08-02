@@ -113,4 +113,15 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Notification Address
+    |--------------------------------------------------------------------------
+    |
+    | Contact form / notification email gula ei address-e jabe.
+    |
+    */
+
+    'admin_email' => env('MAIL_ADMIN_EMAIL'),
+
 ];

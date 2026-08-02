@@ -19,19 +19,22 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'full_name' => 'required|string|max:255',
-            'email'     => 'required|email|max:255',
-            'subject'   => 'nullable|string|max:255',
-            'message'   => 'required|string',
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email|max:255',
+            'subject' => 'nullable|string|max:255',
+            'message' => 'required|string|max:5000',
         ]);
 
         // ডেটাবেসে সংরক্ষণ
         $contact = ContactMessage::create($validated);
 
-        // অ্যাডমিনকে ইমেইল পাঠান (কিউতে দিতে পারেন)
-        Mail::to(config('mail.admin_email'))->send(new ContactNotification($contact));
+        // অ্যাডমিনকে ইমেইল পাঠান (admin_email set থাকলেই)
+        $adminEmail = config('mail.admin_email');
+        if ($adminEmail) {
+            Mail::to($adminEmail)->send(new ContactNotification($contact));
+        }
 
-        // Inertia দিয়ে সাফল্য মেসেজ সহ রিডাইরেক্ট
+        // Inertia দিয়ে সাফল্য মেসেজ সহ রিডাইরেক্ট
         return redirect()->back()->with('success', 'Message sent! We\'ll reply within 24 hours.');
     }
 }
