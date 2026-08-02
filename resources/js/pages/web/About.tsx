@@ -16,6 +16,7 @@ import {
     Database,
     Award,
 } from 'lucide-react';
+import { PublicFooter } from '@/components/public/PublicFooter';
 
 // TODO: Replace with usePage().props
 const stats = [
@@ -110,12 +111,12 @@ export default function About() {
                     <div className="max-w-[1100px] mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                         {/* LEFT */}
                         <div className="relative">
-              <span
-                  aria-hidden="true"
-                  className="absolute -top-12 -left-4 font-display font-black text-[120px] lg:text-[140px] text-[#FF6B00] opacity-[0.08] leading-none select-none pointer-events-none"
-              >
-                01
-              </span>
+                            <span
+                                aria-hidden="true"
+                                className="absolute -top-12 -left-4 font-display font-black text-[120px] lg:text-[140px] text-[#FF6B00] opacity-[0.08] leading-none select-none pointer-events-none"
+                            >
+                                01
+                            </span>
                             <div className="relative">
                                 <div className="text-[#FF6B00] text-xs tracking-[0.2em] uppercase font-bold">
                                     Our Mission
@@ -262,13 +263,13 @@ export default function About() {
                                                 strokeWidth={2}
                                             />
                                             <span className="text-sm text-[#0F172A] dark:text-[#F5F5F5] leading-relaxed">
-                        {benefit}
-                      </span>
+                                                {benefit}
+                                            </span>
                                         </li>
                                     ))}
                                 </ul>
                                 <Link
-                                    href="/register/player"
+                                    href="/register"
                                     className="inline-flex items-center gap-2 mt-8 px-6 py-3 bg-[#FF6B00] text-white font-semibold text-sm rounded-lg hover:bg-[#CC5500] transition-colors"
                                 >
                                     Create Player Profile
@@ -301,13 +302,13 @@ export default function About() {
                                                 strokeWidth={2}
                                             />
                                             <span className="text-sm text-[#0F172A] dark:text-[#F5F5F5] leading-relaxed">
-                        {benefit}
-                      </span>
+                                                {benefit}
+                                            </span>
                                         </li>
                                     ))}
                                 </ul>
                                 <Link
-                                    href="/register/scout"
+                                    href="/register?role=scout"
                                     className="inline-flex items-center gap-2 mt-8 px-6 py-3 bg-[#0F172A] dark:bg-[#1F1F1F] text-white font-semibold text-sm rounded-lg hover:bg-[#1F1F1F] dark:hover:bg-[#2A2A2A] transition-colors"
                                 >
                                     Request Scout Access
@@ -352,105 +353,7 @@ export default function About() {
                 </section>
 
                 {/* FOOTER */}
-                <footer className="bg-[#0F172A] py-14 px-6">
-                    <div className="max-w-[1100px] mx-auto">
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
-                            <div className="col-span-2 md:col-span-1">
-                                <img
-                                    src="/images/logo/hilights_logo_dark_200.png"
-                                    className="h-10 w-auto mb-4"
-                                    alt="HiLights Football"
-                                />
-                                <p className="text-white/50 text-xs leading-relaxed">
-                                    Enterprise football discovery platform connecting players, scouts, and clubs
-                                    across 67 countries.
-                                </p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-white text-xs tracking-widest uppercase mb-4">
-                                    Platform
-                                </h4>
-                                <ul className="space-y-2.5">
-                                    <li>
-                                        <Link href="/players" className="text-white/60 hover:text-white text-sm">
-                                            Players
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/scouts" className="text-white/60 hover:text-white text-sm">
-                                            For Scouts
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/clubs" className="text-white/60 hover:text-white text-sm">
-                                            For Clubs
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/pricing" className="text-white/60 hover:text-white text-sm">
-                                            Pricing
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-white text-xs tracking-widest uppercase mb-4">
-                                    Company
-                                </h4>
-                                <ul className="space-y-2.5">
-                                    <li>
-                                        <Link href="/about" className="text-white/60 hover:text-white text-sm">
-                                            About
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/careers" className="text-white/60 hover:text-white text-sm">
-                                            Careers
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/press" className="text-white/60 hover:text-white text-sm">
-                                            Press
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/contact" className="text-white/60 hover:text-white text-sm">
-                                            Contact
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-white text-xs tracking-widest uppercase mb-4">
-                                    Legal
-                                </h4>
-                                <ul className="space-y-2.5">
-                                    <li>
-                                        <Link href="/privacy" className="text-white/60 hover:text-white text-sm">
-                                            Privacy
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/terms" className="text-white/60 hover:text-white text-sm">
-                                            Terms
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/cookies" className="text-white/60 hover:text-white text-sm">
-                                            Cookies
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between gap-3">
-                            <div className="text-white/40 text-xs">
-                                © 2026 HiLights Football. All rights reserved.
-                            </div>
-                            <div className="text-white/40 text-xs">Made for the global game.</div>
-                        </div>
-                    </div>
-                </footer>
+                <PublicFooter />
             </main>
         </div>
     );

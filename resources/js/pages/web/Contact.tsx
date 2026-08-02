@@ -27,6 +27,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/components/ui/accordion';
+import { PublicFooter } from '@/components/public/PublicFooter';
 
 // TODO: Replace with usePage().props for any server-driven content
 const faqs = [
@@ -311,9 +312,9 @@ export default function Contact() {
 
                             {/* AD — ScoutPro */}
                             <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden h-[280px] relative">
-                <span className="absolute top-2 right-2 text-[10px] text-[#94A3B8] dark:text-[#555555] font-sans z-10">
-                  Sponsored
-                </span>
+                                <span className="absolute top-2 right-2 text-[10px] text-[#94A3B8] dark:text-[#555555] font-sans z-10">
+                                    Sponsored
+                                </span>
                                 <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628] via-[#0F2347] to-[#0A1628] p-6 flex flex-col justify-between">
                                     {/* Brand top */}
                                     <div>
@@ -322,8 +323,8 @@ export default function Contact() {
                                                 <Target className="h-4 w-4 text-white" strokeWidth={2.5} />
                                             </div>
                                             <span className="font-display font-bold text-white text-lg tracking-tight uppercase">
-                        ScoutPro
-                      </span>
+                                                ScoutPro
+                                            </span>
                                         </div>
                                         <p className="mt-4 font-display font-bold text-white text-2xl uppercase tracking-tight leading-tight">
                                             Find the next<br />
@@ -339,8 +340,8 @@ export default function Contact() {
                                         <div className="flex items-center gap-3 mb-3">
                                             <TrendingUp className="h-3.5 w-3.5 text-[#3B82F6]" />
                                             <span className="font-mono text-[11px] text-[#94A3B8] tracking-wider">
-                        240K+ PLAYERS · 92 LEAGUES
-                      </span>
+                                                240K+ PLAYERS · 92 LEAGUES
+                                            </span>
                                         </div>
                                         <button className="w-full h-9 bg-[#3B82F6] hover:bg-[#2563EB] text-white rounded-lg font-semibold text-xs transition-colors">
                                             Start Free Trial →
@@ -385,120 +386,7 @@ export default function Contact() {
                 </section>
 
                 {/* ============ FOOTER ============ */}
-                <footer className="bg-[#0F172A] text-white">
-                    <div className="max-w-[1280px] mx-auto px-6 py-14">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-                            {/* Brand col */}
-                            <div className="lg:col-span-1">
-                                <img
-                                    src="/images/logo/hilights_logo_dark_200.png"
-                                    className="h-12 w-auto"
-                                    alt="HiLights Football"
-                                />
-                                <p className="mt-4 text-sm text-[#94A3B8] leading-relaxed">
-                                    The enterprise discovery platform connecting football players
-                                    with scouts, clubs, and agents worldwide.
-                                </p>
-                            </div>
-
-                            {/* Platform */}
-                            <div>
-                                <h4 className="font-display font-bold text-white uppercase tracking-tight text-sm mb-4">
-                                    Platform
-                                </h4>
-                                <ul className="space-y-2.5 text-sm text-[#94A3B8]">
-                                    <li>
-                                        <Link href="/players" className="hover:text-[#FF6B00] transition-colors">
-                                            Players
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/scouts" className="hover:text-[#FF6B00] transition-colors">
-                                            Scouts
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/clubs" className="hover:text-[#FF6B00] transition-colors">
-                                            Clubs
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/pricing" className="hover:text-[#FF6B00] transition-colors">
-                                            Pricing
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            {/* Company */}
-                            <div>
-                                <h4 className="font-display font-bold text-white uppercase tracking-tight text-sm mb-4">
-                                    Company
-                                </h4>
-                                <ul className="space-y-2.5 text-sm text-[#94A3B8]">
-                                    <li>
-                                        <Link href="/about" className="hover:text-[#FF6B00] transition-colors">
-                                            About
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/careers" className="hover:text-[#FF6B00] transition-colors">
-                                            Careers
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/press" className="hover:text-[#FF6B00] transition-colors">
-                                            Press
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/contact" className="hover:text-[#FF6B00] transition-colors">
-                                            Contact
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            {/* Legal */}
-                            <div>
-                                <h4 className="font-display font-bold text-white uppercase tracking-tight text-sm mb-4">
-                                    Legal
-                                </h4>
-                                <ul className="space-y-2.5 text-sm text-[#94A3B8]">
-                                    <li>
-                                        <Link href="/terms" className="hover:text-[#FF6B00] transition-colors">
-                                            Terms of Service
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/privacy" className="hover:text-[#FF6B00] transition-colors">
-                                            Privacy Policy
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/cookies" className="hover:text-[#FF6B00] transition-colors">
-                                            Cookies
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/dmca" className="hover:text-[#FF6B00] transition-colors">
-                                            DMCA
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3">
-                            <p className="text-xs text-[#94A3B8]">
-                                © 2026 HiLights Football. All rights reserved.
-                            </p>
-                            <p className="text-xs text-[#94A3B8] font-mono">
-                                Built for the global football community.
-                            </p>
-                        </div>
-                    </div>
-                </footer>
+                <PublicFooter />
             </main>
         </div>
     );
