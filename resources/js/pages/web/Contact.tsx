@@ -56,7 +56,14 @@ const faqs = [
 export default function Contact() {
     const [submitted, setSubmitted] = useState(false);
 
-    const { data, setData, processing, errors, reset } = useForm({
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+    } = useForm({
         name: '',
         email: '',
         subject: '',
@@ -65,12 +72,14 @@ export default function Contact() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // TODO: Wire to Inertia post() route once backend endpoint is ready
-        // post(route('contact.store'), { onSuccess: () => { setSubmitted(true); reset(); } })
-        setTimeout(() => {
-            setSubmitted(true);
-            reset();
-        }, 400);
+
+        post(route('contact.store'), {
+            preserveScroll: true,
+            onSuccess: () => {
+                setSubmitted(true);
+                reset();
+            },
+        });
     };
 
     const inputClasses =
