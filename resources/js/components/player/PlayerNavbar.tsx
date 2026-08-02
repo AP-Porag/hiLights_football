@@ -12,6 +12,9 @@ interface PlayerUser {
     name: string;
     email: string;
     avatar_url?: string | null;
+    player_profile?: {
+        id: number;
+    } | null;
 }
 
 interface PageProps {
@@ -180,7 +183,7 @@ export default function PlayerNavbar() {
 
                             <DropdownMenuItem asChild className="cursor-pointer rounded-md focus:bg-[#F8FAFC] dark:focus:bg-[#1F1F1F]">
                                 <Link
-                                    href={`/players/${auth.user.id}`}
+                                    href={`${window.location.origin}/player/profile/${auth?.user?.player_profile?.id}`}
                                     className="flex items-center gap-2 px-3 py-2 text-sm text-[#94A3B8]"
                                 >
                                     <User className="h-4 w-4 text-[#94A3B8]" />
@@ -329,6 +332,6 @@ export default function PlayerNavbar() {
                     </Sheet>
                 </div>
             </div>
-        </header>
+        </header >
     );
 }

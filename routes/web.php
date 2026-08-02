@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Web\HomeController;
 use Laravel\Cashier\Http\Controllers\WebhookController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/execute-command', function () {
     //    return redirect()->route('login');
@@ -147,9 +148,10 @@ Route::middleware(['auth'])->prefix('scouting')->group(function () {
 //Route::middleware(['auth'])->prefix('admin')->group(function () {
 Route::prefix('admin')->group(function () {
 
-    Route::get('/', function () {
-        return Inertia::render('admin/dashboard/Index');
-    })->name('admin.dashboard');
+    // Route::get('/', function () {
+    //     return Inertia::render('admin/dashboard/Index');
+    // })->name('admin.dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/users', function () {
         return Inertia::render('admin/users/Index');

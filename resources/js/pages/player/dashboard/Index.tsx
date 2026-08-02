@@ -11,6 +11,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { useRef, useState } from 'react';
 import { toPng } from 'html-to-image';
 import { Upload } from "lucide-react";
+import ReactCountryFlag from "react-country-flag";
 import {
     Share2,
     Download,
@@ -805,7 +806,20 @@ export default function PlayerDashboard() {
         {
             icon: <Shield className="w-4 h-4 text-gray-300" />,
             label: 'CLUB',
-            value: pp?.current_club ? `${pp.current_club}` : 'Not specified',
+            value: pp?.current_club ? (
+                <span className="inline-flex items-center gap-1.5">
+                    {pp.current_club_country && (
+                        <ReactCountryFlag
+                            countryCode={pp.current_club_country}
+                            svg
+                            style={{ width: '1.2em', height: '1.2em' }}
+                        />
+                    )}
+                    <span>{pp.current_club}</span>
+                </span>
+            ) : (
+                'Not specified'
+            ),
         },
         {
             icon: <CalendarDays className="w-4 h-4 text-gray-300" />,
@@ -955,7 +969,7 @@ export default function PlayerDashboard() {
                                 <>
                                     <Badge className="w-fit border border-green-600 bg-green-950/30 text-[10px] font-bold tracking-wider text-green-400 hover:bg-green-950/30">PREMIUM ACTIVE</Badge>
                                     <p className="mt-3 flex-1 text-sm text-[#9A9A9A]">All features unlocked.</p>
-                                    <p className="mt-3 text-xs text-[#94A3B8]">Renews 01/06/2026</p>
+                                    {/* <p className="mt-3 text-xs text-[#94A3B8]">Renews 01/06/2026</p> */}
                                 </>
                             )}
                         </div>
@@ -1054,7 +1068,7 @@ export default function PlayerDashboard() {
                                     <Shield className="w-6 h-6 " />
                                     <span className="pl-2">THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br className="hidden sm:block" />MEMBER OF HILIGHTS FOOTBALL PLATFORM.</span>
                                 </p>
-                                <p className="text-[6px] sm:text-[8px] text-black font-bold translate-x-[5px] sm:translate-x-[10%]">[WWW.HILIGHTSFOOTBALL.COM](https://WWW.HILIGHTSFOOTBALL.COM)</p>
+                                <p className="text-[6px] sm:text-[8px] text-white font-bold translate-x-[5px] sm:translate-x-[10%]">[WWW.HILIGHTSFOOTBALL.COM](https://WWW.HILIGHTSFOOTBALL.COM)</p>
                                 <div className="absolute -bottom-16 left-0 flex justify-between w-full">
                                     <button className="capitalize flex items-center rounded-xl bg-[#e75502] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[16px] cursor-pointer text-[10px] transition-all hover:bg-[#ff7a1a]" onClick={() => setShareOpen(true)}>
                                         <Share2 className="mr-2 w-[10px] h-[10px] sm:h-[12px]" /> Share full profile
