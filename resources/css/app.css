@@ -110,6 +110,14 @@
     --sidebar-accent-foreground: hsl(0, 0%, 30%);
     --sidebar-border: hsl(0, 0%, 91%);
     --sidebar-ring: hsl(217.2, 91.2%, 59.8%);
+   --sidebar-background: 0 0% 5%;            /* #0d0d0d */
+  --sidebar-foreground: 0 0% 95%;           /* #f2f2f2 */
+  --sidebar-primary: 20 100% 50%;           /* #ff6b00 */
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 0 0% 10%;               /* #1a1a1a */
+  --sidebar-accent-foreground: 0 0% 90%;
+  --sidebar-border: 0 0% 15%;               /* #262626 */
+  --sidebar-ring: 20 100% 50%;
 }
 html {
     color-scheme: dark;
@@ -148,6 +156,24 @@ html {
     --sidebar-accent-foreground: hsl(240, 4.8%, 95.9%);
     --sidebar-border: hsl(0, 0%, 15.9%);
     --sidebar-ring: hsl(217.2, 91.2%, 59.8%);
+
+     /* সাইডবারের বেসিক ব্যাকগ্রাউন্ড (প্রায় ব্ল্যাক) */
+  --sidebar-background: 0 0% 5%;       /* hsl(0,0%,5%) → #0d0d0d */
+  --sidebar-foreground: 0 0% 95%;      /* hsl(0,0%,95%) → #f2f2f2 */
+
+  /* প্রাইমারি (অ্যাকসেন্ট) - আপনার পছন্দমতো */
+  --sidebar-primary: 20 100% 50%;       /* #ff6b00 */
+  --sidebar-primary-foreground: 0 0% 100%;
+
+  /* হোভার/সিলেক্টেড আইটেম */
+  --sidebar-accent: 0 0% 10%;           /* #1a1a1a */
+  --sidebar-accent-foreground: 0 0% 90%;
+
+  /* বর্ডার */
+  --sidebar-border: 0 0% 15%;           /* #262626 */
+
+  /* রিং (ফোকাস) */
+  --sidebar-ring: 20 100% 50%;
 }
 
 @layer base {

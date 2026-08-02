@@ -1,66 +1,39 @@
-// import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-// import { useInitials } from '@/hooks/use-initials';
-// import { type User } from '@/types';
-
-// export function UserInfo({ user, showEmail = false }: { user: User; showEmail?: boolean }) {
-//     const getInitials = useInitials();
-
-//     return (
-//         <>
-//             <Avatar className="h-8 w-8 overflow-hidden rounded-full">
-//                 <AvatarImage src={user.avatar} alt={user.name} />
-//                 <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-//                     {getInitials(user.name)}
-//                 </AvatarFallback>
-//             </Avatar>
-//             <div className="grid flex-1 text-left text-sm leading-tight">
-//                 <span className="truncate font-medium">{user.name}</span>
-//                 {showEmail && <span className="text-muted-foreground truncate text-xs">{user.email}</span>}
-//             </div>
-//         </>
-//     );
-// }
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/hooks/use-initials';
-import { type User } from '@/types';
 
-export function UserInfo({
-    user,
-    showEmail = false,
-}: {
-    user?: User | null;
-    showEmail?: boolean;
-}) {
+import { usePage } from '@inertiajs/react';
+import type { User } from '@/types';
+
+interface PageProps {
+    auth: {
+        user: User | null;
+    };
+}
+
+export function UserInfo({ showEmail = false }: { showEmail?: boolean }) {
     const getInitials = useInitials();
 
+    const { auth } = usePage<PageProps>().props;
+    const user = auth.user;
+    console.log(user);
 
-    // if (!user) return null;
-    if (!user){
-        user = {
-            id: 1,
-            name: 'Luna Parker',
-            email: 'luna.parker@app.com',
-            avatar: 'https://i.pravatar.cc/150?img=28',
-            email_verified_at: '2026-05-17T10:00:00.000000Z',
-            created_at: '2026-05-01T08:30:00.000000Z',
-            updated_at: '2026-05-17T10:00:00.000000Z',
-        };
-    }
+    if (!user) return null;
 
     return (
         <>
             <Avatar className="h-8 w-8 overflow-hidden rounded-full">
-                <AvatarImage src={user.avatar ?? ''} alt={user.name ?? 'User'} />
-                <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                    {getInitials(user.name ?? 'U')}
+                <AvatarImage src={user.avatar ?? ''} alt={user.name} />
+                <AvatarFallback>
+                    {getInitials(user.name)}
                 </AvatarFallback>
             </Avatar>
 
             <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium">
+                    {user.name}
+                </span>
 
-                {showEmail && user.email && (
+                {showEmail && (
                     <span className="text-muted-foreground truncate text-xs">
                         {user.email}
                     </span>
