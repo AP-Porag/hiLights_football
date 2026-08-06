@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Web\HomeController;
 use Laravel\Cashier\Http\Controllers\WebhookController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PlayerController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\PlayerSearchController;
 use App\Http\Controllers\Player\NotificationController;
 
@@ -158,9 +160,7 @@ Route::prefix('admin')->group(function () {
     // })->name('admin.dashboard');
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
 
-    Route::get('/users', function () {
-        return Inertia::render('admin/users/Index');
-    })->name('users.index');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
     Route::get('/players', function () {
         return Inertia::render('admin/players/Index');
@@ -177,6 +177,32 @@ Route::prefix('admin')->group(function () {
     Route::get('/scouting', function () {
         return Inertia::render('admin/scouting/Index');
     })->name('scouting.index');
+
+    Route::get('/agents', function () {
+        return Inertia::render('admin/agent/Index');
+    })->name('agent.index');
+
+    Route::get('/clubs', function () {
+        return Inertia::render('admin/club/Index');
+    })->name('club.index');
+
+    Route::post('/admin/users', [App\Http\Controllers\Admin\UserController::class, 'store'])
+        ->name('users.store');
+
+    Route::get('/admin/users/{id}/edit', [App\Http\Controllers\Admin\UserController::class, 'edit'])->name('users.edit');
+    Route::put('/admin/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
+    Route::delete('/admin/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::post('/users/{id}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
+
+
+
+    // Players
+    Route::get('/players', [PlayerController::class, 'index'])->name('players.index');
+    Route::put('/players/{id}', [PlayerController::class, 'update'])->name('players.update');
+    Route::put('/players/{id}/featured', [PlayerController::class, 'toggleFeatured'])->name('players.toggle-featured');
+    Route::put('/players/{id}/suspend', [PlayerController::class, 'suspend'])->name('players.suspend');
+    Route::delete('/players/{id}', [PlayerController::class, 'destroy'])->name('players.destroy');
 });
 
 Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])

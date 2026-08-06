@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { usePage } from '@inertiajs/react';
+import { usePage, router } from '@inertiajs/react';
 import type { BreadcrumbItem } from '@/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -76,6 +76,11 @@ const subscriptionStyles: Record<string, string> = {
     Agent: 'bg-[rgba(255,107,0,0.12)] text-[#FF6B00] border-[#FF6B00]/30',
 };
 
+const statusClasses: Record<string, string> = {
+    Active: 'bg-green-600 text-white',
+    Suspended: 'bg-red-600 text-white',
+    Pending: 'bg-yellow-600 text-white',
+};
 const StatCard: React.FC<{
     label: string;
     value: string;
@@ -125,7 +130,9 @@ export default function Index() {
         registrationTrend = 0,
         subscriptionData = [],
         recentUsers = [],
+
     } = usePage<PageProps>().props;
+    console.log(recentUsers)
 
     const chartData = registrations;
     const nf = (n: number) => n.toLocaleString();
@@ -340,15 +347,10 @@ export default function Index() {
                                                 </Badge>
                                             </TableCell>
                                             <TableCell>
-                                                <Badge variant="outline" className={`${statusStyles[user.status] ?? statusStyles.Pending} text-xs font-medium`}>
-                                                    <span
-                                                        className={`mr-1.5 h-1.5 w-1.5 rounded-full ${user.status === 'Active'
-                                                            ? 'bg-green-500'
-                                                            : user.status === 'Pending'
-                                                                ? 'bg-yellow-500'
-                                                                : 'bg-red-500'
-                                                            }`}
-                                                    />
+                                                <Badge variant="outline" className={`${statusClasses[user.status] ?? statusClasses.Active} text-xs font-medium`}>
+                                                    <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${user.status === 'Active' ? 'bg-green-500' :
+                                                        user.status === 'Pending' ? 'bg-yellow-500' : 'bg-red-500'
+                                                        }`} />
                                                     {user.status}
                                                 </Badge>
                                             </TableCell>
@@ -368,19 +370,22 @@ export default function Index() {
                                                     </DropdownMenuTrigger>
                                                     <DropdownMenuContent align="end" className="w-40 border-[#2A2A2A] bg-[#161616] text-[#F5F5F5]">
                                                         <DropdownMenuItem asChild className="cursor-pointer focus:bg-[#1F1F1F]">
-                                                            <Link href={`/admin/users/${user.id}`} className="flex items-center gap-2">
+                                                            <Link href={route('users.show', user.id)} className="flex items-center gap-2">
                                                                 <Eye className="h-3.5 w-3.5" />
                                                                 <span className="text-sm">View</span>
                                                             </Link>
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem asChild className="cursor-pointer focus:bg-[#1F1F1F]">
-                                                            <Link href={`/admin/users/${user.id}/edit`} className="flex items-center gap-2">
+                                                            <Link href={route('users.edit', user.id)} className="flex items-center gap-2">
                                                                 <Pencil className="h-3.5 w-3.5" />
                                                                 <span className="text-sm">Edit</span>
                                                             </Link>
                                                         </DropdownMenuItem>
                                                         <DropdownMenuSeparator className="bg-[#2A2A2A]" />
-                                                        <DropdownMenuItem className="cursor-pointer text-red-400 focus:bg-red-500/10 focus:text-red-300">
+                                                        <DropdownMenuItem
+                                                            onClick={() => router.post(route('users.suspend', user.id))}
+                                                            className="cursor-pointer text-red-400 focus:bg-red-500/10 focus:text-red-300"
+                                                        >
                                                             <Ban className="mr-2 h-3.5 w-3.5" />
                                                             <span className="text-sm">Suspend</span>
                                                         </DropdownMenuItem>
