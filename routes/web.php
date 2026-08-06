@@ -11,6 +11,7 @@ use App\Http\Controllers\Web\HomeController;
 use Laravel\Cashier\Http\Controllers\WebhookController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Web\PlayerSearchController;
+use App\Http\Controllers\Player\NotificationController;
 
 Route::get('/execute-command', function () {
     //    return redirect()->route('login');
@@ -126,6 +127,9 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
     Route::post('/subscription/resume', [SubscriptionController::class, 'resume'])->name('subscription.resume');
 
     Route::get('/views', [PlayerProfileController::class, 'views'])->name('player.views');
+
+    Route::get('/player/notifications/feed', [NotificationController::class, 'feed'])->name('notifications.feed');
+    Route::post('/player/notifications/read', [NotificationController::class, 'markRead'])->name('notifications.read');
 });
 
 //all Scouts / Agents / Clubs routes
