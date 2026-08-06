@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Web\HomeController;
 use Laravel\Cashier\Http\Controllers\WebhookController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Web\PlayerSearchController;
 
 Route::get('/execute-command', function () {
     //    return redirect()->route('login');
@@ -179,6 +180,8 @@ Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])
 
 // Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+//Player Search
+Route::get('/players/search', [PlayerSearchController::class, 'search'])->name('players.search');
 
 
 require __DIR__ . '/settings.php';

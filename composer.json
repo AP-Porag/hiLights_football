@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.10.1",
         "pragmarx/countries": "^1.0",
         "stevebauman/location": "^7.6",
+        "symfony/intl": "^7.4",
         "tightenco/ziggy": "^2.4"
     },
     "require-dev": {
