@@ -390,13 +390,15 @@ function ListModal({
                         </div>
                     ))}
                 </div>
-                <button
-                    type="button"
-                    onClick={addRow}
-                    className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#FF6B00] hover:text-[#CC5500]"
-                >
-                    <Plus className="h-4 w-4" /> Add row
-                </button>
+                {configKey !== 'videos' && (
+                    <button
+                        type="button"
+                        onClick={addRow}
+                        className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#FF6B00] hover:text-[#CC5500]"
+                    >
+                        <Plus className="h-4 w-4" /> Add row
+                    </button>
+                )}
                 <div className="mt-6 flex justify-end gap-3">
                     <Button type="button" variant="ghost" onClick={onClose} className="text-[#9A9A9A] hover:bg-[#1F1F1F] hover:text-[#F5F5F5]">
                         Cancel

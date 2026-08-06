@@ -127,7 +127,7 @@ export default function ScoutNavbar() {
                 <div className="hidden shrink-0 items-center gap-3 md:flex">
                     {/* <ThemeToggle /> */}
                     {/* Notification bell */}
-                    <Link
+                    {/* <Link
                         href="/scout/notifications"
                         className="relative rounded-md p-2 transition-colors hover:bg-[#1F1F1F]"
                         aria-label="Notifications"
@@ -136,7 +136,7 @@ export default function ScoutNavbar() {
                         {notificationCount > 0 && (
                             <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500 ring-2 ring-[#0D0D0D]" />
                         )}
-                    </Link>
+                    </Link> */}
                     {/* Avatar dropdown */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -172,18 +172,18 @@ export default function ScoutNavbar() {
                                     {auth.user.organization ?? auth.user.email}
                                 </div>
                             </div>
-                            <DropdownMenuItem asChild className="cursor-pointer rounded-md focus:bg-[#1F1F1F]">
+                            {/* <DropdownMenuItem asChild className="cursor-pointer rounded-md focus:bg-[#1F1F1F]">
                                 <Link href="/scout/account" className="flex items-center gap-2 px-3 py-2 text-sm text-[#F5F5F5]">
                                     <Settings className="h-4 w-4 text-[#94A3B8]" />
                                     Account Settings
                                 </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild className="cursor-pointer rounded-md focus:bg-[#1F1F1F]">
+                            </DropdownMenuItem> */}
+                            {/* <DropdownMenuItem asChild className="cursor-pointer rounded-md focus:bg-[#1F1F1F]">
                                 <Link href="/scout/plan" className="flex items-center gap-2 px-3 py-2 text-sm text-[#F5F5F5]">
                                     <CreditCard className="h-4 w-4 text-[#94A3B8]" />
                                     My Plan
                                 </Link>
-                            </DropdownMenuItem>
+                            </DropdownMenuItem> */}
                             <DropdownMenuSeparator className="my-1 bg-[#1F1F1F]" />
                             <DropdownMenuItem
                                 onClick={handleLogout}

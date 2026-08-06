@@ -11,14 +11,34 @@ import AppLogo from './app-logo';
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        url: 'admin/',
+        url: '/admin',
         icon: LayoutGrid,
     },
-    //  {
-    //     title: 'Users',
-    //     url: 'admin/users',
-    //     icon: User,
-    // },
+    {
+        title: 'Users',
+        url: '/admin/users',
+        icon: User,
+    },
+    {
+        title: 'Players',
+        url: '/admin/players',
+        icon: User,
+    },
+    {
+        title: 'Scouts',
+        url: '/admin/scouting',
+        icon: User,
+    },
+    {
+        title: 'Agents',
+        url: '/admin/agents',
+        icon: User,
+    },
+    {
+        title: 'Clubs',
+        url: '/admin/clubs',
+        icon: User,
+    },
     //   {
     //     title: 'Player Profile',
     //     url: 'admin/players',

@@ -116,7 +116,7 @@ class DashboardController extends Controller
                 'initials'     => $initials ?: 'U',
                 'role'         => Str::ucfirst($u->role ?? 'user'),
                 'subscription' => $subLabel,
-                'status'       => $u->email_verified_at ? 'Active' : 'Pending',
+                'status'       => $u->status,
                 'registered'   => $u->created_at?->diffForHumans() ?? '',
             ];
         });
