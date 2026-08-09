@@ -1,14 +1,9 @@
-import { useState } from 'react';
-import { Link } from '@inertiajs/react';
-// import AdminLayout from '@/components/admin/AdminLayout';
+import { useEffect, useRef, useState } from 'react';
+import { Link, router, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { usePage } from '@inertiajs/react';
-import type { BreadcrumbItem } from '@/types';
-// import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import {
     Table,
     TableBody,
@@ -47,220 +42,78 @@ import {
     Download,
 } from 'lucide-react';
 
-// TODO: Replace with usePage().props
-const ratings = [
-    {
-        id: 1,
-        scout: {
-            id: 1,
-            name: 'James Robertson',
-            avatar: 'https://i.pravatar.cc/150?img=12',
-            organization: 'Manchester City FC',
-            country: 'England',
-        },
-        player: {
-            id: 101,
-            name: 'Lucas Almeida',
-            avatar: 'https://i.pravatar.cc/150?img=33',
-            position: 'CAM',
-            club: 'Santos FC U-20',
-            age: 18,
-        },
-        technical: 4.5,
-        physical: 4.0,
-        mental: 4.5,
-        overall: 4.3,
-        notes:
-            'Exceptional vision and ball control under pressure. Showed maturity beyond his years in the final third. Needs to add upper body strength to compete in European leagues. Recommended for follow-up in 6 months. Compares stylistically to a young Bernardo Silva.',
-        date: '2026-05-14',
-        matchContext: 'Santos vs Palmeiras — Copa Sao Paulo',
-    },
-    {
-        id: 2,
-        scout: {
-            id: 2,
-            name: 'Mateus Carvalho',
-            avatar: 'https://i.pravatar.cc/150?img=15',
-            organization: 'TransferRoom Network',
-            country: 'Portugal',
-        },
-        player: {
-            id: 102,
-            name: 'Rafael Mendes',
-            avatar: 'https://i.pravatar.cc/150?img=52',
-            position: 'CB',
-            club: 'Flamengo U-19',
-            age: 17,
-        },
-        technical: 3.5,
-        physical: 5.0,
-        mental: 4.0,
-        overall: 4.2,
-        notes:
-            'Dominant physical presence. Aerial duels won at elite percentage. Distribution needs work — short passing solid but range limited. Strong leadership traits.',
-        date: '2026-05-13',
-        matchContext: 'Flamengo vs Vasco — Carioca U-19',
-    },
-    {
-        id: 3,
-        scout: {
-            id: 3,
-            name: 'Sophie Laurent',
-            avatar: 'https://i.pravatar.cc/150?img=44',
-            organization: 'AS Monaco',
-            country: 'France',
-        },
-        player: {
-            id: 103,
-            name: 'Diego Santana',
-            avatar: 'https://i.pravatar.cc/150?img=68',
-            position: 'LW',
-            club: 'Gremio U-20',
-            age: 19,
-        },
-        technical: 5.0,
-        physical: 3.5,
-        mental: 4.0,
-        overall: 4.2,
-        notes:
-            'Elite dribbling, two-footed, can play both wings. Defensive work-rate inconsistent. Decision-making in final third top tier. Should be tracked closely.',
-        date: '2026-05-12',
-        matchContext: 'Gremio vs Internacional — Gauchao U-20',
-    },
-    {
-        id: 4,
-        scout: {
-            id: 1,
-            name: 'James Robertson',
-            avatar: 'https://i.pravatar.cc/150?img=12',
-            organization: 'Manchester City FC',
-            country: 'England',
-        },
-        player: {
-            id: 104,
-            name: 'Bruno Oliveira',
-            avatar: 'https://i.pravatar.cc/150?img=70',
-            position: 'CDM',
-            club: 'Sao Paulo U-20',
-            age: 18,
-        },
-        technical: 4.0,
-        physical: 4.0,
-        mental: 4.5,
-        overall: 4.2,
-        notes:
-            'Reads the game brilliantly. Tackling timing exceptional. Lacks top-end pace but compensates with positioning.',
-        date: '2026-05-11',
-        matchContext: 'Sao Paulo vs Corinthians — Paulista U-20',
-    },
-    {
-        id: 5,
-        scout: {
-            id: 4,
-            name: 'Klaus Weber',
-            avatar: 'https://i.pravatar.cc/150?img=8',
-            organization: 'Wyscout Analytics',
-            country: 'Germany',
-        },
-        player: {
-            id: 105,
-            name: 'Pedro Costa',
-            avatar: 'https://i.pravatar.cc/150?img=53',
-            position: 'ST',
-            club: 'Atletico MG U-20',
-            age: 19,
-        },
-        technical: 4.0,
-        physical: 4.5,
-        mental: 3.5,
-        overall: 4.0,
-        notes:
-            'Clinical finisher inside the box. Off-the-ball movement improving. Mental side needs maturity — overreacts to officials.',
-        date: '2026-05-10',
-        matchContext: 'Atletico MG vs Cruzeiro — Mineiro U-20',
-    },
-    {
-        id: 6,
-        scout: {
-            id: 5,
-            name: 'Andrea Bianchi',
-            avatar: 'https://i.pravatar.cc/150?img=20',
-            organization: 'Juventus FC',
-            country: 'Italy',
-        },
-        player: {
-            id: 106,
-            name: 'Thiago Ferreira',
-            avatar: 'https://i.pravatar.cc/150?img=60',
-            position: 'RB',
-            club: 'Corinthians U-19',
-            age: 17,
-        },
-        technical: 3.5,
-        physical: 4.0,
-        mental: 4.0,
-        overall: 3.8,
-        notes:
-            'Modern fullback profile. Strong overlapping runs, decent crossing. Defensive 1v1 needs sharpening.',
-        date: '2026-05-09',
-        matchContext: 'Corinthians vs Santos — Paulista U-19',
-    },
-    {
-        id: 7,
-        scout: {
-            id: 2,
-            name: 'Mateus Carvalho',
-            avatar: 'https://i.pravatar.cc/150?img=15',
-            organization: 'TransferRoom Network',
-            country: 'Portugal',
-        },
-        player: {
-            id: 107,
-            name: 'Gabriel Souza',
-            avatar: 'https://i.pravatar.cc/150?img=11',
-            position: 'GK',
-            club: 'Palmeiras U-20',
-            age: 18,
-        },
-        technical: 4.0,
-        physical: 4.5,
-        mental: 4.0,
-        overall: 4.2,
-        notes:
-            'Excellent shot-stopper. Distribution with both feet is a strong asset. Command of box improving with experience.',
-        date: '2026-05-08',
-        matchContext: 'Palmeiras vs Santos — Paulista U-20',
-    },
-];
+const PLACEHOLDER = '/images/img/placeholder.webp';
 
-const summary = {
-    avgRating: 4.1,
-    totalRatings: 1247,
-    topScout: {
-        name: 'James Robertson',
-        organization: 'Manchester City FC',
-        count: 184,
-        avatar: 'https://i.pravatar.cc/150?img=12',
-    },
-};
-
-const mostRatedPlayers = [
-    { id: 101, name: 'Lucas Almeida', position: 'CAM', club: 'Santos FC U-20', ratings: 42, avg: 4.5, avatar: 'https://i.pravatar.cc/150?img=33' },
-    { id: 103, name: 'Diego Santana', position: 'LW', club: 'Gremio U-20', ratings: 38, avg: 4.3, avatar: 'https://i.pravatar.cc/150?img=68' },
-    { id: 102, name: 'Rafael Mendes', position: 'CB', club: 'Flamengo U-19', ratings: 34, avg: 4.2, avatar: 'https://i.pravatar.cc/150?img=52' },
-    { id: 104, name: 'Bruno Oliveira', position: 'CDM', club: 'Sao Paulo U-20', ratings: 29, avg: 4.1, avatar: 'https://i.pravatar.cc/150?img=70' },
-    { id: 105, name: 'Pedro Costa', position: 'ST', club: 'Atletico MG U-20', ratings: 27, avg: 4.0, avatar: 'https://i.pravatar.cc/150?img=53' },
-];
-
-const mostActiveScouts = [
-    { id: 1, name: 'James Robertson', organization: 'Manchester City FC', country: 'England', ratings: 184, avgGiven: 4.0, avatar: 'https://i.pravatar.cc/150?img=12' },
-    { id: 2, name: 'Mateus Carvalho', organization: 'TransferRoom Network', country: 'Portugal', ratings: 152, avgGiven: 4.1, avatar: 'https://i.pravatar.cc/150?img=15' },
-    { id: 3, name: 'Sophie Laurent', organization: 'AS Monaco', country: 'France', ratings: 138, avgGiven: 4.2, avatar: 'https://i.pravatar.cc/150?img=44' },
-    { id: 4, name: 'Klaus Weber', organization: 'Wyscout Analytics', country: 'Germany', ratings: 121, avgGiven: 3.9, avatar: 'https://i.pravatar.cc/150?img=8' },
-    { id: 5, name: 'Andrea Bianchi', organization: 'Juventus FC', country: 'Italy', ratings: 109, avgGiven: 4.0, avatar: 'https://i.pravatar.cc/150?img=20' },
-];
-
-type Rating = (typeof ratings)[number];
+interface ScoutRef {
+    id: number | null;
+    name: string;
+    avatar: string | null;
+    organization: string | null;
+    country: string | null;
+}
+interface PlayerRef {
+    id: number | null;
+    name: string;
+    avatar: string | null;
+    position: string | null;
+    club: string | null;
+    age: number | null;
+}
+interface RatingRow {
+    id: number;
+    scout: ScoutRef;
+    player: PlayerRef;
+    technical: number;
+    physical: number;
+    mental: number;
+    overall: number;
+    notes: string | null;
+    date: string | null;
+    matchContext: string | null;
+}
+interface Paginator<T> {
+    data: T[];
+    current_page: number;
+    last_page: number;
+    from: number | null;
+    to: number | null;
+    total: number;
+}
+interface Summary {
+    avgRating: number;
+    totalRatings: number;
+    totalPlayers: number;
+    ratingsThisMonth: number;
+    avgTrend: number;
+    topScout: { name: string; organization: string | null; count: number; avatar: string | null } | null;
+}
+interface RatedPlayer {
+    id: number;
+    name: string;
+    position: string | null;
+    club: string | null;
+    ratings: number;
+    avg: number;
+    avatar: string | null;
+}
+interface ActiveScout {
+    id: number;
+    name: string;
+    organization: string | null;
+    country: string | null;
+    ratings: number;
+    avgGiven: number;
+    avatar: string | null;
+}
+interface PageProps {
+    ratings: Paginator<RatingRow>;
+    summary: Summary;
+    mostRatedPlayers: RatedPlayer[];
+    mostActiveScouts: ActiveScout[];
+    scouts: { id: number; name: string }[];
+    filters: { search: string; scout: string };
+    [key: string]: any;
+}
 
 function StarsInline({ value, max = 5 }: { value: number; max?: number }) {
     const filled = Math.round(value);
@@ -269,20 +122,18 @@ function StarsInline({ value, max = 5 }: { value: number; max?: number }) {
             {Array.from({ length: max }).map((_, i) => (
                 <Star
                     key={i}
-                    className={`w-3 h-3 ${
-                        i < filled
-                            ? 'fill-[#FF6B00] text-[#FF6B00]'
-                            : 'fill-transparent text-[#CBD5E1] dark:text-[#2A2A2A]'
-                    }`}
+                    className={`w-3 h-3 ${i < filled
+                        ? 'fill-[#FF6B00] text-[#FF6B00]'
+                        : 'fill-transparent text-[#CBD5E1] dark:text-[#2A2A2A]'
+                        }`}
                 />
             ))}
             <span className="ml-1.5 font-mono text-xs text-[#0F172A] dark:text-[#F5F5F5]">
-        {value.toFixed(1)}
-      </span>
+                {value.toFixed(1)}
+            </span>
         </div>
     );
 }
-
 function StarsLarge({ value, label, max = 5 }: { value: number; label: string; max?: number }) {
     const filled = Math.round(value);
     return (
@@ -292,11 +143,10 @@ function StarsLarge({ value, label, max = 5 }: { value: number; label: string; m
                 {Array.from({ length: max }).map((_, i) => (
                     <Star
                         key={i}
-                        className={`w-5 h-5 ${
-                            i < filled
-                                ? 'fill-[#FF6B00] text-[#FF6B00]'
-                                : 'fill-transparent text-[#CBD5E1]'
-                        }`}
+                        className={`w-5 h-5 ${i < filled
+                            ? 'fill-[#FF6B00] text-[#FF6B00]'
+                            : 'fill-transparent text-[#CBD5E1]'
+                            }`}
                     />
                 ))}
             </div>
@@ -308,26 +158,71 @@ function StarsLarge({ value, label, max = 5 }: { value: number; label: string; m
 }
 
 export default function RatingsIndex() {
-    const [search, setSearch] = useState('');
-    const [scoutFilter, setScoutFilter] = useState('all');
-    const [viewRating, setViewRating] = useState<Rating | null>(null);
-    const [deleteRating, setDeleteRating] = useState<Rating | null>(null);
+    const page = usePage<PageProps>().props;
+    const ratings = page.ratings ?? { data: [], current_page: 1, last_page: 1, from: 0, to: 0, total: 0 };
+    const summary = page.summary ?? { avgRating: 0, totalRatings: 0, totalPlayers: 0, ratingsThisMonth: 0, avgTrend: 0, topScout: null };
+    const mostRatedPlayers = page.mostRatedPlayers ?? [];
+    const mostActiveScouts = page.mostActiveScouts ?? [];
+    const scouts = page.scouts ?? [];
+    const filters = page.filters ?? { search: '', scout: 'all' };
 
-    const filtered = ratings.filter((r) => {
-        const q = search.toLowerCase();
-        const matchesSearch =
-            !q ||
-            r.scout.name.toLowerCase().includes(q) ||
-            r.player.name.toLowerCase().includes(q) ||
-            r.scout.organization.toLowerCase().includes(q);
-        const matchesScout = scoutFilter === 'all' || String(r.scout.id) === scoutFilter;
-        return matchesSearch && matchesScout;
-    });
+    const [search, setSearch] = useState(filters?.search ?? '');
+    const [scoutFilter, setScoutFilter] = useState(filters?.scout ?? 'all');
+    const [viewRating, setViewRating] = useState<RatingRow | null>(null);
+    const [deleteRating, setDeleteRating] = useState<RatingRow | null>(null);
+    const [deleting, setDeleting] = useState(false);
+
+    // debounced server-side search + filter (mount-e fire korbe na)
+    const first = useRef(true);
+    useEffect(() => {
+        if (first.current) {
+            first.current = false;
+            return;
+        }
+        const t = setTimeout(() => {
+            router.get(
+                route('admin.ratings.index'),
+                {
+                    search: search || undefined,
+                    scout: scoutFilter !== 'all' ? scoutFilter : undefined,
+                },
+                { preserveState: true, preserveScroll: true, replace: true }
+            );
+        }, 350);
+        return () => clearTimeout(t);
+    }, [search, scoutFilter]);
+
+    const goToPage = (page: number) => {
+        router.get(
+            route('admin.ratings.index'),
+            {
+                page,
+                search: search || undefined,
+                scout: scoutFilter !== 'all' ? scoutFilter : undefined,
+            },
+            { preserveState: true, preserveScroll: true }
+        );
+    };
 
     const handleDelete = () => {
-        // TODO: router.delete(route('admin.ratings.destroy', deleteRating.id))
-        setDeleteRating(null);
+        if (!deleteRating) return;
+        setDeleting(true);
+        router.delete(route('ratings.destroy', deleteRating.id), {
+            preserveScroll: true,
+            onFinish: () => {
+                setDeleting(false);
+                setDeleteRating(null);
+            },
+        });
     };
+
+    // pagination window (current er ashe pashe koyekta page)
+    const pageWindow: number[] = [];
+    {
+        const start = Math.max(1, ratings.current_page - 1);
+        const end = Math.min(ratings.last_page, ratings.current_page + 1);
+        for (let i = start; i <= end; i++) pageWindow.push(i);
+    }
 
     return (
         <AppLayout>
@@ -343,16 +238,15 @@ export default function RatingsIndex() {
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Button
-                            variant="outline"
-                            className="border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F8FAFC]"
+                        <a
+                            // href={route('admin.ratings.export')}
+                            className="inline-flex items-center rounded-md border border-[#E2E8F0] bg-white px-4 py-2 text-sm font-medium text-[#0F172A] transition hover:bg-[#F8FAFC]"
                         >
                             <Download className="mr-2 h-4 w-4" />
                             Export CSV
-                        </Button>
+                        </a>
                     </div>
                 </div>
-
                 {/* Summary Widgets */}
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                     {/* Avg Rating */}
@@ -370,19 +264,20 @@ export default function RatingsIndex() {
                                         {Array.from({ length: 5 }).map((_, i) => (
                                             <Star
                                                 key={i}
-                                                className={`w-4 h-4 ${
-                                                    i < Math.round(summary.avgRating)
-                                                        ? 'fill-[#FF6B00] text-[#FF6B00]'
-                                                        : 'fill-transparent text-[#CBD5E1]'
-                                                }`}
+                                                className={`w-4 h-4 ${i < Math.round(summary.avgRating)
+                                                    ? 'fill-[#FF6B00] text-[#FF6B00]'
+                                                    : 'fill-transparent text-[#CBD5E1]'
+                                                    }`}
                                             />
                                         ))}
                                     </div>
-                                    <div className="mt-3 inline-flex items-center gap-1 text-xs text-[#16A34A]">
-                                        <TrendingUp className="h-3 w-3" />
-                                        <span className="font-mono">+0.2</span>
-                                        <span className="text-[#475569]">vs last month</span>
-                                    </div>
+                                    {summary.avgTrend !== 0 && (
+                                        <div className={`mt-3 inline-flex items-center gap-1 text-xs ${summary.avgTrend > 0 ? 'text-[#16A34A]' : 'text-[#DC2626]'}`}>
+                                            <TrendingUp className="h-3 w-3" />
+                                            <span className="font-mono">{summary.avgTrend > 0 ? '+' : ''}{summary.avgTrend.toFixed(1)}</span>
+                                            <span className="text-[#475569]">vs last month</span>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#FFF3EB]">
                                     <Star className="h-5 w-5 fill-[#FF6B00] text-[#FF6B00]" />
@@ -390,7 +285,6 @@ export default function RatingsIndex() {
                             </div>
                         </CardContent>
                     </Card>
-
                     {/* Total Ratings */}
                     <Card className="border-[#E2E8F0] bg-white">
                         <CardContent className="p-6">
@@ -403,11 +297,11 @@ export default function RatingsIndex() {
                                         {summary.totalRatings.toLocaleString()}
                                     </div>
                                     <div className="mt-2 text-xs text-[#475569]">
-                                        Across <span className="font-mono text-[#0F172A]">312</span> players
+                                        Across <span className="font-mono text-[#0F172A]">{summary.totalPlayers}</span> players
                                     </div>
                                     <div className="mt-3 inline-flex items-center gap-1 text-xs text-[#16A34A]">
                                         <TrendingUp className="h-3 w-3" />
-                                        <span className="font-mono">+184</span>
+                                        <span className="font-mono">+{summary.ratingsThisMonth}</span>
                                         <span className="text-[#475569]">this month</span>
                                     </div>
                                 </div>
@@ -417,7 +311,6 @@ export default function RatingsIndex() {
                             </div>
                         </CardContent>
                     </Card>
-
                     {/* Top Scout */}
                     <Card className="border-[#E2E8F0] bg-white">
                         <CardContent className="p-6">
@@ -426,34 +319,39 @@ export default function RatingsIndex() {
                                     <div className="text-xs font-medium uppercase tracking-wider text-[#475569]">
                                         Top Scout
                                     </div>
-                                    <div className="mt-3 flex items-center gap-3">
-                                        <img
-                                            src={summary.topScout.avatar}
-                                            alt={summary.topScout.name}
-                                            className="h-10 w-10 rounded-full border border-[#E2E8F0] object-cover"
-                                        />
-                                        <div className="min-w-0 flex-1">
-                                            <div className="truncate font-display text-lg font-semibold text-[#0F172A]">
-                                                {summary.topScout.name}
+                                    {summary.topScout ? (
+                                        <>
+                                            <div className="mt-3 flex items-center gap-3">
+                                                <img
+                                                    src={summary.topScout.avatar || PLACEHOLDER}
+                                                    alt={summary.topScout.name}
+                                                    className="h-10 w-10 rounded-full border border-[#E2E8F0] object-cover"
+                                                />
+                                                <div className="min-w-0 flex-1">
+                                                    <div className="truncate font-display text-lg font-semibold text-[#0F172A]">
+                                                        {summary.topScout.name}
+                                                    </div>
+                                                    <div className="truncate text-xs text-[#475569]">
+                                                        {summary.topScout.organization ?? '—'}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className="truncate text-xs text-[#475569]">
-                                                {summary.topScout.organization}
+                                            <div className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-[#FFF3EB] px-2 py-1">
+                                                <Award className="h-3 w-3 text-[#FF6B00]" />
+                                                <span className="font-mono text-xs font-semibold text-[#CC5500]">
+                                                    {summary.topScout.count}
+                                                </span>
+                                                <span className="text-xs text-[#CC5500]">ratings submitted</span>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-[#FFF3EB] px-2 py-1">
-                                        <Award className="h-3 w-3 text-[#FF6B00]" />
-                                        <span className="font-mono text-xs font-semibold text-[#CC5500]">
-                      {summary.topScout.count}
-                    </span>
-                                        <span className="text-xs text-[#CC5500]">ratings submitted</span>
-                                    </div>
+                                        </>
+                                    ) : (
+                                        <div className="mt-3 text-sm text-[#94A3B8]">No ratings yet.</div>
+                                    )}
                                 </div>
                             </div>
                         </CardContent>
                     </Card>
                 </div>
-
                 {/* Filters + Table */}
                 <Card className="border-[#E2E8F0] bg-white">
                     <CardHeader className="border-b border-[#E2E8F0] p-6">
@@ -478,11 +376,11 @@ export default function RatingsIndex() {
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">All Scouts</SelectItem>
-                                        <SelectItem value="1">James Robertson</SelectItem>
-                                        <SelectItem value="2">Mateus Carvalho</SelectItem>
-                                        <SelectItem value="3">Sophie Laurent</SelectItem>
-                                        <SelectItem value="4">Klaus Weber</SelectItem>
-                                        <SelectItem value="5">Andrea Bianchi</SelectItem>
+                                        {scouts.map((s) => (
+                                            <SelectItem key={s.id} value={String(s.id)}>
+                                                {s.name}
+                                            </SelectItem>
+                                        ))}
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -520,7 +418,14 @@ export default function RatingsIndex() {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {filtered.map((rating) => (
+                                    {ratings.data.length === 0 && (
+                                        <TableRow>
+                                            <TableCell colSpan={8} className="px-6 py-10 text-center text-sm text-[#94A3B8]">
+                                                No ratings found.
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                    {ratings.data.map((rating) => (
                                         <TableRow
                                             key={rating.id}
                                             className="border-[#E2E8F0] hover:bg-[#F8FAFC]"
@@ -528,7 +433,7 @@ export default function RatingsIndex() {
                                             <TableCell className="px-6 py-4">
                                                 <div className="flex items-center gap-3">
                                                     <img
-                                                        src={rating.scout.avatar}
+                                                        src={rating.scout.avatar || PLACEHOLDER}
                                                         alt={rating.scout.name}
                                                         className="h-9 w-9 rounded-full border border-[#E2E8F0] object-cover"
                                                     />
@@ -537,7 +442,7 @@ export default function RatingsIndex() {
                                                             {rating.scout.name}
                                                         </div>
                                                         <div className="text-xs text-[#475569]">
-                                                            {rating.scout.organization}
+                                                            {rating.scout.organization ?? '—'}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -545,21 +450,23 @@ export default function RatingsIndex() {
                                             <TableCell className="py-4">
                                                 <div className="flex items-center gap-3">
                                                     <img
-                                                        src={rating.player.avatar}
+                                                        src={rating.player.avatar || PLACEHOLDER}
                                                         alt={rating.player.name}
                                                         className="h-9 w-9 rounded-full border border-[#E2E8F0] object-cover"
                                                     />
                                                     <div>
                                                         <div className="flex items-center gap-2">
-                              <span className="text-sm font-semibold text-[#0F172A]">
-                                {rating.player.name}
-                              </span>
-                                                            <span className="rounded border border-[#FF6B00] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#CC5500]">
-                                {rating.player.position}
-                              </span>
+                                                            <span className="text-sm font-semibold text-[#0F172A]">
+                                                                {rating.player.name}
+                                                            </span>
+                                                            {rating.player.position && (
+                                                                <span className="rounded border border-[#FF6B00] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#CC5500]">
+                                                                    {rating.player.position}
+                                                                </span>
+                                                            )}
                                                         </div>
                                                         <div className="text-xs text-[#475569]">
-                                                            {rating.player.club}
+                                                            {rating.player.club ?? '—'}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -577,17 +484,19 @@ export default function RatingsIndex() {
                                                 <div className="inline-flex items-center gap-1.5 rounded-md bg-[#FFF3EB] px-2 py-1">
                                                     <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
                                                     <span className="font-mono text-sm font-semibold text-[#CC5500]">
-                            {rating.overall.toFixed(1)}
-                          </span>
+                                                        {rating.overall.toFixed(1)}
+                                                    </span>
                                                 </div>
                                             </TableCell>
                                             <TableCell className="py-4">
                                                 <div className="font-mono text-xs text-[#475569]">
-                                                    {new Date(rating.date).toLocaleDateString('en-GB', {
-                                                        day: '2-digit',
-                                                        month: 'short',
-                                                        year: 'numeric',
-                                                    })}
+                                                    {rating.date
+                                                        ? new Date(rating.date).toLocaleDateString('en-GB', {
+                                                            day: '2-digit',
+                                                            month: 'short',
+                                                            year: 'numeric',
+                                                        })
+                                                        : '—'}
                                                 </div>
                                             </TableCell>
                                             <TableCell className="px-6 py-4 text-right">
@@ -615,51 +524,59 @@ export default function RatingsIndex() {
                                 </TableBody>
                             </Table>
                         </div>
-
                         {/* Pagination */}
                         <div className="flex flex-col items-start gap-3 border-t border-[#E2E8F0] p-6 sm:flex-row sm:items-center sm:justify-between">
                             <div className="text-xs text-[#475569]">
-                                Showing <span className="font-mono font-semibold text-[#0F172A]">1-7</span> of{' '}
+                                Showing{' '}
                                 <span className="font-mono font-semibold text-[#0F172A]">
-                  {summary.totalRatings.toLocaleString()}
-                </span>{' '}
+                                    {ratings.from ?? 0}-{ratings.to ?? 0}
+                                </span>{' '}
+                                of{' '}
+                                <span className="font-mono font-semibold text-[#0F172A]">
+                                    {ratings.total.toLocaleString()}
+                                </span>{' '}
                                 ratings
                             </div>
                             <div className="flex items-center gap-2">
                                 <Button
                                     variant="outline"
                                     size="sm"
-                                    className="border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F8FAFC]"
+                                    disabled={ratings.current_page <= 1}
+                                    onClick={() => goToPage(ratings.current_page - 1)}
+                                    className="border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F8FAFC] disabled:opacity-50"
                                 >
                                     <ChevronLeft className="mr-1 h-4 w-4" />
                                     Previous
                                 </Button>
                                 <div className="flex items-center gap-1">
-                                    <Button
-                                        size="sm"
-                                        className="h-8 w-8 bg-[#FF6B00] p-0 font-mono text-white hover:bg-[#CC5500]"
-                                    >
-                                        1
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        className="h-8 w-8 border-[#E2E8F0] bg-white p-0 font-mono text-[#0F172A] hover:bg-[#F8FAFC]"
-                                    >
-                                        2
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        className="h-8 w-8 border-[#E2E8F0] bg-white p-0 font-mono text-[#0F172A] hover:bg-[#F8FAFC]"
-                                    >
-                                        3
-                                    </Button>
+                                    {pageWindow.map((p) =>
+                                        p === ratings.current_page ? (
+                                            <Button
+                                                key={p}
+                                                size="sm"
+                                                className="h-8 w-8 bg-[#FF6B00] p-0 font-mono text-white hover:bg-[#CC5500]"
+                                            >
+                                                {p}
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                key={p}
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => goToPage(p)}
+                                                className="h-8 w-8 border-[#E2E8F0] bg-white p-0 font-mono text-[#0F172A] hover:bg-[#F8FAFC]"
+                                            >
+                                                {p}
+                                            </Button>
+                                        )
+                                    )}
                                 </div>
                                 <Button
                                     variant="outline"
                                     size="sm"
-                                    className="border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F8FAFC]"
+                                    disabled={ratings.current_page >= ratings.last_page}
+                                    onClick={() => goToPage(ratings.current_page + 1)}
+                                    className="border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F8FAFC] disabled:opacity-50"
                                 >
                                     Next
                                     <ChevronRight className="ml-1 h-4 w-4" />
@@ -668,7 +585,6 @@ export default function RatingsIndex() {
                         </div>
                     </CardContent>
                 </Card>
-
                 {/* Bottom 2-col */}
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                     {/* Most Rated Players */}
@@ -693,20 +609,22 @@ export default function RatingsIndex() {
                                             {idx + 1}
                                         </div>
                                         <img
-                                            src={player.avatar}
+                                            src={player.avatar || PLACEHOLDER}
                                             alt={player.name}
                                             className="h-11 w-11 rounded-full border border-[#E2E8F0] object-cover"
                                         />
                                         <div className="min-w-0 flex-1">
                                             <div className="flex items-center gap-2">
-                        <span className="truncate text-sm font-semibold text-[#0F172A]">
-                          {player.name}
-                        </span>
-                                                <span className="rounded border border-[#FF6B00] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#CC5500]">
-                          {player.position}
-                        </span>
+                                                <span className="truncate text-sm font-semibold text-[#0F172A]">
+                                                    {player.name}
+                                                </span>
+                                                {player.position && (
+                                                    <span className="rounded border border-[#FF6B00] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#CC5500]">
+                                                        {player.position}
+                                                    </span>
+                                                )}
                                             </div>
-                                            <div className="truncate text-xs text-[#475569]">{player.club}</div>
+                                            <div className="truncate text-xs text-[#475569]">{player.club ?? '—'}</div>
                                         </div>
                                         <div className="flex flex-col items-end gap-1">
                                             <div className="font-mono text-sm font-semibold text-[#0F172A]">
@@ -715,16 +633,18 @@ export default function RatingsIndex() {
                                             <div className="flex items-center gap-1">
                                                 <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
                                                 <span className="font-mono text-xs text-[#475569]">
-                          {player.avg.toFixed(1)}
-                        </span>
+                                                    {player.avg.toFixed(1)}
+                                                </span>
                                             </div>
                                         </div>
                                     </Link>
                                 ))}
+                                {mostRatedPlayers.length === 0 && (
+                                    <div className="p-6 text-center text-sm text-[#94A3B8]">No data yet.</div>
+                                )}
                             </div>
                         </CardContent>
                     </Card>
-
                     {/* Most Active Scouts */}
                     <Card className="border-[#E2E8F0] bg-white">
                         <CardHeader className="border-b border-[#E2E8F0] p-6">
@@ -747,7 +667,7 @@ export default function RatingsIndex() {
                                             {idx + 1}
                                         </div>
                                         <img
-                                            src={scout.avatar}
+                                            src={scout.avatar || PLACEHOLDER}
                                             alt={scout.name}
                                             className="h-11 w-11 rounded-full border border-[#E2E8F0] object-cover"
                                         />
@@ -756,7 +676,7 @@ export default function RatingsIndex() {
                                                 {scout.name}
                                             </div>
                                             <div className="truncate text-xs text-[#475569]">
-                                                {scout.organization} · {scout.country}
+                                                {scout.organization ?? '—'}{scout.country ? ` · ${scout.country}` : ''}
                                             </div>
                                         </div>
                                         <div className="flex flex-col items-end gap-1">
@@ -766,18 +686,20 @@ export default function RatingsIndex() {
                                             <div className="flex items-center gap-1">
                                                 <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
                                                 <span className="font-mono text-xs text-[#475569]">
-                          {scout.avgGiven.toFixed(1)}
-                        </span>
+                                                    {scout.avgGiven.toFixed(1)}
+                                                </span>
                                             </div>
                                         </div>
                                     </Link>
                                 ))}
+                                {mostActiveScouts.length === 0 && (
+                                    <div className="p-6 text-center text-sm text-[#94A3B8]">No data yet.</div>
+                                )}
                             </div>
                         </CardContent>
                     </Card>
                 </div>
             </div>
-
             {/* VIEW DIALOG */}
             <Dialog open={!!viewRating} onOpenChange={() => setViewRating(null)}>
                 <DialogContent className="max-w-3xl border-[#E2E8F0] bg-white">
@@ -789,14 +711,15 @@ export default function RatingsIndex() {
                                 </DialogTitle>
                                 <DialogDescription className="text-sm text-[#475569]">
                                     Submitted on{' '}
-                                    {new Date(viewRating.date).toLocaleDateString('en-GB', {
-                                        day: '2-digit',
-                                        month: 'long',
-                                        year: 'numeric',
-                                    })}
+                                    {viewRating.date
+                                        ? new Date(viewRating.date).toLocaleDateString('en-GB', {
+                                            day: '2-digit',
+                                            month: 'long',
+                                            year: 'numeric',
+                                        })
+                                        : '—'}
                                 </DialogDescription>
                             </DialogHeader>
-
                             <div className="space-y-5">
                                 {/* Profiles */}
                                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -807,7 +730,7 @@ export default function RatingsIndex() {
                                         </div>
                                         <div className="flex items-center gap-3">
                                             <img
-                                                src={viewRating.scout.avatar}
+                                                src={viewRating.scout.avatar || PLACEHOLDER}
                                                 alt={viewRating.scout.name}
                                                 className="h-12 w-12 rounded-full border border-[#E2E8F0] object-cover"
                                             />
@@ -816,15 +739,14 @@ export default function RatingsIndex() {
                                                     {viewRating.scout.name}
                                                 </div>
                                                 <div className="truncate text-xs text-[#475569]">
-                                                    {viewRating.scout.organization}
+                                                    {viewRating.scout.organization ?? '—'}
                                                 </div>
                                                 <div className="text-xs text-[#94A3B8]">
-                                                    {viewRating.scout.country}
+                                                    {viewRating.scout.country ?? ''}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                     {/* Player */}
                                     <div className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-4">
                                         <div className="mb-3 text-xs font-medium uppercase tracking-wider text-[#475569]">
@@ -832,30 +754,33 @@ export default function RatingsIndex() {
                                         </div>
                                         <div className="flex items-center gap-3">
                                             <img
-                                                src={viewRating.player.avatar}
+                                                src={viewRating.player.avatar || PLACEHOLDER}
                                                 alt={viewRating.player.name}
                                                 className="h-12 w-12 rounded-full border border-[#E2E8F0] object-cover"
                                             />
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex items-center gap-2">
-                          <span className="truncate font-display text-base font-semibold text-[#0F172A]">
-                            {viewRating.player.name}
-                          </span>
-                                                    <span className="rounded border border-[#FF6B00] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#CC5500]">
-                            {viewRating.player.position}
-                          </span>
+                                                    <span className="truncate font-display text-base font-semibold text-[#0F172A]">
+                                                        {viewRating.player.name}
+                                                    </span>
+                                                    {viewRating.player.position && (
+                                                        <span className="rounded border border-[#FF6B00] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#CC5500]">
+                                                            {viewRating.player.position}
+                                                        </span>
+                                                    )}
                                                 </div>
                                                 <div className="truncate text-xs text-[#475569]">
-                                                    {viewRating.player.club}
+                                                    {viewRating.player.club ?? '—'}
                                                 </div>
-                                                <div className="text-xs text-[#94A3B8]">
-                                                    Age <span className="font-mono">{viewRating.player.age}</span>
-                                                </div>
+                                                {viewRating.player.age !== null && (
+                                                    <div className="text-xs text-[#94A3B8]">
+                                                        Age <span className="font-mono">{viewRating.player.age}</span>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                                 {/* Ratings Grid */}
                                 <div>
                                     <div className="mb-3 text-xs font-medium uppercase tracking-wider text-[#475569]">
@@ -873,11 +798,10 @@ export default function RatingsIndex() {
                                                 {Array.from({ length: 5 }).map((_, i) => (
                                                     <Star
                                                         key={i}
-                                                        className={`w-5 h-5 ${
-                                                            i < Math.round(viewRating.overall)
-                                                                ? 'fill-[#FF6B00] text-[#FF6B00]'
-                                                                : 'fill-transparent text-[#FF6B00]/30'
-                                                        }`}
+                                                        className={`w-5 h-5 ${i < Math.round(viewRating.overall)
+                                                            ? 'fill-[#FF6B00] text-[#FF6B00]'
+                                                            : 'fill-transparent text-[#FF6B00]/30'
+                                                            }`}
                                                     />
                                                 ))}
                                             </div>
@@ -887,29 +811,30 @@ export default function RatingsIndex() {
                                         </div>
                                     </div>
                                 </div>
-
                                 {/* Match Context */}
-                                <div className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-4">
-                                    <div className="flex items-center gap-2">
-                                        <Calendar className="h-4 w-4 text-[#FF6B00]" />
-                                        <div className="text-xs font-medium uppercase tracking-wider text-[#475569]">
-                                            Match Context
+                                {viewRating.matchContext && (
+                                    <div className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-4">
+                                        <div className="flex items-center gap-2">
+                                            <Calendar className="h-4 w-4 text-[#FF6B00]" />
+                                            <div className="text-xs font-medium uppercase tracking-wider text-[#475569]">
+                                                Match Context
+                                            </div>
+                                        </div>
+                                        <div className="mt-2 text-sm text-[#0F172A]">{viewRating.matchContext}</div>
+                                    </div>
+                                )}
+                                {/* Notes */}
+                                {viewRating.notes && (
+                                    <div>
+                                        <div className="mb-2 text-xs font-medium uppercase tracking-wider text-[#475569]">
+                                            Scout Notes
+                                        </div>
+                                        <div className="rounded-lg border border-[#E2E8F0] bg-white p-4 text-sm leading-relaxed text-[#0F172A]">
+                                            {viewRating.notes}
                                         </div>
                                     </div>
-                                    <div className="mt-2 text-sm text-[#0F172A]">{viewRating.matchContext}</div>
-                                </div>
-
-                                {/* Notes */}
-                                <div>
-                                    <div className="mb-2 text-xs font-medium uppercase tracking-wider text-[#475569]">
-                                        Scout Notes
-                                    </div>
-                                    <div className="rounded-lg border border-[#E2E8F0] bg-white p-4 text-sm leading-relaxed text-[#0F172A]">
-                                        {viewRating.notes}
-                                    </div>
-                                </div>
+                                )}
                             </div>
-
                             <DialogFooter className="gap-2">
                                 <Button
                                     variant="outline"
@@ -929,7 +854,6 @@ export default function RatingsIndex() {
                     )}
                 </DialogContent>
             </Dialog>
-
             {/* DELETE DIALOG */}
             <Dialog open={!!deleteRating} onOpenChange={() => setDeleteRating(null)}>
                 <DialogContent className="max-w-md border-[#E2E8F0] bg-white">
@@ -944,11 +868,10 @@ export default function RatingsIndex() {
                                     platform.
                                 </DialogDescription>
                             </DialogHeader>
-
                             <div className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-4">
                                 <div className="flex items-center gap-3">
                                     <img
-                                        src={deleteRating.scout.avatar}
+                                        src={deleteRating.scout.avatar || PLACEHOLDER}
                                         alt={deleteRating.scout.name}
                                         className="h-10 w-10 rounded-full border border-[#E2E8F0] object-cover"
                                     />
@@ -963,26 +886,27 @@ export default function RatingsIndex() {
                                     <div className="inline-flex items-center gap-1 rounded-md bg-[#FFF3EB] px-2 py-1">
                                         <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
                                         <span className="font-mono text-sm font-semibold text-[#CC5500]">
-                      {deleteRating.overall.toFixed(1)}
-                    </span>
+                                            {deleteRating.overall.toFixed(1)}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
-
                             <DialogFooter className="gap-2">
                                 <Button
                                     variant="outline"
                                     onClick={() => setDeleteRating(null)}
+                                    disabled={deleting}
                                     className="border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F8FAFC]"
                                 >
                                     Cancel
                                 </Button>
                                 <Button
                                     onClick={handleDelete}
+                                    disabled={deleting}
                                     className="bg-[#DC2626] text-white hover:bg-[#B91C1C]"
                                 >
                                     <Trash2 className="mr-2 h-4 w-4" />
-                                    Delete Rating
+                                    {deleting ? 'Deleting...' : 'Delete Rating'}
                                 </Button>
                             </DialogFooter>
                         </>

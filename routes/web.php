@@ -11,6 +11,7 @@ use App\Http\Controllers\Web\HomeController;
 use Laravel\Cashier\Http\Controllers\WebhookController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PlayerController;
+use App\Http\Controllers\Admin\RatingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\PlayerSearchController;
 use App\Http\Controllers\Player\NotificationController;
@@ -174,9 +175,9 @@ Route::prefix('admin')->group(function () {
         return Inertia::render('admin/subscriptions/Index');
     })->name('subscriptions.index');
 
-    Route::get('/scouting', function () {
-        return Inertia::render('admin/scouting/Index');
-    })->name('scouting.index');
+    // Route::get('/scouting', function () {
+    //     return Inertia::render('admin/scouting/Index');
+    // })->name('scouting.index');
 
     Route::get('/agents', function () {
         return Inertia::render('admin/agent/Index');
@@ -203,6 +204,15 @@ Route::prefix('admin')->group(function () {
     Route::put('/players/{id}/featured', [PlayerController::class, 'toggleFeatured'])->name('players.toggle-featured');
     Route::put('/players/{id}/suspend', [PlayerController::class, 'suspend'])->name('players.suspend');
     Route::delete('/players/{id}', [PlayerController::class, 'destroy'])->name('players.destroy');
+
+
+    Route::get('/ratings', [RatingController::class, 'index'])->name('ratings.index');
+    Route::get('/ratings/export', [RatingController::class, 'export'])->name('ratings.export');
+    Route::delete('/ratings/destroy/{rating}', [RatingController::class, 'destroy'])->name('ratings.destroy');
+
+
+    Route::get('/players/{id}', [RatingController::class, 'publicPlayerDetails'])
+        ->name('player.profile');
 });
 
 Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])

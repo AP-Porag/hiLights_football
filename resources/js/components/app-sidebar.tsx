@@ -26,7 +26,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Scouts',
-        url: '/admin/scouting',
+        url: ' /admin/ratings',
         icon: User,
     },
     {
