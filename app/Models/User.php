@@ -71,4 +71,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(ScoutProfile::class);
     }
+
+    public function savedPlayers()
+    {
+        return $this->hasMany(SavedPlayer::class);
+    }
 }

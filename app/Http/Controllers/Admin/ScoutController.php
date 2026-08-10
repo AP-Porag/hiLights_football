@@ -7,6 +7,7 @@ use App\Models\PlayerRating;
 use App\Models\User;
 use App\Models\PlayerProfile;
 use App\Models\ProfileView;
+use App\Models\SavedPlayer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Stevebauman\Location\Facades\Location;
@@ -147,6 +148,8 @@ class ScoutController extends Controller
             ];
         });
 
+
+
         return inertia('admin/scouting/Index', [
             'ratings'          => $ratings,
             'summary'          => [
@@ -166,6 +169,7 @@ class ScoutController extends Controller
             ],
             'allScouts'        => $allScouts,
             'scoutSearch'      => $scoutSearch,
+
         ]);
     }
 
@@ -275,6 +279,41 @@ class ScoutController extends Controller
 
         return Inertia::render('admin/scouting/most-rated/Detail', [
             'player' => $player,
+        ]);
+    }
+    public function toggleSave(Request $request, $playerId)
+    {
+        $user = auth()->user();
+
+        // শুধু স্কাউটরা সেভ করতে পারবে
+        if (!$user || $user->role !== 'scout') {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        // player_profile_id ভ্যালিড কিনা চেক
+        $profile = PlayerProfile::find($playerId);
+        if (!$profile) {
+            return response()->json(['error' => 'Player not found'], 404);
+        }
+
+        $saved = SavedPlayer::where('user_id', $user->id)
+            ->where('player_profile_id', $playerId)
+            ->first();
+
+        if ($saved) {
+            $saved->delete();
+            $saved = false;
+        } else {
+            SavedPlayer::create([
+                'user_id' => $user->id,
+                'player_profile_id' => $playerId,
+            ]);
+            $saved = true;
+        }
+
+        return response()->json([
+            'saved' => $saved,
+            'message' => $saved ? 'Player saved' : 'Player unsaved',
         ]);
     }
 }
