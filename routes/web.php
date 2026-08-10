@@ -167,9 +167,9 @@ Route::prefix('admin')->group(function () {
         return Inertia::render('admin/players/Index');
     })->name('players.index');
 
-    Route::get('/players/{id}', function () {
-        return Inertia::render('admin/players/Detail');
-    })->name('players.details');
+    // Route::get('/players/{id}', function () {
+    //     return Inertia::render('admin/players/Detail');
+    // })->name('players.details');
 
     Route::get('/subscriptions', function () {
         return Inertia::render('admin/subscriptions/Index');
@@ -209,10 +209,6 @@ Route::prefix('admin')->group(function () {
     Route::get('/ratings', [RatingController::class, 'index'])->name('ratings.index');
     Route::get('/ratings/export', [RatingController::class, 'export'])->name('ratings.export');
     Route::delete('/ratings/destroy/{rating}', [RatingController::class, 'destroy'])->name('ratings.destroy');
-
-
-    Route::get('/players/{id}', [RatingController::class, 'publicPlayerDetails'])
-        ->name('player.profile');
 });
 
 Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])
@@ -222,6 +218,9 @@ Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 //Player Search
 Route::get('/players/search', [PlayerSearchController::class, 'search'])->name('players.search');
+
+Route::get('/players/{id}', [RatingController::class, 'publicPlayerDetails'])
+    ->name('player.profile');
 
 
 require __DIR__ . '/settings.php';
