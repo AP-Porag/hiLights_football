@@ -227,25 +227,25 @@ class RatingController extends Controller
         $player = PlayerProfile::with('user')->where('user_id', $id)->firstOrFail();
 
         // ভিউ বাড়ান
-        $player->increment('views');
+        // $player->increment('views');
 
-        $viewer = auth()->user();
+        // $viewer = auth()->user();
 
-        // IP ঠিক করা
-        $ip = app()->environment('local')
-            ? '8.8.8.8'
-            : $request->ip();
+        // // IP ঠিক করা
+        // $ip = app()->environment('local')
+        //     ? '8.8.8.8'
+        //     : $request->ip();
 
-        $location = Location::get($ip);
+        // $location = Location::get($ip);
 
-        ProfileView::create([
-            'player_profile_id' => $player->id,
-            'viewer_id'         => $viewer?->id,
-            'country'           => $location?->countryName,
-            'country_code'      => $location?->countryCode,
-            'ip_address'        => $ip,
-            // 'user_agent'        => $request->userAgent(),
-        ]);
+        // ProfileView::create([
+        //     'player_profile_id' => $player->id,
+        //     'viewer_id'         => $viewer?->id,
+        //     'country'           => $location?->countryName,
+        //     'country_code'      => $location?->countryCode,
+        //     'ip_address'        => $ip,
+        //     // 'user_agent'        => $request->userAgent(),
+        // ]);
 
         return Inertia::render('admin/scouting/most-rated/Detail', [
             'player' => $player,
