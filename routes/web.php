@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AgentController;
+use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Player\PlayerProfileController;
 use App\Http\Controllers\Player\SubscriptionController;
@@ -11,7 +13,7 @@ use App\Http\Controllers\Web\HomeController;
 use Laravel\Cashier\Http\Controllers\WebhookController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PlayerController;
-use App\Http\Controllers\Admin\RatingController;
+use App\Http\Controllers\Admin\ScoutController as SController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\PlayerSearchController;
 use App\Http\Controllers\Player\NotificationController;
@@ -206,9 +208,23 @@ Route::prefix('admin')->group(function () {
     Route::delete('/players/{id}', [PlayerController::class, 'destroy'])->name('players.destroy');
 
 
-    Route::get('/ratings', [RatingController::class, 'index'])->name('ratings.index');
-    Route::get('/ratings/export', [RatingController::class, 'export'])->name('ratings.export');
-    Route::delete('/ratings/destroy/{rating}', [RatingController::class, 'destroy'])->name('ratings.destroy');
+    //Scout
+    Route::get('/ratings', [SController::class, 'index'])->name('ratings.index');
+    Route::delete('/ratings/destroy/{rating}', [SController::class, 'destroy'])->name('ratings.destroy');
+
+
+    // Agent Routes
+    Route::get('/agents', [AgentController::class, 'index'])->name('agents.index');
+    Route::get('/agents/export', [AgentController::class, 'export'])->name('agents.export');
+    Route::delete('/agents/destroy/{rating}', [AgentController::class, 'destroy'])->name('agents.destroy');
+    Route::get('/agent/players/{id}', [AgentController::class, 'publicPlayerDetails'])->name('agent.player.profile');
+
+
+    // Club Routes
+    Route::get('/clubs', [ClubController::class, 'index'])->name('clubs.index');
+    Route::get('/clubs/export', [ClubController::class, 'export'])->name('clubs.export');
+    Route::delete('/clubs/destroy/{rating}', [ClubController::class, 'destroy'])->name('clubs.destroy');
+    Route::get('/club/players/{id}', [ClubController::class, 'publicPlayerDetails'])->name('club.player.profile');
 });
 
 Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])

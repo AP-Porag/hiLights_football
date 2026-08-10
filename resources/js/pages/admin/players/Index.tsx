@@ -14,6 +14,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 
 // ── Types ──
 interface Player {
@@ -140,16 +141,21 @@ export default function PlayersIndex() {
             router.delete(route('players.destroy', id));
         }
     };
-
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Players',
+            href: '/admin/dashboard',
+        },
+    ];
     return (
-        <AppLayout pageTitle="Player Profiles">
+        <AppLayout pageTitle="Player Profiles" breadcrumbs={breadcrumbs}>
             <div className="space-y-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
+                    {/* <div>
                         <h1 className="font-display text-2xl font-bold uppercase tracking-tight text-white sm:text-3xl">Player Profiles</h1>
                         <p className="mt-1 text-sm text-white">Manage published profiles, featured talent, and subscription tiers.</p>
-                    </div>
+                    </div> */}
                     {/* <div className="flex flex-wrap items-center gap-2">
                         <Button variant="outline" className="border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F8FAFC]">
                             <Download className="mr-2 h-4 w-4" /> Export CSV
