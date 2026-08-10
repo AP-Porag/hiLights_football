@@ -4,6 +4,7 @@ import AppLayout from '@/layouts/app-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import {
     Table,
     TableBody,
@@ -40,16 +41,19 @@ import {
     ChevronRight,
     Filter,
     Download,
+    User,
 } from 'lucide-react';
 
 const PLACEHOLDER = '/images/img/placeholder.webp';
 
+// Interfaces (আগের মতোই)
 interface ScoutRef {
     id: number | null;
     name: string;
     avatar: string | null;
     organization: string | null;
     country: string | null;
+    role?: string;
 }
 interface PlayerRef {
     id: number | null;
@@ -105,6 +109,15 @@ interface ActiveScout {
     avgGiven: number;
     avatar: string | null;
 }
+interface ScoutListItem {
+    id: number;
+    name: string;
+    email: string;
+    organization: string | null;
+    country: string | null;
+    total_ratings: number;
+    avg_rating: number;
+}
 interface PageProps {
     ratings: Paginator<RatingRow>;
     summary: Summary;
@@ -112,6 +125,8 @@ interface PageProps {
     mostActiveScouts: ActiveScout[];
     scouts: { id: number; name: string }[];
     filters: { search: string; scout: string };
+    allScouts: Paginator<ScoutListItem>;
+    scoutSearch: string;
     [key: string]: any;
 }
 
@@ -128,7 +143,7 @@ function StarsInline({ value, max = 5 }: { value: number; max?: number }) {
                         }`}
                 />
             ))}
-            <span className="ml-1.5 font-mono text-xs text-[#0F172A] dark:text-[#F5F5F5]">
+            <span className="ml-1.5 font-mono text-xs text-white">
                 {value.toFixed(1)}
             </span>
         </div>
@@ -137,8 +152,8 @@ function StarsInline({ value, max = 5 }: { value: number; max?: number }) {
 function StarsLarge({ value, label, max = 5 }: { value: number; label: string; max?: number }) {
     const filled = Math.round(value);
     return (
-        <div className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-4">
-            <div className="text-xs font-medium uppercase tracking-wider text-[#475569]">{label}</div>
+        <div className="rounded-lg border border-[#E2E8F0] bg-[#1A1A1A] p-4">
+            <div className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">{label}</div>
             <div className="mt-2 flex items-center gap-1">
                 {Array.from({ length: max }).map((_, i) => (
                     <Star
@@ -150,7 +165,7 @@ function StarsLarge({ value, label, max = 5 }: { value: number; label: string; m
                     />
                 ))}
             </div>
-            <div className="mt-2 font-mono text-2xl font-semibold text-[#0F172A]">
+            <div className="mt-2 font-mono text-2xl font-semibold text-white">
                 {value.toFixed(1)}
             </div>
         </div>
@@ -165,14 +180,23 @@ export default function RatingsIndex() {
     const mostActiveScouts = page.mostActiveScouts ?? [];
     const scouts = page.scouts ?? [];
     const filters = page.filters ?? { search: '', scout: 'all' };
+    const allScouts = page.allScouts ?? { data: [], current_page: 1, last_page: 1, from: 0, to: 0, total: 0 };
+    const scoutSearchInitial = page.scoutSearch ?? '';
 
     const [search, setSearch] = useState(filters?.search ?? '');
     const [scoutFilter, setScoutFilter] = useState(filters?.scout ?? 'all');
     const [viewRating, setViewRating] = useState<RatingRow | null>(null);
     const [deleteRating, setDeleteRating] = useState<RatingRow | null>(null);
     const [deleting, setDeleting] = useState(false);
+    const [scoutSearch, setScoutSearch] = useState(scoutSearchInitial);
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Scouts',
+            href: '/admin/dashboard',
+        },
+    ];
 
-    // debounced server-side search + filter (mount-e fire korbe na)
+    // Debounce for main ratings search
     const first = useRef(true);
     useEffect(() => {
         if (first.current) {
@@ -185,12 +209,13 @@ export default function RatingsIndex() {
                 {
                     search: search || undefined,
                     scout: scoutFilter !== 'all' ? scoutFilter : undefined,
+                    scout_search: scoutSearch || undefined,
                 },
                 { preserveState: true, preserveScroll: true, replace: true }
             );
         }, 350);
         return () => clearTimeout(t);
-    }, [search, scoutFilter]);
+    }, [search, scoutFilter, scoutSearch]);
 
     const goToPage = (page: number) => {
         router.get(
@@ -199,6 +224,20 @@ export default function RatingsIndex() {
                 page,
                 search: search || undefined,
                 scout: scoutFilter !== 'all' ? scoutFilter : undefined,
+                scout_search: scoutSearch || undefined,
+            },
+            { preserveState: true, preserveScroll: true }
+        );
+    };
+
+    const goToScoutPage = (page: number) => {
+        router.get(
+            route('ratings.index'),
+            {
+                scout_page: page,
+                search: search || undefined,
+                scout: scoutFilter !== 'all' ? scoutFilter : undefined,
+                scout_search: scoutSearch || undefined,
             },
             { preserveState: true, preserveScroll: true }
         );
@@ -216,7 +255,7 @@ export default function RatingsIndex() {
         });
     };
 
-    // pagination window (current er ashe pashe koyekta page)
+    // pagination window
     const pageWindow: number[] = [];
     {
         const start = Math.max(1, ratings.current_page - 1);
@@ -224,40 +263,153 @@ export default function RatingsIndex() {
         for (let i = start; i <= end; i++) pageWindow.push(i);
     }
 
+    const scoutPageWindow: number[] = [];
+    {
+        const start = Math.max(1, allScouts.current_page - 1);
+        const end = Math.min(allScouts.last_page, allScouts.current_page + 1);
+        for (let i = start; i <= end; i++) scoutPageWindow.push(i);
+    }
+
     return (
-        <AppLayout>
-            <div className="space-y-6">
-                {/* Header */}
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <h1 className="font-display text-white text-3xl font-bold uppercase tracking-tight text-[#0F172A]">
-                            Scout Ratings
-                        </h1>
-                        <p className="mt-1 text-sm text-white">
-                            Monitor all ratings submitted by scouts across the platform.
-                        </p>
-                    </div>
-                    {/* <div className="flex items-center gap-2">
-                        <a
-                            // href={route('admin.ratings.export')}
-                            className="inline-flex items-center rounded-md border border-[#E2E8F0] bg-white px-4 py-2 text-sm font-medium text-[#0F172A] transition hover:bg-[#F8FAFC]"
-                        >
-                            <Download className="mr-2 h-4 w-4" />
-                            Export CSV
-                        </a>
-                    </div> */}
-                </div>
-                {/* Summary Widgets */}
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <div className="space-y-6 bg-black text-white min-h-screen p-6">
+                {/* ──── SCOUT LIST TABLE ──── */}
+                <Card className="border-[#2A2A2A] bg-[#0F0F0F]">
+                    <CardHeader className="border-b border-[#2A2A2A] p-6">
+                        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                            <CardTitle className="font-display text-lg font-semibold uppercase tracking-wide text-white">
+                                All Scouts
+                            </CardTitle>
+                            <div className="relative">
+                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" />
+                                <Input
+                                    placeholder="Search scouts..."
+                                    value={scoutSearch}
+                                    onChange={(e) => setScoutSearch(e.target.value)}
+                                    className="w-full border-[#2A2A2A] bg-[#1A1A1A] pl-9 text-sm text-white placeholder:text-[#94A3B8] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 sm:w-72"
+                                />
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                        <div className="overflow-x-auto">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow className="border-[#2A2A2A] hover:bg-transparent">
+                                        <TableHead className="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Name</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Email</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Total Ratings</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Avg Rating</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {allScouts.data.length === 0 && (
+                                        <TableRow>
+                                            <TableCell colSpan={4} className="px-6 py-10 text-center text-sm text-[#94A3B8]">
+                                                No scouts found.
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                    {allScouts.data.map((scout) => (
+                                        <TableRow key={scout.id} className="border-[#2A2A2A] hover:bg-[#1A1A1A]">
+                                            <TableCell className="px-6 py-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="h-9 w-9 rounded-full bg-[#2A2A2A] flex items-center justify-center">
+                                                        <User className="h-5 w-5 text-[#94A3B8]" />
+                                                    </div>
+                                                    <span className="text-sm font-semibold text-white">{scout.name}</span>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="py-4 text-sm text-[#E2E8F0]">{scout.email}</TableCell>
+                                            <TableCell className="py-4 text-sm text-[#E2E8F0]">{scout.total_ratings}</TableCell>
+                                            <TableCell className="py-4 text-sm text-[#E2E8F0]">
+                                                {scout.avg_rating > 0 ? (
+                                                    <div className="flex items-center gap-2">
+                                                        <span>{scout.avg_rating.toFixed(1)}</span>
+                                                        <Star className="h-4 w-4 fill-[#FF6B00] text-[#FF6B00]" />
+                                                    </div>
+                                                ) : (
+                                                    '—'
+                                                )}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </div>
+                        {/* Scout Pagination */}
+                        <div className="flex flex-col items-start gap-3 border-t border-[#2A2A2A] p-6 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="text-xs text-[#94A3B8]">
+                                Showing{' '}
+                                <span className="font-mono font-semibold text-white">
+                                    {allScouts.from ?? 0}-{allScouts.to ?? 0}
+                                </span>{' '}
+                                of{' '}
+                                <span className="font-mono font-semibold text-white">
+                                    {allScouts.total.toLocaleString()}
+                                </span>{' '}
+                                scouts
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    disabled={allScouts.current_page <= 1}
+                                    onClick={() => goToScoutPage(allScouts.current_page - 1)}
+                                    className="border-[#2A2A2A] bg-[#1A1A1A] text-white hover:bg-[#2A2A2A] disabled:opacity-50"
+                                >
+                                    <ChevronLeft className="mr-1 h-4 w-4" />
+                                    Previous
+                                </Button>
+                                <div className="flex items-center gap-1">
+                                    {scoutPageWindow.map((p) =>
+                                        p === allScouts.current_page ? (
+                                            <Button
+                                                key={p}
+                                                size="sm"
+                                                className="h-8 w-8 bg-[#FF6B00] p-0 font-mono text-white hover:bg-[#CC5500]"
+                                            >
+                                                {p}
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                key={p}
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => goToScoutPage(p)}
+                                                className="h-8 w-8 border-[#2A2A2A] bg-[#1A1A1A] p-0 font-mono text-white hover:bg-[#2A2A2A]"
+                                            >
+                                                {p}
+                                            </Button>
+                                        )
+                                    )}
+                                </div>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    disabled={allScouts.current_page >= allScouts.last_page}
+                                    onClick={() => goToScoutPage(allScouts.current_page + 1)}
+                                    className="border-[#2A2A2A] bg-[#1A1A1A] text-white hover:bg-[#2A2A2A] disabled:opacity-50"
+                                >
+                                    Next
+                                    <ChevronRight className="ml-1 h-4 w-4" />
+                                </Button>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* ──── SUMMARY WIDGETS ──── */}
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                     {/* Avg Rating */}
-                    <Card className="border-[#E2E8F0] bg-white">
+                    <Card className="border-[#2A2A2A] bg-[#0F0F0F]">
                         <CardContent className="p-6">
                             <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                    <div className="text-xs font-medium uppercase tracking-wider text-[#475569]">
+                                {/* <div className="flex-1">
+                                    <div className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">
                                         Average Rating
                                     </div>
-                                    <div className="mt-3 font-mono text-4xl font-bold text-[#0F172A]">
+                                    <div className="mt-3 font-mono text-4xl font-bold text-white">
                                         {summary.avgRating.toFixed(1)}
                                     </div>
                                     <div className="mt-2 flex items-center gap-0.5">
@@ -275,10 +427,10 @@ export default function RatingsIndex() {
                                         <div className={`mt-3 inline-flex items-center gap-1 text-xs ${summary.avgTrend > 0 ? 'text-[#16A34A]' : 'text-[#DC2626]'}`}>
                                             <TrendingUp className="h-3 w-3" />
                                             <span className="font-mono">{summary.avgTrend > 0 ? '+' : ''}{summary.avgTrend.toFixed(1)}</span>
-                                            <span className="text-[#475569]">vs last month</span>
+                                            <span className="text-[#94A3B8]">vs last month</span>
                                         </div>
                                     )}
-                                </div>
+                                </div> */}
                                 <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#FFF3EB]">
                                     <Star className="h-5 w-5 fill-[#FF6B00] text-[#FF6B00]" />
                                 </div>
@@ -286,23 +438,23 @@ export default function RatingsIndex() {
                         </CardContent>
                     </Card>
                     {/* Total Ratings */}
-                    <Card className="border-[#E2E8F0] bg-white">
+                    <Card className="border-[#2A2A2A] bg-[#0F0F0F]">
                         <CardContent className="p-6">
                             <div className="flex items-start justify-between">
                                 <div className="flex-1">
-                                    <div className="text-xs font-medium uppercase tracking-wider text-[#475569]">
+                                    <div className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">
                                         Total Ratings
                                     </div>
-                                    <div className="mt-3 font-mono text-4xl font-bold text-[#0F172A]">
+                                    <div className="mt-3 font-mono text-4xl font-bold text-white">
                                         {summary.totalRatings.toLocaleString()}
                                     </div>
-                                    <div className="mt-2 text-xs text-[#475569]">
-                                        Across <span className="font-mono text-[#0F172A]">{summary.totalPlayers}</span> players
+                                    <div className="mt-2 text-xs text-[#94A3B8]">
+                                        Across <span className="font-mono text-white">{summary.totalPlayers}</span> players
                                     </div>
                                     <div className="mt-3 inline-flex items-center gap-1 text-xs text-[#16A34A]">
                                         <TrendingUp className="h-3 w-3" />
                                         <span className="font-mono">+{summary.ratingsThisMonth}</span>
-                                        <span className="text-[#475569]">this month</span>
+                                        <span className="text-[#94A3B8]">this month</span>
                                     </div>
                                 </div>
                                 <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#FFF3EB]">
@@ -312,26 +464,24 @@ export default function RatingsIndex() {
                         </CardContent>
                     </Card>
                     {/* Top Scout */}
-                    <Card className="border-[#E2E8F0] bg-white">
+                    <Card className="border-[#2A2A2A] bg-[#0F0F0F]">
                         <CardContent className="p-6">
                             <div className="flex items-start justify-between">
                                 <div className="flex-1">
-                                    <div className="text-xs font-medium uppercase tracking-wider text-[#475569]">
+                                    <div className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">
                                         Top Scout
                                     </div>
                                     {summary.topScout ? (
                                         <>
                                             <div className="mt-3 flex items-center gap-3">
-                                                <img
-                                                    src={summary.topScout.avatar || PLACEHOLDER}
-                                                    alt={summary.topScout.name}
-                                                    className="h-10 w-10 rounded-full border border-[#E2E8F0] object-cover"
-                                                />
+                                                <div className="h-10 w-10 rounded-full bg-[#2A2A2A] flex items-center justify-center">
+                                                    <User className="h-5 w-5 text-[#94A3B8]" />
+                                                </div>
                                                 <div className="min-w-0 flex-1">
-                                                    <div className="truncate font-display text-lg font-semibold text-[#0F172A]">
+                                                    <div className="truncate font-display text-lg font-semibold text-white">
                                                         {summary.topScout.name}
                                                     </div>
-                                                    <div className="truncate text-xs text-[#475569]">
+                                                    <div className="truncate text-xs text-[#94A3B8]">
                                                         {summary.topScout.organization ?? '—'}
                                                     </div>
                                                 </div>
@@ -352,11 +502,12 @@ export default function RatingsIndex() {
                         </CardContent>
                     </Card>
                 </div>
-                {/* Filters + Table */}
-                <Card className="border-[#E2E8F0] bg-white">
-                    <CardHeader className="border-b border-[#E2E8F0] p-6">
+
+                {/* ──── RATINGS TABLE ──── */}
+                <Card className="border-[#2A2A2A] bg-[#0F0F0F]">
+                    <CardHeader className="border-b border-[#2A2A2A] p-6">
                         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                            <CardTitle className="font-display text-lg font-semibold uppercase tracking-wide text-[#0F172A]">
+                            <CardTitle className="font-display text-lg font-semibold uppercase tracking-wide text-white">
                                 All Ratings
                             </CardTitle>
                             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -366,11 +517,12 @@ export default function RatingsIndex() {
                                         placeholder="Search scout or player..."
                                         value={search}
                                         onChange={(e) => setSearch(e.target.value)}
-                                        className="w-full border-[#E2E8F0] bg-white pl-9 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 sm:w-72"
+                                        className="w-full border-[#2A2A2A] bg-[#1A1A1A] pl-9 text-sm text-white placeholder:text-[#94A3B8] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 sm:w-72"
                                     />
                                 </div>
-                                {/* <Select value={scoutFilter} onValueChange={setScoutFilter}>
-                                    <SelectTrigger className="w-full border-[#E2E8F0] bg-white text-sm text-[#0F172A] sm:w-48">
+                                {/* Scout Filter Dropdown (যদি দরকার হয়) */}
+                                <Select value={scoutFilter} onValueChange={setScoutFilter}>
+                                    <SelectTrigger className="w-full border-[#2A2A2A] bg-[#1A1A1A] text-sm text-white sm:w-48">
                                         <Filter className="mr-2 h-4 w-4 text-[#94A3B8]" />
                                         <SelectValue placeholder="All scouts" />
                                     </SelectTrigger>
@@ -382,7 +534,7 @@ export default function RatingsIndex() {
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
-                                </Select> */}
+                                </Select>
                             </div>
                         </div>
                     </CardHeader>
@@ -390,31 +542,15 @@ export default function RatingsIndex() {
                         <div className="overflow-x-auto">
                             <Table>
                                 <TableHeader>
-                                    <TableRow className="border-[#E2E8F0] hover:bg-transparent">
-                                        <TableHead className="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[#475569]">
-                                            Scout
-                                        </TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#475569]">
-                                            Player
-                                        </TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#475569]">
-                                            Technical
-                                        </TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#475569]">
-                                            Physical
-                                        </TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#475569]">
-                                            Mental
-                                        </TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#475569]">
-                                            Overall
-                                        </TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#475569]">
-                                            Date
-                                        </TableHead>
-                                        <TableHead className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-[#475569]">
-                                            Actions
-                                        </TableHead>
+                                    <TableRow className="border-[#2A2A2A] hover:bg-transparent">
+                                        <TableHead className="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Scout</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Player</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Technical</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Physical</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Mental</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Overall</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Date</TableHead>
+                                        <TableHead className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -425,114 +561,98 @@ export default function RatingsIndex() {
                                             </TableCell>
                                         </TableRow>
                                     )}
-                                    {ratings.data.map((rating) => (
-                                        <TableRow
-                                            key={rating.id}
-                                            className="border-[#E2E8F0] hover:bg-[#F8FAFC]"
-                                        >
-                                            <TableCell className="px-6 py-4">
-                                                <div className="flex items-center gap-3">
-                                                    <img
-                                                        src={rating.scout.avatar || PLACEHOLDER}
-                                                        alt={rating.scout.name}
-                                                        className="h-9 w-9 rounded-full border border-[#E2E8F0] object-cover"
-                                                    />
-                                                    <div>
-                                                        <div className="text-sm font-semibold text-[#0F172A]">
-                                                            {rating.scout.name}
+                                    {ratings.data.map((rating) => {
+                                        if (rating.scout.role !== 'scout') return null;
+                                        return (
+                                            <TableRow key={rating.id} className="border-[#2A2A2A] hover:bg-[#1A1A1A]">
+                                                <TableCell className="px-6 py-4">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="h-9 w-9 rounded-full bg-[#2A2A2A] flex items-center justify-center">
+                                                            <User className="h-4 w-4 text-[#94A3B8]" />
                                                         </div>
-                                                        <div className="text-xs text-[#475569]">
-                                                            {rating.scout.organization ?? '—'}
+                                                        <div>
+                                                            <div className="text-sm font-semibold text-white">{rating.scout.name}</div>
+                                                            <div className="text-xs text-[#94A3B8]">{rating.scout.organization ?? '—'}</div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell className="py-4">
-                                                <div className="flex items-center gap-3">
-                                                    <img
-                                                        src={rating.player.avatar || PLACEHOLDER}
-                                                        alt={rating.player.name}
-                                                        className="h-9 w-9 rounded-full border border-[#E2E8F0] object-cover"
-                                                    />
-                                                    <div>
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="text-sm font-semibold text-[#0F172A]">
-                                                                {rating.player.name}
-                                                            </span>
-                                                            {rating.player.position && (
-                                                                <span className="rounded border border-[#FF6B00] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#CC5500]">
-                                                                    {rating.player.position}
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                        <div className="text-xs text-[#475569]">
-                                                            {rating.player.club ?? '—'}
+                                                </TableCell>
+                                                <TableCell className="py-4">
+                                                    <div className="flex items-center gap-3">
+                                                        <img
+                                                            src={rating.player.avatar || PLACEHOLDER}
+                                                            alt={rating.player.name}
+                                                            className="h-9 w-9 rounded-full border border-[#2A2A2A] object-cover"
+                                                        />
+                                                        <div>
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="text-sm font-semibold text-white">{rating.player.name}</span>
+                                                                {rating.player.position && (
+                                                                    <span className="rounded border border-[#FF6B00] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#CC5500]">
+                                                                        {rating.player.position}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                            <div className="text-xs text-[#94A3B8]">{rating.player.club ?? '—'}</div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell className="py-4">
-                                                <StarsInline value={rating.technical} />
-                                            </TableCell>
-                                            <TableCell className="py-4">
-                                                <StarsInline value={rating.physical} />
-                                            </TableCell>
-                                            <TableCell className="py-4">
-                                                <StarsInline value={rating.mental} />
-                                            </TableCell>
-                                            <TableCell className="py-4">
-                                                <div className="inline-flex items-center gap-1.5 rounded-md bg-[#FFF3EB] px-2 py-1">
-                                                    <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
-                                                    <span className="font-mono text-sm font-semibold text-[#CC5500]">
-                                                        {rating.overall.toFixed(1)}
-                                                    </span>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell className="py-4">
-                                                <div className="font-mono text-xs text-[#475569]">
-                                                    {rating.date
-                                                        ? new Date(rating.date).toLocaleDateString('en-GB', {
-                                                            day: '2-digit',
-                                                            month: 'short',
-                                                            year: 'numeric',
-                                                        })
-                                                        : '—'}
-                                                </div>
-                                            </TableCell>
-                                            <TableCell className="px-6 py-4 text-right">
-                                                <div className="flex items-center justify-end gap-1">
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        onClick={() => setViewRating(rating)}
-                                                        className="h-8 w-8 p-0 text-[#475569] hover:bg-[#FFF3EB] hover:text-[#FF6B00]"
-                                                    >
-                                                        <Eye className="h-4 w-4" />
-                                                    </Button>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        onClick={() => setDeleteRating(rating)}
-                                                        className="h-8 w-8 p-0 text-[#475569] hover:bg-red-50 hover:text-[#DC2626]"
-                                                    >
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                                </TableCell>
+                                                <TableCell className="py-4"><StarsInline value={rating.technical} /></TableCell>
+                                                <TableCell className="py-4"><StarsInline value={rating.physical} /></TableCell>
+                                                <TableCell className="py-4"><StarsInline value={rating.mental} /></TableCell>
+                                                <TableCell className="py-4">
+                                                    <div className="inline-flex items-center gap-1.5 rounded-md bg-[#FFF3EB] px-2 py-1">
+                                                        <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
+                                                        <span className="font-mono text-sm font-semibold text-[#CC5500]">
+                                                            {rating.overall.toFixed(1)}
+                                                        </span>
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell className="py-4">
+                                                    <div className="font-mono text-xs text-[#94A3B8]">
+                                                        {rating.date
+                                                            ? new Date(rating.date).toLocaleDateString('en-GB', {
+                                                                day: '2-digit',
+                                                                month: 'short',
+                                                                year: 'numeric',
+                                                            })
+                                                            : '—'}
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell className="px-6 py-4 text-right">
+                                                    <div className="flex items-center justify-end gap-1">
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={() => setViewRating(rating)}
+                                                            className="h-8 w-8 p-0 text-[#94A3B8] hover:bg-[#2A2A2A] hover:text-[#FF6B00]"
+                                                        >
+                                                            <Eye className="h-4 w-4" />
+                                                        </Button>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={() => setDeleteRating(rating)}
+                                                            className="h-8 w-8 p-0 text-[#94A3B8] hover:bg-red-50 hover:text-[#DC2626]"
+                                                        >
+                                                            <Trash2 className="h-4 w-4" />
+                                                        </Button>
+                                                    </div>
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
                                 </TableBody>
                             </Table>
                         </div>
-                        {/* Pagination */}
-                        <div className="flex flex-col items-start gap-3 border-t border-[#E2E8F0] p-6 sm:flex-row sm:items-center sm:justify-between">
-                            <div className="text-xs text-[#475569]">
+                        {/* Ratings Pagination */}
+                        <div className="flex flex-col items-start gap-3 border-t border-[#2A2A2A] p-6 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="text-xs text-[#94A3B8]">
                                 Showing{' '}
-                                <span className="font-mono font-semibold text-[#0F172A]">
+                                <span className="font-mono font-semibold text-white">
                                     {ratings.from ?? 0}-{ratings.to ?? 0}
                                 </span>{' '}
                                 of{' '}
-                                <span className="font-mono font-semibold text-[#0F172A]">
+                                <span className="font-mono font-semibold text-white">
                                     {ratings.total.toLocaleString()}
                                 </span>{' '}
                                 ratings
@@ -543,7 +663,7 @@ export default function RatingsIndex() {
                                     size="sm"
                                     disabled={ratings.current_page <= 1}
                                     onClick={() => goToPage(ratings.current_page - 1)}
-                                    className="border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F8FAFC] disabled:opacity-50"
+                                    className="border-[#2A2A2A] bg-[#1A1A1A] text-white hover:bg-[#2A2A2A] disabled:opacity-50"
                                 >
                                     <ChevronLeft className="mr-1 h-4 w-4" />
                                     Previous
@@ -564,7 +684,7 @@ export default function RatingsIndex() {
                                                 variant="outline"
                                                 size="sm"
                                                 onClick={() => goToPage(p)}
-                                                className="h-8 w-8 border-[#E2E8F0] bg-white p-0 font-mono text-[#0F172A] hover:bg-[#F8FAFC]"
+                                                className="h-8 w-8 border-[#2A2A2A] bg-[#1A1A1A] p-0 font-mono text-white hover:bg-[#2A2A2A]"
                                             >
                                                 {p}
                                             </Button>
@@ -576,7 +696,7 @@ export default function RatingsIndex() {
                                     size="sm"
                                     disabled={ratings.current_page >= ratings.last_page}
                                     onClick={() => goToPage(ratings.current_page + 1)}
-                                    className="border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F8FAFC] disabled:opacity-50"
+                                    className="border-[#2A2A2A] bg-[#1A1A1A] text-white hover:bg-[#2A2A2A] disabled:opacity-50"
                                 >
                                     Next
                                     <ChevronRight className="ml-1 h-4 w-4" />
@@ -585,56 +705,50 @@ export default function RatingsIndex() {
                         </div>
                     </CardContent>
                 </Card>
-                {/* Bottom 2-col */}
+
+                {/* ──── MOST RATED PLAYERS ──── */}
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">
-                    {/* Most Rated Players */}
-                    <Card className="border-[#E2E8F0] bg-white">
-                        <CardHeader className="border-b border-[#E2E8F0] p-6">
-                            <CardTitle className="font-display text-lg font-semibold uppercase tracking-wide text-[#0F172A]">
+                    <Card className="border-[#2A2A2A] bg-[#0F0F0F]">
+                        <CardHeader className="border-b border-[#2A2A2A] p-6">
+                            <CardTitle className="font-display text-lg font-semibold uppercase tracking-wide text-white">
                                 Most Rated Players
                             </CardTitle>
-                            <p className="mt-1 text-xs text-[#475569]">
+                            <p className="mt-1 text-xs text-[#94A3B8]">
                                 Players with the highest number of submitted ratings
                             </p>
                         </CardHeader>
                         <CardContent className="p-0">
-                            <div className="divide-y divide-[#E2E8F0]">
+                            <div className="divide-y divide-[#2A2A2A]">
                                 {mostRatedPlayers.map((player, idx) => (
                                     <Link
                                         key={player.id}
                                         href={`/players/${player.id}`}
-                                        className="flex items-center gap-4 p-4 transition hover:bg-[#F8FAFC]"
+                                        className="flex items-center gap-4 p-4 transition hover:bg-[#1A1A1A]"
                                     >
-                                        <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-[#F8FAFC] font-mono text-xs font-semibold text-[#475569]">
+                                        <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-[#1A1A1A] font-mono text-xs font-semibold text-[#94A3B8]">
                                             {idx + 1}
                                         </div>
                                         <img
                                             src={player.avatar || PLACEHOLDER}
                                             alt={player.name}
-                                            className="h-11 w-11 rounded-full border border-[#E2E8F0] object-cover"
+                                            className="h-11 w-11 rounded-full border border-[#2A2A2A] object-cover"
                                         />
                                         <div className="min-w-0 flex-1">
                                             <div className="flex items-center gap-2">
-                                                <span className="truncate text-sm font-semibold text-[#0F172A]">
-                                                    {player.name}
-                                                </span>
+                                                <span className="truncate text-sm font-semibold text-white">{player.name}</span>
                                                 {player.position && (
                                                     <span className="rounded border border-[#FF6B00] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#CC5500]">
                                                         {player.position}
                                                     </span>
                                                 )}
                                             </div>
-                                            <div className="truncate text-xs text-[#475569]">{player.club ?? '—'}</div>
+                                            <div className="truncate text-xs text-[#94A3B8]">{player.club ?? '—'}</div>
                                         </div>
                                         <div className="flex flex-col items-end gap-1">
-                                            <div className="font-mono text-sm font-semibold text-[#0F172A]">
-                                                {player.ratings}
-                                            </div>
+                                            <div className="font-mono text-sm font-semibold text-white">{player.ratings}</div>
                                             <div className="flex items-center gap-1">
                                                 <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
-                                                <span className="font-mono text-xs text-[#475569]">
-                                                    {player.avg.toFixed(1)}
-                                                </span>
+                                                <span className="font-mono text-xs text-[#94A3B8]">{player.avg.toFixed(1)}</span>
                                             </div>
                                         </div>
                                     </Link>
@@ -645,71 +759,19 @@ export default function RatingsIndex() {
                             </div>
                         </CardContent>
                     </Card>
-                    {/* Most Active Scouts */}
-                    {/* <Card className="border-[#E2E8F0] bg-white">
-                        <CardHeader className="border-b border-[#E2E8F0] p-6">
-                            <CardTitle className="font-display text-lg font-semibold uppercase tracking-wide text-[#0F172A]">
-                                Most Active Scouts
-                            </CardTitle>
-                            <p className="mt-1 text-xs text-[#475569]">
-                                Scouts who have submitted the most ratings this period
-                            </p>
-                        </CardHeader>
-                        <CardContent className="p-0">
-                            <div className="divide-y divide-[#E2E8F0]">
-                                {mostActiveScouts.map((scout, idx) => (
-                                    <Link
-                                        key={scout.id}
-                                        href={`/admin/scouts/${scout.id}`}
-                                        className="flex items-center gap-4 p-4 transition hover:bg-[#F8FAFC]"
-                                    >
-                                        <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-[#F8FAFC] font-mono text-xs font-semibold text-[#475569]">
-                                            {idx + 1}
-                                        </div>
-                                        <img
-                                            src={scout.avatar || PLACEHOLDER}
-                                            alt={scout.name}
-                                            className="h-11 w-11 rounded-full border border-[#E2E8F0] object-cover"
-                                        />
-                                        <div className="min-w-0 flex-1">
-                                            <div className="truncate text-sm font-semibold text-[#0F172A]">
-                                                {scout.name}
-                                            </div>
-                                            <div className="truncate text-xs text-[#475569]">
-                                                {scout.organization ?? '—'}{scout.country ? ` · ${scout.country}` : ''}
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col items-end gap-1">
-                                            <div className="font-mono text-sm font-semibold text-[#0F172A]">
-                                                {scout.ratings}
-                                            </div>
-                                            <div className="flex items-center gap-1">
-                                                <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
-                                                <span className="font-mono text-xs text-[#475569]">
-                                                    {scout.avgGiven.toFixed(1)}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                ))}
-                                {mostActiveScouts.length === 0 && (
-                                    <div className="p-6 text-center text-sm text-[#94A3B8]">No data yet.</div>
-                                )}
-                            </div>
-                        </CardContent>
-                    </Card> */}
                 </div>
             </div>
-            {/* VIEW DIALOG */}
+
+            {/* ──── VIEW DIALOG ──── */}
             <Dialog open={!!viewRating} onOpenChange={() => setViewRating(null)}>
-                <DialogContent className="max-w-3xl border-[#E2E8F0] bg-white">
+                <DialogContent className="max-w-3xl border-[#2A2A2A] bg-[#0F0F0F] text-white">
                     {viewRating && (
                         <>
                             <DialogHeader>
-                                <DialogTitle className="font-display text-2xl font-bold uppercase tracking-tight text-[#0F172A]">
+                                <DialogTitle className="font-display text-2xl font-bold uppercase tracking-tight text-white">
                                     Rating Details
                                 </DialogTitle>
-                                <DialogDescription className="text-sm text-[#475569]">
+                                <DialogDescription className="text-sm text-[#94A3B8]">
                                     Submitted on{' '}
                                     {viewRating.date
                                         ? new Date(viewRating.date).toLocaleDateString('en-GB', {
@@ -721,132 +783,83 @@ export default function RatingsIndex() {
                                 </DialogDescription>
                             </DialogHeader>
                             <div className="space-y-5">
-                                {/* Profiles */}
                                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                    {/* Scout */}
-                                    <div className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-4">
-                                        <div className="mb-3 text-xs font-medium uppercase tracking-wider text-[#475569]">
-                                            Scout
-                                        </div>
+                                    <div className="rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] p-4">
+                                        <div className="mb-3 text-xs font-medium uppercase tracking-wider text-[#94A3B8]">Scout</div>
                                         <div className="flex items-center gap-3">
-                                            <img
-                                                src={viewRating.scout.avatar || PLACEHOLDER}
-                                                alt={viewRating.scout.name}
-                                                className="h-12 w-12 rounded-full border border-[#E2E8F0] object-cover"
-                                            />
+                                            <div className="h-12 w-12 rounded-full bg-[#2A2A2A] flex items-center justify-center">
+                                                <User className="h-6 w-6 text-[#94A3B8]" />
+                                            </div>
                                             <div className="min-w-0 flex-1">
-                                                <div className="truncate font-display text-base font-semibold text-[#0F172A]">
+                                                <div className="truncate font-display text-base font-semibold text-white">
                                                     {viewRating.scout.name}
                                                 </div>
-                                                <div className="truncate text-xs text-[#475569]">
-                                                    {viewRating.scout.organization ?? '—'}
-                                                </div>
-                                                <div className="text-xs text-[#94A3B8]">
-                                                    {viewRating.scout.country ?? ''}
-                                                </div>
+                                                <div className="truncate text-xs text-[#94A3B8]">{viewRating.scout.organization ?? '—'}</div>
+                                                <div className="text-xs text-[#94A3B8]">{viewRating.scout.country ?? ''}</div>
                                             </div>
                                         </div>
                                     </div>
-                                    {/* Player */}
-                                    <div className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-4">
-                                        <div className="mb-3 text-xs font-medium uppercase tracking-wider text-[#475569]">
-                                            Player
-                                        </div>
+                                    <div className="rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] p-4">
+                                        <div className="mb-3 text-xs font-medium uppercase tracking-wider text-[#94A3B8]">Player</div>
                                         <div className="flex items-center gap-3">
-                                            <img
-                                                src={viewRating.player.avatar || PLACEHOLDER}
-                                                alt={viewRating.player.name}
-                                                className="h-12 w-12 rounded-full border border-[#E2E8F0] object-cover"
-                                            />
+                                            <img src={viewRating.player.avatar || PLACEHOLDER} alt={viewRating.player.name} className="h-12 w-12 rounded-full border border-[#2A2A2A] object-cover" />
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="truncate font-display text-base font-semibold text-[#0F172A]">
-                                                        {viewRating.player.name}
-                                                    </span>
+                                                    <span className="truncate font-display text-base font-semibold text-white">{viewRating.player.name}</span>
                                                     {viewRating.player.position && (
                                                         <span className="rounded border border-[#FF6B00] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#CC5500]">
                                                             {viewRating.player.position}
                                                         </span>
                                                     )}
                                                 </div>
-                                                <div className="truncate text-xs text-[#475569]">
-                                                    {viewRating.player.club ?? '—'}
-                                                </div>
+                                                <div className="truncate text-xs text-[#94A3B8]">{viewRating.player.club ?? '—'}</div>
                                                 {viewRating.player.age !== null && (
-                                                    <div className="text-xs text-[#94A3B8]">
-                                                        Age <span className="font-mono">{viewRating.player.age}</span>
-                                                    </div>
+                                                    <div className="text-xs text-[#94A3B8]">Age <span className="font-mono">{viewRating.player.age}</span></div>
                                                 )}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                {/* Ratings Grid */}
                                 <div>
-                                    <div className="mb-3 text-xs font-medium uppercase tracking-wider text-[#475569]">
-                                        Ratings Breakdown
-                                    </div>
+                                    <div className="mb-3 text-xs font-medium uppercase tracking-wider text-[#94A3B8]">Ratings Breakdown</div>
                                     <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
                                         <StarsLarge value={viewRating.technical} label="Technical" />
                                         <StarsLarge value={viewRating.physical} label="Physical" />
                                         <StarsLarge value={viewRating.mental} label="Mental" />
                                         <div className="rounded-lg border border-[#FF6B00] bg-[#FFF3EB] p-4">
-                                            <div className="text-xs font-medium uppercase tracking-wider text-[#CC5500]">
-                                                Overall
-                                            </div>
+                                            <div className="text-xs font-medium uppercase tracking-wider text-[#CC5500]">Overall</div>
                                             <div className="mt-2 flex items-center gap-1">
                                                 {Array.from({ length: 5 }).map((_, i) => (
-                                                    <Star
-                                                        key={i}
-                                                        className={`w-5 h-5 ${i < Math.round(viewRating.overall)
-                                                            ? 'fill-[#FF6B00] text-[#FF6B00]'
-                                                            : 'fill-transparent text-[#FF6B00]/30'
-                                                            }`}
-                                                    />
+                                                    <Star key={i} className={`w-5 h-5 ${i < Math.round(viewRating.overall) ? 'fill-[#FF6B00] text-[#FF6B00]' : 'fill-transparent text-[#FF6B00]/30'}`} />
                                                 ))}
                                             </div>
-                                            <div className="mt-2 font-mono text-2xl font-bold text-[#CC5500]">
-                                                {viewRating.overall.toFixed(1)}
-                                            </div>
+                                            <div className="mt-2 font-mono text-2xl font-bold text-[#CC5500]">{viewRating.overall.toFixed(1)}</div>
                                         </div>
                                     </div>
                                 </div>
-                                {/* Match Context */}
                                 {viewRating.matchContext && (
-                                    <div className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-4">
+                                    <div className="rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] p-4">
                                         <div className="flex items-center gap-2">
                                             <Calendar className="h-4 w-4 text-[#FF6B00]" />
-                                            <div className="text-xs font-medium uppercase tracking-wider text-[#475569]">
-                                                Match Context
-                                            </div>
+                                            <div className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">Match Context</div>
                                         </div>
-                                        <div className="mt-2 text-sm text-[#0F172A]">{viewRating.matchContext}</div>
+                                        <div className="mt-2 text-sm text-white">{viewRating.matchContext}</div>
                                     </div>
                                 )}
-                                {/* Notes */}
                                 {viewRating.notes && (
                                     <div>
-                                        <div className="mb-2 text-xs font-medium uppercase tracking-wider text-[#475569]">
-                                            Scout Notes
-                                        </div>
-                                        <div className="rounded-lg border border-[#E2E8F0] bg-white p-4 text-sm leading-relaxed text-[#0F172A]">
+                                        <div className="mb-2 text-xs font-medium uppercase tracking-wider text-[#94A3B8]">Scout Notes</div>
+                                        <div className="rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] p-4 text-sm leading-relaxed text-white">
                                             {viewRating.notes}
                                         </div>
                                     </div>
                                 )}
                             </div>
                             <DialogFooter className="gap-2">
-                                <Button
-                                    variant="outline"
-                                    onClick={() => setViewRating(null)}
-                                    className="border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F8FAFC]"
-                                >
+                                <Button variant="outline" onClick={() => setViewRating(null)} className="border-[#2A2A2A] bg-[#1A1A1A] text-white hover:bg-[#2A2A2A]">
                                     Close
                                 </Button>
-                                <Link
-                                    href={`/admin/players/${viewRating.player.id}`}
-                                    className="inline-flex items-center justify-center rounded-md bg-[#FF6B00] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#CC5500]"
-                                >
+                                <Link href={`/admin/players/${viewRating.player.id}`} className="inline-flex items-center justify-center rounded-md bg-[#FF6B00] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#CC5500]">
                                     View Player Profile
                                 </Link>
                             </DialogFooter>
@@ -854,57 +867,42 @@ export default function RatingsIndex() {
                     )}
                 </DialogContent>
             </Dialog>
-            {/* DELETE DIALOG */}
+
+            {/* ──── DELETE DIALOG ──── */}
             <Dialog open={!!deleteRating} onOpenChange={() => setDeleteRating(null)}>
-                <DialogContent className="max-w-md border-[#E2E8F0] bg-white">
+                <DialogContent className="max-w-md border-[#2A2A2A] bg-[#0F0F0F] text-white">
                     {deleteRating && (
                         <>
                             <DialogHeader>
-                                <DialogTitle className="font-display text-xl font-bold uppercase tracking-tight text-[#0F172A]">
+                                <DialogTitle className="font-display text-xl font-bold uppercase tracking-tight text-white">
                                     Delete Rating
                                 </DialogTitle>
-                                <DialogDescription className="text-sm text-[#475569]">
-                                    This action cannot be undone. The rating will be permanently removed from the
-                                    platform.
+                                <DialogDescription className="text-sm text-[#94A3B8]">
+                                    This action cannot be undone. The rating will be permanently removed from the platform.
                                 </DialogDescription>
                             </DialogHeader>
-                            <div className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-4">
+                            <div className="rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] p-4">
                                 <div className="flex items-center gap-3">
-                                    <img
-                                        src={deleteRating.scout.avatar || PLACEHOLDER}
-                                        alt={deleteRating.scout.name}
-                                        className="h-10 w-10 rounded-full border border-[#E2E8F0] object-cover"
-                                    />
+                                    <div className="h-10 w-10 rounded-full bg-[#2A2A2A] flex items-center justify-center">
+                                        <User className="h-5 w-5 text-[#94A3B8]" />
+                                    </div>
                                     <div className="min-w-0 flex-1">
-                                        <div className="truncate text-sm font-semibold text-[#0F172A]">
-                                            {deleteRating.scout.name}
-                                        </div>
-                                        <div className="truncate text-xs text-[#475569]">
+                                        <div className="truncate text-sm font-semibold text-white">{deleteRating.scout.name}</div>
+                                        <div className="truncate text-xs text-[#94A3B8]">
                                             rated <span className="font-semibold">{deleteRating.player.name}</span>
                                         </div>
                                     </div>
                                     <div className="inline-flex items-center gap-1 rounded-md bg-[#FFF3EB] px-2 py-1">
                                         <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
-                                        <span className="font-mono text-sm font-semibold text-[#CC5500]">
-                                            {deleteRating.overall.toFixed(1)}
-                                        </span>
+                                        <span className="font-mono text-sm font-semibold text-[#CC5500]">{deleteRating.overall.toFixed(1)}</span>
                                     </div>
                                 </div>
                             </div>
                             <DialogFooter className="gap-2">
-                                <Button
-                                    variant="outline"
-                                    onClick={() => setDeleteRating(null)}
-                                    disabled={deleting}
-                                    className="border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F8FAFC]"
-                                >
+                                <Button variant="outline" onClick={() => setDeleteRating(null)} disabled={deleting} className="border-[#2A2A2A] bg-[#1A1A1A] text-white hover:bg-[#2A2A2A]">
                                     Cancel
                                 </Button>
-                                <Button
-                                    onClick={handleDelete}
-                                    disabled={deleting}
-                                    className="bg-[#DC2626] text-white hover:bg-[#B91C1C]"
-                                >
+                                <Button onClick={handleDelete} disabled={deleting} className="bg-[#DC2626] text-white hover:bg-[#B91C1C]">
                                     <Trash2 className="mr-2 h-4 w-4" />
                                     {deleting ? 'Deleting...' : 'Delete Rating'}
                                 </Button>

@@ -122,6 +122,7 @@ export default function UsersIndex() {
     });
     const [creating, setCreating] = useState(false);
 
+
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // react-select-এর জন্য কান্ট্রি অপশন
@@ -237,9 +238,15 @@ export default function UsersIndex() {
             color: '#F5F5F5',
         }),
     };
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Users',
+            href: '',
+        },
+    ];
 
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <div className="overflow-x-hidden">
                 {/* TOP ACTIONS BAR */}
                 <div className="bg-[#0f0f0f] border-b border-[#2A2A2A] -mx-8 px-8 py-4 mb-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
@@ -254,7 +261,7 @@ export default function UsersIndex() {
                                 className="pl-9 h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#64748B] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-[#FF6B00]"
                             />
                         </form>
-                        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full sm:w-auto">
+                        {/* <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full sm:w-auto">
                             <TabsList className="bg-[#1A1A1A] border border-[#2A2A2A] h-9 p-0.5">
                                 <TabsTrigger value="all" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#FF6B00] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">All</TabsTrigger>
                                 <TabsTrigger value="players" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#FF6B00] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">Players</TabsTrigger>
@@ -262,7 +269,7 @@ export default function UsersIndex() {
                                 <TabsTrigger value="agents" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#FF6B00] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">Agents</TabsTrigger>
                                 <TabsTrigger value="clubs" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#FF6B00] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">Clubs</TabsTrigger>
                             </TabsList>
-                        </Tabs>
+                        </Tabs> */}
                     </div>
 
                     <div className="flex gap-2">
@@ -293,8 +300,8 @@ export default function UsersIndex() {
                                     <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold w-12 py-4 px-6">#</TableHead>
                                     <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4">User</TableHead>
                                     <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4 hidden md:table-cell">Email</TableHead>
-                                    <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4">Role</TableHead>
-                                    <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4 hidden lg:table-cell">Subscription</TableHead>
+                                    {/* <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4">Role</TableHead> */}
+                                    {/* <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4 hidden lg:table-cell">Subscription</TableHead> */}
                                     <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4 hidden sm:table-cell">Status</TableHead>
                                     <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4 hidden xl:table-cell">Joined</TableHead>
                                     <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4 text-right pr-6">Actions</TableHead>
@@ -323,16 +330,16 @@ export default function UsersIndex() {
                                             </div>
                                         </TableCell>
                                         <TableCell className="text-sm text-[#94A3B8] py-4 hidden md:table-cell">{user.email}</TableCell>
-                                        <TableCell className="py-4">
+                                        {/* <TableCell className="py-4">
                                             <Badge variant="outline" className={`${roleBadgeClasses[user.role] || 'border-gray-500 text-gray-300 bg-gray-800'} text-xs font-medium px-2.5 py-0.5 rounded-md`}>
                                                 {user.role}
                                             </Badge>
-                                        </TableCell>
-                                        <TableCell className="py-4 hidden lg:table-cell">
+                                        </TableCell> */}
+                                        {/* <TableCell className="py-4 hidden lg:table-cell">
                                             <Badge className={`${subBadgeClasses[user.subscription] || 'border-gray-500 text-gray-300 bg-gray-800'} text-xs font-medium px-2.5 py-0.5 rounded-md`}>
                                                 {user.subscription}
                                             </Badge>
-                                        </TableCell>
+                                        </TableCell> */}
                                         <TableCell className="py-4 hidden sm:table-cell">
                                             <Badge className={`${statusClasses[user.status] || 'bg-gray-600 text-white'} text-xs font-medium px-2.5 py-0.5 rounded-md`}>
                                                 {user.status}
