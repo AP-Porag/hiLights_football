@@ -181,7 +181,7 @@ export default function RatingsIndex() {
         }
         const t = setTimeout(() => {
             router.get(
-                route('admin.ratings.index'),
+                route('ratings.index'),
                 {
                     search: search || undefined,
                     scout: scoutFilter !== 'all' ? scoutFilter : undefined,
@@ -194,7 +194,7 @@ export default function RatingsIndex() {
 
     const goToPage = (page: number) => {
         router.get(
-            route('admin.ratings.index'),
+            route('ratings.index'),
             {
                 page,
                 search: search || undefined,
@@ -230,14 +230,14 @@ export default function RatingsIndex() {
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="font-display text-3xl font-bold uppercase tracking-tight text-[#0F172A]">
+                        <h1 className="font-display text-white text-3xl font-bold uppercase tracking-tight text-[#0F172A]">
                             Scout Ratings
                         </h1>
-                        <p className="mt-1 text-sm text-[#475569]">
+                        <p className="mt-1 text-sm text-white">
                             Monitor all ratings submitted by scouts across the platform.
                         </p>
                     </div>
-                    <div className="flex items-center gap-2">
+                    {/* <div className="flex items-center gap-2">
                         <a
                             // href={route('admin.ratings.export')}
                             className="inline-flex items-center rounded-md border border-[#E2E8F0] bg-white px-4 py-2 text-sm font-medium text-[#0F172A] transition hover:bg-[#F8FAFC]"
@@ -245,7 +245,7 @@ export default function RatingsIndex() {
                             <Download className="mr-2 h-4 w-4" />
                             Export CSV
                         </a>
-                    </div>
+                    </div> */}
                 </div>
                 {/* Summary Widgets */}
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -369,7 +369,7 @@ export default function RatingsIndex() {
                                         className="w-full border-[#E2E8F0] bg-white pl-9 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 sm:w-72"
                                     />
                                 </div>
-                                <Select value={scoutFilter} onValueChange={setScoutFilter}>
+                                {/* <Select value={scoutFilter} onValueChange={setScoutFilter}>
                                     <SelectTrigger className="w-full border-[#E2E8F0] bg-white text-sm text-[#0F172A] sm:w-48">
                                         <Filter className="mr-2 h-4 w-4 text-[#94A3B8]" />
                                         <SelectValue placeholder="All scouts" />
@@ -382,7 +382,7 @@ export default function RatingsIndex() {
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
-                                </Select>
+                                </Select> */}
                             </div>
                         </div>
                     </CardHeader>
