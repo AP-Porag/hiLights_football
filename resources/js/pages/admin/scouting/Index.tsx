@@ -586,7 +586,7 @@ export default function RatingsIndex() {
                     </CardContent>
                 </Card>
                 {/* Bottom 2-col */}
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">
                     {/* Most Rated Players */}
                     <Card className="border-[#E2E8F0] bg-white">
                         <CardHeader className="border-b border-[#E2E8F0] p-6">
@@ -602,7 +602,7 @@ export default function RatingsIndex() {
                                 {mostRatedPlayers.map((player, idx) => (
                                     <Link
                                         key={player.id}
-                                        href={`/admin/players/${player.id}`}
+                                        href={`/players/${player.id}`}
                                         className="flex items-center gap-4 p-4 transition hover:bg-[#F8FAFC]"
                                     >
                                         <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-[#F8FAFC] font-mono text-xs font-semibold text-[#475569]">
@@ -646,7 +646,7 @@ export default function RatingsIndex() {
                         </CardContent>
                     </Card>
                     {/* Most Active Scouts */}
-                    <Card className="border-[#E2E8F0] bg-white">
+                    {/* <Card className="border-[#E2E8F0] bg-white">
                         <CardHeader className="border-b border-[#E2E8F0] p-6">
                             <CardTitle className="font-display text-lg font-semibold uppercase tracking-wide text-[#0F172A]">
                                 Most Active Scouts
@@ -697,7 +697,7 @@ export default function RatingsIndex() {
                                 )}
                             </div>
                         </CardContent>
-                    </Card>
+                    </Card> */}
                 </div>
             </div>
             {/* VIEW DIALOG */}

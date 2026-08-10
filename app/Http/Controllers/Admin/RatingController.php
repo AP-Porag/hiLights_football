@@ -223,18 +223,17 @@ class RatingController extends Controller
 
     public function publicPlayerDetails(Request $request, $id)
     {
+        // user_id দিয়ে প্রোফাইল খোঁজ
+        $player = PlayerProfile::with('user')->where('user_id', $id)->firstOrFail();
 
-
-        $player = PlayerProfile::with('user')->findOrFail($id);
-
-        // Increase profile views
+        // ভিউ বাড়ান
         $player->increment('views');
 
         $viewer = auth()->user();
 
-        // Visitor IP
+        // IP ঠিক করা
         $ip = app()->environment('local')
-            ? '8.8.8.8' // Localhost testing
+            ? '8.8.8.8'
             : $request->ip();
 
         $location = Location::get($ip);
