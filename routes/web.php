@@ -142,16 +142,18 @@ Route::middleware(['auth'])->prefix('scouting')->group(function () {
 
     Route::get('/', [ScoutController::class, 'index'])->name('scouting.dashboard');
 
+    // 🔥 স্পেসিফিক রাউট আগে
+    Route::get('/player/saved', [ScoutController::class, 'savedPlayers'])->name('scout.saved');
+    Route::put('/player/saved/{saved}', [ScoutController::class, 'updateNote'])->name('scout.saved.update');
+    Route::delete('/player/saved/{saved}', [ScoutController::class, 'removeSaved'])->name('scout.saved.destroy');
+
+    Route::post('/player/save/{id}', [ScoutController::class, 'toggleSave'])->name('scout.player.save');
+
+    // তারপর জেনেরিক {id} রাউট
     Route::get('/player/{id}', [ScoutController::class, 'playerDetails'])->name('player.details');
     Route::post('/player/{id}/rating', [ScoutController::class, 'storeRating'])->name('player.rating.store');
-
-
     Route::get('/player/{id}/report', [ScoutController::class, 'playerReport'])->name('player.report');
     Route::post('/player/{id}/report', [ScoutController::class, 'storeReport'])->name('player.report.store');
-
-    Route::get('/player/saved', function () {
-        return Inertia::render('scouting/search/Saved');
-    })->name('player.saved');
 });
 
 //all admin routes
@@ -235,7 +237,7 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 //Player Search
 Route::get('/players/search', [PlayerSearchController::class, 'search'])->name('players.search');
 
-Route::get('/players/{id}', [RatingController::class, 'publicPlayerDetails'])
+Route::get('/players/{id}', [ScoutController::class, 'publicPlayerDetails'])
     ->name('player.profile');
 
 
