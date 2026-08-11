@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('12345678'),
                 'role' => 'player',
                 'dob' => '2005-06-15',
-                'nationality' => 'BAN',
+                'nationality' => 'BD',
                 'remember_token' => Str::random(10),
             ]
         );

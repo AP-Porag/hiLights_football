@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AgentController;
+use App\Http\Controllers\Agent\AgentController as AController;
+use App\Http\Controllers\Club\ClubController as CController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Player\PlayerProfileController;
@@ -156,6 +158,42 @@ Route::middleware(['auth'])->prefix('scouting')->group(function () {
     Route::post('/player/{id}/report', [ScoutController::class, 'storeReport'])->name('player.report.store');
 });
 
+
+Route::prefix('agent')->middleware(['auth'])->group(function () {
+    Route::get('/', [AController::class, 'index'])->name('agent.dashboard');
+
+    // 🔥 স্পেসিফিক রাউট আগে
+    Route::get('/player/saved', [AController::class, 'savedPlayers'])->name('agent.saved');
+    Route::put('/player/saved/{saved}', [AController::class, 'updateNote'])->name('agent.saved.update');
+    Route::delete('/player/saved/{saved}', [AController::class, 'removeSaved'])->name('agent.saved.destroy');
+
+    Route::post('/player/save/{id}', [AController::class, 'toggleSave'])->name('agent.player.save');
+
+    // তারপর জেনেরিক {id} রাউট
+    Route::get('/player/{id}', [AController::class, 'playerDetails'])->name('player.details');
+    Route::post('/player/{id}/rating', [AController::class, 'storeRating'])->name('player.rating.store');
+    Route::get('/player/{id}/report', [AController::class, 'playerReport'])->name('player.report');
+    Route::post('/player/{id}/report', [AController::class, 'storeReport'])->name('player.report.store');
+});
+
+
+
+Route::prefix('club')->middleware(['auth'])->group(function () {
+    Route::get('/', [CController::class, 'index'])->name('club.dashboard');
+
+    // 🔥 স্পেসিফিক রাউট আগে
+    Route::get('/player/saved', [CController::class, 'savedPlayers'])->name('club.saved');
+    Route::put('/player/saved/{saved}', [CController::class, 'updateNote'])->name('club.saved.update');
+    Route::delete('/player/saved/{saved}', [CController::class, 'removeSaved'])->name('club.saved.destroy');
+
+    Route::post('/player/save/{id}', [CController::class, 'toggleSave'])->name('club.player.save');
+
+    // তারপর জেনেরিক {id} রাউট
+    Route::get('/player/{id}', [CController::class, 'playerDetails'])->name('player.details');
+    Route::post('/player/{id}/rating', [CController::class, 'storeRating'])->name('player.rating.store');
+    Route::get('/player/{id}/report', [CController::class, 'playerReport'])->name('player.report');
+    Route::post('/player/{id}/report', [CController::class, 'storeReport'])->name('player.report.store');
+});
 //all admin routes
 //Route::middleware(['auth'])->prefix('admin')->group(function () {
 Route::prefix('admin')->group(function () {
