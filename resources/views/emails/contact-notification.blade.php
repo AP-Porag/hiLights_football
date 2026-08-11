@@ -149,7 +149,7 @@
         <table class="detail-table">
             <tr>
                 <td class="label">👤 Name</td>
-                <td class="value"><strong>{{ $contact->full_name }}</strong></td>
+                <td class="value"><strong>{{ $contact->name }}</strong></td>
             </tr>
             <tr>
                 <td class="label">📧 Email</td>

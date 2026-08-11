@@ -294,13 +294,13 @@ export default function Index() {
                             <CardTitle className="font-display text-lg font-bold text-[#F5F5F5]">Recent Registrations</CardTitle>
                             <p className="mt-1 text-xs text-[#9A9A9A]">Last 8 sign-ups across all roles and regions</p>
                         </div>
-                        <Link
+                        {/* <Link
                             href="/admin/users"
                             className="inline-flex items-center gap-1 text-sm font-medium text-[#FF6B00] transition-colors hover:text-[#CC5500]"
                         >
                             View All
                             <ArrowUpRight className="h-3.5 w-3.5" />
-                        </Link>
+                        </Link> */}
                     </CardHeader>
                     <CardContent className="p-0">
                         {/* Desktop table */}

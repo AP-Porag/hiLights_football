@@ -964,7 +964,7 @@ export default function Index({
                                         key={p.id}
                                         className="bg-[#161616] border border-[#2A2A2A] rounded-2xl overflow-hidden cursor-pointer group transition-all hover:-translate-y-1 hover:shadow-[0_4px_20px_rgba(255,107,0,0.08)] hover:border-[#FF6B00] relative"
                                     >
-                                        <Link href={`/scouting/player/${p.id}`} className="block">
+                                        <Link href={`/agent/player/${p.id}`} className="block">
                                             {/* Photo area */}
                                             <div
                                                 className={`h-48 ${positionGradient(
