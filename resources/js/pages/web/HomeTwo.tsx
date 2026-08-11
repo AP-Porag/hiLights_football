@@ -59,7 +59,15 @@ const HomeTwo = () => {
     };
     const isLoggedIn = !!auth?.user;
     const dashboardHref =
-        auth?.user?.role === 'player' ? '/player' : '/scouting';
+        auth?.user?.role === 'player'
+            ? '/player'
+            : auth?.user?.role === 'agent'
+                ? '/agent'
+                : auth?.user?.role === 'club'
+                    ? '/club'
+                    : auth?.user?.role === 'admin'
+                        ? '/admin'
+                        : '/scouting';
 
     const steps = [
         {
@@ -331,12 +339,7 @@ const HomeTwo = () => {
                                     Community Highlights
                                 </h2>
                             </div>
-                            <Link href="/register?role=scout">
-                                <button className="flex cursor-pointer items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs lg:text-sm 2xl:text-base">
-                                    View All
-                                    <ArrowRight size={14} className="text-[#ff6b00]" />
-                                </button>
-                            </Link>
+                            <Link href={auth?.user ? auth.user.role === "player" ? "/player" : auth.user.role === "admin" ? "/admin" : auth.user.role === "agent" ? "/agent" : auth.user.role === "club" ? "/club" : "/scout" : "/register?role=scout"} > <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs"> View All <ArrowRight size={18} className="text-[#ff6b00] font-bold" /> </button> </Link>
                         </div>
 
                         {/* Rows */}
