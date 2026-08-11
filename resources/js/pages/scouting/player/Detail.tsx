@@ -373,8 +373,8 @@ export default function Detail() {
                                         Scout View
                                     </span>
                                 </div>
-                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                                    <button
+                                <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 mb-6">
+                                    {/* <button
                                         onClick={() => setIsShortlisted(!isShortlisted)}
                                         className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-colors ${isShortlisted
                                             ? 'bg-[rgba(255,107,0,0.12)] border-[#FF6B00] text-[#CC5500]'
@@ -383,7 +383,7 @@ export default function Detail() {
                                     >
                                         <Bookmark className={`w-5 h-5 ${isShortlisted ? 'fill-current' : ''}`} />
                                         <span className="text-xs font-semibold text-center">{isShortlisted ? 'Shortlisted' : 'Add to List'}</span>
-                                    </button>
+                                    </button> */}
                                     <Link href={`/scouting/player/${player?.id}/report`} className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#1F1F1F] border-[#2A2A2A] hover:border-[#FF6B00] transition-colors">
                                         <FileText className="w-5 h-5" />
                                         <span className="text-xs font-semibold text-center">Write Report</span>
@@ -878,8 +878,8 @@ export default function Detail() {
                             <p className="text-sm text-white/90 mt-1">Track players, compare profiles, and export scouting reports.</p>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                            <Link href="/scout/shortlist" className="bg-white hover:bg-white/90 text-[#FF6B00] px-6 py-3 rounded-xl font-bold text-sm text-center transition-colors">Open My Shortlist</Link>
-                            <Link href="/scouting/dashboard" className="bg-[#0F172A] hover:bg-[#1F1F1F] text-white px-6 py-3 rounded-xl font-bold text-sm text-center transition-colors">Browse Players</Link>
+                            {/* <Link href="/scout/shortlist" className="bg-white hover:bg-white/90 text-[#FF6B00] px-6 py-3 rounded-xl font-bold text-sm text-center transition-colors">Open My Shortlist</Link> */}
+                            <Link href="/scouting" className="bg-[#0F172A] hover:bg-[#1F1F1F] text-white px-6 py-3 rounded-xl font-bold text-sm text-center transition-colors">Browse Players</Link>
                         </div>
                     </div>
                 </div>
