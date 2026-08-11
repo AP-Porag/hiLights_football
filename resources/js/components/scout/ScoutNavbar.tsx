@@ -42,10 +42,7 @@ interface NavLink {
     prominent?: boolean;
 }
 
-const NAV_LINKS: NavLink[] = [
-    { label: 'Dashboard', href: '/scouting' },
-    { label: 'Saved Players', href: '/scouting/player/saved' },
-];
+const getNavLinks = (role?: string | null): NavLink[] => { switch (role) { case 'scout': return [{ label: 'Dashboard', href: '/scouting' }, { label: 'Saved Players', href: '/scouting/player/saved' },]; case 'agent': return [{ label: 'Dashboard', href: '/agent' }, { label: 'Saved Players', href: '/agent/player/saved' },]; case 'club': return [{ label: 'Dashboard', href: '/club' }, { label: 'Saved Players', href: '/club/player/saved' },]; default: return []; } };
 
 const ROLE_STYLES: Record<ScoutRole, string> = {
     SCOUT: 'bg-blue-500/10 text-blue-300 border-blue-500/30',
@@ -63,16 +60,8 @@ function getInitials(name: string): string {
 export default function ScoutNavbar() {
     const { url, props } = usePage<PageProps>();
 
-    const auth = props.auth?.user
-        ? props.auth
-        : {
-            user: {
-                id: 1,
-                name: 'Lucas Pereira',
-                email: 'lucas@hilights.fc',
-                avatar_url: null,
-            },
-        };
+    const { auth } = usePage<{ auth: { user: { role: string; }; }; }>().props;
+    const NAV_LINKS = getNavLinks(auth.user?.role);
 
     const notificationCount = props.notificationCount ?? 2;
 
@@ -120,7 +109,7 @@ export default function ScoutNavbar() {
                     aria-label="HiLights Football"
                 >
                     <img
-                        src="/images/logo/mobile-nav-logo.png"
+                        src="/images/logo/final_logo.png"
                         className="h-9 w-auto"
                         alt="HiLights Football"
                     />
