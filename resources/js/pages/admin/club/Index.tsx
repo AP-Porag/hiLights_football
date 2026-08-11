@@ -585,7 +585,7 @@ export default function ClubIndex() {
                         <CardContent className="p-0">
                             <div className="divide-y divide-[#2A2A2A]">
                                 {mostRatedPlayers.map((player, idx) => (
-                                    <Link key={player.id} href={`/admin/players/${player.id}`} className="flex items-center gap-4 p-4 transition hover:bg-[#1A1A1A]">
+                                    <Link key={player.id} href={`/players/${player.id}`} className="flex items-center gap-4 p-4 transition hover:bg-[#1A1A1A]">
                                         <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-[#1A1A1A] font-mono text-xs font-semibold text-[#94A3B8]">{idx + 1}</div>
                                         <img src={player.avatar || PLACEHOLDER} alt={player.name} className="h-11 w-11 rounded-full border border-[#2A2A2A] object-cover" />
                                         <div className="min-w-0 flex-1">

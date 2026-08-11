@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, BriefcaseBusiness, BriefcaseBusinessIcon, DollarSign, Folder, Group, GroupIcon, LayoutGrid, LucideBriefcaseBusiness, SubscriptIcon, User, User2, User2Icon, Footprints, Briefcase, Handshake, Shield } from 'lucide-react';
+import { BookOpen, BriefcaseBusiness, BriefcaseBusinessIcon, DollarSign, Folder, Group, GroupIcon, LayoutGrid, LucideBriefcaseBusiness, SubscriptIcon, User, User2, User2Icon, Footprints, Briefcase, Handshake, Shield, Mail } from 'lucide-react';
 import AppLogo from './app-logo';
 
 
@@ -18,6 +18,11 @@ const mainNavItems: NavItem[] = [
         title: 'Users',
         url: '/admin/users',
         icon: User,
+    },
+    {
+        title: 'Contact',
+        url: '/admin/contact-messages',
+        icon: Mail,
     },
     {
         title: 'Players',

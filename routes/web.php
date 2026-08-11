@@ -5,6 +5,7 @@ use App\Http\Controllers\Agent\AgentController as AController;
 use App\Http\Controllers\Club\ClubController as CController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Web\ContactController;
+use App\Http\Controllers\Admin\ContactController as ConController;
 use App\Http\Controllers\Player\PlayerProfileController;
 use App\Http\Controllers\Player\SubscriptionController;
 use App\Http\Controllers\Scout\ScoutController;
@@ -144,6 +145,7 @@ Route::middleware(['auth'])->prefix('scouting')->group(function () {
 
     Route::get('/', [ScoutController::class, 'index'])->name('scouting.dashboard');
 
+
     // 🔥 স্পেসিফিক রাউট আগে
     Route::get('/player/saved', [ScoutController::class, 'savedPlayers'])->name('scout.saved');
     Route::put('/player/saved/{saved}', [ScoutController::class, 'updateNote'])->name('scout.saved.update');
@@ -152,7 +154,8 @@ Route::middleware(['auth'])->prefix('scouting')->group(function () {
     Route::post('/player/save/{id}', [ScoutController::class, 'toggleSave'])->name('scout.player.save');
 
     // তারপর জেনেরিক {id} রাউট
-    Route::get('/player/{id}', [ScoutController::class, 'playerDetails'])->name('player.details');
+
+    Route::get('/players/{id}', [ScoutController::class, 'playerDetails'])->name('player.details');
     Route::post('/player/{id}/rating', [ScoutController::class, 'storeRating'])->name('player.rating.store');
     Route::get('/player/{id}/report', [ScoutController::class, 'playerReport'])->name('player.report');
     Route::post('/player/{id}/report', [ScoutController::class, 'storeReport'])->name('player.report.store');
@@ -265,6 +268,13 @@ Route::prefix('admin')->group(function () {
     Route::get('/clubs/export', [ClubController::class, 'export'])->name('clubs.export');
     Route::delete('/clubs/destroy/{rating}', [ClubController::class, 'destroy'])->name('clubs.destroy');
     Route::get('/club/players/{id}', [ClubController::class, 'publicPlayerDetails'])->name('club.player.profile');
+
+    // Contact Messages
+    Route::get('/contact-messages', [ConController::class, 'index'])->name('admin.contact.index');
+    Route::get('/contact-messages/{id}', [ConController::class, 'show'])->name('admin.contact.show');
+    Route::put('/contact-messages/{id}/read', [ConController::class, 'markAsRead'])->name('admin.contact.read');
+    Route::post('/contact-messages/{id}/reply', [ConController::class, 'reply'])->name('admin.contact.reply');
+    Route::delete('/contact-messages/{id}', [ConController::class, 'destroy'])->name('admin.contact.destroy');
 });
 
 Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])
@@ -275,7 +285,7 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 //Player Search
 Route::get('/players/search', [PlayerSearchController::class, 'search'])->name('players.search');
 
-Route::get('/players/{id}', [ScoutController::class, 'publicPlayerDetails'])
+Route::get('/players/{id}', [SController::class, 'publicPlayerDetails'])
     ->name('player.profile');
 
 
