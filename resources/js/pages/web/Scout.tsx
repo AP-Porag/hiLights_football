@@ -136,7 +136,13 @@ const Scout = () => {
                                                         auth?.user
                                                             ? auth.user.role === "player"
                                                                 ? "/player"
-                                                                : "/scouting"
+                                                                : auth.user.role === "admin"
+                                                                    ? "/admin"
+                                                                    : auth.user.role === "agent"
+                                                                        ? "/agent"
+                                                                        : auth.user.role === "club"
+                                                                            ? "/club"
+                                                                            : "/scouting"
                                                             : "/register?role=scout"
                                                     }
                                                 >
@@ -155,6 +161,8 @@ const Scout = () => {
                                                         )}
                                                     </span>
                                                 </Link>
+
+
                                             </button>
 
                                             <button className="flex items-center justify-center rounded-md border border-gray-600 bg-black px-3 py-2 text-[10px] font-semibold uppercase transition-all duration-300 hover:border-white md:px-6 md:py-4 md:text-sm">
@@ -233,16 +241,22 @@ const Scout = () => {
                                 <button className="sm:-w-45 flex items-center gap-2 rounded-xl bg-[#dc4108] px-4 py-2 transition md:gap-4 lg:px-6 lg:py-2">
 
 
+
                                     <Link
                                         href={
                                             auth?.user
                                                 ? auth.user.role === "player"
                                                     ? "/player"
-                                                    : "/scouting"
+                                                    : auth.user.role === "admin"
+                                                        ? "/admin"
+                                                        : auth.user.role === "agent"
+                                                            ? "/agent"
+                                                            : auth.user.role === "club"
+                                                                ? "/club"
+                                                                : "/scouting"
                                                 : "/register?role=scout"
                                         }
                                     >
-
                                         <span className="pl-2 inline-flex items-center gap-2">
                                             {auth?.user ? (
                                                 "Dashboard"
@@ -258,6 +272,7 @@ const Scout = () => {
                                             )}
                                         </span>
                                     </Link>
+
                                 </button>
                             </div>
                         </div>
@@ -275,12 +290,7 @@ const Scout = () => {
                                     TOP TALENTS YOU CAN DISCOVER TODAY
                                 </h2>
                             </div>
-                            <Link href="/register?role=scout">
-                                <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs">
-                                    View All
-                                    <ArrowRight size={18} className="text-[#ff6b00] font-bold" />
-                                </button>
-                            </Link>
+                            <Link href={auth?.user ? auth.user.role === "player" ? "/player" : auth.user.role === "admin" ? "/admin" : auth.user.role === "agent" ? "/agent" : auth.user.role === "club" ? "/club" : "/scout" : "/register?role=scout"} > <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs"> View All <ArrowRight size={18} className="text-[#ff6b00] font-bold" /> </button> </Link>
                         </div>
 
                         {/* Rows */}

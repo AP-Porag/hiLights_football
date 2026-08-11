@@ -377,12 +377,12 @@ export default function Detail() {
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                                 <div className="flex items-center justify-between gap-3 mb-5">
                                     <div className="min-w-0">
-                                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">Scout Toolkit</div>
-                                        <h2 className="font-display text-2xl font-bold uppercase">Scout Actions</h2>
+                                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">Agent Toolkit</div>
+                                        <h2 className="font-display text-2xl font-bold uppercase">Agent Actions</h2>
                                     </div>
                                     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] uppercase font-bold tracking-wider flex-shrink-0">
                                         <Eye className="w-3 h-3" />
-                                        Scout View
+                                        Agent View
                                     </span>
                                 </div>
                                 <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 mb-6">
@@ -468,7 +468,7 @@ export default function Detail() {
                                         })}
                                     </div>
                                     <div className="mt-6">
-                                        <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">Scout Notes</label>
+                                        <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">Agent Notes</label>
                                         <textarea
                                             value={rating.notes}
                                             onChange={(e) => setRating({ ...rating, notes: e.target.value })}
@@ -926,7 +926,7 @@ export default function Detail() {
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                             {/* <Link href="/scout/shortlist" className="bg-white hover:bg-white/90 text-[#FF6B00] px-6 py-3 rounded-xl font-bold text-sm text-center transition-colors">Open My Shortlist</Link> */}
-                            <Link href="/scouting" className="bg-[#0F172A] hover:bg-[#1F1F1F] text-white px-6 py-3 rounded-xl font-bold text-sm text-center transition-colors">Browse Players</Link>
+                            <Link href="/agent" className="bg-[#0F172A] hover:bg-[#1F1F1F] text-white px-6 py-3 rounded-xl font-bold text-sm text-center transition-colors">Browse Players</Link>
                         </div>
                     </div>
                 </div>

@@ -50,7 +50,15 @@ export default function PublicNavbar() {
     };
     const isLoggedIn = !!auth?.user;
     const dashboardHref =
-        auth?.user?.role === 'player' ? '/player' : '/scouting';
+        auth?.user?.role === 'player'
+            ? '/player'
+            : auth?.user?.role === 'agent'
+                ? '/agent'
+                : auth?.user?.role === 'club'
+                    ? '/club'
+                    : auth?.user?.role === 'admin'
+                        ? '/admin'
+                        : '/scouting';
     return (
         <header
             className={[
