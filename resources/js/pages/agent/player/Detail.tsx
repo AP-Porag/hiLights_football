@@ -177,7 +177,7 @@ export default function Detail() {
     const handleSaveRating = (goToReport = false) => {
         setSavingRating(true);
         router.post(
-            `/scouting/player/${player?.id}/rating`,
+            `/agent/player/${player?.id}/rating`,
             { ...rating },
             {
                 preserveScroll: true,

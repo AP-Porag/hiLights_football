@@ -294,9 +294,9 @@ export default function NewDetail() {
                                     {(player.transfer_history ?? []).filter((item: any) => item?.club).map((item: any, index: number) => (
                                         <div key={index} className="flex items-center gap-2 md:gap-4">
                                             <span className="w-8 text-[10px] font-medium text-slate-300 sm:text-[13px] md:w-12 md:text-[16px]">{item.year}</span>
-                                            <div className="h-6 w-6 flex-shrink-0 rounded-full border border-slate-600 bg-slate-700 md:h-8 md:w-8 overflow-hidden">
+                                            {/* <div className="h-6 w-6 flex-shrink-0 rounded-full border border-slate-600 bg-slate-700 md:h-8 md:w-8 overflow-hidden">
                                                 <img src={item.logo} alt="" className="h-full w-full rounded-full object-cover" />
-                                            </div>
+                                            </div> */}
                                             <span className="text-[10px] text-white sm:text-[13px] md:text-base">{item.club}</span>
                                         </div>
                                     ))}
@@ -338,9 +338,9 @@ export default function NewDetail() {
                                     </div>
                                 ))}
                             </div>
-                            <button className="mt-6 text-[12px] font-medium text-orange-500 transition hover:text-orange-400 md:text-sm">
+                            {/* <button className="mt-6 text-[12px] font-medium text-orange-500 transition hover:text-orange-400 md:text-sm">
                                 View all achievements →
-                            </button>
+                            </button> */}
                         </div>
                         {/* Player Description */}
                         <div className="rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5">
@@ -379,12 +379,12 @@ export default function NewDetail() {
                                     </div>
                                 ))}
                             </div>
-                            <div className="mt-8 flex justify-end">
+                            {/* <div className="mt-8 flex justify-end">
                                 <button className="flex items-center gap-2 text-[13px] text-[#f97316] transition hover:text-orange-400 md:text-[18px]">
                                     View all competitions
                                     <ChevronRight size={22} />
                                 </button>
-                            </div>
+                            </div>*/}
                         </div>
                         {/* Recent Matches */}
                         <div className="overflow-hidden rounded-lg border border-[#152538] bg-[#07111d] p-6">
@@ -417,12 +417,12 @@ export default function NewDetail() {
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="mt-8 flex justify-end">
+                            {/* <div className="mt-8 flex justify-end">
                                 <button className="flex items-center gap-2 text-[14px] text-[#f97316] transition hover:text-orange-400 md:text-[18px]">
                                     View all matches
                                     <ChevronRight size={22} />
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </main>

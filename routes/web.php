@@ -23,7 +23,7 @@ use App\Http\Controllers\Player\NotificationController;
 
 Route::get('/execute-command', function () {
     //    return redirect()->route('login');
-    //    Artisan::call('storage:link');
+    Artisan::call('storage:link');
     Artisan::call('migrate:fresh --seed');
     Artisan::call('cache:clear');
     Artisan::call('view:clear');
@@ -155,10 +155,10 @@ Route::middleware(['auth'])->prefix('scouting')->group(function () {
 
     // তারপর জেনেরিক {id} রাউট
 
-    Route::get('/players/{id}', [ScoutController::class, 'playerDetails'])->name('player.details');
-    Route::post('/player/{id}/rating', [ScoutController::class, 'storeRating'])->name('player.rating.store');
-    Route::get('/player/{id}/report', [ScoutController::class, 'playerReport'])->name('player.report');
-    Route::post('/player/{id}/report', [ScoutController::class, 'storeReport'])->name('player.report.store');
+    Route::get('/players/{id}', [ScoutController::class, 'playerDetails'])->name('scout.player.details');
+    Route::post('/player/{id}/rating', [ScoutController::class, 'storeRating'])->name('scout.player.rating.store');
+    Route::get('/player/{id}/report', [ScoutController::class, 'playerReport'])->name('scout.player.report');
+    Route::post('/player/{id}/report', [ScoutController::class, 'storeReport'])->name('scout.player.report.store');
 });
 
 
@@ -173,10 +173,10 @@ Route::prefix('agent')->middleware(['auth'])->group(function () {
     Route::post('/player/save/{id}', [AController::class, 'toggleSave'])->name('agent.player.save');
 
     // তারপর জেনেরিক {id} রাউট
-    Route::get('/player/{id}', [AController::class, 'playerDetails'])->name('player.details');
-    Route::post('/player/{id}/rating', [AController::class, 'storeRating'])->name('player.rating.store');
-    Route::get('/player/{id}/report', [AController::class, 'playerReport'])->name('player.report');
-    Route::post('/player/{id}/report', [AController::class, 'storeReport'])->name('player.report.store');
+    Route::get('/player/{id}', [AController::class, 'playerDetails'])->name('agent.player.details');
+    Route::post('/player/{id}/rating', [AController::class, 'storeRating'])->name('agent.player.rating.store');
+    Route::get('/player/{id}/report', [AController::class, 'playerReport'])->name('agent.player.report');
+    Route::post('/player/{id}/report', [AController::class, 'storeReport'])->name('agent.player.report.store');
 });
 
 
@@ -192,10 +192,10 @@ Route::prefix('club')->middleware(['auth'])->group(function () {
     Route::post('/player/save/{id}', [CController::class, 'toggleSave'])->name('club.player.save');
 
     // তারপর জেনেরিক {id} রাউট
-    Route::get('/player/{id}', [CController::class, 'playerDetails'])->name('player.details');
-    Route::post('/player/{id}/rating', [CController::class, 'storeRating'])->name('player.rating.store');
-    Route::get('/player/{id}/report', [CController::class, 'playerReport'])->name('player.report');
-    Route::post('/player/{id}/report', [CController::class, 'storeReport'])->name('player.report.store');
+    Route::get('/player/{id}', [CController::class, 'playerDetails'])->name('club.player.details');
+    Route::post('/player/{id}/rating', [CController::class, 'storeRating'])->name('club.player.rating.store');
+    Route::get('/player/{id}/report', [CController::class, 'playerReport'])->name('club.player.report');
+    Route::post('/player/{id}/report', [CController::class, 'storeReport'])->name('club.player.report.store');
 });
 //all admin routes
 //Route::middleware(['auth'])->prefix('admin')->group(function () {
