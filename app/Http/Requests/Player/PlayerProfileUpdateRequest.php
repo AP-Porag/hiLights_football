@@ -59,8 +59,8 @@ class PlayerProfileUpdateRequest extends FormRequest
             'matches.*.home' => ['nullable', 'string', 'max:255'],
             'matches.*.score' => ['nullable', 'string', 'max:20'],
             'matches.*.away' => ['nullable', 'string', 'max:255'],
-            'matches.*.goals' => ['nullable', 'integer'],
-            'matches.*.assists' => ['nullable', 'integer'],
+            'matches.*.goals' => ['nullable', 'string'],
+            'matches.*.assists' => ['nullable', 'string'],
             'matches.*.minutes' => ['nullable', 'string', 'max:20'],
         ];
     }

@@ -148,7 +148,7 @@ export default function Report() {
             <section className="bg-[#0F172A] text-white pt-20 pb-8">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6">
                     <Link
-                        href={`/scouting/player/${player?.id}`}
+                        href="/scouting"
                         className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/60 hover:text-white mb-6"
                     >
                         <ArrowLeft className="w-4 h-4" />

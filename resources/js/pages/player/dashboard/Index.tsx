@@ -1286,7 +1286,7 @@ export default function PlayerDashboard() {
                         <div className="flex items-center justify-between">
                             <h2 className="text-xl font-semibold text-gray-900">Share Profile</h2>
                             <button onClick={() => setShareOpen(false)} className="rounded-full p-1 hover:bg-gray-100">
-                                <X className="h-6 w-6" />
+                                <X className="h-6 w-6 text-black" />
                             </button>
                         </div>
                         <div className="mt-6 grid grid-cols-4 gap-5">
@@ -1316,7 +1316,7 @@ export default function PlayerDashboard() {
                             </a>
                         </div>
                         <div className="mt-7 flex items-center gap-2 rounded-xl border bg-gray-50 p-3">
-                            <input readOnly value={profileUrl} className="flex-1 bg-transparent text-sm outline-none" />
+                            <input readOnly value={profileUrl} className="flex-1 bg-transparent text-sm outline-none text-black" />
                             <button onClick={copyProfileLink} className="rounded-lg cursor-pointer bg-black px-4 py-2 text-sm text-white hover:bg-gray-800 transition-colors">
                                 {copied ? 'Copied!' : 'Copy'}
                             </button>

@@ -148,7 +148,7 @@ export default function Report() {
             <section className="bg-[#0F172A] text-white pt-20 pb-8">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6">
                     <Link
-                        href={`/scouting/player/${player?.id}`}
+                        href="/club"
                         className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/60 hover:text-white mb-6"
                     >
                         <ArrowLeft className="w-4 h-4" />
@@ -170,7 +170,7 @@ export default function Report() {
                             <div className="flex items-center gap-2 mb-2">
                                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#FF6B00] text-[10px] font-bold uppercase tracking-wider">
                                     <FileText className="w-3 h-3" />
-                                    Scouting Report
+                                    Club Report
                                 </span>
                                 {report?.status === 'final' && (
                                     <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-green-500/20 border border-green-400 text-green-300 text-[10px] font-bold uppercase tracking-wider">
