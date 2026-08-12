@@ -309,7 +309,27 @@ export default function Detail() {
                                     <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4" />{player.birth_city}</span>
                                 )}
                                 {age !== null && (
-                                    <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" />{age} years</span>
+                                    <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" />{player?.user?.dob
+                                        ? (() => {
+                                            const birthDate = new Date(player.user.dob);
+                                            const today = new Date();
+
+                                            let age = today.getFullYear() - birthDate.getFullYear();
+
+                                            const hasBirthdayPassed =
+                                                today.getMonth() > birthDate.getMonth() ||
+                                                (today.getMonth() === birthDate.getMonth() &&
+                                                    today.getDate() >= birthDate.getDate());
+
+                                            if (!hasBirthdayPassed) {
+                                                age--;
+                                            }
+
+                                            return age < 18
+                                                ? `Birth Year: ${birthDate.getFullYear()}`
+                                                : `${age} years`;
+                                        })()
+                                        : '—'}</span>
                                 )}
                                 {player?.current_club && (
                                     <span className="flex items-center gap-1.5"><Shield className="w-4 h-4" />{player.current_club}</span>
