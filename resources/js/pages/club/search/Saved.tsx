@@ -497,7 +497,7 @@ export default function SavedPlayers() {
 
                                         {/* CTA buttons */}
                                         <div className="mt-4 flex gap-2">
-                                            <Link href={`/scouting/player/${sp.player.id}`} className="flex-1">
+                                            <Link href={`/club/player/${sp.player.id}`} className="flex-1">
                                                 <Button
                                                     variant="outline"
                                                     className="w-full text-sm border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] hover:border-[#FF6B00] hover:text-[#FF6B00] bg-white dark:bg-[#161616]"

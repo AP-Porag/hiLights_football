@@ -59,7 +59,7 @@ class AgentController extends Controller
             ->where('player_profile_id', $player->id)
             ->first();
 
-        return Inertia::render('scouting/player/Detail', [
+        return Inertia::render('agent/player/Detail', [
             'player' => $player,
             'similarPlayers' => $similarPlayers,
             'existingRating' => $existingRating,
