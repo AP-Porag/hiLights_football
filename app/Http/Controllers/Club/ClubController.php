@@ -203,6 +203,10 @@ class ClubController extends Controller
                         'name' => $user?->name ?? 'Unknown',
                         'nickname' => null,
                         'age' => $user?->dob ? \Carbon\Carbon::parse($user->dob)->age : null,
+                        // User table থেকে DOB
+                        'dob' => $user?->dob
+                            ? \Carbon\Carbon::parse($user->dob)->format('Y-m-d')
+                            : null,
                         'nationality' => $user?->nationality ?? '',
                         'flag' => $flag,
                         'currentClub' => $profile?->current_club ?? '—',
