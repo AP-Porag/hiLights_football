@@ -333,7 +333,7 @@ export default function SavedPlayers() {
                                     className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all group"
                                 >
                                     {/* TOP — Photo area */}
-                                    <div className="h-36 relative bg-gradient-to-br from-[#F8FAFC] dark:from-[#1F1F1F] to-[#E2E8F0] dark:to-[#161616] flex items-center justify-center">
+                                    <div className="h-70 relative bg-gradient-to-br from-[#F8FAFC] dark:from-[#1F1F1F] to-[#E2E8F0] dark:to-[#161616] flex items-center justify-center">
                                         {/* Position badges */}
                                         <div className="absolute top-2 left-2 flex gap-1">
                                             {sp.player.positions.slice(0, 2).map((pos) => (
@@ -376,7 +376,7 @@ export default function SavedPlayers() {
                                             <img
                                                 src={sp.player.photoUrl}
                                                 alt={sp.player.name}
-                                                className="absolute inset-0 h-full w-full object-cover"
+                                                className="absolute inset-0 h-full w-full object-cover object-top"
                                             />
                                         ) : (
                                             <span className="font-display font-black text-3xl text-[#CBD5E1] dark:text-[#2A2A2A]">
@@ -433,7 +433,25 @@ export default function SavedPlayers() {
                                         <div className="grid grid-cols-3 mt-3 pt-3 border-t border-[#F1F5F9] dark:border-[#1F1F1F] text-center">
                                             <div>
                                                 <div className="font-mono font-semibold text-sm text-[#0F172A] dark:text-[#F5F5F5]">
-                                                    {sp.player.age ?? '—'}
+                                                    {sp.player.dob
+                                                        ? (() => {
+                                                            const birthDate = new Date(sp.player.dob);
+                                                            const today = new Date();
+
+                                                            let age = today.getFullYear() - birthDate.getFullYear();
+
+                                                            const hasBirthdayPassed =
+                                                                today.getMonth() > birthDate.getMonth() ||
+                                                                (today.getMonth() === birthDate.getMonth() &&
+                                                                    today.getDate() >= birthDate.getDate());
+
+                                                            if (!hasBirthdayPassed) {
+                                                                age--;
+                                                            }
+
+                                                            return age < 18 ? birthDate.getFullYear() : age;
+                                                        })()
+                                                        : '—'}
                                                 </div>
                                                 <div className="text-[9px] text-[#94A3B8] uppercase tracking-wider mt-0.5">Age</div>
                                             </div>

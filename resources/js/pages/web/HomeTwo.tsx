@@ -409,7 +409,25 @@ const HomeTwo = () => {
                                     {/* Age */}
                                     <div className="flex items-center justify-end gap-2 text-xs whitespace-nowrap text-[#222] md:ml-4 md:text-sm lg:text-base 2xl:text-lg">
                                         <Clock3 size={14} />
-                                        {player.dob && new Date().getFullYear() - new Date(player.dob).getFullYear()} years
+                                        {player?.dob && (() => {
+                                            const dob = new Date(player.dob);
+                                            const today = new Date();
+
+                                            let age = today.getFullYear() - dob.getFullYear();
+
+                                            const hasBirthdayPassed =
+                                                today.getMonth() > dob.getMonth() ||
+                                                (today.getMonth() === dob.getMonth() &&
+                                                    today.getDate() >= dob.getDate());
+
+                                            if (!hasBirthdayPassed) {
+                                                age--;
+                                            }
+
+                                            return age < 18
+                                                ? dob.getFullYear()
+                                                : `${age} years`;
+                                        })()}
                                     </div>
                                 </div>
                             </Link>

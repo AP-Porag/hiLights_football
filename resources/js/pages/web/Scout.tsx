@@ -302,7 +302,7 @@ const Scout = () => {
                                         : "/register?role=scout"}>
                                         {/* Thumbnail */}
                                         <div className="relative">
-                                            <img src={player.photo_url || '/images/img/placeholder.webp'} className="h-[150px] w-full rounded object-cover" />
+                                            <img src={player.photo_url || '/images/img/placeholder.webp'} className="h-[300px] w-full rounded object-cover" />
 
                                             {/* <button className="absolute right-3 bottom-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00]">
                                                 <Play size={12} fill="white" className="text-white" />
@@ -355,7 +355,23 @@ const Scout = () => {
                                             {/* Age */}
                                             <div className="flex gap-2 text-[12px] whitespace-nowrap text-[#222] md:ml-4 md:text-sm">
                                                 <Clock3 size={14} className="mt-[2px]" />
-                                                {player.dob && new Date().getFullYear() - new Date(player.dob).getFullYear()} years
+                                                {player?.dob && (() => {
+                                                    const dob = new Date(player.dob);
+                                                    const today = new Date();
+
+                                                    let age = today.getFullYear() - dob.getFullYear();
+
+                                                    const monthDiff = today.getMonth() - dob.getMonth();
+                                                    const dayDiff = today.getDate() - dob.getDate();
+
+                                                    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                                                        age--;
+                                                    }
+
+                                                    return age < 18
+                                                        ? dob.getFullYear()
+                                                        : `${age} years`;
+                                                })()}
                                             </div>
                                         </div>
                                     </Link>

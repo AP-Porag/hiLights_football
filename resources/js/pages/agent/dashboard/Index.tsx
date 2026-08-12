@@ -71,6 +71,7 @@ interface Player {
     club: string;
     position: 'GK' | 'DEF' | 'MID' | 'FWD' | '—';
     age: number | null;
+    dob: string | null;
     height: number | null;
     foot: 'R' | 'L' | 'B' | '—';
     country: string;
@@ -158,12 +159,38 @@ const normalizePlayer = (p: PlayerProfileRow): Player => {
         club: p.current_club ?? '—',
         position: firstPos ? POSITION_GROUP[firstPos] : '—',
         age: calcAge(p.user?.dob),
+        dob: p.user?.dob ?? null,
         height: toNumOrNull(p.height),
         foot: p.foot ? (FOOT_MAP[p.foot] ?? '—') : '—',
         country: getCountryName(p.user?.nationality),
         flag: codeToFlag(p.user?.nationality),
         modality: p.modality ?? 'Football',
         photoUrl: p.photo_url ?? null,
+    };
+};
+const getAgeDisplay = (
+    age: number | null,
+    dob: string | null
+): { label: string; value: string } => {
+    if (!dob || age === null) {
+        return {
+            label: 'Age',
+            value: '—',
+        };
+    }
+
+    if (age < 18) {
+        const birthDate = new Date(dob);
+
+        return {
+            label: 'Birth Year',
+            value: birthDate.getFullYear().toString(),
+        };
+    }
+
+    return {
+        label: 'Age',
+        value: age.toString(),
     };
 };
 
@@ -975,12 +1002,14 @@ export default function Index({
                                                     <img
                                                         src={p.photoUrl}
                                                         alt={p.name}
-                                                        className="absolute inset-0 h-full w-full object-cover"
+                                                        className="absolute inset-0 h-full w-full object-cover object-top"
                                                     />
                                                 ) : (
-                                                    <div className="w-24 h-24 rounded-full bg-black/20 flex items-center justify-center font-display text-3xl font-black text-white/70">
-                                                        {initials(p.name)}
-                                                    </div>
+                                                    <img
+                                                        src={'/images/img/placeholder.webp'}
+                                                        alt={p.name}
+                                                        className="absolute inset-0 h-full w-full object-cover"
+                                                    />
                                                 )}
                                                 {/* Position badge */}
                                                 <span className="absolute top-3 left-3 bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-black px-2.5 py-0.5 rounded-full tracking-wider">
@@ -1001,10 +1030,11 @@ export default function Index({
                                                 <div className="grid grid-cols-3 mt-3 text-center border-t border-[#1F1F1F] pt-3">
                                                     <div>
                                                         <p className="text-[9px] text-[#555555] uppercase tracking-wider">
-                                                            Age
+                                                            {getAgeDisplay(p.age, p.dob).label}
                                                         </p>
+
                                                         <p className="text-xs font-semibold font-mono text-[#F5F5F5] mt-0.5">
-                                                            {p.age ?? '—'}
+                                                            {getAgeDisplay(p.age, p.dob).value}
                                                         </p>
                                                     </div>
                                                     <div className="border-x border-[#1F1F1F]">

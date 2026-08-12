@@ -125,7 +125,7 @@ export const PublicFooter = () => {
                 </div>
             </section>
 
-            {/* ─── ফ্লোটিং হোয়াটসঅ্যাপ আইকন (নিচ-বাম কোণে) ─── */}
+
             <a
                 href="https://wa.me/8801234567890"
                 target="_blank"
