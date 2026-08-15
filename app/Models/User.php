@@ -28,6 +28,7 @@ class User extends Authenticatable
         'dob',
         'nationality',
         'remember_token',
+        'country',
     ];
 
     /**
@@ -51,6 +52,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'dob'               => 'date',
+            'nationality' => 'array',
         ];
     }
     public function playerProfile(): \Illuminate\Database\Eloquent\Relations\HasOne

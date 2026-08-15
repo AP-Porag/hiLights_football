@@ -31,6 +31,7 @@ class RegisteredUserController extends Controller
                     'name' => $country->name->common,
                 ];
             })
+            ->sortBy('name')
             ->values();
 
         return Inertia::render('auth/register', [
@@ -52,8 +53,10 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'email', 'lowercase', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'dob' => ['nullable', 'date'],
-            'whatsapp'          => ['nullable', 'string', 'max:30'],   // ← new validation
-            'nationality' => ['nullable', 'string', 'max:3'],
+            'whatsapp'          => ['required', 'string', 'max:30'],   // ← new validation
+            'nationality' => ['nullable', 'array'],            // ← array validation
+            'nationality.*' => ['string', 'max:3'],            // প্রতিটি element validate
+            'country' => ['nullable', 'string', 'max:3'],      // scout এর জন্য
             'organization_name' => ['nullable', 'string', 'max:255'],
             'terms' => ['accepted'],
         ]);
@@ -66,8 +69,8 @@ class RegisteredUserController extends Controller
 
             // extra fields
             'dob' => $validated['dob'] ?? null,
-            'nationality' => $validated['nationality'] ?? null,
-            'whatsapp'          => $validated['whatsapp'] ?? null,
+            'nationality' => $validated['nationality'] ?? null,  // array যাবে, JSON হয়ে save হবে
+            'country' => $validated['country'] ?? null,
 
             // important fix
             'terms_accepted' => true,
