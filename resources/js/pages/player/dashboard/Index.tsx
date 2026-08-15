@@ -69,9 +69,18 @@ const player = {
 };
 // ডিফল্ট কান্ট্রি ডেটা (যদি ব্যাকএন্ড থেকে না আসে)
 
-const getCountryName = (code?: string) => {
+const getCountryName = (code?: string | string[]) => {
     if (!code) return '';
-    return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
+    const codes = Array.isArray(code) ? code : [code];
+    return codes
+        .map((c) => {
+            try {
+                return new Intl.DisplayNames(['en'], { type: 'region' }).of(c) || c;
+            } catch {
+                return c;
+            }
+        })
+        .join(', ');
 };
 // alpha-2 code theke flag emoji
 const codeToFlag = (code?: string): string => {
@@ -99,8 +108,11 @@ function formatDate(): string {
         day: 'numeric',
     });
 }
-const nonEmpty = (v: any): boolean =>
-    v !== null && v !== undefined && String(v).trim() !== '';
+const nonEmpty = (v: any): boolean => {
+    if (v === null || v === undefined) return false;
+    if (Array.isArray(v)) return v.length > 0;
+    return String(v).trim() !== '';
+};
 const ALL_POSITIONS = ['GK', 'LB', 'CB-L', 'CB-R', 'RB', 'LM', 'CM-L', 'CM-R', 'RM', 'CAM', 'LW', 'ST', 'RW', 'CF'];
 // ════════ LIST MODAL CONFIG (repeatable rows) ════════
 type FieldDef = { name: string; label: string; type: 'text' | 'number' | 'file' | 'country' };
@@ -190,7 +202,7 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
     },
 };
 // ════════ FORM MODAL CONFIG (single record) ════════
-type FormFieldType = 'text' | 'number' | 'date' | 'select' | 'country' | 'positions' | 'file' | 'textarea';
+type FormFieldType = 'text' | 'number' | 'date' | 'select' | 'country' | 'positions' | 'multi_country' | 'file' | 'textarea';
 type FormField = { name: string; label: string; type: FormFieldType; options?: string[] };
 type FormConfig = { title: string; fields: FormField[] };
 const FORM_CONFIGS: Record<string, FormConfig> = {
@@ -200,7 +212,7 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
             { name: 'full_name', label: 'Full Name', type: 'text' },
             { name: 'dob', label: 'Date of Birth', type: 'date' },
             { name: 'gender', label: 'Gender', type: 'select', options: ['M', 'F', 'Other'] },
-            { name: 'nationality', label: 'Nationality', type: 'country' },
+            { name: 'nationality', label: 'Nationality', type: 'multi_country' },
             { name: 'height', label: 'Height (cm)', type: 'number' },
             { name: 'weight', label: 'Weight (kg)', type: 'number' },
             { name: 'birth_city', label: 'Birth City', type: 'text' },
@@ -431,7 +443,8 @@ function FormModal({
         cfg.fields.forEach((f) => {
             if (f.name === 'full_name') init[f.name] = user?.name ?? '';
             else if (f.name === 'whatsapp') init[f.name] = user?.whatsapp ?? '';
-            else if (f.name === 'dob' || f.name === 'nationality') init[f.name] = user?.[f.name] ?? '';
+            else if (f.name === 'dob') init[f.name] = user?.dob ?? '';
+            else if (f.name === 'nationality') init[f.name] = Array.isArray(user?.nationality) ? user.nationality : [];
             else if (f.name === 'positions') init[f.name] = Array.isArray(pp?.positions) ? pp.positions : [];
             else if (f.name === 'photo') init[f.name] = null;
             else init[f.name] = pp?.[f.name] ?? '';
@@ -481,7 +494,7 @@ function FormModal({
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {cfg.fields.map((f) => (
-                        <div key={f.name} className={f.type === 'positions' || f.type === 'file' || f.type === 'textarea' ? 'sm:col-span-2' : ''}>
+                        <div key={f.name} className={f.type === 'positions' || f.type === 'file' || f.type === 'textarea' || f.type === 'multi_country' ? 'sm:col-span-2' : ''}>
                             <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-wider text-[#94A3B8]">
                                 {f.label}
                             </label>
@@ -520,6 +533,41 @@ function FormModal({
                                     {nonEmpty(values[f.name]) && (
                                         <span className="shrink-0 text-2xl leading-none">{codeToFlag(values[f.name])}</span>
                                     )}
+                                </div>
+                            )}
+                            {f.type === 'multi_country' && (
+                                <div className="space-y-2">
+                                    <div className="flex flex-wrap gap-2">
+                                        {Array.isArray(values[f.name]) && values[f.name].map((code: string) => (
+                                            <span key={code} className="inline-flex items-center gap-1 rounded-full bg-[#1F1F1F] border border-[#2A2A2A] px-2 py-1 text-xs text-[#F5F5F5]">
+                                                {codeToFlag(code)} {getCountryName(code)}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setField(f.name, values[f.name].filter((c: string) => c !== code))}
+                                                    className="ml-1 text-[#9A9A9A] hover:text-red-400"
+                                                >
+                                                    ×
+                                                </button>
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <select
+                                        value=""
+                                        onChange={(e) => {
+                                            const code = e.target.value;
+                                            if (code && !values[f.name].includes(code)) {
+                                                setField(f.name, [...(values[f.name] || []), code]);
+                                            }
+                                        }}
+                                        className={inputClass}
+                                    >
+                                        <option value="">Add country...</option>
+                                        {countries.map((c) => (
+                                            <option key={c.code} value={c.code}>
+                                                {c.flag ?? ''} {c.name}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                             )}
                             {f.type === 'positions' && (
@@ -1015,7 +1063,11 @@ export default function PlayerDashboard() {
                                             </div>
                                             <div className="flex items-center">
                                                 <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
-                                                <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">NATIONALITY:<br /><span className="text-white">{getCountryName(auth?.user?.nationality)}</span></p>
+                                                <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">NATIONALITY:<br /><span className="text-white">
+                                                    {Array.isArray(auth?.user?.nationality) && auth?.user?.nationality.length > 0
+                                                        ? getCountryName(auth?.user?.nationality)
+                                                        : 'Not specified'}
+                                                </span></p>
                                             </div>
                                             <div className="flex items-center">
                                                 <MapPin className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />

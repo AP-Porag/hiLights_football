@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
+import { FaWhatsapp } from 'react-icons/fa';
 
 type RoleId = 'player' | 'scout' | 'agent' | 'club';
 
@@ -70,9 +71,10 @@ const registerSchema = z.object({
     password: z.string().min(8, 'Password must be at least 8 characters'),
     password_confirmation: z.string(),
     dob: z.string().optional(),
-    nationality: z.string().optional(),
+    nationality: z.array(z.string()).optional(),
+    country: z.string().optional(),
     organization_name: z.string().optional(),
-    whatsapp: z.string().optional(),   // added
+    whatsapp: z.string().min(8, "Whatsapp number is required"),  // added
     terms: z.boolean().refine((val) => val === true, {
         message: 'You must accept terms',
     }),
@@ -228,7 +230,7 @@ export default function Register({ countries = [] }: Props) {
         password: '',
         password_confirmation: '',
         dob: '',
-        nationality: '',
+        nationality: [] as string[],
         country: '',
         organization_name: '',
         whatsapp: '',   // added WhatsApp field
@@ -279,10 +281,13 @@ export default function Register({ countries = [] }: Props) {
         setClientErrors({});
         post('/register');
     };
+    const sortedCountries = [...countries].sort((a, b) =>
+        a.name.localeCompare(b.name)
+    );
 
-    const options = countries.map((c) => ({
+    const options = sortedCountries.map((c) => ({
         value: c.code,
-        label: `${c.name} ${c.code ?? ''}`,
+        label: `${c.name} (${c.code})`, // optional
     }));
 
     // react-select dark theme styles (nationality ar country dutoi te use hobe)
@@ -597,7 +602,7 @@ export default function Register({ countries = [] }: Props) {
                                 htmlFor="whatsapp"
                                 className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
                             >
-                                WhatsApp Number (optional)
+                                WhatsApp Number
                             </label>
                             <input
                                 id="whatsapp"
@@ -670,11 +675,15 @@ export default function Register({ countries = [] }: Props) {
                                     </label>
                                     <Select
                                         options={options}
-                                        value={options.find((o) => o.value === data.nationality)}
+                                        value={options.filter((o) => data.nationality.includes(o.value))}
                                         onChange={(selected) =>
-                                            setData('nationality', selected?.value || '')
+                                            setData(
+                                                'nationality',
+                                                selected ? selected.map((o) => o.value) : []
+                                            )
                                         }
-                                        placeholder="Select your country"
+                                        isMulti
+                                        placeholder="Select one or more nationalities"
                                         isSearchable
                                         className="text-sm"
                                         styles={selectStyles}
@@ -699,9 +708,9 @@ export default function Register({ countries = [] }: Props) {
                                     </label>
                                     <Select
                                         options={options}
-                                        value={options.find((o) => o.value === data.nationality)}
+                                        value={options.find((o) => o.value === data.country)}
                                         onChange={(selected) =>
-                                            setData('nationality', selected?.value || '')
+                                            setData('country', selected?.value || '')
                                         }
                                         placeholder="Select your country"
                                         isSearchable

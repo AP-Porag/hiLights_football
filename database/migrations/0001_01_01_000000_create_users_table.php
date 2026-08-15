@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('role');
             $table->date('dob')->nullable();
-            $table->string('nationality', 3)->nullable();
+            $table->json('nationality')->nullable();
+            $table->string('country', 3)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
