@@ -116,6 +116,9 @@ class PlayerProfileController extends Controller
 
         $countries = (new Countries())
             ->all()
+            ->sortBy(function ($country) {
+                return strtolower($country->name->common);
+            })
             ->map(function ($country) {
                 return [
                     'code' => $country->cca2,
@@ -189,7 +192,7 @@ class PlayerProfileController extends Controller
         );
 
         return redirect()->route('player.dashboard')
-            ->with('success', 'Profile saved.');
+            ->with('success', 'Profile saved.')->with('scrollTo', 'basic-info-item');
     }
 
     /**

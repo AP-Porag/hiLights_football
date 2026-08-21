@@ -11,6 +11,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { useRef, useState } from 'react';
 import { toPng } from 'html-to-image';
 import { Upload } from "lucide-react";
+import { useEffect } from 'react';
 import ReactCountryFlag from "react-country-flag";
 import {
     Share2,
@@ -59,6 +60,7 @@ import {
     XAxis,
     YAxis
 } from 'recharts';
+
 // MOCK DATA (realistic) – subscription সরানো হয়েছে
 const player = {
     name: 'Benjamin',
@@ -67,7 +69,6 @@ const player = {
     scoutInterest: 23,
     avgRating: 4.2,
 };
-// ডিফল্ট কান্ট্রি ডেটা (যদি ব্যাকএন্ড থেকে না আসে)
 
 const getCountryName = (code?: string | string[]) => {
     if (!code) return '';
@@ -82,6 +83,7 @@ const getCountryName = (code?: string | string[]) => {
         })
         .join(', ');
 };
+
 // alpha-2 code theke flag emoji
 const codeToFlag = (code?: string): string => {
     if (!code || code.length !== 2) return '';
@@ -89,17 +91,20 @@ const codeToFlag = (code?: string): string => {
         ...code.toUpperCase().split('').map((c) => 0x1f1a5 + c.charCodeAt(0))
     );
 };
+
 // CSRF cookie theke token (logo file upload er jonno fetch-e lagbe)
 const getCookie = (name: string): string => {
     const row = document.cookie.split('; ').find((r) => r.startsWith(name + '='));
     return row ? decodeURIComponent(row.split('=')[1]) : '';
 };
+
 function getGreeting(): string {
     const h = new Date().getHours();
     if (h < 12) return 'Good morning';
     if (h < 18) return 'Good afternoon';
     return 'Good evening';
 }
+
 function formatDate(): string {
     return new Date().toLocaleDateString('en-US', {
         weekday: 'long',
@@ -108,14 +113,17 @@ function formatDate(): string {
         day: 'numeric',
     });
 }
+
 const nonEmpty = (v: any): boolean => {
     if (v === null || v === undefined) return false;
     if (Array.isArray(v)) return v.length > 0;
     return String(v).trim() !== '';
 };
+
 const ALL_POSITIONS = ['GK', 'LB', 'CB-L', 'CB-R', 'RB', 'LM', 'CM-L', 'CM-R', 'RM', 'CAM', 'LW', 'ST', 'RW', 'CF'];
+
 // ════════ LIST MODAL CONFIG (repeatable rows) ════════
-type FieldDef = { name: string; label: string; type: 'text' | 'number' | 'file' | 'country' };
+type FieldDef = { name: string; label: string; type: 'text' | 'number' | 'file' | 'country', placeholder?: string; };
 type ListConfig = {
     title: string;
     storageKey: string;
@@ -125,6 +133,7 @@ type ListConfig = {
     firstFixed?: boolean;
     defaultRows?: Record<string, any>[];
 };
+
 const LIST_CONFIGS: Record<string, ListConfig> = {
     videos: {
         title: 'Videos',
@@ -132,14 +141,14 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
         primary: 'url',
         firstFixed: true,
         defaultRows: [
-            { label: 'Highlight', url: '' },
-            { label: 'Goal', url: '' },
-            { label: 'Assist', url: '' },
-            { label: 'Dribble', url: '' },
+            { label: '', url: '' },   // আগে ছিল { label: 'Highlight', url: '' }
+            { label: '', url: '' },   // আগে ছিল { label: 'Goal', url: '' }
+            { label: '', url: '' },   // আগে ছিল { label: 'Assist', url: '' }
+            { label: '', url: '' },   // আগে ছিল { label: 'Dribble', url: '' }
         ],
         fields: [
-            { name: 'label', label: 'Label', type: 'text' },
-            { name: 'url', label: 'Video URL (YouTube / Vimeo)', type: 'text' },
+            { name: 'label', label: 'Label', type: 'text', placeholder: 'Enter Your Label' },
+            { name: 'url', label: 'Video URL (YouTube / Vimeo)', type: 'text', placeholder: 'Enter video URL' },
         ],
         empty: { label: '', url: '' },
     },
@@ -152,7 +161,7 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
             { name: 'club', label: 'Club', type: 'text' },
             { name: 'country', label: 'Country', type: 'country' },
         ],
-        empty: { year: '', club: '', country: '' },
+        empty: { year: '', club: '', country: '', year_type: 'european' }, // ← year_type default
     },
     transfer_history: {
         title: 'Transfer History',
@@ -201,10 +210,12 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
         empty: { home: '', score: '', away: '', goals: '', assists: '', minutes: '' },
     },
 };
+
 // ════════ FORM MODAL CONFIG (single record) ════════
 type FormFieldType = 'text' | 'number' | 'date' | 'select' | 'country' | 'positions' | 'multi_country' | 'file' | 'textarea';
 type FormField = { name: string; label: string; type: FormFieldType; options?: string[] };
 type FormConfig = { title: string; fields: FormField[] };
+
 const FORM_CONFIGS: Record<string, FormConfig> = {
     basic_info: {
         title: 'Basic Information',
@@ -212,14 +223,14 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
             { name: 'full_name', label: 'Full Name', type: 'text' },
             { name: 'dob', label: 'Date of Birth', type: 'date' },
             { name: 'gender', label: 'Gender', type: 'select', options: ['M', 'F', 'Other'] },
-            { name: 'nationality', label: 'Nationality', type: 'multi_country' },
+            { name: 'nationality', label: 'Nationality', type: 'multi_country' }, // ← multi-select nationality
             { name: 'height', label: 'Height (cm)', type: 'number' },
             { name: 'weight', label: 'Weight (kg)', type: 'number' },
             { name: 'birth_city', label: 'Birth City', type: 'text' },
             { name: 'birth_country', label: 'Birth Country', type: 'country' },
             { name: 'current_club', label: 'Current Club', type: 'text' },
             { name: 'current_club_country', label: 'Club Country', type: 'country' },
-            { name: 'in_team_since', label: 'In Team Since (YYYY-MM)', type: 'text' },
+            { name: 'in_team_since', label: 'In Team Since (MM-YYYY)', type: 'text' },
             { name: 'agent', label: 'Agent', type: 'text' },
             { name: 'whatsapp', label: 'WhatsApp Number', type: 'text' },
             { name: 'description', label: 'About / Bio', type: 'textarea' },
@@ -238,8 +249,10 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
         ],
     },
 };
+
 const inputClass =
     'h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none';
+
 // ── Generic list modal (repeatable rows) ──
 function ListModal({
     configKey,
@@ -254,12 +267,26 @@ function ListModal({
 }) {
     const cfg = LIST_CONFIGS[configKey];
     const [rows, setRows] = useState<any[]>(() => {
-        if (initialRows.length) return initialRows.map((r) => ({ ...cfg.empty, ...r }));
-        if (cfg.defaultRows) return cfg.defaultRows.map((r) => ({ ...cfg.empty, ...r }));
+        if (configKey === 'videos') {
+            const existing = initialRows.length
+                ? initialRows.map((r: any) => ({ ...cfg.empty, ...r }))
+                : [];
+            const total = 4;
+            const result = [...existing];
+            while (result.length < total) {
+                result.push({ ...cfg.empty });
+            }
+            return result;
+        }
+
+        if (initialRows.length) return initialRows.map((r: any) => ({ ...cfg.empty, ...r }));
+        if (cfg.defaultRows) return cfg.defaultRows.map((r: any) => ({ ...cfg.empty, ...r }));
         return [{ ...cfg.empty }];
     });
     const [saving, setSaving] = useState(false);
     const [uploadingKey, setUploadingKey] = useState<string | null>(null);
+    const [yearErrors, setYearErrors] = useState<{ [key: number]: string }>({});
+
     const update = (i: number, name: string, val: string) => {
         setRows((prev) => {
             const copy = [...prev];
@@ -267,6 +294,30 @@ function ListModal({
             return copy;
         });
     };
+
+    const validateYearFormat = (idx: number, value: string, format: 'european' | 'brazilian') => {
+        if (!value) {
+            setYearErrors((prev) => ({ ...prev, [idx]: '' }));
+            return;
+        }
+
+        if (format === 'european') {
+            const regex = /^\d{2}\/\d{2}$/;
+            if (!regex.test(value)) {
+                setYearErrors((prev) => ({ ...prev, [idx]: 'Format must be: 26/27' }));
+            } else {
+                setYearErrors((prev) => ({ ...prev, [idx]: '' }));
+            }
+        } else {
+            const regex = /^\d{4}$/;
+            if (!regex.test(value)) {
+                setYearErrors((prev) => ({ ...prev, [idx]: 'Format must be: 2026' }));
+            } else {
+                setYearErrors((prev) => ({ ...prev, [idx]: '' }));
+            }
+        }
+    };
+
     const uploadFile = async (i: number, name: string, file: File) => {
         const key = `${i}-${name}`;
         setUploadingKey(key);
@@ -292,11 +343,14 @@ function ListModal({
             setUploadingKey(null);
         }
     };
+
     const addRow = () => setRows([...rows, { ...cfg.empty }]);
     const removeRow = (i: number) => {
+        if (configKey === 'videos') return;
         if (cfg.firstFixed && i === 0) return;
         setRows(rows.filter((_, idx) => idx !== i));
     };
+
     const save = () => {
         const cleaned = rows.filter((r) => nonEmpty(r[cfg.primary]));
         setSaving(true);
@@ -310,6 +364,7 @@ function ListModal({
             }
         );
     };
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
             <div
@@ -322,86 +377,177 @@ function ListModal({
                         <X className="h-5 w-5" />
                     </button>
                 </div>
-                <div className="space-y-3">
-                    {rows.map((row, i) => (
-                        <div key={i} className="flex flex-wrap items-end gap-2 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
-                            {cfg.fields.map((f) => (
-                                <div key={f.name} className="flex-1 min-w-[90px]">
-                                    <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-[#94A3B8]">
-                                        {f.label}
-                                    </label>
-                                    {f.type === 'file' ? (
-                                        <div className="flex items-center gap-2">
-                                            {nonEmpty(row[f.name]) && (
-                                                <img
-                                                    src={row[f.name]}
-                                                    alt="logo"
-                                                    className="h-9 w-9 flex-shrink-0 rounded-md border border-[#2A2A2A] object-cover"
-                                                />
-                                            )}
-                                            <label className="flex h-9 flex-1 cursor-pointer items-center justify-center rounded-lg border border-dashed border-[#2A2A2A] bg-[#0D0D0D] px-2 text-xs text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00]">
-                                                {uploadingKey === `${i}-${f.name}`
-                                                    ? 'Uploading...'
-                                                    : nonEmpty(row[f.name])
-                                                        ? 'Change'
-                                                        : 'Upload'}
-                                                <input
-                                                    type="file"
-                                                    accept="image/jpeg,image/png,image/webp"
-                                                    className="hidden"
-                                                    onChange={(e) => {
-                                                        const file = e.target.files?.[0];
-                                                        if (file) uploadFile(i, f.name, file);
-                                                    }}
-                                                />
-                                            </label>
-                                        </div>
-                                    ) : f.type === 'country' ? (
-                                        <div className="flex items-center gap-2 w-full">
-                                            <select
-                                                value={row[f.name] ?? ''}
-                                                onChange={(e) => update(i, f.name, e.target.value)}
-                                                className={`${inputClass} flex-1`}
-                                            >
-                                                <option value="">Country...</option>
-                                                {countries.map((country: any) => (
-                                                    <option key={country.code} value={country.code}>
-                                                        {country.name}
-                                                    </option>
-                                                ))}
-                                            </select>
 
-                                            {row[f.name] && (
-                                                <span className="text-xl leading-none whitespace-nowrap">
-                                                    {codeToFlag(row[f.name])}
-                                                </span>
-                                            )}
-                                        </div>
-                                    ) : (
+                <div className="space-y-3">
+                    {configKey === 'club_history' ? (
+                        // Custom club history layout
+                        rows.map((row, i) => {
+                            const yearType = row.year_type || 'european';
+                            const yearError = yearErrors[i] || '';
+                            return (
+                                <div key={i} className="mb-3">
+                                    <div className="grid grid-cols-[110px_80px_minmax(0,1fr)_130px_40px] gap-3 items-start">
+                                        {/* Year Format Dropdown */}
+                                        <select
+                                            value={yearType}
+                                            onChange={(e) => {
+                                                update(i, 'year_type', e.target.value);
+                                                setYearErrors((prev) => ({ ...prev, [i]: '' }));
+                                            }}
+                                            className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-xs text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none font-sans"
+                                        >
+                                            <option value="european">European (26/27)</option>
+                                            <option value="brazilian">Brazilian (2026)</option>
+                                        </select>
+
+                                        {/* Year Input */}
                                         <input
-                                            type={f.type}
-                                            value={row[f.name] ?? ''}
-                                            onChange={(e) => update(i, f.name, e.target.value)}
-                                            className={inputClass}
+                                            type="text"
+                                            value={row.year ?? ''}
+                                            onChange={(e) => {
+                                                update(i, 'year', e.target.value);
+                                                validateYearFormat(i, e.target.value, yearType);
+                                            }}
+                                            placeholder={yearType === 'brazilian' ? '2026' : '26/27'}
+                                            className="h-10 w-full bg-[#111111] border border-[#2A2A2A] rounded-lg px-2 text-sm text-[#F5F5F5] font-mono focus:border-[#FF6B00] focus:outline-none"
                                         />
+
+                                        {/* Club Name */}
+                                        <input
+                                            value={row.club}
+                                            onChange={(e) => update(i, 'club', e.target.value)}
+                                            placeholder="Club"
+                                            className="h-10 w-full bg-[#111111] border border-[#2A2A2A] rounded-lg px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none"
+                                        />
+
+                                        {/* Country */}
+                                        <select
+                                            value={row.country ?? ''}
+                                            onChange={(e) => update(i, 'country', e.target.value)}
+                                            className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none font-sans"
+                                        >
+                                            <option value="">Country...</option>
+                                            {countries.map((c: any) => (
+                                                <option key={c.code} value={c.code}>
+                                                    {c.flag ?? ''} {c.name}
+                                                </option>
+                                            ))}
+                                        </select>
+
+                                        {/* Add / Remove Button */}
+                                        {i === 0 ? (
+                                            <button
+                                                type="button"
+                                                onClick={addRow}
+                                                className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#FF6B00] hover:border-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]"
+                                            >
+                                                <Plus className="w-4 h-4" />
+                                            </button>
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                onClick={() => removeRow(i)}
+                                                className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {/* Year format error message */}
+                                    {yearError && (
+                                        <p className="mt-1 ml-[198px] text-xs text-red-400">
+                                            ⚠️ {yearError}
+                                        </p>
                                     )}
                                 </div>
-                            ))}
-                            {cfg.firstFixed && i === 0 ? (
-                                <div className="h-9 w-9 flex-shrink-0" />
-                            ) : (
-                                <button
-                                    type="button"
-                                    onClick={() => removeRow(i)}
-                                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"
-                                    aria-label="Remove"
-                                >
-                                    <X className="h-4 w-4" />
-                                </button>
-                            )}
-                        </div>
-                    ))}
+                            );
+                        })
+                    ) : (
+                        // Generic layout for other lists
+                        rows.map((row, i) => (
+                            <div key={i} className="flex flex-wrap items-end gap-2 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
+                                {cfg.fields.map((f) => (
+                                    <div key={f.name} className="flex-1 min-w-[90px]">
+                                        <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-[#94A3B8]">
+                                            {f.label}
+                                        </label>
+                                        {f.type === 'file' ? (
+                                            <div className="flex items-center gap-2">
+                                                {nonEmpty(row[f.name]) && (
+                                                    <img
+                                                        src={row[f.name]}
+                                                        alt="logo"
+                                                        className="h-9 w-9 flex-shrink-0 rounded-md border border-[#2A2A2A] object-cover"
+                                                    />
+                                                )}
+                                                <label className="flex h-9 flex-1 cursor-pointer items-center justify-center rounded-lg border border-dashed border-[#2A2A2A] bg-[#0D0D0D] px-2 text-xs text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00]">
+                                                    {uploadingKey === `${i}-${f.name}`
+                                                        ? 'Uploading...'
+                                                        : nonEmpty(row[f.name])
+                                                            ? 'Change'
+                                                            : 'Upload'}
+                                                    <input
+                                                        type="file"
+                                                        accept="image/jpeg,image/png,image/webp"
+                                                        className="hidden"
+                                                        onChange={(e) => {
+                                                            const file = e.target.files?.[0];
+                                                            if (file) uploadFile(i, f.name, file);
+                                                        }}
+                                                    />
+                                                </label>
+                                            </div>
+                                        ) : f.type === 'country' ? (
+                                            <div className="flex items-center gap-2 w-full">
+                                                <select
+                                                    value={row[f.name] ?? ''}
+                                                    onChange={(e) => update(i, f.name, e.target.value)}
+                                                    className={`${inputClass} flex-1`}
+                                                >
+                                                    <option value="">Country...</option>
+                                                    {countries.map((country: any) => (
+                                                        <option key={country.code} value={country.code}>
+                                                            {country.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+
+                                                {row[f.name] && (
+                                                    <span className="text-xl leading-none whitespace-nowrap">
+                                                        {codeToFlag(row[f.name])}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <input
+                                                type={f.type}
+                                                value={row[f.name] ?? ''}
+                                                onChange={(e) => update(i, f.name, e.target.value)}
+                                                className={inputClass}
+                                            />
+                                        )}
+                                    </div>
+                                ))}
+                                {configKey === 'videos' ? (
+                                    <div className="h-9 w-9 flex-shrink-0" />
+                                ) : cfg.firstFixed && i === 0 ? (
+                                    <div className="h-9 w-9 flex-shrink-0" />
+                                ) : (
+                                    <button
+                                        type="button"
+                                        onClick={() => removeRow(i)}
+                                        className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"
+                                        aria-label="Remove"
+                                    >
+                                        <X className="h-4 w-4" />
+                                    </button>
+                                )}
+                            </div>
+                        ))
+                    )}
                 </div>
+
                 {configKey !== 'videos' && (
                     <button
                         type="button"
@@ -411,6 +557,7 @@ function ListModal({
                         <Plus className="h-4 w-4" /> Add row
                     </button>
                 )}
+
                 <div className="mt-6 flex justify-end gap-3">
                     <Button type="button" variant="ghost" onClick={onClose} className="text-[#9A9A9A] hover:bg-[#1F1F1F] hover:text-[#F5F5F5]">
                         Cancel
@@ -423,6 +570,7 @@ function ListModal({
         </div>
     );
 }
+
 // ── Generic form modal (single record) ──
 function FormModal({
     configKey,
@@ -444,7 +592,22 @@ function FormModal({
             if (f.name === 'full_name') init[f.name] = user?.name ?? '';
             else if (f.name === 'whatsapp') init[f.name] = user?.whatsapp ?? '';
             else if (f.name === 'dob') init[f.name] = user?.dob ?? '';
-            else if (f.name === 'nationality') init[f.name] = Array.isArray(user?.nationality) ? user.nationality : [];
+            else if (f.name === 'nationality') {
+                // ✅ Robust nationality parsing: array / JSON string / comma-separated
+                const nat = user?.nationality;
+                if (Array.isArray(nat)) {
+                    init[f.name] = nat;
+                } else if (typeof nat === 'string' && nat.trim() !== '') {
+                    try {
+                        const parsed = JSON.parse(nat);
+                        init[f.name] = Array.isArray(parsed) ? parsed : [];
+                    } catch {
+                        init[f.name] = nat.split(',').map((s: string) => s.trim()).filter(Boolean);
+                    }
+                } else {
+                    init[f.name] = [];
+                }
+            }
             else if (f.name === 'positions') init[f.name] = Array.isArray(pp?.positions) ? pp.positions : [];
             else if (f.name === 'photo') init[f.name] = null;
             else init[f.name] = pp?.[f.name] ?? '';
@@ -472,9 +635,17 @@ function FormModal({
     const save = () => {
         const payload: Record<string, any> = { ...values };
         if (!payload.photo) delete payload.photo;
+
+        // ✅ Basic Info modal-এ user table-এর ফিল্ড আছে, তাই আলাদা endpoint
+        const endpoint = configKey === 'basic_info'
+            ? '/player/profile'   // User + player_profile উভয় handle করে (nationality array allowed)
+            : '/player/profile/fields';  // শুধু player_profile ফিল্ড
+
+        const hasFile = Object.values(payload).some((v) => v instanceof File);
+
         setSaving(true);
-        router.post('/player/profile/fields', payload, {
-            forceFormData: true,
+        router.post(endpoint, payload, {
+            ...(hasFile ? { forceFormData: true } : {}),
             preserveScroll: true,
             onSuccess: () => onClose(),
             onFinish: () => setSaving(false),
@@ -635,8 +806,10 @@ function FormModal({
         </div>
     );
 }
+
 export default function PlayerDashboard() {
     const { auth } = usePage().props as any;
+    const { flash } = usePage().props as any;
     const {
         recentViews = [],
         subscription,
@@ -648,7 +821,6 @@ export default function PlayerDashboard() {
     } = usePage().props as any;
     const countryData = countryAnalytics ?? [];
 
-    // sparkline = last 7 days er daily views (time trend) — country data noy
     const sparklineData: number[] = (viewsDaily ?? []).map((v: any) => Number(v) || 0);
     const totalViews = countryData.reduce(
         (sum: number, item: any) => sum + Number(item.views),
@@ -663,6 +835,7 @@ export default function PlayerDashboard() {
     const [shareOpen, setShareOpen] = useState(false);
     const profileUrl = `${window.location.origin}/player/profile/${auth?.user?.player_profile?.id}`;
     const [copied, setCopied] = useState(false);
+
     const copyProfileLink = async () => {
         try {
             await navigator.clipboard.writeText(profileUrl);
@@ -687,10 +860,16 @@ export default function PlayerDashboard() {
             }
         }
     };
+
     const videoDone =
         nonEmpty(pp.video_url) ||
         (Array.isArray(pp.videos) && pp.videos.some((v: any) => nonEmpty(v?.url)));
-    // ── PROFILE COMPLETION (now 24 checks after adding current_club_country, agent, whatsapp) ──
+
+    // ✅ Transfer history আলাদা check বাদ দেওয়া হয়েছে, এবং club history-র সাথে যুক্ত হয়েছে
+    const clubHistoryDone =
+        (Array.isArray(pp.club_history) && pp.club_history.some((r: any) => nonEmpty(r?.club))) ||
+        (Array.isArray(pp.transfer_history) && pp.transfer_history.some((r: any) => nonEmpty(r?.club)));
+
     const completionChecks: boolean[] = [
         nonEmpty(auth?.user?.name),
         nonEmpty(auth?.user?.dob),
@@ -701,26 +880,26 @@ export default function PlayerDashboard() {
         nonEmpty(pp.birth_city),
         nonEmpty(pp.birth_country),
         nonEmpty(pp.current_club),
-        nonEmpty(pp.current_club_country),   // ← নতুন
+        nonEmpty(pp.current_club_country),
         nonEmpty(pp.in_team_since),
-        nonEmpty(pp.agent),                 // ← নতুন
-        nonEmpty(auth?.user?.whatsapp),              // ← নতুন
+        nonEmpty(pp.agent),
+        nonEmpty(auth?.user?.whatsapp),
         nonEmpty(pp.modality),
         nonEmpty(pp.foot),
         nonEmpty(pp.photo_path),
         videoDone,
         nonEmpty(pp.description),
         Array.isArray(pp.positions) && pp.positions.length > 0,
-        Array.isArray(pp.club_history) && pp.club_history.some((r: any) => nonEmpty(r?.club)),
-        Array.isArray(pp.transfer_history) && pp.transfer_history.some((r: any) => nonEmpty(r?.club)),
+        clubHistoryDone, // ✅ এখন transfer_history-ও club_history-র সাথে হিসাব হয়
         Array.isArray(pp.achievements) && pp.achievements.some((r: any) => nonEmpty(r?.title)),
         Array.isArray(pp.competitions) && pp.competitions.some((r: any) => nonEmpty(r?.name)),
         Array.isArray(pp.matches) && pp.matches.some((r: any) => nonEmpty(r?.home)),
     ];
+
     const profileComplete = Math.round(
         (completionChecks.filter(Boolean).length / completionChecks.length) * 100
     );
-    // ── CHECKLIST ──
+
     const checklist: {
         label: string;
         done: boolean;
@@ -763,22 +942,14 @@ export default function PlayerDashboard() {
                 label: 'Add highlight videos',
                 done: videoDone,
                 modal: 'videos',
-                cta: videoDone ? 'Edit' : 'Edit',
+                cta: 'Edit',
                 icon: Video,
                 alwaysShow: true,
             },
             {
                 label: 'Add club history',
-                done: Array.isArray(pp.club_history) && pp.club_history.some((r: any) => nonEmpty(r?.club)),
+                done: clubHistoryDone, // ✅ club history + transfer history একত্রে
                 modal: 'club_history',
-                cta: 'Edit',
-                icon: History,
-                alwaysShow: true,
-            },
-            {
-                label: 'Add transfer history',
-                done: Array.isArray(pp.transfer_history) && pp.transfer_history.some((r: any) => nonEmpty(r?.club)),
-                modal: 'transfer_history',
                 cta: 'Edit',
                 icon: History,
                 alwaysShow: true,
@@ -815,6 +986,7 @@ export default function PlayerDashboard() {
                 icon: Crown,
             },
         ];
+
     const circumference = 276.46;
     const dashOffset = circumference - (profileComplete / 100) * circumference;
     const sparkMax = Math.max(...sparklineData, 1);
@@ -828,10 +1000,11 @@ export default function PlayerDashboard() {
                     const x = (i / (sparklineData.length - 1)) * 100;
                     const y =
                         100 - ((v - sparkMin) / sparkRange) * 80 - 10;
-
                     return `${x},${y}`;
                 })
                 .join(" ");
+
+    // ── MEMBER CARD PLAYER INFO (existing + basic_info fields) ──
     const playerInfo = [
         {
             icon: <Shirt className="w-4 h-4 text-gray-300" />,
@@ -878,7 +1051,41 @@ export default function PlayerDashboard() {
                 ? new Date(pp.in_team_since).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
                 : 'Not specified',
         },
+        // নিচের ফিল্ডগুলো Basic Info থেকে যুক্ত করা হলো
+        {
+            icon: <User className="w-4 h-4 text-gray-300" />,
+            label: 'GENDER',
+            value: pp?.gender || 'Not specified',
+        },
+        {
+            icon: <MapPin className="w-4 h-4 text-gray-300" />,
+            label: 'BIRTH COUNTRY',
+            value: pp?.birth_country ? getCountryName(pp.birth_country) : 'Not specified',
+        },
+        {
+            icon: <Flag className="w-4 h-4 text-gray-300" />,
+            label: 'CLUB COUNTRY',
+            value: pp?.current_club_country ? getCountryName(pp.current_club_country) : 'Not specified',
+        },
+        {
+            icon: <UserPen className="w-4 h-4 text-gray-300" />,
+            label: 'AGENT',
+            value: pp?.agent || 'Not specified',
+        },
+        {
+            icon: <Smartphone className="w-4 h-4 text-gray-300" />,
+            label: 'WHATSAPP',
+            value: auth?.user?.whatsapp || 'Not specified',
+        },
+        {
+            icon: <ClipboardList className="w-4 h-4 text-gray-300" />,
+            label: 'DESCRIPTION',
+            value: pp?.description
+                ? (pp.description.length > 40 ? pp.description.substring(0, 40) + '...' : pp.description)
+                : 'Not specified',
+        },
     ];
+
     const shareProfile = async () => {
         const shareData = {
             title: `${auth?.user?.name || 'Player'} — HiLights Football`,
@@ -918,6 +1125,7 @@ export default function PlayerDashboard() {
             prompt('Copy this profile link:', profileUrl);
         }
     };
+
     const cardRef = useRef<HTMLDivElement>(null);
     const downloadCard = async () => {
         if (!cardRef.current) return;
@@ -932,6 +1140,16 @@ export default function PlayerDashboard() {
             alert('Could not download card. Please try again.');
         }
     };
+
+    useEffect(() => {
+        if (flash?.scrollTo) {
+            const el = document.getElementById(flash.scrollTo);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    }, [flash]);
+
     return (
         <div className="min-h-screen bg-[#0D0D0D] pt-16">
             <PlayerNavbar />
@@ -987,21 +1205,6 @@ export default function PlayerDashboard() {
                                 <polyline points={sparkPoints} fill="none" stroke="#FF6B00" strokeWidth="2" vectorEffect="non-scaling-stroke" />
                             </svg>
                         </div>
-                        {/* [3] Scout Interest */}
-                        {/* <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
-                            <div className="flex items-start justify-between">
-                                <div>
-                                    <p className="font-mono text-3xl font-black text-[#F5F5F5]">{player.scoutInterest}</p>
-                                    <p className="mt-1 text-sm text-[#9A9A9A]">Scout Ratings</p>
-                                </div>
-                                <Star className="h-5 w-5 fill-[#FF6B00] text-[#FF6B00]" />
-                            </div>
-                            <div className="mt-2 flex items-center gap-1">
-                                <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
-                                <span className="text-xs font-medium text-[#9A9A9A]">Average {player.avgRating} / 5.0</span>
-                            </div>
-                            <Progress value={84} className="mt-3 h-2 bg-[#2A2A2A] [&>div]:bg-[#FF6B00]" />
-                        </div> */}
                         {/* [4] Subscription */}
                         <div className="flex flex-col rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                             {!hasSubscription ? (
@@ -1019,7 +1222,6 @@ export default function PlayerDashboard() {
                                 <>
                                     <Badge className="w-fit border border-green-600 bg-green-950/30 text-[10px] font-bold tracking-wider text-green-400 hover:bg-green-950/30">PREMIUM ACTIVE</Badge>
                                     <p className="mt-3 flex-1 text-sm text-[#9A9A9A]">All features unlocked.</p>
-                                    {/* <p className="mt-3 text-xs text-[#94A3B8]">Renews 01/06/2026</p> */}
                                 </>
                             )}
                         </div>
@@ -1049,7 +1251,6 @@ export default function PlayerDashboard() {
                                     <div>
                                         <div className="relative z-10">
                                             <h3 className="mt-2 text-[12px] sm:mt-4 sm:text-[16px] font-bold uppercase">{auth?.user?.name}</h3>
-                                            {/* <p className="text-[8px] sm:text-[10px] text-[#f05300] uppercase">{getPositionName(auth?.user?.player_profile?.positions)}</p> */}
                                             <div className="absolute mt-2 h-[1px] bg-orange-500 w-[80%] sm:w-[110%]"></div>
                                         </div>
                                         <div className="mt-6 space-y-1">
@@ -1162,7 +1363,7 @@ export default function PlayerDashboard() {
                             {checklist.map((item, i) => {
                                 const Icon = item.icon;
                                 return (
-                                    <li key={i} className="flex items-center gap-3 py-2">
+                                    <li id="basic-info-item" key={i} className="flex items-center gap-3 py-2">
                                         {item.done ? (
                                             <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-400" />
                                         ) : (
@@ -1186,75 +1387,8 @@ export default function PlayerDashboard() {
                             })}
                         </ul>
                     </section>
-                    {/* RECENT VIEWS CARD */}
-                    {/* <section className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
-                        <div className="mb-5 flex items-start justify-between">
-                            <div>
-                                <h2 className="text-lg font-bold text-[#F5F5F5]">Recent Profile Views</h2>
-                                <p className="mt-1 text-xs text-[#94A3B8]">Who visited your profile</p>
-                            </div>
-                            <Link href="/player/views" className="text-xs font-semibold text-[#FF6B00] hover:text-[#CC5500]">View all →</Link>
-                        </div>
-                        {recentViews.length === 0 && (
-                            <p className="rounded-xl border border-[#2A2A2A] p-6 text-center text-sm text-[#9A9A9A]">
-                                No one has viewed your profile yet.
-                            </p>
-                        )}
-                        <ul className="space-y-3">
-                            {recentViews.map((view, index) => {
-                                const locked = !hasSubscription && index >= 2;
-                                const initials = view.name
-                                    .split(' ')
-                                    .slice(0, 2)
-                                    .map((w) => w[0])
-                                    .join('')
-                                    .toUpperCase();
-                                return (
-                                    <li
-                                        key={view.id}
-                                        className="relative flex items-center gap-3 rounded-xl border border-[#2A2A2A] p-3 transition-colors hover:border-[#FF6B00]"
-                                    >
-                                        <div className={locked ? 'flex flex-1 items-center gap-3 blur-sm filter' : 'flex flex-1 items-center gap-3'}>
-                                            <Avatar className="h-10 w-10 flex-shrink-0">
-                                                <AvatarFallback className="bg-[rgba(255,107,0,0.12)] text-xs font-bold text-[#FF6B00]">
-                                                    {initials}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                            <div className="min-w-0 flex-1">
-                                                <p className="truncate text-sm font-semibold text-[#F5F5F5]">
-                                                    {view.name}
-                                                </p>
-                                            </div>
-                                            {!locked && (
-                                                view.player_profile_id ? (
-                                                    <Link
-                                                        href={`/player/profile/${view.player_profile_id}`}
-                                                        className="flex-shrink-0 text-xs font-semibold text-[#FF6B00] hover:text-[#CC5500]"
-                                                    >
-                                                        View →
-                                                    </Link>
-                                                ) : (
-                                                    <span className="text-xs text-[#94A3B8]">No profile</span>
-                                                )
-                                            )}
-                                        </div>
-                                        {locked && (
-                                            <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-[#161616]/60">
-                                                <div className="flex items-center gap-2 rounded-lg border border-[#2A2A2A] bg-[#1F1F1F] px-3 py-1.5">
-                                                    <Lock className="h-3.5 w-3.5 text-[#FF6B00]" />
-                                                    <span className="text-xs font-medium text-[#9A9A9A]">
-                                                        Upgrade to Premium to unlock
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </section> */}
                 </div>
-                {/* COUNTRY ANALYTICS - ডাইনামিক ডেটা সহ */}
+                {/* COUNTRY ANALYTICS */}
                 <section className="relative overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                     <div className="mb-5 flex items-start justify-between">
                         <div>
@@ -1321,7 +1455,7 @@ export default function PlayerDashboard() {
                     )}
                 </section>
             </main>
-            {/* MODALS — list vs form auto-select */}
+            {/* MODALS */}
             {
                 activeModal && (
                     LIST_CONFIGS[activeModal] ? (

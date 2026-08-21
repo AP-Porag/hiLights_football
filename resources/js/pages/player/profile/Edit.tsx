@@ -247,6 +247,32 @@ export default function Edit() {
     const profile = page.profile ?? null;
     const countries = page.countries ?? [];
     const [dobOpen, setDobOpen] = useState(false);
+    // Club history year validation error state
+    const [yearErrors, setYearErrors] = useState<{ [key: number]: string }>({});
+
+    // Year format validation function
+    const validateYearFormat = (idx: number, value: string, format: 'european' | 'brazilian') => {
+        if (!value) {
+            setYearErrors((prev) => ({ ...prev, [idx]: '' })); // empty hole error nei
+            return;
+        }
+
+        if (format === 'european') {
+            const regex = /^\d{2}\/\d{2}$/;
+            if (!regex.test(value)) {
+                setYearErrors((prev) => ({ ...prev, [idx]: 'Format must be: 26/27' }));
+            } else {
+                setYearErrors((prev) => ({ ...prev, [idx]: '' }));
+            }
+        } else if (format === 'brazilian') {
+            const regex = /^\d{4}$/;
+            if (!regex.test(value)) {
+                setYearErrors((prev) => ({ ...prev, [idx]: 'Format must be: 2026' }));
+            } else {
+                setYearErrors((prev) => ({ ...prev, [idx]: '' }));
+            }
+        }
+    };
 
     const { data, setData, post, processing, errors, transform } = useForm({
         full_name: profile?.full_name ?? user.name ?? '',
@@ -299,7 +325,17 @@ export default function Edit() {
 
     // generic updaters for each list
     const updateClubHistory = (idx: number, field: string, value: string) => { const copy = [...data.club_history]; copy[idx] = { ...copy[idx], [field]: value }; setData('club_history', copy); };
-    const addClubRow = () => setData('club_history', [...data.club_history, { year: '', club: '', country: '' }]);
+    const addClubRow = () => {
+        setData(prev => ({
+            ...prev,
+            club_history: [
+                ...prev.club_history,
+                { year: '', club: '', country: '', year_type: 'european' }
+            ]
+        }));
+        // নতুন row-এর জন্য error clear
+        setYearErrors(prev => ({ ...prev, [prev.club_history.length]: '' }));
+    };
     const removeClubRow = (idx: number) => setData('club_history', data.club_history.filter((_, i) => i !== idx));
 
     const updateTransferHistory = (idx: number, field: string, value: string) => { const copy = [...data.transfer_history]; copy[idx] = { ...copy[idx], [field]: value }; setData('transfer_history', copy); };
@@ -637,33 +673,128 @@ export default function Edit() {
                         <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">04 / Career History</div>
                         <div className="space-y-8">
                             {/* Club History */}
+                            {/* Club History */}
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Club History</h3>
-                                <div className="flex items-center gap-3 mb-2">
-                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
-                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Club Name</span>
-                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Country</span>
-                                    <span className="w-10 flex-shrink-0" />
+
+                                {/* Header Row */}
+                                <div className="grid grid-cols-[110px_80px_minmax(0,1fr)_130px_40px] gap-3 items-center mb-2">
+                                    <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
+                                        Format
+                                    </span>
+                                    <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
+                                        Year
+                                    </span>
+                                    <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
+                                        Club Name
+                                    </span>
+                                    <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
+                                        Country
+                                    </span>
+                                    <span className="w-10" />
                                 </div>
-                                {data.club_history.map((row: any, idx: number) => (
-                                    <div key={idx} className="flex items-center gap-3 mb-2">
-                                        <Input type="number" value={row.year ?? ''} onChange={(e) => updateClubHistory(idx, 'year', e.target.value)} placeholder="Year" className="w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
-                                        <Input value={row.club} onChange={(e) => updateClubHistory(idx, 'club', e.target.value)} placeholder="Club name" className="flex-1 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
-                                        <select value={row.country ?? ''} onChange={(e) => updateClubHistory(idx, 'country', e.target.value)} className="flex-1 h-10 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none font-sans">
-                                            <option value="">Country...</option>
-                                            {countries.map((c) => <option key={c.code} value={c.code}>{c.flag ?? ''} {c.name}</option>)}
-                                        </select>
-                                        {idx === 0 ? (
-                                            <button type="button" onClick={addClubRow} className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#FF6B00] hover:border-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]"><Plus className="w-4 h-4" /></button>
-                                        ) : (
-                                            <button type="button" onClick={() => removeClubRow(idx)} className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"><X className="w-4 h-4" /></button>
-                                        )}
-                                    </div>
-                                ))}
+
+                                {data.club_history.map((row: any, idx: number) => {
+                                    const yearType = row.year_type || 'european';
+                                    const yearError = yearErrors[idx] || '';
+
+                                    return (
+                                        <div key={idx} className="mb-3">
+                                            <div className="grid grid-cols-[110px_80px_minmax(0,1fr)_130px_40px] gap-3 items-start">
+                                                {/* Year Format Dropdown */}
+                                                <select
+                                                    value={yearType}
+                                                    onChange={(e) => {
+                                                        const newType = e.target.value;
+                                                        updateClubHistory(idx, 'year_type', newType);
+                                                        setYearErrors((prev) => ({ ...prev, [idx]: '' }));
+                                                    }}
+                                                    className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-xs text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none font-sans"
+                                                >
+                                                    <option value="european">European (26/27)</option>
+                                                    <option value="brazilian">Brazilian (2026)</option>
+                                                </select>
+
+                                                {/* Year Input */}
+                                                {yearType === 'european' ? (
+                                                    <Input
+                                                        type="text"
+                                                        value={row.year ?? ''}
+                                                        onChange={(e) => {
+                                                            updateClubHistory(idx, 'year', e.target.value);
+                                                            validateYearFormat(idx, e.target.value, 'european');
+                                                        }}
+                                                        placeholder="26/27"
+                                                        className="h-10 w-full bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                                    />
+                                                ) : (
+                                                    <Input
+                                                        type="number"
+                                                        value={row.year ?? ''}
+                                                        onChange={(e) => {
+                                                            updateClubHistory(idx, 'year', e.target.value);
+                                                            validateYearFormat(idx, e.target.value, 'brazilian');
+                                                        }}
+                                                        placeholder="2026"
+                                                        className="h-10 w-full bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                                    />
+                                                )}
+
+                                                {/* Club Name */}
+                                                <Input
+                                                    value={row.club}
+                                                    onChange={(e) => updateClubHistory(idx, 'club', e.target.value)}
+                                                    placeholder="Club name"
+                                                    className="h-10 w-full bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                                />
+
+                                                {/* Country */}
+                                                <select
+                                                    value={row.country ?? ''}
+                                                    onChange={(e) => updateClubHistory(idx, 'country', e.target.value)}
+                                                    className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none font-sans"
+                                                >
+                                                    <option value="">Country...</option>
+                                                    {countries.map((c) => (
+                                                        <option key={c.code} value={c.code}>
+                                                            {c.flag ?? ''} {c.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+
+                                                {/* Add / Remove Button */}
+                                                {idx === 0 ? (
+                                                    <button
+                                                        type="button"
+                                                        onClick={addClubRow}
+                                                        className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#FF6B00] hover:border-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]"
+                                                    >
+                                                        <Plus className="w-4 h-4" />
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeClubRow(idx)}
+                                                        className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"
+                                                    >
+                                                        <X className="w-4 h-4" />
+                                                    </button>
+                                                )}
+                                            </div>
+
+                                            {/* Year format error message */}
+                                            {yearError && (
+                                                <p className="mt-1 ml-[198px] text-xs text-red-400">
+                                                    ⚠️ {yearError}
+                                                </p>
+                                            )}
+                                        </div>
+                                    );
+                                })}
                             </div>
 
                             {/* Transfer History */}
-                            <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
+                            {/* <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Transfer History</h3>
                                 <div className="flex items-center gap-3 mb-2">
                                     <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
@@ -683,7 +814,7 @@ export default function Edit() {
                                     </div>
                                 ))}
                                 <button type="button" onClick={addTransferRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#FF6B00] hover:text-[#CC5500]"><Plus className="w-4 h-4" /> Add row</button>
-                            </div>
+                            </div> */}
 
                             {/* Achievements */}
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
