@@ -19,15 +19,28 @@ import {
 } from "lucide-react";
 import { Link } from '@inertiajs/react';
 
-const getCountryName = (code?: string | null) => {
+const getCountryName = (code?: string | string[] | null): string => {
     if (!code) return '';
-    return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
+
+    const codes = Array.isArray(code) ? code : [code];
+
+    const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+
+    return codes
+        .map(c => {
+            try {
+                return regionNames.of(c) || c;
+            } catch {
+                return c; // invalid code fallback
+            }
+        })
+        .join(', ');
 };
 
 interface PlayerItem {
     id: number;
     name: string | null;
-    nationality: string | null;
+    nationality: string[] | null;  // ✅ array of ISO country codes
     positions: string[] | null;
     current_club: string | null;
     photo_url: string | null;
@@ -35,7 +48,6 @@ interface PlayerItem {
     height: string | null;
     dob: string | null;
     video_url: string | null;
-
 }
 
 const getEmbedUrl = (url?: string | null): string | null => {
@@ -118,44 +130,6 @@ const HomeTwo = () => {
     ];
     const [activeVideo, setActiveVideo] = React.useState<string | null>(null);
 
-    // const players = [
-    //     {
-    //         name: "Mahamadou Balde",
-    //         position: "Left winger",
-    //         country: "Senegal",
-    //         code: "SN",
-    //         height: "178 cm",
-    //         age: "20 years",
-    //         image: "/images/img/p-3.jpg",
-    //     },
-    //     {
-    //         name: "Gabriel Gama",
-    //         position: "Attacking Midfielder",
-    //         country: "Brazil",
-    //         code: "BR",
-    //         height: "175 cm",
-    //         age: "21 years",
-    //         image: "/images/img/p-6.png",
-    //     },
-    //     {
-    //         name: "Mady Danfaga",
-    //         position: "Striker",
-    //         country: "Guinea",
-    //         code: "GN",
-    //         height: "185 cm",
-    //         age: "22 years",
-    //         image: "/images/img/p-4.jpg",
-    //     },
-    //     {
-    //         name: "Vinicius Peruchi",
-    //         position: "Goal Keeper",
-    //         country: "Brazil",
-    //         code: "BR",
-    //         height: "188 cm",
-    //         age: "21 years",
-    //         image: "/images/img/p-5.jpg",
-    //     },
-    // ];
     const { players } = usePage<{ players: PlayerItem[] }>().props;
 
     return (
@@ -344,32 +318,22 @@ const HomeTwo = () => {
 
                         {/* Rows */}
                         {players.map((player, index) => (
-
-                            < Link key={player.id} href={auth?.user
+                            <Link key={player.id} href={auth?.user
                                 ? `/player/profile/${player.id}`
                                 : "/register?role=scout"}>
-                                {/* <Link key={index} href={route('player.public.profile', 1)}> */}
-                                <div className="mb-2 grid grid-cols-[40px_1fr_70px_70px] items-center rounded-[12px] bg-white pr-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:grid-cols-[70px_1fr_80px_120px] md:grid-cols-[150px_1fr_120px_170px] 2xl:grid-cols-[180px_1fr_150px_200px]" >
+                                <div className="mb-2 grid grid-cols-[40px_1fr_70px_70px] items-center rounded-[12px] bg-white pr-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:grid-cols-[70px_1fr_80px_120px] md:grid-cols-[150px_1fr_120px_170px] 2xl:grid-cols-[180px_1fr_150px_200px]">
                                     {/* Thumbnail */}
-                                    {/* < div className="relative" >
-                                        <img
-                                            src={player.photo_url || '/images/img/placeholder.webp'} alt={player.name ?? ''}
-                                            className="rounded rounded-tl-[12px] rounded-bl-[12px] object-cover"
-                                        />
-                                        <button className="absolute right-3 bottom-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00]">
-                                            <Play size={12} fill="white" className="text-white" />
-                                        </button>
-                                    </div> */}
                                     <div className="relative">
                                         <img
-                                            src={player.photo_url || '/images/img/placeholder.webp'} alt={player.name ?? ''}
+                                            src={player.photo_url || '/images/img/placeholder.webp'}
+                                            alt={player.name ?? ''}
                                             className="rounded rounded-tl-[12px] rounded-bl-[12px] object-cover"
                                         />
                                         {player.video_url && (
                                             <button
                                                 type="button"
                                                 onClick={(e) => {
-                                                    e.preventDefault();          // Link navigate bondho koro
+                                                    e.preventDefault();
                                                     e.stopPropagation();
                                                     setActiveVideo(player.video_url);
                                                 }}
@@ -385,20 +349,22 @@ const HomeTwo = () => {
                                         <p className="text-xs whitespace-nowrap text-gray-600 md:text-sm 2xl:text-base">
                                             {getPositionName(player.positions ?? [])}
                                         </p>
-                                        <div className="mt-1 flex items-center gap-2">
-                                            {/* <span className="text-sm">
-                                                <ReactCountryFlag countryCode={player.code} svg className="mt-[2px] mr-1 md:mt-1" />
-                                            </span> */}
-                                            <span className="inline-flex items-center gap-1.5 text-xs whitespace-nowrap text-gray-700 md:text-sm 2xl:text-base">
-                                                {player?.nationality && (
-                                                    <ReactCountryFlag
-                                                        countryCode={player.nationality}
-                                                        svg
-                                                        style={{ width: '1.2em', height: '1.2em' }}
-                                                    />
-                                                )}
-                                                <span>{getCountryName(player?.nationality)}</span>
-                                            </span>
+                                        <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                                            {player?.nationality && player.nationality.length > 0 ? (
+                                                player.nationality.map((code, idx) => (
+                                                    <span key={`${code}-${idx}`} className="inline-flex items-center gap-1 text-xs whitespace-nowrap text-gray-700 md:text-sm 2xl:text-base">
+                                                        <ReactCountryFlag
+                                                            countryCode={code}
+                                                            svg
+                                                            style={{ width: '1.2em', height: '1.2em' }}
+                                                        />
+                                                        <span>{getCountryName(code)}</span>
+                                                        {idx < player.nationality.length - 1 && <span>,</span>}
+                                                    </span>
+                                                ))
+                                            ) : (
+                                                <span className="text-xs text-gray-700">—</span>
+                                            )}
                                         </div>
                                     </div>
                                     {/* Height */}
@@ -465,10 +431,10 @@ const HomeTwo = () => {
                             </div>
                         </div>
                     )}
-                </section >
-            </main >
+                </section>
+            </main>
             <PublicFooter />
-        </div >
+        </div>
     );
 }
 
