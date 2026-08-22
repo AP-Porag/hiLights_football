@@ -28,7 +28,7 @@ class AgentController extends Controller
             ? SavedPlayer::where('user_id', auth()->id())->pluck('player_profile_id')->toArray()
             : [];
 
-        return Inertia::render('agent/dashboard/Index', [
+        return Inertia::render('scouting/dashboard/Index', [
             'players' => $players,
             'savedIds' => $savedIds,
         ]);
@@ -59,7 +59,7 @@ class AgentController extends Controller
             ->where('player_profile_id', $player->id)
             ->first();
 
-        return Inertia::render('agent/player/Detail', [
+        return Inertia::render('scouting/player/Detail', [
             'player' => $player,
             'similarPlayers' => $similarPlayers,
             'existingRating' => $existingRating,
@@ -224,7 +224,7 @@ class AgentController extends Controller
                 ];
             });
 
-        return Inertia::render('agent/search/Saved', [
+        return Inertia::render('scouting/search/Saved', [
             'savedPlayers' => $savedPlayers,
         ]);
     }
@@ -261,12 +261,23 @@ class AgentController extends Controller
     // Helper for flag emoji (if you have a nationality code)
     private function getFlag($code)
     {
-        if (!$code || strlen($code) !== 2) {
-            return '🏳️'; // ডিফল্ট ফ্ল্যাগ
+        $codes = is_array($code) ? $code : [$code];
+        $flags = [];
+
+        foreach ($codes as $c) {
+            $c = trim((string) $c);
+            if ($c === '' || strlen($c) !== 2) {
+                $flags[] = '🏳️';
+                continue;
+            }
+
+            $c = strtoupper($c);
+            $regionalOffset = 0x1F1E6 - ord('A');
+            $flag = mb_convert_encoding('&#' . (ord($c[0]) + $regionalOffset) . ';', 'UTF-8', 'HTML-ENTITIES') .
+                mb_convert_encoding('&#' . (ord($c[1]) + $regionalOffset) . ';', 'UTF-8', 'HTML-ENTITIES');
+            $flags[] = $flag;
         }
-        $code = strtoupper($code);
-        $regionalOffset = 0x1F1E6 - ord('A');
-        return mb_convert_encoding('&#' . (ord($code[0]) + $regionalOffset) . ';', 'UTF-8', 'HTML-ENTITIES') .
-            mb_convert_encoding('&#' . (ord($code[1]) + $regionalOffset) . ';', 'UTF-8', 'HTML-ENTITIES');
+
+        return implode(', ', $flags);
     }
 }

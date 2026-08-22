@@ -91,7 +91,7 @@ export default function About() {
 
             <main className="pt-16">
                 {/* HERO */}
-                <section className="bg-[#FF6B00] py-24 px-6">
+                <section className="bg-[#FF5E24] py-24 px-6">
                     <div className="max-w-[1100px] mx-auto text-center">
                         <div className="text-white/70 text-xs tracking-[0.2em] uppercase font-semibold mb-6">
                             About HiLights Football
@@ -113,12 +113,12 @@ export default function About() {
                         <div className="relative">
                             <span
                                 aria-hidden="true"
-                                className="absolute -top-12 -left-4 font-display font-black text-[120px] lg:text-[140px] text-[#FF6B00] opacity-[0.08] leading-none select-none pointer-events-none"
+                                className="absolute -top-12 -left-4 font-display font-black text-[120px] lg:text-[140px] text-[#FF5E24] opacity-[0.08] leading-none select-none pointer-events-none"
                             >
                                 01
                             </span>
                             <div className="relative">
-                                <div className="text-[#FF6B00] text-xs tracking-[0.2em] uppercase font-bold">
+                                <div className="text-[#FF5E24] text-xs tracking-[0.2em] uppercase font-bold">
                                     Our Mission
                                 </div>
                                 <h2 className="font-display text-3xl sm:text-4xl text-[#0F172A] dark:text-[#F5F5F5] font-black mt-3 leading-tight">
@@ -156,7 +156,7 @@ export default function About() {
                                         className="flex gap-5 p-6 rounded-2xl border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#161616]"
                                     >
                                         <div className="shrink-0 w-12 h-12 rounded-xl bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] flex items-center justify-center">
-                                            <Icon className="w-6 h-6 text-[#FF6B00]" strokeWidth={2} />
+                                            <Icon className="w-6 h-6 text-[#FF5E24]" strokeWidth={2} />
                                         </div>
                                         <div>
                                             <h3 className="font-bold text-lg text-[#0F172A] dark:text-[#F5F5F5] mb-1.5">
@@ -174,7 +174,7 @@ export default function About() {
                 </section>
 
                 {/* STATS BAND */}
-                <section className="bg-[#FF6B00] py-14 px-6">
+                <section className="bg-[#FF5E24] py-14 px-6">
                     <div className="max-w-[1100px] mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
                         {stats.map((stat) => (
                             <div key={stat.label} className="text-center">
@@ -193,7 +193,7 @@ export default function About() {
                 <section className="bg-[#F8FAFC] dark:bg-[#111111] py-16 lg:py-20 px-6">
                     <div className="max-w-[1100px] mx-auto">
                         <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-14">
-                            <div className="text-[#FF6B00] text-xs tracking-[0.2em] uppercase font-bold">
+                            <div className="text-[#FF5E24] text-xs tracking-[0.2em] uppercase font-bold">
                                 Our Vision
                             </div>
                             <h2 className="font-display text-3xl sm:text-4xl text-[#0F172A] dark:text-[#F5F5F5] font-black mt-3 leading-tight">
@@ -207,10 +207,10 @@ export default function About() {
                                 return (
                                     <div
                                         key={card.title}
-                                        className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-8 border-t-4 border-t-[#FF6B00]"
+                                        className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-8 border-t-4 border-t-[#FF5E24]"
                                     >
                                         <div className="w-12 h-12 rounded-xl bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] flex items-center justify-center mb-5">
-                                            <Icon className="w-6 h-6 text-[#FF6B00]" strokeWidth={2} />
+                                            <Icon className="w-6 h-6 text-[#FF5E24]" strokeWidth={2} />
                                         </div>
                                         <h3 className="font-bold text-xl text-[#0F172A] dark:text-[#F5F5F5] mb-3">
                                             {card.title}
@@ -229,7 +229,7 @@ export default function About() {
                 <section className="bg-white dark:bg-[#0D0D0D] py-16 lg:py-20 px-6">
                     <div className="max-w-[1100px] mx-auto">
                         <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-14">
-                            <div className="text-[#FF6B00] text-xs tracking-[0.2em] uppercase font-bold">
+                            <div className="text-[#FF5E24] text-xs tracking-[0.2em] uppercase font-bold">
                                 Built For Both Sides Of The Pitch
                             </div>
                             <h2 className="font-display text-3xl sm:text-4xl text-[#0F172A] dark:text-[#F5F5F5] font-black mt-3 leading-tight">
@@ -239,12 +239,12 @@ export default function About() {
 
                         <div className="grid md:grid-cols-2 gap-6">
                             {/* For Players */}
-                            <div className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.08)] border-2 border-[#FF6B00] rounded-2xl p-8 lg:p-10">
+                            <div className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.08)] border-2 border-[#FF5E24] rounded-2xl p-8 lg:p-10">
                                 <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-10 h-10 rounded-lg bg-[#FF6B00] flex items-center justify-center">
+                                    <div className="w-10 h-10 rounded-lg bg-[#FF5E24] flex items-center justify-center">
                                         <Users className="w-5 h-5 text-white" strokeWidth={2.5} />
                                     </div>
-                                    <div className="text-[#CC5500] dark:text-[#FF6B00] text-xs tracking-[0.2em] uppercase font-bold">
+                                    <div className="text-[##FF5E24] dark:text-[##FF5E24] text-xs tracking-[0.2em] uppercase font-bold">
                                         For Players
                                     </div>
                                 </div>
@@ -259,7 +259,7 @@ export default function About() {
                                     {playerBenefits.map((benefit) => (
                                         <li key={benefit} className="flex gap-3 items-start">
                                             <CheckCircle2
-                                                className="w-5 h-5 text-[#FF6B00] shrink-0 mt-0.5"
+                                                className="w-5 h-5 text-[#FF5E24] shrink-0 mt-0.5"
                                                 strokeWidth={2}
                                             />
                                             <span className="text-sm text-[#0F172A] dark:text-[#F5F5F5] leading-relaxed">
@@ -270,7 +270,7 @@ export default function About() {
                                 </ul>
                                 <Link
                                     href="/register"
-                                    className="inline-flex items-center gap-2 mt-8 px-6 py-3 bg-[#FF6B00] text-white font-semibold text-sm rounded-lg hover:bg-[#CC5500] transition-colors"
+                                    className="inline-flex items-center gap-2 mt-8 px-6 py-3 bg-[#FF5E24] text-white font-semibold text-sm rounded-lg hover:bg-[#CC5500] transition-colors"
                                 >
                                     Create Player Profile
                                     <ArrowRight className="w-4 h-4" />
@@ -320,7 +320,7 @@ export default function About() {
                 </section>
 
                 {/* CTA BAND */}
-                <section className="bg-[#FF6B00] py-16 lg:py-20 px-6 text-center">
+                <section className="bg-[#FF5E24] py-16 lg:py-20 px-6 text-center">
                     <div className="max-w-2xl mx-auto">
                         <div className="text-white/70 text-xs tracking-[0.2em] uppercase font-bold mb-4">
                             Ready When You Are
@@ -337,7 +337,7 @@ export default function About() {
                         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
                             <Link
                                 href="/register"
-                                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-[#FF6B00] font-bold text-sm rounded-lg hover:bg-white/90 transition-colors"
+                                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-[#FF5E24] font-bold text-sm rounded-lg hover:bg-white/90 transition-colors"
                             >
                                 Get Started Free
                                 <ArrowRight className="w-4 h-4" />

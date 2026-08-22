@@ -13,9 +13,12 @@ interface PlayerResult {
 
 // alpha-2 code -> flag emoji
 const codeToFlag = (code?: string | null): string => {
-    if (!code || code.length !== 2) return '';
+    if (!code) return '';
+    // ✅ Force conversion to string (handles numbers, objects, etc.)
+    const str = String(code);
+    if (str.length !== 2) return '';
     return String.fromCodePoint(
-        ...code.toUpperCase().split('').map((c) => 0x1f1a5 + c.charCodeAt(0))
+        ...str.toUpperCase().split('').map((c) => 0x1f1a5 + c.charCodeAt(0))
     );
 };
 

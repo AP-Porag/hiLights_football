@@ -124,21 +124,39 @@ const toNumOrNull = (v: unknown): number | null => {
     return isNaN(n) ? null : n;
 };
 
-const getCountryName = (code?: string | null): string => {
+const getCountryName = (code?: string | string[] | null): string => {
     if (!code) return '';
-    try {
-        return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
-    } catch {
-        return code;
-    }
+
+    const codes = Array.isArray(code) ? code : [code];
+
+    const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+
+    return codes
+        .map(c => {
+            try {
+                return regionNames.of(c) || c;
+            } catch {
+                return c;
+            }
+        })
+        .join(', '); // ← কমা দিয়ে আলাদা
 };
 
-// alpha-2 code থেকে flag emoji
-const codeToFlag = (code?: string | null): string => {
-    if (!code || code.length !== 2) return '🏳️';
-    return String.fromCodePoint(
-        ...code.toUpperCase().split('').map((c) => 0x1f1a5 + c.charCodeAt(0))
-    );
+const codeToFlag = (code?: string | string[] | null): string => {
+    if (!code) return '🏳️';
+
+    const codes = Array.isArray(code) ? code : [code];
+
+    if (codes.length === 0) return '🏳️';
+
+    return codes
+        .map(c => {
+            if (typeof c !== 'string' || c.length !== 2) return '🏳️';
+            return String.fromCodePoint(
+                ...c.toUpperCase().split('').map((ch) => 0x1f1a5 + ch.charCodeAt(0))
+            );
+        })
+        .join(', '); // ← কমা ও স্পেস দিয়ে আলাদা
 };
 
 const calcAge = (dob?: string | null): number | null => {

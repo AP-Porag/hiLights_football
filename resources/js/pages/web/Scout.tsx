@@ -20,9 +20,22 @@ import {
     ArrowRight
 } from "lucide-react";
 import { Link, usePage } from '@inertiajs/react';
-const getCountryName = (code?: string | null) => {
+const getCountryName = (code?: string | string[] | null): string => {
     if (!code) return '';
-    return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
+
+    const codes = Array.isArray(code) ? code : [code];
+
+    const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+
+    return codes
+        .map(c => {
+            try {
+                return regionNames.of(c) || c;
+            } catch {
+                return c;
+            }
+        })
+        .join(', ');
 };
 
 const Scout = () => {
@@ -331,14 +344,17 @@ const Scout = () => {
 
                                             <div className="mt-2 flex items-center gap-2">
                                                 <span className="inline-flex items-center gap-1.5 text-xs whitespace-nowrap text-gray-700 md:text-sm 2xl:text-base">
-                                                    {player?.nationality && (
-                                                        <ReactCountryFlag
-                                                            countryCode={player.nationality}
-                                                            svg
-                                                            style={{ width: '1.2em', height: '1.2em' }}
-                                                        />
+                                                    {Array.isArray(player?.nationality) && player.nationality.length > 0 ? (
+                                                        player.nationality.map((code, idx) => (
+                                                            <span key={code} className="inline-flex items-center gap-1">
+                                                                <ReactCountryFlag countryCode={code} svg style={{ width: '1.2em', height: '1.2em' }} />
+                                                                <span>{getCountryName(code)}</span>
+                                                                {idx < player.nationality.length - 1 && <span className="mr-1">,</span>}
+                                                            </span>
+                                                        ))
+                                                    ) : (
+                                                        <span>{getCountryName(player?.nationality)}</span>
                                                     )}
-                                                    <span>{getCountryName(player?.nationality)}</span>
                                                 </span>
 
                                                 <span className="text-[10px] whitespace-nowrap text-[#545454] md:text-xs">{player.country}</span>

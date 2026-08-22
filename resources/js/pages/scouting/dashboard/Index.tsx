@@ -52,10 +52,13 @@ interface PlayerProfileRow {
     height: number | string | null;
     weight: number | string | null;
     current_club: string | null;
+    current_club_country?: string | null; // ← নতুন
     modality: string | null;
     positions: string[] | string | null;
     foot: string | null;
     photo_url: string | null;
+    clubCountry: string;      // ← new
+
     user?: {
         id: number;
         name: string | null;
@@ -78,6 +81,9 @@ interface Player {
     flag: string;
     modality: string;
     photoUrl: string | null;
+    birthYear: number | null; // ← new
+    countryCodes: string;      // ← নতুন: country codes (comma separated)
+    clubCountryCodes: string;
 }
 
 // positions[] থেকে main group বের করা
@@ -124,21 +130,39 @@ const toNumOrNull = (v: unknown): number | null => {
     return isNaN(n) ? null : n;
 };
 
-const getCountryName = (code?: string | null): string => {
+const getCountryName = (code?: string | string[] | null): string => {
     if (!code) return '';
-    try {
-        return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
-    } catch {
-        return code;
-    }
+
+    const codes = Array.isArray(code) ? code : [code];
+
+    const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+
+    return codes
+        .map(c => {
+            try {
+                return regionNames.of(c) || c;
+            } catch {
+                return c;
+            }
+        })
+        .join(', '); // ← কমা দিয়ে আলাদা
 };
 
-// alpha-2 code থেকে flag emoji
-const codeToFlag = (code?: string | null): string => {
-    if (!code || code.length !== 2) return '🏳️';
-    return String.fromCodePoint(
-        ...code.toUpperCase().split('').map((c) => 0x1f1a5 + c.charCodeAt(0))
-    );
+const codeToFlag = (code?: string | string[] | null): string => {
+    if (!code) return '🏳️';
+
+    const codes = Array.isArray(code) ? code : [code];
+
+    if (codes.length === 0) return '🏳️';
+
+    return codes
+        .map(c => {
+            if (typeof c !== 'string' || c.length !== 2) return '🏳️';
+            return String.fromCodePoint(
+                ...c.toUpperCase().split('').map((ch) => 0x1f1a5 + ch.charCodeAt(0))
+            );
+        })
+        .join(', '); // ← কমা ও স্পেস দিয়ে আলাদা
 };
 
 const calcAge = (dob?: string | null): number | null => {
@@ -153,6 +177,12 @@ const calcAge = (dob?: string | null): number | null => {
 const normalizePlayer = (p: PlayerProfileRow): Player => {
     const positions = toArray(p.positions);
     const firstPos = positions.find((x) => POSITION_GROUP[x]);
+
+    const nationalityCodes = Array.isArray(p.user?.nationality)
+        ? p.user.nationality.join(', ')
+        : (p.user?.nationality ?? '');
+
+    const clubCountryCodes = p.current_club_country ?? '';
     return {
         id: p.id,
         name: p.user?.name ?? 'Unnamed player',
@@ -166,6 +196,10 @@ const normalizePlayer = (p: PlayerProfileRow): Player => {
         flag: codeToFlag(p.user?.nationality),
         modality: p.modality ?? 'Football',
         photoUrl: p.photo_url ?? null,
+        clubCountry: getCountryName(p.current_club_country),
+        birthYear: p.user?.dob ? new Date(p.user.dob).getFullYear() : null,
+        countryCodes: nationalityCodes,          // ← রাখুন
+        clubCountryCodes: clubCountryCodes,      // ← রাখুন
     };
 };
 const getAgeDisplay = (
@@ -470,19 +504,19 @@ function FilterPanel({
 
             {/* AD ZONE - ScoutPro */}
             <div className="space-y-2 pt-2">
-                <p className="text-[10px] uppercase tracking-widest text-[#555555] text-center">Sponsored</p>
+                {/* <p className="text-[10px] uppercase tracking-widest text-[#555555] text-center">Sponsored</p> */}
                 <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-xl h-[240px] p-5 flex flex-col items-center justify-center text-center border border-[#334155] relative overflow-hidden">
-                    <div className="absolute top-2 right-2 text-[9px] text-white/30 uppercase tracking-widest">Ad</div>
-                    <div className="w-14 h-14 rounded-full bg-[#FF6B00]/20 border border-[#FF6B00]/40 flex items-center justify-center mb-3">
+                    {/* <div className="absolute top-2 right-2 text-[9px] text-white/30 uppercase tracking-widest">Ad</div> */}
+                    {/* <div className="w-14 h-14 rounded-full bg-[#FF6B00]/20 border border-[#FF6B00]/40 flex items-center justify-center mb-3">
                         <Network className="w-7 h-7 text-[#FF6B00]" strokeWidth={2.2} />
-                    </div>
-                    <h4 className="font-display text-xl font-bold text-white tracking-tight">ScoutPro Network</h4>
-                    <p className="text-xs text-white/60 leading-snug mt-2 mb-4 px-2">
+                    </div> */}
+                    {/* <h4 className="font-display text-xl font-bold text-white tracking-tight">ScoutPro Network</h4> */}
+                    {/* <p className="text-xs text-white/60 leading-snug mt-2 mb-4 px-2">
                         Connect with 12,000+ verified scouts. Direct messaging, market insights, and exclusive reports.
-                    </p>
-                    <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white text-xs font-bold uppercase tracking-wider px-5 py-2 rounded-lg transition-colors">
+                    </p> */}
+                    {/* <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white text-xs font-bold uppercase tracking-wider px-5 py-2 rounded-lg transition-colors">
                         Join Free
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </div>
@@ -500,7 +534,10 @@ export default function Index({
     const pageProps = usePage<{
         players?: PlayerProfileRow[];
         savedIds?: number[];
+        auth?: { user?: { role?: string } };
     }>().props;
+    const { auth } = pageProps;
+    const role = auth?.user?.role;
 
     const rawPlayers: PlayerProfileRow[] = Array.isArray(playersProp)
         ? playersProp
@@ -651,7 +688,7 @@ export default function Index({
 
         return allPlayers.filter((p) => {
             if (q) {
-                const haystack = `${p.name} ${p.club} ${p.country}`.toLowerCase();
+                const haystack = `${p.name} ${p.club} ${p.country} ${p.countryCodes} ${p.position} ${POSITION_LABELS[p.position] ?? p.position} ${p.birthYear ?? ''} ${p.clubCountry} ${p.clubCountryCodes}`.toLowerCase();
                 if (!haystack.includes(q)) return false;
             }
             if (selectedPositions.length && !selectedPositions.includes(p.position)) return false;
@@ -712,10 +749,16 @@ export default function Index({
 
     // ── Toggle save ──
     const toggleSave = async (playerProfileId: number) => {
+        // role ভেরিয়েবলটি এখন component scope থেকে পাওয়া যাবে
+        const routeName =
+            role === 'agent' ? 'agent.player.save' :
+                role === 'club' ? 'club.player.save' :
+                    'scout.player.save';
+
         try {
             const response = await axios.post(
-                route('scout.player.save', playerProfileId),
-                {}, // খালি বডি (প্রয়োজন হলে ডেটা পাঠাতে পারেন)
+                route(routeName, playerProfileId),
+                {},
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -731,7 +774,6 @@ export default function Index({
             }
         } catch (error) {
             console.error('Error toggling save:', error);
-            // অপশনাল: ইউজারকে নোটিফিকেশন দেখান
         }
     };
     // ── Helpers ──
@@ -941,27 +983,27 @@ export default function Index({
                     {/* AD ZONE - TransferRoom Leaderboard */}
                     <div className="mb-4">
                         <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl min-h-[80px] flex flex-col sm:flex-row items-center px-6 py-3 sm:py-0 gap-3 sm:gap-4 border border-[#334155] relative overflow-hidden">
-                            <div className="absolute top-1.5 right-2.5 text-[10px] text-white/30 uppercase tracking-widest">
+                            {/* <div className="absolute top-1.5 right-2.5 text-[10px] text-white/30 uppercase tracking-widest">
                                 Sponsored
-                            </div>
+                            </div> */}
                             <div className="flex items-center gap-3 shrink-0">
-                                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#FF6B00] to-[#CC5500] flex items-center justify-center font-display font-black text-white text-lg">
+                                {/* <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#FF6B00] to-[#CC5500] flex items-center justify-center font-display font-black text-white text-lg">
                                     TR
-                                </div>
-                                <div className="text-white">
+                                </div> */}
+                                {/* <div className="text-white">
                                     <p className="font-display text-lg font-bold leading-tight">TransferRoom</p>
                                     <p className="text-[10px] text-white/50 uppercase tracking-widest">
                                         Global Transfer Network
                                     </p>
-                                </div>
+                                </div> */}
                             </div>
-                            <p className="flex-1 text-sm text-white/80 text-center sm:text-left sm:px-4">
+                            {/* <p className="flex-1 text-sm text-white/80 text-center sm:text-left sm:px-4">
                                 Direct club-to-club deals. No agents. 800+ clubs trust TransferRoom for the transfer
                                 window.
-                            </p>
-                            <button className="bg-white text-[#0F172A] hover:bg-white/90 text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg transition-colors shrink-0">
+                            </p> */}
+                            {/* <button className="bg-white text-[#0F172A] hover:bg-white/90 text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg transition-colors shrink-0">
                                 Request Demo
-                            </button>
+                            </button> */}
                         </div>
                     </div>
 

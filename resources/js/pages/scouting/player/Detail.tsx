@@ -92,29 +92,41 @@ const POSITION_NAMES: Record<string, string> = {
     RM: 'Right Midfielder', CAM: 'Attacking Midfielder',
     LW: 'Left Winger', ST: 'Striker', RW: 'Right Winger', CF: 'Centre Forward',
 };
-const getCountryName = (code?: string | null): string => {
+const getCountryName = (code?: string | string[] | null): string => {
     if (!code) return '';
-    try {
-        return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
-    } catch {
-        return code;
-    }
+
+    const codes = Array.isArray(code) ? code : [code];
+
+    const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+
+    return codes
+        .map(c => {
+            try {
+                return regionNames.of(c) || c;
+            } catch {
+                return c;
+            }
+        })
+        .join(', '); // একাধিক দেশের নাম কমা দিয়ে
 };
-const codeToFlag = (code?: string | null): string => {
+const codeToFlag = (code?: string | string[] | null): string => {
     if (!code) return '🏳️';
 
-    const countryCode = code.trim().toUpperCase();
+    const codes = Array.isArray(code) ? code : [code];
 
-    if (!/^[A-Z]{2}$/.test(countryCode)) {
-        return '🏳️';
-    }
+    if (codes.length === 0) return '🏳️';
 
-    return countryCode
-        .split('')
-        .map(char =>
-            String.fromCodePoint(127397 + char.charCodeAt(0))
-        )
-        .join('');
+    return codes
+        .map(c => {
+            if (typeof c !== 'string') return '🏳️';
+            const countryCode = c.trim().toUpperCase();
+            if (!/^[A-Z]{2}$/.test(countryCode)) return '🏳️';
+            return countryCode
+                .split('')
+                .map(char => String.fromCodePoint(127397 + char.charCodeAt(0)))
+                .join('');
+        })
+        .join(', '); // একাধিক পতাকার মধ্যে কমা
 };
 const calcAge = (dob?: string | null): number | null => {
     if (!dob) return null;
@@ -159,6 +171,15 @@ export default function Detail() {
         setToast(message);
         setTimeout(() => setToast(null), 3000);
     };
+
+    const { auth } = usePage<{ auth?: { user?: { role?: string } } }>().props;
+    const role = auth?.user?.role ?? 'scout';
+
+    // Role ভিত্তিক label
+    const roleLabel =
+        role === 'agent' ? 'Agent' :
+            role === 'club' ? 'Club' :
+                'Scout';
     // rating save — thakle update, na thakle notun create
     // const handleSaveRating = () => {
     //     setSavingRating(true);
@@ -248,8 +269,8 @@ export default function Detail() {
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="flex justify-center">
                         <div className="relative w-full max-w-[728px] h-[90px] bg-black rounded-2xl overflow-hidden flex items-center justify-between px-6">
-                            <span className="absolute top-1 right-2 text-[10px] text-white/40 uppercase tracking-wider">Ad</span>
-                            <div className="flex items-center gap-4">
+                            {/* <span className="absolute top-1 right-2 text-[10px] text-white/40 uppercase tracking-wider">Ad</span> */}
+                            {/* <div className="flex items-center gap-4">
                                 <div className="text-white font-display text-3xl font-black italic">NIKE</div>
                                 <div className="hidden sm:block h-12 w-px bg-white/20" />
                                 <div className="hidden sm:block">
@@ -257,7 +278,7 @@ export default function Detail() {
                                     <div className="text-white/70 text-xs">Just Do It.</div>
                                 </div>
                             </div>
-                            <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white px-4 sm:px-6 py-2 rounded-xl font-semibold text-sm transition-colors">Shop Now</button>
+                            <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white px-4 sm:px-6 py-2 rounded-xl font-semibold text-sm transition-colors">Shop Now</button> */}
                         </div>
                     </div>
                 </div>
@@ -365,28 +386,28 @@ export default function Detail() {
                         <aside className="hidden lg:block lg:col-span-3">
                             <div className="sticky top-24 space-y-6">
                                 <div className="relative w-full max-w-[300px] mx-auto h-[600px] bg-[#0B1929] rounded-2xl overflow-hidden">
-                                    <span className="absolute top-2 left-2 text-[10px] text-white/40 uppercase tracking-wider z-10">Sponsored</span>
+                                    {/* <span className="absolute top-2 left-2 text-[10px] text-white/40 uppercase tracking-wider z-10">Sponsored</span> */}
                                     <div className="absolute inset-0 flex flex-col items-center justify-between p-6 text-white">
                                         <div className="text-center pt-6">
-                                            <div className="font-display text-3xl font-black tracking-tight mb-1">WYSCOUT</div>
-                                            <div className="h-1 w-12 bg-blue-400 mx-auto mb-4" />
-                                            <div className="text-xs uppercase tracking-widest text-blue-300">Scouting Intelligence</div>
+                                            {/* <div className="font-display text-3xl font-black tracking-tight mb-1">WYSCOUT</div> */}
+                                            {/* <div className="h-1 w-12 bg-blue-400 mx-auto mb-4" /> */}
+                                            {/* <div className="text-xs uppercase tracking-widest text-blue-300">Scouting Intelligence</div> */}
                                         </div>
                                         <div className="text-center px-2">
-                                            <div className="font-display text-2xl font-bold leading-tight mb-3">DISCOVER 600,000+ PLAYERS</div>
-                                            <p className="text-sm text-white/70 mb-6">Advanced video analysis, player databases & opposition reports trusted by elite clubs worldwide.</p>
+                                            {/* <div className="font-display text-2xl font-bold leading-tight mb-3">DISCOVER 600,000+ PLAYERS</div>
+                                            <p className="text-sm text-white/70 mb-6">Advanced video analysis, player databases & opposition reports trusted by elite clubs worldwide.</p> */}
                                             <div className="grid grid-cols-2 gap-2 mb-6 text-left">
                                                 <div className="bg-white/5 rounded-lg p-2">
-                                                    <div className="text-blue-400 text-[10px] uppercase font-bold">Players</div>
-                                                    <div className="font-mono text-lg font-bold">600K+</div>
+                                                    {/* <div className="text-blue-400 text-[10px] uppercase font-bold">Players</div>
+                                                    <div className="font-mono text-lg font-bold">600K+</div> */}
                                                 </div>
                                                 <div className="bg-white/5 rounded-lg p-2">
-                                                    <div className="text-blue-400 text-[10px] uppercase font-bold">Clubs</div>
-                                                    <div className="font-mono text-lg font-bold">3,200</div>
+                                                    {/* <div className="text-blue-400 text-[10px] uppercase font-bold">Clubs</div>
+                                                    <div className="font-mono text-lg font-bold">3,200</div> */}
                                                 </div>
                                             </div>
                                         </div>
-                                        <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-semibold text-sm transition-colors">Request a Demo</button>
+                                        {/* <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-semibold text-sm transition-colors">Request a Demo</button> */}
                                     </div>
                                 </div>
                             </div>
@@ -397,12 +418,12 @@ export default function Detail() {
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                                 <div className="flex items-center justify-between gap-3 mb-5">
                                     <div className="min-w-0">
-                                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">Scout Toolkit</div>
-                                        <h2 className="font-display text-2xl font-bold uppercase">Scout Actions</h2>
+                                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">{roleLabel} Toolkit</div>
+                                        <h2 className="font-display text-2xl font-bold uppercase italic">{roleLabel} Actions</h2>
                                     </div>
                                     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] uppercase font-bold tracking-wider flex-shrink-0">
                                         <Eye className="w-3 h-3" />
-                                        Scout View
+                                        {roleLabel} View
                                     </span>
                                 </div>
                                 <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 mb-6">
@@ -433,7 +454,7 @@ export default function Detail() {
                                 <div className="border-t border-[#2A2A2A] pt-6">
                                     <div className="flex items-center justify-between mb-5">
                                         <div>
-                                            <h3 className="font-display text-lg font-bold uppercase">Your Rating</h3>
+                                            <h3 className="font-display text-lg font-bold uppercase italic">Your Rating</h3>
                                             <p className="text-xs text-[#9A9A9A] mt-0.5">
                                                 {existingRating ? 'You already rated this player — update anytime' : 'Rate on a scale of 1 to 10'}
                                             </p>
@@ -488,7 +509,7 @@ export default function Detail() {
                                         })}
                                     </div>
                                     <div className="mt-6">
-                                        <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">Scout Notes</label>
+                                        <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">{roleLabel} Notes</label>
                                         <textarea
                                             value={rating.notes}
                                             onChange={(e) => setRating({ ...rating, notes: e.target.value })}
@@ -518,7 +539,7 @@ export default function Detail() {
                             {/* BIO */}
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                                 <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">About</div>
-                                <h2 className="font-display text-2xl font-bold uppercase mb-3">Player Profile</h2>
+                                <h2 className="font-display text-2xl font-bold uppercase mb-3 italic">Player Profile</h2>
                                 <p className="text-sm text-[#9A9A9A] leading-relaxed mb-6">
                                     {player?.description || 'No description added yet.'}
                                 </p>
@@ -564,19 +585,19 @@ export default function Detail() {
                             </div>
                             {/* IN-CONTENT AD */}
                             <div className="relative w-full h-[100px] bg-black rounded-2xl overflow-hidden flex items-center justify-between gap-3 px-6">
-                                <span className="absolute top-1 right-2 text-[10px] text-white/40 uppercase tracking-wider">Ad</span>
+                                {/* <span className="absolute top-1 right-2 text-[10px] text-white/40 uppercase tracking-wider">Ad</span> */}
                                 <div className="flex items-center gap-4 min-w-0">
-                                    <div className="flex flex-col flex-shrink-0">
+                                    {/* <div className="flex flex-col flex-shrink-0">
                                         <div className="w-12 h-2 bg-white rounded-sm mb-1" />
                                         <div className="w-12 h-2 bg-white rounded-sm mb-1" />
                                         <div className="w-12 h-2 bg-white rounded-sm" />
-                                    </div>
+                                    </div> */}
                                     <div className="min-w-0">
-                                        <div className="text-white font-display text-xl font-black tracking-tight truncate">ADIDAS PREDATOR</div>
-                                        <div className="text-white/60 text-xs">Impossible is Nothing.</div>
+                                        {/* <div className="text-white font-display text-xl font-black tracking-tight truncate">ADIDAS PREDATOR</div> */}
+                                        {/* <div className="text-white/60 text-xs">Impossible is Nothing.</div> */}
                                     </div>
                                 </div>
-                                <button className="bg-white hover:bg-white/90 text-black px-4 sm:px-6 py-2 rounded-xl font-bold text-sm transition-colors flex-shrink-0">Discover</button>
+                                {/* <button className="bg-white hover:bg-white/90 text-black px-4 sm:px-6 py-2 rounded-xl font-bold text-sm transition-colors flex-shrink-0">Discover</button> */}
                             </div>
                             {/* HIGHLIGHTS */}
                             {videos.length > 0 && (
@@ -584,7 +605,7 @@ export default function Detail() {
                                     <div className="flex items-center justify-between mb-5">
                                         <div>
                                             <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">Video Library</div>
-                                            <h2 className="font-display text-2xl font-bold uppercase">Highlights</h2>
+                                            {/* <h2 className="font-display text-2xl font-bold uppercase">Highlights</h2> */}
                                         </div>
                                         <span className="font-mono text-xs text-[#9A9A9A]">{videos.length} videos</span>
                                     </div>
@@ -609,7 +630,7 @@ export default function Detail() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <h3 className="text-sm font-semibold line-clamp-1">{clip.label || 'Highlight'}</h3>
+                                                    <h3 className="text-sm font-semibold line-clamp-1">{clip.label || ''}</h3>
                                                 </a>
                                             );
                                         })}
@@ -620,7 +641,7 @@ export default function Detail() {
                             {matches.length > 0 && (
                                 <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                                     <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">From Recent Matches</div>
-                                    <h2 className="font-display text-2xl font-bold uppercase mb-5">Statistics</h2>
+                                    <h2 className="font-display text-2xl font-bold uppercase mb-5 italic">Statistics</h2>
                                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
                                         {[
                                             { label: 'Appearances', value: stats.appearances, icon: Trophy },
@@ -661,7 +682,7 @@ export default function Detail() {
                             {achievements.length > 0 && (
                                 <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                                     <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Honours</div>
-                                    <h2 className="font-display text-2xl font-bold uppercase mb-5">Achievements</h2>
+                                    <h2 className="font-display text-2xl font-bold uppercase mb-5 italic">Achievements</h2>
                                     <div className="space-y-3">
                                         {achievements.map((a, i) => (
                                             <div key={i} className="flex items-center gap-4 pb-3 border-b border-[#2A2A2A] last:border-0 last:pb-0">
@@ -679,29 +700,37 @@ export default function Detail() {
                             )}
                             {/* COMPETITIONS */}
                             {competitions.length > 0 && (
-                                <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
-                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Experience</div>
-                                    <h2 className="font-display text-2xl font-bold uppercase mb-5">Competitions</h2>
-                                    <div className="space-y-3">
-                                        {competitions.map((c, i) => (
-                                            <div key={i} className="flex items-center gap-4 pb-3 border-b border-[#2A2A2A] last:border-0 last:pb-0">
-                                                <div className="w-10 h-10 rounded-lg bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
-                                                    <ClipboardList className="w-5 h-5 text-[#FF6B00]" />
-                                                </div>
-                                                <div className="flex-1 min-w-0 flex flex-wrap items-baseline justify-between gap-2">
-                                                    <span className="text-sm font-semibold">{c.name}</span>
-                                                    <span className="font-mono text-xs text-[#9A9A9A]">{c.year}</span>
-                                                </div>
-                                            </div>
-                                        ))}
+                                <section className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
+                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">
+                                        Experience
                                     </div>
-                                </div>
+                                    <h2 className="font-display text-2xl font-bold uppercase mb-5 italic">
+                                        Competitions
+                                    </h2>
+                                    <ul className="space-y-3">
+                                        {/* Sort by year – newest first (descending) */}
+                                        {[...competitions]
+                                            .sort((a, b) => Number(b.year) - Number(a.year))
+                                            .map((c) => (
+                                                <li key={c.id || c.name} className="flex items-center gap-4 pb-3 border-b border-[#2A2A2A] last:border-0 last:pb-0">
+                                                    <div className="w-10 h-10 rounded-lg bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] flex items-center justify-center flex-shrink-0">
+                                                        <ClipboardList className="w-5 h-5 text-[#FF6B00]" aria-hidden="true" />
+                                                    </div>
+                                                    <div className="flex-1 min-w-0 flex flex-wrap items-baseline justify-between gap-2">
+                                                        <span className="text-sm font-semibold">{c.name}</span>
+                                                        <span className="font-mono text-xs text-[#9A9A9A]">{c.year}</span>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                    </ul>
+                                </section>
                             )}
+
                             {/* CAREER — club history */}
                             {clubHistory.length > 0 && (
                                 <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                                     <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Trajectory</div>
-                                    <h2 className="font-display text-2xl font-bold uppercase mb-5">Career History</h2>
+                                    <h2 className="font-display text-2xl font-bold uppercase mb-5 italic">Career History</h2>
                                     <div className="space-y-4">
                                         {clubHistory.map((entry, i) => (
                                             <div key={i} className="flex items-start gap-4 pb-4 border-b border-[#2A2A2A] last:border-0 last:pb-0">
@@ -816,48 +845,48 @@ export default function Detail() {
                             </div>
                             {/* RIGHT SIDEBAR AD */}
                             <div className="hidden md:block">
-                                <div className="relative w-full max-w-[300px] mx-auto h-[600px] bg-[#1A0F0A] rounded-2xl overflow-hidden">
-                                    <span className="absolute top-2 left-2 text-[10px] text-white/40 uppercase tracking-wider z-10">Sponsored</span>
+                                <div className="relative w-full max-w-[300px] mx-auto h-[600px] bg-[#001E2E] rounded-2xl overflow-hidden">
+                                    {/* <span className="absolute top-2 left-2 text-[10px] text-white/40 uppercase tracking-wider z-10">Sponsored</span> */}
                                     <div className="absolute inset-0 flex flex-col p-6 text-white">
                                         <div className="text-center pt-4 mb-6">
-                                            <div className="font-display text-3xl font-black italic tracking-tight">TRANSFER<span className="text-[#FF6B00]">ROOM</span></div>
-                                            <div className="text-xs uppercase tracking-widest text-white/50 mt-1">The Transfer Network</div>
+                                            {/* <div className="font-display text-3xl font-black italic tracking-tight">TRANSFER<span className="text-[#FF6B00]">ROOM</span></div> */}
+                                            {/* <div className="text-xs uppercase tracking-widest text-white/50 mt-1">The Transfer Network</div> */}
                                         </div>
                                         <div className="flex-1 flex flex-col justify-center text-center">
-                                            <div className="font-display text-2xl font-bold leading-tight mb-3">CONNECT WITH 700+ CLUBS WORLDWIDE</div>
-                                            <p className="text-sm text-white/70 mb-6">The professional network for football's transfer market. Trusted by decision-makers at the world's biggest clubs.</p>
+                                            {/* <div className="font-display text-2xl font-bold leading-tight mb-3">CONNECT WITH 700+ CLUBS WORLDWIDE</div>
+                                            <p className="text-sm text-white/70 mb-6">The professional network for football's transfer market. Trusted by decision-makers at the world's biggest clubs.</p> */}
                                             <div className="space-y-2 mb-6 text-left">
                                                 <div className="flex items-center gap-2 text-xs">
-                                                    <CheckCircle2 className="w-4 h-4 text-[#FF6B00] flex-shrink-0" />
-                                                    <span>Direct club-to-club messaging</span>
+                                                    {/* <CheckCircle2 className="w-4 h-4 text-[#FF6B00] flex-shrink-0" />
+                                                    <span>Direct club-to-club messaging</span> */}
                                                 </div>
                                                 <div className="flex items-center gap-2 text-xs">
-                                                    <CheckCircle2 className="w-4 h-4 text-[#FF6B00] flex-shrink-0" />
-                                                    <span>Verified player availability</span>
+                                                    {/* <CheckCircle2 className="w-4 h-4 text-[#FF6B00] flex-shrink-0" />
+                                                    <span>Verified player availability</span> */}
                                                 </div>
                                                 <div className="flex items-center gap-2 text-xs">
-                                                    <CheckCircle2 className="w-4 h-4 text-[#FF6B00] flex-shrink-0" />
-                                                    <span>Live transfer market data</span>
+                                                    {/* <CheckCircle2 className="w-4 h-4 text-[#FF6B00] flex-shrink-0" />
+                                                    <span>Live transfer market data</span> */}
                                                 </div>
                                             </div>
                                         </div>
-                                        <button className="w-full bg-[#FF6B00] hover:bg-[#CC5500] text-white py-3 rounded-xl font-bold text-sm transition-colors">Join the Network</button>
+                                        {/* <button className="w-full bg-[#FF6B00] hover:bg-[#CC5500] text-white py-3 rounded-xl font-bold text-sm transition-colors">Join the Network</button> */}
                                     </div>
                                 </div>
                             </div>
                             {/* HALF PAGE AD */}
                             <div className="relative w-full max-w-[300px] mx-auto h-[250px] bg-[#001E2E] rounded-2xl overflow-hidden">
-                                <span className="absolute top-2 right-2 text-[10px] text-white/40 uppercase tracking-wider z-10">Ad</span>
+                                {/* <span className="absolute top-2 right-2 text-[10px] text-white/40 uppercase tracking-wider z-10">Ad</span> */}
                                 <div className="absolute inset-0 flex flex-col items-center justify-between p-5 text-white">
                                     <div className="text-center pt-2">
-                                        <div className="font-display text-2xl font-black tracking-tight">SPORT<span className="text-[#0091EA]">RADAR</span></div>
-                                        <div className="text-[10px] uppercase tracking-widest text-blue-300 mt-1">Data & Analytics</div>
+                                        {/* <div className="font-display text-2xl font-black tracking-tight">SPORT<span className="text-[#0091EA]">RADAR</span></div>
+                                        <div className="text-[10px] uppercase tracking-widest text-blue-300 mt-1">Data & Analytics</div> */}
                                     </div>
                                     <div className="text-center">
-                                        <div className="font-display text-lg font-bold leading-tight mb-2">ELITE FOOTBALL ANALYTICS</div>
-                                        <p className="text-xs text-white/60">Real-time data powering the world's top scouting departments.</p>
+                                        {/* <div className="font-display text-lg font-bold leading-tight mb-2">ELITE FOOTBALL ANALYTICS</div>
+                                        <p className="text-xs text-white/60">Real-time data powering the world's top scouting departments.</p> */}
                                     </div>
-                                    <button className="w-full bg-[#0091EA] hover:bg-[#0277BD] text-white py-2.5 rounded-lg font-semibold text-xs transition-colors">Explore Solutions</button>
+                                    {/* <button className="w-full bg-[#0091EA] hover:bg-[#0277BD] text-white py-2.5 rounded-lg font-semibold text-xs transition-colors">Explore Solutions</button> */}
                                 </div>
                             </div>
                         </aside>
