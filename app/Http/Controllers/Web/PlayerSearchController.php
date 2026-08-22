@@ -34,119 +34,159 @@ class PlayerSearchController extends Controller
         $q = trim((string) $request->query('q', ''));
 
         if (mb_strlen($q) < 2) {
-            return response()->json([
-                'players' => [],
-            ]);
+            return response()->json(['players' => []]);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Country Name -> ISO Code
-        |--------------------------------------------------------------------------
-        */
+        // --------------------------------------------------------------
+        // 1. Detect country codes (from full name or 2-letter code)
+        // --------------------------------------------------------------
+        $countryCodes = [];
 
-        $countryCode = null;
+        // If query looks like a 2-letter ISO code, add it
+        if (preg_match('/^[A-Za-z]{2}$/', $q)) {
+            $countryCodes[] = strtoupper($q);
+        }
 
-        foreach (Countries::getNames('en') as $code => $country) {
-            if (strcasecmp($country, $q) === 0) {
-                $countryCode = $code;
-                break;
+        // Find all countries whose name contains the query (case-insensitive)
+        foreach (Countries::getNames('en') as $code => $name) {
+            if (stripos($name, $q) !== false) {
+                $countryCodes[] = $code;
             }
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Position aliases
-        |--------------------------------------------------------------------------
-        */
+        $countryCodes = array_unique($countryCodes);
 
+        // --------------------------------------------------------------
+        // 2. Detect position codes (alias, direct, or group name)
+        // --------------------------------------------------------------
         $positionAliases = [
             'goalkeeper'            => 'GK',
             'keeper'                => 'GK',
-
             'center back'           => 'CB',
             'centre back'           => 'CB',
             'cb'                    => 'CB',
-
             'right center back'     => 'CB-R',
             'right centre back'     => 'CB-R',
             'cb-r'                  => 'CB-R',
-
             'left center back'      => 'CB-L',
             'left centre back'      => 'CB-L',
             'cb-l'                  => 'CB-L',
-
             'left back'             => 'LB',
             'lb'                    => 'LB',
-
             'right back'            => 'RB',
             'rb'                    => 'RB',
-
             'defensive midfielder'  => 'CDM',
             'cdm'                   => 'CDM',
-
             'central midfielder'    => 'CM',
             'centre midfielder'     => 'CM',
             'cm'                    => 'CM',
-
             'attacking midfielder'  => 'CAM',
             'cam'                   => 'CAM',
-
             'left midfielder'       => 'LM',
             'lm'                    => 'LM',
-
             'right midfielder'      => 'RM',
             'rm'                    => 'RM',
-
             'left wing'             => 'LW',
             'lw'                    => 'LW',
-
             'right wing'            => 'RW',
             'rw'                    => 'RW',
-
             'winger'                => 'RW',
-
             'striker'               => 'ST',
             'forward'               => 'ST',
             'st'                    => 'ST',
-
             'second striker'        => 'CF',
             'centre forward'        => 'CF',
             'center forward'        => 'CF',
             'cf'                    => 'CF',
         ];
 
-        $positionSearch = $positionAliases[strtolower($q)] ?? strtoupper($q);
+        $positionCodes = [];
 
+        // a) Check aliases
+        $alias = $positionAliases[strtolower($q)] ?? null;
+        if ($alias) {
+            $positionCodes[] = $alias;
+        }
+
+        // b) Direct position code (e.g., "GK")
+        if (array_key_exists(strtoupper($q), self::POSITION_GROUP)) {
+            $positionCodes[] = strtoupper($q);
+        }
+
+        // c) Position groups (Goalkeeper, Defender, Midfielder, Forward)
+        $groupToPositions = [];
+        foreach (self::POSITION_GROUP as $code => $group) {
+            $groupToPositions[$group][] = $code;
+        }
+
+        foreach (array_keys($groupToPositions) as $group) {
+            if (stripos($group, $q) !== false) {
+                $positionCodes = array_merge($positionCodes, $groupToPositions[$group]);
+            }
+        }
+
+        $positionCodes = array_unique($positionCodes);
+
+        // --------------------------------------------------------------
+        // 3. Detect year of birth (if query is a 4-digit number)
+        // --------------------------------------------------------------
+        $yearCondition = null;
+        if (preg_match('/^\d{4}$/', $q)) {
+            $yearCondition = (int) $q;
+        }
+
+        // --------------------------------------------------------------
+        // 4. Build the query
+        // --------------------------------------------------------------
         $players = PlayerProfile::query()
-            ->with('user:id,name,nationality')
-            ->where(function ($query) use ($q, $countryCode, $positionSearch) {
+            ->with('user:id,name,nationality,dob') // 👈 load dob from user
+            ->where(function ($query) use ($q, $countryCodes, $positionCodes, $yearCondition) {
 
-                // Search in users table
-                $query->whereHas('user', function ($user) use ($q, $countryCode) {
-
+                // ----- Search in the related user -----
+                $query->whereHas('user', function ($user) use ($q, $countryCodes, $yearCondition) {
+                    // Player name
                     $user->where('name', 'like', "%{$q}%");
 
-                    if ($countryCode) {
-                        $user->orWhere('nationality', $countryCode);
+                    // Player nationality (country of origin)
+                    if (!empty($countryCodes)) {
+                        $user->orWhereIn('nationality', $countryCodes);
                     }
-                })
 
-                    // Search in player_profiles table
-                    ->orWhere('current_club', 'like', "%{$q}%")
-                    ->orWhere('nickname', 'like', "%{$q}%")
-                    ->orWhere('positions', 'like', "%{$positionSearch}%");
+                    // Year of birth (using the 'dob' column)
+                    if ($yearCondition) {
+                        $user->orWhereYear('dob', $yearCondition);
+                    }
+                });
+
+                // ----- Search directly in player_profiles -----
+                // Club name
+                $query->orWhere('current_club', 'like', "%{$q}%");
+
+                // Club country (where the player currently plays)
+                if (!empty($countryCodes)) {
+                    $query->orWhereIn('current_club_country', $countryCodes);
+                }
+
+                // Nickname
+                $query->orWhere('nickname', 'like', "%{$q}%");
+
+                // Positions (matching any detected position code)
+                if (!empty($positionCodes)) {
+                    $query->orWhere(function ($sub) use ($positionCodes) {
+                        foreach ($positionCodes as $pos) {
+                            $sub->orWhere('positions', 'like', "%{$pos}%");
+                        }
+                    });
+                }
             })
             ->limit(8)
             ->get()
             ->map(function ($player) {
-
                 $positions = is_array($player->positions)
                     ? $player->positions
                     : json_decode($player->positions, true);
 
                 $positions = is_array($positions) ? $positions : [];
-
                 $firstPosition = $positions[0] ?? null;
 
                 return [
@@ -161,8 +201,6 @@ class PlayerSearchController extends Controller
                 ];
             });
 
-        return response()->json([
-            'players' => $players,
-        ]);
+        return response()->json(['players' => $players]);
     }
 }

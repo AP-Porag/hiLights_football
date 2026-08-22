@@ -91,7 +91,7 @@ export default function Contact() {
 
             <main className="pt-16">
                 {/* ============ HEADER BAND ============ */}
-                <section className="bg-[#FF6B00] py-16">
+                <section className="bg-[#FF5E24] py-16">
                     <div className="max-w-[1100px] mx-auto px-6 text-center">
                         <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white uppercase tracking-tight leading-tight">
                             Contact HiLights Football
@@ -143,7 +143,7 @@ export default function Contact() {
                                         required
                                     />
                                     {errors.name && (
-                                        <p className="mt-1 text-xs text-[#DC2626]">{errors.name}</p>
+                                        <p className="mt-1 text-xs text-[#FF5E24]">{errors.name}</p>
                                     )}
                                 </div>
 
@@ -165,7 +165,7 @@ export default function Contact() {
                                         required
                                     />
                                     {errors.email && (
-                                        <p className="mt-1 text-xs text-[#DC2626]">{errors.email}</p>
+                                        <p className="mt-1 text-xs text-[#FF5E24]">{errors.email}</p>
                                     )}
                                 </div>
 
@@ -183,7 +183,7 @@ export default function Contact() {
                                     >
                                         <SelectTrigger
                                             id="subject"
-                                            className="w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-11 px-4 text-sm text-[#0F172A] dark:text-[#F5F5F5] focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)]"
+                                            className="w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-11 px-4 text-sm text-[#0F172A] dark:text-[#F5F5F5] focus:border-[#FF5E24] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)]"
                                         >
                                             <SelectValue placeholder="Select a topic" />
                                         </SelectTrigger>
@@ -196,7 +196,7 @@ export default function Contact() {
                                         </SelectContent>
                                     </Select>
                                     {errors.subject && (
-                                        <p className="mt-1 text-xs text-[#DC2626]">
+                                        <p className="mt-1 text-xs text-[#FF5E24]">
                                             {errors.subject}
                                         </p>
                                     )}
@@ -215,11 +215,11 @@ export default function Contact() {
                                         value={data.message}
                                         onChange={(e) => setData('message', e.target.value)}
                                         placeholder="Tell us how we can help…"
-                                        className="w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-36 px-4 py-3 text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)] transition-colors resize-none"
+                                        className="w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-36 px-4 py-3 text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#FF5E24] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)] transition-colors resize-none"
                                         required
                                     />
                                     {errors.message && (
-                                        <p className="mt-1 text-xs text-[#DC2626]">
+                                        <p className="mt-1 text-xs text-[#FF5E24]">
                                             {errors.message}
                                         </p>
                                     )}
@@ -229,7 +229,7 @@ export default function Contact() {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="w-full h-12 bg-[#FF6B00] hover:bg-[#CC5500] text-white rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                                    className="w-full h-12 bg-[#FF5E24] hover:bg-[#CC5500] text-white rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
                                     <Send className="h-4 w-4" />
                                     {processing ? 'Sending…' : 'Send Message →'}
@@ -239,7 +239,7 @@ export default function Contact() {
                                     By submitting, you agree to our{' '}
                                     <Link
                                         href="/privacy"
-                                        className="text-[#FF6B00] hover:underline"
+                                        className="text-[#FF5E24] hover:underline"
                                     >
                                         Privacy Policy
                                     </Link>
@@ -262,7 +262,7 @@ export default function Contact() {
                                 <div className="mt-6 space-y-4">
                                     <div className="flex items-start gap-3">
                                         <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] flex items-center justify-center">
-                                            <Mail className="h-5 w-5 text-[#FF6B00]" />
+                                            <Mail className="h-5 w-5 text-[#FF5E24]" />
                                         </div>
                                         <div>
                                             <p className="text-xs text-[#94A3B8] dark:text-[#555555] uppercase tracking-wider font-semibold">
@@ -270,7 +270,7 @@ export default function Contact() {
                                             </p>
                                             <a
                                                 href="mailto:contact@highlightsfootball.com"
-                                                className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5] hover:text-[#FF6B00] dark:hover:text-[#FF6B00] transition-colors break-all"
+                                                className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5] hover:text-[#FF5E24] dark:hover:text-[#FF5E24] transition-colors break-all"
                                             >
                                                 contact@highlightsfootball.com
                                             </a>
@@ -279,7 +279,7 @@ export default function Contact() {
 
                                     <div className="flex items-start gap-3">
                                         <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] flex items-center justify-center">
-                                            <Clock className="h-5 w-5 text-[#FF6B00]" />
+                                            <Clock className="h-5 w-5 text-[#FF5E24]" />
                                         </div>
                                         <div>
                                             <p className="text-xs text-[#94A3B8] dark:text-[#555555] uppercase tracking-wider font-semibold">
@@ -310,7 +310,7 @@ export default function Contact() {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 aria-label={label}
-                                                className="w-10 h-10 rounded-xl border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] flex items-center justify-center text-[#475569] dark:text-[#9A9A9A] hover:text-[#FF6B00] dark:hover:text-[#FF6B00] hover:border-[#FF6B00] dark:hover:border-[#FF6B00] transition-colors"
+                                                className="w-10 h-10 rounded-xl border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] flex items-center justify-center text-[#475569] dark:text-[#9A9A9A] hover:text-[#FF5E24] dark:hover:text-[#FF5E24] hover:border-[#FF5E24] dark:hover:border-[#FF5E24] transition-colors"
                                             >
                                                 <Icon className="h-4 w-4" />
                                             </a>
@@ -321,40 +321,16 @@ export default function Contact() {
 
                             {/* AD — ScoutPro */}
                             <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden h-[280px] relative">
-                                <span className="absolute top-2 right-2 text-[10px] text-[#94A3B8] dark:text-[#555555] font-sans z-10">
-                                    Sponsored
-                                </span>
+
                                 <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628] via-[#0F2347] to-[#0A1628] p-6 flex flex-col justify-between">
                                     {/* Brand top */}
                                     <div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-8 h-8 rounded-lg bg-[#3B82F6] flex items-center justify-center">
-                                                <Target className="h-4 w-4 text-white" strokeWidth={2.5} />
-                                            </div>
-                                            <span className="font-display font-bold text-white text-lg tracking-tight uppercase">
-                                                ScoutPro
-                                            </span>
-                                        </div>
-                                        <p className="mt-4 font-display font-bold text-white text-2xl uppercase tracking-tight leading-tight">
-                                            Find the next<br />
-                                            <span className="text-[#3B82F6]">Generation</span> first.
-                                        </p>
-                                        <p className="mt-2 text-xs text-[#94A3B8] font-sans leading-relaxed">
-                                            Professional scouting tools used by 400+ clubs across Europe and South America.
-                                        </p>
+
                                     </div>
 
                                     {/* Stats + CTA */}
                                     <div>
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <TrendingUp className="h-3.5 w-3.5 text-[#3B82F6]" />
-                                            <span className="font-mono text-[11px] text-[#94A3B8] tracking-wider">
-                                                240K+ PLAYERS · 92 LEAGUES
-                                            </span>
-                                        </div>
-                                        <button className="w-full h-9 bg-[#3B82F6] hover:bg-[#2563EB] text-white rounded-lg font-semibold text-xs transition-colors">
-                                            Start Free Trial →
-                                        </button>
+
                                     </div>
                                 </div>
                             </div>
@@ -380,9 +356,9 @@ export default function Contact() {
                                 <AccordionItem
                                     key={i}
                                     value={`item-${i}`}
-                                    className="bg-[#F8FAFC] dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl px-6 data-[state=open]:border-[#FF6B00] dark:data-[state=open]:border-[#FF6B00] transition-colors"
+                                    className="bg-[#F8FAFC] dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl px-6 data-[state=open]:border-[#FF5E24] dark:data-[state=open]:border-[#FF5E24] transition-colors"
                                 >
-                                    <AccordionTrigger className="text-left font-semibold text-sm sm:text-base text-[#0F172A] dark:text-[#F5F5F5] hover:no-underline py-5 font-sans hover:text-[#FF6B00] dark:hover:text-[#FF6B00] [&[data-state=open]]:text-[#FF6B00] dark:[&[data-state=open]]:text-[#FF6B00]">
+                                    <AccordionTrigger className="text-left font-semibold text-sm sm:text-base text-[#0F172A] dark:text-[#F5F5F5] hover:no-underline py-5 font-sans hover:text-[#FF5E24] dark:hover:text-[#FF5E24] [&[data-state=open]]:text-[#FF5E24] dark:[&[data-state=open]]:text-[#FF5E24]">
                                         {item.q}
                                     </AccordionTrigger>
                                     <AccordionContent className="text-sm text-[#475569] dark:text-[#9A9A9A] pb-5 leading-relaxed font-sans">

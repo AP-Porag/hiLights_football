@@ -712,11 +712,11 @@ export default function SavedPlayers() {
                     {/* Sponsored Ad */}
                     {!isEmpty && (
                         <div className="max-w-[728px] mx-auto mt-8">
-                            <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider mb-2 text-center">
+                            {/* <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider mb-2 text-center">
                                 Sponsored
-                            </p>
+                            </p> */}
                             <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl h-[80px] flex items-center px-6 gap-4 border border-[#334155] mx-auto">
-                                <div className="font-display font-black text-lg text-white shrink-0">
+                                {/* <div className="font-display font-black text-lg text-white shrink-0">
                                     TRANSFERROOM
                                 </div>
                                 <p className="text-white/70 text-xs sm:text-sm flex-1 hidden sm:block">
@@ -724,7 +724,7 @@ export default function SavedPlayers() {
                                 </p>
                                 <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-5 py-2 rounded-lg text-sm shrink-0 transition-colors">
                                     Start Free →
-                                </button>
+                                </button> */}
                             </div>
                         </div>
                     )}

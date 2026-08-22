@@ -372,15 +372,18 @@ export default function NewDetail() {
                         <div className="rounded-lg border border-[#152538] bg-[#07111d] p-4 md:p-6">
                             <h2 className="mb-6 text-[14px] font-bold text-white uppercase md:text-xl">Competition History</h2>
                             <div className="space-y-2 md:space-y-4">
-                                {(player.competitions ?? []).filter((item: any) => item?.name).map((item: any, index: number) => (
-                                    <div key={index} className="flex items-start justify-between gap-2 md:gap-4">
-                                        <div className="flex items-start gap-1 md:gap-3">
-                                            <Trophy size={18} strokeWidth={1.5} className="mt-0.5 shrink-0 text-gray-300" />
-                                            <span className="text-[10px] text-gray-200 md:text-sm">{item.name}</span>
+                                {(player.competitions ?? [])
+                                    .filter((item: any) => item?.name)
+                                    .sort((a: any, b: any) => (Number(b.year) || 0) - (Number(a.year) || 0)) // recent year আগে
+                                    .map((item: any, index: number) => (
+                                        <div key={index} className="flex items-start justify-between gap-2 md:gap-4">
+                                            <div className="flex items-start gap-1 md:gap-3">
+                                                <Trophy size={18} strokeWidth={1.5} className="mt-0.5 shrink-0 text-gray-300" />
+                                                <span className="text-[10px] text-gray-200 md:text-sm">{item.name}</span>
+                                            </div>
+                                            <span className="text-[10px] whitespace-nowrap text-[#f97316] md:text-sm">{item.year}</span>
                                         </div>
-                                        <span className="text-[10px] whitespace-nowrap text-[#f97316] md:text-sm">{item.year}</span>
-                                    </div>
-                                ))}
+                                    ))}
                             </div>
                             {/* <div className="mt-8 flex justify-end">
                                 <button className="flex items-center gap-2 text-[13px] text-[#f97316] transition hover:text-orange-400 md:text-[18px]">

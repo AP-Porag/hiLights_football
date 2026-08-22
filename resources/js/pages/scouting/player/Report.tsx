@@ -54,19 +54,39 @@ interface ReportRow {
     updated_at?: string | null;
 }
 // ── helpers ──
-const getCountryName = (code?: string | null): string => {
+const getCountryName = (code?: string | string[] | null): string => {
     if (!code) return '';
-    try {
-        return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
-    } catch {
-        return code;
-    }
+
+    const codes = Array.isArray(code) ? code : [code];
+    const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+
+    return codes
+        .map(c => {
+            try {
+                return regionNames.of(c) || c;
+            } catch {
+                return c;
+            }
+        })
+        .join(', ');
 };
-const codeToFlag = (code?: string | null): string => {
-    if (!code || code.length !== 2) return '🏳️';
-    return String.fromCodePoint(
-        ...code.toUpperCase().split('').map((c) => 0x1f1a5 + c.charCodeAt(0))
-    );
+const codeToFlag = (code?: string | string[] | null): string => {
+    if (!code) return '🏳️';
+
+    const codes = Array.isArray(code) ? code : [code];
+
+    if (codes.length === 0) return '🏳️';
+
+    return codes
+        .map(c => {
+            if (typeof c !== 'string' || c.trim().length !== 2) return '🏳️';
+            const countryCode = c.trim().toUpperCase();
+            return countryCode
+                .split('')
+                .map(char => String.fromCodePoint(127397 + char.charCodeAt(0)))
+                .join('');
+        })
+        .join(', '); // একাধিক flag এর মধ্যে কমা
 };
 const calcAge = (dob?: string | null): number | null => {
     if (!dob) return null;
@@ -94,6 +114,15 @@ export default function Report() {
         rating?: RatingRow | null;
         report?: ReportRow | null;
     }>().props;
+
+    const { auth } = usePage<{ auth?: { user?: { role?: string } } }>().props;
+    const role = auth?.user?.role ?? 'scout';
+
+    // Role-ভিত্তিক লেবেল
+    const roleLabel =
+        role === 'agent' ? 'Agent' :
+            role === 'club' ? 'Club' :
+                'Scout';
     const [toast, setToast] = useState<string | null>(null);
     const showToast = (message: string) => {
         setToast(message);
@@ -170,7 +199,7 @@ export default function Report() {
                             <div className="flex items-center gap-2 mb-2">
                                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#FF6B00] text-[10px] font-bold uppercase tracking-wider">
                                     <FileText className="w-3 h-3" />
-                                    Scouting Report
+                                    {roleLabel} Report
                                 </span>
                                 {report?.status === 'final' && (
                                     <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-green-500/20 border border-green-400 text-green-300 text-[10px] font-bold uppercase tracking-wider">
