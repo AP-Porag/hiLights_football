@@ -1459,7 +1459,19 @@ export default function PlayerDashboard() {
             {
                 activeModal && (
                     LIST_CONFIGS[activeModal] ? (
-                        <ListModal configKey={activeModal} initialRows={pp[activeModal] ?? []} onClose={() => setActiveModal(null)} countries={countries} />
+                        <ListModal
+                            configKey={activeModal}
+                            initialRows={
+                                activeModal === 'videos'
+                                    ? [
+                                        { label: '', url: pp.video_url ?? '' }, // প্রথম ফিল্ড video_url থেকে
+                                        ...(pp.videos ?? []),                   // বাকিগুলো videos JSON থেকে
+                                    ]
+                                    : pp[activeModal] ?? []
+                            }
+                            onClose={() => setActiveModal(null)}
+                            countries={countries}
+                        />
                     ) : (
                         <FormModal configKey={activeModal} user={auth?.user} pp={pp} onClose={() => setActiveModal(null)} countries={countries} />
                     )

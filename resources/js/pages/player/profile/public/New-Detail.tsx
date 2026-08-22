@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import ReactCountryFlag from "react-country-flag";
@@ -71,9 +70,22 @@ const matches = [
 
 const viewerRole = 'scout';
 
-const getCountryName = (code?: string | null) => {
+const getCountryName = (code?: string | string[] | null): string => {
     if (!code) return '';
-    return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code;
+
+    const codes = Array.isArray(code) ? code : [code];
+
+    const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+
+    return codes
+        .map(c => {
+            try {
+                return regionNames.of(c) || c;
+            } catch {
+                return c;
+            }
+        })
+        .join(', ');
 };
 
 const getEmbedUrl = (url?: string | null): string | null => {
@@ -182,10 +194,17 @@ export default function NewDetail() {
                                     <div className="flex items-center">
                                         <Users className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
                                         <span className="pr-3 text-[#e1e2e6]">Nationality:</span>
-                                        {player.user?.nationality && (
-                                            <ReactCountryFlag countryCode={player.user.nationality} svg className="mr-1" />
+                                        {Array.isArray(player.user?.nationality) && player.user.nationality.length > 0 ? (
+                                            player.user.nationality.map((code, idx) => (
+                                                <span key={code} className="mr-1 inline-flex items-center">
+                                                    <ReactCountryFlag countryCode={code} svg style={{ width: '1.2em', height: '1.2em' }} />
+                                                    <span className="ml-1">{getCountryName(code)}</span>
+                                                    {idx < player.user.nationality.length - 1 && <span className="mr-1">,</span>}
+                                                </span>
+                                            ))
+                                        ) : (
+                                            <span>{getCountryName(player.user?.nationality)}</span>
                                         )}
-                                        <span>{getCountryName(player.user?.nationality)}</span>
                                     </div>
                                     <div className="flex items-center">
                                         <Ruler className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
@@ -221,7 +240,7 @@ export default function NewDetail() {
 
                         {/* Main video — visible on first view, no scroll needed */}
                         <div className="w-full">
-                            <p className="mb-2 text-[16px] font-bold text-white">HIGHLIGHTS VIDEO</p>
+                            {/* <p className="mb-2 text-[16px] font-bold text-white">HIGHLIGHTS VIDEO</p> */}
                             <div className="overflow-hidden rounded-2xl">
                                 {getEmbedUrl(player.video_url) ? (
                                     <iframe
@@ -246,31 +265,32 @@ export default function NewDetail() {
 
                     {/* SUB VIDEOS */}
                     <section>
-                        <div className="grid gap-5 grid-cols-3">
-                            {[
-                                { label: 'Goals' },
-                                { label: 'Assists' },
-                                { label: 'Dribbles' },
-                            ].map((v, i) => (
-                                <div key={i}>
-                                    <div className="overflow-hidden rounded-[12px] ">
-                                        {player.videoUrl ? (
-                                            <iframe
-                                                src={player.videoUrl}
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                allowFullScreen
-                                                className="aspect-video w-full rounded-[12px] bg-gray-800"
-                                            />
-                                        ) : (
-                                            <div className="flex aspect-video w-full flex-col items-center justify-center rounded-[12px] bg-gray-800">
-                                                <Video className="mb-2 h-10 w-10 text-white/30" />
-                                                <p className="text-sm text-white/40">No video yet</p>
-                                            </div>
+                        <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                            {(player.videos ?? [])
+                                .filter((v: any) => v?.url)
+                                .slice(1) // Skip first video (already shown as main)
+                                .map((v: any, i: number) => (
+                                    <div key={i}>
+                                        <div className="overflow-hidden rounded-[12px] ">
+                                            {getEmbedUrl(v.url) ? (
+                                                <iframe
+                                                    src={getEmbedUrl(v.url)!}
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                    className="aspect-video w-full rounded-[12px] bg-gray-800"
+                                                />
+                                            ) : (
+                                                <div className="flex aspect-video w-full flex-col items-center justify-center rounded-[12px] bg-gray-800">
+                                                    <Video className="mb-2 h-10 w-10 text-white/30" />
+                                                    <p className="text-sm text-white/40">Invalid video</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                        {v.label && (
+                                            <p className="py-2 text-center text-[16px] font-bold text-white">{v.label}</p>
                                         )}
                                     </div>
-                                    <p className="py-2 text-center text-[16px] font-bold text-white">{v.label}</p>
-                                </div>
-                            ))}
+                                ))}
                         </div>
                     </section>
 
@@ -284,24 +304,7 @@ export default function NewDetail() {
 
                     {/* CLUB HISTORY */}
                     <section className="overflow-hidden">
-                        <div className="grid gap-2 grid-cols-2 md:gap-4">
-                            {/* Transfer History */}
-                            <div className="rounded-xl border border-slate-800 bg-[#06111d] p-6">
-                                <h2 className="mb-6 text-[13px] font-bold text-white uppercase md:text-[18px]">
-                                    Transfer History <span className="font-medium text-slate-400">(Last 10 Years)</span>
-                                </h2>
-                                <div className="space-y-3">
-                                    {(player.transfer_history ?? []).filter((item: any) => item?.club).map((item: any, index: number) => (
-                                        <div key={index} className="flex items-center gap-2 md:gap-4">
-                                            <span className="w-8 text-[10px] font-medium text-slate-300 sm:text-[13px] md:w-12 md:text-[16px]">{item.year}</span>
-                                            {/* <div className="h-6 w-6 flex-shrink-0 rounded-full border border-slate-600 bg-slate-700 md:h-8 md:w-8 overflow-hidden">
-                                                <img src={item.logo} alt="" className="h-full w-full rounded-full object-cover" />
-                                            </div> */}
-                                            <span className="text-[10px] text-white sm:text-[13px] md:text-base">{item.club}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                        <div className="grid gap-2 grid-cols-1 md:gap-4">
                             {/* Positions */}
                             <div className="rounded-xl border border-slate-800 bg-[#06111d] p-5">
                                 <h2 className="mb-6 text-[13px] font-bold text-white uppercase md:text-[18px]">Positions On The Pitch</h2>

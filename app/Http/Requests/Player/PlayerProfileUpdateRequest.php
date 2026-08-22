@@ -35,7 +35,7 @@ class PlayerProfileUpdateRequest extends FormRequest
             'positions'         => ['array', 'max:3'],
             'positions.*'       => ['string', 'max:10'],
             'foot'              => ['sometimes', 'required', 'in:Right,Left,Ambidextrous'],
-            'photo'             => ['nullable', 'image', 'mimes:jpeg,png', 'max:5120'],
+            'photo'             => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:5120'],
             'video_url'         => ['nullable', 'url', 'max:255'],
             'club_history'      => ['array'],
             'club_history.*.year' => ['required', 'string'],

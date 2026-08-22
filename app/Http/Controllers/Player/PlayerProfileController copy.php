@@ -240,12 +240,22 @@ class PlayerProfileController extends Controller
 
         $profile->fill($data);
 
-        // videos ashle first url ke video_url-e sync
         if (array_key_exists('videos', $data)) {
-            $first = collect($data['videos'])->first(fn($v) => !empty($v['url'] ?? null));
-            if ($first) {
-                $profile->video_url = $first['url'];
-            }
+            $videos = collect($data['videos'])
+                ->filter(fn($v) => !empty($v['url'] ?? null))
+                ->values();
+
+            // প্রথম ভিডিও URL আলাদা video_url-এ
+            $profile->video_url = $videos[0]['url'] ?? null;
+
+            // বাকি ৩টি videos JSON-এ
+            $profile->videos = $videos->slice(1)
+                ->values()
+                ->map(fn($v) => [
+                    'label' => $v['label'] ?? '',
+                    'url'   => $v['url'] ?? '',
+                ])
+                ->toArray();
         }
 
         $profile->save();
