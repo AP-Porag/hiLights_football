@@ -94,12 +94,12 @@ const premiumPlan = [
 const items = [
     {
         icon: Binoculars,
-        title: 'MORE VISIBILITY',
+        title: 'More Visibility',
         description: 'Get noticed by scouts and clubs worldwide.',
     },
     {
         icon: Users,
-        title: 'BUILD YOUR STORY',
+        title: 'Build Your Story',
         description: 'Show your achievements and evolution as an athlete.',
     },
     // {
@@ -109,12 +109,12 @@ const items = [
     // },
     {
         icon: Globe,
-        title: 'CONNECT',
+        title: 'Connect',
         description: 'Connect with the biggest football network.',
     },
     {
         icon: ShieldCheck,
-        title: 'BE VERIFIED',
+        title: 'Be Verified',
         description: 'Build credibility and boost your career.',
     },
 ];
@@ -451,7 +451,7 @@ export default function Plans() {
                         </div>
                         <div>
                             <h3 className="text-[14px] leading-tight font-bold text-white sm:text-[16px] md:text-[20px] lg:text-[28px]">
-                                TAKE YOUR CAREER TO THE <span className="text-[#fa2e00]">NEXT LEVEL.</span>
+                                Take Your Career To The <span className="text-[#fa2e00]">Next Level.</span>
                             </h3>
                             <p className="mt-3 pr-2 text-[10px] leading-relaxed text-gray-300 sm:pr-16 sm:text-[12px] md:text-[14px] lg:pr-24 lg:text-[18px]">
                                 Join thousands of players using HiLights PRO to showcase their talent and stand out in the football world.

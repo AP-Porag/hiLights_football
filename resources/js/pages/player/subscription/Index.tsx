@@ -56,22 +56,22 @@ const premiumPlan = [
 const items = [
     {
         icon: Binoculars,
-        title: 'MORE VISIBILITY',
+        title: 'More Visibility',
         description: 'Get noticed by scouts and clubs worldwide.',
     },
     {
         icon: Users,
-        title: 'BUILD YOUR STORY',
+        title: 'Build Your Story',
         description: 'Show your achievements and evolution as an athlete.',
     },
     {
         icon: Globe,
-        title: 'CONNECT',
+        title: 'Connect',
         description: 'Connect with the biggest football network.',
     },
     {
         icon: ShieldCheck,
-        title: 'BE VERIFIED',
+        title: 'Be Verified',
         description: 'Build credibility and boost your career.',
     },
 ];
@@ -165,7 +165,7 @@ export default function SubscriptionIndex() {
                                 Welcome back, {player.name}
                             </span>
                         </div>
-                        <h1 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-5xl lg:text-6xl">
+                        <h1 className="font-display text-4xl font-bold leading-none tracking-tight text-white sm:text-5xl lg:text-6xl">
                             Your Subscription
                         </h1>
                         <p className="mx-auto mt-5 max-w-2xl font-sans text-base text-white/95 sm:text-lg lg:text-xl">
@@ -226,7 +226,7 @@ export default function SubscriptionIndex() {
                             <span className="font-mono text-xs font-medium uppercase tracking-widest text-[#FF6B00]">
                                 Choose your plan
                             </span>
-                            <h2 className="mt-2 font-display text-3xl font-bold uppercase tracking-tight text-[#F5F5F5] sm:text-4xl">
+                            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#F5F5F5] sm:text-4xl">
                                 Built for serious athletes
                             </h2>
                             <p className="mx-auto mt-3 max-w-2xl font-sans text-sm text-[#9A9A9A] sm:text-base">
@@ -379,7 +379,7 @@ export default function SubscriptionIndex() {
                                         <Shield className="h-5 w-5 text-[#FF6B00]" />
                                     </div>
                                     <div>
-                                        <h3 className="font-display text-lg font-bold uppercase tracking-tight text-[#F5F5F5]">
+                                        <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5]">
                                             Bank-level security
                                         </h3>
                                         <p className="mt-1.5 font-sans text-sm leading-relaxed text-[#9A9A9A]">
@@ -392,7 +392,7 @@ export default function SubscriptionIndex() {
                                         <CreditCard className="h-5 w-5 text-[#FF6B00]" />
                                     </div>
                                     <div>
-                                        <h3 className="font-display text-lg font-bold uppercase tracking-tight text-[#F5F5F5]">
+                                        <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5]">
                                             Cancel anytime
                                         </h3>
                                         <p className="mt-1.5 font-sans text-sm leading-relaxed text-[#9A9A9A]">
