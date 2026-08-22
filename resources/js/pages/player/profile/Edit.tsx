@@ -191,6 +191,107 @@ function CountryCombobox({
     );
 }
 
+function MultiCountryCombobox({
+    value,
+    onChange,
+    countries,
+    placeholder = 'Select nationalities',
+}: {
+    value: string[];
+    onChange: (v: string[]) => void;
+    countries: { code: string; name: string; flag?: string }[];
+    placeholder?: string;
+}) {
+    const [open, setOpen] = useState(false);
+    const selected = countries.filter((c) => value.includes(c.code));
+
+    const toggleCountry = (code: string) => {
+        if (value.includes(code)) {
+            onChange(value.filter((c) => c !== code));
+        } else {
+            onChange([...value, code]);
+        }
+    };
+
+    return (
+        <div className="space-y-2">
+            <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={open}
+                        className={`group w-full h-11 justify-between rounded-xl font-normal bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] hover:bg-white dark:hover:bg-[#111111] transition-colors ${selected.length ? 'text-[#0F172A] dark:text-[#F5F5F5]' : 'text-[#94A3B8]'}`}
+                    >
+                        <span className="flex items-center gap-2 truncate">
+                            {selected.length ? (
+                                <span className="truncate font-medium">
+                                    {selected.map((c) => c.name).join(', ')}
+                                </span>
+                            ) : (
+                                placeholder
+                            )}
+                        </span>
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-[#94A3B8] group-hover:text-[#FF6B00] transition-colors" />
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                    className="w-[--radix-popover-trigger-width] p-0 rounded-2xl border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#161616] shadow-xl shadow-black/5 dark:shadow-black/40 overflow-hidden"
+                    align="start"
+                    sideOffset={8}
+                >
+                    <Command className="bg-transparent">
+                        <CommandInput placeholder="Search countries..." className="h-11" />
+                        <CommandList className="max-h-64">
+                            <CommandEmpty className="py-6 text-center text-sm text-[#94A3B8] font-sans">
+                                No country found.
+                            </CommandEmpty>
+                            <CommandGroup>
+                                {countries.map((c) => {
+                                    const isSelected = value.includes(c.code);
+                                    return (
+                                        <CommandItem
+                                            key={c.code}
+                                            value={c.name}
+                                            onSelect={() => toggleCountry(c.code)}
+                                            className="cursor-pointer rounded-lg text-[#0F172A] dark:text-[#F5F5F5] aria-selected:bg-[#FFF3EB] dark:aria-selected:bg-[rgba(255,107,0,0.12)] aria-selected:text-[#0F172A] dark:aria-selected:text-[#F5F5F5]"
+                                        >
+                                            <span className="mr-2">{c.flag ?? ''}</span>
+                                            <span className="truncate">{c.name}</span>
+                                            <Check className={`ml-auto h-4 w-4 text-[#FF6B00] ${isSelected ? 'opacity-100' : 'opacity-0'}`} />
+                                        </CommandItem>
+                                    );
+                                })}
+                            </CommandGroup>
+                        </CommandList>
+                    </Command>
+                </PopoverContent>
+            </Popover>
+
+            {selected.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                    {selected.map((c) => (
+                        <span
+                            key={c.code}
+                            className="inline-flex items-center gap-1 rounded-full bg-[#1F1F1F] border border-[#2A2A2A] px-2 py-1 text-xs text-[#F5F5F5]"
+                        >
+                            {c.flag ?? ''} {c.name}
+                            <button
+                                type="button"
+                                onClick={() => toggleCountry(c.code)}
+                                className="ml-1 text-[#9A9A9A] hover:text-red-400"
+                            >
+                                ×
+                            </button>
+                        </span>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
+
 function DobCalendar({ value, onChange, onClose }: { value: string; onChange: (v: string) => void }) {
     const selectedDate = parseYmd(value);
     const today = new Date(); today.setHours(0, 0, 0, 0);
@@ -277,7 +378,19 @@ export default function Edit() {
     const { data, setData, post, processing, errors, transform } = useForm({
         full_name: profile?.full_name ?? user.name ?? '',
         dob: profile?.dob ?? user.dob ?? '',
-        nationality: profile?.nationality ?? user.nationality ?? '',
+        nationality: (() => {
+            const nat = profile?.nationality ?? user.nationality ?? '';
+            if (Array.isArray(nat)) return nat;
+            if (typeof nat === 'string' && nat.trim() !== '') {
+                try {
+                    const parsed = JSON.parse(nat);
+                    return Array.isArray(parsed) ? parsed : [];
+                } catch {
+                    return nat.split(',').map((s: string) => s.trim()).filter(Boolean);
+                }
+            }
+            return [] as string[];
+        })(),
         nickname: profile?.nickname ?? '',
         gender: profile?.gender ?? 'M',
         height: profile?.height != null ? String(profile.height) : '',
@@ -481,7 +594,12 @@ export default function Edit() {
                                 </div>
                                 <div>
                                     <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Nationality <span className="text-[#FF6B00]">*</span></Label>
-                                    <CountryCombobox value={data.nationality} onChange={(v) => setData('nationality', v)} countries={countries} placeholder="Select nationality" />
+                                    <MultiCountryCombobox
+                                        value={data.nationality}
+                                        onChange={(v) => setData('nationality', v)}
+                                        countries={countries}
+                                        placeholder="Select nationalities"
+                                    />
                                     <FieldError msg={errors.nationality} />
                                 </div>
                                 <div>
