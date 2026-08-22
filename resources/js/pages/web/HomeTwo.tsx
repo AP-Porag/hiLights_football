@@ -85,7 +85,7 @@ const HomeTwo = () => {
         {
             icon: User,
             step: "01",
-            title: "CREATE YOUR PROFILE",
+            title: "Create Your Profile.",
             desc: (
                 <>
                     Build an organized, professional profile with your{" "}
@@ -102,7 +102,7 @@ const HomeTwo = () => {
         {
             icon: Play,
             step: "02",
-            title: "UPLOAD YOUR BEST VIDEOS",
+            title: "Upload Your Best Videos.",
             desc: (
                 <>
                     Show the world your{" "}
@@ -115,7 +115,7 @@ const HomeTwo = () => {
         {
             icon: Megaphone,
             step: "03",
-            title: "BE SEEN. BE DISCOVERED.",
+            title: "Be Seen. Be Discovered.",
             desc: (
                 <>
                     A platform developed by professionals from various areas of football
@@ -151,7 +151,7 @@ const HomeTwo = () => {
                         {/* Left Content */}
                         <div className="px-6 py-14 sm:px-10 md:py-20 lg:px-16 2xl:px-20">
                             <div className="max-w-xl 2xl:max-w-2xl">
-                                <h1 className="text-3xl font-extrabold uppercase leading-tight sm:text-4xl md:text-[42px] lg:text-5xl xl:text-6xl 2xl:text-7xl">
+                                <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl md:text-[42px] lg:text-5xl xl:text-6xl 2xl:text-7xl">
                                     <span className="block text-white">Be Seen.</span>
                                     <span className="block text-[#ee5e00]">
                                         Be Discovered <span className="text-white">!</span>
@@ -172,7 +172,7 @@ const HomeTwo = () => {
                                 {/* Buttons */}
                                 <div className="mt-8 flex flex-wrap items-center gap-4 2xl:mt-10">
                                     <Link href={isLoggedIn ? dashboardHref : "/register"}>
-                                        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#ea3905] px-4 py-3 text-xs font-semibold uppercase transition-all duration-300 hover:bg-orange-600 sm:text-sm lg:px-6 lg:py-3 lg:text-base 2xl:px-8 2xl:py-4 2xl:text-lg">
+                                        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#ea3905] px-4 py-3 text-xs font-semibold  transition-all duration-300 hover:bg-orange-600 sm:text-sm lg:px-6 lg:py-3 lg:text-base 2xl:px-8 2xl:py-4 2xl:text-lg">
                                             <UserRoundPlus className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
                                             <span className="text-left leading-tight">
 
@@ -188,7 +188,7 @@ const HomeTwo = () => {
                                             </span>
                                         </button>
                                     </Link>
-                                    <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-gray-600 px-4 py-3 text-xs font-semibold uppercase transition-all duration-300 hover:border-white sm:text-sm lg:px-6 lg:py-4 lg:text-base 2xl:px-8 2xl:text-lg">
+                                    <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-gray-600 px-4 py-3 text-xs font-semibold transition-all duration-300 hover:border-white sm:text-sm lg:px-6 lg:py-4 lg:text-base 2xl:px-8 2xl:text-lg">
                                         <CirclePlay className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
                                         <span>Learn More</span>
                                     </button>
@@ -205,7 +205,7 @@ const HomeTwo = () => {
                 <aside className="space-y-3 lg:px-10">
                     <div className="container mx-auto my-6 px-4">
                         <div className="mx-auto flex w-full max-w-7xl items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">
-                            <p className="text-sm font-medium tracking-widest text-white/50 uppercase 2xl:text-base">ADVERTISING SPACE</p>
+                            <p className="text-sm font-medium tracking-widest text-white/50 2xl:text-base">ADVERTISING SPACE</p>
                         </div>
                     </div>
                 </aside>
@@ -214,8 +214,8 @@ const HomeTwo = () => {
                 <section className="mx-auto max-w-7xl bg-black px-6 pt-10 text-white sm:px-10 lg:px-16 2xl:pt-14">
                     <div>
                         {/* Heading */}
-                        <h2 className="mb-6 text-2xl font-extrabold uppercase leading-tight sm:text-3xl lg:text-4xl 2xl:mb-8 2xl:text-5xl">
-                            A SIMPLE. PROFESSIONAL. <span className="text-[#df5f18]">EFFECTIVE PLATFORM.</span>
+                        <h2 className="mb-6 text-2xl font-extrabold leading-tight sm:text-3xl lg:text-4xl 2xl:mb-8 2xl:text-5xl">
+                            A Simple. Professional. <span className="text-[#df5f18]">Effective Platform.</span>
                         </h2>
 
                         {/* Steps */}
@@ -238,7 +238,7 @@ const HomeTwo = () => {
                                             </div>
                                             {/* Content */}
                                             <div className="border-l-4 border-[#1f1f1f] pl-3 md:pl-5">
-                                                <h3 className="mb-1 text-base font-extrabold uppercase sm:text-lg md:text-xl lg:text-2xl 2xl:text-3xl">
+                                                <h3 className="mb-1 text-base font-extrabold sm:text-lg md:text-xl lg:text-2xl 2xl:text-3xl">
                                                     {item.title}
                                                 </h3>
                                                 <p className="text-sm leading-relaxed text-gray-300 sm:text-base lg:text-lg 2xl:text-xl">
@@ -275,7 +275,7 @@ const HomeTwo = () => {
                                 <Link href={isLoggedIn ? dashboardHref : "/register"}>
                                     <button className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#773a0c] px-4 py-2 transition hover:bg-[#ff6b00]/10 md:gap-4 lg:px-8 lg:py-4 2xl:px-10">
                                         <UserPlus className="h-6 w-6 shrink-0 text-white md:h-8 md:w-8 2xl:h-9 2xl:w-9" />
-                                        <span className="text-left text-xs font-bold uppercase sm:text-sm lg:text-base 2xl:text-lg">
+                                        <span className="text-left text-xs font-bold  sm:text-sm lg:text-base 2xl:text-lg">
                                             {isLoggedIn ? (
                                                 "Dashboard"
                                             ) : (
@@ -297,7 +297,7 @@ const HomeTwo = () => {
                 <aside className="space-y-3 lg:px-10">
                     <div className="container mx-auto my-6 px-4">
                         <div className="mx-auto flex w-full max-w-7xl items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">
-                            <p className="text-sm font-medium tracking-widest text-white/50 uppercase 2xl:text-base">ADVERTISING SPACE</p>
+                            <p className="text-sm font-medium tracking-widest text-white/50 2xl:text-base">ADVERTISING SPACE</p>
                         </div>
                     </div>
                 </aside>
@@ -309,11 +309,11 @@ const HomeTwo = () => {
                         <div className="flex items-center justify-between pb-3">
                             <div className="flex items-center gap-2">
                                 <Star size={18} fill="#ff6b00" className="text-[#f25704]" />
-                                <h2 className="text-xs font-extrabold whitespace-nowrap text-[#222] uppercase md:text-sm lg:text-base 2xl:text-lg">
+                                <h2 className="text-xs font-extrabold whitespace-nowrap text-[#222] md:text-sm lg:text-base 2xl:text-lg">
                                     Community Highlights
                                 </h2>
                             </div>
-                            <Link href={auth?.user ? auth.user.role === "player" ? "/player" : auth.user.role === "admin" ? "/admin" : auth.user.role === "agent" ? "/agent" : auth.user.role === "club" ? "/club" : "/scout" : "/register?role=scout"} > <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs"> View All <ArrowRight size={18} className="text-[#ff6b00] font-bold" /> </button> </Link>
+                            <Link href={auth?.user ? auth.user.role === "player" ? "/player" : auth.user.role === "admin" ? "/admin" : auth.user.role === "agent" ? "/agent" : auth.user.role === "club" ? "/club" : "/scout" : "/register?role=scout"} > <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs"> View All <ArrowRight size={18} className="text-[#ff6b00] font-bold" /> </button> </Link>
                         </div>
 
                         {/* Rows */}

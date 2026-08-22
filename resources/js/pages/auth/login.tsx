@@ -48,9 +48,9 @@ export default function Login() {
                             alt="HiLights Football"
                             className="h-14 w-auto"
                         />
-                        <span className="font-display font-black text-5xl text-white italic tracking-tight">
+                        {/* <span className="font-display font-black text-5xl text-white italic tracking-tight">
                             HiLights
-                        </span>
+                        </span> */}
                     </Link>
                     {/* Tagline */}
                     <h2 className="font-display font-black text-3xl text-white leading-tight">

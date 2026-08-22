@@ -212,7 +212,7 @@ export default function Report() {
                                     </span>
                                 )}
                             </div>
-                            <h1 className="font-display text-3xl sm:text-4xl font-bold uppercase leading-none mb-2">
+                            <h1 className="font-display text-3xl sm:text-4xl font-bold uppercase leading-none mb-2 italic">
                                 {fullName}
                             </h1>
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/60">
@@ -254,7 +254,7 @@ export default function Report() {
                         <div className="flex items-center justify-between gap-3 mb-5">
                             <div>
                                 <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">From your profile rating</div>
-                                <h2 className="font-display text-2xl font-bold uppercase">Rating Summary</h2>
+                                <h2 className="font-display text-2xl font-bold uppercase italic">Rating Summary</h2>
                             </div>
                             {averageRating > 0 && (
                                 <div className="text-right flex-shrink-0">
@@ -280,7 +280,7 @@ export default function Report() {
                                 </div>
                                 {rating.notes && (
                                     <div className="mt-4 bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl p-4">
-                                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1.5">Scout Notes</div>
+                                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1.5">{roleLabel} Notes</div>
                                         <p className="text-sm text-[#9A9A9A] leading-relaxed whitespace-pre-line">{rating.notes}</p>
                                     </div>
                                 )}
@@ -303,7 +303,7 @@ export default function Report() {
                     {/* RECOMMENDATION */}
                     <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                         <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Your verdict</div>
-                        <h2 className="font-display text-2xl font-bold uppercase mb-5">Recommendation</h2>
+                        <h2 className="font-display text-2xl font-bold uppercase mb-5 italic">Recommendation</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             {RECOMMENDATIONS.map((rec) => {
                                 const Icon = rec.icon;
@@ -350,7 +350,7 @@ export default function Report() {
                     {/* WRITTEN REPORT */}
                     <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                         <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Observations</div>
-                        <h2 className="font-display text-2xl font-bold uppercase mb-5">Written Report</h2>
+                        <h2 className="font-display text-2xl font-bold uppercase mb-5 italic">Written Report</h2>
                         <div className="space-y-5">
                             <div>
                                 <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">

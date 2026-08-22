@@ -45,7 +45,7 @@ const Scout = () => {
         {
             icon: Binoculars,
             step: "01",
-            title: "EARLY ACCESS TO TALENT",
+            title: "Early Access to Talent",
             desc: (
                 <>
                     Be the first to discover young players before they become known to the world.{" "}
@@ -56,7 +56,7 @@ const Scout = () => {
         {
             icon: Users,
             step: "02",
-            title: "ADVANCED SEARCH AND FILTERS",
+            title: "Advanced Search and Filters",
             desc: (
                 <>
                     Find players by position, age, country, club, tournament, skills and much more.
@@ -66,7 +66,7 @@ const Scout = () => {
         {
             icon: ChartColumn,
             step: "03",
-            title: "DETAILED PLAYER PROFILES",
+            title: "Detailed Player Profiles",
             desc: (
                 <>
                     Watch highlights, check stats, performance and player information all in one place.
@@ -76,7 +76,7 @@ const Scout = () => {
         {
             icon: Send,
             step: "04",
-            title: "CONTACT TALENTS FOR FREE",
+            title: "Contact Talents for Free",
             desc: (
                 <>
                     Get in touch directly with players or their representatives and start real connections.
@@ -86,7 +86,7 @@ const Scout = () => {
         {
             icon: Star,
             step: "04",
-            title: "FOLLOW AND TRACK",
+            title: "Follow and Track",
             desc: (
                 <>
                     Follow your favorite players, receive updates and never miss a new talent.
@@ -127,14 +127,14 @@ const Scout = () => {
                             {/* Left Content */}
                             <div className="flex px-6 pt-16 sm:px-10 lg:px-16">
                                 <div className="max-w-xl">
-                                    <h1 className="text-[18px] leading-tight font-extrabold uppercase md:text-2xl lg:text-4xl">
-                                        <span className="block text-white">BE THE FIRST</span>
+                                    <h1 className="text-[18px] leading-tight font-extrabold md:text-2xl lg:text-4xl">
+                                        <span className="block text-white">Be the First</span>
 
-                                        <span className="block text-[#fa5418]">TO SEE A RARE TALENT.</span>
+                                        <span className="block text-[#fa5418]">To See a Rare Talent.</span>
 
-                                        <span className="block text-white">BE THE DISCOVERER</span>
+                                        <span className="block text-white">Be the Discoverer</span>
 
-                                        <span className="block text-[#fa5418]">OF THE NEXT GREAT FOOTBALL STAR.</span>
+                                        <span className="block text-[#fa5418]">Of the Next Great Football Star.</span>
                                     </h1>
 
                                     <div className="relative">
@@ -193,8 +193,8 @@ const Scout = () => {
                 </section>
 
                 <section className="mx-auto max-w-7xl bg-black px-6 pt-2 text-white sm:px-10 lg:px-16">
-                    <div className="mb-4 bg-[#363636] px-6 py-4 rounded-tl-[10px] rounded-tr-[10px]">
-                        <p className="text-center text-white text-[12px] sm:text-[14px] md:text-[16px]"> WHY SCOUTS, AGENTS AND CLUBS CHOOSE HILIGHTS FOOTBALL </p>
+                    <div className="mb-4 bg-[#363636] px-6 py-8 rounded-tl-[10px] rounded-tr-[10px]">
+                        <p className="text-center text-white text-[12px] sm:text-[14px] md:text-[16px]"> </p>
                     </div>
 
                     <div className="">
@@ -215,7 +215,7 @@ const Scout = () => {
 
                                             {/* Content */}
                                             <div className="border-[#1f1f1f] pl-3 md:pl-5">
-                                                <h3 className="mb-1 text-[14px] font-extrabold text-[#f93f04] uppercase sm:text-[16px] md:text-[18px] lg:text-[22px]">
+                                                <h3 className="mb-1 text-[14px] font-extrabold text-[#f93f04]  sm:text-[16px] md:text-[18px] lg:text-[22px]">
                                                     {item.title}
                                                 </h3>
 
@@ -241,7 +241,7 @@ const Scout = () => {
                             {/* Text */}
                             <div>
                                 <h3 className="text-[13px] leading-tight font-bold text-white sm:text-[14px] md:text-[16px] lg:text-[18px]">
-                                    JOIN THOUSANDS OF SCOUTS, AGENTS AND CLUBS ALREADY ON HILIGHTS FOOTBALL.
+                                    Join Thousands of Scouts, Agents and Clubs Already on HiLights Football.
                                 </h3>
 
                                 <p className="mt-1 text-[10px] leading-relaxed text-[#d9d9d9] sm:text-[12px] md:text-[14px] lg:text-[16px]">

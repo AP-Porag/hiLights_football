@@ -318,7 +318,7 @@ export default function Detail() {
                                     </span>
                                 )}
                             </div>
-                            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold uppercase leading-none mb-2">{fullName}</h1>
+                            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold uppercase leading-none mb-2 italic">{fullName}</h1>
                             {positionDetail && (
                                 <p className="text-sm text-[#FF6B00] uppercase tracking-wider font-semibold mb-3">{positionDetail}</p>
                             )}

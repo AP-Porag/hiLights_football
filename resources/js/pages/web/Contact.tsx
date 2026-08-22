@@ -93,7 +93,7 @@ export default function Contact() {
                 {/* ============ HEADER BAND ============ */}
                 <section className="bg-[#FF5E24] py-16">
                     <div className="max-w-[1100px] mx-auto px-6 text-center">
-                        <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white uppercase tracking-tight leading-tight">
+                        <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-tight">
                             Contact HiLights Football
                         </h1>
                         <p className="mt-4 text-base sm:text-lg text-white/90 max-w-2xl mx-auto font-sans">
@@ -108,7 +108,7 @@ export default function Contact() {
                     <div className="max-w-[1100px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-10">
                         {/* -------- FORM CARD -------- */}
                         <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-10">
-                            <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#0F172A] dark:text-[#F5F5F5] uppercase tracking-tight">
+                            <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#0F172A] dark:text-[#F5F5F5] tracking-tight">
                                 Send us a message
                             </h2>
                             <p className="mt-2 text-sm text-[#475569] dark:text-[#9A9A9A] font-sans">
@@ -342,7 +342,7 @@ export default function Contact() {
                 <section className="bg-white dark:bg-[#111111] py-12 sm:py-16">
                     <div className="max-w-[1100px] mx-auto px-6">
                         <div className="text-center mb-10">
-                            <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#0F172A] dark:text-[#F5F5F5] uppercase tracking-tight">
+                            <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#0F172A] dark:text-[#F5F5F5] tracking-tight">
                                 Frequently Asked Questions
                             </h2>
                             <p className="mt-3 text-sm text-[#475569] dark:text-[#9A9A9A] font-sans max-w-xl mx-auto">
