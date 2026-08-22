@@ -142,7 +142,7 @@ const Scout = () => {
                                             At HiLights Football, you have the opportunity to discover, follow and contact great talents for free.
                                         </p>
                                         <div className="absolute top-17 left-0 z-0 flex w-[200%] flex-row gap-4 md:top-22 lg:top-25">
-                                            <button className="flex items-center justify-center rounded-md bg-[#dd3e06] px-3 py-2 text-[10px] font-semibold uppercase transition-all duration-300 hover:bg-orange-600 md:px-6 md:text-sm">
+                                            <button className="flex items-center justify-center rounded-md bg-[#dd3e06] px-3 py-2 text-[10px] font-semibold transition-all duration-300 hover:bg-orange-600 md:px-6 md:text-sm">
 
                                                 <Link
                                                     href={
@@ -178,7 +178,7 @@ const Scout = () => {
 
                                             </button>
 
-                                            <button className="flex items-center justify-center rounded-md border border-gray-600 bg-black px-3 py-2 text-[10px] font-semibold uppercase transition-all duration-300 hover:border-white md:px-6 md:py-4 md:text-sm">
+                                            <button className="flex items-center justify-center rounded-md border border-gray-600 bg-black px-3 py-2 text-[10px] font-semibold transition-all duration-300 hover:border-white md:px-6 md:py-4 md:text-sm">
                                                 <CirclePlay className="h-6 w-6" />
                                                 <span className="pl-2">Learn More</span>
                                             </button>
