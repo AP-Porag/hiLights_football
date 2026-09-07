@@ -36,13 +36,10 @@ class GlobalConstant
     | Subscription Tiers
     |--------------------------------------------------------------------------
     */
-    public const TIER_TRIAL_PRICE_ID = 'price_1TXH33HKtXG9R7bGb5heMCgK';
-    public const TIER_ONE_VIEW_ONLY_PRICE_ID = 'price_1TSwAKHKtXG9R7bGP5EtUGrg';
-    public const TIER_TWO_FULL_ACCESS_PRICE_ID = 'price_1TSyapHKtXG9R7bGgdo6OLrA';
+    public const TRIAL = 'price_1TXH33HKtXG9R7bGb5heMCgK';
+    public const STRIPE_PLAN_ONE = 'price_1TsfD5HKtXG9R7bGyzR4H6C9';
+    public const STRIPE_PLAN_TWO = 'price_1TsfDtHKtXG9R7bGVsNxRTT6';
 
-    // public const TIER_TRIAL_PRICE_ID = 'price_1U0nSxFulxMQQHJjszqFW2i1';
-    // public const TIER_ONE_VIEW_ONLY_PRICE_ID = 'price_1U0nQCFulxMQQHJjvEsWv8wc';
-    // public const TIER_TWO_FULL_ACCESS_PRICE_ID = 'price_1U0nRqFulxMQQHJjA3FJ4s5r';
 
 
 

@@ -7,11 +7,8 @@ export const GlobalConstant = {
     SUB_EXPIRED: 'expired',
     SUB_CANCELLED: 'cancelled',
 
-    TIER_VIEW_ONLY: 'tier_1',
-    TIER_FULL_ACCESS: 'tier_2',
-
-    TIER_VIEW_ONLY_PRICE_ID: 'price_1TSwAKHKtXG9R7bGP5EtUGrg',
-    TIER_FULL_ACCESS_PRICE_ID: 'price_1TSyapHKtXG9R7bGgdo6OLrA',
+    STRIPE_PLAN_ONE: 'price_1TsfD5HKtXG9R7bGyzR4H6C9',
+    STRIPE_PLAN_TWO: 'price_1TsfDtHKtXG9R7bGVsNxRTT6',
 
     PENDING: 'pending',
     OPEN: 'open',
