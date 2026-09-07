@@ -6,6 +6,7 @@ use App\Http\Controllers\Club\ClubController as CController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Admin\ContactController as ConController;
+use App\Http\Controllers\Admin\AdminSubscriptionsController;
 use App\Http\Controllers\Player\PlayerProfileController;
 use App\Http\Controllers\Player\SubscriptionController;
 use App\Http\Controllers\Scout\ScoutController;
@@ -275,6 +276,14 @@ Route::prefix('admin')->group(function () {
     Route::put('/contact-messages/{id}/read', [ConController::class, 'markAsRead'])->name('admin.contact.read');
     Route::post('/contact-messages/{id}/reply', [ConController::class, 'reply'])->name('admin.contact.reply');
     Route::delete('/contact-messages/{id}', [ConController::class, 'destroy'])->name('admin.contact.destroy');
+
+
+    //Subscriptions
+    Route::get('/subscriptions', [AdminSubscriptionsController::class, 'index'])
+        ->name('subscriptions.index');
+
+    Route::get('/subscriptions/{subscription}', [AdminSubscriptionsController::class, 'show'])
+        ->name('admin.subscriptions.show');
 });
 
 Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])
