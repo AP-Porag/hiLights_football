@@ -76,14 +76,23 @@ class PlayerController extends Controller
             ->withQueryString()
             ->through(function ($profile) {
                 $user = $profile->user;
+                $nationality = $user?->nationality;
+                if (is_array($nationality)) {
+                    $primaryCountry = $nationality[0] ?? null; // প্রথম দেশের কোড
+                    $countryList = implode(', ', $nationality); // সবগুলো দেখাতে চাইলে
+                } else {
+                    $primaryCountry = $nationality;
+                    $countryList = $nationality ?? 'N/A';
+                }
+
                 return [
                     'id'             => $profile->id,
                     'name'           => $user?->name ?? 'Unknown',
                     'age'            => $profile->dob ? \Carbon\Carbon::parse($profile->dob)->age : null,
                     'position'       => $this->getPositionGroup($profile->positions),
                     'positionShort'  => is_array($profile->positions) ? ($profile->positions[0] ?? 'N/A') : 'N/A',
-                    'country'        => $user?->nationality ?? 'N/A',
-                    'countryFlag'    => $this->getCountryFlag($user?->nationality),
+                    'country'        => $countryList, // অথবা শুধু প্রথম দেশ: $primaryCountry
+                    'countryFlag'    => $this->getCountryFlag($primaryCountry), // string|null পাস হচ্ছে
                     'club'           => $profile->current_club ?? 'N/A',
                     'subscription'   => $profile->subscription_plan ?? 'Free',
                     'views'          => $profile->views ?? 0,               // <- আপনার টেবিলে views কলাম
