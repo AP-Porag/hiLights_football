@@ -104,6 +104,14 @@ class SubscriptionController extends Controller
         return redirect()->route('subscription');
     }
 
+    public function downloadInvoice(Request $request, string $invoiceId)
+    {
+        return $request->user()->downloadInvoice($invoiceId, [
+            'vendor'  => 'HiLights Football',
+            'product' => 'HiLights Premium Subscription',
+        ]);
+    }
+
     /**
      * Subscription state — index / plans / success shob jaygায় ei same state pathabo
      */

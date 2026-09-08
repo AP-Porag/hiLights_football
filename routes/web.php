@@ -139,6 +139,10 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
 
     Route::get('/player/notifications/feed', [NotificationController::class, 'feed'])->name('notifications.feed');
     Route::post('/player/notifications/read', [NotificationController::class, 'markRead'])->name('notifications.read');
+
+
+    Route::get('/player/subscription/invoice/{invoiceId}', [SubscriptionController::class, 'downloadInvoice'])
+        ->name('subscription.invoice.download');
 });
 
 //all Scouts / Agents / Clubs routes

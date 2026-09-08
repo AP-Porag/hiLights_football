@@ -225,7 +225,6 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
             { name: 'gender', label: 'Gender', type: 'select', options: ['M', 'F', 'Other'] },
             { name: 'nationality', label: 'Nationality', type: 'multi_country' }, // ← multi-select nationality
             { name: 'height', label: 'Height (cm)', type: 'number' },
-            { name: 'weight', label: 'Weight (kg)', type: 'number' },
             { name: 'birth_city', label: 'Birth City', type: 'text' },
             { name: 'birth_country', label: 'Birth Country', type: 'country' },
             { name: 'current_club', label: 'Current Club', type: 'text' },
@@ -259,11 +258,13 @@ function ListModal({
     initialRows,
     onClose,
     countries,
+    maxVideos = 1,
 }: {
     configKey: string;
     initialRows: any[];
     onClose: () => void;
     countries?: any[];
+    maxVideos?: number;
 }) {
     const cfg = LIST_CONFIGS[configKey];
     const [rows, setRows] = useState<any[]>(() => {
@@ -271,14 +272,13 @@ function ListModal({
             const existing = initialRows.length
                 ? initialRows.map((r: any) => ({ ...cfg.empty, ...r }))
                 : [];
-            const total = 4;
-            const result = [...existing];
+            const total = maxVideos;
+            const result = [...existing].slice(0, total);
             while (result.length < total) {
                 result.push({ ...cfg.empty });
             }
             return result;
         }
-
         if (initialRows.length) return initialRows.map((r: any) => ({ ...cfg.empty, ...r }));
         if (cfg.defaultRows) return cfg.defaultRows.map((r: any) => ({ ...cfg.empty, ...r }));
         return [{ ...cfg.empty }];
@@ -615,6 +615,7 @@ function FormModal({
         return init;
     });
     const [preview, setPreview] = useState<string>(pp?.photo_url ?? '');
+    const [photoError, setPhotoError] = useState<string>('');
     const [saving, setSaving] = useState(false);
     const setField = (name: string, val: any) => setValues((prev) => ({ ...prev, [name]: val }));
     const togglePos = (id: string) => {
@@ -624,12 +625,31 @@ function FormModal({
     };
     const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
-            setField('photo', file);
-            const r = new FileReader();
-            r.onload = (ev) => setPreview(ev.target?.result as string);
-            r.readAsDataURL(file);
+        if (!file) return;
+
+        // type check
+        const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+        if (!allowed.includes(file.type)) {
+            setPhotoError('Only JPG, PNG or WEBP images are allowed.');
+            e.target.value = '';
+            return;
         }
+
+        // size check — 5MB
+        const MAX_SIZE = 5 * 1024 * 1024;
+        if (file.size > MAX_SIZE) {
+            const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+            setPhotoError(`Image is ${sizeMb}MB — maximum allowed size is 5MB. Please choose a smaller image.`);
+            e.target.value = '';
+            return;
+        }
+
+        // valid
+        setPhotoError('');
+        setField('photo', file);
+        const r = new FileReader();
+        r.onload = (ev) => setPreview(ev.target?.result as string);
+        r.readAsDataURL(file);
     };
     const fileInputRef = useRef<HTMLInputElement>(null);
     const save = () => {
@@ -788,6 +808,9 @@ function FormModal({
                                             <br />
                                             JPG, PNG or WEBP
                                         </p>
+                                        {photoError && (
+                                            <p className="mt-2 text-xs text-red-400">{photoError}</p>
+                                        )}
                                     </div>
                                 </div>
                             )}
@@ -876,7 +899,6 @@ export default function PlayerDashboard() {
         nonEmpty(auth?.user?.nationality),
         nonEmpty(pp.gender),
         nonEmpty(pp.height),
-        nonEmpty(pp.weight),
         nonEmpty(pp.birth_city),
         nonEmpty(pp.birth_country),
         nonEmpty(pp.current_club),
@@ -912,7 +934,7 @@ export default function PlayerDashboard() {
             {
                 label: 'Basic information added',
                 done: nonEmpty(auth?.user?.name) && nonEmpty(auth?.user?.dob) && nonEmpty(auth?.user?.nationality)
-                    && nonEmpty(pp.gender) && nonEmpty(pp.height) && nonEmpty(pp.weight)
+                    && nonEmpty(pp.gender) && nonEmpty(pp.height)
                     && nonEmpty(pp.birth_city) && nonEmpty(pp.birth_country)
                     && nonEmpty(pp.current_club) && nonEmpty(pp.current_club_country)
                     && nonEmpty(pp.in_team_since) && nonEmpty(pp.agent) && nonEmpty(auth?.user?.whatsapp)
@@ -1020,11 +1042,6 @@ export default function PlayerDashboard() {
             icon: <Ruler className="w-4 h-4 text-gray-300" />,
             label: 'HEIGHT',
             value: pp?.height ? `${pp.height} cm` : 'Not specified',
-        },
-        {
-            icon: <Weight className="w-4 h-4 text-gray-300" />,
-            label: 'WEIGHT',
-            value: pp?.weight ? `${pp.weight} kg` : 'Not specified',
         },
         {
             icon: <Shield className="w-4 h-4 text-gray-300" />,
@@ -1463,14 +1480,22 @@ export default function PlayerDashboard() {
                             configKey={activeModal}
                             initialRows={
                                 activeModal === 'videos'
-                                    ? [
-                                        { label: '', url: pp.video_url ?? '' }, // প্রথম ফিল্ড video_url থেকে
-                                        ...(pp.videos ?? []),                   // বাকিগুলো videos JSON থেকে
-                                    ]
+                                    ? (() => {
+                                        // pp.videos-e already sob video (label + url) thake
+                                        // video_url shudhu tokhon add koro jokhon setā videos-e nei
+                                        const vids = Array.isArray(pp.videos) ? pp.videos : [];
+                                        const hasUrl = (u: string) => vids.some((v: any) => v?.url === u);
+                                        const merged = [...vids];
+                                        if (nonEmpty(pp.video_url) && !hasUrl(pp.video_url)) {
+                                            merged.unshift({ label: '', url: pp.video_url });
+                                        }
+                                        return merged;
+                                    })()
                                     : pp[activeModal] ?? []
                             }
                             onClose={() => setActiveModal(null)}
                             countries={countries}
+                            maxVideos={hasSubscription ? 4 : 1}
                         />
                     ) : (
                         <FormModal configKey={activeModal} user={auth?.user} pp={pp} onClose={() => setActiveModal(null)} countries={countries} />

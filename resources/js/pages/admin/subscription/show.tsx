@@ -11,14 +11,14 @@ const breadcrumbs = [
 ];
 
 const planLabel = (price) => {
-    if (price === GlobalConstant.TIER_VIEW_ONLY_PRICE_ID) return 'View Only';
-    if (price === GlobalConstant.TIER_FULL_ACCESS_PRICE_ID) return 'Full Access';
+    if (price === GlobalConstant.STRIPE_PLAN_ONE) return 'Premium';
+    if (price === GlobalConstant.STRIPE_PLAN_TWO) return 'Elite';
     return 'Trial';
 };
 
 const priceAmount = (price) => {
-    if (price === GlobalConstant.TIER_VIEW_ONLY_PRICE_ID) return '$8.99';
-    if (price === GlobalConstant.TIER_FULL_ACCESS_PRICE_ID) return '$12.99';
+    if (price === GlobalConstant.STRIPE_PLAN_ONE) return 'R$ 47';
+    if (price === GlobalConstant.STRIPE_PLAN_TWO) return 'R$ 94';
     return '$0.00';
 };
 
@@ -64,7 +64,7 @@ export default function Show({ subscription }) {
                         <div><strong className="text-[#9A9A9A] font-medium">Status:</strong> {subscription.stripe_status}</div>
                         <div><strong className="text-[#9A9A9A] font-medium">Plan:</strong> {planLabel(subscription.stripe_price)}</div>
                         <div><strong className="text-[#9A9A9A] font-medium">Quantity:</strong> {subscription.quantity || '—'}</div>
-                        <div><strong className="text-[#9A9A9A] font-medium">Trial Ends:</strong> {subscription.trial_ends_at ? new Date(subscription.trial_ends_at).toLocaleDateString() : '—'}</div>
+
                         <div><strong className="text-[#9A9A9A] font-medium">Ends At:</strong> {subscription.ends_at ? new Date(subscription.ends_at).toLocaleDateString() : '—'}</div>
                         <div><strong className="text-[#9A9A9A] font-medium">Created:</strong> {new Date(subscription.created_at).toLocaleString()}</div>
                     </div>

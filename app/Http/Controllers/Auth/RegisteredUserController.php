@@ -53,6 +53,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'email', 'lowercase', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'dob' => ['nullable', 'date'],
+            'gender' => ['nullable', 'in:M,F,Other'],
             'whatsapp'          => ['required', 'string', 'max:30'],   // ← new validation
             'nationality' => ['nullable', 'array'],            // ← array validation
             'nationality.*' => ['string', 'max:3'],            // প্রতিটি element validate
@@ -71,6 +72,7 @@ class RegisteredUserController extends Controller
             'dob' => $validated['dob'] ?? null,
             'nationality' => $validated['nationality'] ?? null,  // array যাবে, JSON হয়ে save হবে
             'country' => $validated['country'] ?? null,
+            'whatsapp' => $validated['whatsapp'] ?? null,
 
             // important fix
             'terms_accepted' => true,
@@ -82,6 +84,7 @@ class RegisteredUserController extends Controller
             PlayerProfile::create([
                 'user_id' => $user->id,
                 'player_id' => $this->generatePlayerId(),
+                'gender' => $validated['gender'] ?? null,
             ]);
         }
 
