@@ -81,7 +81,7 @@ const FIELD_STEP: Record<string, number> = {
     full_name: 0, nickname: 0, dob: 0, gender: 0, height: 0,
     birth_city: 0, birth_country: 0, nationality: 0, current_club: 0,
     current_club_country: 0, in_team_since: 0, agent: 0, guardian_name: 0,
-    weight: 0, whatsapp: 0,
+    whatsapp: 0,
     modality: 1, positions: 1, foot: 1,
     photo: 2, video_url: 2,
     club_history: 3, transfer_history: 3, achievements: 3, competitions: 3, matches: 3,
@@ -375,6 +375,9 @@ export default function Edit() {
         }
     };
 
+
+    const [photoError, setPhotoError] = useState<string>('');
+
     const { data, setData, post, processing, errors, transform } = useForm({
         full_name: profile?.full_name ?? user.name ?? '',
         dob: profile?.dob ?? user.dob ?? '',
@@ -394,7 +397,6 @@ export default function Edit() {
         nickname: profile?.nickname ?? '',
         gender: profile?.gender ?? 'M',
         height: profile?.height != null ? String(profile.height) : '',
-        weight: profile?.weight != null ? String(profile.weight) : '',
         birth_city: profile?.birth_city ?? '',
         birth_country: profile?.birth_country ?? '',
         current_club: profile?.current_club ?? '',
@@ -469,7 +471,31 @@ export default function Edit() {
 
     const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) { setData('photo', file); const reader = new FileReader(); reader.onload = (ev) => setData('photo_preview', ev.target?.result as string); reader.readAsDataURL(file); }
+        if (!file) return;
+
+        // type check
+        const allowed = ['image/jpeg', 'image/png'];
+        if (!allowed.includes(file.type)) {
+            setPhotoError('Only JPG or PNG images are allowed.');
+            e.target.value = ''; // same file abar select korte parbe
+            return;
+        }
+
+        // size check — 5MB = 5 * 1024 * 1024 bytes
+        const MAX_SIZE = 5 * 1024 * 1024;
+        if (file.size > MAX_SIZE) {
+            const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+            setPhotoError(`Image is ${sizeMb}MB — maximum allowed size is 5MB. Please choose a smaller image.`);
+            e.target.value = '';
+            return;
+        }
+
+        // valid — error clear kore preview set koro
+        setPhotoError('');
+        setData('photo', file);
+        const reader = new FileReader();
+        reader.onload = (ev) => setData('photo_preview', ev.target?.result as string);
+        reader.readAsDataURL(file);
     };
 
     const goNext = () => setStep(s => Math.min(s + 1, STEPS.length - 1));
@@ -578,11 +604,6 @@ export default function Edit() {
                                     <Label htmlFor="height" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Height (cm)</Label>
                                     <Input id="height" type="number" value={data.height} onChange={(e) => setData('height', e.target.value)} placeholder="178" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
                                     <FieldError msg={errors.height} />
-                                </div>
-                                <div>
-                                    <Label htmlFor="weight" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Weight (kg)</Label>
-                                    <Input id="weight" type="number" value={data.weight} onChange={(e) => setData('weight', e.target.value)} placeholder="67" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
-                                    <FieldError msg={errors.weight} />
                                 </div>
                                 <div>
                                     <Label htmlFor="birth_city" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Birthplace City</Label>
@@ -747,6 +768,10 @@ export default function Edit() {
                                                 <Button type="button" variant="outline" className="border-[#2A2A2A] text-[#F5F5F5] hover:border-[#FF6B00] hover:text-[#FF6B00] bg-[#1F1F1F]" onClick={() => document.getElementById('photo-input')?.click()}>Change Photo</Button>
                                                 <input id="photo-input" type="file" accept="image/jpeg,image/png" onChange={handlePhotoUpload} className="hidden" />
                                             </label>
+                                            <p className="text-xs text-[#9A9A9A] font-sans">
+                                                Recommended size: <span className="text-[#F5F5F5] font-medium">200 × 300 px</span>
+                                                <span className="block text-[#94A3B8]">JPG or PNG, up to 5MB</span>
+                                            </p>
                                             <button type="button" onClick={() => { setData('photo', null); setData('photo_preview', ''); }} className="text-xs text-[#94A3B8] hover:text-red-500 font-sans">Remove</button>
                                         </div>
 
@@ -762,7 +787,7 @@ export default function Edit() {
                                         <input type="file" accept="image/jpeg,image/png" onChange={handlePhotoUpload} className="hidden" />
                                     </label>
                                 )}
-                                <FieldError msg={errors.photo} />
+                                <FieldError msg={photoError || errors.photo} />
                             </div>
                             <div>
                                 <Label htmlFor="video_url" className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Highlight Video URL</Label>

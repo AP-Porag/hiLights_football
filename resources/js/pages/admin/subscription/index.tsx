@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Head, router } from '@inertiajs/react';
 import DataTable from '@/components/common/DataTable';
 import AppLayout from '@/layouts/app-layout.js';
+import { GlobalConstant } from '@/utils/GlobalConstant';
 
 const breadcrumbs = [
     {
@@ -24,7 +25,7 @@ export default function Index({ subscriptions, statuses, filters: initialFilters
     useEffect(() => {
         const { apply, ...queryParams } = filters;
         if (filters.apply) {
-            router.get(route('admin.subscriptions.index'), queryParams, {
+            router.get(route('subscriptions.index'), queryParams, {
                 preserveState: true,
                 replace: true,
             });
@@ -50,17 +51,17 @@ export default function Index({ subscriptions, statuses, filters: initialFilters
             key: 'access_level',
             label: 'Access Level',
             render: (row) => {
-                if (row.stripe_price === 'price_1U0nQCFulxMQQHJjvEsWv8wc') {
+                if (row.stripe_price === GlobalConstant.STRIPE_PLAN_ONE) {
                     return (
                         <span className="inline-flex items-center rounded-full bg-blue-500/15 text-blue-400 px-2.5 py-0.5 text-xs font-medium">
-                            View Only
+                            Premium
                         </span>
                     );
                 }
-                if (row.stripe_price === 'price_1U0nRqFulxMQQHJjA3FJ4s5r') {
+                if (row.stripe_price === GlobalConstant.STRIPE_PLAN_TWO) {
                     return (
                         <span className="inline-flex items-center rounded-full bg-green-500/15 text-green-400 px-2.5 py-0.5 text-xs font-medium">
-                            Full Access
+                            Elite
                         </span>
                     );
                 }
@@ -125,15 +126,15 @@ export default function Index({ subscriptions, statuses, filters: initialFilters
                 return <span className="text-xs text-[#555555]">—</span>;
             },
         },
-        {
-            key: 'trial_ends_at',
-            label: 'Trial Ends',
-            render: (row) => (
-                <span className="whitespace-nowrap text-[#F5F5F5]">
-                    {row.trial_ends_at ? new Date(row.trial_ends_at).toLocaleDateString() : '—'}
-                </span>
-            ),
-        },
+        // {
+        //     key: 'trial_ends_at',
+        //     label: 'Trial Ends',
+        //     render: (row) => (
+        //         <span className="whitespace-nowrap text-[#F5F5F5]">
+        //             {row.trial_ends_at ? new Date(row.trial_ends_at).toLocaleDateString() : '—'}
+        //         </span>
+        //     ),
+        // },
         {
             key: 'ends_at',
             label: 'Ends At',

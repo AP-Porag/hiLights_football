@@ -71,6 +71,7 @@ const registerSchema = z.object({
     password: z.string().min(8, 'Password must be at least 8 characters'),
     password_confirmation: z.string(),
     dob: z.string().optional(),
+    gender: z.string().optional(),
     nationality: z.array(z.string()).optional(),
     country: z.string().optional(),
     organization_name: z.string().optional(),
@@ -230,6 +231,7 @@ export default function Register({ countries = [] }: Props) {
         password: '',
         password_confirmation: '',
         dob: '',
+        gender: '',
         nationality: [] as string[],
         country: '',
         organization_name: '',
@@ -258,6 +260,7 @@ export default function Register({ countries = [] }: Props) {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+        console.log('gender being sent:', data.gender);
         console.log('SUBMIT CLICKED', data);
         if (!data.role) {
             setClientErrors((prev) => ({
@@ -663,6 +666,40 @@ export default function Register({ countries = [] }: Props) {
                                     {(clientErrors.dob || errors.dob) && (
                                         <p className="text-xs text-[#DC2626] mt-1.5">
                                             {clientErrors.dob || errors.dob}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5">
+                                        Gender
+                                    </label>
+                                    <div className="flex gap-3">
+                                        {[
+                                            { v: 'M', l: 'Male' },
+                                            { v: 'F', l: 'Female' },
+                                            { v: 'Other', l: 'Other' },
+                                        ].map((g) => {
+                                            const selected = data.gender === g.v;
+                                            return (
+                                                <button
+                                                    key={g.v}
+                                                    type="button"
+                                                    onClick={() => setData('gender', g.v)}
+                                                    className={
+                                                        'flex-1 h-11 rounded-xl border text-sm font-semibold transition-colors ' +
+                                                        (selected
+                                                            ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00]'
+                                                            : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A] hover:border-[#FF6B00]')
+                                                    }
+                                                >
+                                                    {g.l}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                    {(clientErrors.gender || errors.gender) && (
+                                        <p className="text-xs text-[#DC2626] mt-1.5">
+                                            {clientErrors.gender || errors.gender}
                                         </p>
                                     )}
                                 </div>

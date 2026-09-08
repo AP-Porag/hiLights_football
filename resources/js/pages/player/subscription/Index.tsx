@@ -26,6 +26,8 @@ import {
     CheckCircle,
     Binoculars,
     ShieldCheck,
+    Download,
+    FileText,
 } from 'lucide-react';
 import PlayerNavbar from '@/components/player/PlayerNavbar';
 import { useForm } from '@inertiajs/react';
@@ -73,13 +75,25 @@ const items = [
         description: 'Build credibility and boost your career.',
     },
 ];
+
+// invoice type
+type Invoice = {
+    id: string;
+    number?: string | null;
+    date: string; // ISO or timestamp string
+    total: string; // formatted, e.g. "R$ 94.00"
+    status?: string;
+    download_url: string;
+};
+
 export default function SubscriptionIndex() {
-    const { current_plan, on_grace_period, is_cancelled, subscription_ends_at, auth } = usePage<{
+    const { current_plan, on_grace_period, is_cancelled, subscription_ends_at, auth, invoices } = usePage<{
         current_plan: string | null;
         on_grace_period?: boolean;
         is_cancelled?: boolean;
         subscription_ends_at?: string | null;
         auth: { user: { name: string } | null };
+        invoices?: Invoice[];
     }>().props;
     const { post, processing } = useForm({});
     // cancel confirmation modal
@@ -107,6 +121,7 @@ export default function SubscriptionIndex() {
                 ? 'Premium plan'
                 : 'Free plan';
     const hasPlan = current_plan !== null;
+    const invoiceList: Invoice[] = invoices ?? [];
     const endsAtText = subscription_ends_at
         ? new Date(subscription_ends_at).toLocaleDateString('en-US', {
             day: 'numeric',
@@ -114,16 +129,6 @@ export default function SubscriptionIndex() {
             year: 'numeric',
         })
         : null;
-    // Stripe checkout — from=subscription pathacchi (success-e ei page-e fire ashbe)
-    // const handleCheckout = (planName: string) => {
-    //     console.log("Checkout clicked");
-    //     post(route('subscription.checkout', { name: planName, from: 'subscription' }), {
-    //         preserveScroll: true,
-    //         preserveState: false, // ← swap er por props refresh hobe (badge/button update dekhabe)
-    //         // No need for onSuccess - Inertia::location() handles the redirect automatically
-    //     });
-    // };
-    // Stripe checkout / swap — swap hole flash message + reload, notun hole Stripe redirect
     // Stripe checkout / swap — swap hole flash message + reload, notun hole Stripe redirect
     const handleCheckout = (planName: string) => {
         setCheckoutPlan(planName);
@@ -137,9 +142,13 @@ export default function SubscriptionIndex() {
                 } else if (flash?.info) {
                     toast.info(flash.info); // already subscribed
                 }
-                // props already refresh hoyeche (preserveState: false) → badge/button update
+                // swap hole sathe sathe fresh props ente hard reload-er moto effect
+                router.reload({
+                    preserveScroll: true,
+                    onFinish: () => setCheckoutPlan(null),
+                });
             },
-            onFinish: () => setCheckoutPlan(null),
+            onError: () => setCheckoutPlan(null),
         });
     };
     // subscription cancel — grace period-e jabe (modal theke confirm hoy)
@@ -171,6 +180,10 @@ export default function SubscriptionIndex() {
                 },
             }
         );
+    };
+    // invoice download — new tab-e Stripe hosted PDF khule
+    const downloadInvoice = (inv: Invoice) => {
+        window.open(inv.download_url, '_blank', 'noopener,noreferrer');
     };
     return (
         <div className="min-h-screen bg-black">
@@ -373,6 +386,81 @@ export default function SubscriptionIndex() {
                         </div>
                     </div>
                 </section>
+                {/* ====================== BILLING / INVOICES ====================== */}
+                {hasPlan && (
+                    <section className="bg-black px-4 pb-4">
+                        <div className="mx-auto max-w-6xl">
+                            <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 sm:p-8">
+                                <div className="mb-6 flex items-center gap-3">
+                                    <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-[rgba(255,107,0,0.12)]">
+                                        <FileText className="h-5 w-5 text-[#FF6B00]" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5]">
+                                            Billing History
+                                        </h3>
+                                        <p className="mt-0.5 font-sans text-sm text-[#9A9A9A]">
+                                            Download your invoices and payment receipts.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {invoiceList.length > 0 ? (
+                                    <div className="overflow-x-auto">
+                                        <table className="min-w-full">
+                                            <thead>
+                                                <tr className="border-b border-[#2A2A2A] text-left">
+                                                    <th className="pb-3 pr-4 font-sans text-xs font-semibold uppercase tracking-wider text-[#9A9A9A]">Invoice</th>
+                                                    <th className="pb-3 pr-4 font-sans text-xs font-semibold uppercase tracking-wider text-[#9A9A9A]">Date</th>
+                                                    <th className="pb-3 pr-4 font-sans text-xs font-semibold uppercase tracking-wider text-[#9A9A9A]">Amount</th>
+                                                    <th className="pb-3 pr-4 font-sans text-xs font-semibold uppercase tracking-wider text-[#9A9A9A]">Status</th>
+                                                    <th className="pb-3 text-right font-sans text-xs font-semibold uppercase tracking-wider text-[#9A9A9A]">Download</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {invoiceList.map((inv) => (
+                                                    <tr key={inv.id} className="border-b border-[#2A2A2A] last:border-b-0">
+                                                        <td className="py-4 pr-4 font-mono text-sm text-[#F5F5F5]">
+                                                            {inv.number || inv.id}
+                                                        </td>
+                                                        <td className="py-4 pr-4 font-sans text-sm text-[#9A9A9A] whitespace-nowrap">
+                                                            {new Date(inv.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                                        </td>
+                                                        <td className="py-4 pr-4 font-mono text-sm text-[#F5F5F5] whitespace-nowrap">
+                                                            {inv.total}
+                                                        </td>
+                                                        <td className="py-4 pr-4">
+                                                            <span className="inline-flex items-center gap-1 rounded-full bg-green-500/15 px-2.5 py-0.5 font-sans text-xs font-medium capitalize text-green-400">
+                                                                <Check className="h-3 w-3" strokeWidth={3} />
+                                                                {inv.status || 'Paid'}
+                                                            </span>
+                                                        </td>
+                                                        <td className="py-4 text-right">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => downloadInvoice(inv)}
+                                                                className="inline-flex items-center gap-1.5 rounded-lg border border-[#2A2A2A] bg-[#1F1F1F] px-3 py-1.5 font-sans text-xs font-semibold text-[#F5F5F5] transition hover:border-[#FF6B00] hover:text-[#FF6B00]"
+                                                            >
+                                                                <Download className="h-3.5 w-3.5" />
+                                                                Download
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#2A2A2A] py-10 text-center">
+                                        <FileText className="mb-3 h-8 w-8 text-[#555555]" />
+                                        <p className="font-sans text-sm text-[#9A9A9A]">No invoices yet.</p>
+                                        <p className="mt-1 font-sans text-xs text-[#555555]">Your invoices will appear here after your first payment.</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </section>
+                )}
                 {/* ====================== BENEFITS ====================== */}
                 <section className="w-full bg-black px-4">
                     <div className="mx-auto max-w-7xl">
@@ -428,19 +516,6 @@ export default function SubscriptionIndex() {
                                         </p>
                                     </div>
                                 </div>
-                                {/* <div className="flex items-start gap-4">
-                                    <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-[rgba(255,107,0,0.12)]">
-                                        <Award className="h-5 w-5 text-[#FF6B00]" />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-display text-lg font-bold uppercase tracking-tight text-[#F5F5F5]">
-                                            14-day guarantee
-                                        </h3>
-                                        <p className="mt-1.5 font-sans text-sm leading-relaxed text-[#9A9A9A]">
-                                            Not happy? Get a full refund within 14 days of upgrading. No questions asked, no hassle.
-                                        </p>
-                                    </div>
-                                </div> */}
                             </div>
                             <div className="mt-10 border-t border-[#2A2A2A] pt-8">
                                 <p className="text-center font-mono text-[11px] font-medium uppercase tracking-widest text-[#555555]">

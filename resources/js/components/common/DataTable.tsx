@@ -310,8 +310,8 @@ export default function DataTable({
                                     className="px-4 py-4 text-center text-[#555555]"
                                 >
                                     {filters.search?.trim().length >= 3
-                                        ? 'This Individual Is Not In The Database'
-                                        : "No Records Found. Start By Adding Your First Record."}
+                                        ? 'No Matching Record Found'
+                                        : "No Subscription Has Been Purchased Yet"}
                                 </td>
                             </tr>
                         ) : (
