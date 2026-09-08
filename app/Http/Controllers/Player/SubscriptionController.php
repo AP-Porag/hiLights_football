@@ -112,9 +112,6 @@ class SubscriptionController extends Controller
         ]);
     }
 
-    /**
-     * Subscription state — index / plans / success shob jaygায় ei same state pathabo
-     */
     private function subscriptionState(Request $request): array
     {
         $subscription = $request->user()?->subscription('default');
@@ -129,10 +126,27 @@ class SubscriptionController extends Controller
             $isCancelled   = $subscription->ends_at !== null;
             $endsAt        = $subscription->ends_at;
 
-            // valid() = active / trial / grace period
-            // ends_at past hoye gele valid() false → currentPlan null → button abar enable
             if ($subscription->valid()) {
                 $currentPlan = $subscription->stripe_price;
+            }
+        }
+
+        // ✅ ei ongshTa ekhane add koro — $subscription check-er por, return-er age
+        $invoices = [];
+        if ($subscription) {
+            try {
+                foreach ($request->user()->invoices() as $inv) {
+                    $invoices[] = [
+                        'id'           => $inv->id,
+                        'number'       => $inv->number,
+                        'date'         => $inv->date()->toDateString(),
+                        'total'        => $inv->total(),
+                        'status'       => $inv->asStripeInvoice()->status,
+                        'download_url' => route('subscription.invoice.download', $inv->id),
+                    ];
+                }
+            } catch (\Throwable $e) {
+                report($e); // invoice fetch fail korleo page break korbe na
             }
         }
 
@@ -141,6 +155,39 @@ class SubscriptionController extends Controller
             'on_grace_period'      => $onGracePeriod,
             'is_cancelled'         => $isCancelled,
             'subscription_ends_at' => $endsAt,
+            'invoices'             => $invoices,   // ✅ ei line ta return array-e add koro
         ];
     }
+
+    /**
+     * Subscription state — index / plans / success shob jaygায় ei same state pathabo
+     */
+    // private function subscriptionState(Request $request): array
+    // {
+    //     $subscription = $request->user()?->subscription('default');
+
+    //     $currentPlan   = null;
+    //     $onGracePeriod = false;
+    //     $isCancelled   = false;
+    //     $endsAt        = null;
+
+    //     if ($subscription) {
+    //         $onGracePeriod = $subscription->onGracePeriod();
+    //         $isCancelled   = $subscription->ends_at !== null;
+    //         $endsAt        = $subscription->ends_at;
+
+    //         // valid() = active / trial / grace period
+    //         // ends_at past hoye gele valid() false → currentPlan null → button abar enable
+    //         if ($subscription->valid()) {
+    //             $currentPlan = $subscription->stripe_price;
+    //         }
+    //     }
+
+    //     return [
+    //         'current_plan'         => $currentPlan,
+    //         'on_grace_period'      => $onGracePeriod,
+    //         'is_cancelled'         => $isCancelled,
+    //         'subscription_ends_at' => $endsAt,
+    //     ];
+    // }
 }
