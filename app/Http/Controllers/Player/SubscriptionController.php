@@ -4,57 +4,75 @@ namespace App\Http\Controllers\Player;
 
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
+use App\Services\Player\SubscriptionService;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller
 {
-    // public function checkout($name, Request $request)
-    // {
+    protected SubscriptionService $service;
 
-    //     $plan = Plan::whereName($name)->first();
-    //     $planPrice = $plan->stripe_price_id;
-    //     return $request->user()
-    //         ->newSubscription('default', $planPrice)
-    //         ->checkout([
-    //             'success_url' => route('checkout.success', [
-    //                 'plan' => $plan->name,
-    //             ]),
-    //             // 'cancel_url' => route('app.myplan'),
-    //             // 'payment_method_types' => ['card'],
-    //         ]);
-    // }
+    public function __construct(SubscriptionService $service)
+    {
+        $this->service = $service;
+    }
     public function index(Request $request)
     {
         return Inertia::render('player/subscription/Index', $this->subscriptionState($request));
     }
 
+
     public function checkout($name, Request $request)
     {
-        $plan = Plan::whereName($name)->firstOrFail();
-        $from = $request->input('from', 'plans');
-
-        $checkout = $request->user()
-            ->newSubscription('default', $plan->stripe_price_id)
-            ->checkout([
-                'success_url' => route('checkout.success', ['from' => $from]),
-                // 'cancel_url' => route('app.myplan'),
-            ]);
-
-        // Check if it's an Inertia request
-        if ($request->header('X-Inertia')) {
-            // For Inertia, return a location redirect
-            return Inertia::location($checkout->url);
-        }
-
-        // For regular AJAX/API requests (keep this if you have other clients)
-        return response()->json([
-            'url' => $checkout->url
-        ]);
+        return $this->service->checkout($name, $request);
+        //                                            ↑ string   ↑ Request
     }
+
+
 
     public function success(Request $request)
     {
+        $user = $request->user();
+        $plan = Plan::whereName($request->plan)->firstOrFail();
+
+        try {
+            $subscription = $user->subscription('default');
+            $stripeSubscription = $subscription?->asStripeSubscription(['default_payment_method']);
+
+            // subscription theke, na thakle customer theke PM id nao
+            $pmId = $stripeSubscription?->default_payment_method
+                ?: $user->asStripeCustomer(['invoice_settings.default_payment_method'])
+                ->invoice_settings->default_payment_method;
+
+            if ($pmId) {
+                $paymentMethod = is_string($pmId)
+                    ? $user->stripe()->paymentMethods->retrieve($pmId)
+                    : $pmId;
+
+                $user->updateDefaultPaymentMethod($paymentMethod);
+
+                // manual force-fill — early-return holeo eta guaranteed save
+                if ($paymentMethod->type === 'card' && $paymentMethod->card) {
+                    $user->forceFill([
+                        'pm_type'      => $paymentMethod->card->brand,
+                        'pm_last_four' => $paymentMethod->card->last4,
+                    ])->save();
+                }
+            }
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
+        // ✅ Update local subscription state
+        $user->update([
+            'subscription_status' => 'active',
+            'subscription_tier'   => $plan->name,
+            'trial_ends_at'       => null,
+        ]);
+
+        $user->refresh();
+
+        // ✅ Decide which component to render based on entry point
         $from = $request->query('from', 'plans');
 
         $component = $from === 'subscription'

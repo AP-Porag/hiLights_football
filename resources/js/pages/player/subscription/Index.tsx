@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
+import { toast } from 'sonner';
 import {
     Check,
     X,
@@ -28,13 +29,14 @@ import {
 } from 'lucide-react';
 import PlayerNavbar from '@/components/player/PlayerNavbar';
 import { useForm } from '@inertiajs/react';
-// ── Stripe price IDs (nijer real price ID diye replace koro) ──
-const PLAN_ONE_PRICE = 'price_1TsfD5HKtXG9R7bGyzR4H6C9'; // Premium
-const PLAN_TWO_PRICE = 'price_1TsfDtHKtXG9R7bGVsNxRTT6'; // Elite
+
+// ── Stripe price IDs (backend current_plan = stripe_price ID) ──
+const PLAN_ONE_PRICE = 'price_1TsfD5HKtXG9R7bGyzR4H6C9'; // Premium (12 months fidelity) — plan_one
+const PLAN_TWO_PRICE = 'price_1TsfDtHKtXG9R7bGVsNxRTT6'; // Premium (no fidelity) — plan_two
+
 // TODO: name — auth theke ana jabe
-const player = {
-    name: 'Benjamin',
-};
+
+
 const freePlan = [
     'Public Profile',
     'Upload 1 Video',
@@ -42,6 +44,7 @@ const freePlan = [
     'Competitions History',
     'Achievements',
 ];
+
 const premiumPlan = [
     'Public Profile',
     'Upload 3 Videos',
@@ -53,6 +56,7 @@ const premiumPlan = [
     'Priority in Searches',
     'Consultancy for profile and video improvements',
 ];
+
 const items = [
     {
         icon: Binoculars,
@@ -75,12 +79,14 @@ const items = [
         description: 'Build credibility and boost your career.',
     },
 ];
+
 export default function SubscriptionIndex() {
-    const { current_plan, on_grace_period, is_cancelled, subscription_ends_at } = usePage<{
+    const { current_plan, on_grace_period, is_cancelled, subscription_ends_at, auth } = usePage<{
         current_plan: string | null;
         on_grace_period?: boolean;
         is_cancelled?: boolean;
         subscription_ends_at?: string | null;
+        auth: { user: { name: string } | null };
     }>().props;
     const { post, processing } = useForm({});
     // cancel confirmation modal
@@ -115,11 +121,28 @@ export default function SubscriptionIndex() {
         })
         : null;
     // Stripe checkout — from=subscription pathacchi (success-e ei page-e fire ashbe)
+    // const handleCheckout = (planName: string) => {
+    //     console.log("Checkout clicked");
+    //     post(route('subscription.checkout', { name: planName, from: 'subscription' }), {
+    //         preserveScroll: true,
+    //         preserveState: false, // ← swap er por props refresh hobe (badge/button update dekhabe)
+    //         // No need for onSuccess - Inertia::location() handles the redirect automatically
+    //     });
+    // };
+    // Stripe checkout / swap — swap hole flash message + reload, notun hole Stripe redirect
     const handleCheckout = (planName: string) => {
-        console.log("Checkout clicked");
         post(route('subscription.checkout', { name: planName, from: 'subscription' }), {
             preserveScroll: true,
-            // No need for onSuccess - Inertia::location() handles the redirect automatically
+            preserveState: false,
+            onSuccess: (page) => {
+                const flash = (page.props as any)?.flash;
+                if (flash?.success) {
+                    toast.success(flash.success); // swap holo
+                } else if (flash?.info) {
+                    toast.info(flash.info); // already subscribed
+                }
+                // props already refresh hoyeche (preserveState: false) → badge/button update
+            },
         });
     };
     // subscription cancel — grace period-e jabe (modal theke confirm hoy)
@@ -162,7 +185,7 @@ export default function SubscriptionIndex() {
                         <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 backdrop-blur-sm">
                             <Sparkles className="h-3.5 w-3.5 text-white" />
                             <span className="font-sans text-xs font-semibold uppercase tracking-widest text-white">
-                                Welcome back, {player.name}
+                                Welcome back, {auth?.user?.name}
                             </span>
                         </div>
                         <h1 className="font-display text-4xl font-bold leading-none tracking-tight text-white sm:text-5xl lg:text-6xl">
