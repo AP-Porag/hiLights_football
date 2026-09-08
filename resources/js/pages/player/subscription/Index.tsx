@@ -29,14 +29,10 @@ import {
 } from 'lucide-react';
 import PlayerNavbar from '@/components/player/PlayerNavbar';
 import { useForm } from '@inertiajs/react';
-
 // ── Stripe price IDs (backend current_plan = stripe_price ID) ──
 const PLAN_ONE_PRICE = 'price_1TsfD5HKtXG9R7bGyzR4H6C9'; // Premium (12 months fidelity) — plan_one
 const PLAN_TWO_PRICE = 'price_1TsfDtHKtXG9R7bGVsNxRTT6'; // Premium (no fidelity) — plan_two
-
 // TODO: name — auth theke ana jabe
-
-
 const freePlan = [
     'Public Profile',
     'Upload 1 Video',
@@ -44,7 +40,6 @@ const freePlan = [
     'Competitions History',
     'Achievements',
 ];
-
 const premiumPlan = [
     'Public Profile',
     'Upload 3 Videos',
@@ -56,7 +51,6 @@ const premiumPlan = [
     'Priority in Searches',
     'Consultancy for profile and video improvements',
 ];
-
 const items = [
     {
         icon: Binoculars,
@@ -79,7 +73,6 @@ const items = [
         description: 'Build credibility and boost your career.',
     },
 ];
-
 export default function SubscriptionIndex() {
     const { current_plan, on_grace_period, is_cancelled, subscription_ends_at, auth } = usePage<{
         current_plan: string | null;
@@ -95,6 +88,7 @@ export default function SubscriptionIndex() {
     // resume confirmation modal
     const [resumeOpen, setResumeOpen] = useState(false);
     const [resuming, setResuming] = useState(false);
+    const [checkoutPlan, setCheckoutPlan] = useState<string | null>(null);
     // premium = plan_one, elite = plan_two
     const disablePremium =
         current_plan === PLAN_ONE_PRICE || current_plan === PLAN_TWO_PRICE;
@@ -130,7 +124,9 @@ export default function SubscriptionIndex() {
     //     });
     // };
     // Stripe checkout / swap — swap hole flash message + reload, notun hole Stripe redirect
+    // Stripe checkout / swap — swap hole flash message + reload, notun hole Stripe redirect
     const handleCheckout = (planName: string) => {
+        setCheckoutPlan(planName);
         post(route('subscription.checkout', { name: planName, from: 'subscription' }), {
             preserveScroll: true,
             preserveState: false,
@@ -143,6 +139,7 @@ export default function SubscriptionIndex() {
                 }
                 // props already refresh hoyeche (preserveState: false) → badge/button update
             },
+            onFinish: () => setCheckoutPlan(null),
         });
     };
     // subscription cancel — grace period-e jabe (modal theke confirm hoy)
@@ -325,7 +322,11 @@ export default function SubscriptionIndex() {
                                         : 'bg-[#e53f01] hover:bg-orange-600'
                                         }`}
                                 >
-                                    {disablePremium ? 'Already Subscribed' : 'Choose Premium'}
+                                    {currentPlanId === 'elite'
+                                        ? 'Already subscribed to Elite plan'
+                                        : disablePremium
+                                            ? 'Already Subscribed'
+                                            : 'Choose Premium'}
                                 </button>
                             </div>
                             {/* Premium — no fidelity (plan_two) */}
@@ -355,14 +356,18 @@ export default function SubscriptionIndex() {
                                     ))}
                                 </div>
                                 <button
-                                    onClick={disableElite ? undefined : () => handleCheckout('plan_two')}
-                                    disabled={disableElite}
-                                    className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disableElite
+                                    onClick={disableElite || checkoutPlan === 'plan_two' ? undefined : () => handleCheckout('plan_two')}
+                                    disabled={disableElite || checkoutPlan === 'plan_two'}
+                                    className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disableElite || checkoutPlan === 'plan_two'
                                         ? 'cursor-not-allowed bg-gray-600 opacity-50'
                                         : 'bg-[#e53f01] hover:bg-orange-600'
                                         }`}
                                 >
-                                    {disableElite ? 'Already Subscribed' : 'Choose Premium'}
+                                    {checkoutPlan === 'plan_two'
+                                        ? 'Processing...'
+                                        : disableElite
+                                            ? 'Already Subscribed'
+                                            : 'Choose Premium'}
                                 </button>
                             </div>
                         </div>
