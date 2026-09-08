@@ -141,7 +141,7 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
     Route::post('/player/notifications/read', [NotificationController::class, 'markRead'])->name('notifications.read');
 
 
-    Route::get('/player/subscription/invoice/{invoiceId}', [SubscriptionController::class, 'downloadInvoice'])
+    Route::get('/subscription/invoice/{invoiceId}', [SubscriptionController::class, 'downloadInvoice'])
         ->name('subscription.invoice.download');
 });
 
