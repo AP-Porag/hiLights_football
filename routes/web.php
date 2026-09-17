@@ -15,6 +15,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Web\HomeController;
 use Laravel\Cashier\Http\Controllers\WebhookController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PlayerController;
 use App\Http\Controllers\Admin\ScoutController as SController;
@@ -87,7 +88,7 @@ Route::get('/scout', [HomeController::class, 'scout'])->name('scout');
 //     ->name('profile.public.detail');
 
 //all player routes
-Route::middleware(['auth'])->prefix('player')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('player')->group(function () {
 
 
 
@@ -144,6 +145,10 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
     Route::get('/subscription/invoice/{invoiceId}', [SubscriptionController::class, 'downloadInvoice'])
         ->name('subscription.invoice.download');
 });
+
+Route::get('verify-email', EmailVerificationPromptController::class)
+    ->middleware('auth')
+    ->name('verification.notice');
 
 //all Scouts / Agents / Clubs routes
 Route::middleware(['auth'])->prefix('scouting')->group(function () {

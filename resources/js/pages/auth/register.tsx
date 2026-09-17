@@ -2,6 +2,8 @@ import { useState, FormEvent, useEffect } from 'react';
 import { Link, useForm } from '@inertiajs/react';
 import Select from 'react-select';
 import { z } from 'zod';
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 import {
     Zap,
     Search,
@@ -35,24 +37,24 @@ const ROLES: RoleOption[] = [
         description: 'Build your profile, upload highlights, and get discovered by scouts and clubs worldwide.',
         Icon: Zap,
     },
-    {
-        id: 'scout',
-        title: 'Scout',
-        description: 'Access advanced player search, performance data, and recruitment tools to find talent.',
-        Icon: Search,
-    },
-    {
-        id: 'agent',
-        title: 'Agent',
-        description: 'Manage your roster, track market value, and connect with clubs to negotiate transfers.',
-        Icon: Briefcase,
-    },
-    {
-        id: 'club',
-        title: 'Club',
-        description: 'Scout players, run recruitment campaigns, and integrate with your existing scouting workflow.',
-        Icon: Building2,
-    },
+    // {
+    //     id: 'scout',
+    //     title: 'Scout',
+    //     description: 'Access advanced player search, performance data, and recruitment tools to find talent.',
+    //     Icon: Search,
+    // },
+    // {
+    //     id: 'agent',
+    //     title: 'Agent',
+    //     description: 'Manage your roster, track market value, and connect with clubs to negotiate transfers.',
+    //     Icon: Briefcase,
+    // },
+    // {
+    //     id: 'club',
+    //     title: 'Club',
+    //     description: 'Scout players, run recruitment campaigns, and integrate with your existing scouting workflow.',
+    //     Icon: Building2,
+    // },
 ];
 
 interface Country {
@@ -75,14 +77,25 @@ const registerSchema = z.object({
     nationality: z.array(z.string()).optional(),
     country: z.string().optional(),
     organization_name: z.string().optional(),
-    whatsapp: z.string().min(8, "Whatsapp number is required"),  // added
+    whatsapp: z.string().min(1, 'WhatsApp number is required').refine(
+        (val) => isValidPhoneNumber(val),
+        { message: 'Enter a valid WhatsApp number for the selected country' }
+    ),
     terms: z.boolean().refine((val) => val === true, {
         message: 'You must accept terms',
     }),
-}).refine((data) => data.password === data.password_confirmation, {
-    message: "Passwords don't match",
-    path: ['password_confirmation'],
-});
+})
+    .refine((data) => data.password === data.password_confirmation, {
+        message: "Passwords don't match",
+        path: ['password_confirmation'],
+    })
+    .refine(
+        (data) => data.role !== 'player' || (data.gender && data.gender.length > 0),
+        {
+            message: 'Gender is required',
+            path: ['gender'],
+        }
+    );
 
 const MONTHS = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -215,6 +228,73 @@ function DobCalendar({
     );
 }
 
+// ── Dark-theme styling for react-phone-number-input ─────────────────────
+// PhoneInput renders: .PhoneInput > .PhoneInputCountry (flag + select) + .PhoneInputInput (number field)
+// libphonenumber-js metadata automatically restricts max digit count per selected country.
+function PhoneDarkStyles() {
+    return (
+        <style>{`
+            .PhoneInput {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                height: 44px;
+                background-color: #111111;
+                border: 1px solid #2A2A2A;
+                border-radius: 12px;
+                padding: 0 12px;
+                transition: border-color 0.15s, box-shadow 0.15s;
+            }
+            .PhoneInput--focus {
+                border-color: #FF6B00;
+                box-shadow: 0 0 0 2px rgba(255,107,0,0.15);
+            }
+            .PhoneInputCountry {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding-right: 8px;
+                border-right: 1px solid #2A2A2A;
+                flex-shrink: 0;
+            }
+            .PhoneInputCountryIcon {
+                width: 22px;
+                height: 16px;
+                border-radius: 2px;
+                overflow: hidden;
+            }
+            .PhoneInputCountrySelect {
+                background: transparent;
+                color: #F5F5F5;
+                border: none;
+                outline: none;
+                font-size: 13px;
+                cursor: pointer;
+            }
+            .PhoneInputCountrySelect option {
+                background-color: #1F1F1F;
+                color: #F5F5F5;
+            }
+            .PhoneInputCountrySelectArrow {
+                border-color: #9A9A9A transparent transparent;
+                opacity: 0.8;
+            }
+            .PhoneInputInput {
+                flex: 1;
+                background: transparent;
+                border: none;
+                outline: none;
+                color: #F5F5F5;
+                font-size: 14px;
+                height: 100%;
+            }
+            .PhoneInputInput::placeholder {
+                color: #555555;
+            }
+        `}</style>
+    );
+}
+
 // ────────────────────────────────────────────────────────────────────────
 export default function Register({ countries = [] }: Props) {
     const [step, setStep] = useState<0 | 1>(0);
@@ -235,7 +315,7 @@ export default function Register({ countries = [] }: Props) {
         nationality: [] as string[],
         country: '',
         organization_name: '',
-        whatsapp: '',   // added WhatsApp field
+        whatsapp: '',   // E.164 format e.g. +8801700000000 — Twilio OTP-er jonno ready
         terms: false as boolean,
     });
 
@@ -260,8 +340,6 @@ export default function Register({ countries = [] }: Props) {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        console.log('gender being sent:', data.gender);
-        console.log('SUBMIT CLICKED', data);
         if (!data.role) {
             setClientErrors((prev) => ({
                 ...prev,
@@ -347,6 +425,7 @@ export default function Register({ countries = [] }: Props) {
 
     return (
         <div className="relative min-h-screen bg-[#0D0D0D] font-sans antialiased">
+            <PhoneDarkStyles />
             {/* TOP — Logo + heading */}
             <div className="py-10 text-center px-6">
                 <Link href="/" className="inline-block">
@@ -390,7 +469,7 @@ export default function Register({ countries = [] }: Props) {
             {/* STEP 1 — ROLE CARDS */}
             {step === 0 && (
                 <div className="max-w-[860px] mx-auto px-6 pb-16">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
+                    <div className="flex flex-wrap justify-center gap-4 mt-2">
                         {ROLES.map((role) => {
                             const isSelected = selectedRole === role.id;
                             const Icon = role.Icon;
@@ -400,7 +479,8 @@ export default function Register({ countries = [] }: Props) {
                                     type="button"
                                     onClick={() => handleSelectRole(role.id)}
                                     className={
-                                        'group text-center cursor-pointer rounded-2xl border-2 p-7 transition-all duration-200 ' +
+                                        'group w-full sm:w-[280px] text-center cursor-pointer rounded-2xl border-2 p-7 transition-all duration-200 '
+                                        +
                                         (isSelected
                                             ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.08)] shadow-[0_0_0_4px_rgba(255,107,0,0.15)]'
                                             : 'border-[#2A2A2A] bg-[#161616] hover:border-[#FF6B00] hover:shadow-[0_0_0_4px_rgba(255,107,0,0.08)] hover:-translate-y-1')
@@ -499,6 +579,9 @@ export default function Register({ countries = [] }: Props) {
                                 placeholder="you@example.com"
                                 className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
                             />
+                            <p className="text-[11px] text-[#94A3B8] mt-1.5">
+                                We'll send a verification link to this email. You must verify it before accessing your account.
+                            </p>
                             {(clientErrors.email || errors.email) && (
                                 <p className="text-xs text-[#DC2626] mt-1.5">
                                     {clientErrors.email || errors.email}
@@ -599,7 +682,7 @@ export default function Register({ countries = [] }: Props) {
                                 )}
                         </div>
 
-                        {/* ── WhatsApp Number (all roles) ── */}
+                        {/* ── WhatsApp Number (country code + number split, digit-restricted per country) ── */}
                         <div className="mb-4">
                             <label
                                 htmlFor="whatsapp"
@@ -607,16 +690,17 @@ export default function Register({ countries = [] }: Props) {
                             >
                                 WhatsApp Number
                             </label>
-                            <input
+                            <PhoneInput
                                 id="whatsapp"
-                                type="text"
+                                international
+                                defaultCountry="BD"
                                 value={data.whatsapp}
-                                onChange={(e) =>
-                                    setData('whatsapp', e.target.value)
-                                }
-                                placeholder="+8801700000000"
-                                className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                onChange={(value) => setData('whatsapp', value || '')}
+                                placeholder="Enter WhatsApp number"
                             />
+                            <p className="text-[11px] text-[#94A3B8] mt-1.5">
+                                We'll verify this via a WhatsApp OTP (or SMS if WhatsApp isn't available on this number).
+                            </p>
                             {(clientErrors.whatsapp || errors.whatsapp) && (
                                 <p className="text-xs text-[#DC2626] mt-1.5">
                                     {clientErrors.whatsapp || errors.whatsapp}

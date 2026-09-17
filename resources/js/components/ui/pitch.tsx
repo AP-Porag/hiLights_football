@@ -1,20 +1,20 @@
 import React from 'react'
 
 const POSITION_ZONES = [
-    { id: 'GK', label: 'GK', cx: 30, cy: 100 },
-    { id: 'LB', label: 'LB', cx: 75, cy: 40 },
-    { id: 'CB-L', label: 'CB', cx: 80, cy: 80 },
-    { id: 'CB-R', label: 'CB', cx: 80, cy: 120 },
-    { id: 'RB', label: 'RB', cx: 75, cy: 160 },
-    { id: 'LM', label: 'LM', cx: 145, cy: 40 },
-    { id: 'CM-L', label: 'CM', cx: 145, cy: 80 },
-    { id: 'CM-R', label: 'CM', cx: 145, cy: 120 },
-    { id: 'RM', label: 'RM', cx: 145, cy: 160 },
-    { id: 'CAM', label: 'CAM', cx: 200, cy: 100 },
-    { id: 'LW', label: 'LW', cx: 235, cy: 50 },
-    { id: 'ST', label: 'ST', cx: 260, cy: 100 },
-    { id: 'RW', label: 'RW', cx: 235, cy: 150 },
-    { id: 'CF', label: 'CF', cx: 245, cy: 100 },
+    { id: 'GK', full: 'Goalkeeper', cx: 30, cy: 100 },
+    { id: 'LB', full: 'Left Back', cx: 75, cy: 40 },
+    { id: 'CB-L', full: 'Centre Back Left', cx: 80, cy: 80 },
+    { id: 'CB-R', full: 'Centre Back Right', cx: 80, cy: 120 },
+    { id: 'RB', full: 'Right Back', cx: 75, cy: 160 },
+    { id: 'LM', full: 'Left Midfielder', cx: 145, cy: 40 },
+    { id: 'CM-L', full: 'Central Midfielder Left', cx: 145, cy: 80 },
+    { id: 'CM-R', full: 'Central Midfielder Right', cx: 145, cy: 120 },
+    { id: 'RM', full: 'Right Midfielder', cx: 145, cy: 160 },
+    { id: 'CAM', full: 'Central Attacking Midfielder', cx: 200, cy: 100 },
+    { id: 'LW', full: 'Left Winger', cx: 235, cy: 50 },
+    { id: 'ST', full: 'Striker', cx: 260, cy: 100 },
+    { id: 'RW', full: 'Right Winger', cx: 235, cy: 150 },
+    { id: 'CF', full: 'Centre Forward', cx: 245, cy: 100 },
 ];
 
 interface PitchProps {
@@ -56,11 +56,15 @@ export const Pitch = ({ selected = [] }: PitchProps) => {
 
                         {POSITION_ZONES.map((p) => {
                             const isActive = selected.includes(p.id);
+                            const words = p.full.split(' ');
+                            const lineHeight = 3.6;
+                            // multi-line text ke vertically center korar jonno starting offset
+                            const startDy = -((words.length - 1) * lineHeight) / 2;
                             return (
-                                <g
-                                    key={p.id}
-                                    className="group"
-                                >
+                                <g key={p.id} className="group">
+                                    {/* Hover korle full name tooltip */}
+                                    <title>{p.full}</title>
+
                                     <circle
                                         cx={p.cx}
                                         cy={p.cy}
@@ -74,12 +78,20 @@ export const Pitch = ({ selected = [] }: PitchProps) => {
                                         y={p.cy}
                                         textAnchor="middle"
                                         dominantBaseline="central"
-                                        fontSize="8"
+                                        fontSize="3.2"
                                         fontWeight="700"
                                         fill={isActive ? '#FFFFFF' : 'rgba(255,255,255,0.7)'}
                                         style={{ pointerEvents: 'none' }}
                                     >
-                                        {p.label}
+                                        {words.map((w, idx) => (
+                                            <tspan
+                                                key={idx}
+                                                x={p.cx}
+                                                dy={idx === 0 ? startDy : lineHeight}
+                                            >
+                                                {w}
+                                            </tspan>
+                                        ))}
                                     </text>
                                 </g>
                             );
