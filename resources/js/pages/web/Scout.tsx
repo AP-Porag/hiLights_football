@@ -310,9 +310,10 @@ const Scout = () => {
                         <div className="flex items-center justify-between overflow-x-auto pb-4">
                             {players.map((player: any, index: number) => (
                                 <div key={index} className="w-[24%] rounded-[8px] shadow-[0_4px_12px_rgba(0,0,0,0.10)]">
-                                    <Link key={index} href={auth?.user
+                                    {/* <Link key={index} href={auth?.user
                                         ? `/player/profile/${player.id}`
-                                        : "/register?role=scout"}>
+                                        : "/register?role=scout"}> */}
+                                    <Link href={`/player/profile/${player.id}`}>
                                         {/* Thumbnail */}
                                         <div className="relative">
                                             <img src={player.photo_url || '/images/img/placeholder.webp'} className="h-[300px] w-full rounded object-cover" />

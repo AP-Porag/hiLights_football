@@ -122,6 +122,24 @@ const nonEmpty = (v: any): boolean => {
 
 const ALL_POSITIONS = ['GK', 'LB', 'CB-L', 'CB-R', 'RB', 'LM', 'CM-L', 'CM-R', 'RM', 'CAM', 'LW', 'ST', 'RW', 'CF'];
 
+// Position code → full form name
+const POSITION_FULL_NAMES: Record<string, string> = {
+    'GK': 'Goalkeeper',
+    'LB': 'Left Back',
+    'CB-L': 'Centre Back (Left)',
+    'CB-R': 'Centre Back (Right)',
+    'RB': 'Right Back',
+    'LM': 'Left Midfielder',
+    'CM-L': 'Central Midfielder (Left)',
+    'CM-R': 'Central Midfielder (Right)',
+    'RM': 'Right Midfielder',
+    'CAM': 'Central Attacking Midfielder',
+    'LW': 'Left Winger',
+    'ST': 'Striker',
+    'RW': 'Right Winger',
+    'CF': 'Centre Forward',
+};
+
 // ════════ LIST MODAL CONFIG (repeatable rows) ════════
 type FieldDef = { name: string; label: string; type: 'text' | 'number' | 'file' | 'country', placeholder?: string; };
 type ListConfig = {
@@ -761,8 +779,8 @@ function FormModal({
                                     </select>
                                 </div>
                             )}
-                            {f.type === 'positions' && (
-                                <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+                            {/* {f.type === 'positions' && (
+                                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                                     {ALL_POSITIONS.map((id) => {
                                         const on = (values.positions || []).includes(id);
                                         return (
@@ -770,9 +788,28 @@ function FormModal({
                                                 key={id}
                                                 type="button"
                                                 onClick={() => togglePos(id)}
-                                                className={`rounded-lg border px-2 py-1.5 text-xs font-semibold ${on ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00]' : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A]'}`}
+                                                className={`flex flex-col items-start rounded-lg border px-2.5 py-2 text-left ${on ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00]' : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A]'}`}
                                             >
-                                                {id}
+                                                <span className="text-xs font-bold">{id}</span>
+                                                <span className="text-[10px] leading-tight opacity-80">{POSITION_FULL_NAMES[id]}</span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            )} */}
+                            {f.type === 'positions' && (
+                                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                                    {ALL_POSITIONS.map((id) => {
+                                        const on = (values.positions || []).includes(id);
+                                        return (
+                                            <button
+                                                key={id}
+                                                type="button"
+                                                onClick={() => togglePos(id)}
+                                                className={`flex flex-col items-start rounded-lg border px-2.5 py-2 text-left ${on ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00]' : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A]'}`}
+                                            >
+                                                <span className="text-xs font-bold">{id}</span>
+                                                <span className="text-[10px] leading-tight opacity-80">{POSITION_FULL_NAMES[id]}</span>
                                             </button>
                                         );
                                     })}
@@ -856,6 +893,29 @@ export default function PlayerDashboard() {
     const dateStr = formatDate();
     const [activeModal, setActiveModal] = useState<string | null>(null);
     const [shareOpen, setShareOpen] = useState(false);
+    // Country analytics time range (URL param diye backend-e jabe)
+    const [countryRange, setCountryRange] = useState<'7d' | '30d' | '90d' | 'all'>('all');
+
+    const changeCountryRange = (range: '7d' | '30d' | '90d' | 'all') => {
+        setCountryRange(range);
+        router.get(
+            window.location.pathname,
+            { country_range: range },
+            {
+                only: ['countryAnalytics'],   // shudhu ei prop ta refetch — page reload na
+                preserveScroll: true,
+                preserveState: true,
+                replace: true,
+            }
+        );
+    };
+
+    const RANGE_OPTIONS: { key: '7d' | '30d' | '90d' | 'all'; label: string }[] = [
+        { key: '7d', label: '7D' },
+        { key: '30d', label: '30D' },
+        { key: '90d', label: '90D' },
+        { key: 'all', label: 'All' },
+    ];
     const profileUrl = `${window.location.origin}/player/profile/${auth?.user?.player_profile?.id}`;
     const [copied, setCopied] = useState(false);
 
@@ -1406,16 +1466,42 @@ export default function PlayerDashboard() {
                     </section>
                 </div>
                 {/* COUNTRY ANALYTICS */}
+                {/* COUNTRY ANALYTICS */}
                 <section className="relative overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
-                    <div className="mb-5 flex items-start justify-between">
+                    <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div>
                             <h2 className="text-lg font-bold text-[#F5F5F5]">Country Analytics</h2>
                             <p className="mt-1 text-xs text-[#94A3B8]">Where your profile views come from</p>
                         </div>
-                        {hasSubscription && (
-                            <Badge className="border border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[10px] font-bold tracking-wider text-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]">PREMIUM</Badge>
-                        )}
+
+                        <div className="flex items-center gap-3">
+                            {/* Period selector — shudhu premium hole interactive */}
+                            {hasSubscription && (
+                                <div className="flex items-center gap-1 rounded-lg border border-[#2A2A2A] bg-[#111111] p-1">
+                                    {RANGE_OPTIONS.map((opt) => (
+                                        <button
+                                            key={opt.key}
+                                            type="button"
+                                            onClick={() => changeCountryRange(opt.key)}
+                                            className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors ${countryRange === opt.key
+                                                ? 'bg-[#FF6B00] text-white'
+                                                : 'text-[#9A9A9A] hover:text-[#F5F5F5]'
+                                                }`}
+                                        >
+                                            {opt.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+
+                            {hasSubscription && (
+                                <Badge className="border border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[10px] font-bold tracking-wider text-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]">
+                                    PREMIUM
+                                </Badge>
+                            )}
+                        </div>
                     </div>
+
                     <div className={!hasSubscription ? 'pointer-events-none blur-md filter select-none' : ''}>
                         {hasCountryData ? (
                             <div className="h-[280px] w-full">
@@ -1448,7 +1534,7 @@ export default function PlayerDashboard() {
                                             }}
                                             cursor={{ fill: 'rgba(255,107,0,0.08)' }}
                                         />
-                                        <Bar dataKey="views" fill="#FF6B00" radius={[6, 6, 0, 0]} />
+                                        <Bar dataKey="views" fill="#FF6B00" radius={[6, 6, 0, 0]} maxBarSize={80} />
                                     </BarChart>
                                 </ResponsiveContainer>
                             </div>
@@ -1458,6 +1544,7 @@ export default function PlayerDashboard() {
                             </div>
                         )}
                     </div>
+
                     {!hasSubscription && (
                         <div className="absolute inset-0 flex items-center justify-center bg-[#0D0D0D]/40">
                             <div className="mx-4 max-w-md rounded-2xl border border-[#2A2A2A] bg-[#1F1F1F] p-8 text-center shadow-xl">

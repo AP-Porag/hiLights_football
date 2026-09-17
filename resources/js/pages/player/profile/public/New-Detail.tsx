@@ -70,6 +70,35 @@ const matches = [
 
 const viewerRole = 'scout';
 
+// Position code → full form name
+const POSITION_FULL_NAMES: Record<string, string> = {
+    'GK': 'Goalkeeper',
+    'LB': 'Left Back',
+    'CB-L': 'Centre Back (Left)',
+    'CB-R': 'Centre Back (Right)',
+    'RB': 'Right Back',
+    'LM': 'Left Midfielder',
+    'CM-L': 'Central Midfielder (Left)',
+    'CM-R': 'Central Midfielder (Right)',
+    'RM': 'Right Midfielder',
+    'CAM': 'Central Attacking Midfielder',
+    'LW': 'Left Winger',
+    'ST': 'Striker',
+    'RW': 'Right Winger',
+    'CF': 'Centre Forward',
+};
+
+const getPositionFullName = (codes?: string | string[] | null): string => {
+    if (!codes) return 'Not specified';
+    const arr = Array.isArray(codes) ? codes : [codes];
+    return arr
+        .map((c) => {
+            const key = String(c).trim().toUpperCase(); // normalize: gk / Gk / " GK " → GK
+            return POSITION_FULL_NAMES[key] ?? c;
+        })
+        .join(', ');
+};
+
 const getCountryName = (code?: string | string[] | null): string => {
     if (!code) return '';
 
@@ -214,7 +243,7 @@ export default function NewDetail() {
                                     <div className="flex items-center">
                                         <Crosshair className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Position:</span>
-                                        <span className="pl-2 text-gray-100">{getPositionName(player.positions ?? [])}</span>
+                                        <span className="pl-2 text-gray-100">{getPositionFullName(player.positions ?? [])}</span>
                                     </div>
                                     <div className="flex items-center">
                                         <Footprints className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
@@ -312,12 +341,12 @@ export default function NewDetail() {
                                 <div className="mt-6 space-y-2 text-[11px] font-bold text-white uppercase md:text-[16px]">
                                     <p>
                                         <span className="mb-3 text-[13px] font-bold text-white uppercase md:text-[18px]">Main Position:</span>{' '}
-                                        {player.positions?.length ? getPositionName([player.positions[0]]) : 'Not specified'}
+                                        {player.positions?.length ? getPositionFullName([player.positions[0]]) : 'Not specified'}
                                     </p>
                                     {player.positions?.length > 1 && (
                                         <p>
                                             <span className="text-[13px] font-bold text-white uppercase md:text-[18px]">Secondary:</span>{' '}
-                                            {getPositionName(player.positions.slice(1))}
+                                            {getPositionFullName(player.positions.slice(1))}
                                         </p>
                                     )}
                                 </div>
@@ -423,12 +452,6 @@ export default function NewDetail() {
                                     </tbody>
                                 </table>
                             </div>
-                            {/* <div className="mt-8 flex justify-end">
-                                <button className="flex items-center gap-2 text-[14px] text-[#f97316] transition hover:text-orange-400 md:text-[18px]">
-                                    View all matches
-                                    <ChevronRight size={22} />
-                                </button>
-                            </div> */}
                         </div>
                     </div>
                 </main>

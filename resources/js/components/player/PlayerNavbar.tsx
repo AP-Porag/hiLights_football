@@ -203,13 +203,28 @@ export default function PlayerNavbar() {
                                 <div className="mt-0.5 truncate text-xs text-[#94A3B8] dark:text-[#555555]">{auth.user.email}</div>
                             </div>
                             <DropdownMenuItem asChild className="cursor-pointer rounded-md focus:bg-[#F8FAFC] dark:focus:bg-[#1F1F1F]">
-                                <Link
+                                {/* <Link
                                     href={`${window.location.origin}/player/profile/${auth?.user?.player_profile?.id}`}
+                                    target="_blank"
                                     className="flex items-center gap-2 px-3 py-2 text-sm text-[#94A3B8]"
                                 >
                                     <User className="h-4 w-4 text-[#94A3B8]" />
                                     View Public Profile
-                                </Link>
+                                </Link> */}
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        window.open(
+                                            `/player/profile/${auth?.user?.player_profile?.id}`,
+                                            '_blank',
+                                            'noopener,noreferrer'
+                                        )
+                                    }
+                                    className="flex items-center gap-2 px-3 py-2 text-sm text-[#94A3B8] w-full"
+                                >
+                                    <User className="h-4 w-4 text-[#94A3B8]" />
+                                    View Public Profile
+                                </button>
                             </DropdownMenuItem>
                             {/* <DropdownMenuItem asChild className="cursor-pointer rounded-md focus:bg-[#F8FAFC] dark:focus:bg-[#1F1F1F]">
                                 <Link
