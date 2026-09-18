@@ -16,12 +16,14 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Web\HomeController;
 use Laravel\Cashier\Http\Controllers\WebhookController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PlayerController;
 use App\Http\Controllers\Admin\ScoutController as SController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\PlayerSearchController;
 use App\Http\Controllers\Player\NotificationController;
+use App\Http\Controllers\Auth\WhatsappVerificationController;
 
 Route::get('/execute-command', function () {
     //    return redirect()->route('login');
@@ -88,7 +90,7 @@ Route::get('/scout', [HomeController::class, 'scout'])->name('scout');
 //     ->name('profile.public.detail');
 
 //all player routes
-Route::middleware(['auth', 'verified'])->prefix('player')->group(function () {
+Route::middleware(['auth', 'verified',])->prefix('player')->group(function () {
 
 
 
@@ -149,6 +151,28 @@ Route::middleware(['auth', 'verified'])->prefix('player')->group(function () {
 Route::get('verify-email', EmailVerificationPromptController::class)
     ->middleware('auth')
     ->name('verification.notice');
+
+Route::post('verify-email', VerifyEmailController::class)
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.verify');
+
+Route::post('email/verification-notification', function (\Illuminate\Http\Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('status', 'verification-code-sent');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+// Route::get('verify-whatsapp', [WhatsappVerificationController::class, 'prompt'])
+//     ->middleware(['auth', 'verified'])
+//     ->name('verification.whatsapp.notice');
+
+// Route::post('verify-whatsapp/send', [WhatsappVerificationController::class, 'send'])
+//     ->middleware(['auth', 'verified', 'throttle:6,1'])
+//     ->name('verification.whatsapp.send');
+
+// Route::post('verify-whatsapp', [WhatsappVerificationController::class, 'verify'])
+//     ->middleware(['auth', 'verified', 'throttle:6,1'])
+//     ->name('verification.whatsapp.verify');
 
 //all Scouts / Agents / Clubs routes
 Route::middleware(['auth'])->prefix('scouting')->group(function () {

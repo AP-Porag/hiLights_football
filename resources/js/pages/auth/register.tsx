@@ -580,7 +580,7 @@ export default function Register({ countries = [] }: Props) {
                                 className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
                             />
                             <p className="text-[11px] text-[#94A3B8] mt-1.5">
-                                We'll send a verification link to this email. You must verify it before accessing your account.
+                                We'll send a verification code to this email. You must verify it before accessing your account.
                             </p>
                             {(clientErrors.email || errors.email) && (
                                 <p className="text-xs text-[#DC2626] mt-1.5">
@@ -694,6 +694,7 @@ export default function Register({ countries = [] }: Props) {
                                 id="whatsapp"
                                 international
                                 defaultCountry="BD"
+                                limitMaxLength
                                 value={data.whatsapp}
                                 onChange={(value) => setData('whatsapp', value || '')}
                                 placeholder="Enter WhatsApp number"
