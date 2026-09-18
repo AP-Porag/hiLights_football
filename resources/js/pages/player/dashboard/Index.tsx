@@ -50,6 +50,8 @@ import {
     Mail,
     Copy,
     MessageCircle,
+    ArrowUp,
+    ArrowDown
 } from 'lucide-react';
 import {
     Bar,
@@ -139,6 +141,7 @@ const POSITION_FULL_NAMES: Record<string, string> = {
     'RW': 'Right Winger',
     'CF': 'Centre Forward',
 };
+const PRIORITY_LABELS = ['Main Position', 'Secondary Position', 'Third Position'];
 
 // ════════ LIST MODAL CONFIG (repeatable rows) ════════
 type FieldDef = { name: string; label: string; type: 'text' | 'number' | 'file' | 'country', placeholder?: string; };
@@ -641,6 +644,17 @@ function FormModal({
         if (cur.includes(id)) setField('positions', cur.filter((p) => p !== id));
         else if (cur.length < 3) setField('positions', [...cur, id]);
     };
+
+    // Selected positions reorder koro (dir: -1 = Main-er dike, +1 = Third-er dike)
+    const movePosition = (idx: number, dir: number) => {
+        const cur: string[] = values.positions || [];
+        const target = idx + dir;
+        if (target < 0 || target >= cur.length) return;
+        const copy = [...cur];
+        [copy[idx], copy[target]] = [copy[target], copy[idx]];
+        setField('positions', copy);
+    };
+
     const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -779,40 +793,65 @@ function FormModal({
                                     </select>
                                 </div>
                             )}
-                            {/* {f.type === 'positions' && (
-                                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                                    {ALL_POSITIONS.map((id) => {
-                                        const on = (values.positions || []).includes(id);
-                                        return (
-                                            <button
-                                                key={id}
-                                                type="button"
-                                                onClick={() => togglePos(id)}
-                                                className={`flex flex-col items-start rounded-lg border px-2.5 py-2 text-left ${on ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00]' : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A]'}`}
-                                            >
-                                                <span className="text-xs font-bold">{id}</span>
-                                                <span className="text-[10px] leading-tight opacity-80">{POSITION_FULL_NAMES[id]}</span>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            )} */}
+
                             {f.type === 'positions' && (
-                                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                                    {ALL_POSITIONS.map((id) => {
-                                        const on = (values.positions || []).includes(id);
-                                        return (
-                                            <button
-                                                key={id}
-                                                type="button"
-                                                onClick={() => togglePos(id)}
-                                                className={`flex flex-col items-start rounded-lg border px-2.5 py-2 text-left ${on ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00]' : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A]'}`}
-                                            >
-                                                <span className="text-xs font-bold">{id}</span>
-                                                <span className="text-[10px] leading-tight opacity-80">{POSITION_FULL_NAMES[id]}</span>
-                                            </button>
-                                        );
-                                    })}
+                                <div>
+                                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                                        {ALL_POSITIONS.map((id) => {
+                                            const on = (values.positions || []).includes(id);
+                                            return (
+                                                <button
+                                                    key={id}
+                                                    type="button"
+                                                    onClick={() => togglePos(id)}
+                                                    className={`flex flex-col items-start rounded-lg border px-2.5 py-2 text-left ${on ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00]' : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A]'}`}
+                                                >
+                                                    <span className="text-xs font-bold">{id}</span>
+                                                    <span className="text-[10px] leading-tight opacity-80">{POSITION_FULL_NAMES[id]}</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+
+                                    {/* Selected positions — priority order (Main / Secondary / Third) */}
+                                    {(values.positions || []).length > 1 && (
+                                        <div className="mt-3 space-y-2">
+                                            <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold">
+                                                Reorder to set priority
+                                            </span>
+                                            {(values.positions || []).map((id: string, idx: number) => (
+                                                <div key={id} className="flex items-center gap-3 rounded-lg border border-[#FF6B00] bg-[rgba(255,107,0,0.08)] px-3 py-2">
+                                                    <span className="flex-shrink-0 rounded-md bg-[#FF6B00] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                                                        {PRIORITY_LABELS[idx] ?? `#${idx + 1}`}
+                                                    </span>
+                                                    <span className="flex-1 text-sm font-semibold text-[#F5F5F5]">
+                                                        {POSITION_FULL_NAMES[id]}
+                                                        <span className="ml-2 text-xs text-[#94A3B8] font-mono">({id})</span>
+                                                    </span>
+                                                    <div className="flex items-center gap-1">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => movePosition(idx, -1)}
+                                                            disabled={idx === 0}
+                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00] disabled:opacity-30 disabled:cursor-not-allowed"
+                                                            aria-label="Move up"
+                                                        >
+                                                            <ArrowUp className="h-3.5 w-3.5" />
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => movePosition(idx, 1)}
+                                                            disabled={idx === (values.positions || []).length - 1}
+                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00] disabled:opacity-30 disabled:cursor-not-allowed"
+                                                            aria-label="Move down"
+                                                        >
+                                                            <ArrowDown className="h-3.5 w-3.5" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             )}
                             {f.type === 'file' && (

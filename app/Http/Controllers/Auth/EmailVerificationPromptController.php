@@ -11,12 +11,23 @@ use Inertia\Response;
 class EmailVerificationPromptController extends Controller
 {
     /**
-     * Show the email verification prompt page.
+     * Show the email verification prompt page,
+     * or redirect the user to their dashboard if already verified.
      */
     public function __invoke(Request $request): Response|RedirectResponse
     {
-        return $request->user()->hasVerifiedEmail()
-                    ? redirect()->intended(route('dashboard', absolute: false))
-                    : Inertia::render('auth/verify-email', ['status' => $request->session()->get('status')]);
+        $user = $request->user();
+
+        if ($user->hasVerifiedEmail()) {
+            return match ($user->role) {
+                'player' => to_route('player.dashboard'),
+                'scout', 'agent', 'club' => to_route('scouting.dashboard'),
+                default => to_route('home'),
+            };
+        }
+
+        return Inertia::render('auth/VerifyEmail', [
+            'status' => $request->session()->get('status'),
+        ]);
     }
 }

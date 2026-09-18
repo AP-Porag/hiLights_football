@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\OtpVerificationNotification;
 
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -79,5 +80,25 @@ class User extends Authenticatable implements MustVerifyEmail
     public function savedPlayers()
     {
         return $this->hasMany(SavedPlayer::class);
+    }
+
+    /**
+     * Override Laravel's default link-based verification email
+     * with a 6-digit OTP code instead.
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        $code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        $this->forceFill([
+            'email_verification_code' => $code,
+            'email_verification_code_expires_at' => now()->addMinutes(10),
+        ])->save();
+
+        $this->notify(new OtpVerificationNotification($code));
+    }
+    public function hasVerifiedWhatsapp(): bool
+    {
+        return !is_null($this->whatsapp_verified_at);
     }
 }
