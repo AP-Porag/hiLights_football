@@ -53,7 +53,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'email', 'lowercase', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'dob' => ['nullable', 'date'],
-            'gender' => ['nullable', 'in:M,F,Other'],
+            'gender' => ['required', 'in:M,F,Other'],
             'whatsapp'          => ['required', 'string', 'max:30'],   // ← new validation
             'nationality' => ['nullable', 'array'],            // ← array validation
             'nationality.*' => ['string', 'max:3'],            // প্রতিটি element validate
@@ -101,14 +101,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        // role-based redirect (important for your app)
-        return match ($user->role) {
-            'player' => to_route('player.dashboard'),
-            'scout' => to_route('scouting.dashboard'),
-            'agent' => to_route('scouting.dashboard'),
-            'club' => to_route('scouting.dashboard'),
-            // default => to_route('home'),
-        };
+        // Email verify na kora porjonto dashboard e na pathiye verification notice e pathao
+        return to_route('verification.notice');
     }
     private function generatePlayerId()
     {

@@ -50,6 +50,8 @@ import {
     Mail,
     Copy,
     MessageCircle,
+    ArrowUp,
+    ArrowDown
 } from 'lucide-react';
 import {
     Bar,
@@ -121,6 +123,25 @@ const nonEmpty = (v: any): boolean => {
 };
 
 const ALL_POSITIONS = ['GK', 'LB', 'CB-L', 'CB-R', 'RB', 'LM', 'CM-L', 'CM-R', 'RM', 'CAM', 'LW', 'ST', 'RW', 'CF'];
+
+// Position code → full form name
+const POSITION_FULL_NAMES: Record<string, string> = {
+    'GK': 'Goalkeeper',
+    'LB': 'Left Back',
+    'CB-L': 'Centre Back (Left)',
+    'CB-R': 'Centre Back (Right)',
+    'RB': 'Right Back',
+    'LM': 'Left Midfielder',
+    'CM-L': 'Central Midfielder (Left)',
+    'CM-R': 'Central Midfielder (Right)',
+    'RM': 'Right Midfielder',
+    'CAM': 'Central Attacking Midfielder',
+    'LW': 'Left Winger',
+    'ST': 'Striker',
+    'RW': 'Right Winger',
+    'CF': 'Centre Forward',
+};
+const PRIORITY_LABELS = ['Main Position', 'Secondary Position', 'Third Position'];
 
 // ════════ LIST MODAL CONFIG (repeatable rows) ════════
 type FieldDef = { name: string; label: string; type: 'text' | 'number' | 'file' | 'country', placeholder?: string; };
@@ -623,6 +644,17 @@ function FormModal({
         if (cur.includes(id)) setField('positions', cur.filter((p) => p !== id));
         else if (cur.length < 3) setField('positions', [...cur, id]);
     };
+
+    // Selected positions reorder koro (dir: -1 = Main-er dike, +1 = Third-er dike)
+    const movePosition = (idx: number, dir: number) => {
+        const cur: string[] = values.positions || [];
+        const target = idx + dir;
+        if (target < 0 || target >= cur.length) return;
+        const copy = [...cur];
+        [copy[idx], copy[target]] = [copy[target], copy[idx]];
+        setField('positions', copy);
+    };
+
     const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -761,21 +793,65 @@ function FormModal({
                                     </select>
                                 </div>
                             )}
+
                             {f.type === 'positions' && (
-                                <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-                                    {ALL_POSITIONS.map((id) => {
-                                        const on = (values.positions || []).includes(id);
-                                        return (
-                                            <button
-                                                key={id}
-                                                type="button"
-                                                onClick={() => togglePos(id)}
-                                                className={`rounded-lg border px-2 py-1.5 text-xs font-semibold ${on ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00]' : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A]'}`}
-                                            >
-                                                {id}
-                                            </button>
-                                        );
-                                    })}
+                                <div>
+                                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                                        {ALL_POSITIONS.map((id) => {
+                                            const on = (values.positions || []).includes(id);
+                                            return (
+                                                <button
+                                                    key={id}
+                                                    type="button"
+                                                    onClick={() => togglePos(id)}
+                                                    className={`flex flex-col items-start rounded-lg border px-2.5 py-2 text-left ${on ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00]' : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A]'}`}
+                                                >
+                                                    <span className="text-xs font-bold">{id}</span>
+                                                    <span className="text-[10px] leading-tight opacity-80">{POSITION_FULL_NAMES[id]}</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+
+                                    {/* Selected positions — priority order (Main / Secondary / Third) */}
+                                    {(values.positions || []).length > 1 && (
+                                        <div className="mt-3 space-y-2">
+                                            <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold">
+                                                Reorder to set priority
+                                            </span>
+                                            {(values.positions || []).map((id: string, idx: number) => (
+                                                <div key={id} className="flex items-center gap-3 rounded-lg border border-[#FF6B00] bg-[rgba(255,107,0,0.08)] px-3 py-2">
+                                                    <span className="flex-shrink-0 rounded-md bg-[#FF6B00] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                                                        {PRIORITY_LABELS[idx] ?? `#${idx + 1}`}
+                                                    </span>
+                                                    <span className="flex-1 text-sm font-semibold text-[#F5F5F5]">
+                                                        {POSITION_FULL_NAMES[id]}
+                                                        <span className="ml-2 text-xs text-[#94A3B8] font-mono">({id})</span>
+                                                    </span>
+                                                    <div className="flex items-center gap-1">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => movePosition(idx, -1)}
+                                                            disabled={idx === 0}
+                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00] disabled:opacity-30 disabled:cursor-not-allowed"
+                                                            aria-label="Move up"
+                                                        >
+                                                            <ArrowUp className="h-3.5 w-3.5" />
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => movePosition(idx, 1)}
+                                                            disabled={idx === (values.positions || []).length - 1}
+                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00] disabled:opacity-30 disabled:cursor-not-allowed"
+                                                            aria-label="Move down"
+                                                        >
+                                                            <ArrowDown className="h-3.5 w-3.5" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             )}
                             {f.type === 'file' && (
@@ -856,6 +932,29 @@ export default function PlayerDashboard() {
     const dateStr = formatDate();
     const [activeModal, setActiveModal] = useState<string | null>(null);
     const [shareOpen, setShareOpen] = useState(false);
+    // Country analytics time range (URL param diye backend-e jabe)
+    const [countryRange, setCountryRange] = useState<'7d' | '30d' | '90d' | 'all'>('all');
+
+    const changeCountryRange = (range: '7d' | '30d' | '90d' | 'all') => {
+        setCountryRange(range);
+        router.get(
+            window.location.pathname,
+            { country_range: range },
+            {
+                only: ['countryAnalytics'],   // shudhu ei prop ta refetch — page reload na
+                preserveScroll: true,
+                preserveState: true,
+                replace: true,
+            }
+        );
+    };
+
+    const RANGE_OPTIONS: { key: '7d' | '30d' | '90d' | 'all'; label: string }[] = [
+        { key: '7d', label: '7D' },
+        { key: '30d', label: '30D' },
+        { key: '90d', label: '90D' },
+        { key: 'all', label: 'All' },
+    ];
     const profileUrl = `${window.location.origin}/player/profile/${auth?.user?.player_profile?.id}`;
     const [copied, setCopied] = useState(false);
 
@@ -1069,38 +1168,38 @@ export default function PlayerDashboard() {
                 : 'Not specified',
         },
         // নিচের ফিল্ডগুলো Basic Info থেকে যুক্ত করা হলো
-        {
-            icon: <User className="w-4 h-4 text-gray-300" />,
-            label: 'GENDER',
-            value: pp?.gender || 'Not specified',
-        },
-        {
-            icon: <MapPin className="w-4 h-4 text-gray-300" />,
-            label: 'BIRTH COUNTRY',
-            value: pp?.birth_country ? getCountryName(pp.birth_country) : 'Not specified',
-        },
-        {
-            icon: <Flag className="w-4 h-4 text-gray-300" />,
-            label: 'CLUB COUNTRY',
-            value: pp?.current_club_country ? getCountryName(pp.current_club_country) : 'Not specified',
-        },
-        {
-            icon: <UserPen className="w-4 h-4 text-gray-300" />,
-            label: 'AGENT',
-            value: pp?.agent || 'Not specified',
-        },
-        {
-            icon: <Smartphone className="w-4 h-4 text-gray-300" />,
-            label: 'WHATSAPP',
-            value: auth?.user?.whatsapp || 'Not specified',
-        },
-        {
-            icon: <ClipboardList className="w-4 h-4 text-gray-300" />,
-            label: 'DESCRIPTION',
-            value: pp?.description
-                ? (pp.description.length > 40 ? pp.description.substring(0, 40) + '...' : pp.description)
-                : 'Not specified',
-        },
+        // {
+        //     icon: <User className="w-4 h-4 text-gray-300" />,
+        //     label: 'GENDER',
+        //     value: pp?.gender || 'Not specified',
+        // },
+        // {
+        //     icon: <MapPin className="w-4 h-4 text-gray-300" />,
+        //     label: 'BIRTH COUNTRY',
+        //     value: pp?.birth_country ? getCountryName(pp.birth_country) : 'Not specified',
+        // },
+        // {
+        //     icon: <Flag className="w-4 h-4 text-gray-300" />,
+        //     label: 'CLUB COUNTRY',
+        //     value: pp?.current_club_country ? getCountryName(pp.current_club_country) : 'Not specified',
+        // },
+        // {
+        //     icon: <UserPen className="w-4 h-4 text-gray-300" />,
+        //     label: 'AGENT',
+        //     value: pp?.agent || 'Not specified',
+        // },
+        // {
+        //     icon: <Smartphone className="w-4 h-4 text-gray-300" />,
+        //     label: 'WHATSAPP',
+        //     value: auth?.user?.whatsapp || 'Not specified',
+        // },
+        // {
+        //     icon: <ClipboardList className="w-4 h-4 text-gray-300" />,
+        //     label: 'DESCRIPTION',
+        //     value: pp?.description
+        //         ? (pp.description.length > 40 ? pp.description.substring(0, 40) + '...' : pp.description)
+        //         : 'Not specified',
+        // },
     ];
 
     const shareProfile = async () => {
@@ -1147,7 +1246,14 @@ export default function PlayerDashboard() {
     const downloadCard = async () => {
         if (!cardRef.current) return;
         try {
-            const dataUrl = await toPng(cardRef.current, { cacheBust: true, pixelRatio: 2 });
+            const currentWidth = cardRef.current.offsetWidth;
+            const targetWidth = 1054;
+            const ratio = targetWidth / currentWidth;
+
+            const dataUrl = await toPng(cardRef.current, {
+                cacheBust: true,
+                pixelRatio: ratio,
+            });
             const link = document.createElement('a');
             link.download = `${auth?.user?.name ?? 'member'}-card.png`;
             link.href = dataUrl;
@@ -1157,6 +1263,19 @@ export default function PlayerDashboard() {
             alert('Could not download card. Please try again.');
         }
     };
+    // const downloadCard = async () => {
+    //     if (!cardRef.current) return;
+    //     try {
+    //         const dataUrl = await toPng(cardRef.current, { cacheBust: true, pixelRatio: 2 });
+    //         const link = document.createElement('a');
+    //         link.download = `${auth?.user?.name ?? 'member'}-card.png`;
+    //         link.href = dataUrl;
+    //         link.click();
+    //     } catch (err) {
+    //         console.error('Card download failed:', err);
+    //         alert('Could not download card. Please try again.');
+    //     }
+    // };
 
     useEffect(() => {
         if (flash?.scrollTo) {
@@ -1279,13 +1398,29 @@ export default function PlayerDashboard() {
                                                 <CalendarDays className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
                                                 <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">DATE OF BIRTH:<br /><span className="text-white">{auth?.user?.dob && new Date(auth?.user?.dob).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></p>
                                             </div>
-                                            <div className="flex items-center">
+                                            {/* <div className="flex items-center">
                                                 <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
                                                 <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">NATIONALITY:<br /><span className="text-white">
                                                     {Array.isArray(auth?.user?.nationality) && auth?.user?.nationality.length > 0
                                                         ? getCountryName(auth?.user?.nationality)
                                                         : 'Not specified'}
                                                 </span></p>
+                                            </div> */}
+                                            <div className="flex items-center">
+                                                <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                                <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">NATIONALITY:<br />
+                                                    <span className="text-white inline-flex flex-wrap items-center gap-1">
+                                                        {Array.isArray(auth?.user?.nationality) && auth?.user?.nationality.length > 0
+                                                            ? auth.user.nationality.map((code: string, idx: number) => (
+                                                                <span key={code} className="inline-flex items-center gap-1">
+                                                                    <ReactCountryFlag countryCode={code} svg style={{ width: '1em', height: '1em' }} />
+                                                                    <span>{getCountryName(code)}</span>
+                                                                    {idx < auth.user.nationality.length - 1 && <span>,</span>}
+                                                                </span>
+                                                            ))
+                                                            : 'Not specified'}
+                                                    </span>
+                                                </p>
                                             </div>
                                             <div className="flex items-center">
                                                 <MapPin className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
@@ -1406,16 +1541,42 @@ export default function PlayerDashboard() {
                     </section>
                 </div>
                 {/* COUNTRY ANALYTICS */}
+                {/* COUNTRY ANALYTICS */}
                 <section className="relative overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
-                    <div className="mb-5 flex items-start justify-between">
+                    <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div>
                             <h2 className="text-lg font-bold text-[#F5F5F5]">Country Analytics</h2>
                             <p className="mt-1 text-xs text-[#94A3B8]">Where your profile views come from</p>
                         </div>
-                        {hasSubscription && (
-                            <Badge className="border border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[10px] font-bold tracking-wider text-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]">PREMIUM</Badge>
-                        )}
+
+                        <div className="flex items-center gap-3">
+                            {/* Period selector — shudhu premium hole interactive */}
+                            {hasSubscription && (
+                                <div className="flex items-center gap-1 rounded-lg border border-[#2A2A2A] bg-[#111111] p-1">
+                                    {RANGE_OPTIONS.map((opt) => (
+                                        <button
+                                            key={opt.key}
+                                            type="button"
+                                            onClick={() => changeCountryRange(opt.key)}
+                                            className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors ${countryRange === opt.key
+                                                ? 'bg-[#FF6B00] text-white'
+                                                : 'text-[#9A9A9A] hover:text-[#F5F5F5]'
+                                                }`}
+                                        >
+                                            {opt.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+
+                            {hasSubscription && (
+                                <Badge className="border border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[10px] font-bold tracking-wider text-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]">
+                                    PREMIUM
+                                </Badge>
+                            )}
+                        </div>
                     </div>
+
                     <div className={!hasSubscription ? 'pointer-events-none blur-md filter select-none' : ''}>
                         {hasCountryData ? (
                             <div className="h-[280px] w-full">
@@ -1448,7 +1609,7 @@ export default function PlayerDashboard() {
                                             }}
                                             cursor={{ fill: 'rgba(255,107,0,0.08)' }}
                                         />
-                                        <Bar dataKey="views" fill="#FF6B00" radius={[6, 6, 0, 0]} />
+                                        <Bar dataKey="views" fill="#FF6B00" radius={[6, 6, 0, 0]} maxBarSize={80} />
                                     </BarChart>
                                 </ResponsiveContainer>
                             </div>
@@ -1458,6 +1619,7 @@ export default function PlayerDashboard() {
                             </div>
                         )}
                     </div>
+
                     {!hasSubscription && (
                         <div className="absolute inset-0 flex items-center justify-center bg-[#0D0D0D]/40">
                             <div className="mx-4 max-w-md rounded-2xl border border-[#2A2A2A] bg-[#1F1F1F] p-8 text-center shadow-xl">

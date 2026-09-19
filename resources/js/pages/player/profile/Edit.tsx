@@ -37,6 +37,8 @@ import {
     AlertTriangle,
     ArrowLeft,
     ArrowRight,
+    ArrowUp,
+    ArrowDown,
     CalendarIcon,
     Check,
     ChevronsUpDown,
@@ -53,22 +55,43 @@ const STEPS = [
 ];
 const MODALITIES = ['Football', 'Futsal', 'Beach Soccer'];
 const POSITION_ZONES = [
-    { id: 'GK', label: 'GK', cx: 30, cy: 100 },
-    { id: 'LB', label: 'LB', cx: 75, cy: 40 },
-    { id: 'CB-L', label: 'CB', cx: 80, cy: 80 },
-    { id: 'CB-R', label: 'CB', cx: 80, cy: 120 },
-    { id: 'RB', label: 'RB', cx: 75, cy: 160 },
-    { id: 'LM', label: 'LM', cx: 145, cy: 40 },
-    { id: 'CM-L', label: 'CM', cx: 145, cy: 80 },
-    { id: 'CM-R', label: 'CM', cx: 145, cy: 120 },
-    { id: 'RM', label: 'RM', cx: 145, cy: 160 },
-    { id: 'CAM', label: 'CAM', cx: 200, cy: 100 },
-    { id: 'LW', label: 'LW', cx: 235, cy: 50 },
-    { id: 'ST', label: 'ST', cx: 260, cy: 100 },
-    { id: 'RW', label: 'RW', cx: 235, cy: 150 },
-    { id: 'CF', label: 'CF', cx: 245, cy: 100 },
+    { id: 'GK', label: 'GK', full: 'Goalkeeper', cx: 30, cy: 100 },
+    { id: 'LB', label: 'LB', full: 'Left Back', cx: 75, cy: 40 },
+    { id: 'CB-L', label: 'CB', full: 'Centre Back (Left)', cx: 80, cy: 80 },
+    { id: 'CB-R', label: 'CB', full: 'Centre Back (Right)', cx: 80, cy: 120 },
+    { id: 'RB', label: 'RB', full: 'Right Back', cx: 75, cy: 160 },
+    { id: 'LM', label: 'LM', full: 'Left Midfielder', cx: 145, cy: 40 },
+    { id: 'CM-L', label: 'CM', full: 'Central Midfielder (Left)', cx: 145, cy: 80 },
+    { id: 'CM-R', label: 'CM', full: 'Central Midfielder (Right)', cx: 145, cy: 120 },
+    { id: 'RM', label: 'RM', full: 'Right Midfielder', cx: 145, cy: 160 },
+    { id: 'CAM', label: 'CAM', full: 'Central Attacking Midfielder', cx: 200, cy: 100 },
+    { id: 'LW', label: 'LW', full: 'Left Winger', cx: 235, cy: 50 },
+    { id: 'ST', label: 'ST', full: 'Striker', cx: 260, cy: 100 },
+    { id: 'RW', label: 'RW', full: 'Right Winger', cx: 235, cy: 150 },
+    { id: 'CF', label: 'CF', full: 'Centre Forward', cx: 245, cy: 100 },
 ];
 const ALL_POSITIONS = ['GK', 'LB', 'CB-L', 'CB-R', 'RB', 'LM', 'CM-L', 'CM-R', 'RM', 'CAM', 'LW', 'ST', 'RW', 'CF'];
+
+// Position code → full form name
+const POSITION_FULL_NAMES: Record<string, string> = {
+    'GK': 'Goalkeeper',
+    'LB': 'Left Back',
+    'CB-L': 'Centre Back (Left)',
+    'CB-R': 'Centre Back (Right)',
+    'RB': 'Right Back',
+    'LM': 'Left Midfielder',
+    'CM-L': 'Central Midfielder (Left)',
+    'CM-R': 'Central Midfielder (Right)',
+    'RM': 'Right Midfielder',
+    'CAM': 'Central Attacking Midfielder',
+    'LW': 'Left Winger',
+    'ST': 'Striker',
+    'RW': 'Right Winger',
+    'CF': 'Centre Forward',
+};
+
+// Selected position order → priority label (index 0 = Primary)
+const PRIORITY_LABELS = ['Main Position', 'Secondary Position', 'Third Position'];
 
 const MONTHS = [
     { v: '01', l: 'January' }, { v: '02', l: 'February' }, { v: '03', l: 'March' },
@@ -417,6 +440,10 @@ export default function Edit() {
         competitions: (profile?.competitions?.length ? profile.competitions.map((c: any) => ({ name: c.name ?? '', year: c.year ?? '' })) : []) as any[],
         matches: (profile?.matches?.length ? profile.matches.map((m: any) => ({ home: m.home ?? '', score: m.score ?? '', away: m.away ?? '', goals: m.goals ?? '', assists: m.assists ?? '', minutes: m.minutes ?? '' })) : []) as any[],
         description: profile?.description ?? '',
+        supported_club: profile?.supported_club ?? '',
+        dream_club: profile?.dream_club ?? '',
+        boot_brands: (Array.isArray(profile?.boot_brands) ? profile.boot_brands : []) as string[],
+        boot_brand_other: profile?.boot_brand_other ?? '',
     });
 
     transform((d) => { const { photo_preview, ...rest } = d as any; return rest; });
@@ -436,6 +463,24 @@ export default function Edit() {
     const togglePosition = (id: string) => {
         if (data.positions.includes(id)) setData('positions', data.positions.filter(p => p !== id));
         else if (data.positions.length < 3) setData('positions', [...data.positions, id]);
+    };
+    const BOOT_BRANDS = ['Nike', 'Adidas', 'Puma', 'Umbro', 'Mizuno', 'Joma', 'Penalty', 'Skechers', 'Other'];
+
+    const toggleBootBrand = (brand: string) => {
+        if (data.boot_brands.includes(brand)) {
+            setData('boot_brands', data.boot_brands.filter((b) => b !== brand));
+        } else {
+            setData('boot_brands', [...data.boot_brands, brand]);
+        }
+    };
+
+    // Reorder a selected position (dir: -1 = up/higher priority, +1 = down/lower priority)
+    const movePosition = (idx: number, dir: number) => {
+        const target = idx + dir;
+        if (target < 0 || target >= data.positions.length) return;
+        const copy = [...data.positions];
+        [copy[idx], copy[target]] = [copy[target], copy[idx]];
+        setData('positions', copy);
     };
 
     // generic updaters for each list
@@ -516,7 +561,7 @@ export default function Edit() {
         <div className="min-h-screen bg-[#0D0D0D] pt-16 pb-32">
             <PlayerNavbar />
             <div className="bg-[#0D0D0D] border-b border-[#2A2A2A] sticky top-16 z-20 px-4 sm:px-8 py-4">
-                <div className="max-w-[720px] mx-auto">
+                <div className="max-w-[1100px] mx-auto">
                     <div className="flex items-center">
                         {STEPS.map((s, idx) => {
                             const completed = idx < step;
@@ -555,7 +600,7 @@ export default function Edit() {
                 </div>
             </div>
 
-            <div className="max-w-[720px] mx-auto px-4 py-8">
+            <div className="max-w-[1100px] mx-auto px-4 py-8">
                 {step === 0 && (
                     <section>
                         <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">01 / Basic Information</div>
@@ -692,10 +737,10 @@ export default function Edit() {
                             </div>
                             <div className="mb-8">
                                 <Label className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Position <span className="text-[#94A3B8] font-normal">(up to 3)</span></Label>
-                                {/* pitch SVG same as before */}
+                                {/* pitch SVG — full width, full-form labels */}
                                 <div className="hidden md:block">
-                                    <div className="flex justify-center bg-[#0F172A] rounded-2xl p-4">
-                                        <svg viewBox="0 0 300 200" className="w-full max-w-[400px] h-auto">
+                                    <div className="flex justify-center bg-[#0F172A] rounded-2xl p-4 w-full">
+                                        <svg viewBox="0 0 300 200" className="w-full h-auto">
                                             <rect x="0" y="0" width="300" height="200" fill="#1a3a1a" />
                                             <rect x="2" y="2" width="296" height="196" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
                                             <line x1="150" y1="2" x2="150" y2="198" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
@@ -706,37 +751,94 @@ export default function Edit() {
                                             <rect x="283" y="75" width="15" height="50" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
                                             {POSITION_ZONES.map((p) => {
                                                 const selected = data.positions.includes(p.id);
+                                                const words = p.full.split(' ');
+                                                const lineHeight = 3.6;
+                                                const startDy = -((words.length - 1) * lineHeight) / 2;
                                                 return (
                                                     <g key={p.id} onClick={() => togglePosition(p.id)} style={{ cursor: 'pointer' }} className="group">
+                                                        <title>{p.full}</title>
                                                         <circle cx={p.cx} cy={p.cy} r="14" fill={selected ? 'rgba(255,107,0,0.85)' : 'transparent'} stroke={selected ? '#FF6B00' : 'rgba(255,255,255,0.4)'} strokeWidth="1.5" className="group-hover:fill-[rgba(255,107,0,0.3)] transition-colors" />
-                                                        <text x={p.cx} y={p.cy} textAnchor="middle" dominantBaseline="central" fontSize="8" fontWeight="700" fill={selected ? '#FFFFFF' : 'rgba(255,255,255,0.7)'} style={{ pointerEvents: 'none' }}>{p.label}</text>
+                                                        <text x={p.cx} y={p.cy} textAnchor="middle" dominantBaseline="central" fontSize="3.2" fontWeight="700" fill={selected ? '#FFFFFF' : 'rgba(255,255,255,0.7)'} style={{ pointerEvents: 'none' }}>
+                                                            {words.map((w, wi) => (
+                                                                <tspan key={wi} x={p.cx} dy={wi === 0 ? startDy : lineHeight}>{w}</tspan>
+                                                            ))}
+                                                        </text>
                                                     </g>
                                                 );
                                             })}
                                         </svg>
                                     </div>
                                 </div>
-                                <div className="md:hidden grid grid-cols-3 gap-3">
+                                <div className="md:hidden grid grid-cols-2 gap-3">
                                     {ALL_POSITIONS.map((id) => {
                                         const selected = data.positions.includes(id);
                                         return (
                                             <label key={id} className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-colors ${selected ? 'bg-[rgba(255,107,0,0.12)] border-[#FF6B00]' : 'bg-[#1F1F1F] border-[#2A2A2A]'}`}>
                                                 <Checkbox checked={selected} onCheckedChange={() => togglePosition(id)} className="border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]" />
-                                                <span className={`text-xs font-semibold font-sans ${selected ? 'text-[#CC5500]' : 'text-[#F5F5F5]'}`}>{id}</span>
+                                                <span className={`text-xs font-semibold font-sans leading-tight ${selected ? 'text-[#CC5500]' : 'text-[#F5F5F5]'}`}>
+                                                    {POSITION_FULL_NAMES[id]}
+                                                </span>
                                             </label>
                                         );
                                     })}
                                 </div>
-                                <div className="mt-4 flex flex-wrap items-center gap-2">
-                                    <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans mr-1">Selected:</span>
-                                    {data.positions.length === 0 && <span className="text-xs text-[#94A3B8] italic font-sans">None — up to 3 positions</span>}
-                                    {data.positions.map((id) => (
-                                        <span key={id} className="inline-flex items-center gap-1.5 bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] rounded-full px-3 py-1 text-xs font-bold font-mono">
-                                            {id}
-                                            <button type="button" onClick={() => togglePosition(id)} className="hover:opacity-70"><Trash2 className="w-3 h-3" /></button>
-                                        </span>
-                                    ))}
+
+                                {/* Selected positions with priority ordering */}
+                                <div className="mt-5">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Selected Positions</span>
+                                        {data.positions.length > 1 && (
+                                            <span className="text-[10px] text-[#94A3B8] font-sans">Reorder to set priority</span>
+                                        )}
+                                    </div>
+
+                                    {data.positions.length === 0 ? (
+                                        <span className="text-xs text-[#94A3B8] italic font-sans">None selected — pick up to 3 positions</span>
+                                    ) : (
+                                        <div className="space-y-2">
+                                            {data.positions.map((id, idx) => (
+                                                <div key={id} className="flex items-center gap-3 rounded-xl border border-[#FF6B00] bg-[rgba(255,107,0,0.08)] px-3 py-2.5">
+                                                    <span className="flex-shrink-0 rounded-md bg-[#FF6B00] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white font-sans">
+                                                        {PRIORITY_LABELS[idx] ?? `#${idx + 1}`}
+                                                    </span>
+                                                    <span className="flex-1 text-sm font-semibold text-[#F5F5F5] font-sans">
+                                                        {POSITION_FULL_NAMES[id]}
+                                                        <span className="ml-2 text-xs text-[#94A3B8] font-mono">({id})</span>
+                                                    </span>
+                                                    <div className="flex items-center gap-1">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => movePosition(idx, -1)}
+                                                            disabled={idx === 0}
+                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00] disabled:opacity-30 disabled:cursor-not-allowed"
+                                                            aria-label="Move up"
+                                                        >
+                                                            <ArrowUp className="w-3.5 h-3.5" />
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => movePosition(idx, 1)}
+                                                            disabled={idx === data.positions.length - 1}
+                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00] disabled:opacity-30 disabled:cursor-not-allowed"
+                                                            aria-label="Move down"
+                                                        >
+                                                            <ArrowDown className="w-3.5 h-3.5" />
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => togglePosition(id)}
+                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"
+                                                            aria-label="Remove"
+                                                        >
+                                                            <Trash2 className="w-3.5 h-3.5" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
+
                                 <FieldError msg={errors.positions} />
                             </div>
                             <div>
@@ -1033,6 +1135,81 @@ export default function Edit() {
                             <div className="flex justify-between mt-2">
                                 <FieldError msg={errors.description} />
                                 <span className={`text-xs font-mono ${descCount > 450 ? 'text-[#FF6B00] font-bold' : 'text-[#94A3B8]'}`}>{descCount} / 500</span>
+                            </div>
+                        </div>
+
+                        {/* Player Questionnaire — private, not shown on public profile */}
+                        <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8 mt-6">
+                            <h3 className="text-sm font-bold text-[#F5F5F5] mb-1 font-sans">Player Questionnaire</h3>
+                            <p className="text-xs text-[#94A3B8] mb-6 font-sans">The answers to these questions will not appear on your public profile.</p>
+
+                            <div className="space-y-6">
+                                <div>
+                                    <Label htmlFor="supported_club" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">
+                                        1. Which football club do you support?
+                                    </Label>
+                                    <Input
+                                        id="supported_club"
+                                        value={data.supported_club}
+                                        onChange={(e) => setData('supported_club', e.target.value)}
+                                        placeholder="e.g. Manchester United"
+                                        className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                    />
+                                    <FieldError msg={errors.supported_club} />
+                                </div>
+
+                                <div>
+                                    <Label htmlFor="dream_club" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">
+                                        2. Besides the club you support, which club do you dream of playing for?
+                                    </Label>
+                                    <Input
+                                        id="dream_club"
+                                        value={data.dream_club}
+                                        onChange={(e) => setData('dream_club', e.target.value)}
+                                        placeholder="e.g. Real Madrid"
+                                        className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                    />
+                                    <FieldError msg={errors.dream_club} />
+                                </div>
+
+                                <div>
+                                    <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">
+                                        3. Which football boot brand do you prefer and would most like to be sponsored by?
+                                        <span className="text-[#94A3B8] font-normal ml-1">(select all that apply)</span>
+                                    </Label>
+                                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                                        {BOOT_BRANDS.map((brand) => {
+                                            const selected = data.boot_brands.includes(brand);
+                                            return (
+                                                <label
+                                                    key={brand}
+                                                    className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-colors ${selected ? 'bg-[rgba(255,107,0,0.12)] border-[#FF6B00]' : 'bg-[#1F1F1F] border-[#2A2A2A]'}`}
+                                                >
+                                                    <Checkbox
+                                                        checked={selected}
+                                                        onCheckedChange={() => toggleBootBrand(brand)}
+                                                        className="border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
+                                                    />
+                                                    <span className={`text-sm font-sans ${selected ? 'text-[#CC5500] font-semibold' : 'text-[#F5F5F5]'}`}>
+                                                        {brand}
+                                                    </span>
+                                                </label>
+                                            );
+                                        })}
+                                    </div>
+
+                                    {data.boot_brands.includes('Other') && (
+                                        <div className="mt-3">
+                                            <Input
+                                                value={data.boot_brand_other}
+                                                onChange={(e) => setData('boot_brand_other', e.target.value)}
+                                                placeholder="Please specify the brand"
+                                                className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                            />
+                                        </div>
+                                    )}
+                                    <FieldError msg={errors.boot_brands} />
+                                </div>
                             </div>
                         </div>
                     </section>

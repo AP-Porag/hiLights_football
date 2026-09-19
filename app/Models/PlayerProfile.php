@@ -19,6 +19,7 @@ class PlayerProfile extends Model
         'achievements'     => 'array',
         'competitions'     => 'array',
         'matches'          => 'array',
+        'boot_brands' => 'array',
 
     ];
 

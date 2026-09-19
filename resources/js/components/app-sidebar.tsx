@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, BriefcaseBusiness, BriefcaseBusinessIcon, DollarSign, Folder, Group, GroupIcon, LayoutGrid, LucideBriefcaseBusiness, SubscriptIcon, User, User2, User2Icon, Footprints, Briefcase, Handshake, Shield, Mail, Crown } from 'lucide-react';
+import { BookOpen, BriefcaseBusiness, BriefcaseBusinessIcon, DollarSign, Folder, Group, GroupIcon, LayoutGrid, LucideBriefcaseBusiness, SubscriptIcon, User, User2, User2Icon, Footprints, Briefcase, Handshake, Shield, Mail, Crown, ClipboardList } from 'lucide-react';
 import AppLogo from './app-logo';
 
 
@@ -48,6 +48,11 @@ const mainNavItems: NavItem[] = [
         title: 'Clubs',
         url: '/admin/clubs',
         icon: Shield,
+    },
+    {
+        title: 'Access Requests',
+        url: '/admin/access-requests',
+        icon: ClipboardList,
     },
     //   {
     //     title: 'Player Profile',

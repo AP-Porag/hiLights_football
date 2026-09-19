@@ -29,7 +29,7 @@ import {
 } from 'lucide-react';
 import PublicNavbar from '@/components/public/PublicNavbar';
 import { PublicFooter } from '@/components/public/PublicFooter';
-import { Pitch } from '@/components/ui/pitch';
+import { PitchPriority } from '@/components/ui/pitch-priority';
 
 // MOCK DATA
 
@@ -69,6 +69,35 @@ const matches = [
 ];
 
 const viewerRole = 'scout';
+
+// Position code → full form name
+const POSITION_FULL_NAMES: Record<string, string> = {
+    'GK': 'Goalkeeper',
+    'LB': 'Left Back',
+    'CB-L': 'Centre Back (Left)',
+    'CB-R': 'Centre Back (Right)',
+    'RB': 'Right Back',
+    'LM': 'Left Midfielder',
+    'CM-L': 'Central Midfielder (Left)',
+    'CM-R': 'Central Midfielder (Right)',
+    'RM': 'Right Midfielder',
+    'CAM': 'Central Attacking Midfielder',
+    'LW': 'Left Winger',
+    'ST': 'Striker',
+    'RW': 'Right Winger',
+    'CF': 'Centre Forward',
+};
+
+const getPositionFullName = (codes?: string | string[] | null): string => {
+    if (!codes) return 'Not specified';
+    const arr = Array.isArray(codes) ? codes : [codes];
+    return arr
+        .map((c) => {
+            const key = String(c).trim().toUpperCase(); // normalize: gk / Gk / " GK " → GK
+            return POSITION_FULL_NAMES[key] ?? c;
+        })
+        .join(', ');
+};
 
 const getCountryName = (code?: string | string[] | null): string => {
     if (!code) return '';
@@ -214,7 +243,7 @@ export default function NewDetail() {
                                     <div className="flex items-center">
                                         <Crosshair className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Position:</span>
-                                        <span className="pl-2 text-gray-100">{getPositionName(player.positions ?? [])}</span>
+                                        <span className="pl-2 text-gray-100">{getPositionFullName(player.positions ?? [])}</span>
                                     </div>
                                     <div className="flex items-center">
                                         <Footprints className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
@@ -308,16 +337,22 @@ export default function NewDetail() {
                             {/* Positions */}
                             <div className="rounded-xl border border-slate-800 bg-[#06111d] p-5">
                                 <h2 className="mb-6 text-[13px] font-bold text-white uppercase md:text-[18px]">Positions On The Pitch</h2>
-                                <Pitch selected={player.positions ?? []} />
+                                <PitchPriority selected={player.positions ?? []} />
                                 <div className="mt-6 space-y-2 text-[11px] font-bold text-white uppercase md:text-[16px]">
                                     <p>
-                                        <span className="mb-3 text-[13px] font-bold text-white uppercase md:text-[18px]">Main Position:</span>{' '}
-                                        {player.positions?.length ? getPositionName([player.positions[0]]) : 'Not specified'}
+                                        <span className="mb-3 text-[13px] font-bold text-white italic uppercase md:text-[18px]">Main Position:</span>{' '}
+                                        {player.positions?.[0] ? getPositionFullName([player.positions[0]]) : 'Not specified'}
                                     </p>
-                                    {player.positions?.length > 1 && (
+                                    {player.positions?.[1] && (
                                         <p>
-                                            <span className="text-[13px] font-bold text-white uppercase md:text-[18px]">Secondary:</span>{' '}
-                                            {getPositionName(player.positions.slice(1))}
+                                            <span className="text-[13px] font-bold text-white uppercase italic md:text-[18px]">Secondary Position:</span>{' '}
+                                            {getPositionFullName([player.positions[1]])}
+                                        </p>
+                                    )}
+                                    {player.positions?.[2] && (
+                                        <p>
+                                            <span className="text-[13px] font-bold text-white uppercase italic md:text-[18px]">Third Position:</span>{' '}
+                                            {getPositionFullName([player.positions[2]])}
                                         </p>
                                     )}
                                 </div>
@@ -326,7 +361,7 @@ export default function NewDetail() {
                     </section>
 
                     {/* ACHIEVEMENTS + DESCRIPTION */}
-                    <div className="grid grid-cols-2 sm:grid-cols-[250px_1fr] gap-2 md:gap-4 md:grid-cols-[400px_1fr]">
+                    <div className="grid grid-cols-1 sm:grid-cols-[250px_1fr] gap-2 md:gap-4 md:grid-cols-[400px_1fr]">
                         {/* Achievements */}
                         <div className="rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5">
                             <h2 className="mb-5 text-[12px] font-semibold text-white uppercase md:text-sm">Achievements</h2>
@@ -367,7 +402,7 @@ export default function NewDetail() {
                     </aside>
 
                     {/* COMPETITIONS + RECENT MATCHES */}
-                    <div className="grid grid-cols-2 sm:grid-cols-[1fr_1.50fr] gap-2 md:gap-4 lg:grid-cols-[1fr_1.25fr]">
+                    <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.50fr] gap-2 md:gap-4 lg:grid-cols-[1fr_1.25fr]">
                         {/* Competition History */}
                         <div className="rounded-lg border border-[#152538] bg-[#07111d] p-4 md:p-6">
                             <h2 className="mb-6 text-[14px] font-bold text-white uppercase md:text-xl">Competition History</h2>
@@ -423,12 +458,6 @@ export default function NewDetail() {
                                     </tbody>
                                 </table>
                             </div>
-                            {/* <div className="mt-8 flex justify-end">
-                                <button className="flex items-center gap-2 text-[14px] text-[#f97316] transition hover:text-orange-400 md:text-[18px]">
-                                    View all matches
-                                    <ChevronRight size={22} />
-                                </button>
-                            </div> */}
                         </div>
                     </div>
                 </main>

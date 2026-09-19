@@ -70,8 +70,18 @@ class PlayerProfileController extends Controller
 
         $totalViews = ProfileView::where('player_profile_id', $profile->id)->count();
 
-        // Country analytics
+        // Country analytics — time range filter
+        $range = $request->input('country_range', 'all');
+
+        $since = match ($range) {
+            '7d'  => Carbon::now()->subDays(7),
+            '30d' => Carbon::now()->subDays(30),
+            '90d' => Carbon::now()->subDays(90),
+            default => null, // 'all'
+        };
+
         $countryAnalytics = ProfileView::where('player_profile_id', $profile->id)
+            ->when($since, fn($q) => $q->where('created_at', '>=', $since)) // ← date filter
             ->selectRaw('country_code as country, COUNT(*) as views')
             ->whereNotNull('country_code')
             ->groupBy('country_code')
@@ -293,6 +303,11 @@ class PlayerProfileController extends Controller
             'club_history.*.year'    => ['nullable'],
             'club_history.*.club'    => ['nullable', 'string', 'max:255'],
             'club_history.*.country' => ['nullable', 'string', 'size:2'],
+            'supported_club' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'dream_club' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'boot_brands' => ['sometimes', 'array'],
+            'boot_brands.*' => ['string', 'max:20'],
+            'boot_brand_other' => ['sometimes', 'nullable', 'string', 'max:255'],
         ]);
 
         $user = $request->user();
@@ -335,24 +350,63 @@ class PlayerProfileController extends Controller
         return back();
     }
 
+    // public function playerDetails($id, Request $request)
+    // {
+    //     $player = PlayerProfile::with('user')->findOrFail($id);
+
+    //     $player->increment('views');
+
+    //     $viewer = auth()->user();
+
+    //     $ip = $request->ip();
+    //     $location = Location::get($ip);
+
+    //     ProfileView::create([
+    //         'player_profile_id' => $player->id,
+    //         'viewer_id'         => $viewer?->id,
+    //         'country'           => $location?->countryName,
+    //         'country_code'      => $location?->countryCode,
+    //         'ip_address'        => $ip,
+    //     ]);
+
+    //     return Inertia::render('player/profile/public/New-Detail', [
+    //         'player' => $player,
+    //     ]);
+    // }
+
     public function playerDetails($id, Request $request)
     {
         $player = PlayerProfile::with('user')->findOrFail($id);
 
-        $player->increment('views');
-
         $viewer = auth()->user();
-
         $ip = $request->ip();
-        $location = Location::get($ip);
 
-        ProfileView::create([
-            'player_profile_id' => $player->id,
-            'viewer_id'         => $viewer?->id,
-            'country'           => $location?->countryName,
-            'country_code'      => $location?->countryCode,
-            'ip_address'        => $ip,
-        ]);
+        // Nijer profile hole count korbo na
+        $isOwnProfile = $viewer && $viewer->id === $player->user_id;
+
+        // Aajker din e ei viewer/IP already dekheche kina check koro
+        $alreadyViewedToday = ProfileView::where('player_profile_id', $player->id)
+            ->whereDate('created_at', Carbon::today())
+            ->when(
+                $viewer,
+                fn($q) => $q->where('viewer_id', $viewer->id),      // logged-in: viewer diye
+                fn($q) => $q->whereNull('viewer_id')->where('ip_address', $ip) // guest: IP diye
+            )
+            ->exists();
+
+        if (!$isOwnProfile && !$alreadyViewedToday) {
+            $player->increment('views');
+
+            $location = Location::get($ip);
+
+            ProfileView::create([
+                'player_profile_id' => $player->id,
+                'viewer_id'         => $viewer?->id,
+                'country'           => $location?->countryName,
+                'country_code'      => $location?->countryCode,
+                'ip_address'        => $ip,
+            ]);
+        }
 
         return Inertia::render('player/profile/public/New-Detail', [
             'player' => $player,
@@ -428,30 +482,73 @@ class PlayerProfileController extends Controller
         ]);
     }
 
+    // public function publicPlayerDetails(Request $request, $id)
+    // {
+    //     $player = PlayerProfile::with('user')->findOrFail($id);
+
+    //     // Increase profile views
+    //     $player->increment('views');
+
+    //     $viewer = auth()->user();
+
+    //     // Visitor IP
+    //     $ip = app()->environment('local')
+    //         ? '8.8.8.8' // Localhost testing
+    //         : $request->ip();
+
+    //     $location = Location::get($ip);
+
+    //     ProfileView::create([
+    //         'player_profile_id' => $player->id,
+    //         'viewer_id'         => $viewer?->id,
+    //         'country'           => $location?->countryName,
+    //         'country_code'      => $location?->countryCode,
+    //         'ip_address'        => $ip,
+    //         // 'user_agent'        => $request->userAgent(),
+    //     ]);
+
+    //     return Inertia::render('player/profile/public/New-Detail', [
+    //         'player' => $player,
+    //     ]);
+    // }
+
     public function publicPlayerDetails(Request $request, $id)
     {
         $player = PlayerProfile::with('user')->findOrFail($id);
-
-        // Increase profile views
-        $player->increment('views');
 
         $viewer = auth()->user();
 
         // Visitor IP
         $ip = app()->environment('local')
-            ? '8.8.8.8' // Localhost testing
+            ? '103.108.0.1' // Bangladesh range IP (testing) — production e $request->ip() cholbe
             : $request->ip();
 
-        $location = Location::get($ip);
+        // Nijer profile hole count korbo na
+        $isOwnProfile = $viewer && $viewer->id === $player->user_id;
 
-        ProfileView::create([
-            'player_profile_id' => $player->id,
-            'viewer_id'         => $viewer?->id,
-            'country'           => $location?->countryName,
-            'country_code'      => $location?->countryCode,
-            'ip_address'        => $ip,
-            // 'user_agent'        => $request->userAgent(),
-        ]);
+        // Aajker din e ei viewer/IP already dekheche kina check koro
+        $alreadyViewedToday = ProfileView::where('player_profile_id', $player->id)
+            ->whereDate('created_at', Carbon::today())
+            ->when(
+                $viewer,
+                fn($q) => $q->where('viewer_id', $viewer->id),
+                fn($q) => $q->whereNull('viewer_id')->where('ip_address', $ip)
+            )
+            ->exists();
+
+        if (!$isOwnProfile && !$alreadyViewedToday) {
+            $player->increment('views');
+
+            $location = Location::get($ip);
+
+            ProfileView::create([
+                'player_profile_id' => $player->id,
+                'viewer_id'         => $viewer?->id,
+                'country'           => $location?->countryName,
+                'country_code'      => $location?->countryCode,
+                'ip_address'        => $ip,
+            ]);
+        }
 
         return Inertia::render('player/profile/public/New-Detail', [
             'player' => $player,

@@ -21,7 +21,7 @@ export function UserInfo({ showEmail = false }: { showEmail?: boolean }) {
 
     return (
         <>
-            <Avatar className="h-8 w-8 overflow-hidden rounded-full">
+            <Avatar className="h-8 w-8 overflow-hidden rounded-full bg-gray-600">
                 <AvatarImage src={user.avatar ?? ''} alt={user.name} />
                 <AvatarFallback>
                     {getInitials(user.name)}

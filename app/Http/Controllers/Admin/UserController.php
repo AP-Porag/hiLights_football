@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Symfony\Component\Intl\Countries;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -93,17 +94,19 @@ class UserController extends Controller
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
             'email'       => 'required|email|unique:users,email',
-            'password'    => 'required|min:6',
-            'role'        => 'required|in:Player,Scout,Agent,Club,Admin',
+            // 'password'    => 'required|min:6',
+            'role' => 'required',
             'nationality' => 'nullable|string|size:2',
         ]);
 
         User::create([
             'name'        => $validated['name'],
             'email'       => $validated['email'],
-            'password'    => bcrypt($validated['password']),
+            'password'    => Hash::make('12345678'),
+            // 'password'    => bcrypt($validated['password']),
             'role'        => $validated['role'],
             'nationality' => strtoupper($validated['nationality'] ?? ''),
+
         ]);
 
         return redirect()->route('users.index')->with('success', 'User created.');
