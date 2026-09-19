@@ -63,8 +63,20 @@ class VerifyEmailController extends Controller
     //         default => to_route('home'),
     //     };
     // }
+    // private function redirectToDashboard($user): RedirectResponse
+    // {
+    //     return match ($user->role) {
+    //         'player' => to_route('player.dashboard'),
+    //         'scout', 'agent', 'club' => to_route('scouting.dashboard'),
+    //         default => to_route('home'),
+    //     };
+    // }
     private function redirectToDashboard($user): RedirectResponse
     {
+        if (!$user->hasVerifiedWhatsapp()) {
+            return to_route('verification.whatsapp.notice');
+        }
+
         return match ($user->role) {
             'player' => to_route('player.dashboard'),
             'scout', 'agent', 'club' => to_route('scouting.dashboard'),

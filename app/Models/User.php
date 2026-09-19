@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\OtpVerificationNotification;
+use App\Notifications\HiLightsResetPasswordNotification;
 
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -100,5 +101,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasVerifiedWhatsapp(): bool
     {
         return !is_null($this->whatsapp_verified_at);
+    }
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new HiLightsResetPasswordNotification($token));
     }
 }

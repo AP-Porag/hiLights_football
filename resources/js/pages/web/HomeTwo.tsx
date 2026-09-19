@@ -189,10 +189,12 @@ const HomeTwo = () => {
                                             </span>
                                         </button>
                                     </Link>
-                                    <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-gray-600 px-4 py-3 text-xs font-semibold transition-all duration-300 hover:border-white sm:text-sm lg:px-6 lg:py-4 lg:text-base 2xl:px-8 2xl:text-lg">
-                                        <CirclePlay className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
-                                        <span>Learn More</span>
-                                    </button>
+                                    <Link href="/about">
+                                        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-gray-600 px-4 py-3 text-xs font-semibold transition-all duration-300 hover:border-white sm:text-sm lg:px-6 lg:py-4 lg:text-base 2xl:px-8 2xl:text-lg">
+                                            <CirclePlay className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
+                                            <span>Learn More</span>
+                                        </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

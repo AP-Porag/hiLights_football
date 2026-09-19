@@ -513,11 +513,12 @@ export default function UsersIndex() {
                                         className="h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none"
                                     >
 
-                                        <option value={GlobalConstant.ROLE_PLAYER}>Player</option>
+                                        {/* <option value={GlobalConstant.ROLE_PLAYER}>Player</option>
                                         <option value={GlobalConstant.ROLE_SCOUT}>Scout</option>
                                         <option value={GlobalConstant.ROLE_AGENT}>Agent</option>
-                                        <option value={GlobalConstant.ROLE_CLUB}>Club</option>
+                                        <option value={GlobalConstant.ROLE_CLUB}>Club</option> */}
                                         <option value={GlobalConstant.ROLE_ADMIN}>Admin</option>
+                                        <option value={GlobalConstant.ROLE_USER}>User</option>
                                     </select>
                                     {errors.name && (
                                         <p className="text-xs text-red-400 mt-1">{errors.role}</p>

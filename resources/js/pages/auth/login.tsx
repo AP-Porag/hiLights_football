@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Eye, EyeOff, AlertCircle, ArrowRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { toast } from 'sonner';
 
 interface LoginErrors {
     email?: string;
@@ -15,13 +16,19 @@ interface LoginErrors {
 
 export default function Login() {
     // TODO: Replace with usePage().props.errors
-    const { errors } = usePage().props as unknown as { errors: LoginErrors };
+    const { errors, status } = usePage().props as unknown as { errors: LoginErrors; status?: string };
     const [showPassword, setShowPassword] = useState(false);
     const { data, setData, post, processing } = useForm({
         email: '',
         password: '',
         remember: false as boolean,
     });
+
+    useEffect(() => {
+        if (status) {
+            toast.success(status);
+        }
+    }, [status]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
