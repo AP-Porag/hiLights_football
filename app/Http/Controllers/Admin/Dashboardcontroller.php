@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Utils\GlobalConstant;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -17,8 +18,8 @@ class DashboardController extends Controller
 
     // MRR calculation er jonno each plan-er monthly amount (€) — real amount diye update koro
     private const PLAN_AMOUNTS = [
-        self::PLAN_ONE_PRICE => 14.99,
-        self::PLAN_TWO_PRICE => 39.99,
+        self::PLAN_ONE_PRICE => GlobalConstant::STRIPE_PLAN_ONE,
+        self::PLAN_TWO_PRICE => GlobalConstant::STRIPE_PLAN_TWO,
     ];
 
     public function index()
@@ -35,14 +36,15 @@ class DashboardController extends Controller
         $totalUsers   = User::count();
         $totalPlayers = User::where('role', 'player')->count();
         $activeScouts = User::where('role', 'scout')->count();
-        $newToday     = User::whereDate('created_at', $today)->count();
+        $newToday = User::whereDate('created_at', $today)
+            ->where('role', '!=', 'admin')
+            ->count();
 
         // ── MRR (active subscription price gula sum) ──
         $mrr = 0.0;
         foreach ($activeSubs as $sub) {
-            $mrr += self::PLAN_AMOUNTS[$sub->stripe_price] ?? 0;
+            $mrr += GlobalConstant::PLAN_AMOUNTS[$sub->stripe_price] ?? 0;
         }
-
         // ── Trend numbers ──
         $playersThisMonth = User::where('role', 'player')->where('created_at', '>=', $monthStart)->count();
         $scoutsThisMonth  = User::where('role', 'scout')->where('created_at', '>=', $monthStart)->count();
@@ -125,7 +127,7 @@ class DashboardController extends Controller
             'stats' => [
                 'totalPlayers'  => $totalPlayers,
                 'activePremium' => $activePremium,
-                'mrr'           => (int) round($mrr),
+                'mrr' => round($mrr, 2),
                 'newToday'      => $newToday,
                 'activeScouts'  => $activeScouts,
             ],

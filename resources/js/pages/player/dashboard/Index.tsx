@@ -1168,38 +1168,38 @@ export default function PlayerDashboard() {
                 : 'Not specified',
         },
         // নিচের ফিল্ডগুলো Basic Info থেকে যুক্ত করা হলো
-        {
-            icon: <User className="w-4 h-4 text-gray-300" />,
-            label: 'GENDER',
-            value: pp?.gender || 'Not specified',
-        },
-        {
-            icon: <MapPin className="w-4 h-4 text-gray-300" />,
-            label: 'BIRTH COUNTRY',
-            value: pp?.birth_country ? getCountryName(pp.birth_country) : 'Not specified',
-        },
-        {
-            icon: <Flag className="w-4 h-4 text-gray-300" />,
-            label: 'CLUB COUNTRY',
-            value: pp?.current_club_country ? getCountryName(pp.current_club_country) : 'Not specified',
-        },
-        {
-            icon: <UserPen className="w-4 h-4 text-gray-300" />,
-            label: 'AGENT',
-            value: pp?.agent || 'Not specified',
-        },
-        {
-            icon: <Smartphone className="w-4 h-4 text-gray-300" />,
-            label: 'WHATSAPP',
-            value: auth?.user?.whatsapp || 'Not specified',
-        },
-        {
-            icon: <ClipboardList className="w-4 h-4 text-gray-300" />,
-            label: 'DESCRIPTION',
-            value: pp?.description
-                ? (pp.description.length > 40 ? pp.description.substring(0, 40) + '...' : pp.description)
-                : 'Not specified',
-        },
+        // {
+        //     icon: <User className="w-4 h-4 text-gray-300" />,
+        //     label: 'GENDER',
+        //     value: pp?.gender || 'Not specified',
+        // },
+        // {
+        //     icon: <MapPin className="w-4 h-4 text-gray-300" />,
+        //     label: 'BIRTH COUNTRY',
+        //     value: pp?.birth_country ? getCountryName(pp.birth_country) : 'Not specified',
+        // },
+        // {
+        //     icon: <Flag className="w-4 h-4 text-gray-300" />,
+        //     label: 'CLUB COUNTRY',
+        //     value: pp?.current_club_country ? getCountryName(pp.current_club_country) : 'Not specified',
+        // },
+        // {
+        //     icon: <UserPen className="w-4 h-4 text-gray-300" />,
+        //     label: 'AGENT',
+        //     value: pp?.agent || 'Not specified',
+        // },
+        // {
+        //     icon: <Smartphone className="w-4 h-4 text-gray-300" />,
+        //     label: 'WHATSAPP',
+        //     value: auth?.user?.whatsapp || 'Not specified',
+        // },
+        // {
+        //     icon: <ClipboardList className="w-4 h-4 text-gray-300" />,
+        //     label: 'DESCRIPTION',
+        //     value: pp?.description
+        //         ? (pp.description.length > 40 ? pp.description.substring(0, 40) + '...' : pp.description)
+        //         : 'Not specified',
+        // },
     ];
 
     const shareProfile = async () => {
@@ -1246,7 +1246,14 @@ export default function PlayerDashboard() {
     const downloadCard = async () => {
         if (!cardRef.current) return;
         try {
-            const dataUrl = await toPng(cardRef.current, { cacheBust: true, pixelRatio: 2 });
+            const currentWidth = cardRef.current.offsetWidth;
+            const targetWidth = 1054;
+            const ratio = targetWidth / currentWidth;
+
+            const dataUrl = await toPng(cardRef.current, {
+                cacheBust: true,
+                pixelRatio: ratio,
+            });
             const link = document.createElement('a');
             link.download = `${auth?.user?.name ?? 'member'}-card.png`;
             link.href = dataUrl;
@@ -1256,6 +1263,19 @@ export default function PlayerDashboard() {
             alert('Could not download card. Please try again.');
         }
     };
+    // const downloadCard = async () => {
+    //     if (!cardRef.current) return;
+    //     try {
+    //         const dataUrl = await toPng(cardRef.current, { cacheBust: true, pixelRatio: 2 });
+    //         const link = document.createElement('a');
+    //         link.download = `${auth?.user?.name ?? 'member'}-card.png`;
+    //         link.href = dataUrl;
+    //         link.click();
+    //     } catch (err) {
+    //         console.error('Card download failed:', err);
+    //         alert('Could not download card. Please try again.');
+    //     }
+    // };
 
     useEffect(() => {
         if (flash?.scrollTo) {
@@ -1378,13 +1398,29 @@ export default function PlayerDashboard() {
                                                 <CalendarDays className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
                                                 <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">DATE OF BIRTH:<br /><span className="text-white">{auth?.user?.dob && new Date(auth?.user?.dob).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></p>
                                             </div>
-                                            <div className="flex items-center">
+                                            {/* <div className="flex items-center">
                                                 <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
                                                 <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">NATIONALITY:<br /><span className="text-white">
                                                     {Array.isArray(auth?.user?.nationality) && auth?.user?.nationality.length > 0
                                                         ? getCountryName(auth?.user?.nationality)
                                                         : 'Not specified'}
                                                 </span></p>
+                                            </div> */}
+                                            <div className="flex items-center">
+                                                <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                                <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">NATIONALITY:<br />
+                                                    <span className="text-white inline-flex flex-wrap items-center gap-1">
+                                                        {Array.isArray(auth?.user?.nationality) && auth?.user?.nationality.length > 0
+                                                            ? auth.user.nationality.map((code: string, idx: number) => (
+                                                                <span key={code} className="inline-flex items-center gap-1">
+                                                                    <ReactCountryFlag countryCode={code} svg style={{ width: '1em', height: '1em' }} />
+                                                                    <span>{getCountryName(code)}</span>
+                                                                    {idx < auth.user.nationality.length - 1 && <span>,</span>}
+                                                                </span>
+                                                            ))
+                                                            : 'Not specified'}
+                                                    </span>
+                                                </p>
                                             </div>
                                             <div className="flex items-center">
                                                 <MapPin className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />

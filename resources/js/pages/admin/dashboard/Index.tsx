@@ -136,6 +136,7 @@ export default function Index() {
 
     const chartData = registrations;
     const nf = (n: number) => n.toLocaleString();
+    const nfMoney = (n: number) => n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Dashboard',
@@ -174,7 +175,7 @@ export default function Index() {
                     />
                     <StatCard
                         label="Revenue MRR"
-                        value={`€${nf(stats.mrr)}`}
+                        value={`$${nfMoney(stats.mrr)}`}
                         valueClass="text-[#FF6B00] font-mono"
                         icon={<TrendingUp className="h-4 w-4 text-[#FF6B00]" />}
                     />
