@@ -170,6 +170,7 @@ export default function Contact() {
                                 </div>
 
                                 {/* Subject */}
+                                {/* Subject */}
                                 <div>
                                     <label
                                         htmlFor="subject"
@@ -177,24 +178,15 @@ export default function Contact() {
                                     >
                                         Subject
                                     </label>
-                                    <Select
+                                    <input
+                                        id="subject"
+                                        type="text"
                                         value={data.subject}
-                                        onValueChange={(v) => setData('subject', v)}
-                                    >
-                                        <SelectTrigger
-                                            id="subject"
-                                            className="w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-11 px-4 text-sm text-[#0F172A] dark:text-[#F5F5F5] focus:border-[#FF5E24] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)]"
-                                        >
-                                            <SelectValue placeholder="Select a topic" />
-                                        </SelectTrigger>
-                                        <SelectContent className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5]">
-                                            <SelectItem value="general">General Inquiry</SelectItem>
-                                            <SelectItem value="support">Technical Support</SelectItem>
-                                            <SelectItem value="partnership">Partnership</SelectItem>
-                                            <SelectItem value="advertising">Advertising</SelectItem>
-                                            <SelectItem value="press">Press</SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                        onChange={(e) => setData('subject', e.target.value)}
+                                        placeholder="What's this about?"
+                                        className={inputClasses}
+                                        required
+                                    />
                                     {errors.subject && (
                                         <p className="mt-1 text-xs text-[#FF5E24]">
                                             {errors.subject}
@@ -269,10 +261,10 @@ export default function Contact() {
                                                 Email
                                             </p>
                                             <a
-                                                href="mailto:contact@highlightsfootball.com"
+                                                href="mailto:hello@hilightsfootball.com"
                                                 className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5] hover:text-[#FF5E24] dark:hover:text-[#FF5E24] transition-colors break-all"
                                             >
-                                                contact@highlightsfootball.com
+                                                hello@hilightsfootball.com
                                             </a>
                                         </div>
                                     </div>

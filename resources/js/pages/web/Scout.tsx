@@ -303,23 +303,29 @@ const Scout = () => {
                                     TOP TALENTS YOU CAN DISCOVER TODAY
                                 </h2>
                             </div>
-                            <Link href={auth?.user ? auth.user.role === "player" ? "/player" : auth.user.role === "admin" ? "/admin" : auth.user.role === "agent" ? "/agent" : auth.user.role === "club" ? "/club" : "/scout" : "/register?role=scout"} > <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs"> View All <ArrowRight size={18} className="text-[#ff6b00] font-bold" /> </button> </Link>
+                            {/* Desktop/tablet-e header-e thakbe, mobile-e hide */}
+                            <Link
+                                href={auth?.user ? auth.user.role === "player" ? "/player" : auth.user.role === "admin" ? "/admin" : auth.user.role === "agent" ? "/agent" : auth.user.role === "club" ? "/club" : "/scout" : "/register?role=scout"}
+                                className="hidden sm:block"
+                            >
+                                <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs">
+                                    View All <ArrowRight size={18} className="text-[#ff6b00] font-bold" />
+                                </button>
+                            </Link>
                         </div>
 
                         {/* Rows */}
-                        <div className="flex items-center justify-between overflow-x-auto pb-4">
+                        <div className="flex items-center gap-5 overflow-x-auto pb-4 snap-x snap-mandatory sm:snap-none">
                             {players.map((player: any, index: number) => (
-                                <div key={index} className="w-[24%] rounded-[8px] shadow-[0_4px_12px_rgba(0,0,0,0.10)]">
-                                    <Link key={index} href={auth?.user
-                                        ? `/player/profile/${player.id}`
-                                        : "/register?role=scout"}>
+                                <div
+                                    key={index}
+                                    className="w-[85%] flex-shrink-0 snap-center rounded-[8px] shadow-[0_4px_12px_rgba(0,0,0,0.10)] sm:w-[48%] md:w-[32%] lg:w-[24%] sm:snap-align-none"
+                                >
+                                    <Link href={`/player/profile/${player.id}`}>
                                         {/* Thumbnail */}
                                         <div className="relative">
                                             <img src={player.photo_url || '/images/img/placeholder.webp'} className="h-[300px] w-full rounded object-cover" />
 
-                                            {/* <button className="absolute right-3 bottom-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00]">
-                                                <Play size={12} fill="white" className="text-white" />
-                                            </button> */}
                                             {player.video_url && (
                                                 <button
                                                     type="button"
@@ -394,6 +400,16 @@ const Scout = () => {
                                 </div>
                             ))}
                         </div>
+
+                        {/* Mobile-only View All — player cards-er niche, full width */}
+                        <Link
+                            href={auth?.user ? auth.user.role === "player" ? "/player" : auth.user.role === "admin" ? "/admin" : auth.user.role === "agent" ? "/agent" : auth.user.role === "club" ? "/club" : "/scout" : "/register?role=scout"}
+                            className="block sm:hidden"
+                        >
+                            <button className="flex w-full items-center justify-center gap-2 rounded-[10px] bg-white px-4 py-3 text-xs font-bold uppercase text-gray-700 shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+                                View All <ArrowRight size={18} className="text-[#ff6b00] font-bold" />
+                            </button>
+                        </Link>
                     </div>
                     {activeVideo && (
                         <div

@@ -141,10 +141,11 @@ const HomeTwo = () => {
                 <section
                     className="relative w-full overflow-hidden text-white"
                     style={{
-                        backgroundImage: "url('/images/img/hero.jpg')",
+                        backgroundImage: "url('/images/img/hero.jpeg')",
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'right center',
                         backgroundSize: 'contain',
+                        height: '100vh',
                     }}
                 >
                     <div className="grid min-h-[380px] grid-cols-1 items-center sm:min-h-[440px] md:min-h-[520px] md:grid-cols-2 lg:min-h-[600px] xl:min-h-[680px] 2xl:min-h-[760px]">
@@ -188,10 +189,12 @@ const HomeTwo = () => {
                                             </span>
                                         </button>
                                     </Link>
-                                    <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-gray-600 px-4 py-3 text-xs font-semibold transition-all duration-300 hover:border-white sm:text-sm lg:px-6 lg:py-4 lg:text-base 2xl:px-8 2xl:text-lg">
-                                        <CirclePlay className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
-                                        <span>Learn More</span>
-                                    </button>
+                                    <Link href="/about">
+                                        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-gray-600 px-4 py-3 text-xs font-semibold transition-all duration-300 hover:border-white sm:text-sm lg:px-6 lg:py-4 lg:text-base 2xl:px-8 2xl:text-lg">
+                                            <CirclePlay className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
+                                            <span>Learn More</span>
+                                        </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -318,9 +321,10 @@ const HomeTwo = () => {
 
                         {/* Rows */}
                         {players.map((player, index) => (
-                            <Link key={player.id} href={auth?.user
-                                ? `/player/profile/${player.id}`
-                                : "/register?role=scout"}>
+                            // <Link key={player.id} href={auth?.user
+                            //     ? `/player/profile/${player.id}`
+                            //     : "/register?role=scout"}>
+                            <Link key={player.id} href={`/player/profile/${player.id}`}>
                                 <div className="mb-2 grid grid-cols-[40px_1fr_70px_70px] items-center rounded-[12px] bg-white pr-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:grid-cols-[70px_1fr_80px_120px] md:grid-cols-[150px_1fr_120px_170px] 2xl:grid-cols-[180px_1fr_150px_200px]">
                                     {/* Thumbnail */}
                                     <div className="relative">

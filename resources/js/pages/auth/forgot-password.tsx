@@ -1,14 +1,7 @@
-// Components
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
+import { LoaderCircle, Mail, ArrowLeft } from 'lucide-react';
 import { FormEventHandler } from 'react';
-
-import InputError from '@/components/input-error';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
+import { Link } from '@inertiajs/react';
 
 export default function ForgotPassword({ status }: { status?: string }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -17,47 +10,89 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
         post(route('password.email'));
     };
 
     return (
-        <AuthLayout title="Forgot password" description="Enter your email to receive a password reset link">
+        <div className="relative min-h-screen bg-[#0D0D0D] flex items-center justify-center px-6 py-12 font-sans">
             <Head title="Forgot password" />
 
-            {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
-
-            <div className="space-y-6">
-                <form onSubmit={submit}>
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            name="email"
-                            autoComplete="off"
-                            value={data.email}
-                            autoFocus
-                            onChange={(e) => setData('email', e.target.value)}
-                            placeholder="email@example.com"
+            <div className="w-full max-w-[440px]">
+                {/* Logo */}
+                <div className="text-center mb-8">
+                    <Link href="/" className="inline-block">
+                        <img
+                            src="/images/logo/final_logo.png"
+                            className="h-14 w-auto mx-auto"
+                            alt="HiLights Football"
                         />
-
-                        <InputError message={errors.email} />
-                    </div>
-
-                    <div className="my-6 flex items-center justify-start">
-                        <Button className="w-full" disabled={processing}>
-                            {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                            Email password reset link
-                        </Button>
-                    </div>
-                </form>
-
-                <div className="text-muted-foreground space-x-1 text-center text-sm">
-                    <span>Or, return to</span>
-                    <TextLink href={route('login')}>log in</TextLink>
+                    </Link>
                 </div>
+
+                <div className="bg-[#161616] rounded-2xl border border-[#2A2A2A] p-8">
+                    <div className="text-center mb-6">
+                        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[rgba(255,107,0,0.12)]">
+                            <Mail className="h-6 w-6 text-[#FF6B00]" />
+                        </div>
+                        <h1 className="font-display font-black text-2xl text-[#F5F5F5]">
+                            Forgot your password?
+                        </h1>
+                        <p className="text-sm text-[#9A9A9A] mt-2 leading-relaxed">
+                            Enter your email address and we'll send you a link to reset your password.
+                        </p>
+                    </div>
+
+                    {status && (
+                        <div className="mb-5 rounded-lg border border-green-900 bg-green-950/30 px-4 py-3 text-center text-sm font-medium text-green-400">
+                            {status}
+                        </div>
+                    )}
+
+                    <form onSubmit={submit}>
+                        <div className="mb-5">
+                            <label
+                                htmlFor="email"
+                                className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
+                            >
+                                Email Address
+                            </label>
+                            <input
+                                id="email"
+                                type="email"
+                                name="email"
+                                autoComplete="off"
+                                autoFocus
+                                value={data.email}
+                                onChange={(e) => setData('email', e.target.value)}
+                                placeholder="you@example.com"
+                                className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                            />
+                            {errors.email && (
+                                <p className="text-xs text-[#DC2626] mt-1.5">{errors.email}</p>
+                            )}
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={processing}
+                            className="w-full h-12 cursor-pointer rounded-xl bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold text-sm uppercase tracking-wider transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        >
+                            {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                            Email Password Reset Link
+                        </button>
+                    </form>
+                </div>
+
+                <p className="text-center text-sm text-[#9A9A9A] mt-6">
+                    <Link
+                        href={route('login')}
+                        className="inline-flex items-center gap-1.5 text-[#FF6B00] hover:underline font-semibold"
+                    >
+                        <ArrowLeft className="h-3.5 w-3.5" />
+                        Back to Sign In
+                    </Link>
+                </p>
             </div>
-        </AuthLayout>
+        </div>
     );
 }

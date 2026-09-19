@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\Agent\AgentController as AController;
 use App\Http\Controllers\Club\ClubController as CController;
 use App\Http\Controllers\Admin\ClubController;
+use App\Http\Controllers\Admin\AccessRequestController as AdminAccessRequestController;
 use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Admin\ContactController as ConController;
 use App\Http\Controllers\Admin\AdminSubscriptionsController;
@@ -15,12 +16,16 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Web\HomeController;
 use Laravel\Cashier\Http\Controllers\WebhookController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PlayerController;
 use App\Http\Controllers\Admin\ScoutController as SController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\PlayerSearchController;
 use App\Http\Controllers\Player\NotificationController;
+use App\Http\Controllers\Auth\WhatsappVerificationController;
+use App\Http\Controllers\Web\AccessRequestController;
 
 Route::get('/execute-command', function () {
     //    return redirect()->route('login');
@@ -68,6 +73,10 @@ Route::get('/contact', function () {
     return Inertia::render('web/Contact');
 })->name('contact');
 
+
+Route::get('/request-access', [AccessRequestController::class, 'create'])->name('request-access');
+Route::post('/request-access', [AccessRequestController::class, 'store'])->name('request-access.store');
+
 // Route::get('/player/profile/{id}', function () {
 //     return Inertia::render('player/profile/public/Detail');
 // })->name('profile.public.detail');
@@ -87,7 +96,7 @@ Route::get('/scout', [HomeController::class, 'scout'])->name('scout');
 //     ->name('profile.public.detail');
 
 //all player routes
-Route::middleware(['auth'])->prefix('player')->group(function () {
+Route::middleware(['auth', 'verified', 'whatsapp.verified'])->prefix('player')->group(function () {
 
 
 
@@ -144,6 +153,32 @@ Route::middleware(['auth'])->prefix('player')->group(function () {
     Route::get('/subscription/invoice/{invoiceId}', [SubscriptionController::class, 'downloadInvoice'])
         ->name('subscription.invoice.download');
 });
+
+Route::get('verify-email', EmailVerificationPromptController::class)
+    ->middleware('auth')
+    ->name('verification.notice');
+
+Route::post('verify-email', VerifyEmailController::class)
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.verify');
+
+Route::post('email/verification-notification', function (\Illuminate\Http\Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('status', 'verification-code-sent');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+Route::get('verify-whatsapp', [WhatsappVerificationController::class, 'prompt'])
+    ->middleware(['auth', 'verified'])
+    ->name('verification.whatsapp.notice');
+
+Route::post('verify-whatsapp/send', [WhatsappVerificationController::class, 'send'])
+    ->middleware(['auth', 'verified', 'throttle:6,1'])
+    ->name('verification.whatsapp.send');
+
+Route::post('verify-whatsapp', [WhatsappVerificationController::class, 'verify'])
+    ->middleware(['auth', 'verified', 'throttle:6,1'])
+    ->name('verification.whatsapp.verify');
 
 //all Scouts / Agents / Clubs routes
 Route::middleware(['auth'])->prefix('scouting')->group(function () {
@@ -245,6 +280,11 @@ Route::prefix('admin')->group(function () {
     Route::delete('/admin/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
     Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
     Route::post('/users/{id}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
+
+
+    Route::get('/access-requests', [AdminAccessRequestController::class, 'index'])->name('access-requests.index');
+    Route::put('/access-requests/{accessRequest}/status', [AdminAccessRequestController::class, 'updateStatus'])->name('access-requests.status');
+    Route::delete('/access-requests/{accessRequest}', [AdminAccessRequestController::class, 'destroy'])->name('access-requests.destroy');
 
 
 

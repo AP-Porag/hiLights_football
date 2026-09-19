@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Eye, EyeOff, AlertCircle, ArrowRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { toast } from 'sonner';
 
 interface LoginErrors {
     email?: string;
@@ -15,31 +16,87 @@ interface LoginErrors {
 
 export default function Login() {
     // TODO: Replace with usePage().props.errors
-    const { errors } = usePage().props as unknown as { errors: LoginErrors };
+    const { errors, status } = usePage().props as unknown as { errors: LoginErrors; status?: string };
     const [showPassword, setShowPassword] = useState(false);
     const { data, setData, post, processing } = useForm({
         email: '',
         password: '',
         remember: false as boolean,
     });
+
+    useEffect(() => {
+        if (status) {
+            toast.success(status);
+        }
+    }, [status]);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // TODO: POST route('login'), redirect by role after auth
         post(route('login'));
     };
+
     const hasError = errors?.email || errors?.password || errors?.general;
+
     return (
         <div className="relative min-h-screen bg-[#0D0D0D] lg:grid lg:grid-cols-2">
-            {/* LEFT PANEL — Orange brand panel (hidden on mobile) */}
+            {/* LEFT PANEL — Brand panel (hidden on mobile) */}
             <div className="relative hidden lg:flex flex-col items-center justify-center bg-[#0D0D0D] p-16 overflow-hidden">
-                {/* Decorative floating player card silhouettes */}
+                {/* Decorative floating player cards */}
                 <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                    <div className="absolute top-16 left-12 w-40 h-56 rounded-2xl bg-white/10 border border-white/10 rotate-[-8deg]" />
-                    <div className="absolute top-40 right-10 w-32 h-44 rounded-2xl bg-white/10 border border-white/10 rotate-[12deg]" />
-                    <div className="absolute bottom-24 left-20 w-36 h-48 rounded-2xl bg-white/10 border border-white/10 rotate-[6deg]" />
-                    <div className="absolute bottom-12 right-16 w-28 h-40 rounded-2xl bg-white/10 border border-white/10 rotate-[-14deg]" />
+                    {/* LEFT — Male player 1 */}
+                    {/* TODO: Replace src with usePage().props asset path */}
+                    <div className="absolute top-16 left-12 w-40 h-56 rounded-2xl overflow-hidden border border-white/10 rotate-[-8deg] bg-[#0F172A] shadow-xl shadow-black/40">
+                        <img
+                            src="/images/login/player-male-1.jpeg"
+                            alt="Male footballer striking the ball"
+                            className="h-full w-full object-cover"
+                            loading="lazy"
+                            draggable={false}
+                        />
+                    </div>
+
+                    {/* RIGHT — Female player 1 */}
+                    {/* TODO: Replace src with usePage().props asset path */}
+                    <div className="absolute top-40 right-10 w-32 h-44 rounded-2xl overflow-hidden border border-white/10 rotate-[12deg] bg-[#0F172A] shadow-xl shadow-black/40">
+                        <img
+                            src="/images/login/player-female-1.jpeg"
+                            alt="Female footballer sprinting with the ball"
+                            className="h-full w-full object-cover"
+                            loading="lazy"
+                            draggable={false}
+                        />
+                    </div>
+
+                    {/* LEFT — Male player 2 */}
+                    {/* TODO: Replace src with usePage().props asset path */}
+                    <div className="absolute bottom-24 left-20 w-36 h-48 rounded-2xl overflow-hidden border border-white/10 rotate-[6deg] bg-[#0F172A] shadow-xl shadow-black/40">
+                        <img
+                            src="/images/login/player-male-2.jpeg"
+                            alt="Male footballer in a stadium at night"
+                            className="h-full w-full object-cover"
+                            loading="lazy"
+                            draggable={false}
+                        />
+                    </div>
+
+                    {/* RIGHT — Female player 2 */}
+                    {/* TODO: Replace src with usePage().props asset path */}
+                    <div className="absolute bottom-12 right-16 w-28 h-40 rounded-2xl overflow-hidden border border-white/10 rotate-[-14deg] bg-[#0F172A] shadow-xl shadow-black/40">
+                        <img
+                            src="/images/login/player-female-2.jpeg"
+                            alt="Female footballer striking the ball"
+                            className="h-full w-full object-cover"
+                            loading="lazy"
+                            draggable={false}
+                        />
+                    </div>
+
+                    {/* CENTER — decorative accent */}
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-64 rounded-2xl bg-white/5 border border-white/10 rotate-[3deg]" />
                 </div>
+
+                {/* Content — logo, tagline, stats */}
                 <div className="relative z-10 flex flex-col items-center text-center max-w-md">
                     {/* Logo */}
                     <Link href="/" className="inline-flex items-center gap-3 mb-10">
@@ -48,10 +105,8 @@ export default function Login() {
                             alt="HiLights Football"
                             className="h-14 w-auto"
                         />
-                        {/* <span className="font-display font-black text-5xl text-white italic tracking-tight">
-                            HiLights
-                        </span> */}
                     </Link>
+
                     {/* Tagline */}
                     <h2 className="font-display font-black text-3xl text-white leading-tight">
                         Welcome back to the world's football discovery platform
@@ -59,6 +114,7 @@ export default function Login() {
                     <p className="text-white/80 text-xl mt-4 max-w-sm leading-relaxed">
                         Where talent meets opportunity. Trusted by scouts, clubs, and agents in 100+ countries.
                     </p>
+
                     {/* Stats Row */}
                     <div className="mt-12 grid grid-cols-3 gap-6 w-full max-w-md">
                         <div className="text-center">
@@ -82,10 +138,11 @@ export default function Login() {
                     </div>
                 </div>
             </div>
+
             {/* RIGHT PANEL — Login form */}
             <div className="flex items-center justify-center p-6 sm:p-8 bg-[#0D0D0D] min-h-screen lg:min-h-0">
                 <div className="w-full max-w-md">
-                    {/* Mobile-only logo (shown above card on small screens) */}
+                    {/* Mobile-only logo */}
                     <div className="lg:hidden flex justify-center mb-8">
                         <Link href="/">
                             <img
@@ -95,6 +152,7 @@ export default function Login() {
                             />
                         </Link>
                     </div>
+
                     {/* Login Card */}
                     <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-8 sm:p-10 w-full shadow-sm">
                         {/* Header */}
@@ -106,8 +164,10 @@ export default function Login() {
                                 Access your HiLights Football account
                             </p>
                         </div>
+
                         {/* Divider */}
                         <div className="border-t border-[#2A2A2A] mt-6 mb-6" />
+
                         {/* Error Alert */}
                         {hasError && (
                             <Alert className="mb-5 border-red-900 bg-red-950/40 text-red-400">
@@ -120,6 +180,7 @@ export default function Login() {
                                 </AlertDescription>
                             </Alert>
                         )}
+
                         {/* Form */}
                         <form onSubmit={handleSubmit} className="space-y-5">
                             {/* Email */}
@@ -141,6 +202,7 @@ export default function Login() {
                                     className="h-11 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-orange-800 rounded-xl"
                                 />
                             </div>
+
                             {/* Password */}
                             <div className="space-y-2">
                                 <Label
@@ -174,6 +236,7 @@ export default function Login() {
                                     </button>
                                 </div>
                             </div>
+
                             {/* Remember + Forgot */}
                             <div className="flex items-center justify-between pt-1">
                                 <div className="flex items-center gap-2">
@@ -199,6 +262,7 @@ export default function Login() {
                                     Forgot password?
                                 </Link>
                             </div>
+
                             {/* Submit Button */}
                             <Button
                                 type="submit"
@@ -215,6 +279,7 @@ export default function Login() {
                                 )}
                             </Button>
                         </form>
+
                         {/* Divider */}
                         <div className="relative my-7">
                             <div className="absolute inset-0 flex items-center">
@@ -226,11 +291,10 @@ export default function Login() {
                                 </span>
                             </div>
                         </div>
+
                         {/* Signup CTA */}
                         <div className="text-center space-y-1">
-                            <p className="text-sm text-[#9A9A9A]">
-                                Don't have an account?
-                            </p>
+                            <p className="text-sm text-[#9A9A9A]">Don't have an account?</p>
                             <Link
                                 href={route('register')}
                                 className="inline-flex items-center gap-1 text-sm text-[#FF6B00] font-semibold hover:text-[#CC5500] hover:underline"
@@ -240,6 +304,7 @@ export default function Login() {
                             </Link>
                         </div>
                     </div>
+
                     {/* Footer — Trust line */}
                     <p className="text-center text-xs text-[#555555] mt-6">
                         By signing in, you agree to our{' '}

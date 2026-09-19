@@ -41,5 +41,10 @@ return [
         'plan_one' => env('STRIPE_PLAN_ONE'),
         'plan_two' => env('STRIPE_PLAN_TWO'),
     ],
+    'twilio' => [
+        'sid' => env('TWILIO_SID'),
+        'auth_token' => env('TWILIO_AUTH_TOKEN'),
+        'verify_sid' => env('TWILIO_VERIFY_SERVICE_SID'),
+    ],
 
 ];

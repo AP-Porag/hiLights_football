@@ -246,13 +246,13 @@ export default function AdminLayout({ children, pageTitle, breadcrumb }: AdminLa
     const auth = props.auth?.user
         ? props.auth
         : {
-              user: {
-                  id: 1,
-                  name: 'Lucas Pereira',
-                  email: 'lucas@hilights.fc',
-                  avatar_url: null,
-              },
-          };
+            user: {
+                id: 1,
+                name: 'Lucas Pereira',
+                email: 'lucas@hilights.fc',
+                avatar_url: null,
+            },
+        };
 
     const [mobileOpen, setMobileOpen] = useState(false);
 

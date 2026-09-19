@@ -63,6 +63,11 @@ class PlayerProfileUpdateRequest extends FormRequest
             'matches.*.goals' => ['nullable', 'string'],
             'matches.*.assists' => ['nullable', 'string'],
             'matches.*.minutes' => ['nullable', 'string', 'max:20'],
+            'supported_club' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'dream_club' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'boot_brands' => ['sometimes', 'array'],
+            'boot_brands.*' => ['string', 'max:20'],
+            'boot_brand_other' => ['sometimes', 'nullable', 'string', 'max:255'],
         ];
     }
 

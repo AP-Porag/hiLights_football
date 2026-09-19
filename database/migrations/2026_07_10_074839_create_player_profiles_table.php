@@ -36,6 +36,10 @@ return new class extends Migration
             $table->json('matches')->nullable();
             $table->json('club_history')->nullable();         // [{year, club, country}]
             $table->text('description')->nullable();
+            $table->string('supported_club')->nullable();
+            $table->string('dream_club')->nullable();
+            $table->json('boot_brands')->nullable();
+            $table->string('boot_brand_other')->nullable();
             $table->timestamps();
         });
     }
