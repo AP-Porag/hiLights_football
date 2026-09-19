@@ -33,24 +33,23 @@ class GlobalConstant
 
     /*
     |--------------------------------------------------------------------------
-    | Subscription Tiers
+    | Subscription Tiers — Stripe Price IDs
     |--------------------------------------------------------------------------
     */
     public const TRIAL = 'price_1TXH33HKtXG9R7bGb5heMCgK';
-    public const STRIPE_PLAN_ONE = 'price_1TsfD5HKtXG9R7bGyzR4H6C9';
-    public const STRIPE_PLAN_TWO = 'price_1TsfDtHKtXG9R7bGVsNxRTT6';
+    public const STRIPE_PLAN_ONE = 'price_1TsfD5HKtXG9R7bGyzR4H6C9'; // Premium
+    public const STRIPE_PLAN_TWO = 'price_1TsfDtHKtXG9R7bGVsNxRTT6'; // Elite
 
-
-
-
-    public const TIER_TRIAL = 'trial';
-    public const TIER_ONE_VIEW_ONLY = 'tier_1_view_only';
-    public const TIER_TWO_FULL_ACCESS = 'tier_2_full_acces';
-
-    // public const TIER_PRICE = [
-    //     self::TIER_VIEW_ONLY => 14.99,
-    //     self::TIER_FULL_ACCESS => 19.99,
-    // ];
+    /*
+    |--------------------------------------------------------------------------
+    | Plan Monthly Amounts (€) — MRR calculation-er jonno
+    | Key = Stripe price ID (STRIPE_PLAN_ONE/TWO), Value = euro amount
+    |--------------------------------------------------------------------------
+    */
+    public const PLAN_AMOUNTS = [
+        self::STRIPE_PLAN_ONE => 0.10,   // Premium actual price
+        self::STRIPE_PLAN_TWO => 0.20,  // Elite actual price — confirm koro
+    ];
 
     /*
     |--------------------------------------------------------------------------

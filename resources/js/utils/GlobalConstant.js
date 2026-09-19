@@ -1,6 +1,10 @@
 export const GlobalConstant = {
     ROLE_ADMIN: 'admin',
     ROLE_USER: 'user',
+    ROLE_PLAYER: 'player',
+    ROLE_SCOUT: 'scout',
+    ROLE_AGENT: 'agent',
+    ROLE_CLUB: 'club',
 
     SUB_ACTIVE: 'active',
     SUB_TRIAL: 'trial',

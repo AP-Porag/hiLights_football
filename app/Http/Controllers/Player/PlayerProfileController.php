@@ -303,6 +303,11 @@ class PlayerProfileController extends Controller
             'club_history.*.year'    => ['nullable'],
             'club_history.*.club'    => ['nullable', 'string', 'max:255'],
             'club_history.*.country' => ['nullable', 'string', 'size:2'],
+            'supported_club' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'dream_club' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'boot_brands' => ['sometimes', 'array'],
+            'boot_brands.*' => ['string', 'max:20'],
+            'boot_brand_other' => ['sometimes', 'nullable', 'string', 'max:255'],
         ]);
 
         $user = $request->user();

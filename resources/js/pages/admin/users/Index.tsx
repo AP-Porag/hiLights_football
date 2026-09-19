@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Link, usePage, router } from '@inertiajs/react';
+import { Link, usePage, router, useForm } from '@inertiajs/react';
 import Select from 'react-select';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/app-layout';
+import { GlobalConstant } from '@/utils/GlobalConstant';
 import type { BreadcrumbItem } from '@/types';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -113,14 +114,12 @@ export default function UsersIndex() {
 
     // -------- Create User Modal ----------
     const [showCreateModal, setShowCreateModal] = useState(false);
-    const [newUser, setNewUser] = useState({
+    const { data: newUser, setData: setNewUser, post, processing: creating, errors, reset, clearErrors } = useForm({
         name: '',
         email: '',
-        password: '',
-        role: 'Player',
+        role: GlobalConstant.ROLE_PLAYER,
         nationality: '',
     });
-    const [creating, setCreating] = useState(false);
 
 
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -181,17 +180,16 @@ export default function UsersIndex() {
 
     const handleCreateUser = (e: React.FormEvent) => {
         e.preventDefault();
-        setCreating(true);
-        router.post(route('users.store'), newUser, {
+
+        post(route('users.store'), {
             onSuccess: () => {
                 setShowCreateModal(false);
-                setNewUser({ name: '', email: '', password: '', role: 'Player', nationality: '' });
+                reset();
                 router.visit(route('users.index'), { preserveState: false });
             },
-            onError: (errors) => {
-                console.error(errors);
+            onError: () => {
+                // errors অটো-populate হবে useForm-এ
             },
-            onFinish: () => setCreating(false),
         });
     };
 
@@ -277,7 +275,10 @@ export default function UsersIndex() {
                             <Download className="h-4 w-4 mr-2" /> Export CSV
                         </Button> */}
                         <Button
-                            onClick={() => setShowCreateModal(true)}
+                            onClick={() => {
+                                clearErrors();
+                                setShowCreateModal(true);
+                            }}
                             className="h-9 bg-[#FF6B00] text-white hover:bg-[#CC5500] font-medium text-sm"
                         >
                             <UserPlus className="h-4 w-4 mr-2" /> Add User
@@ -475,9 +476,12 @@ export default function UsersIndex() {
                                         type="text"
                                         value={newUser.name}
                                         onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-                                        required
+
                                         className="h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-[#FF6B00]"
                                     />
+                                    {errors.name && (
+                                        <p className="text-xs text-red-400 mt-1">{errors.name}</p>
+                                    )}
                                 </div>
                                 <div>
                                     <label className="text-xs uppercase tracking-wide text-[#94A3B8] block mb-1">Email</label>
@@ -485,11 +489,13 @@ export default function UsersIndex() {
                                         type="email"
                                         value={newUser.email}
                                         onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                                        required
                                         className="h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-[#FF6B00]"
                                     />
+                                    {errors.name && (
+                                        <p className="text-xs text-red-400 mt-1">{errors.email}</p>
+                                    )}
                                 </div>
-                                <div>
+                                {/* <div>
                                     <label className="text-xs uppercase tracking-wide text-[#94A3B8] block mb-1">Password</label>
                                     <Input
                                         type="password"
@@ -498,7 +504,7 @@ export default function UsersIndex() {
                                         required
                                         className="h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-[#FF6B00]"
                                     />
-                                </div>
+                                </div> */}
                                 <div>
                                     <label className="text-xs uppercase tracking-wide text-[#94A3B8] block mb-1">Role</label>
                                     <select
@@ -506,12 +512,16 @@ export default function UsersIndex() {
                                         onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
                                         className="h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none"
                                     >
-                                        <option value="Player">Player</option>
-                                        <option value="Scout">Scout</option>
-                                        <option value="Agent">Agent</option>
-                                        <option value="Club">Club</option>
-                                        <option value="Admin">Admin</option>
+
+                                        <option value={GlobalConstant.ROLE_PLAYER}>Player</option>
+                                        <option value={GlobalConstant.ROLE_SCOUT}>Scout</option>
+                                        <option value={GlobalConstant.ROLE_AGENT}>Agent</option>
+                                        <option value={GlobalConstant.ROLE_CLUB}>Club</option>
+                                        <option value={GlobalConstant.ROLE_ADMIN}>Admin</option>
                                     </select>
+                                    {errors.name && (
+                                        <p className="text-xs text-red-400 mt-1">{errors.role}</p>
+                                    )}
                                 </div>
                                 {/* ── Nationality Dropdown (react‑select) ── */}
                                 <div>
@@ -529,6 +539,9 @@ export default function UsersIndex() {
                                         className="text-sm"
                                         styles={selectStyles}
                                     />
+                                    {errors.name && (
+                                        <p className="text-xs text-red-400 mt-1">{errors.nationality}</p>
+                                    )}
                                 </div>
                             </div>
                             <DialogFooter className="mt-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-2">

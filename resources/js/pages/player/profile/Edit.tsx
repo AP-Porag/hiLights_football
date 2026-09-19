@@ -440,6 +440,10 @@ export default function Edit() {
         competitions: (profile?.competitions?.length ? profile.competitions.map((c: any) => ({ name: c.name ?? '', year: c.year ?? '' })) : []) as any[],
         matches: (profile?.matches?.length ? profile.matches.map((m: any) => ({ home: m.home ?? '', score: m.score ?? '', away: m.away ?? '', goals: m.goals ?? '', assists: m.assists ?? '', minutes: m.minutes ?? '' })) : []) as any[],
         description: profile?.description ?? '',
+        supported_club: profile?.supported_club ?? '',
+        dream_club: profile?.dream_club ?? '',
+        boot_brands: (Array.isArray(profile?.boot_brands) ? profile.boot_brands : []) as string[],
+        boot_brand_other: profile?.boot_brand_other ?? '',
     });
 
     transform((d) => { const { photo_preview, ...rest } = d as any; return rest; });
@@ -459,6 +463,15 @@ export default function Edit() {
     const togglePosition = (id: string) => {
         if (data.positions.includes(id)) setData('positions', data.positions.filter(p => p !== id));
         else if (data.positions.length < 3) setData('positions', [...data.positions, id]);
+    };
+    const BOOT_BRANDS = ['Nike', 'Adidas', 'Puma', 'Umbro', 'Mizuno', 'Joma', 'Penalty', 'Skechers', 'Other'];
+
+    const toggleBootBrand = (brand: string) => {
+        if (data.boot_brands.includes(brand)) {
+            setData('boot_brands', data.boot_brands.filter((b) => b !== brand));
+        } else {
+            setData('boot_brands', [...data.boot_brands, brand]);
+        }
     };
 
     // Reorder a selected position (dir: -1 = up/higher priority, +1 = down/lower priority)
@@ -1122,6 +1135,81 @@ export default function Edit() {
                             <div className="flex justify-between mt-2">
                                 <FieldError msg={errors.description} />
                                 <span className={`text-xs font-mono ${descCount > 450 ? 'text-[#FF6B00] font-bold' : 'text-[#94A3B8]'}`}>{descCount} / 500</span>
+                            </div>
+                        </div>
+
+                        {/* Player Questionnaire — private, not shown on public profile */}
+                        <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8 mt-6">
+                            <h3 className="text-sm font-bold text-[#F5F5F5] mb-1 font-sans">Player Questionnaire</h3>
+                            <p className="text-xs text-[#94A3B8] mb-6 font-sans">The answers to these questions will not appear on your public profile.</p>
+
+                            <div className="space-y-6">
+                                <div>
+                                    <Label htmlFor="supported_club" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">
+                                        1. Which football club do you support?
+                                    </Label>
+                                    <Input
+                                        id="supported_club"
+                                        value={data.supported_club}
+                                        onChange={(e) => setData('supported_club', e.target.value)}
+                                        placeholder="e.g. Manchester United"
+                                        className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                    />
+                                    <FieldError msg={errors.supported_club} />
+                                </div>
+
+                                <div>
+                                    <Label htmlFor="dream_club" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">
+                                        2. Besides the club you support, which club do you dream of playing for?
+                                    </Label>
+                                    <Input
+                                        id="dream_club"
+                                        value={data.dream_club}
+                                        onChange={(e) => setData('dream_club', e.target.value)}
+                                        placeholder="e.g. Real Madrid"
+                                        className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                    />
+                                    <FieldError msg={errors.dream_club} />
+                                </div>
+
+                                <div>
+                                    <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">
+                                        3. Which football boot brand do you prefer and would most like to be sponsored by?
+                                        <span className="text-[#94A3B8] font-normal ml-1">(select all that apply)</span>
+                                    </Label>
+                                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                                        {BOOT_BRANDS.map((brand) => {
+                                            const selected = data.boot_brands.includes(brand);
+                                            return (
+                                                <label
+                                                    key={brand}
+                                                    className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-colors ${selected ? 'bg-[rgba(255,107,0,0.12)] border-[#FF6B00]' : 'bg-[#1F1F1F] border-[#2A2A2A]'}`}
+                                                >
+                                                    <Checkbox
+                                                        checked={selected}
+                                                        onCheckedChange={() => toggleBootBrand(brand)}
+                                                        className="border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
+                                                    />
+                                                    <span className={`text-sm font-sans ${selected ? 'text-[#CC5500] font-semibold' : 'text-[#F5F5F5]'}`}>
+                                                        {brand}
+                                                    </span>
+                                                </label>
+                                            );
+                                        })}
+                                    </div>
+
+                                    {data.boot_brands.includes('Other') && (
+                                        <div className="mt-3">
+                                            <Input
+                                                value={data.boot_brand_other}
+                                                onChange={(e) => setData('boot_brand_other', e.target.value)}
+                                                placeholder="Please specify the brand"
+                                                className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                            />
+                                        </div>
+                                    )}
+                                    <FieldError msg={errors.boot_brands} />
+                                </div>
                             </div>
                         </div>
                     </section>
