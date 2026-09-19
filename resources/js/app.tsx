@@ -4,6 +4,7 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { route as routeFn } from 'ziggy-js';
+import { Toaster } from 'sonner';
 import { initializeTheme } from './hooks/use-appearance';
 
 declare global {
@@ -25,7 +26,23 @@ createInertiaApp({
     resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
     setup({ el, App, props }) {
         const root = createRoot(el);
-        root.render(<App {...props} />);
+        root.render(
+            <>
+                <App {...props} />
+                <Toaster
+                    position="top-center"
+                    theme="dark"
+                    richColors
+                    toastOptions={{
+                        style: {
+                            background: '#161616',
+                            border: '1px solid #2A2A2A',
+                            color: '#F5F5F5',
+                        },
+                    }}
+                />
+            </>
+        );
     },
     progress: {
         color: '#4B5563',

@@ -19,10 +19,15 @@ export default function VerifyWhatsapp({ whatsapp, status }: Props) {
 
     // Page load hole ekbar automatically code pathao
     useEffect(() => {
-        if (!autoSent) {
+        if (autoSent) return;
+
+        setAutoSent(true);
+
+        const timer = setTimeout(() => {
             router.post(route('verification.whatsapp.send'), {}, { preserveScroll: true });
-            setAutoSent(true);
-        }
+        }, 100);
+
+        return () => clearTimeout(timer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

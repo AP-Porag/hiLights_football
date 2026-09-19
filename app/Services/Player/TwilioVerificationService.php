@@ -2,7 +2,9 @@
 
 namespace App\Services\Player;
 
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class TwilioVerificationService
 {
@@ -18,16 +20,34 @@ class TwilioVerificationService
     }
 
     /**
-     * WhatsApp channel-e code pathay; Twilio Verify automatically
-     * WhatsApp na thakle SMS-e fallback kore.
+     * Prothome WhatsApp channel-e code pathanor chesta kore;
+     * WhatsApp fail hole (na thakle/error hole) automatically SMS-e fallback kore.
      */
     public function sendCode(string $phoneE164): void
+    {
+        try {
+            $this->sendViaChannel($phoneE164, 'whatsapp');
+        } catch (RequestException $e) {
+            Log::info('Twilio WhatsApp send failed, falling back to SMS.', [
+                'phone' => $phoneE164,
+                'error' => $e->getMessage(),
+            ]);
+
+            // WhatsApp fail korle SMS-e fallback koro
+            $this->sendViaChannel($phoneE164, 'sms');
+        }
+    }
+
+    /**
+     * Ekta specific channel-e (whatsapp/sms) verification code pathay.
+     */
+    private function sendViaChannel(string $phoneE164, string $channel): void
     {
         Http::withBasicAuth($this->sid, $this->authToken)
             ->asForm()
             ->post("https://verify.twilio.com/v2/Services/{$this->verifySid}/Verifications", [
                 'To' => $phoneE164,
-                'Channel' => 'sms',
+                'Channel' => $channel,
             ])
             ->throw();
     }

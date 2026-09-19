@@ -308,7 +308,7 @@ export default function About() {
                                     ))}
                                 </ul>
                                 <Link
-                                    href="/register?role=scout"
+                                    href="/request-access"
                                     className="inline-flex items-center gap-2 mt-8 px-6 py-3 bg-[#0F172A] dark:bg-[#1F1F1F] text-white font-semibold text-sm rounded-lg hover:bg-[#1F1F1F] dark:hover:bg-[#2A2A2A] transition-colors"
                                 >
                                     Request Scout Access
