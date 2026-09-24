@@ -136,7 +136,7 @@ export default function ContactIndex() {
                     </div>
                     <div className="text-xs text-[#94A3B8]">
                         Total: <span className="font-mono font-semibold text-[#F5F5F5]">{messages.length}</span>
-                        {' '}· Unread: <span className="font-mono font-semibold text-[#FF6B00]">
+                        {' '}· Unread: <span className="font-mono font-semibold text-[#E53F01]">
                             {messages.filter(m => !m.is_read).length}
                         </span>
                     </div>
@@ -149,7 +149,7 @@ export default function ContactIndex() {
                         placeholder="Search by name, email, or subject..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="border-[#2A2A2A] bg-[#0D0D0D] pl-9 text-sm text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-800"
+                        className="border-[#2A2A2A] bg-[#0D0D0D] pl-9 text-sm text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-800"
                     />
                 </div>
 
@@ -207,7 +207,7 @@ export default function ContactIndex() {
                                                     onClick={() => handleReadToggle(msg.id)}
                                                     className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-[10px] font-bold uppercase tracking-wider transition-colors ${msg.is_read
                                                         ? 'border-green-700 bg-green-900/20 text-green-400 hover:bg-green-900/40'
-                                                        : 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00] hover:bg-[rgba(255,107,0,0.2)]'
+                                                        : 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01] hover:bg-[rgba(255,107,0,0.2)]'
                                                         }`}
                                                 >
                                                     {msg.is_read ? (
@@ -233,7 +233,7 @@ export default function ContactIndex() {
                                                     </Link>
                                                     <button
                                                         onClick={() => handleReply(msg)}
-                                                        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-[#94A3B8] hover:bg-[#1A1A1A] hover:text-[#FF6B00]"
+                                                        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-[#94A3B8] hover:bg-[#1A1A1A] hover:text-[#E53F01]"
                                                     >
                                                         <Reply className="h-4 w-4" />
                                                     </button>
@@ -275,7 +275,7 @@ export default function ContactIndex() {
                             onChange={(e) => setReplyText(e.target.value)}
                             placeholder="Type your reply here..."
                             rows={5}
-                            className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-800 resize-none"
+                            className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-800 resize-none"
                         />
                     </div>
                     <DialogFooter>
@@ -290,7 +290,7 @@ export default function ContactIndex() {
                         <Button
                             onClick={sendReply}
                             disabled={!replyText.trim() || sending}
-                            className="bg-[#FF6B00] text-white hover:bg-[#CC5500]"
+                            className="bg-[#E53F01] text-white hover:bg-[#E53F01]"
                         >
                             {sending ? 'Sending...' : 'Send Reply'}
                         </Button>

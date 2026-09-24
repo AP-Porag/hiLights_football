@@ -19,7 +19,7 @@
                     <tr>
                         <td align="center" style="padding-bottom:32px;">
                             <span style="font-size:24px; font-weight:900; font-style:italic; color:#F5F5F5;">
-                                Hi<span style="color:#FF6B00;">Lights</span>
+                                Hi<span style="color:#E53F01;">Lights</span>
                             </span>
                             <div
                                 style="font-size:11px; font-weight:700; letter-spacing:0.1em; color:#9A9A9A; margin-top:2px;">
@@ -72,9 +72,9 @@
                                         <table role="presentation" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td
-                                                    style="background-color:#111111; border:1px solid #FF6B00; border-radius:12px; padding:18px 32px;">
+                                                    style="background-color:#111111; border:1px solid #E53F01; border-radius:12px; padding:18px 32px;">
                                                     <span
-                                                        style="font-size:32px; font-weight:700; letter-spacing:10px; color:#FF6B00; font-family:'Courier New', monospace;">
+                                                        style="font-size:32px; font-weight:700; letter-spacing:10px; color:#E53F01; font-family:'Courier New', monospace;">
                                                         {{ $code }}
                                                     </span>
                                                 </td>

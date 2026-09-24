@@ -142,7 +142,7 @@ export default function Pricing() {
 
             <main className="pt-16">
                 {/* HEADER — orange band */}
-                <section className="bg-[#FF6B00] py-20 text-center px-6">
+                <section className="bg-[#E53F01] py-20 text-center px-6">
                     <div className="text-white/80 text-xs font-bold tracking-[0.2em] uppercase">
                         Pricing
                     </div>
@@ -159,8 +159,8 @@ export default function Pricing() {
                             type="button"
                             onClick={() => setBilling('monthly')}
                             className={`px-5 py-2 rounded-full text-sm transition-colors ${billing === 'monthly'
-                                    ? 'bg-white text-[#FF6B00] font-semibold'
-                                    : 'text-white font-medium'
+                                ? 'bg-white text-[#E53F01] font-semibold'
+                                : 'text-white font-medium'
                                 }`}
                         >
                             Monthly
@@ -169,8 +169,8 @@ export default function Pricing() {
                             type="button"
                             onClick={() => setBilling('annual')}
                             className={`px-5 py-2 rounded-full text-sm transition-colors flex items-center ${billing === 'annual'
-                                    ? 'bg-white text-[#FF6B00] font-semibold'
-                                    : 'text-white font-medium'
+                                ? 'bg-white text-[#E53F01] font-semibold'
+                                : 'text-white font-medium'
                                 }`}
                         >
                             Annual
@@ -193,12 +193,12 @@ export default function Pricing() {
                                     key={plan.id}
                                     className={
                                         isPremium
-                                            ? 'bg-white dark:bg-[#161616] border-2 border-[#FF6B00] rounded-2xl p-8 shadow-[0_8px_40px_rgba(255,107,0,0.2)] relative lg:scale-[1.02]'
+                                            ? 'bg-white dark:bg-[#161616] border-2 border-[#E53F01] rounded-2xl p-8 shadow-[0_8px_40px_rgba(255,107,0,0.2)] relative lg:scale-[1.02]'
                                             : 'bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-8'
                                     }
                                 >
                                     {plan.badge && (
-                                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#FF6B00] text-white text-xs font-black px-5 py-1.5 rounded-full tracking-wide uppercase">
+                                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#E53F01] text-white text-xs font-black px-5 py-1.5 rounded-full tracking-wide uppercase">
                                             {plan.badge}
                                         </div>
                                     )}
@@ -212,8 +212,8 @@ export default function Pricing() {
                                     <div className="mt-3 flex items-baseline">
                                         <span
                                             className={`font-display text-5xl font-black ${isPremium
-                                                    ? 'text-[#FF6B00]'
-                                                    : 'text-[#0F172A] dark:text-[#F5F5F5]'
+                                                ? 'text-[#E53F01]'
+                                                : 'text-[#0F172A] dark:text-[#F5F5F5]'
                                                 }`}
                                         >
                                             €{displayPrice.toFixed(displayPrice % 1 === 0 ? 0 : 2)}
@@ -237,7 +237,7 @@ export default function Pricing() {
                                                 className="flex items-start gap-3 text-sm text-[#0F172A] dark:text-[#F5F5F5]"
                                             >
                                                 <CheckCircle2
-                                                    className={`w-4 h-4 mt-0.5 shrink-0 ${isPremium ? 'text-[#FF6B00]' : 'text-green-500'
+                                                    className={`w-4 h-4 mt-0.5 shrink-0 ${isPremium ? 'text-[#E53F01]' : 'text-green-500'
                                                         }`}
                                                 />
                                                 <span>{feat}</span>
@@ -262,14 +262,14 @@ export default function Pricing() {
                                         {isPremium ? (
                                             <Link
                                                 href="/register?plan=premium"
-                                                className="bg-[#FF6B00] text-white w-full h-12 font-bold rounded-xl hover:bg-[#CC5500] flex items-center justify-center transition-colors"
+                                                className="bg-[#E53F01] text-white w-full h-12 font-bold rounded-xl hover:bg-[#E53F01] flex items-center justify-center transition-colors"
                                             >
                                                 {plan.cta}
                                             </Link>
                                         ) : (
                                             <Link
                                                 href={plan.id === 'agent' ? '/contact?plan=agent' : '/register'}
-                                                className="w-full h-12 border border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] hover:text-[#FF6B00] font-semibold rounded-xl flex items-center justify-center text-[#0F172A] dark:text-[#F5F5F5] transition-colors bg-white dark:bg-[#161616]"
+                                                className="w-full h-12 border border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#E53F01] hover:text-[#E53F01] font-semibold rounded-xl flex items-center justify-center text-[#0F172A] dark:text-[#F5F5F5] transition-colors bg-white dark:bg-[#161616]"
                                             >
                                                 {plan.cta}
                                             </Link>
@@ -301,7 +301,7 @@ export default function Pricing() {
                                         <TableHead className="text-[#0F172A] dark:text-[#F5F5F5] font-bold text-sm text-center py-4">
                                             Free
                                         </TableHead>
-                                        <TableHead className="text-[#FF6B00] font-black text-sm text-center py-4">
+                                        <TableHead className="text-[#E53F01] font-black text-sm text-center py-4">
                                             Premium
                                         </TableHead>
                                         <TableHead className="text-[#0F172A] dark:text-[#F5F5F5] font-bold text-sm text-center py-4">
@@ -356,15 +356,15 @@ export default function Pricing() {
                     {/* Trust badges */}
                     <div className="flex flex-wrap justify-center items-center gap-6 mt-8">
                         <div className="flex items-center gap-2 text-sm text-[#0F172A] dark:text-[#F5F5F5]">
-                            <RefreshCcw className="w-4 h-4 text-[#FF6B00]" />
+                            <RefreshCcw className="w-4 h-4 text-[#E53F01]" />
                             <span className="font-semibold">Cancel Anytime</span>
                         </div>
                         <div className="flex items-center gap-2 text-sm text-[#0F172A] dark:text-[#F5F5F5]">
-                            <ShieldCheck className="w-4 h-4 text-[#FF6B00]" />
+                            <ShieldCheck className="w-4 h-4 text-[#E53F01]" />
                             <span className="font-semibold">Secure Payment</span>
                         </div>
                         <div className="flex items-center gap-2 text-sm text-[#0F172A] dark:text-[#F5F5F5]">
-                            <CheckCircle2 className="w-4 h-4 text-[#FF6B00]" />
+                            <CheckCircle2 className="w-4 h-4 text-[#E53F01]" />
                             <span className="font-semibold">30-Day Guarantee</span>
                         </div>
                     </div>
@@ -374,7 +374,7 @@ export default function Pricing() {
                 <section className="bg-white dark:bg-[#111111] py-16 px-6">
                     <div className="max-w-[800px] mx-auto">
                         <div className="text-center mb-10">
-                            <div className="text-[#FF6B00] text-xs font-bold tracking-[0.2em] uppercase">
+                            <div className="text-[#E53F01] text-xs font-bold tracking-[0.2em] uppercase">
                                 FAQ
                             </div>
                             <h2 className="font-display font-black text-3xl sm:text-4xl text-[#0F172A] dark:text-[#F5F5F5] mt-2">
@@ -387,7 +387,7 @@ export default function Pricing() {
                                 <AccordionItem
                                     key={i}
                                     value={`item-${i}`}
-                                    className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl px-6 data-[state=open]:border-[#FF6B00]/40"
+                                    className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl px-6 data-[state=open]:border-[#E53F01]/40"
                                 >
                                     <AccordionTrigger className="text-left font-semibold text-[#0F172A] dark:text-[#F5F5F5] hover:no-underline py-5 text-base">
                                         {f.q}
@@ -463,7 +463,7 @@ function renderCell(value: boolean | string, highlight = false) {
     if (typeof value === 'boolean') {
         return value ? (
             <Check
-                className={`w-5 h-5 mx-auto ${highlight ? 'text-[#FF6B00]' : 'text-green-500'
+                className={`w-5 h-5 mx-auto ${highlight ? 'text-[#E53F01]' : 'text-green-500'
                     }`}
             />
         ) : (
@@ -473,8 +473,8 @@ function renderCell(value: boolean | string, highlight = false) {
     return (
         <span
             className={`font-mono text-xs font-semibold ${highlight
-                    ? 'text-[#FF6B00]'
-                    : 'text-[#0F172A] dark:text-[#F5F5F5]'
+                ? 'text-[#E53F01]'
+                : 'text-[#0F172A] dark:text-[#F5F5F5]'
                 }`}
         >
             {value}

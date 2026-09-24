@@ -27,13 +27,13 @@ exports.__esModule = true;
 //             desc: (
 //                 <>
 //                     Build an organized, professional profile with your{" "}
-//                     <span className="text-[#ff6b00]">data</span>,{" "}
-//                     <span className="text-[#ff6b00]">club history</span>,{" "}
-//                     <span className="text-[#ff6b00]">
+//                     <span className="text-[#E53F01]">data</span>,{" "}
+//                     <span className="text-[#E53F01]">club history</span>,{" "}
+//                     <span className="text-[#E53F01]">
 //                         physical and technical characteristics
 //                     </span>
 //                     , and your{" "}
-//                     <span className="text-[#ff6b00]">achievements</span>.
+//                     <span className="text-[#E53F01]">achievements</span>.
 //                 </>
 //             ),
 //         },
@@ -44,8 +44,8 @@ exports.__esModule = true;
 //             desc: (
 //                 <>
 //                     Show the world your{" "}
-//                     <span className="text-[#ff6b00]">best moments</span>. Get{" "}
-//                     <span className="text-[#ff6b00]">improvement tips</span> to make
+//                     <span className="text-[#E53F01]">best moments</span>. Get{" "}
+//                     <span className="text-[#E53F01]">improvement tips</span> to make
 //                     your videos more attractive to scouts, agents and clubs.
 //                 </>
 //             ),
@@ -58,7 +58,7 @@ exports.__esModule = true;
 //                 <>
 //                     A platform developed by professionals from various areas of football
 //                     with{" "}
-//                     <span className="text-[#ff6b00]">
+//                     <span className="text-[#E53F01]">
 //                         over 20 years of experience worldwide
 //                     </span>
 //                     .
@@ -126,7 +126,7 @@ exports.__esModule = true;
 //                                     {/* <h1 className="text-red-700 md:text-blue-600 min-[]:text-yellow-500 text-2xl">hello i am aongkon</h1> */}
 //                                     <h1 className="text-3xl leading-tight font-extrabold uppercase sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
 //                                         <span className="block text-white">Be Seen.</span>
-//                                         <span className="block text-[#ee5e00]">
+//                                         <span className="block text-[#E53F01]">
 //                                             Be Discovered <span className="text-white">!</span>
 //                                         </span>
 //                                     </h1>
@@ -147,7 +147,7 @@ exports.__esModule = true;
 //                             </div>
 //                         </div>
 //                         <div className="mb-10 flex flex-wrap gap-4 pl-6 sm:pl-10 lg:pl-16">
-//                             <button className="flex items-center justify-center cursor-pointer rounded-md bg-[#ea3905] px-3 py-2 text-xs md:text-base lg:text-lg font-semibold uppercase transition-all duration-300 hover:bg-orange-600 md:px-6 md:py-2">
+//                             <button className="flex items-center justify-center cursor-pointer rounded-md bg-[#E53F01] px-3 py-2 text-xs md:text-base lg:text-lg font-semibold uppercase transition-all duration-300 hover:bg-[#E53F01] md:px-6 md:py-2">
 //                                 <UserRoundPlus className="h-6 w-6" />
 //                                 <span className="pl-2">
 //                                     Create A Free
@@ -172,7 +172,7 @@ exports.__esModule = true;
 //                     <div className="">
 //                         {/* Heading */}
 //                         <h2 className="mb-6 text-base leading-tight font-extrabold uppercase sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl">
-//                             A SIMPLE. PROFESSIONAL. <span className="text-[#df5f18]">EFFECTIVE PLATFORM.</span>
+//                             A SIMPLE. PROFESSIONAL. <span className="text-[#E53F01]">EFFECTIVE PLATFORM.</span>
 //                         </h2>
 //                         {/* Steps */}
 //                         <div className="lg:max-w-5xl">
@@ -187,13 +187,13 @@ exports.__esModule = true;
 //                                             {/* Icon */}
 //                                             <div className="flex justify-center">
 //                                                 <div className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-500 md:h-14 md:w-14">
-//                                                     <Icon className="h-5 w-5 text-[#ff6100] md:h-8 md:w-8" />
+//                                                     <Icon className="h-5 w-5 text-[#E53F01] md:h-8 md:w-8" />
 //                                                 </div>
 //                                             </div>
 //                                             {/* Step */}
 //                                             <div>
-//                                                 <p className="text-[10px] font-bold text-[#ff6b00] md:text-sm">STEP</p>
-//                                                 <h3 className="text-3xl leading-none font-extrabold text-[#ff6b00] md:text-5xl">{item.step}</h3>
+//                                                 <p className="text-[10px] font-bold text-[#E53F01] md:text-sm">STEP</p>
+//                                                 <h3 className="text-3xl leading-none font-extrabold text-[#E53F01] md:text-5xl">{item.step}</h3>
 //                                             </div>
 //                                             {/* Content */}
 //                                             <div className="border-l-4 border-[#1f1f1f] pl-3 md:pl-5">
@@ -213,14 +213,14 @@ exports.__esModule = true;
 //                         <div className="flex items-center gap-4 border-b border-[#1f1f1f] py-6 sm:grid sm:grid-cols-[70px_1fr_200px] md:grid-cols-[90px_1fr_400px] lg:grid-cols-[110px_1fr_500px]">
 //                             {/* Left Icon */}
 //                             <div className="flex justify-center">
-//                                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#e63e00] md:h-20 md:w-20">
+//                                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#E53F01] md:h-20 md:w-20">
 //                                     <Users className="text-white md:h-12 md:w-12" />
 //                                 </div>
 //                             </div>
 //                             {/* Text */}
 //                             <div>
 //                                 <h3 className="text-base leading-tight font-bold sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
-//                                     Not part of the <span className="text-[#ff6100]">HiLights Football</span>
+//                                     Not part of the <span className="text-[#E53F01]">HiLights Football</span>
 //                                     <br />
 //                                     community yet?
 //                                 </h3>
@@ -230,7 +230,7 @@ exports.__esModule = true;
 //                             </div>
 //                             {/* Button */}
 //                             <div className="flex items-end justify-end lg:pr-10">
-//                                 <button className="sm:-w-45 flex cursor-pointer items-center gap-2 rounded-xl border border-[#773a0c] px-4 py-2 transition hover:bg-[#ff6b00]/10 md:gap-4 lg:px-8 lg:py-4">
+//                                 <button className="sm:-w-45 flex cursor-pointer items-center gap-2 rounded-xl border border-[#E53F01] px-4 py-2 transition hover:bg-[#E53F01]/10 md:gap-4 lg:px-8 lg:py-4">
 //                                     <UserPlus className="h-6 w-6 text-white md:h-8 md:w-8" />
 //                                     <span className="text-left text-xs font-bold uppercase sm:text-sm md:text-base lg:text-lg xl:text-xl">
 //                                         <span className="text-[#dc7936]">Create a Free</span>
@@ -254,14 +254,14 @@ exports.__esModule = true;
 //                         {/* Header */}
 //                         <div className="flex items-center justify-between pb-3">
 //                             <div className="flex items-center gap-2">
-//                                 <Star size={18} fill="#ff6b00" className="text-[#f25704]" />
+//                                 <Star size={18} fill="#E53F01" className="text-[#f25704]" />
 //                                 <h2 className="text-sm font-extrabold whitespace-nowrap text-[#222] uppercase md:text-base lg:text-lg">
 //                                     Community Highlights
 //                                 </h2>
 //                             </div>
 //                             <button className="flex cursor-pointer items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs">
 //                                 View All
-//                                 <ArrowRight size={14} className="text-[#ff6b00]" />
+//                                 <ArrowRight size={14} className="text-[#E53F01]" />
 //                             </button>
 //                         </div>
 //                         {/* Rows */}
@@ -329,16 +329,16 @@ var HomeTwo = function () {
             desc: (react_1["default"].createElement(react_1["default"].Fragment, null,
                 "Build an organized, professional profile with your",
                 " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "data"),
+                react_1["default"].createElement("span", { className: "text-[#E53F01]" }, "data"),
                 ",",
                 " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "club history"),
+                react_1["default"].createElement("span", { className: "text-[#E53F01]" }, "club history"),
                 ",",
                 " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "physical and technical characteristics"),
+                react_1["default"].createElement("span", { className: "text-[#E53F01]" }, "physical and technical characteristics"),
                 ", and your",
                 " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "achievements"),
+                react_1["default"].createElement("span", { className: "text-[#E53F01]" }, "achievements"),
                 "."))
         },
         {
@@ -348,10 +348,10 @@ var HomeTwo = function () {
             desc: (react_1["default"].createElement(react_1["default"].Fragment, null,
                 "Show the world your",
                 " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "best moments"),
+                react_1["default"].createElement("span", { className: "text-[#E53F01]" }, "best moments"),
                 ". Get",
                 " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "improvement tips"),
+                react_1["default"].createElement("span", { className: "text-[#E53F01]" }, "improvement tips"),
                 " to make your videos more attractive to scouts, agents and clubs."))
         },
         {
@@ -361,7 +361,7 @@ var HomeTwo = function () {
             desc: (react_1["default"].createElement(react_1["default"].Fragment, null,
                 "A platform developed by professionals from various areas of football with",
                 " ",
-                react_1["default"].createElement("span", { className: "text-[#ff6b00]" }, "over 20 years of experience worldwide"),
+                react_1["default"].createElement("span", { className: "text-[#E53F01]" }, "over 20 years of experience worldwide"),
                 "."))
         },
     ];
@@ -417,13 +417,13 @@ var HomeTwo = function () {
                         react_1["default"].createElement("div", { className: "max-w-xl" },
                             react_1["default"].createElement("h1", { className: "text-3xl font-extrabold uppercase leading-tight sm:text-4xl md:text-[42px] lg:text-5xl xl:text-6xl" },
                                 react_1["default"].createElement("span", { className: "block text-white" }, "Be Seen."),
-                                react_1["default"].createElement("span", { className: "block text-[#ee5e00]" },
+                                react_1["default"].createElement("span", { className: "block text-[#E53F01]" },
                                     "Be Discovered ",
                                     react_1["default"].createElement("span", { className: "text-white" }, "!"))),
                             react_1["default"].createElement("p", { className: "mt-6 max-w-lg text-sm leading-relaxed text-[#f4f4f4] sm:text-base xl:text-lg" }, "The platform that connects players, clubs, agents and scouts through videos, statistics and professional profiles."),
                             react_1["default"].createElement("p", { className: "mt-4 max-w-lg border-l-2 border-[#b2300e] pl-3 text-sm leading-relaxed text-[#f4f4f4] sm:text-base xl:text-lg" }, "Show your talent to the world and increase your opportunities in football."),
                             react_1["default"].createElement("div", { className: "mt-8 flex flex-wrap items-center gap-4" },
-                                react_1["default"].createElement("button", { className: "flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#ea3905] px-4 py-3 text-xs font-semibold uppercase transition-all duration-300 hover:bg-orange-600 sm:text-sm lg:px-6 lg:py-3 lg:text-base" },
+                                react_1["default"].createElement("button", { className: "flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#E53F01] px-4 py-3 text-xs font-semibold uppercase transition-all duration-300 hover:bg-[#E53F01] sm:text-sm lg:px-6 lg:py-3 lg:text-base" },
                                     react_1["default"].createElement(lucide_react_1.UserRoundPlus, { className: "h-5 w-5 shrink-0 lg:h-6 lg:w-6" }),
                                     react_1["default"].createElement("span", { className: "text-left leading-tight" },
                                         "Create A Free",
@@ -441,34 +441,34 @@ var HomeTwo = function () {
                 react_1["default"].createElement("div", null,
                     react_1["default"].createElement("h2", { className: "mb-6 text-2xl font-extrabold uppercase leading-tight sm:text-3xl lg:text-4xl" },
                         "A SIMPLE. PROFESSIONAL. ",
-                        react_1["default"].createElement("span", { className: "text-[#df5f18]" }, "EFFECTIVE PLATFORM.")),
+                        react_1["default"].createElement("span", { className: "text-[#E53F01]" }, "EFFECTIVE PLATFORM.")),
                     react_1["default"].createElement("div", { className: "lg:max-w-5xl" }, steps.map(function (item, index) {
                         var Icon = item.icon;
                         return (react_1["default"].createElement("div", { key: index, className: "border-b border-[#1f1f1f]" },
                             react_1["default"].createElement("div", { className: "grid grid-cols-[50px_60px_1fr] items-center py-5 md:grid-cols-[70px_90px_1fr] lg:max-w-4xl" },
                                 react_1["default"].createElement("div", { className: "flex justify-center" },
                                     react_1["default"].createElement("div", { className: "flex h-9 w-9 items-center justify-center rounded-full border border-gray-500 md:h-14 md:w-14" },
-                                        react_1["default"].createElement(Icon, { className: "h-5 w-5 text-[#ff6100] md:h-8 md:w-8" }))),
+                                        react_1["default"].createElement(Icon, { className: "h-5 w-5 text-[#E53F01] md:h-8 md:w-8" }))),
                                 react_1["default"].createElement("div", null,
-                                    react_1["default"].createElement("p", { className: "text-[10px] font-bold text-[#ff6b00] md:text-sm" }, "STEP"),
-                                    react_1["default"].createElement("h3", { className: "text-3xl leading-none font-extrabold text-[#ff6b00] md:text-5xl" }, item.step)),
+                                    react_1["default"].createElement("p", { className: "text-[10px] font-bold text-[#E53F01] md:text-sm" }, "STEP"),
+                                    react_1["default"].createElement("h3", { className: "text-3xl leading-none font-extrabold text-[#E53F01] md:text-5xl" }, item.step)),
                                 react_1["default"].createElement("div", { className: "border-l-4 border-[#1f1f1f] pl-3 md:pl-5" },
                                     react_1["default"].createElement("h3", { className: "mb-1 text-base font-extrabold uppercase sm:text-lg md:text-xl lg:text-2xl" }, item.title),
                                     react_1["default"].createElement("p", { className: "text-sm leading-relaxed text-gray-300 sm:text-base lg:text-lg" }, item.desc)))));
                     })),
                     react_1["default"].createElement("div", { className: "flex items-center gap-4 border-b border-[#1f1f1f] py-6 sm:grid sm:grid-cols-[70px_1fr_200px] md:grid-cols-[90px_1fr_300px] lg:grid-cols-[110px_1fr_320px]" },
                         react_1["default"].createElement("div", { className: "flex justify-center" },
-                            react_1["default"].createElement("div", { className: "flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e63e00] md:h-20 md:w-20" },
+                            react_1["default"].createElement("div", { className: "flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#E53F01] md:h-20 md:w-20" },
                                 react_1["default"].createElement(lucide_react_1.Users, { className: "text-white md:h-12 md:w-12" }))),
                         react_1["default"].createElement("div", null,
                             react_1["default"].createElement("h3", { className: "text-base leading-tight font-bold sm:text-lg md:text-xl lg:text-2xl" },
                                 "Not part of the ",
-                                react_1["default"].createElement("span", { className: "text-[#ff6100]" }, "HiLights Football"),
+                                react_1["default"].createElement("span", { className: "text-[#E53F01]" }, "HiLights Football"),
                                 react_1["default"].createElement("br", null),
                                 "community yet?"),
                             react_1["default"].createElement("p", { className: "mt-3 max-w-xl text-xs leading-relaxed text-[#efefef] sm:text-sm md:text-base" }, "Create your free profile, share your best moments and become visible to coaches, clubs and recruiters worldwide.")),
                         react_1["default"].createElement("div", { className: "flex items-end justify-end lg:pr-4" },
-                            react_1["default"].createElement("button", { className: "flex cursor-pointer items-center gap-2 rounded-xl border border-[#773a0c] px-4 py-2 transition hover:bg-[#ff6b00]/10 md:gap-4 lg:px-8 lg:py-4" },
+                            react_1["default"].createElement("button", { className: "flex cursor-pointer items-center gap-2 rounded-xl border border-[#E53F01] px-4 py-2 transition hover:bg-[#E53F01]/10 md:gap-4 lg:px-8 lg:py-4" },
                                 react_1["default"].createElement(lucide_react_1.UserPlus, { className: "h-6 w-6 shrink-0 text-white md:h-8 md:w-8" }),
                                 react_1["default"].createElement("span", { className: "text-left text-xs font-bold uppercase sm:text-sm lg:text-base" },
                                     react_1["default"].createElement("span", { className: "text-[#dc7936]" }, "Create a Free"),
@@ -482,11 +482,11 @@ var HomeTwo = function () {
                 react_1["default"].createElement("div", { className: "rounded-xl bg-[#f9f9f9] p-3 md:p-6" },
                     react_1["default"].createElement("div", { className: "flex items-center justify-between pb-3" },
                         react_1["default"].createElement("div", { className: "flex items-center gap-2" },
-                            react_1["default"].createElement(lucide_react_1.Star, { size: 18, fill: "#ff6b00", className: "text-[#f25704]" }),
+                            react_1["default"].createElement(lucide_react_1.Star, { size: 18, fill: "#E53F01", className: "text-[#f25704]" }),
                             react_1["default"].createElement("h2", { className: "text-xs font-extrabold whitespace-nowrap text-[#222] uppercase md:text-sm lg:text-base" }, "Community Highlights")),
                         react_1["default"].createElement("button", { className: "flex cursor-pointer items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs lg:text-sm" },
                             "View All",
-                            react_1["default"].createElement(lucide_react_1.ArrowRight, { size: 14, className: "text-[#ff6b00]" }))),
+                            react_1["default"].createElement(lucide_react_1.ArrowRight, { size: 14, className: "text-[#E53F01]" }))),
                     players.map(function (player, index) { return (react_1["default"].createElement(react_2.Link, { key: index, href: route('profile.public.detail', 1) },
                         react_1["default"].createElement("div", { className: "mb-2 grid grid-cols-[40px_1fr_70px_70px] items-center rounded-[12px] bg-white pr-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:grid-cols-[70px_1fr_80px_120px] md:grid-cols-[150px_1fr_120px_170px]" },
                             react_1["default"].createElement("div", { className: "relative" },

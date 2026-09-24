@@ -70,7 +70,7 @@ export const Pitch = ({ selected = [] }: PitchProps) => {
                                         cy={p.cy}
                                         r="14"
                                         fill={isActive ? 'rgba(255,107,0,0.85)' : 'transparent'}
-                                        stroke={isActive ? '#FF6B00' : 'rgba(255,255,255,0.4)'}
+                                        stroke={isActive ? '#E53F01' : 'rgba(255,255,255,0.4)'}
                                         strokeWidth="1.5"
                                     />
                                     <text

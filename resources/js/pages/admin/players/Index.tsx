@@ -58,7 +58,7 @@ function SubscriptionBadge({ sub }: { sub: Player['subscription'] }) {
     const styles = {
         Free: 'bg-[#1F1F1F] text-[#94A3B8] border-[#2A2A2A]',
         Pro: 'bg-[#2A2A2A] text-[#F5F5F5] border-[#3A3A3A]',
-        Elite: 'bg-[rgba(255,107,0,0.12)] text-[#FF6B00] border-[#FF6B00]',
+        Elite: 'bg-[rgba(255,107,0,0.12)] text-[#E53F01] border-[#E53F01]',
     } as const;
     return (
         <span className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wider ${styles[sub]}`}>
@@ -158,7 +158,7 @@ export default function PlayersIndex() {
                     ].map((stat) => (
                         <div key={stat.label} className="rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] p-6">
                             <div className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">{stat.label}</div>
-                            <div className={`mt-2 font-mono text-2xl font-semibold ${stat.accent ? 'text-[#FF6B00]' : 'text-[#F5F5F5]'}`}>{stat.value}</div>
+                            <div className={`mt-2 font-mono text-2xl font-semibold ${stat.accent ? 'text-[#E53F01]' : 'text-[#F5F5F5]'}`}>{stat.value}</div>
                         </div>
                     ))}
                 </div>
@@ -173,7 +173,7 @@ export default function PlayersIndex() {
                                 placeholder="Search by name, club, or country..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="h-10 border-[#2A2A2A] bg-[#1A1A1A] pl-9 text-sm text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-800"
+                                className="h-10 border-[#2A2A2A] bg-[#1A1A1A] pl-9 text-sm text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-800"
                             />
                         </form>
                         <div className="flex flex-wrap items-center gap-3">
@@ -189,7 +189,7 @@ export default function PlayersIndex() {
                                             }`}
                                     >
                                         {tab}
-                                        <span className={`ml-1.5 font-mono ${activeFilter === tab ? 'text-[#FF6B00]' : 'text-[#555555]'}`}>
+                                        <span className={`ml-1.5 font-mono ${activeFilter === tab ? 'text-[#E53F01]' : 'text-[#555555]'}`}>
                                             {tab === 'All' ? players.total : tab === 'Published' ? stats.published : stats.featured}
                                         </span>
                                     </button>
@@ -246,7 +246,7 @@ export default function PlayersIndex() {
                                             </TableCell>
                                             <TableCell className="py-4">
                                                 <div className="flex flex-col">
-                                                    <Link href={`/players/${player.id}`} className="font-display text-sm font-semibold text-[#F5F5F5] hover:text-[#FF6B00]">{player.name}</Link>
+                                                    <Link href={`/player/profile/${player.id}`} className="font-display text-sm font-semibold text-[#F5F5F5] hover:text-[#E53F01]">{player.name}</Link>
                                                     {/* <div className="mt-0.5 flex items-center gap-2 text-xs text-[#94A3B8]">
                                                         {player.age && <span className="font-mono">Age {player.age}</span>}
                                                         <span className="text-[#2A2A2A]">•</span>
@@ -255,7 +255,7 @@ export default function PlayersIndex() {
                                                 </div>
                                             </TableCell>
                                             <TableCell className="py-4">
-                                                <span className="inline-flex items-center rounded-md border border-[#FF6B00] bg-[rgba(255,107,0,0.12)] px-2 py-1 font-mono text-xs font-semibold text-[#CC5500]">{player.positionShort}</span>
+                                                <span className="inline-flex items-center rounded-md border border-[#E53F01] bg-[rgba(255,107,0,0.12)] px-2 py-1 font-mono text-xs font-semibold text-[#E53F01]">{player.positionShort}</span>
                                             </TableCell>
                                             <TableCell className="py-4">
                                                 <div className="flex items-center gap-2 text-sm text-[#F5F5F5]">
@@ -264,12 +264,12 @@ export default function PlayersIndex() {
                                             </TableCell>
                                             <TableCell className="py-4 text-sm text-[#94A3B8]">{player.club}</TableCell>
                                             <TableCell className="py-4"><SubscriptionBadge sub={player.subscription} /></TableCell>
-                                            <TableCell className="py-4 text-right font-mono text-sm font-semibold text-[#FF6B00]">{formatViews(player.views)}</TableCell>
+                                            <TableCell className="py-4 text-right font-mono text-sm font-semibold text-[#E53F01]">{formatViews(player.views)}</TableCell>
                                             <TableCell className="py-4 text-center">
                                                 <Switch
                                                     checked={player.featured}
                                                     onCheckedChange={() => handleToggleFeatured(player.id)}
-                                                    className="data-[state=checked]:bg-[#FF6B00] data-[state=unchecked]:bg-[#2A2A2A]"
+                                                    className="data-[state=checked]:bg-[#E53F01] data-[state=unchecked]:bg-[#2A2A2A]"
                                                 />
                                             </TableCell>
                                             <TableCell className="py-4 text-right">
@@ -375,9 +375,9 @@ function EditPlayerForm({ player, onClose }: { player: Player; onClose: () => vo
             <div className="flex-1 overflow-y-auto px-6 py-6">
                 <Tabs defaultValue="basic" className="w-full">
                     <TabsList className="grid w-full grid-cols-3 border border-[#2A2A2A] bg-[#1A1A1A]">
-                        <TabsTrigger value="basic" className="text-xs data-[state=active]:bg-[#0D0D0D] data-[state=active]:text-[#FF6B00] text-[#94A3B8]">Basic Info</TabsTrigger>
-                        <TabsTrigger value="physical" className="text-xs data-[state=active]:bg-[#0D0D0D] data-[state=active]:text-[#FF6B00] text-[#94A3B8]">Physical</TabsTrigger>
-                        <TabsTrigger value="status" className="text-xs data-[state=active]:bg-[#0D0D0D] data-[state=active]:text-[#FF6B00] text-[#94A3B8]">Status</TabsTrigger>
+                        <TabsTrigger value="basic" className="text-xs data-[state=active]:bg-[#0D0D0D] data-[state=active]:text-[#E53F01] text-[#94A3B8]">Basic Info</TabsTrigger>
+                        <TabsTrigger value="physical" className="text-xs data-[state=active]:bg-[#0D0D0D] data-[state=active]:text-[#E53F01] text-[#94A3B8]">Physical</TabsTrigger>
+                        <TabsTrigger value="status" className="text-xs data-[state=active]:bg-[#0D0D0D] data-[state=active]:text-[#E53F01] text-[#94A3B8]">Status</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="basic" className="mt-6 space-y-5">
@@ -448,7 +448,7 @@ function EditPlayerForm({ player, onClose }: { player: Player; onClose: () => vo
             <div className="shrink-0 border-t border-[#2A2A2A] bg-[#0D0D0D] px-6 py-4">
                 <div className="flex justify-end gap-3">
                     <Button type="button" variant="outline" onClick={onClose} className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] hover:bg-[#2A2A2A]">Cancel</Button>
-                    <Button type="submit" disabled={processing} className="bg-[#FF6B00] text-white hover:bg-[#CC5500]">
+                    <Button type="submit" disabled={processing} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">
                         {processing ? 'Saving...' : 'Save Changes'}
                     </Button>
                 </div>

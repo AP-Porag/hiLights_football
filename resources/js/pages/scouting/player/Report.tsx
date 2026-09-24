@@ -188,16 +188,16 @@ export default function Report() {
                             <img
                                 src={player.photo_url}
                                 alt={fullName}
-                                className="w-20 h-20 rounded-2xl border-2 border-[#FF6B00] object-cover flex-shrink-0"
+                                className="w-20 h-20 rounded-2xl border-2 border-[#E53F01] object-cover flex-shrink-0"
                             />
                         ) : (
-                            <div className="w-20 h-20 rounded-2xl border-2 border-[#FF6B00] bg-white/10 flex items-center justify-center font-display text-2xl font-black text-white/70 flex-shrink-0">
+                            <div className="w-20 h-20 rounded-2xl border-2 border-[#E53F01] bg-white/10 flex items-center justify-center font-display text-2xl font-black text-white/70 flex-shrink-0">
                                 {initials(fullName)}
                             </div>
                         )}
                         <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2 mb-2">
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#FF6B00] text-[10px] font-bold uppercase tracking-wider">
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-bold uppercase tracking-wider">
                                     <FileText className="w-3 h-3" />
                                     {roleLabel} Report
                                 </span>
@@ -216,7 +216,7 @@ export default function Report() {
                                 {fullName}
                             </h1>
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/60">
-                                {positions[0] && <span className="font-mono text-[#FF6B00]">{positions[0]}</span>}
+                                {positions[0] && <span className="font-mono text-[#E53F01]">{positions[0]}</span>}
                                 {nationality && (
                                     <span className="flex items-center gap-1.5">
                                         <span className="text-base">{codeToFlag(player?.user?.nationality)}</span>
@@ -259,7 +259,7 @@ export default function Report() {
                             {averageRating > 0 && (
                                 <div className="text-right flex-shrink-0">
                                     <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold">Overall</div>
-                                    <div className="font-mono text-3xl font-bold text-[#FF6B00]">{averageRating.toFixed(1)}</div>
+                                    <div className="font-mono text-3xl font-bold text-[#E53F01]">{averageRating.toFixed(1)}</div>
                                 </div>
                             )}
                         </div>
@@ -271,7 +271,7 @@ export default function Report() {
                                         const value = rating[cat.key as keyof RatingRow] as number;
                                         return (
                                             <div key={cat.key} className="bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl p-4">
-                                                <Icon className="w-4 h-4 text-[#FF6B00] mb-2" />
+                                                <Icon className="w-4 h-4 text-[#E53F01] mb-2" />
                                                 <div className="font-mono text-2xl font-bold">{value || '—'}</div>
                                                 <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mt-1">{cat.label}</div>
                                             </div>
@@ -292,7 +292,7 @@ export default function Report() {
                                 </p>
                                 <Link
                                     href={`/scouting/player/${player?.id}`}
-                                    className="inline-flex items-center gap-1.5 text-[#FF6B00] hover:text-[#CC5500] text-sm font-semibold"
+                                    className="inline-flex items-center gap-1.5 text-[#E53F01] hover:text-[#E53F01] text-sm font-semibold"
                                 >
                                     Add a rating first
                                     <ArrowLeft className="w-4 h-4 rotate-180" />
@@ -314,12 +314,12 @@ export default function Report() {
                                         type="button"
                                         onClick={() => setData('recommendation', rec.value)}
                                         className={`text-left p-4 rounded-xl border transition-colors ${active
-                                            ? 'bg-[rgba(255,107,0,0.12)] border-[#FF6B00]'
-                                            : 'bg-[#1F1F1F] border-[#2A2A2A] hover:border-[#FF6B00]'
+                                            ? 'bg-[rgba(255,107,0,0.12)] border-[#E53F01]'
+                                            : 'bg-[#1F1F1F] border-[#2A2A2A] hover:border-[#E53F01]'
                                             }`}
                                     >
-                                        <Icon className={`w-5 h-5 mb-2 ${active ? 'text-[#FF6B00]' : 'text-[#9A9A9A]'}`} />
-                                        <div className={`font-display text-lg font-bold uppercase ${active ? 'text-[#FF6B00]' : ''}`}>
+                                        <Icon className={`w-5 h-5 mb-2 ${active ? 'text-[#E53F01]' : 'text-[#9A9A9A]'}`} />
+                                        <div className={`font-display text-lg font-bold uppercase ${active ? 'text-[#E53F01]' : ''}`}>
                                             {rec.label}
                                         </div>
                                         <div className="text-[11px] text-[#9A9A9A] leading-snug mt-0.5">{rec.desc}</div>
@@ -340,7 +340,7 @@ export default function Report() {
                                 value={data.match_context}
                                 onChange={(e) => setData('match_context', e.target.value)}
                                 placeholder="e.g. Santos U-20 vs Palmeiras U-20, 12 Mar 2026 — live"
-                                className="w-full h-11 px-4 bg-[#111111] border border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-orange-800"
+                                className="w-full h-11 px-4 bg-[#111111] border border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#E53F01] focus:ring-1 focus:ring-orange-800"
                             />
                             {errors.match_context && (
                                 <p className="text-xs text-[#DC2626] mt-1.5">{errors.match_context}</p>
@@ -361,7 +361,7 @@ export default function Report() {
                                     onChange={(e) => setData('strengths', e.target.value)}
                                     rows={5}
                                     placeholder="What stands out — technical qualities, decision-making, movement off the ball..."
-                                    className="w-full px-4 py-3 bg-[#111111] border border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-orange-800 resize-none"
+                                    className="w-full px-4 py-3 bg-[#111111] border border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#E53F01] focus:ring-1 focus:ring-orange-800 resize-none"
                                 />
                                 {errors.strengths && (
                                     <p className="text-xs text-[#DC2626] mt-1.5">{errors.strengths}</p>
@@ -376,7 +376,7 @@ export default function Report() {
                                     onChange={(e) => setData('weaknesses', e.target.value)}
                                     rows={5}
                                     placeholder="Where does he need to improve — physicality, consistency, defensive work rate..."
-                                    className="w-full px-4 py-3 bg-[#111111] border border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-orange-800 resize-none"
+                                    className="w-full px-4 py-3 bg-[#111111] border border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#E53F01] focus:ring-1 focus:ring-orange-800 resize-none"
                                 />
                                 {errors.weaknesses && (
                                     <p className="text-xs text-[#DC2626] mt-1.5">{errors.weaknesses}</p>
@@ -391,7 +391,7 @@ export default function Report() {
                                     onChange={(e) => setData('summary', e.target.value)}
                                     rows={6}
                                     placeholder="Overall assessment, projected ceiling, and what you'd recommend as next steps..."
-                                    className="w-full px-4 py-3 bg-[#111111] border border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-orange-800 resize-none"
+                                    className="w-full px-4 py-3 bg-[#111111] border border-[#2A2A2A] rounded-xl text-sm focus:outline-none focus:border-[#E53F01] focus:ring-1 focus:ring-orange-800 resize-none"
                                 />
                                 {errors.summary && (
                                     <p className="text-xs text-[#DC2626] mt-1.5">{errors.summary}</p>
@@ -406,7 +406,7 @@ export default function Report() {
                                 type="button"
                                 onClick={() => submitWith('draft')}
                                 disabled={processing}
-                                className="flex-1 inline-flex items-center justify-center gap-2 bg-[#1F1F1F] border border-[#2A2A2A] hover:border-[#FF6B00] disabled:opacity-60 text-[#F5F5F5] px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
+                                className="flex-1 inline-flex items-center justify-center gap-2 bg-[#1F1F1F] border border-[#2A2A2A] hover:border-[#E53F01] disabled:opacity-60 text-[#F5F5F5] px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
                             >
                                 <Save className="w-4 h-4" />
                                 {processing ? 'Saving...' : 'Save Draft'}
@@ -415,7 +415,7 @@ export default function Report() {
                                 type="button"
                                 onClick={() => submitWith('final')}
                                 disabled={processing}
-                                className="flex-1 inline-flex items-center justify-center gap-2 bg-[#FF6B00] hover:bg-[#CC5500] disabled:opacity-60 text-white px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
+                                className="flex-1 inline-flex items-center justify-center gap-2 bg-[#E53F01] hover:bg-[#E53F01] disabled:opacity-60 text-white px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
                             >
                                 <Send className="w-4 h-4" />
                                 {processing ? 'Submitting...' : 'Submit Report'}

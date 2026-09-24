@@ -221,7 +221,7 @@ function positionGradient(position: string): string {
         case 'MID':
             return 'bg-gradient-to-br from-emerald-500/25 to-teal-700/30';
         case 'FWD':
-            return 'bg-gradient-to-br from-[#FF6B00]/30 to-red-700/30';
+            return 'bg-gradient-to-br from-[#E53F01]/30 to-red-700/30';
         default:
             return 'bg-gradient-to-br from-slate-400/20 to-slate-700/20';
     }
@@ -297,7 +297,7 @@ function FilterPanel({
                 <h3 className="text-xs font-bold text-[#F5F5F5] tracking-widest uppercase">
                     Filters
                     {activeFilterCount > 0 && (
-                        <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[#FF6B00] px-1.5 py-0.5 text-[9px] font-black text-white">
+                        <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[#E53F01] px-1.5 py-0.5 text-[9px] font-black text-white">
                             {activeFilterCount}
                         </span>
                     )}
@@ -305,7 +305,7 @@ function FilterPanel({
                 <button
                     onClick={clearAll}
                     disabled={activeFilterCount === 0}
-                    className="text-[#FF6B00] text-xs hover:underline font-semibold disabled:opacity-40 disabled:cursor-not-allowed disabled:no-underline"
+                    className="text-[#E53F01] text-xs hover:underline font-semibold disabled:opacity-40 disabled:cursor-not-allowed disabled:no-underline"
                 >
                     Clear All
                 </button>
@@ -322,14 +322,14 @@ function FilterPanel({
                                 id={`pos-${p.code}`}
                                 checked={selectedPositions.includes(p.code)}
                                 onCheckedChange={() => togglePosition(p.code)}
-                                className="border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
+                                className="border-[#2A2A2A] data-[state=checked]:bg-[#E53F01] data-[state=checked]:border-[#E53F01]"
                             />
                             <Label
                                 htmlFor={`pos-${p.code}`}
                                 className="flex-1 flex items-center justify-between text-sm font-normal text-[#F5F5F5] cursor-pointer"
                             >
                                 <span>
-                                    <span className="font-mono font-bold text-[#FF6B00]">{p.code}</span>
+                                    <span className="font-mono font-bold text-[#E53F01]">{p.code}</span>
                                     <span className="text-[#9A9A9A]"> — {p.label}</span>
                                 </span>
                                 <span className="text-[10px] font-mono text-[#555555]">{p.count}</span>
@@ -345,7 +345,7 @@ function FilterPanel({
             <div className="space-y-3">
                 <div className="flex items-center justify-between">
                     <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">Age Range</h4>
-                    <span className="font-mono text-[#FF6B00] text-sm font-semibold">
+                    <span className="font-mono text-[#E53F01] text-sm font-semibold">
                         {ageActive ? `${ageMin} – ${ageMax}` : 'Any'}
                     </span>
                 </div>
@@ -356,7 +356,7 @@ function FilterPanel({
                         max={AGE_CEIL}
                         value={ageMin}
                         onChange={(e) => setAgeMin(Math.min(Number(e.target.value), ageMax))}
-                        className="w-full h-1.5 bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-[#FF6B00]"
+                        className="w-full h-1.5 bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-[#E53F01]"
                     />
                     <input
                         type="range"
@@ -364,7 +364,7 @@ function FilterPanel({
                         max={AGE_CEIL}
                         value={ageMax}
                         onChange={(e) => setAgeMax(Math.max(Number(e.target.value), ageMin))}
-                        className="w-full h-1.5 bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-[#FF6B00]"
+                        className="w-full h-1.5 bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-[#E53F01]"
                     />
                 </div>
                 <div className="flex justify-between text-[10px] font-mono text-[#555555]">
@@ -383,7 +383,7 @@ function FilterPanel({
                         value={countrySearch}
                         onChange={(e) => setCountrySearch(e.target.value)}
                         placeholder="Search country..."
-                        className="pl-9 h-9 text-sm bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-orange-800"
+                        className="pl-9 h-9 text-sm bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800"
                     />
                 </div>
                 <div className="space-y-1.5 max-h-44 overflow-y-auto pr-1">
@@ -395,7 +395,7 @@ function FilterPanel({
                                     id={`country-${c.name}`}
                                     checked={selectedCountries.includes(c.name)}
                                     onCheckedChange={() => toggleCountry(c.name)}
-                                    className="border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
+                                    className="border-[#2A2A2A] data-[state=checked]:bg-[#E53F01] data-[state=checked]:border-[#E53F01]"
                                 />
                                 <Label
                                     htmlFor={`country-${c.name}`}
@@ -427,7 +427,7 @@ function FilterPanel({
                             <RadioGroupItem
                                 id={`foot-${foot}`}
                                 value={foot}
-                                className="border-[#2A2A2A] text-[#FF6B00]"
+                                className="border-[#2A2A2A] text-[#E53F01]"
                             />
                             <Label htmlFor={`foot-${foot}`} className="text-sm font-normal text-[#F5F5F5] capitalize cursor-pointer">
                                 {foot}
@@ -448,7 +448,7 @@ function FilterPanel({
                                 id={`mod-${m.name}`}
                                 checked={selectedModalities.includes(m.name)}
                                 onCheckedChange={() => toggleModality(m.name)}
-                                className="border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
+                                className="border-[#2A2A2A] data-[state=checked]:bg-[#E53F01] data-[state=checked]:border-[#E53F01]"
                             />
                             <Label
                                 htmlFor={`mod-${m.name}`}
@@ -473,7 +473,7 @@ function FilterPanel({
                         value={heightMin}
                         onChange={(e) => setHeightMin(e.target.value)}
                         placeholder="Min"
-                        className="h-9 text-sm font-mono bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-orange-800"
+                        className="h-9 text-sm font-mono bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800"
                     />
                     <span className="text-[#94A3B8] text-sm">–</span>
                     <Input
@@ -481,7 +481,7 @@ function FilterPanel({
                         value={heightMax}
                         onChange={(e) => setHeightMax(e.target.value)}
                         placeholder="Max"
-                        className="h-9 text-sm font-mono bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-orange-800"
+                        className="h-9 text-sm font-mono bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800"
                     />
                 </div>
             </div>
@@ -491,14 +491,14 @@ function FilterPanel({
                 <p className="text-[10px] uppercase tracking-widest text-[#555555] text-center">Sponsored</p>
                 <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-xl h-[240px] p-5 flex flex-col items-center justify-center text-center border border-[#334155] relative overflow-hidden">
                     <div className="absolute top-2 right-2 text-[9px] text-white/30 uppercase tracking-widest">Ad</div>
-                    <div className="w-14 h-14 rounded-full bg-[#FF6B00]/20 border border-[#FF6B00]/40 flex items-center justify-center mb-3">
-                        <Network className="w-7 h-7 text-[#FF6B00]" strokeWidth={2.2} />
+                    <div className="w-14 h-14 rounded-full bg-[#E53F01]/20 border border-[#E53F01]/40 flex items-center justify-center mb-3">
+                        <Network className="w-7 h-7 text-[#E53F01]" strokeWidth={2.2} />
                     </div>
                     <h4 className="font-display text-xl font-bold text-white tracking-tight">ScoutPro Network</h4>
                     <p className="text-xs text-white/60 leading-snug mt-2 mb-4 px-2">
                         Connect with 12,000+ verified scouts. Direct messaging, market insights, and exclusive reports.
                     </p>
-                    <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white text-xs font-bold uppercase tracking-wider px-5 py-2 rounded-lg transition-colors">
+                    <button className="bg-[#E53F01] hover:bg-[#E53F01] text-white text-xs font-bold uppercase tracking-wider px-5 py-2 rounded-lg transition-colors">
                         Join Free
                     </button>
                 </div>
@@ -838,7 +838,7 @@ export default function Index({
                                     setPage(1);
                                 }}
                                 placeholder="Search by name, club, or nationality..."
-                                className="pl-10 pr-10 h-11 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-orange-800"
+                                className="pl-10 pr-10 h-11 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800"
                             />
                             {searchQuery && (
                                 <button
@@ -846,7 +846,7 @@ export default function Index({
                                         setSearchQuery('');
                                         setPage(1);
                                     }}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#FF6B00]"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#E53F01]"
                                     aria-label="Clear search"
                                 >
                                     <X className="w-4 h-4" />
@@ -865,7 +865,7 @@ export default function Index({
                                         <SlidersHorizontal className="w-4 h-4 mr-2" />
                                         Filters
                                         {activeFilterCount > 0 && (
-                                            <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[#FF6B00] px-1.5 py-0.5 text-[10px] font-black text-white">
+                                            <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[#E53F01] px-1.5 py-0.5 text-[10px] font-black text-white">
                                                 {activeFilterCount}
                                             </span>
                                         )}
@@ -894,7 +894,7 @@ export default function Index({
                                 <button
                                     onClick={() => setView('grid')}
                                     className={`p-1.5 rounded-md transition-colors ${view === 'grid'
-                                        ? 'text-[#FF6B00] bg-[rgba(255,107,0,0.12)]'
+                                        ? 'text-[#E53F01] bg-[rgba(255,107,0,0.12)]'
                                         : 'text-[#555555] hover:text-[#9A9A9A]'
                                         }`}
                                     aria-label="Grid view"
@@ -904,7 +904,7 @@ export default function Index({
                                 <button
                                     onClick={() => setView('list')}
                                     className={`p-1.5 rounded-md transition-colors ${view === 'list'
-                                        ? 'text-[#FF6B00] bg-[rgba(255,107,0,0.12)]'
+                                        ? 'text-[#E53F01] bg-[rgba(255,107,0,0.12)]'
                                         : 'text-[#555555] hover:text-[#9A9A9A]'
                                         }`}
                                     aria-label="List view"
@@ -936,7 +936,7 @@ export default function Index({
                                 <button
                                     key={`${chip.label}-${i}`}
                                     onClick={chip.onRemove}
-                                    className="inline-flex items-center gap-1.5 rounded-full border border-[#FF6B00] bg-[rgba(255,107,0,0.12)] px-3 py-1 text-xs font-semibold text-[#CC5500] hover:bg-[#FF6B00] hover:text-white transition-colors"
+                                    className="inline-flex items-center gap-1.5 rounded-full border border-[#E53F01] bg-[rgba(255,107,0,0.12)] px-3 py-1 text-xs font-semibold text-[#E53F01] hover:bg-[#E53F01] hover:text-white transition-colors"
                                 >
                                     {chip.label}
                                     <X className="w-3 h-3" />
@@ -944,7 +944,7 @@ export default function Index({
                             ))}
                             <button
                                 onClick={clearAll}
-                                className="text-xs font-bold text-[#9A9A9A] hover:text-[#FF6B00] hover:underline"
+                                className="text-xs font-bold text-[#9A9A9A] hover:text-[#E53F01] hover:underline"
                             >
                                 Clear all
                             </button>
@@ -963,7 +963,7 @@ export default function Index({
                                 Sponsored
                             </div>
                             <div className="flex items-center gap-3 shrink-0">
-                                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#FF6B00] to-[#CC5500] flex items-center justify-center font-display font-black text-white text-lg">
+                                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#E53F01] to-[#E53F01] flex items-center justify-center font-display font-black text-white text-lg">
                                     TR
                                 </div>
                                 <div className="text-white">
@@ -991,7 +991,7 @@ export default function Index({
                             ) : (
                                 <>
                                     <p className="text-sm text-[#9A9A9A]">No players match your filters.</p>
-                                    <button onClick={clearAll} className="mt-3 text-[#FF6B00] text-xs font-bold hover:underline">
+                                    <button onClick={clearAll} className="mt-3 text-[#E53F01] text-xs font-bold hover:underline">
                                         Clear all filters
                                     </button>
                                 </>
@@ -1007,7 +1007,7 @@ export default function Index({
                                 return (
                                     <div
                                         key={p.id}
-                                        className="bg-[#161616] border border-[#2A2A2A] rounded-2xl overflow-hidden cursor-pointer group transition-all hover:-translate-y-1 hover:shadow-[0_4px_20px_rgba(255,107,0,0.08)] hover:border-[#FF6B00] relative"
+                                        className="bg-[#161616] border border-[#2A2A2A] rounded-2xl overflow-hidden cursor-pointer group transition-all hover:-translate-y-1 hover:shadow-[0_4px_20px_rgba(255,107,0,0.08)] hover:border-[#E53F01] relative"
                                     >
                                         <Link href={`/agent/player/${p.id}`} className="block">
                                             {/* Photo area */}
@@ -1030,7 +1030,7 @@ export default function Index({
                                                     />
                                                 )}
                                                 {/* Position badge */}
-                                                <span className="absolute top-3 left-3 bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-black px-2.5 py-0.5 rounded-full tracking-wider">
+                                                <span className="absolute top-3 left-3 bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-black px-2.5 py-0.5 rounded-full tracking-wider">
                                                     {p.position}
                                                 </span>
                                                 {/* Flag */}
@@ -1073,7 +1073,7 @@ export default function Index({
                                                     </div>
                                                 </div>
 
-                                                <p className="mt-3 text-[#FF6B00] text-xs font-bold tracking-wider group-hover:underline flex items-center gap-1">
+                                                <p className="mt-3 text-[#E53F01] text-xs font-bold tracking-wider group-hover:underline flex items-center gap-1">
                                                     VIEW PROFILE
                                                     <ChevronRight className="w-3 h-3" />
                                                 </p>
@@ -1091,7 +1091,7 @@ export default function Index({
                                             aria-label={isSaved ? 'Unsave player' : 'Save player'}
                                         >
                                             {isSaved ? (
-                                                <Heart className="w-5 h-5 fill-[#FF6B00] text-[#FF6B00]" />
+                                                <Heart className="w-5 h-5 fill-[#E53F01] text-[#E53F01]" />
                                             ) : (
                                                 <Heart className="w-5 h-5 text-white" />
                                             )}
@@ -1171,7 +1171,7 @@ export default function Index({
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <span className="bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-black px-2 py-0.5 rounded-full tracking-wider">
+                                                        <span className="bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-black px-2 py-0.5 rounded-full tracking-wider">
                                                             {p.position}
                                                         </span>
                                                     </TableCell>
@@ -1202,14 +1202,14 @@ export default function Index({
                                                                 aria-label={isSaved ? 'Unsave player' : 'Save player'}
                                                             >
                                                                 {isSaved ? (
-                                                                    <Heart className="w-5 h-5 fill-[#FF6B00] text-[#FF6B00]" />
+                                                                    <Heart className="w-5 h-5 fill-[#E53F01] text-[#E53F01]" />
                                                                 ) : (
                                                                     <Heart className="w-5 h-5 text-[#9A9A9A] hover:text-white" />
                                                                 )}
                                                             </button>
                                                             <Link
                                                                 href={`/scouting/player/${p.id}`}
-                                                                className="inline-flex items-center gap-1 text-[#FF6B00] text-xs font-bold tracking-wider hover:underline"
+                                                                className="inline-flex items-center gap-1 text-[#E53F01] text-xs font-bold tracking-wider hover:underline"
                                                             >
                                                                 VIEW
                                                                 <ChevronRight className="w-3 h-3" />
@@ -1257,7 +1257,7 @@ export default function Index({
                                                 }}
                                                 className={
                                                     n === currentPage
-                                                        ? 'bg-[#FF6B00] text-white border-[#FF6B00] hover:bg-[#CC5500] hover:text-white'
+                                                        ? 'bg-[#E53F01] text-white border-[#E53F01] hover:bg-[#E53F01] hover:text-white'
                                                         : 'text-[#9A9A9A] hover:bg-[#1A1A1A] border-[#2A2A2A]'
                                                 }
                                             >

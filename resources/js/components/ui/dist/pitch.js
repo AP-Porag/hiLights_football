@@ -81,7 +81,7 @@ exports.Pitch = function () {
                     POSITION_ZONES.map(function (p) {
                         var selected = data.positions.includes(p.id);
                         return (react_1["default"].createElement("g", { key: p.id, onClick: function () { return togglePosition(p.id); }, style: { cursor: 'pointer' }, className: "group" },
-                            react_1["default"].createElement("circle", { cx: p.cx, cy: p.cy, r: "14", fill: selected ? 'rgba(255,107,0,0.85)' : 'transparent', stroke: selected ? '#FF6B00' : 'rgba(255,255,255,0.4)', strokeWidth: "1.5", className: "group-hover:fill-[rgba(255,107,0,0.3)] transition-colors" }),
+                            react_1["default"].createElement("circle", { cx: p.cx, cy: p.cy, r: "14", fill: selected ? 'rgba(255,107,0,0.85)' : 'transparent', stroke: selected ? '#E53F01' : 'rgba(255,255,255,0.4)', strokeWidth: "1.5", className: "group-hover:fill-[rgba(255,107,0,0.3)] transition-colors" }),
                             react_1["default"].createElement("text", { x: p.cx, y: p.cy, textAnchor: "middle", dominantBaseline: "central", fontSize: "8", fontWeight: "700", fill: selected ? '#FFFFFF' : 'rgba(255,255,255,0.7)', style: { pointerEvents: 'none' } }, p.label)));
                     }))))));
 };

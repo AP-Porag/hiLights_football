@@ -65,7 +65,7 @@ export default function EditUser() {
         option: (base: any, state: any) => ({
             ...base,
             backgroundColor: state.isSelected
-                ? '#FF6B00'
+                ? '#E53F01'
                 : state.isFocused
                     ? '#2A2A2A'
                     : '#1F1F1F',
@@ -119,7 +119,7 @@ export default function EditUser() {
                     <div className="flex items-center gap-4 mb-8">
                         <Link
                             href={route('users.index')}
-                            className="inline-flex items-center gap-1 text-sm text-[#FF6B00] hover:underline"
+                            className="inline-flex items-center gap-1 text-sm text-[#E53F01] hover:underline"
                         >
                             <ArrowLeft className="h-4 w-4" />
                             Back to Users
@@ -140,7 +140,7 @@ export default function EditUser() {
                                     name="name"
                                     defaultValue={user.name}
                                     required
-                                    className="h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-[#FF6B00]"
+                                    className="h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-[#E53F01]"
                                 />
                             </div>
 
@@ -152,7 +152,7 @@ export default function EditUser() {
                                 <select
                                     name="role"
                                     defaultValue={user.role}
-                                    className="h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none"
+                                    className="h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none"
                                 >
                                     <option value="Player">Player</option>
                                     <option value="Scout">Scout</option>
@@ -196,7 +196,7 @@ export default function EditUser() {
                                 <select
                                     name="status"
                                     defaultValue={user.status}
-                                    className="h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none"
+                                    className="h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none"
                                 >
                                     <option value="Active">Active</option>
                                     <option value="Suspended">Suspended</option>
@@ -207,7 +207,7 @@ export default function EditUser() {
                             <div className="flex justify-end pt-4 border-t border-[#2A2A2A]">
                                 <Button
                                     type="submit"
-                                    className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-medium text-sm h-9 px-6"
+                                    className="bg-[#E53F01] hover:bg-[#E53F01] text-white font-medium text-sm h-9 px-6"
                                 >
                                     Update User
                                 </Button>

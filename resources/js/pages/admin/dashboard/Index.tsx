@@ -62,7 +62,7 @@ const roleStyles: Record<string, string> = {
     Scout: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
     Agent: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30',
     Club: 'bg-green-500/10 text-green-400 border-green-500/30',
-    Admin: 'bg-[rgba(255,107,0,0.12)] text-[#FF6B00] border-[#FF6B00]/30',
+    Admin: 'bg-[rgba(255,107,0,0.12)] text-[#E53F01] border-[#E53F01]/30',
 };
 const statusStyles: Record<string, string> = {
     Active: 'bg-green-500/10 text-green-400 border-green-500/30',
@@ -71,9 +71,9 @@ const statusStyles: Record<string, string> = {
 };
 const subscriptionStyles: Record<string, string> = {
     Free: 'bg-[#1F1F1F] text-[#9A9A9A] border-[#2A2A2A]',
-    Premium: 'bg-[rgba(255,107,0,0.12)] text-[#FF6B00] border-[#FF6B00]/30',
-    Elite: 'bg-[rgba(255,107,0,0.12)] text-[#FF6B00] border-[#FF6B00]/30',
-    Agent: 'bg-[rgba(255,107,0,0.12)] text-[#FF6B00] border-[#FF6B00]/30',
+    Premium: 'bg-[rgba(255,107,0,0.12)] text-[#E53F01] border-[#E53F01]/30',
+    Elite: 'bg-[rgba(255,107,0,0.12)] text-[#E53F01] border-[#E53F01]/30',
+    Agent: 'bg-[rgba(255,107,0,0.12)] text-[#E53F01] border-[#E53F01]/30',
 };
 
 const statusClasses: Record<string, string> = {
@@ -90,7 +90,7 @@ const StatCard: React.FC<{
     subtitle?: string;
 }> = ({ label, value, icon, trend, valueClass, subtitle }) => (
     <Card className="relative overflow-hidden rounded-2xl border-[#2A2A2A] bg-[#161616] shadow-sm">
-        <div className="absolute top-0 right-0 bottom-0 w-1 bg-[#FF6B00]" />
+        <div className="absolute top-0 right-0 bottom-0 w-1 bg-[#E53F01]" />
         <CardContent className="p-6">
             <div className="mb-4 flex items-start justify-between">
                 <span className="font-sans text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">{label}</span>
@@ -163,32 +163,32 @@ export default function Index() {
                     <StatCard
                         label="Total Players"
                         value={nf(stats.totalPlayers)}
-                        icon={<Users className="h-4 w-4 text-[#FF6B00]" />}
+                        icon={<Users className="h-4 w-4 text-[#E53F01]" />}
                         trend={{ text: trends.players, positive: true }}
                     />
                     <StatCard
                         label="Active Premium"
                         value={nf(stats.activePremium)}
                         subtitle={stats.totalPlayers > 0 ? `${((stats.activePremium / stats.totalPlayers) * 100).toFixed(1)}% of players` : undefined}
-                        icon={<Crown className="h-4 w-4 text-[#FF6B00]" />}
+                        icon={<Crown className="h-4 w-4 text-[#E53F01]" />}
                         trend={{ text: trends.premium, positive: true }}
                     />
                     <StatCard
                         label="Revenue MRR"
                         value={`$${nfMoney(stats.mrr)}`}
-                        valueClass="text-[#FF6B00] font-mono"
-                        icon={<TrendingUp className="h-4 w-4 text-[#FF6B00]" />}
+                        valueClass="text-[#E53F01] font-mono"
+                        icon={<TrendingUp className="h-4 w-4 text-[#E53F01]" />}
                     />
                     <StatCard
                         label="New Today"
                         value={`+${nf(stats.newToday)}`}
                         valueClass="text-green-400 font-mono"
-                        icon={<UserPlus className="h-4 w-4 text-[#FF6B00]" />}
+                        icon={<UserPlus className="h-4 w-4 text-[#E53F01]" />}
                     />
                     <StatCard
                         label="Active Scouts"
                         value={nf(stats.activeScouts)}
-                        icon={<Search className="h-4 w-4 text-[#FF6B00]" />}
+                        icon={<Search className="h-4 w-4 text-[#E53F01]" />}
                         trend={{ text: trends.scouts, positive: true }}
                     />
                 </div>
@@ -201,7 +201,7 @@ export default function Index() {
                                 <CardTitle className="font-display text-lg font-bold text-[#F5F5F5]">Registrations — Last 30 Days</CardTitle>
                                 <p className="mt-1 text-xs text-[#9A9A9A]">Daily new user sign-ups across all roles</p>
                             </div>
-                            <Badge className="border border-[#FF6B00]/30 bg-[rgba(255,107,0,0.12)] text-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]">
+                            <Badge className="border border-[#E53F01]/30 bg-[rgba(255,107,0,0.12)] text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]">
                                 <span className="font-mono text-xs">{registrationTrend >= 0 ? '+' : ''}{registrationTrend}%</span>
                             </Badge>
                         </CardHeader>
@@ -218,14 +218,14 @@ export default function Index() {
                                             interval={4}
                                         />
                                         <YAxis tick={{ fontSize: 10, fill: '#6B6B6B' }} tickLine={false} axisLine={false} />
-                                        <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#FF6B00', strokeOpacity: 0.2, strokeWidth: 2 }} />
+                                        <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#E53F01', strokeOpacity: 0.2, strokeWidth: 2 }} />
                                         <Line
                                             type="monotone"
                                             dataKey="registrations"
-                                            stroke="#FF6B00"
+                                            stroke="#E53F01"
                                             strokeWidth={2}
                                             dot={false}
-                                            activeDot={{ r: 5, fill: '#FF6B00', stroke: '#161616', strokeWidth: 2 }}
+                                            activeDot={{ r: 5, fill: '#E53F01', stroke: '#161616', strokeWidth: 2 }}
                                         />
                                     </LineChart>
                                 </ResponsiveContainer>
@@ -297,7 +297,7 @@ export default function Index() {
                         </div>
                         {/* <Link
                             href="/admin/users"
-                            className="inline-flex items-center gap-1 text-sm font-medium text-[#FF6B00] transition-colors hover:text-[#CC5500]"
+                            className="inline-flex items-center gap-1 text-sm font-medium text-[#E53F01] transition-colors hover:text-[#E53F01]"
                         >
                             View All
                             <ArrowUpRight className="h-3.5 w-3.5" />
@@ -327,7 +327,7 @@ export default function Index() {
                                                 <div className="flex items-center gap-3">
                                                     <Avatar className="h-9 w-9 border border-[#2A2A2A]">
                                                         {user?.avatar && <AvatarImage src={user?.avatar} alt={user.name} />}
-                                                        <AvatarFallback className="bg-[rgba(255,107,0,0.12)] text-xs font-semibold text-[#FF6B00]">
+                                                        <AvatarFallback className="bg-[rgba(255,107,0,0.12)] text-xs font-semibold text-[#E53F01]">
                                                             {user.initials}
                                                         </AvatarFallback>
                                                     </Avatar>
@@ -364,7 +364,7 @@ export default function Index() {
                                                         <Button
                                                             variant="ghost"
                                                             size="sm"
-                                                            className="h-8 w-8 p-0 text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#FF6B00]"
+                                                            className="h-8 w-8 p-0 text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]"
                                                         >
                                                             <MoreHorizontal className="h-4 w-4" />
                                                         </Button>
@@ -406,7 +406,7 @@ export default function Index() {
                                         <div className="flex min-w-0 flex-1 items-center gap-3">
                                             <Avatar className="h-10 w-10 shrink-0 border border-[#2A2A2A]">
                                                 {user?.avatar && <AvatarImage src={user?.avatar} alt={user.name} />}
-                                                <AvatarFallback className="bg-[rgba(255,107,0,0.12)] text-xs font-semibold text-[#FF6B00]">
+                                                <AvatarFallback className="bg-[rgba(255,107,0,0.12)] text-xs font-semibold text-[#E53F01]">
                                                     {user.initials}
                                                 </AvatarFallback>
                                             </Avatar>
@@ -420,7 +420,7 @@ export default function Index() {
                                                 <Button
                                                     variant="ghost"
                                                     size="sm"
-                                                    className="h-8 w-8 shrink-0 p-0 text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#FF6B00]"
+                                                    className="h-8 w-8 shrink-0 p-0 text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]"
                                                 >
                                                     <MoreHorizontal className="h-4 w-4" />
                                                 </Button>

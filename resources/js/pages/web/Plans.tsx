@@ -179,7 +179,7 @@ export default function Plans() {
                         {/* Left Side */}
                         <div>
                             <h1 className="text-[42px] font-extrabold tracking-wide italic sm:text-[55px] md:text-[65px] lg:text-[80px]">PLANS</h1>
-                            <h2 className="-mt-2 text-[14px] font-bold text-[#f54208] uppercase italic sm:text-[18px] md:-mt-3 md:text-[22px] lg:text-[24px]">
+                            <h2 className="-mt-2 text-[14px] font-bold text-[#E53F01] uppercase italic sm:text-[18px] md:-mt-3 md:text-[22px] lg:text-[24px]">
                                 Choose the plan that drives
                             </h2>
                             <h3 className="text-[16px] font-bold text-white uppercase sm:text-[20px] md:text-[20px] lg:text-[22px]">
@@ -343,7 +343,7 @@ export default function Plans() {
 
                         {/* Premium Monthly */}
                         <div className="relative rounded-[20px] border border-orange-500 bg-black p-6">
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-md bg-[#e53f01] px-4 py-1 text-xs font-bold text-white uppercase">
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-md bg-[#E53F01] px-4 py-1 text-xs font-bold text-white uppercase">
                                 Most Popular
                             </div>
                             <div className="mb-4 flex justify-center">
@@ -351,7 +351,7 @@ export default function Plans() {
                             </div>
                             <h3 className="text-center text-2xl font-bold text-white uppercase italic">HiLights Premium</h3>
                             <p className="mb-6 text-center">
-                                <span className="text-[20px] font-semibold text-white">R$ <span className="pl-1 text-[30px] font-bold text-[#e73d00]">47</span></span>
+                                <span className="text-[20px] font-semibold text-white">R$ <span className="pl-1 text-[30px] font-bold text-[#E53F01]">47</span></span>
                                 <span className="ml-2 text-sm text-white">/month</span>
                                 <span className="ml-4 text-xs text-orange-500">(12 months fidelity)</span>
                             </p>
@@ -368,7 +368,7 @@ export default function Plans() {
                                 disabled={disablePlanOne}
                                 className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disablePlanOne
                                     ? 'cursor-not-allowed bg-gray-600 opacity-50'
-                                    : 'bg-[#e53f01] hover:bg-orange-600'
+                                    : 'bg-[#E53F01] hover:bg-[#E53F01]'
                                     }`}
                             >
                                 Choose Prmium
@@ -382,7 +382,7 @@ export default function Plans() {
                             </div>
                             <h3 className="text-center text-2xl font-bold text-white uppercase italic">HiLights Premium</h3>
                             <p className="mb-6 text-center">
-                                <span className="text-[20px] font-semibold text-white">R$ <span className="pl-1 text-[30px] font-bold text-[#e73d00]">94</span></span>
+                                <span className="text-[20px] font-semibold text-white">R$ <span className="pl-1 text-[30px] font-bold text-[#E53F01]">94</span></span>
                                 <span className="ml-2 text-sm text-white">/month</span>
                                 <span className="ml-6 text-xs text-orange-500">(no fidelity)</span>
                             </p>
@@ -399,7 +399,7 @@ export default function Plans() {
                                 disabled={disablePlanTwo}
                                 className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disablePlanTwo
                                     ? 'cursor-not-allowed bg-gray-600 opacity-50'
-                                    : 'bg-[#e53f01] hover:bg-orange-600'
+                                    : 'bg-[#E53F01] hover:bg-[#E53F01]'
                                     }`}
                             >
                                 {disablePlanTwo ? 'Already Subscribed' : 'Choose Premium'}
@@ -458,7 +458,7 @@ export default function Plans() {
                             </p>
                         </div>
                         <div className="flex items-end justify-end lg:pr-10">
-                            <Link href="/register" className="flex items-center gap-2 rounded-[10px] bg-[#ea4100] px-4 py-1 text-white transition sm:py-2 md:gap-4 lg:px-8 lg:py-2">
+                            <Link href="/register" className="flex items-center gap-2 rounded-[10px] bg-[#E53F01] px-4 py-1 text-white transition sm:py-2 md:gap-4 lg:px-8 lg:py-2">
                                 <span className="text-left text-[10px] font-bold uppercase sm:text-[12px] md:text-[14px] lg:text-[16px]">
                                     UPGRADE NOW
                                 </span>

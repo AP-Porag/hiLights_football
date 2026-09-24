@@ -142,7 +142,7 @@ function SidebarContent({ url, user, onNavigate, onLogout }: SidebarContentProps
                     <span className="text-lg font-black tracking-tight text-white">HiLights</span>
                     <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.14em] text-[#555555]">FOOTBALL</span>
                 </div>
-                <span className="ml-1 rounded bg-[#FF6B00] px-2 py-0.5 text-[9px] font-black tracking-wider text-white">ADMIN</span>
+                <span className="ml-1 rounded bg-[#E53F01] px-2 py-0.5 text-[9px] font-black tracking-wider text-white">ADMIN</span>
             </div>
 
             {/* NAV */}
@@ -176,7 +176,7 @@ function SidebarContent({ url, user, onNavigate, onLogout }: SidebarContentProps
                                                 >
                                                     <Icon className="h-4 w-4 shrink-0 text-[#555555]" />
                                                     <span className="truncate">{item.label}</span>
-                                                    <span className="ml-auto rounded bg-[rgba(255,107,0,0.10)] px-1.5 py-0.5 text-[9px] font-bold text-[#FF6B00]">
+                                                    <span className="ml-auto rounded bg-[rgba(255,107,0,0.10)] px-1.5 py-0.5 text-[9px] font-bold text-[#E53F01]">
                                                         SOON
                                                     </span>
                                                 </div>
@@ -197,11 +197,11 @@ function SidebarContent({ url, user, onNavigate, onLogout }: SidebarContentProps
                                     className={[
                                         baseClasses,
                                         active
-                                            ? 'rounded-l-none border-l-[3px] border-[#FF6B00] bg-[rgba(255,107,0,0.10)] pl-[9px] text-[#F5F5F5]'
+                                            ? 'rounded-l-none border-l-[3px] border-[#E53F01] bg-[rgba(255,107,0,0.10)] pl-[9px] text-[#F5F5F5]'
                                             : 'text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.05)] hover:text-[#F5F5F5]',
                                     ].join(' ')}
                                 >
-                                    <Icon className={['h-4 w-4 shrink-0', active ? 'text-[#FF6B00]' : 'text-[#555555]'].join(' ')} />
+                                    <Icon className={['h-4 w-4 shrink-0', active ? 'text-[#E53F01]' : 'text-[#555555]'].join(' ')} />
                                     <span className="truncate">{item.label}</span>
                                 </Link>
                             );
@@ -312,14 +312,14 @@ export default function AdminLayout({ children, pageTitle, breadcrumb }: AdminLa
 
                     <div className="flex shrink-0 items-center gap-4">
                         <button className="relative rounded-md p-2 transition-colors hover:bg-[#F8FAFC]" aria-label="Notifications">
-                            <Bell className="h-5 w-5 text-[#94A3B8] hover:text-[#FF6B00]" />
+                            <Bell className="h-5 w-5 text-[#94A3B8] hover:text-[#E53F01]" />
                             <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
                         </button>
 
                         <div className="flex items-center gap-2.5">
                             <Avatar className="h-9 w-9 border border-[#E2E8F0]">
                                 {auth.user.avatar_url ? <AvatarImage src={auth.user.avatar_url} alt={auth.user.name} /> : null}
-                                <AvatarFallback className="bg-[#FFF3EB] text-sm font-bold text-[#FF6B00]">{adminInitials}</AvatarFallback>
+                                <AvatarFallback className="bg-[#FFF3EB] text-sm font-bold text-[#E53F01]">{adminInitials}</AvatarFallback>
                             </Avatar>
                             <span className="hidden text-sm font-medium text-[#0F172A] sm:inline">{auth.user.name}</span>
                         </div>

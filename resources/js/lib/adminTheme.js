@@ -11,7 +11,7 @@ export const adminTheme = {
 
         // ===== BRAND =====
         primary: {
-            DEFAULT: '#FF6B00',
+            DEFAULT: '#E53F01',
             hover: '#EA580C',
             soft: 'rgba(255,107,0,0.10)',
         },
@@ -46,7 +46,7 @@ export const adminTheme = {
 //         surface: '#161616',
 //         elevated: '#1F1F1F',
 //
-//         primary: '#FF6B00',
+//         primary: '#E53F01',
 //
 //         content: '#F8FAFC',
 //         card: '#FFFFFF',

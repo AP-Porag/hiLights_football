@@ -43,7 +43,7 @@ function PhoneStyles() {
                 border-color: #2A2A2A;
             }
             .PhoneInput--focus {
-                border-color: #FF6B00;
+                border-color: #E53F01;
                 box-shadow: 0 0 0 2px rgba(255,107,0,0.15);
             }
             .PhoneInputCountry {
@@ -134,7 +134,7 @@ export default function RequestAccess({ countries = [] }: Props) {
     };
 
     const inputClasses =
-        'w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-11 px-4 text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)] transition-colors';
+        'w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-11 px-4 text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)] transition-colors';
 
     const labelClasses = 'block text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5] mb-2 font-sans';
 
@@ -145,7 +145,7 @@ export default function RequestAccess({ countries = [] }: Props) {
 
             <main className="pt-16">
                 {/* HEADER BAND */}
-                <section className="bg-[#FF6B00] py-16">
+                <section className="bg-[#E53F01] py-16">
                     <div className="max-w-[900px] mx-auto px-6 text-center">
                         <h1 className="font-display font-bold text-4xl sm:text-5xl text-white tracking-tight leading-tight">
                             Request Access
@@ -169,7 +169,7 @@ export default function RequestAccess({ countries = [] }: Props) {
                                 className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-5 text-center"
                             >
                                 <div className="mx-auto mb-3 w-11 h-11 rounded-xl bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] flex items-center justify-center">
-                                    <Icon className="h-5 w-5 text-[#FF6B00]" />
+                                    <Icon className="h-5 w-5 text-[#E53F01]" />
                                 </div>
                                 <p className="font-semibold text-sm text-[#0F172A] dark:text-[#F5F5F5]">{label}</p>
                                 <p className="text-xs text-[#475569] dark:text-[#9A9A9A] mt-1">{desc}</p>
@@ -212,7 +212,7 @@ export default function RequestAccess({ countries = [] }: Props) {
                                             className={inputClasses}
                                             required
                                         />
-                                        {errors.name && <p className="mt-1 text-xs text-[#FF6B00]">{errors.name}</p>}
+                                        {errors.name && <p className="mt-1 text-xs text-[#E53F01]">{errors.name}</p>}
                                     </div>
 
                                     <div>
@@ -229,7 +229,7 @@ export default function RequestAccess({ countries = [] }: Props) {
                                                 <option key={r.value} value={r.value}>{r.label}</option>
                                             ))}
                                         </select>
-                                        {errors.role && <p className="mt-1 text-xs text-[#FF6B00]">{errors.role}</p>}
+                                        {errors.role && <p className="mt-1 text-xs text-[#E53F01]">{errors.role}</p>}
                                     </div>
                                 </div>
 
@@ -246,7 +246,7 @@ export default function RequestAccess({ countries = [] }: Props) {
                                         placeholder="e.g. FC Porto Scouting"
                                         className={inputClasses}
                                     />
-                                    {errors.organization && <p className="mt-1 text-xs text-[#FF6B00]">{errors.organization}</p>}
+                                    {errors.organization && <p className="mt-1 text-xs text-[#E53F01]">{errors.organization}</p>}
                                 </div>
 
                                 {/* Email + Phone */}
@@ -262,7 +262,7 @@ export default function RequestAccess({ countries = [] }: Props) {
                                             className={inputClasses}
                                             required
                                         />
-                                        {errors.email && <p className="mt-1 text-xs text-[#FF6B00]">{errors.email}</p>}
+                                        {errors.email && <p className="mt-1 text-xs text-[#E53F01]">{errors.email}</p>}
                                     </div>
 
                                     <div>
@@ -278,7 +278,7 @@ export default function RequestAccess({ countries = [] }: Props) {
                                             onChange={(value) => setData('phone', value || '')}
                                             placeholder="Enter phone number"
                                         />
-                                        {errors.phone && <p className="mt-1 text-xs text-[#FF6B00]">{errors.phone}</p>}
+                                        {errors.phone && <p className="mt-1 text-xs text-[#E53F01]">{errors.phone}</p>}
                                     </div>
                                 </div>
 
@@ -296,7 +296,7 @@ export default function RequestAccess({ countries = [] }: Props) {
                                             <option key={c.code} value={c.code}>{c.name}</option>
                                         ))}
                                     </select>
-                                    {errors.country && <p className="mt-1 text-xs text-[#FF6B00]">{errors.country}</p>}
+                                    {errors.country && <p className="mt-1 text-xs text-[#E53F01]">{errors.country}</p>}
                                 </div>
 
                                 {/* Interest */}
@@ -310,7 +310,7 @@ export default function RequestAccess({ countries = [] }: Props) {
                                         placeholder="e.g. Finding U-18 strikers in South America"
                                         className={inputClasses}
                                     />
-                                    {errors.interest && <p className="mt-1 text-xs text-[#FF6B00]">{errors.interest}</p>}
+                                    {errors.interest && <p className="mt-1 text-xs text-[#E53F01]">{errors.interest}</p>}
                                 </div>
 
                                 {/* Message */}
@@ -323,15 +323,15 @@ export default function RequestAccess({ countries = [] }: Props) {
                                         value={data.message}
                                         onChange={(e) => setData('message', e.target.value)}
                                         placeholder="Tell us more about your requirements…"
-                                        className="w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-32 px-4 py-3 text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)] transition-colors resize-none"
+                                        className="w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-32 px-4 py-3 text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)] transition-colors resize-none"
                                     />
-                                    {errors.message && <p className="mt-1 text-xs text-[#FF6B00]">{errors.message}</p>}
+                                    {errors.message && <p className="mt-1 text-xs text-[#E53F01]">{errors.message}</p>}
                                 </div>
 
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="w-full h-12 bg-[#FF6B00] hover:bg-[#CC5500] text-white rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                                    className="w-full h-12 bg-[#E53F01] hover:bg-[#E53F01] text-white rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
                                     <Send className="h-4 w-4" />
                                     {processing ? 'Submitting…' : 'Submit Request'}
@@ -339,7 +339,7 @@ export default function RequestAccess({ countries = [] }: Props) {
 
                                 <p className="text-xs text-[#94A3B8] dark:text-[#555555] text-center font-sans">
                                     By submitting, you agree to our{' '}
-                                    <Link href="/privacy" className="text-[#FF6B00] hover:underline">
+                                    <Link href="/privacy" className="text-[#E53F01] hover:underline">
                                         Privacy Policy
                                     </Link>
                                     .

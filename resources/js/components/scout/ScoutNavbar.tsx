@@ -127,8 +127,8 @@ export default function ScoutNavbar() {
                                     'relative text-sm transition-colors',
                                     link.prominent ? 'font-semibold' : 'font-medium',
                                     active
-                                        ? 'text-[#FF6B00] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#FF6B00]'
-                                        : 'text-[#9A9A9A] hover:text-[#FF6B00]',
+                                        ? 'text-[#E53F01] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#E53F01]'
+                                        : 'text-[#9A9A9A] hover:text-[#E53F01]',
                                 ].join(' ')}
                             >
                                 {link.label}
@@ -142,7 +142,7 @@ export default function ScoutNavbar() {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <button
-                                className="flex items-center gap-1.5 rounded-full p-0.5 transition-colors outline-none hover:bg-[#1F1F1F] focus-visible:ring-2 focus-visible:ring-[#FF6B00]"
+                                className="flex items-center gap-1.5 rounded-full p-0.5 transition-colors outline-none hover:bg-[#1F1F1F] focus-visible:ring-2 focus-visible:ring-[#E53F01]"
                                 aria-label="Account menu"
                             >
                                 <Avatar className="h-9 w-9 border border-[#2A2A2A]">
@@ -152,7 +152,7 @@ export default function ScoutNavbar() {
                                             alt={auth.user.name}
                                         />
                                     ) : null}
-                                    <AvatarFallback className="bg-[rgba(255,107,0,0.15)] text-sm font-bold text-[#FF6B00]">
+                                    <AvatarFallback className="bg-[rgba(255,107,0,0.15)] text-sm font-bold text-[#E53F01]">
                                         {initials}
                                     </AvatarFallback>
                                 </Avatar>
@@ -232,7 +232,7 @@ export default function ScoutNavbar() {
                                         <span className="text-xl font-black tracking-tight text-[#F5F5F5]">
                                             Hi
                                         </span>
-                                        <span className="text-xl font-black tracking-tight text-[#FF6B00] italic">
+                                        <span className="text-xl font-black tracking-tight text-[#E53F01] italic">
                                             Lights
                                         </span>
                                         <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.12em] text-[#94A3B8]">
@@ -250,7 +250,7 @@ export default function ScoutNavbar() {
                                             alt={auth.user.name}
                                         />
                                     ) : null}
-                                    <AvatarFallback className="bg-[rgba(255,107,0,0.15)] text-sm font-bold text-[#FF6B00]">
+                                    <AvatarFallback className="bg-[rgba(255,107,0,0.15)] text-sm font-bold text-[#E53F01]">
                                         {initials}
                                     </AvatarFallback>
                                 </Avatar>
@@ -285,8 +285,8 @@ export default function ScoutNavbar() {
                                                 'block border-b border-[#1F1F1F] py-3 text-base transition-colors',
                                                 link.prominent ? 'font-semibold' : 'font-medium',
                                                 active
-                                                    ? 'text-[#FF6B00]'
-                                                    : 'text-[#F5F5F5] hover:text-[#FF6B00]',
+                                                    ? 'text-[#E53F01]'
+                                                    : 'text-[#F5F5F5] hover:text-[#E53F01]',
                                             ].join(' ')}
                                         >
                                             {link.label}
@@ -296,7 +296,7 @@ export default function ScoutNavbar() {
                                 <Link
                                     href="/scout/plan"
                                     onClick={() => setMobileOpen(false)}
-                                    className="block border-b border-[#1F1F1F] py-3 text-base font-medium text-[#F5F5F5] transition-colors hover:text-[#FF6B00]"
+                                    className="block border-b border-[#1F1F1F] py-3 text-base font-medium text-[#F5F5F5] transition-colors hover:text-[#E53F01]"
                                 >
                                     My Plan
                                 </Link>

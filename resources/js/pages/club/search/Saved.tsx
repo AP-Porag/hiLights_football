@@ -241,7 +241,7 @@ export default function SavedPlayers() {
                                 <button
                                     onClick={() => setView('grid')}
                                     className={`rounded-md p-1.5 transition-colors ${view === 'grid'
-                                        ? 'text-[#FF6B00] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]'
+                                        ? 'text-[#E53F01] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]'
                                         : 'text-[#94A3B8] hover:text-[#475569] dark:hover:text-[#9A9A9A]'
                                         }`}
                                     aria-label="Grid view"
@@ -251,7 +251,7 @@ export default function SavedPlayers() {
                                 <button
                                     onClick={() => setView('list')}
                                     className={`rounded-md p-1.5 transition-colors ${view === 'list'
-                                        ? 'text-[#FF6B00] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]'
+                                        ? 'text-[#E53F01] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]'
                                         : 'text-[#94A3B8] hover:text-[#475569] dark:hover:text-[#9A9A9A]'
                                         }`}
                                     aria-label="List view"
@@ -277,7 +277,7 @@ export default function SavedPlayers() {
                             {/* <Button
                                 variant="outline"
                                 size="sm"
-                                className="border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] text-[#475569] dark:text-[#9A9A9A] hover:text-[#FF6B00] hover:border-[#FF6B00]"
+                                className="border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] text-[#475569] dark:text-[#9A9A9A] hover:text-[#E53F01] hover:border-[#E53F01]"
                             >
                                 <Download className="w-4 h-4 mr-2" />
                                 Export List
@@ -297,7 +297,7 @@ export default function SavedPlayers() {
                                 key={pill.id}
                                 onClick={() => setActiveFilter(pill.id)}
                                 className={`shrink-0 text-xs px-3 py-1.5 rounded-full border transition-colors ${activeFilter === pill.id
-                                    ? 'bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border-[#FF6B00] text-[#CC5500] font-semibold'
+                                    ? 'bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border-[#E53F01] text-[#E53F01] font-semibold'
                                     : 'bg-[#F8FAFC] dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] hover:border-[#CBD5E1] dark:hover:border-[#3A3A3A]'
                                     }`}
                             >
@@ -319,7 +319,7 @@ export default function SavedPlayers() {
                                 Start browsing players and save the ones you're interested in.
                             </p>
                             <Link href="/scouting" className="inline-block mt-6">
-                                <Button className="bg-[#FF6B00] text-white hover:bg-[#CC5500]">
+                                <Button className="bg-[#E53F01] text-white hover:bg-[#E53F01]">
                                     Browse Players →
                                 </Button>
                             </Link>
@@ -339,7 +339,7 @@ export default function SavedPlayers() {
                                             {sp.player.positions.slice(0, 2).map((pos) => (
                                                 <span
                                                     key={pos}
-                                                    className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-bold px-2 py-0.5 rounded-full"
+                                                    className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-bold px-2 py-0.5 rounded-full"
                                                 >
                                                     {pos}
                                                 </span>
@@ -357,14 +357,14 @@ export default function SavedPlayers() {
                                             </button>
                                             <button
                                                 onClick={() => openNotes(sp)}
-                                                className="p-1 rounded text-[#94A3B8] hover:text-[#FF6B00] transition-colors"
+                                                className="p-1 rounded text-[#94A3B8] hover:text-[#E53F01] transition-colors"
                                                 aria-label="Edit notes"
                                             >
                                                 <StickyNote className="w-4 h-4" />
                                             </button>
                                             <Link
                                                 href={`/scouting/player/${sp.player.id}`}
-                                                className="p-1 rounded text-[#94A3B8] hover:text-[#FF6B00] transition-colors"
+                                                className="p-1 rounded text-[#94A3B8] hover:text-[#E53F01] transition-colors"
                                                 aria-label="View full profile"
                                             >
                                                 <ExternalLink className="w-4 h-4" />
@@ -386,7 +386,7 @@ export default function SavedPlayers() {
 
                                         {/* Premium badge */}
                                         {sp.player.isPremium && (
-                                            <span className="absolute bottom-2 left-2 bg-[#FF6B00] text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                            <span className="absolute bottom-2 left-2 bg-[#E53F01] text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
                                                 Premium
                                             </span>
                                         )}
@@ -478,12 +478,12 @@ export default function SavedPlayers() {
                                                             <Star
                                                                 key={i}
                                                                 className={`w-3.5 h-3.5 ${i <= Math.round(sp.player.avgRating)
-                                                                    ? 'text-[#FF6B00] fill-[#FF6B00]'
+                                                                    ? 'text-[#E53F01] fill-[#E53F01]'
                                                                     : 'text-[#E2E8F0] dark:text-[#2A2A2A] fill-[#E2E8F0] dark:fill-[#2A2A2A]'
                                                                     }`}
                                                             />
                                                         ))}
-                                                        <span className="font-mono text-[#FF6B00] text-sm font-bold ml-1">
+                                                        <span className="font-mono text-[#E53F01] text-sm font-bold ml-1">
                                                             {sp.player.avgRating.toFixed(1)}
                                                         </span>
                                                     </div>
@@ -505,8 +505,8 @@ export default function SavedPlayers() {
                                         {sp.notes && (
                                             <div className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.08)] border border-[#FFD4AA] dark:border-[rgba(255,107,0,0.2)] rounded-xl px-3 py-2 mt-3">
                                                 <div className="flex gap-1.5">
-                                                    <StickyNote className="w-3 h-3 text-[#FF6B00] shrink-0 mt-0.5" />
-                                                    <p className="text-xs text-[#92400E] dark:text-[#FF6B00] italic leading-relaxed">
+                                                    <StickyNote className="w-3 h-3 text-[#E53F01] shrink-0 mt-0.5" />
+                                                    <p className="text-xs text-[#92400E] dark:text-[#E53F01] italic leading-relaxed">
                                                         {sp.notes}
                                                     </p>
                                                 </div>
@@ -518,13 +518,13 @@ export default function SavedPlayers() {
                                             <Link href={`/club/player/${sp.player.id}`} className="flex-1">
                                                 <Button
                                                     variant="outline"
-                                                    className="w-full text-sm border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] hover:border-[#FF6B00] hover:text-[#FF6B00] bg-white dark:bg-[#161616]"
+                                                    className="w-full text-sm border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] hover:border-[#E53F01] hover:text-[#E53F01] bg-white dark:bg-[#161616]"
                                                 >
                                                     View Profile
                                                 </Button>
                                             </Link>
                                             {sp.player.isPremium && (
-                                                <Button className="flex-1 text-sm bg-[#FF6B00] text-white hover:bg-[#CC5500]">
+                                                <Button className="flex-1 text-sm bg-[#E53F01] text-white hover:bg-[#E53F01]">
                                                     Rate Player
                                                 </Button>
                                             )}
@@ -539,7 +539,7 @@ export default function SavedPlayers() {
                             {sorted.map((sp) => (
                                 <div
                                     key={sp.id}
-                                    className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-5 flex flex-col md:flex-row items-start gap-5 hover:border-[#FF6B00] transition-colors"
+                                    className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-5 flex flex-col md:flex-row items-start gap-5 hover:border-[#E53F01] transition-colors"
                                 >
                                     {/* LEFT — Photo */}
                                     <div className="relative w-16 h-16 shrink-0 rounded-xl overflow-hidden bg-gradient-to-br from-[#F8FAFC] dark:from-[#1F1F1F] to-[#E2E8F0] dark:to-[#161616] flex items-center justify-center">
@@ -551,7 +551,7 @@ export default function SavedPlayers() {
                                             </span>
                                         )}
                                         {sp.player.isPremium && (
-                                            <span className="absolute -top-1 -right-1 bg-[#FF6B00] text-white text-[8px] font-black px-1.5 py-0.5 rounded-full">
+                                            <span className="absolute -top-1 -right-1 bg-[#E53F01] text-white text-[8px] font-black px-1.5 py-0.5 rounded-full">
                                                 PRO
                                             </span>
                                         )}
@@ -572,7 +572,7 @@ export default function SavedPlayers() {
                                             {sp.player.positions.slice(0, 2).map((pos) => (
                                                 <span
                                                     key={pos}
-                                                    className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] text-[10px] font-bold px-2 py-0.5 rounded-full"
+                                                    className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-bold px-2 py-0.5 rounded-full"
                                                 >
                                                     {pos}
                                                 </span>
@@ -602,12 +602,12 @@ export default function SavedPlayers() {
                                                         <Star
                                                             key={i}
                                                             className={`w-3 h-3 ${i <= Math.round(sp.player.avgRating)
-                                                                ? 'text-[#FF6B00] fill-[#FF6B00]'
+                                                                ? 'text-[#E53F01] fill-[#E53F01]'
                                                                 : 'text-[#E2E8F0] dark:text-[#2A2A2A] fill-[#E2E8F0] dark:fill-[#2A2A2A]'
                                                                 }`}
                                                         />
                                                     ))}
-                                                    <span className="font-mono text-[#FF6B00] text-xs font-bold ml-1">
+                                                    <span className="font-mono text-[#E53F01] text-xs font-bold ml-1">
                                                         {sp.player.avgRating.toFixed(1)}
                                                     </span>
                                                     <span className="text-[#94A3B8] text-xs ml-1">
@@ -636,8 +636,8 @@ export default function SavedPlayers() {
                                         {sp.notes && (
                                             <div className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.08)] border border-[#FFD4AA] dark:border-[rgba(255,107,0,0.2)] rounded-xl px-3 py-2 mt-3">
                                                 <div className="flex gap-1.5">
-                                                    <StickyNote className="w-3 h-3 text-[#FF6B00] shrink-0 mt-0.5" />
-                                                    <p className="text-xs text-[#92400E] dark:text-[#FF6B00] italic leading-relaxed">
+                                                    <StickyNote className="w-3 h-3 text-[#E53F01] shrink-0 mt-0.5" />
+                                                    <p className="text-xs text-[#92400E] dark:text-[#E53F01] italic leading-relaxed">
                                                         {sp.notes}
                                                     </p>
                                                 </div>
@@ -650,7 +650,7 @@ export default function SavedPlayers() {
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
-                                                    className="w-full border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] hover:border-[#FF6B00] hover:text-[#FF6B00]"
+                                                    className="w-full border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] hover:border-[#E53F01] hover:text-[#E53F01]"
                                                 >
                                                     View Profile
                                                 </Button>
@@ -658,7 +658,7 @@ export default function SavedPlayers() {
                                             {sp.player.isPremium && (
                                                 <Button
                                                     size="sm"
-                                                    className="flex-1 min-w-[120px] bg-[#FF6B00] text-white hover:bg-[#CC5500]"
+                                                    className="flex-1 min-w-[120px] bg-[#E53F01] text-white hover:bg-[#E53F01]"
                                                 >
                                                     Rate
                                                 </Button>
@@ -680,7 +680,7 @@ export default function SavedPlayers() {
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                className="border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] hover:border-[#FF6B00] hover:text-[#FF6B00] w-[120px]"
+                                                className="border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] hover:border-[#E53F01] hover:text-[#E53F01] w-[120px]"
                                             >
                                                 View Profile
                                             </Button>
@@ -688,7 +688,7 @@ export default function SavedPlayers() {
                                         {sp.player.isPremium && (
                                             <Button
                                                 size="sm"
-                                                className="bg-[#FF6B00] text-white hover:bg-[#CC5500] w-[120px]"
+                                                className="bg-[#E53F01] text-white hover:bg-[#E53F01] w-[120px]"
                                             >
                                                 Rate Player
                                             </Button>
@@ -721,7 +721,7 @@ export default function SavedPlayers() {
                                 <p className="text-white/70 text-xs sm:text-sm flex-1 hidden sm:block">
                                     Connect with 1,200+ clubs on the professional transfer network.
                                 </p>
-                                <button className="bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold px-5 py-2 rounded-lg text-sm shrink-0 transition-colors">
+                                <button className="bg-[#E53F01] hover:bg-[#E53F01] text-white font-bold px-5 py-2 rounded-lg text-sm shrink-0 transition-colors">
                                     Start Free →
                                 </button> */}
                             </div>
@@ -747,7 +747,7 @@ export default function SavedPlayers() {
                             value={notesDraft}
                             onChange={(e) => setNotesDraft(e.target.value.slice(0, 500))}
                             placeholder="Add your scouting observations, next steps, or reminders..."
-                            className="h-32 bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00] resize-none"
+                            className="h-32 bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01] resize-none"
                         />
                         <div className="text-xs text-[#94A3B8] text-right mt-1 font-mono">
                             {notesDraft.length}/500
@@ -765,7 +765,7 @@ export default function SavedPlayers() {
                         </Button>
                         <Button
                             onClick={handleSaveNotes}
-                            className="bg-[#FF6B00] text-white hover:bg-[#CC5500]"
+                            className="bg-[#E53F01] text-white hover:bg-[#E53F01]"
                             disabled={loading}
                         >
                             {loading ? 'Saving...' : 'Save Notes'}

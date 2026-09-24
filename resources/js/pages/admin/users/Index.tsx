@@ -85,12 +85,12 @@ const roleBadgeClasses: Record<string, string> = {
     Scout: 'border-purple-400 text-purple-300 bg-purple-900/30',
     Agent: 'border-indigo-400 text-indigo-300 bg-indigo-900/30',
     Club: 'border-green-400 text-green-300 bg-green-900/30',
-    Admin: 'border-[#FF6B00] text-[#FF6B00] bg-orange-900/20',
+    Admin: 'border-[#E53F01] text-[#E53F01] bg-orange-900/20',
 };
 
 const subBadgeClasses: Record<string, string> = {
     Free: 'border-gray-500 text-gray-300 bg-gray-800',
-    Premium: 'bg-[#FF6B00] text-white border-[#FF6B00]',
+    Premium: 'bg-[#E53F01] text-white border-[#E53F01]',
     Agent: 'bg-amber-600 text-white border-amber-600',
 };
 
@@ -220,7 +220,7 @@ export default function UsersIndex() {
         option: (base: any, state: any) => ({
             ...base,
             backgroundColor: state.isSelected
-                ? '#FF6B00'
+                ? '#E53F01'
                 : state.isFocused
                     ? '#2A2A2A'
                     : '#1F1F1F',
@@ -256,16 +256,16 @@ export default function UsersIndex() {
                                 placeholder="Search users..."
                                 value={searchQuery}
                                 onChange={handleSearchChange}
-                                className="pl-9 h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#64748B] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-[#FF6B00]"
+                                className="pl-9 h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#64748B] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-[#E53F01]"
                             />
                         </form>
                         {/* <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full sm:w-auto">
                             <TabsList className="bg-[#1A1A1A] border border-[#2A2A2A] h-9 p-0.5">
-                                <TabsTrigger value="all" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#FF6B00] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">All</TabsTrigger>
-                                <TabsTrigger value="players" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#FF6B00] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">Players</TabsTrigger>
-                                <TabsTrigger value="scouts" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#FF6B00] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">Scouts</TabsTrigger>
-                                <TabsTrigger value="agents" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#FF6B00] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">Agents</TabsTrigger>
-                                <TabsTrigger value="clubs" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#FF6B00] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">Clubs</TabsTrigger>
+                                <TabsTrigger value="all" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#E53F01] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">All</TabsTrigger>
+                                <TabsTrigger value="players" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#E53F01] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">Players</TabsTrigger>
+                                <TabsTrigger value="scouts" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#E53F01] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">Scouts</TabsTrigger>
+                                <TabsTrigger value="agents" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#E53F01] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">Agents</TabsTrigger>
+                                <TabsTrigger value="clubs" className="text-xs px-3 h-8 data-[state=active]:bg-[#2A2A2A] data-[state=active]:text-[#E53F01] data-[state=active]:shadow-sm font-medium text-[#94A3B8]">Clubs</TabsTrigger>
                             </TabsList>
                         </Tabs> */}
                     </div>
@@ -279,7 +279,7 @@ export default function UsersIndex() {
                                 clearErrors();
                                 setShowCreateModal(true);
                             }}
-                            className="h-9 bg-[#FF6B00] text-white hover:bg-[#CC5500] font-medium text-sm"
+                            className="h-9 bg-[#E53F01] text-white hover:bg-[#E53F01] font-medium text-sm"
                         >
                             <UserPlus className="h-4 w-4 mr-2" /> Add User
                         </Button>
@@ -317,7 +317,7 @@ export default function UsersIndex() {
                                         <TableCell className="py-4">
                                             <div className="flex items-center gap-3">
                                                 <Avatar className="h-9 w-9">
-                                                    <AvatarFallback className="bg-orange-900/30 text-[#FF6B00] text-xs font-semibold">
+                                                    <AvatarFallback className="bg-orange-900/30 text-[#E53F01] text-xs font-semibold">
                                                         {getInitials(user.name)}
                                                     </AvatarFallback>
                                                 </Avatar>
@@ -402,7 +402,7 @@ export default function UsersIndex() {
                             <PaginationItem>
                                 <PaginationPrevious
                                     href={users.current_page > 1 ? route('users.index', { page: users.current_page - 1, search: searchQuery, role: activeTab }) : '#'}
-                                    className="border border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1A1A1A] hover:text-[#FF6B00] text-sm h-9"
+                                    className="border border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1A1A1A] hover:text-[#E53F01] text-sm h-9"
                                 />
                             </PaginationItem>
                             {Array.from({ length: users.last_page }, (_, i) => i + 1).map((page) => (
@@ -412,8 +412,8 @@ export default function UsersIndex() {
                                         isActive={page === users.current_page}
                                         className={
                                             page === users.current_page
-                                                ? 'bg-[#FF6B00] text-white border-[#FF6B00] hover:bg-[#CC5500] hover:text-white text-sm h-9 w-9'
-                                                : 'border border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1A1A1A] hover:text-[#FF6B00] text-sm h-9 w-9'
+                                                ? 'bg-[#E53F01] text-white border-[#E53F01] hover:bg-[#E53F01] hover:text-white text-sm h-9 w-9'
+                                                : 'border border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1A1A1A] hover:text-[#E53F01] text-sm h-9 w-9'
                                         }
                                     >
                                         {page}
@@ -423,7 +423,7 @@ export default function UsersIndex() {
                             <PaginationItem>
                                 <PaginationNext
                                     href={users.current_page < users.last_page ? route('users.index', { page: users.current_page + 1, search: searchQuery, role: activeTab }) : '#'}
-                                    className="border border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1A1A1A] hover:text-[#FF6B00] text-sm h-9"
+                                    className="border border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1A1A1A] hover:text-[#E53F01] text-sm h-9"
                                 />
                             </PaginationItem>
                         </PaginationContent>
@@ -477,7 +477,7 @@ export default function UsersIndex() {
                                         value={newUser.name}
                                         onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
 
-                                        className="h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-[#FF6B00]"
+                                        className="h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-[#E53F01]"
                                     />
                                     {errors.name && (
                                         <p className="text-xs text-red-400 mt-1">{errors.name}</p>
@@ -489,7 +489,7 @@ export default function UsersIndex() {
                                         type="email"
                                         value={newUser.email}
                                         onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                                        className="h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-[#FF6B00]"
+                                        className="h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-[#E53F01]"
                                     />
                                     {errors.name && (
                                         <p className="text-xs text-red-400 mt-1">{errors.email}</p>
@@ -502,7 +502,7 @@ export default function UsersIndex() {
                                         value={newUser.password}
                                         onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
                                         required
-                                        className="h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-[#FF6B00]"
+                                        className="h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-[#E53F01]"
                                     />
                                 </div> */}
                                 <div>
@@ -510,7 +510,7 @@ export default function UsersIndex() {
                                     <select
                                         value={newUser.role}
                                         onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                                        className="h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none"
+                                        className="h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none"
                                     >
 
                                         {/* <option value={GlobalConstant.ROLE_PLAYER}>Player</option>
@@ -549,7 +549,7 @@ export default function UsersIndex() {
                                 <Button type="button" variant="outline" onClick={() => setShowCreateModal(false)} className="h-9 border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1A1A1A] font-medium text-sm">
                                     Cancel
                                 </Button>
-                                <Button type="submit" disabled={creating} className="h-9 bg-[#FF6B00] text-white hover:bg-[#CC5500] font-medium text-sm">
+                                <Button type="submit" disabled={creating} className="h-9 bg-[#E53F01] text-white hover:bg-[#E53F01] font-medium text-sm">
                                     {creating ? 'Creating...' : 'Create User'}
                                 </Button>
                             </DialogFooter>

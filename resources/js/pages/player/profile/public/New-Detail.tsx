@@ -152,7 +152,7 @@ function StarRating({ value, onChange }: StarRatingProps) {
                     className="transition-transform hover:scale-110"
                     aria-label={`Rate ${n} stars`}
                 >
-                    <Star className={`h-5 w-5 ${n <= value ? 'fill-[#FF6B00] text-[#FF6B00]' : 'text-[#FCD9BD] dark:text-[#2A2A2A]'}`} />
+                    <Star className={`h-5 w-5 ${n <= value ? 'fill-[#E53F01] text-[#E53F01]' : 'text-[#FCD9BD] dark:text-[#2A2A2A]'}`} />
                 </button>
             ))}
         </div>
@@ -168,11 +168,11 @@ export default function NewDetail() {
             {/* BREADCRUMB */}
             <div className="mx-auto max-w-7xl bg-black px-4 py-3 sm:px-6 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]">
                 <nav className="flex items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A]">
-                    <Link href="/" className="whitespace-nowrap hover:text-[#FF6B00]">Home</Link>
+                    <Link href="/" className="whitespace-nowrap hover:text-[#E53F01]">Home</Link>
                     <ChevronRight className="h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" />
-                    <Link href="/players" className="whitespace-nowrap hover:text-[#FF6B00]">Players</Link>
+                    <Link href="/players" className="whitespace-nowrap hover:text-[#E53F01]">Players</Link>
                     <ChevronRight className="h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" />
-                    <span className="font-medium whitespace-nowrap text-[#FF6B00] dark:text-[#F5F5F5]">{
+                    <span className="font-medium whitespace-nowrap text-[#E53F01] dark:text-[#F5F5F5]">{
                         player?.user?.name}</span>
                 </nav>
             </div>
@@ -206,7 +206,7 @@ export default function NewDetail() {
 
                                 <div className="mt-3 space-y-1.25 text-sm md:text-base">
                                     <div className="flex items-center">
-                                        <CalendarDays className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
+                                        <CalendarDays className="mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" />
                                         <span className="">
                                             <span className=" text-white">Date of Birth:</span>{' '}
                                             {player.user?.dob
@@ -221,7 +221,7 @@ export default function NewDetail() {
                                         </span>
                                     </div>
                                     <div className="flex items-center">
-                                        <Users className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
+                                        <Users className="mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" />
                                         <span className="pr-3 text-[#e1e2e6]">Nationality:</span>
                                         {Array.isArray(player.user?.nationality) && player.user.nationality.length > 0 ? (
                                             player.user.nationality.map((code, idx) => (
@@ -236,7 +236,7 @@ export default function NewDetail() {
                                         )}
                                     </div>
                                     <div className="flex items-center">
-                                        <Ruler className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
+                                        <Ruler className="mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Height:</span>
                                         <span className="pl-2 text-gray-100">{player.height ? `${player.height} cm` : '—'}</span>
                                     </div>

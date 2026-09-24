@@ -146,7 +146,7 @@ export default function Login() {
                     <div className="lg:hidden flex justify-center mb-8">
                         <Link href="/">
                             <img
-                                src="/images/logo/hilights_logo_dark_200.png"
+                                src="/images/logo/final_logo.png"
                                 alt="HiLights Football"
                                 className="h-12 w-auto"
                             />
@@ -170,7 +170,7 @@ export default function Login() {
 
                         {/* Error Alert */}
                         {hasError && (
-                            <Alert className="mb-5 border-red-900 bg-red-950/40 text-red-400">
+                            <Alert className="mb-5 border-[#E53F01] bg-red-950/40 text-red-400">
                                 <AlertCircle className="h-4 w-4 !text-red-400" />
                                 <AlertDescription className="text-sm text-red-400">
                                     {errors?.email ||
@@ -199,7 +199,7 @@ export default function Login() {
                                     value={data.email}
                                     onChange={(e) => setData('email', e.target.value)}
                                     placeholder="you@club.com"
-                                    className="h-11 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-orange-800 rounded-xl"
+                                    className="h-11 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-[#E53F01] rounded-xl"
                                 />
                             </div>
 
@@ -220,7 +220,7 @@ export default function Login() {
                                         value={data.password}
                                         onChange={(e) => setData('password', e.target.value)}
                                         placeholder="••••••••"
-                                        className="h-11 pr-11 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-orange-800 rounded-xl"
+                                        className="h-11 pr-11 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800 rounded-xl"
                                     />
                                     <button
                                         type="button"
@@ -246,7 +246,7 @@ export default function Login() {
                                         onCheckedChange={(checked) =>
                                             setData('remember', Boolean(checked))
                                         }
-                                        className="border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00] data-[state=checked]:text-white"
+                                        className="border-[#2A2A2A] data-[state=checked]:bg-[#E53F01] data-[state=checked]:border-[#E53F01] data-[state=checked]:text-white"
                                     />
                                     <Label
                                         htmlFor="remember"
@@ -257,7 +257,7 @@ export default function Login() {
                                 </div>
                                 <Link
                                     href={route('password.request')}
-                                    className="text-sm text-[#FF6B00] hover:text-[#CC5500] hover:underline font-medium"
+                                    className="text-sm text-[#E53F01] hover:text-[#E53F01] hover:underline font-medium"
                                 >
                                     Forgot password?
                                 </Link>
@@ -267,7 +267,7 @@ export default function Login() {
                             <Button
                                 type="submit"
                                 disabled={processing}
-                                className="w-full h-12 mt-6 bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold rounded-xl text-sm tracking-wide flex items-center justify-center gap-2 transition-colors disabled:opacity-60"
+                                className="w-full h-12 mt-6 bg-[#E53F01] hover:bg-[#E53F01] text-white font-bold rounded-xl text-sm tracking-wide flex items-center justify-center gap-2 transition-colors disabled:opacity-60"
                             >
                                 {processing ? (
                                     'SIGNING IN...'
@@ -297,7 +297,7 @@ export default function Login() {
                             <p className="text-sm text-[#9A9A9A]">Don't have an account?</p>
                             <Link
                                 href={route('register')}
-                                className="inline-flex items-center gap-1 text-sm text-[#FF6B00] font-semibold hover:text-[#CC5500] hover:underline"
+                                className="inline-flex items-center gap-1 text-sm text-[#E53F01] font-semibold hover:text-[#E53F01] hover:underline"
                             >
                                 Create your free account
                                 <ArrowRight className="h-3.5 w-3.5" />
@@ -310,14 +310,14 @@ export default function Login() {
                         By signing in, you agree to our{' '}
                         <Link
                             href="/terms"
-                            className="text-[#9A9A9A] hover:text-[#FF6B00] underline underline-offset-2"
+                            className="text-[#9A9A9A] hover:text-[#E53F01] underline underline-offset-2"
                         >
                             Terms
                         </Link>{' '}
                         and{' '}
                         <Link
                             href="/privacy"
-                            className="text-[#9A9A9A] hover:text-[#FF6B00] underline underline-offset-2"
+                            className="text-[#9A9A9A] hover:text-[#E53F01] underline underline-offset-2"
                         >
                             Privacy Policy
                         </Link>

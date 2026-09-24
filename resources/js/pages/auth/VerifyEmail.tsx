@@ -94,7 +94,7 @@ export default function VerifyEmail({ status }: Props) {
 
                 <div className="bg-[#161616] rounded-2xl border border-[#2A2A2A] p-8 text-center">
                     <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[rgba(255,107,0,0.12)]">
-                        <MailCheck className="h-6 w-6 text-[#FF6B00]" />
+                        <MailCheck className="h-6 w-6 text-[#E53F01]" />
                     </div>
 
                     <h1 className="font-display font-black text-2xl text-[#F5F5F5]">
@@ -128,7 +128,7 @@ export default function VerifyEmail({ status }: Props) {
                                     onChange={(e) => handleChange(idx, e.target.value)}
                                     onKeyDown={(e) => handleKeyDown(idx, e)}
                                     onPaste={handlePaste}
-                                    className="h-14 w-12 text-center text-xl font-bold rounded-xl bg-[#111111] border border-[#2A2A2A] text-[#F5F5F5] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                    className="h-14 w-12 text-center text-xl font-bold rounded-xl bg-[#111111] border border-[#2A2A2A] text-[#F5F5F5] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
                                 />
                             ))}
                         </div>
@@ -140,7 +140,7 @@ export default function VerifyEmail({ status }: Props) {
                         <button
                             type="submit"
                             disabled={processing || code.length !== 6}
-                            className="w-full h-12 mt-6 cursor-pointer rounded-xl bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold text-sm uppercase tracking-wider transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                            className="w-full h-12 mt-6 cursor-pointer rounded-xl bg-[#E53F01] hover:bg-[#E53F01] text-white font-bold text-sm uppercase tracking-wider transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                         >
                             {processing ? 'Verifying…' : 'Verify Email'}
                         </button>
@@ -152,7 +152,7 @@ export default function VerifyEmail({ status }: Props) {
                             type="button"
                             onClick={handleResend}
                             disabled={resending}
-                            className="text-[#FF6B00] hover:underline font-semibold disabled:opacity-60 disabled:cursor-not-allowed"
+                            className="text-[#E53F01] hover:underline font-semibold disabled:opacity-60 disabled:cursor-not-allowed"
                         >
                             {resending ? 'Sending…' : 'Resend code'}
                         </button>

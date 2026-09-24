@@ -167,7 +167,7 @@ function CountryCombobox({
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className={`group w-full h-11 justify-between rounded-xl font-normal bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] hover:bg-white dark:hover:bg-[#111111] transition-colors ${selected ? 'text-[#0F172A] dark:text-[#F5F5F5]' : 'text-[#94A3B8]'}`}
+                    className={`group w-full h-11 justify-between rounded-xl font-normal bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#E53F01] hover:bg-white dark:hover:bg-[#111111] transition-colors ${selected ? 'text-[#0F172A] dark:text-[#F5F5F5]' : 'text-[#94A3B8]'}`}
                 >
                     <span className="flex items-center gap-2 truncate">
                         {selected ? (
@@ -179,7 +179,7 @@ function CountryCombobox({
                             placeholder
                         )}
                     </span>
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-[#94A3B8] group-hover:text-[#FF6B00] transition-colors" />
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-[#94A3B8] group-hover:text-[#E53F01] transition-colors" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent
@@ -203,7 +203,7 @@ function CountryCombobox({
                                 >
                                     <span className="mr-2">{c.flag ?? ''}</span>
                                     <span className="truncate">{c.name}</span>
-                                    <Check className={`ml-auto h-4 w-4 text-[#FF6B00] ${value === c.code ? 'opacity-100' : 'opacity-0'}`} />
+                                    <Check className={`ml-auto h-4 w-4 text-[#E53F01] ${value === c.code ? 'opacity-100' : 'opacity-0'}`} />
                                 </CommandItem>
                             ))}
                         </CommandGroup>
@@ -245,7 +245,7 @@ function MultiCountryCombobox({
                         variant="outline"
                         role="combobox"
                         aria-expanded={open}
-                        className={`group w-full h-11 justify-between rounded-xl font-normal bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#FF6B00] hover:bg-white dark:hover:bg-[#111111] transition-colors ${selected.length ? 'text-[#0F172A] dark:text-[#F5F5F5]' : 'text-[#94A3B8]'}`}
+                        className={`group w-full h-11 justify-between rounded-xl font-normal bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] hover:border-[#E53F01] hover:bg-white dark:hover:bg-[#111111] transition-colors ${selected.length ? 'text-[#0F172A] dark:text-[#F5F5F5]' : 'text-[#94A3B8]'}`}
                     >
                         <span className="flex items-center gap-2 truncate">
                             {selected.length ? (
@@ -256,7 +256,7 @@ function MultiCountryCombobox({
                                 placeholder
                             )}
                         </span>
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-[#94A3B8] group-hover:text-[#FF6B00] transition-colors" />
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-[#94A3B8] group-hover:text-[#E53F01] transition-colors" />
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent
@@ -282,7 +282,7 @@ function MultiCountryCombobox({
                                         >
                                             <span className="mr-2">{c.flag ?? ''}</span>
                                             <span className="truncate">{c.name}</span>
-                                            <Check className={`ml-auto h-4 w-4 text-[#FF6B00] ${isSelected ? 'opacity-100' : 'opacity-0'}`} />
+                                            <Check className={`ml-auto h-4 w-4 text-[#E53F01] ${isSelected ? 'opacity-100' : 'opacity-0'}`} />
                                         </CommandItem>
                                     );
                                 })}
@@ -334,7 +334,7 @@ function DobCalendar({ value, onChange, onClose }: { value: string; onChange: (v
     const isToday = (d: number) => today.getFullYear() === viewYear && today.getMonth() === viewMonth && today.getDate() === d;
     const isFuture = (d: number) => new Date(viewYear, viewMonth, d) > today;
     const pick = (d: number) => { const mm = String(viewMonth + 1).padStart(2, '0'); const dd = String(d).padStart(2, '0'); onChange(`${viewYear}-${mm}-${dd}`); onClose(); };
-    const selectClass = 'flex-1 rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] text-[#0F172A] dark:text-[#F5F5F5] text-sm font-medium px-2 py-2 focus:outline-none focus:ring-2 focus:ring-orange-100 dark:focus-ring-orange-800 focus:border-[#FF6B00] [color-scheme:light] dark:[color-scheme:dark] cursor-pointer';
+    const selectClass = 'flex-1 rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] text-[#0F172A] dark:text-[#F5F5F5] text-sm font-medium px-2 py-2 focus:outline-none focus:ring-2 focus:ring-orange-100 dark:focus-ring-orange-800 focus:border-[#E53F01] [color-scheme:light] dark:[color-scheme:dark] cursor-pointer';
     return (
         <div className="p-4 w-[320px]">
             <div className="flex items-center gap-2 mb-4">
@@ -354,7 +354,7 @@ function DobCalendar({ value, onChange, onClose }: { value: string; onChange: (v
                 {cells.map((d, i) => d === null ? <div key={`e-${i}`} /> : (
                     <button key={d} type="button" disabled={isFuture(d)} onClick={() => pick(d)}
                         className={`h-9 w-9 mx-auto flex items-center justify-center rounded-lg text-sm font-medium transition-colors
-                            ${isSelected(d) ? 'bg-[#FF6B00] text-white hover:bg-[#CC5500]' : isToday(d) ? 'text-[#FF6B00] font-bold  hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]' : 'text-white dark:text-[#F5F5F5] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)] hover:text-black dark:hover:text-black'}
+                            ${isSelected(d) ? 'bg-[#E53F01] text-white hover:bg-[#E53F01]' : isToday(d) ? 'text-[#E53F01] font-bold  hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)]' : 'text-white dark:text-[#F5F5F5] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)] hover:text-black dark:hover:text-black'}
                             disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent`}
                     >{d}</button>
                 ))}
@@ -570,7 +570,7 @@ export default function Edit() {
                                 <React.Fragment key={s.id}>
                                     <button onClick={() => setStep(idx)} className="flex-shrink-0 focus:outline-none" type="button">
                                         {completed || active ? (
-                                            <div className="w-7 h-7 bg-[#FF6B00] text-white rounded-full flex items-center justify-center text-xs font-bold font-sans">
+                                            <div className="w-7 h-7 bg-[#E53F01] text-white rounded-full flex items-center justify-center text-xs font-bold font-sans">
                                                 {completed ? <CheckCircle2 className="w-4 h-4" /> : idx + 1}
                                             </div>
                                         ) : (
@@ -578,7 +578,7 @@ export default function Edit() {
                                         )}
                                     </button>
                                     {idx < STEPS.length - 1 && (
-                                        <div className={`flex-1 h-0.5 mx-1 sm:mx-2 ${idx < step ? 'bg-[#FF6B00]' : 'bg-[#2A2A2A]'}`} />
+                                        <div className={`flex-1 h-0.5 mx-1 sm:mx-2 ${idx < step ? 'bg-[#E53F01]' : 'bg-[#2A2A2A]'}`} />
                                     )}
                                 </React.Fragment>
                             );
@@ -586,14 +586,14 @@ export default function Edit() {
                     </div>
                     <div className="hidden sm:flex items-center justify-between mt-3">
                         {STEPS.map((s, idx) => (
-                            <div key={s.id} className={`text-[10px] uppercase tracking-widest font-semibold font-sans ${idx === step ? 'text-[#FF6B00]' : 'text-[#94A3B8]'}`}
+                            <div key={s.id} className={`text-[10px] uppercase tracking-widest font-semibold font-sans ${idx === step ? 'text-[#E53F01]' : 'text-[#94A3B8]'}`}
                                 style={{ width: `${100 / STEPS.length}%`, textAlign: idx === 0 ? 'left' : idx === STEPS.length - 1 ? 'right' : 'center' }}>
                                 {s.label}
                             </div>
                         ))}
                     </div>
                     <div className="sm:hidden mt-3 text-center">
-                        <div className="text-[10px] uppercase tracking-widest font-semibold font-sans text-[#FF6B00]">
+                        <div className="text-[10px] uppercase tracking-widest font-semibold font-sans text-[#E53F01]">
                             Step {step + 1} of {STEPS.length} — {STEPS[step].label}
                         </div>
                     </div>
@@ -603,25 +603,25 @@ export default function Edit() {
             <div className="max-w-[1100px] mx-auto px-4 py-8">
                 {step === 0 && (
                     <section>
-                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">01 / Basic Information</div>
+                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">01 / Basic Information</div>
                         <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-5">
                                 <div>
-                                    <Label htmlFor="full_name" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Full Name <span className="text-[#FF6B00]">*</span></Label>
-                                    <Input id="full_name" value={data.full_name} onChange={(e) => setData('full_name', e.target.value)} placeholder="John Smith" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
+                                    <Label htmlFor="full_name" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Full Name <span className="text-[#E53F01]">*</span></Label>
+                                    <Input id="full_name" value={data.full_name} onChange={(e) => setData('full_name', e.target.value)} placeholder="John Smith" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]" />
                                     <FieldError msg={errors.full_name} />
                                 </div>
                                 <div>
                                     <Label htmlFor="nickname" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Nickname</Label>
-                                    <Input id="nickname" value={data.nickname} onChange={(e) => setData('nickname', e.target.value)} placeholder="Optional" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
+                                    <Input id="nickname" value={data.nickname} onChange={(e) => setData('nickname', e.target.value)} placeholder="Optional" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]" />
                                 </div>
                                 <div>
-                                    <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Date of Birth <span className="text-[#FF6B00]">*</span></Label>
+                                    <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Date of Birth <span className="text-[#E53F01]">*</span></Label>
                                     <div className="flex items-center gap-3">
                                         <Popover open={dobOpen} onOpenChange={setDobOpen}>
                                             <PopoverTrigger asChild>
                                                 <Button type="button" variant="outline" className={`group flex-1 h-11 justify-start text-left font-normal rounded-xl bg-[#111111] border-[#2A2A2A] text-white`}>
-                                                    <CalendarIcon className="mr-2.5 h-4 w-4 text-[#94A3B8] group-hover:text-[#FF6B00] transition-colors" />
+                                                    <CalendarIcon className="mr-2.5 h-4 w-4 text-[#94A3B8] group-hover:text-[#E53F01] transition-colors" />
                                                     <span className={data.dob ? 'font-medium' : ''}>{data.dob ? format(parseYmd(data.dob)!, 'MMMM d, yyyy') : 'Select date of birth'}</span>
                                                 </Button>
                                             </PopoverTrigger>
@@ -629,7 +629,7 @@ export default function Edit() {
                                                 <DobCalendar value={data.dob} onChange={(v) => setData('dob', v)} onClose={() => setDobOpen(false)} />
                                             </PopoverContent>
                                         </Popover>
-                                        {age !== null && <div className="flex-shrink-0 bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] text-[#CC5500] rounded-full px-3 py-1 text-xs font-bold font-mono whitespace-nowrap">{age} yrs</div>}
+                                        {age !== null && <div className="flex-shrink-0 bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] rounded-full px-3 py-1 text-xs font-bold font-mono whitespace-nowrap">{age} yrs</div>}
                                     </div>
                                     <FieldError msg={errors.dob} />
                                 </div>
@@ -638,7 +638,7 @@ export default function Edit() {
                                     <RadioGroup value={data.gender} onValueChange={(v) => setData('gender', v)} className="flex gap-4 h-10 items-center">
                                         {['M', 'F', 'Other'].map((g) => (
                                             <div key={g} className="flex items-center gap-2">
-                                                <RadioGroupItem value={g} id={`gender-${g}`} className="border-[#2A2A2A] text-[#FF6B00]" />
+                                                <RadioGroupItem value={g} id={`gender-${g}`} className="border-[#2A2A2A] text-[#E53F01]" />
                                                 <Label htmlFor={`gender-${g}`} className="text-sm text-[#F5F5F5] font-sans cursor-pointer">{g}</Label>
                                             </div>
                                         ))}
@@ -647,19 +647,19 @@ export default function Edit() {
                                 </div>
                                 <div>
                                     <Label htmlFor="height" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Height (cm)</Label>
-                                    <Input id="height" type="number" value={data.height} onChange={(e) => setData('height', e.target.value)} placeholder="178" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
+                                    <Input id="height" type="number" value={data.height} onChange={(e) => setData('height', e.target.value)} placeholder="178" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]" />
                                     <FieldError msg={errors.height} />
                                 </div>
                                 <div>
                                     <Label htmlFor="birth_city" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Birthplace City</Label>
-                                    <Input id="birth_city" value={data.birth_city} onChange={(e) => setData('birth_city', e.target.value)} placeholder="City" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
+                                    <Input id="birth_city" value={data.birth_city} onChange={(e) => setData('birth_city', e.target.value)} placeholder="City" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]" />
                                 </div>
                                 <div>
                                     <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Birthplace Country</Label>
                                     <CountryCombobox value={data.birth_country} onChange={(v) => setData('birth_country', v)} countries={countries} placeholder="Select country" />
                                 </div>
                                 <div>
-                                    <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Nationality <span className="text-[#FF6B00]">*</span></Label>
+                                    <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Nationality <span className="text-[#E53F01]">*</span></Label>
                                     <MultiCountryCombobox
                                         value={data.nationality}
                                         onChange={(v) => setData('nationality', v)}
@@ -670,7 +670,7 @@ export default function Edit() {
                                 </div>
                                 <div>
                                     <Label htmlFor="current_club" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Current Club</Label>
-                                    <Input id="current_club" value={data.current_club} onChange={(e) => setData('current_club', e.target.value)} placeholder="Club name" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
+                                    <Input id="current_club" value={data.current_club} onChange={(e) => setData('current_club', e.target.value)} placeholder="Club name" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]" />
                                 </div>
                                 <div>
                                     <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Club Country</Label>
@@ -696,19 +696,19 @@ export default function Edit() {
                                 </div>
                                 <div>
                                     <Label htmlFor="whatsapp" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">WhatsApp Number</Label>
-                                    <Input id="whatsapp" value={data.whatsapp} onChange={(e) => setData('whatsapp', e.target.value)} placeholder="+8801700000000" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
+                                    <Input id="whatsapp" value={data.whatsapp} onChange={(e) => setData('whatsapp', e.target.value)} placeholder="+8801700000000" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]" />
                                 </div>
                                 <div className="lg:col-span-2">
                                     <Label htmlFor="agent" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Agent / Representative <span className="text-[#94A3B8] font-normal">(optional)</span></Label>
-                                    <Input id="agent" value={data.agent} onChange={(e) => setData('agent', e.target.value)} placeholder="Agent or agency name" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
+                                    <Input id="agent" value={data.agent} onChange={(e) => setData('agent', e.target.value)} placeholder="Agent or agency name" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]" />
                                 </div>
                             </div>
                             {isMinor && (
                                 <div className="mt-6">
                                     <Alert className="bg-amber-950 border-amber-700"><AlertTriangle className="h-4 w-4 text-amber-400" /><AlertDescription className="text-amber-200 text-sm font-sans">Player is under 18. This profile must be managed by a parent or legal guardian.</AlertDescription></Alert>
                                     <div className="mt-4">
-                                        <Label htmlFor="guardian_name" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Guardian Name <span className="text-[#FF6B00]">*</span></Label>
-                                        <Input id="guardian_name" value={data.guardian_name} onChange={(e) => setData('guardian_name', e.target.value)} placeholder="Parent or legal guardian's full name" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
+                                        <Label htmlFor="guardian_name" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Guardian Name <span className="text-[#E53F01]">*</span></Label>
+                                        <Input id="guardian_name" value={data.guardian_name} onChange={(e) => setData('guardian_name', e.target.value)} placeholder="Parent or legal guardian's full name" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]" />
                                         <FieldError msg={errors.guardian_name} />
                                     </div>
                                 </div>
@@ -719,7 +719,7 @@ export default function Edit() {
 
                 {step === 1 && (
                     <section>
-                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">02 / Football Details</div>
+                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">02 / Football Details</div>
                         <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                             <div className="mb-8">
                                 <Label className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Modality</Label>
@@ -728,7 +728,7 @@ export default function Edit() {
                                         const selected = data.modality === m;
                                         return (
                                             <button key={m} type="button" onClick={() => setData('modality', m)}
-                                                className={`px-5 py-2.5 rounded-full text-sm font-semibold font-sans transition-colors ${selected ? 'bg-[#FF6B00] text-white border-0' : 'bg-[#1F1F1F] border border-[#2A2A2A] text-[#F5F5F5] hover:border-[#FF6B00]'}`}>
+                                                className={`px-5 py-2.5 rounded-full text-sm font-semibold font-sans transition-colors ${selected ? 'bg-[#E53F01] text-white border-0' : 'bg-[#1F1F1F] border border-[#2A2A2A] text-[#F5F5F5] hover:border-[#E53F01]'}`}>
                                                 {m}
                                             </button>
                                         );
@@ -757,7 +757,7 @@ export default function Edit() {
                                                 return (
                                                     <g key={p.id} onClick={() => togglePosition(p.id)} style={{ cursor: 'pointer' }} className="group">
                                                         <title>{p.full}</title>
-                                                        <circle cx={p.cx} cy={p.cy} r="14" fill={selected ? 'rgba(255,107,0,0.85)' : 'transparent'} stroke={selected ? '#FF6B00' : 'rgba(255,255,255,0.4)'} strokeWidth="1.5" className="group-hover:fill-[rgba(255,107,0,0.3)] transition-colors" />
+                                                        <circle cx={p.cx} cy={p.cy} r="14" fill={selected ? 'rgba(255,107,0,0.85)' : 'transparent'} stroke={selected ? '#E53F01' : 'rgba(255,255,255,0.4)'} strokeWidth="1.5" className="group-hover:fill-[rgba(255,107,0,0.3)] transition-colors" />
                                                         <text x={p.cx} y={p.cy} textAnchor="middle" dominantBaseline="central" fontSize="3.2" fontWeight="700" fill={selected ? '#FFFFFF' : 'rgba(255,255,255,0.7)'} style={{ pointerEvents: 'none' }}>
                                                             {words.map((w, wi) => (
                                                                 <tspan key={wi} x={p.cx} dy={wi === 0 ? startDy : lineHeight}>{w}</tspan>
@@ -773,9 +773,9 @@ export default function Edit() {
                                     {ALL_POSITIONS.map((id) => {
                                         const selected = data.positions.includes(id);
                                         return (
-                                            <label key={id} className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-colors ${selected ? 'bg-[rgba(255,107,0,0.12)] border-[#FF6B00]' : 'bg-[#1F1F1F] border-[#2A2A2A]'}`}>
-                                                <Checkbox checked={selected} onCheckedChange={() => togglePosition(id)} className="border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]" />
-                                                <span className={`text-xs font-semibold font-sans leading-tight ${selected ? 'text-[#CC5500]' : 'text-[#F5F5F5]'}`}>
+                                            <label key={id} className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-colors ${selected ? 'bg-[rgba(255,107,0,0.12)] border-[#E53F01]' : 'bg-[#1F1F1F] border-[#2A2A2A]'}`}>
+                                                <Checkbox checked={selected} onCheckedChange={() => togglePosition(id)} className="border-[#2A2A2A] data-[state=checked]:bg-[#E53F01] data-[state=checked]:border-[#E53F01]" />
+                                                <span className={`text-xs font-semibold font-sans leading-tight ${selected ? 'text-[#E53F01]' : 'text-[#F5F5F5]'}`}>
                                                     {POSITION_FULL_NAMES[id]}
                                                 </span>
                                             </label>
@@ -797,8 +797,8 @@ export default function Edit() {
                                     ) : (
                                         <div className="space-y-2">
                                             {data.positions.map((id, idx) => (
-                                                <div key={id} className="flex items-center gap-3 rounded-xl border border-[#FF6B00] bg-[rgba(255,107,0,0.08)] px-3 py-2.5">
-                                                    <span className="flex-shrink-0 rounded-md bg-[#FF6B00] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white font-sans">
+                                                <div key={id} className="flex items-center gap-3 rounded-xl border border-[#E53F01] bg-[rgba(255,107,0,0.08)] px-3 py-2.5">
+                                                    <span className="flex-shrink-0 rounded-md bg-[#E53F01] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white font-sans">
                                                         {PRIORITY_LABELS[idx] ?? `#${idx + 1}`}
                                                     </span>
                                                     <span className="flex-1 text-sm font-semibold text-[#F5F5F5] font-sans">
@@ -810,7 +810,7 @@ export default function Edit() {
                                                             type="button"
                                                             onClick={() => movePosition(idx, -1)}
                                                             disabled={idx === 0}
-                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00] disabled:opacity-30 disabled:cursor-not-allowed"
+                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01] disabled:opacity-30 disabled:cursor-not-allowed"
                                                             aria-label="Move up"
                                                         >
                                                             <ArrowUp className="w-3.5 h-3.5" />
@@ -819,7 +819,7 @@ export default function Edit() {
                                                             type="button"
                                                             onClick={() => movePosition(idx, 1)}
                                                             disabled={idx === data.positions.length - 1}
-                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00] disabled:opacity-30 disabled:cursor-not-allowed"
+                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01] disabled:opacity-30 disabled:cursor-not-allowed"
                                                             aria-label="Move down"
                                                         >
                                                             <ArrowDown className="w-3.5 h-3.5" />
@@ -846,7 +846,7 @@ export default function Edit() {
                                 <RadioGroup value={data.foot} onValueChange={(v) => setData('foot', v)} className="flex flex-col sm:flex-row gap-4">
                                     {['Right', 'Left', 'Ambidextrous'].map((f) => (
                                         <div key={f} className="flex items-center gap-2">
-                                            <RadioGroupItem value={f} id={`foot-${f}`} className="border-[#2A2A2A] text-[#FF6B00]" />
+                                            <RadioGroupItem value={f} id={`foot-${f}`} className="border-[#2A2A2A] text-[#E53F01]" />
                                             <Label htmlFor={`foot-${f}`} className="text-sm text-[#F5F5F5] font-sans cursor-pointer">{f}</Label>
                                         </div>
                                     ))}
@@ -858,16 +858,16 @@ export default function Edit() {
 
                 {step === 2 && (
                     <section>
-                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">03 / Media</div>
+                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">03 / Media</div>
                         <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8 space-y-8">
                             <div>
                                 <Label className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Profile Photo</Label>
                                 {data.photo_preview ? (
                                     <div className="flex flex-col sm:flex-row items-center gap-6">
-                                        <img src={data.photo_preview} alt="Preview" className="w-24 h-24 rounded-full object-cover border-2 border-[#FF6B00]" />
+                                        <img src={data.photo_preview} alt="Preview" className="w-24 h-24 rounded-full object-cover border-2 border-[#E53F01]" />
                                         <div className="flex flex-col gap-2">
                                             <label className="cursor-pointer">
-                                                <Button type="button" variant="outline" className="border-[#2A2A2A] text-[#F5F5F5] hover:border-[#FF6B00] hover:text-[#FF6B00] bg-[#1F1F1F]" onClick={() => document.getElementById('photo-input')?.click()}>Change Photo</Button>
+                                                <Button type="button" variant="outline" className="border-[#2A2A2A] text-[#F5F5F5] hover:border-[#E53F01] hover:text-[#E53F01] bg-[#1F1F1F]" onClick={() => document.getElementById('photo-input')?.click()}>Change Photo</Button>
                                                 <input id="photo-input" type="file" accept="image/jpeg,image/png" onChange={handlePhotoUpload} className="hidden" />
                                             </label>
                                             <p className="text-xs text-[#9A9A9A] font-sans">
@@ -880,7 +880,7 @@ export default function Edit() {
                                     </div>
                                 ) : (
                                     <label className="block cursor-pointer">
-                                        <div className="border-2 border-dashed border-[#2A2A2A] hover:border-[#FF6B00] rounded-2xl p-12 text-center transition-colors">
+                                        <div className="border-2 border-dashed border-[#2A2A2A] hover:border-[#E53F01] rounded-2xl p-12 text-center transition-colors">
                                             <Upload className="w-8 h-8 text-[#94A3B8] mx-auto mb-3" />
                                             <div className="font-semibold text-[#F5F5F5] font-sans mb-1">Upload Profile Photo</div>
                                             <div className="text-xs text-[#94A3B8] font-sans">JPG, PNG up to 5MB</div>
@@ -894,9 +894,9 @@ export default function Edit() {
                             <div>
                                 <Label htmlFor="video_url" className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Highlight Video URL</Label>
                                 <div className="relative">
-                                    <Youtube className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#FF6B00] pointer-events-none" />
+                                    <Youtube className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#E53F01] pointer-events-none" />
                                     <Input id="video_url" value={data.video_url} onChange={(e) => setData('video_url', e.target.value)} placeholder="YouTube or Vimeo URL"
-                                        className="pl-10 pr-10 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]" />
+                                        className="pl-10 pr-10 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]" />
                                     {videoValid && <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />}
                                 </div>
                                 {videoValid && embedUrl && (
@@ -915,7 +915,7 @@ export default function Edit() {
 
                 {step === 3 && (
                     <section>
-                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">04 / Career History</div>
+                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">04 / Career History</div>
                         <div className="space-y-8">
                             {/* Club History */}
                             {/* Club History */}
@@ -954,7 +954,7 @@ export default function Edit() {
                                                         updateClubHistory(idx, 'year_type', newType);
                                                         setYearErrors((prev) => ({ ...prev, [idx]: '' }));
                                                     }}
-                                                    className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-xs text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none font-sans"
+                                                    className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-xs text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
                                                 >
                                                     <option value="european">European (26/27)</option>
                                                     <option value="brazilian">Brazilian (2026)</option>
@@ -970,7 +970,7 @@ export default function Edit() {
                                                             validateYearFormat(idx, e.target.value, 'european');
                                                         }}
                                                         placeholder="26/27"
-                                                        className="h-10 w-full bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                                        className="h-10 w-full bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]"
                                                     />
                                                 ) : (
                                                     <Input
@@ -981,7 +981,7 @@ export default function Edit() {
                                                             validateYearFormat(idx, e.target.value, 'brazilian');
                                                         }}
                                                         placeholder="2026"
-                                                        className="h-10 w-full bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                                        className="h-10 w-full bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]"
                                                     />
                                                 )}
 
@@ -990,14 +990,14 @@ export default function Edit() {
                                                     value={row.club}
                                                     onChange={(e) => updateClubHistory(idx, 'club', e.target.value)}
                                                     placeholder="Club name"
-                                                    className="h-10 w-full bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                                    className="h-10 w-full bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]"
                                                 />
 
                                                 {/* Country */}
                                                 <select
                                                     value={row.country ?? ''}
                                                     onChange={(e) => updateClubHistory(idx, 'country', e.target.value)}
-                                                    className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none font-sans"
+                                                    className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
                                                 >
                                                     <option value="">Country...</option>
                                                     {countries.map((c) => (
@@ -1012,7 +1012,7 @@ export default function Edit() {
                                                     <button
                                                         type="button"
                                                         onClick={addClubRow}
-                                                        className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#FF6B00] hover:border-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]"
+                                                        className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#E53F01] hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]"
                                                     >
                                                         <Plus className="w-4 h-4" />
                                                     </button>
@@ -1051,14 +1051,14 @@ export default function Edit() {
                                     <div key={idx} className="flex items-center gap-3 mb-2">
                                         <Input type="number" value={row.year ?? ''} onChange={(e) => updateTransferHistory(idx, 'year', e.target.value)} placeholder="Year" className="w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono" />
                                         <Input value={row.club} onChange={(e) => updateTransferHistory(idx, 'club', e.target.value)} placeholder="Club" className="flex-1 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <select value={row.country ?? ''} onChange={(e) => updateTransferHistory(idx, 'country', e.target.value)} className="flex-1 h-10 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none">
+                                        <select value={row.country ?? ''} onChange={(e) => updateTransferHistory(idx, 'country', e.target.value)} className="flex-1 h-10 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none">
                                             <option value="">Country...</option>
                                             {countries.map((c) => <option key={c.code} value={c.code}>{c.flag ?? ''} {c.name}</option>)}
                                         </select>
                                         <button type="button" onClick={() => removeTransferRow(idx)} className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"><X className="w-4 h-4" /></button>
                                     </div>
                                 ))}
-                                <button type="button" onClick={addTransferRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#FF6B00] hover:text-[#CC5500]"><Plus className="w-4 h-4" /> Add row</button>
+                                <button type="button" onClick={addTransferRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#E53F01] hover:text-[#E53F01]"><Plus className="w-4 h-4" /> Add row</button>
                             </div> */}
 
                             {/* Achievements */}
@@ -1076,7 +1076,7 @@ export default function Edit() {
                                         <button type="button" onClick={() => removeAchievementRow(idx)} className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"><X className="w-4 h-4" /></button>
                                     </div>
                                 ))}
-                                <button type="button" onClick={addAchievementRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#FF6B00] hover:text-[#CC5500]"><Plus className="w-4 h-4" /> Add row</button>
+                                <button type="button" onClick={addAchievementRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#E53F01] hover:text-[#E53F01]"><Plus className="w-4 h-4" /> Add row</button>
                             </div>
 
                             {/* Competition History */}
@@ -1094,7 +1094,7 @@ export default function Edit() {
                                         <button type="button" onClick={() => removeCompetitionRow(idx)} className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"><X className="w-4 h-4" /></button>
                                     </div>
                                 ))}
-                                <button type="button" onClick={addCompetitionRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#FF6B00] hover:text-[#CC5500]"><Plus className="w-4 h-4" /> Add row</button>
+                                <button type="button" onClick={addCompetitionRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#E53F01] hover:text-[#E53F01]"><Plus className="w-4 h-4" /> Add row</button>
                             </div>
 
                             {/* Recent Matches */}
@@ -1120,7 +1120,7 @@ export default function Edit() {
                                         <button type="button" onClick={() => removeMatchRow(idx)} className="flex-shrink-0 h-10 w-6 flex items-center justify-center text-[#94A3B8] hover:text-red-500"><X className="w-3 h-3" /></button>
                                     </div>
                                 ))}
-                                <button type="button" onClick={addMatchRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#FF6B00] hover:text-[#CC5500]"><Plus className="w-4 h-4" /> Add match</button>
+                                <button type="button" onClick={addMatchRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#E53F01] hover:text-[#E53F01]"><Plus className="w-4 h-4" /> Add match</button>
                             </div>
                         </div>
                     </section>
@@ -1128,13 +1128,13 @@ export default function Edit() {
 
                 {step === 4 && (
                     <section>
-                        <div className="text-[#FF6B00] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">05 / About You</div>
+                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">05 / About You</div>
                         <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                             <Label htmlFor="description" className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Description</Label>
-                            <Textarea id="description" rows={5} maxLength={500} value={data.description} onChange={(e) => setData('description', e.target.value)} placeholder="Describe your playing style, strengths, and football journey..." className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00] resize-none" />
+                            <Textarea id="description" rows={5} maxLength={500} value={data.description} onChange={(e) => setData('description', e.target.value)} placeholder="Describe your playing style, strengths, and football journey..." className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01] resize-none" />
                             <div className="flex justify-between mt-2">
                                 <FieldError msg={errors.description} />
-                                <span className={`text-xs font-mono ${descCount > 450 ? 'text-[#FF6B00] font-bold' : 'text-[#94A3B8]'}`}>{descCount} / 500</span>
+                                <span className={`text-xs font-mono ${descCount > 450 ? 'text-[#E53F01] font-bold' : 'text-[#94A3B8]'}`}>{descCount} / 500</span>
                             </div>
                         </div>
 
@@ -1153,7 +1153,7 @@ export default function Edit() {
                                         value={data.supported_club}
                                         onChange={(e) => setData('supported_club', e.target.value)}
                                         placeholder="e.g. Manchester United"
-                                        className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                        className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]"
                                     />
                                     <FieldError msg={errors.supported_club} />
                                 </div>
@@ -1167,7 +1167,7 @@ export default function Edit() {
                                         value={data.dream_club}
                                         onChange={(e) => setData('dream_club', e.target.value)}
                                         placeholder="e.g. Real Madrid"
-                                        className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                        className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]"
                                     />
                                     <FieldError msg={errors.dream_club} />
                                 </div>
@@ -1183,14 +1183,14 @@ export default function Edit() {
                                             return (
                                                 <label
                                                     key={brand}
-                                                    className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-colors ${selected ? 'bg-[rgba(255,107,0,0.12)] border-[#FF6B00]' : 'bg-[#1F1F1F] border-[#2A2A2A]'}`}
+                                                    className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-colors ${selected ? 'bg-[rgba(255,107,0,0.12)] border-[#E53F01]' : 'bg-[#1F1F1F] border-[#2A2A2A]'}`}
                                                 >
                                                     <Checkbox
                                                         checked={selected}
                                                         onCheckedChange={() => toggleBootBrand(brand)}
-                                                        className="border-[#2A2A2A] data-[state=checked]:bg-[#FF6B00] data-[state=checked]:border-[#FF6B00]"
+                                                        className="border-[#2A2A2A] data-[state=checked]:bg-[#E53F01] data-[state=checked]:border-[#E53F01]"
                                                     />
-                                                    <span className={`text-sm font-sans ${selected ? 'text-[#CC5500] font-semibold' : 'text-[#F5F5F5]'}`}>
+                                                    <span className={`text-sm font-sans ${selected ? 'text-[#E53F01] font-semibold' : 'text-[#F5F5F5]'}`}>
                                                         {brand}
                                                     </span>
                                                 </label>
@@ -1204,7 +1204,7 @@ export default function Edit() {
                                                 value={data.boot_brand_other}
                                                 onChange={(e) => setData('boot_brand_other', e.target.value)}
                                                 placeholder="Please specify the brand"
-                                                className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#FF6B00]"
+                                                className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]"
                                             />
                                         </div>
                                     )}
@@ -1224,11 +1224,11 @@ export default function Edit() {
                 </div>
                 <div className="flex items-center gap-2 sm:gap-3 ml-auto">
                     <Button type="button" variant="ghost" onClick={goBack} disabled={step === 0} className="text-[#9A9A9A] hover:text-[#F5F5F5] hover:bg-[#1F1F1F] disabled:opacity-30"><ArrowLeft className="w-4 h-4 mr-1" /> Back</Button>
-                    <Button type="button" variant="outline" className="border-[#2A2A2A] text-[#F5F5F5] hover:border-[#FF6B00] hover:text-[#FF6B00] bg-[#1F1F1F]">Save Draft</Button>
+                    <Button type="button" variant="outline" className="border-[#2A2A2A] text-[#F5F5F5] hover:border-[#E53F01] hover:text-[#E53F01] bg-[#1F1F1F]">Save Draft</Button>
                     {step < STEPS.length - 1 ? (
-                        <Button type="button" onClick={goNext} className="bg-[#FF6B00] text-white hover:bg-[#CC5500]">Next <ArrowRight className="w-4 h-4 ml-1" /></Button>
+                        <Button type="button" onClick={goNext} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">Next <ArrowRight className="w-4 h-4 ml-1" /></Button>
                     ) : (
-                        <Button type="button" disabled={processing} onClick={submit} className="bg-[#FF6B00] text-white hover:bg-[#CC5500]">Save & Publish <ArrowRight className="w-4 h-4 ml-1" /></Button>
+                        <Button type="button" disabled={processing} onClick={submit} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">Save & Publish <ArrowRight className="w-4 h-4 ml-1" /></Button>
                     )}
                 </div>
             </div>
