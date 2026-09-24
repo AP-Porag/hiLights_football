@@ -225,9 +225,24 @@ export default function PlayersIndex() {
                                     players.data.map((player) => (
                                         <TableRow key={player.id} className="border-[#2A2A2A] hover:bg-[#1A1A1A]">
                                             <TableCell className="py-4">
-                                                <div className="h-10 w-10 overflow-hidden rounded-full border border-[#2A2A2A]">
-                                                    <img src={player.avatar} alt={player.name} className="h-full w-full object-cover" />
-                                                </div>
+                                                {player.avatar ? (
+                                                    <div className="h-10 w-10 overflow-hidden rounded-full border border-[#2A2A2A]">
+                                                        <img
+                                                            src={player.avatar}
+                                                            alt={player.name}
+                                                            className="h-full w-full object-cover"
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#2A2A2A] bg-[#2A1A0F] text-sm font-semibold text-orange-500">
+                                                        {(player.name || '')
+                                                            .split(' ')
+                                                            .filter(Boolean)
+                                                            .slice(0, 2)
+                                                            .map(word => word.charAt(0).toUpperCase())
+                                                            .join('')}
+                                                    </div>
+                                                )}
                                             </TableCell>
                                             <TableCell className="py-4">
                                                 <div className="flex flex-col">
