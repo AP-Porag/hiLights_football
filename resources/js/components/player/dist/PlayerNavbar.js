@@ -76,26 +76,26 @@ function PlayerNavbar() {
                 return (react_2["default"].createElement(react_1.Link, { key: link.href, href: link.href, className: [
                         'relative text-sm font-medium transition-colors',
                         active
-                            ? 'text-[#FF6B00] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#FF6B00]'
-                            : 'text-[#475569] hover:text-[#FF6B00] dark:text-[#9A9A9A]',
+                            ? 'text-[#E53F01] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#E53F01]'
+                            : 'text-[#475569] hover:text-[#E53F01] dark:text-[#9A9A9A]',
                     ].join(' ') }, link.label));
             })),
             react_2["default"].createElement("div", { className: "hidden shrink-0 items-center gap-3 md:flex" },
                 react_2["default"].createElement(react_1.Link, { href: "/player/notifications", className: "relative rounded-md p-2 transition-colors hover:bg-[#F8FAFC] dark:hover:bg-[#1F1F1F]", "aria-label": "Notifications" },
-                    react_2["default"].createElement(lucide_react_1.Bell, { className: "h-5 w-5 text-[#94A3B8] hover:text-[#FF6B00] dark:text-[#555555]" }),
+                    react_2["default"].createElement(lucide_react_1.Bell, { className: "h-5 w-5 text-[#94A3B8] hover:text-[#E53F01] dark:text-[#555555]" }),
                     notificationCount > 0 && (react_2["default"].createElement("span", { className: "absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#0D0D0D]" }))),
                 react_2["default"].createElement(dropdown_menu_1.DropdownMenu, null,
                     react_2["default"].createElement(dropdown_menu_1.DropdownMenuTrigger, { asChild: true },
-                        react_2["default"].createElement("button", { className: "flex items-center gap-1.5 rounded-full p-0.5 transition-colors outline-none hover:bg-[#F8FAFC] focus-visible:ring-2 focus-visible:ring-[#FF6B00] dark:hover:bg-[#1F1F1F]", "aria-label": "Account menu" },
+                        react_2["default"].createElement("button", { className: "flex items-center gap-1.5 rounded-full p-0.5 transition-colors outline-none hover:bg-[#F8FAFC] focus-visible:ring-2 focus-visible:ring-[#E53F01] dark:hover:bg-[#1F1F1F]", "aria-label": "Account menu" },
                             react_2["default"].createElement(avatar_1.Avatar, { className: "h-9 w-9 border border-[#E2E8F0] dark:border-[#2A2A2A]" },
                                 auth.user.avatar_url ? react_2["default"].createElement(avatar_1.AvatarImage, { src: auth.user.avatar_url, alt: auth.user.name }) : null,
-                                react_2["default"].createElement(avatar_1.AvatarFallback, { className: "bg-[#FFF3EB] text-sm font-bold text-[#FF6B00] dark:bg-[rgba(255,107,0,0.15)]" }, initials)),
+                                react_2["default"].createElement(avatar_1.AvatarFallback, { className: "bg-[#FFF3EB] text-sm font-bold text-[#E53F01] dark:bg-[rgba(255,107,0,0.15)]" }, initials)),
                             react_2["default"].createElement(lucide_react_1.ChevronDown, { className: "h-3 w-3 text-[#94A3B8]" }))),
                     react_2["default"].createElement(dropdown_menu_1.DropdownMenuContent, { align: "end", className: "w-56 rounded-xl border border-[#E2E8F0] bg-white p-1 shadow-lg dark:border-[#2A2A2A] dark:bg-[#161616]" },
                         react_2["default"].createElement("div", { className: "mb-1 border-b border-[#F1F5F9] px-3 py-2 dark:border-[#1F1F1F]" },
                             react_2["default"].createElement("div", { className: "flex items-center justify-between gap-2" },
                                 react_2["default"].createElement("div", { className: "truncate text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]" }, auth.user.name),
-                                react_2["default"].createElement("span", { className: "shrink-0 rounded-full border border-[#FF6B00] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#CC5500] dark:bg-[rgba(255,107,0,0.12)]" }, "PLAYER")),
+                                react_2["default"].createElement("span", { className: "shrink-0 rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]" }, "PLAYER")),
                             react_2["default"].createElement("div", { className: "mt-0.5 truncate text-xs text-[#94A3B8] dark:text-[#555555]" }, auth.user.email)),
                         react_2["default"].createElement(dropdown_menu_1.DropdownMenuItem, { asChild: true, className: "cursor-pointer rounded-md focus:bg-[#F8FAFC] dark:focus:bg-[#1F1F1F]" },
                             react_2["default"].createElement(react_1.Link, { href: "/players/" + auth.user.id, className: "flex items-center gap-2 px-3 py-2 text-sm text-[#0F172A] dark:text-[#F5F5F5]" },
@@ -125,27 +125,27 @@ function PlayerNavbar() {
                                 react_2["default"].createElement("img", { src: "/images/logo/hilights_logo_dark_200.png", className: "hidden h-9 w-auto dark:block", alt: "HiLights Football" }),
                                 react_2["default"].createElement("div", { className: "flex items-end gap-0.5 leading-none" },
                                     react_2["default"].createElement("span", { className: "text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]" }, "Hi"),
-                                    react_2["default"].createElement("span", { className: "text-xl font-black tracking-tight text-[#FF6B00] italic" }, "Lights"),
+                                    react_2["default"].createElement("span", { className: "text-xl font-black tracking-tight text-[#E53F01] italic" }, "Lights"),
                                     react_2["default"].createElement("span", { className: "mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.12em] text-[#94A3B8]" }, "FOOTBALL")))),
                         react_2["default"].createElement("div", { className: "flex items-center gap-3 border-b border-[#E2E8F0] px-6 py-4 dark:border-[#2A2A2A]" },
                             react_2["default"].createElement(avatar_1.Avatar, { className: "h-11 w-11 border border-[#E2E8F0] dark:border-[#2A2A2A]" },
                                 auth.user.avatar_url ? react_2["default"].createElement(avatar_1.AvatarImage, { src: auth.user.avatar_url, alt: auth.user.name }) : null,
-                                react_2["default"].createElement(avatar_1.AvatarFallback, { className: "bg-[#FFF3EB] text-sm font-bold text-[#FF6B00] dark:bg-[rgba(255,107,0,0.15)]" }, initials)),
+                                react_2["default"].createElement(avatar_1.AvatarFallback, { className: "bg-[#FFF3EB] text-sm font-bold text-[#E53F01] dark:bg-[rgba(255,107,0,0.15)]" }, initials)),
                             react_2["default"].createElement("div", { className: "min-w-0 flex-1" },
                                 react_2["default"].createElement("div", { className: "flex items-center gap-2" },
                                     react_2["default"].createElement("div", { className: "truncate text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]" }, auth.user.name),
-                                    react_2["default"].createElement("span", { className: "shrink-0 rounded-full border border-[#FF6B00] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#CC5500] dark:bg-[rgba(255,107,0,0.12)]" }, "PLAYER")),
+                                    react_2["default"].createElement("span", { className: "shrink-0 rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]" }, "PLAYER")),
                                 react_2["default"].createElement("div", { className: "truncate text-xs text-[#94A3B8] dark:text-[#555555]" }, auth.user.email))),
                         react_2["default"].createElement("nav", { className: "flex-1 px-6" },
                             NAV_LINKS.map(function (link) {
                                 var active = isActive(link.href);
                                 return (react_2["default"].createElement(react_1.Link, { key: link.href, href: link.href, onClick: function () { return setMobileOpen(false); }, className: [
                                         'block border-b border-[#F1F5F9] py-3 text-base font-medium transition-colors dark:border-[#1F1F1F]',
-                                        active ? 'text-[#FF6B00]' : 'text-[#0F172A] hover:text-[#FF6B00] dark:text-[#F5F5F5]',
+                                        active ? 'text-[#E53F01]' : 'text-[#0F172A] hover:text-[#E53F01] dark:text-[#F5F5F5]',
                                     ].join(' ') }, link.label));
                             }),
-                            react_2["default"].createElement(react_1.Link, { href: "/players/" + auth.user.id, onClick: function () { return setMobileOpen(false); }, className: "block border-b border-[#F1F5F9] py-3 text-base font-medium text-[#0F172A] transition-colors hover:text-[#FF6B00] dark:border-[#1F1F1F] dark:text-[#F5F5F5]" }, "View Public Profile"),
-                            react_2["default"].createElement(react_1.Link, { href: "/player/settings", onClick: function () { return setMobileOpen(false); }, className: "block border-b border-[#F1F5F9] py-3 text-base font-medium text-[#0F172A] transition-colors hover:text-[#FF6B00] dark:border-[#1F1F1F] dark:text-[#F5F5F5]" }, "Account Settings")),
+                            react_2["default"].createElement(react_1.Link, { href: "/players/" + auth.user.id, onClick: function () { return setMobileOpen(false); }, className: "block border-b border-[#F1F5F9] py-3 text-base font-medium text-[#0F172A] transition-colors hover:text-[#E53F01] dark:border-[#1F1F1F] dark:text-[#F5F5F5]" }, "View Public Profile"),
+                            react_2["default"].createElement(react_1.Link, { href: "/player/settings", onClick: function () { return setMobileOpen(false); }, className: "block border-b border-[#F1F5F9] py-3 text-base font-medium text-[#0F172A] transition-colors hover:text-[#E53F01] dark:border-[#1F1F1F] dark:text-[#F5F5F5]" }, "Account Settings")),
                         react_2["default"].createElement("div", { className: "mt-4 border-t border-[#E2E8F0] px-6 py-4 dark:border-[#2A2A2A]" },
                             react_2["default"].createElement(button_1.Button, { onClick: function (e) {
                                     handleLogout(e);

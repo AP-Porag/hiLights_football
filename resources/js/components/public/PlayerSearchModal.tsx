@@ -115,7 +115,7 @@ export default function PlayerSearchModal({
                         placeholder="Search players by name or club..."
                         className="h-14 w-full bg-transparent text-sm text-[#F5F5F5] outline-none placeholder:text-[#555555]"
                     />
-                    {loading && <Loader2 className="h-4 w-4 shrink-0 animate-spin text-[#FF6B00]" />}
+                    {loading && <Loader2 className="h-4 w-4 shrink-0 animate-spin text-[#E53F01]" />}
                     <button
                         type="button"
                         onClick={onClose}

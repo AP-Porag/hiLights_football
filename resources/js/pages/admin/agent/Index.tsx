@@ -127,7 +127,7 @@ function StarsInline({ value, max = 5 }: { value: number; max?: number }) {
                 <Star
                     key={i}
                     className={`w-3 h-3 ${i < filled
-                        ? 'fill-[#FF6B00] text-[#FF6B00]'
+                        ? 'fill-[#E53F01] text-[#E53F01]'
                         : 'fill-transparent text-[#CBD5E1] dark:text-[#2A2A2A]'
                         }`}
                 />
@@ -148,7 +148,7 @@ function StarsLarge({ value, label, max = 5 }: { value: number; label: string; m
                     <Star
                         key={i}
                         className={`w-5 h-5 ${i < filled
-                            ? 'fill-[#FF6B00] text-[#FF6B00]'
+                            ? 'fill-[#E53F01] text-[#E53F01]'
                             : 'fill-transparent text-[#CBD5E1]'
                             }`}
                     />
@@ -268,7 +268,7 @@ export default function AgentIndex() {
                                     placeholder="Search agents..."
                                     value={agentSearch}
                                     onChange={(e) => setAgentSearch(e.target.value)}
-                                    className="w-full border-[#2A2A2A] bg-[#1A1A1A] pl-9 text-sm text-white placeholder:text-[#94A3B8] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 sm:w-72"
+                                    className="w-full border-[#2A2A2A] bg-[#1A1A1A] pl-9 text-sm text-white placeholder:text-[#94A3B8] focus-visible:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-100 sm:w-72"
                                 />
                             </div>
                         </div>
@@ -308,7 +308,7 @@ export default function AgentIndex() {
                                                 {agent.avg_rating > 0 ? (
                                                     <div className="flex items-center gap-2">
                                                         <span>{agent.avg_rating.toFixed(1)}</span>
-                                                        <Star className="h-4 w-4 fill-[#FF6B00] text-[#FF6B00]" />
+                                                        <Star className="h-4 w-4 fill-[#E53F01] text-[#E53F01]" />
                                                     </div>
                                                 ) : (
                                                     '—'
@@ -349,7 +349,7 @@ export default function AgentIndex() {
                                             <Button
                                                 key={p}
                                                 size="sm"
-                                                className="h-8 w-8 bg-[#FF6B00] p-0 font-mono text-white hover:bg-[#CC5500]"
+                                                className="h-8 w-8 bg-[#E53F01] p-0 font-mono text-white hover:bg-[#E53F01]"
                                             >
                                                 {p}
                                             </Button>
@@ -391,12 +391,12 @@ export default function AgentIndex() {
                                     <div className="mt-3 font-mono text-4xl font-bold text-white">{summary.avgRating.toFixed(1)}</div>
                                     <div className="mt-2 flex items-center gap-0.5">
                                         {Array.from({ length: 5 }).map((_, i) => (
-                                            <Star key={i} className={`w-4 h-4 ${i < Math.round(summary.avgRating) ? 'fill-[#FF6B00] text-[#FF6B00]' : 'fill-transparent text-[#CBD5E1]'}`} />
+                                            <Star key={i} className={`w-4 h-4 ${i < Math.round(summary.avgRating) ? 'fill-[#E53F01] text-[#E53F01]' : 'fill-transparent text-[#CBD5E1]'}`} />
                                         ))}
                                     </div>
                                 </div>
                                 <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#FFF3EB]">
-                                    <Star className="h-5 w-5 fill-[#FF6B00] text-[#FF6B00]" />
+                                    <Star className="h-5 w-5 fill-[#E53F01] text-[#E53F01]" />
                                 </div>
                             </div>
                         </CardContent>
@@ -415,7 +415,7 @@ export default function AgentIndex() {
                                     </div>
                                 </div>
                                 <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#FFF3EB]">
-                                    <Users className="h-5 w-5 text-[#FF6B00]" />
+                                    <Users className="h-5 w-5 text-[#E53F01]" />
                                 </div>
                             </div>
                         </CardContent>
@@ -437,9 +437,9 @@ export default function AgentIndex() {
                                                 </div>
                                             </div>
                                             <div className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-[#FFF3EB] px-2 py-1">
-                                                <Award className="h-3 w-3 text-[#FF6B00]" />
-                                                <span className="font-mono text-xs font-semibold text-[#CC5500]">{summary.topAgent.count}</span>
-                                                <span className="text-xs text-[#CC5500]">ratings submitted</span>
+                                                <Award className="h-3 w-3 text-[#E53F01]" />
+                                                <span className="font-mono text-xs font-semibold text-[#E53F01]">{summary.topAgent.count}</span>
+                                                <span className="text-xs text-[#E53F01]">ratings submitted</span>
                                             </div>
                                         </>
                                     ) : (
@@ -462,7 +462,7 @@ export default function AgentIndex() {
                                     placeholder="Search agent or player..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="w-full border-[#2A2A2A] bg-[#1A1A1A] pl-9 text-sm text-white placeholder:text-[#94A3B8] focus-visible:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 sm:w-72"
+                                    className="w-full border-[#2A2A2A] bg-[#1A1A1A] pl-9 text-sm text-white placeholder:text-[#94A3B8] focus-visible:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-100 sm:w-72"
                                 />
                             </div>
                         </div>
@@ -510,7 +510,7 @@ export default function AgentIndex() {
                                                             <div className="flex items-center gap-2">
                                                                 <span className="text-sm font-semibold text-white">{rating.player.name}</span>
                                                                 {rating.player.position && (
-                                                                    <span className="rounded border border-[#FF6B00] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#CC5500]">
+                                                                    <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#E53F01]">
                                                                         {rating.player.position}
                                                                     </span>
                                                                 )}
@@ -524,8 +524,8 @@ export default function AgentIndex() {
                                                 <TableCell className="py-4"><StarsInline value={rating.mental} /></TableCell>
                                                 <TableCell className="py-4">
                                                     <div className="inline-flex items-center gap-1.5 rounded-md bg-[#FFF3EB] px-2 py-1">
-                                                        <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
-                                                        <span className="font-mono text-sm font-semibold text-[#CC5500]">{rating.overall.toFixed(1)}</span>
+                                                        <Star className="h-3 w-3 fill-[#E53F01] text-[#E53F01]" />
+                                                        <span className="font-mono text-sm font-semibold text-[#E53F01]">{rating.overall.toFixed(1)}</span>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="py-4">
@@ -535,7 +535,7 @@ export default function AgentIndex() {
                                                 </TableCell>
                                                 <TableCell className="px-6 py-4 text-right">
                                                     <div className="flex items-center justify-end gap-1">
-                                                        <Button variant="ghost" size="sm" onClick={() => setViewRating(rating)} className="h-8 w-8 p-0 text-[#94A3B8] hover:bg-[#2A2A2A] hover:text-[#FF6B00]">
+                                                        <Button variant="ghost" size="sm" onClick={() => setViewRating(rating)} className="h-8 w-8 p-0 text-[#94A3B8] hover:bg-[#2A2A2A] hover:text-[#E53F01]">
                                                             <Eye className="h-4 w-4" />
                                                         </Button>
                                                         <Button variant="ghost" size="sm" onClick={() => setDeleteRating(rating)} className="h-8 w-8 p-0 text-[#94A3B8] hover:bg-red-50 hover:text-[#DC2626]">
@@ -561,7 +561,7 @@ export default function AgentIndex() {
                                 <div className="flex items-center gap-1">
                                     {pageWindow.map((p) =>
                                         p === ratings.current_page ? (
-                                            <Button key={p} size="sm" className="h-8 w-8 bg-[#FF6B00] p-0 font-mono text-white hover:bg-[#CC5500]">{p}</Button>
+                                            <Button key={p} size="sm" className="h-8 w-8 bg-[#E53F01] p-0 font-mono text-white hover:bg-[#E53F01]">{p}</Button>
                                         ) : (
                                             <Button key={p} variant="outline" size="sm" onClick={() => goToPage(p)} className="h-8 w-8 border-[#2A2A2A] bg-[#1A1A1A] p-0 font-mono text-white hover:bg-[#2A2A2A]">{p}</Button>
                                         )
@@ -591,14 +591,14 @@ export default function AgentIndex() {
                                         <div className="min-w-0 flex-1">
                                             <div className="flex items-center gap-2">
                                                 <span className="truncate text-sm font-semibold text-white">{player.name}</span>
-                                                {player.position && <span className="rounded border border-[#FF6B00] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#CC5500]">{player.position}</span>}
+                                                {player.position && <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#E53F01]">{player.position}</span>}
                                             </div>
                                             <div className="truncate text-xs text-[#94A3B8]">{player.club ?? '—'}</div>
                                         </div>
                                         <div className="flex flex-col items-end gap-1">
                                             <div className="font-mono text-sm font-semibold text-white">{player.ratings}</div>
                                             <div className="flex items-center gap-1">
-                                                <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
+                                                <Star className="h-3 w-3 fill-[#E53F01] text-[#E53F01]" />
                                                 <span className="font-mono text-xs text-[#94A3B8]">{player.avg.toFixed(1)}</span>
                                             </div>
                                         </div>
@@ -642,7 +642,7 @@ export default function AgentIndex() {
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex items-center gap-2">
                                                     <span className="truncate font-display text-base font-semibold text-white">{viewRating.player.name}</span>
-                                                    {viewRating.player.position && <span className="rounded border border-[#FF6B00] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#CC5500]">{viewRating.player.position}</span>}
+                                                    {viewRating.player.position && <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#E53F01]">{viewRating.player.position}</span>}
                                                 </div>
                                                 <div className="truncate text-xs text-[#94A3B8]">{viewRating.player.club ?? '—'}</div>
                                                 {viewRating.player.age !== null && <div className="text-xs text-[#94A3B8]">Age <span className="font-mono">{viewRating.player.age}</span></div>}
@@ -656,18 +656,18 @@ export default function AgentIndex() {
                                         <StarsLarge value={viewRating.technical} label="Technical" />
                                         <StarsLarge value={viewRating.physical} label="Physical" />
                                         <StarsLarge value={viewRating.mental} label="Mental" />
-                                        <div className="rounded-lg border border-[#FF6B00] bg-[#FFF3EB] p-4">
-                                            <div className="text-xs font-medium uppercase tracking-wider text-[#CC5500]">Overall</div>
+                                        <div className="rounded-lg border border-[#E53F01] bg-[#FFF3EB] p-4">
+                                            <div className="text-xs font-medium uppercase tracking-wider text-[#E53F01]">Overall</div>
                                             <div className="mt-2 flex items-center gap-1">
-                                                {Array.from({ length: 5 }).map((_, i) => <Star key={i} className={`w-5 h-5 ${i < Math.round(viewRating.overall) ? 'fill-[#FF6B00] text-[#FF6B00]' : 'fill-transparent text-[#FF6B00]/30'}`} />)}
+                                                {Array.from({ length: 5 }).map((_, i) => <Star key={i} className={`w-5 h-5 ${i < Math.round(viewRating.overall) ? 'fill-[#E53F01] text-[#E53F01]' : 'fill-transparent text-[#E53F01]/30'}`} />)}
                                             </div>
-                                            <div className="mt-2 font-mono text-2xl font-bold text-[#CC5500]">{viewRating.overall.toFixed(1)}</div>
+                                            <div className="mt-2 font-mono text-2xl font-bold text-[#E53F01]">{viewRating.overall.toFixed(1)}</div>
                                         </div>
                                     </div>
                                 </div>
                                 {viewRating.matchContext && (
                                     <div className="rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] p-4">
-                                        <div className="flex items-center gap-2"><Calendar className="h-4 w-4 text-[#FF6B00]" /><div className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">Match Context</div></div>
+                                        <div className="flex items-center gap-2"><Calendar className="h-4 w-4 text-[#E53F01]" /><div className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">Match Context</div></div>
                                         <div className="mt-2 text-sm text-white">{viewRating.matchContext}</div>
                                     </div>
                                 )}
@@ -680,7 +680,7 @@ export default function AgentIndex() {
                             </div>
                             <DialogFooter className="gap-2">
                                 <Button variant="outline" onClick={() => setViewRating(null)} className="border-[#2A2A2A] bg-[#1A1A1A] text-white hover:bg-[#2A2A2A]">Close</Button>
-                                <Link href={`/ admin / players / ${viewRating.player.id}`} className="inline-flex items-center justify-center rounded-md bg-[#FF6B00] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#CC5500]">View Player Profile</Link>
+                                <Link href={`/ admin / players / ${viewRating.player.id}`} className="inline-flex items-center justify-center rounded-md bg-[#E53F01] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#E53F01]">View Player Profile</Link>
                             </DialogFooter>
                         </>
                     )}
@@ -704,8 +704,8 @@ export default function AgentIndex() {
                                         <div className="truncate text-xs text-[#94A3B8]">rated <span className="font-semibold">{deleteRating.player.name}</span></div>
                                     </div>
                                     <div className="inline-flex items-center gap-1 rounded-md bg-[#FFF3EB] px-2 py-1">
-                                        <Star className="h-3 w-3 fill-[#FF6B00] text-[#FF6B00]" />
-                                        <span className="font-mono text-sm font-semibold text-[#CC5500]">{deleteRating.overall.toFixed(1)}</span>
+                                        <Star className="h-3 w-3 fill-[#E53F01] text-[#E53F01]" />
+                                        <span className="font-mono text-sm font-semibold text-[#E53F01]">{deleteRating.overall.toFixed(1)}</span>
                                     </div>
                                 </div>
                             </div>

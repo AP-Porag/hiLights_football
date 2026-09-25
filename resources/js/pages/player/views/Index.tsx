@@ -48,7 +48,7 @@ export default function Index({ views, pagination }: Props) {
 
             <div className="mx-auto max-w-4xl px-4 py-8 sm:px-8">
                 <div className="flex items-center gap-3 border-b border-[#2A2A2A] pb-4">
-                    <Eye className="h-6 w-6 text-[#FF6B00]" />
+                    <Eye className="h-6 w-6 text-[#E53F01]" />
                     <h1 className="text-2xl font-bold text-[#F5F5F5]">Profile Views</h1>
                     <span className="ml-auto text-sm text-[#94A3B8]">
                         {pagination.total} views total
@@ -73,10 +73,10 @@ export default function Index({ views, pagination }: Props) {
                                 return (
                                     <li
                                         key={view.id}
-                                        className="flex items-center gap-3 rounded-xl border border-[#2A2A2A] bg-[#161616] p-4 transition hover:border-[#FF6B00]"
+                                        className="flex items-center gap-3 rounded-xl border border-[#2A2A2A] bg-[#161616] p-4 transition hover:border-[#E53F01]"
                                     >
                                         <Avatar className="h-10 w-10 flex-shrink-0">
-                                            <AvatarFallback className="bg-[rgba(255,107,0,0.12)] text-xs font-bold text-[#FF6B00]">
+                                            <AvatarFallback className="bg-[rgba(255,107,0,0.12)] text-xs font-bold text-[#E53F01]">
                                                 {initials}
                                             </AvatarFallback>
                                         </Avatar>
@@ -96,7 +96,7 @@ export default function Index({ views, pagination }: Props) {
                                         {view.player_profile_id ? (
                                             <Link
                                                 href={`/player/profile/${view.player_profile_id}`}
-                                                className="flex-shrink-0 rounded-lg bg-[#FF6B00] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#CC5500]"
+                                                className="flex-shrink-0 rounded-lg bg-[#E53F01] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#E53F01]"
                                             >
                                                 View Profile
                                             </Link>

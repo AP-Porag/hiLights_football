@@ -49,7 +49,7 @@ const Scout = () => {
             desc: (
                 <>
                     Be the first to discover young players before they become known to the world.{" "}
-                    {/* <span className="text-[#ff6b00]">data</span>,{" "} */}
+                    {/* <span className="text-[#E53F01]">data</span>,{" "} */}
                 </>
             ),
         },
@@ -142,7 +142,7 @@ const Scout = () => {
                                             At HiLights Football, you have the opportunity to discover, follow and contact great talents for free.
                                         </p>
                                         <div className="absolute top-17 left-0 z-0 flex w-[200%] flex-row gap-4 md:top-22 lg:top-25">
-                                            <button className="flex items-center justify-center rounded-md bg-[#dd3e06] px-3 py-2 text-[10px] font-semibold transition-all duration-300 hover:bg-orange-600 md:px-6 md:text-sm">
+                                            <button className="flex items-center justify-center rounded-md bg-[#dd3e06] px-3 py-2 text-[10px] font-semibold transition-all duration-300 hover:bg-[#E53F01] md:px-6 md:text-sm">
 
                                                 <Link
                                                     href={
@@ -297,7 +297,7 @@ const Scout = () => {
                         {/* Header */}
                         <div className="flex items-center justify-between pb-3">
                             <div className="flex items-center gap-2">
-                                <Star size={18} fill="#ff6b00" className="text-[#c45504]" />
+                                <Star size={18} fill="#E53F01" className="text-[#c45504]" />
 
                                 <h2 className="text-[12px] font-extrabold whitespace-nowrap text-[#222] uppercase md:text-sm">
                                     TOP TALENTS YOU CAN DISCOVER TODAY
@@ -309,7 +309,7 @@ const Scout = () => {
                                 className="hidden sm:block"
                             >
                                 <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs">
-                                    View All <ArrowRight size={18} className="text-[#ff6b00] font-bold" />
+                                    View All <ArrowRight size={18} className="text-[#E53F01] font-bold" />
                                 </button>
                             </Link>
                         </div>
@@ -407,7 +407,7 @@ const Scout = () => {
                             className="block sm:hidden"
                         >
                             <button className="flex w-full items-center justify-center gap-2 rounded-[10px] bg-white px-4 py-3 text-xs font-bold uppercase text-gray-700 shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-                                View All <ArrowRight size={18} className="text-[#ff6b00] font-bold" />
+                                View All <ArrowRight size={18} className="text-[#E53F01] font-bold" />
                             </button>
                         </Link>
                     </div>
@@ -422,7 +422,7 @@ const Scout = () => {
                             >
                                 <button
                                     onClick={() => setActiveVideo(null)}
-                                    className="absolute -top-10 right-0 text-white text-3xl leading-none hover:text-[#ff6b00]"
+                                    className="absolute -top-10 right-0 text-white text-3xl leading-none hover:text-[#E53F01]"
                                     aria-label="Close"
                                 >
                                     ×

@@ -190,7 +190,7 @@ export default function SubscriptionIndex() {
             <PlayerNavbar />
             <main className="pt-16">
                 {/* ====================== HERO HEADER ====================== */}
-                <section className="bg-[#FF6B00] py-12 sm:py-16">
+                <section className="bg-[#E53F01] py-12 sm:py-16">
                     <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
                         <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 backdrop-blur-sm">
                             <Sparkles className="h-3.5 w-3.5 text-white" />
@@ -218,7 +218,7 @@ export default function SubscriptionIndex() {
                                 </span>
                                 <button
                                     onClick={() => setResumeOpen(true)}
-                                    className="shrink-0 rounded-lg bg-white px-4 py-1.5 font-sans text-sm font-semibold text-[#FF6B00] hover:bg-white/90"
+                                    className="shrink-0 rounded-lg bg-white px-4 py-1.5 font-sans text-sm font-semibold text-[#E53F01] hover:bg-white/90"
                                 >
                                     Resume Subscription
                                 </button>
@@ -256,7 +256,7 @@ export default function SubscriptionIndex() {
                 <section className="bg-black px-4 py-12 sm:py-16">
                     <div className="mx-auto max-w-7xl">
                         <div className="mb-10 text-center sm:mb-12">
-                            <span className="font-mono text-xs font-medium uppercase tracking-widest text-[#FF6B00]">
+                            <span className="font-mono text-xs font-medium uppercase tracking-widest text-[#E53F01]">
                                 Choose your plan
                             </span>
                             <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#F5F5F5] sm:text-4xl">
@@ -306,7 +306,7 @@ export default function SubscriptionIndex() {
                                         </span>
                                     </div>
                                 ) : (
-                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-md bg-[#e53f01] px-4 py-1 text-xs font-bold text-white uppercase">
+                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-md bg-[#E53F01] px-4 py-1 text-xs font-bold text-white uppercase">
                                         Most Popular
                                     </div>
                                 )}
@@ -315,7 +315,7 @@ export default function SubscriptionIndex() {
                                 </div>
                                 <h3 className="text-center text-2xl font-bold text-white uppercase italic">HiLights Premium</h3>
                                 <p className="mb-6 text-center">
-                                    <span className="text-[20px] font-semibold text-white">R$ <span className="pl-1 text-[30px] font-bold text-[#e73d00]">47</span></span>
+                                    <span className="text-[20px] font-semibold text-white">R$ <span className="pl-1 text-[30px] font-bold text-[#E53F01]">47</span></span>
                                     <span className="ml-2 text-sm text-white">/month</span>
                                     <span className="ml-4 text-xs text-orange-500">(12 months fidelity)</span>
                                 </p>
@@ -332,7 +332,7 @@ export default function SubscriptionIndex() {
                                     disabled={disablePremium}
                                     className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disablePremium
                                         ? 'cursor-not-allowed bg-gray-600 opacity-50'
-                                        : 'bg-[#e53f01] hover:bg-orange-600'
+                                        : 'bg-[#E53F01] hover:bg-[#E53F01]'
                                         }`}
                                 >
                                     {currentPlanId === 'elite'
@@ -356,7 +356,7 @@ export default function SubscriptionIndex() {
                                 </div>
                                 <h3 className="text-center text-2xl font-bold text-white uppercase italic">HiLights Premium</h3>
                                 <p className="mb-6 text-center">
-                                    <span className="text-[20px] font-semibold text-white">R$ <span className="pl-1 text-[30px] font-bold text-[#e73d00]">94</span></span>
+                                    <span className="text-[20px] font-semibold text-white">R$ <span className="pl-1 text-[30px] font-bold text-[#E53F01]">94</span></span>
                                     <span className="ml-2 text-sm text-white">/month</span>
                                     <span className="ml-6 text-xs text-orange-500">(no fidelity)</span>
                                 </p>
@@ -373,7 +373,7 @@ export default function SubscriptionIndex() {
                                     disabled={disableElite || checkoutPlan === 'plan_two'}
                                     className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disableElite || checkoutPlan === 'plan_two'
                                         ? 'cursor-not-allowed bg-gray-600 opacity-50'
-                                        : 'bg-[#e53f01] hover:bg-orange-600'
+                                        : 'bg-[#E53F01] hover:bg-[#E53F01]'
                                         }`}
                                 >
                                     {checkoutPlan === 'plan_two'
@@ -393,7 +393,7 @@ export default function SubscriptionIndex() {
                             <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 sm:p-8">
                                 <div className="mb-6 flex items-center gap-3">
                                     <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-[rgba(255,107,0,0.12)]">
-                                        <FileText className="h-5 w-5 text-[#FF6B00]" />
+                                        <FileText className="h-5 w-5 text-[#E53F01]" />
                                     </div>
                                     <div>
                                         <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5]">
@@ -439,7 +439,7 @@ export default function SubscriptionIndex() {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => downloadInvoice(inv)}
-                                                                className="inline-flex items-center gap-1.5 rounded-lg border border-[#2A2A2A] bg-[#1F1F1F] px-3 py-1.5 font-sans text-xs font-semibold text-[#F5F5F5] transition hover:border-[#FF6B00] hover:text-[#FF6B00]"
+                                                                className="inline-flex items-center gap-1.5 rounded-lg border border-[#2A2A2A] bg-[#1F1F1F] px-3 py-1.5 font-sans text-xs font-semibold text-[#F5F5F5] transition hover:border-[#E53F01] hover:text-[#E53F01]"
                                                             >
                                                                 <Download className="h-3.5 w-3.5" />
                                                                 Download
@@ -492,7 +492,7 @@ export default function SubscriptionIndex() {
                             <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
                                 <div className="flex items-start gap-4">
                                     <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-[rgba(255,107,0,0.12)]">
-                                        <Shield className="h-5 w-5 text-[#FF6B00]" />
+                                        <Shield className="h-5 w-5 text-[#E53F01]" />
                                     </div>
                                     <div>
                                         <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5]">
@@ -505,7 +505,7 @@ export default function SubscriptionIndex() {
                                 </div>
                                 <div className="flex items-start gap-4">
                                     <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-[rgba(255,107,0,0.12)]">
-                                        <CreditCard className="h-5 w-5 text-[#FF6B00]" />
+                                        <CreditCard className="h-5 w-5 text-[#E53F01]" />
                                     </div>
                                     <div>
                                         <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5]">
@@ -545,7 +545,7 @@ export default function SubscriptionIndex() {
                                 Questions about billing?{' '}
                                 <Link
                                     href="/support"
-                                    className="font-semibold text-[#FF6B00] hover:text-[#CC5500] hover:underline"
+                                    className="font-semibold text-[#E53F01] hover:text-[#E53F01] hover:underline"
                                 >
                                     Contact our support team
                                 </Link>{' '}
@@ -568,7 +568,7 @@ export default function SubscriptionIndex() {
                         <div className="flex items-start justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(255,107,0,0.12)]">
-                                    <AlertTriangle className="h-5 w-5 text-[#FF6B00]" />
+                                    <AlertTriangle className="h-5 w-5 text-[#E53F01]" />
                                 </div>
                                 <h3 className="font-display text-lg font-bold uppercase tracking-tight text-[#F5F5F5]">
                                     Cancel Subscription
@@ -605,7 +605,7 @@ export default function SubscriptionIndex() {
                                 type="button"
                                 onClick={handleCancel}
                                 disabled={cancelling}
-                                className="rounded-lg bg-[#FF6B00] px-5 py-2.5 font-sans text-sm font-semibold text-white hover:bg-[#CC5500] disabled:opacity-60"
+                                className="rounded-lg bg-[#E53F01] px-5 py-2.5 font-sans text-sm font-semibold text-white hover:bg-[#E53F01] disabled:opacity-60"
                             >
                                 {cancelling ? 'Cancelling...' : 'Yes, Cancel Subscription'}
                             </button>
@@ -626,7 +626,7 @@ export default function SubscriptionIndex() {
                         <div className="flex items-start justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(255,107,0,0.12)]">
-                                    <RotateCcw className="h-5 w-5 text-[#FF6B00]" />
+                                    <RotateCcw className="h-5 w-5 text-[#E53F01]" />
                                 </div>
                                 <h3 className="font-display text-lg font-bold uppercase tracking-tight text-[#F5F5F5]">
                                     Resume Subscription
@@ -660,7 +660,7 @@ export default function SubscriptionIndex() {
                                 type="button"
                                 onClick={handleResume}
                                 disabled={resuming}
-                                className="rounded-lg bg-[#FF6B00] px-5 py-2.5 font-sans text-sm font-semibold text-white hover:bg-[#CC5500] disabled:opacity-60"
+                                className="rounded-lg bg-[#E53F01] px-5 py-2.5 font-sans text-sm font-semibold text-white hover:bg-[#E53F01] disabled:opacity-60"
                             >
                                 {resuming ? 'Resuming...' : 'Yes, Resume Subscription'}
                             </button>

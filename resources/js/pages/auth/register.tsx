@@ -37,24 +37,6 @@ const ROLES: RoleOption[] = [
         description: 'Build your profile, upload highlights, and get discovered by scouts and clubs worldwide.',
         Icon: Zap,
     },
-    // {
-    //     id: 'scout',
-    //     title: 'Scout',
-    //     description: 'Access advanced player search, performance data, and recruitment tools to find talent.',
-    //     Icon: Search,
-    // },
-    // {
-    //     id: 'agent',
-    //     title: 'Agent',
-    //     description: 'Manage your roster, track market value, and connect with clubs to negotiate transfers.',
-    //     Icon: Briefcase,
-    // },
-    // {
-    //     id: 'club',
-    //     title: 'Club',
-    //     description: 'Scout players, run recruitment campaigns, and integrate with your existing scouting workflow.',
-    //     Icon: Building2,
-    // },
 ];
 
 interface Country {
@@ -143,7 +125,7 @@ function DobCalendar({
                     type="button"
                     onClick={goPrev}
                     disabled={!canGoPrev}
-                    className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#F5F5F5] hover:border-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#FF6B00] disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                    className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#F5F5F5] hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01] disabled:opacity-30 disabled:pointer-events-none transition-colors"
                 >
                     <ChevronLeft className="h-4 w-4" />
                 </button>
@@ -153,7 +135,7 @@ function DobCalendar({
                         onChange={(e) =>
                             setViewDate(new Date(year, Number(e.target.value), 1))
                         }
-                        className="h-8 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[13px] font-medium text-[#F5F5F5] cursor-pointer focus:outline-none focus:border-[#FF6B00] hover:border-[#3A3A3A] transition-colors"
+                        className="h-8 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[13px] font-medium text-[#F5F5F5] cursor-pointer focus:outline-none focus:border-[#E53F01] hover:border-[#3A3A3A] transition-colors"
                     >
                         {MONTHS.map((m, i) => (
                             <option key={m} value={i} className="bg-[#1F1F1F]">
@@ -166,7 +148,7 @@ function DobCalendar({
                         onChange={(e) =>
                             setViewDate(new Date(Number(e.target.value), month, 1))
                         }
-                        className="h-8 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[13px] font-medium text-[#F5F5F5] cursor-pointer focus:outline-none focus:border-[#FF6B00] hover:border-[#3A3A3A] transition-colors"
+                        className="h-8 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[13px] font-medium text-[#F5F5F5] cursor-pointer focus:outline-none focus:border-[#E53F01] hover:border-[#3A3A3A] transition-colors"
                     >
                         {years.map((y) => (
                             <option key={y} value={y} className="bg-[#1F1F1F]">
@@ -179,7 +161,7 @@ function DobCalendar({
                     type="button"
                     onClick={goNext}
                     disabled={!canGoNext}
-                    className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#F5F5F5] hover:border-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#FF6B00] disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                    className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#F5F5F5] hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01] disabled:opacity-30 disabled:pointer-events-none transition-colors"
                 >
                     <ChevronRight className="h-4 w-4" />
                 </button>
@@ -211,12 +193,12 @@ function DobCalendar({
                             className={[
                                 'h-9 w-9 mx-auto flex items-center justify-center rounded-lg text-[13px] font-medium transition-colors',
                                 selected
-                                    ? 'bg-[#FF6B00] text-[#0D0D0D] font-semibold'
+                                    ? 'bg-[#E53F01] text-[#0D0D0D] font-semibold'
                                     : disabled
                                         ? 'text-[#3A3A3A] pointer-events-none'
                                         : todayCell
-                                            ? 'text-[#FF6B00] font-semibold hover:bg-[rgba(255,107,0,0.12)]'
-                                            : 'text-[#F5F5F5] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#FF6B00]',
+                                            ? 'text-[#E53F01] font-semibold hover:bg-[rgba(255,107,0,0.12)]'
+                                            : 'text-[#F5F5F5] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]',
                             ].join(' ')}
                         >
                             {d.getDate()}
@@ -246,7 +228,7 @@ function PhoneDarkStyles() {
                 transition: border-color 0.15s, box-shadow 0.15s;
             }
             .PhoneInput--focus {
-                border-color: #FF6B00;
+                border-color: #E53F01;
                 box-shadow: 0 0 0 2px rgba(255,107,0,0.15);
             }
             .PhoneInputCountry {
@@ -392,7 +374,7 @@ export default function Register({ countries = [] }: Props) {
         option: (base: any, state: any) => ({
             ...base,
             backgroundColor: state.isSelected
-                ? '#FF6B00'
+                ? '#E53F01'
                 : state.isFocused
                     ? '#2A2A2A'
                     : '#1F1F1F',
@@ -446,13 +428,13 @@ export default function Register({ countries = [] }: Props) {
                     <span
                         className={
                             'h-2.5 rounded-full transition-all duration-300 ' +
-                            (step === 0 ? 'w-8 bg-[#FF6B00]' : 'w-2.5 bg-[#FF6B00]')
+                            (step === 0 ? 'w-8 bg-[#E53F01]' : 'w-2.5 bg-[#E53F01]')
                         }
                     />
                     <span
                         className={
                             'h-2.5 rounded-full transition-all duration-300 ' +
-                            (step === 1 ? 'w-8 bg-[#FF6B00]' : 'w-2.5 bg-[#2A2A2A]')
+                            (step === 1 ? 'w-8 bg-[#E53F01]' : 'w-2.5 bg-[#2A2A2A]')
                         }
                     />
                 </div>
@@ -462,7 +444,7 @@ export default function Register({ countries = [] }: Props) {
                 </p>
             </div>
             {clientErrors.role && (
-                <p className="text-xs text-red-500 mt-2 text-center">
+                <p className="text-xs text-[#E53F01] mt-2 text-center">
                     {clientErrors.role}
                 </p>
             )}
@@ -482,13 +464,13 @@ export default function Register({ countries = [] }: Props) {
                                         'group w-full sm:w-[280px] text-center cursor-pointer rounded-2xl border-2 p-7 transition-all duration-200 '
                                         +
                                         (isSelected
-                                            ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.08)] shadow-[0_0_0_4px_rgba(255,107,0,0.15)]'
-                                            : 'border-[#2A2A2A] bg-[#161616] hover:border-[#FF6B00] hover:shadow-[0_0_0_4px_rgba(255,107,0,0.08)] hover:-translate-y-1')
+                                            ? 'border-[#E53F01] bg-[rgba(255,107,0,0.08)] shadow-[0_0_0_4px_rgba(255,107,0,0.15)]'
+                                            : 'border-[#2A2A2A] bg-[#161616] hover:border-[#E53F01] hover:shadow-[0_0_0_4px_rgba(255,107,0,0.08)] hover:-translate-y-1')
                                     }
                                 >
                                     <div className="mx-auto inline-flex items-center justify-center bg-[rgba(255,107,0,0.15)] rounded-full p-3">
                                         <Icon
-                                            className="h-[44px] w-[44px] text-[#FF6B00]"
+                                            className="h-[44px] w-[44px] text-[#E53F01]"
                                             strokeWidth={2}
                                         />
                                     </div>
@@ -506,7 +488,7 @@ export default function Register({ countries = [] }: Props) {
                         Already have an account?{' '}
                         <Link
                             href="/login"
-                            className="text-[#FF6B00] hover:underline font-semibold"
+                            className="text-[#E53F01] hover:underline font-semibold"
                         >
                             Sign in
                         </Link>
@@ -522,16 +504,16 @@ export default function Register({ countries = [] }: Props) {
                     >
                         {/* Selected role badge */}
                         <div className="flex items-center justify-between gap-3 mb-6 pb-6 border-b border-[#2A2A2A]">
-                            <div className="inline-flex items-center gap-2.5 bg-[rgba(255,107,0,0.12)] border border-[#FF6B00] rounded-full pl-2.5 pr-3.5 py-1.5">
-                                <selectedRoleObj.Icon className="h-4 w-4 text-[#FF6B00]" />
-                                <span className="text-xs font-semibold text-[#FF6B00] uppercase tracking-wider">
+                            <div className="inline-flex items-center gap-2.5 bg-[rgba(255,107,0,0.12)] border border-[#E53F01] rounded-full pl-2.5 pr-3.5 py-1.5">
+                                <selectedRoleObj.Icon className="h-4 w-4 text-[#E53F01]" />
+                                <span className="text-xs font-semibold text-[#E53F01] uppercase tracking-wider">
                                     Registering as {selectedRoleObj.title}
                                 </span>
                             </div>
                             <button
                                 type="button"
                                 onClick={() => setStep(0)}
-                                className="inline-flex items-center gap-1 text-xs font-semibold text-[#FF6B00] hover:underline"
+                                className="inline-flex items-center gap-1 text-xs font-semibold text-[#E53F01] hover:underline"
                             >
                                 <ArrowLeft className="h-3.5 w-3.5" />
                                 Change
@@ -553,10 +535,10 @@ export default function Register({ countries = [] }: Props) {
                                     setData('name', e.target.value)
                                 }
                                 placeholder="e.g. Lucas Martinez"
-                                className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
                             />
                             {(clientErrors.name || errors.name) && (
-                                <p className="text-xs text-[#DC2626] mt-1.5">
+                                <p className="text-xs text-[#E53F01] mt-1.5">
                                     {clientErrors.name || errors.name}
                                 </p>
                             )}
@@ -577,13 +559,13 @@ export default function Register({ countries = [] }: Props) {
                                     setData('email', e.target.value)
                                 }
                                 placeholder="you@example.com"
-                                className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
                             />
                             <p className="text-[11px] text-[#94A3B8] mt-1.5">
                                 We'll send a verification code to this email. You must verify it before accessing your account.
                             </p>
                             {(clientErrors.email || errors.email) && (
-                                <p className="text-xs text-[#DC2626] mt-1.5">
+                                <p className="text-xs text-[#E53F01] mt-1.5">
                                     {clientErrors.email || errors.email}
                                 </p>
                             )}
@@ -605,7 +587,7 @@ export default function Register({ countries = [] }: Props) {
                                         setData('password', e.target.value)
                                     }
                                     placeholder="Minimum 8 characters"
-                                    className="w-full h-11 pl-3.5 pr-11 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                    className="w-full h-11 pl-3.5 pr-11 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
                                 />
                                 <button
                                     type="button"
@@ -652,7 +634,7 @@ export default function Register({ countries = [] }: Props) {
                                         )
                                     }
                                     placeholder="Re-enter your password"
-                                    className="w-full h-11 pl-3.5 pr-11 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                    className="w-full h-11 pl-3.5 pr-11 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
                                 />
                                 <button
                                     type="button"
@@ -675,7 +657,7 @@ export default function Register({ countries = [] }: Props) {
                             </div>
                             {(clientErrors.password_confirmation ||
                                 errors.password_confirmation) && (
-                                    <p className="text-xs text-[#DC2626] mt-1.5">
+                                    <p className="text-xs text-[#E53F01] mt-1.5">
                                         {clientErrors.password_confirmation ||
                                             errors.password_confirmation}
                                     </p>
@@ -703,7 +685,7 @@ export default function Register({ countries = [] }: Props) {
                                 We'll verify this via a WhatsApp OTP (or SMS if WhatsApp isn't available on this number).
                             </p>
                             {(clientErrors.whatsapp || errors.whatsapp) && (
-                                <p className="text-xs text-[#DC2626] mt-1.5">
+                                <p className="text-xs text-[#E53F01] mt-1.5">
                                     {clientErrors.whatsapp || errors.whatsapp}
                                 </p>
                             )}
@@ -716,7 +698,7 @@ export default function Register({ countries = [] }: Props) {
                                     <label className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5">
                                         Date of Birth
                                         {age !== null && (
-                                            <span className="ml-2 font-mono normal-case tracking-normal text-[#FF6B00]">
+                                            <span className="ml-2 font-mono normal-case tracking-normal text-[#E53F01]">
                                                 · Age {age}
                                             </span>
                                         )}
@@ -725,14 +707,14 @@ export default function Register({ countries = [] }: Props) {
                                         <PopoverTrigger asChild>
                                             <button
                                                 type="button"
-                                                className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] hover:border-[#3A3A3A] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition flex items-center justify-between group"
+                                                className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] hover:border-[#3A3A3A] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition flex items-center justify-between group"
                                             >
                                                 <span className={data.dob ? 'text-[#F5F5F5]' : 'text-[#555555]'}>
                                                     {data.dob
                                                         ? format(new Date(data.dob), 'MMMM dd, yyyy')
                                                         : 'Select your date of birth'}
                                                 </span>
-                                                <Calendar className="h-4 w-4 text-[#FF6B00] group-hover:text-[#FF8533] transition" />
+                                                <Calendar className="h-4 w-4 text-[#E53F01] group-hover:text-[#E53F01] transition" />
                                             </button>
                                         </PopoverTrigger>
                                         <PopoverContent
@@ -749,7 +731,7 @@ export default function Register({ countries = [] }: Props) {
                                         </PopoverContent>
                                     </Popover>
                                     {(clientErrors.dob || errors.dob) && (
-                                        <p className="text-xs text-[#DC2626] mt-1.5">
+                                        <p className="text-xs text-[#E53F01] mt-1.5">
                                             {clientErrors.dob || errors.dob}
                                         </p>
                                     )}
@@ -773,8 +755,8 @@ export default function Register({ countries = [] }: Props) {
                                                     className={
                                                         'flex-1 h-11 rounded-xl border text-sm font-semibold transition-colors ' +
                                                         (selected
-                                                            ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00]'
-                                                            : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A] hover:border-[#FF6B00]')
+                                                            ? 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01]'
+                                                            : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A] hover:border-[#E53F01]')
                                                     }
                                                 >
                                                     {g.l}
@@ -783,7 +765,7 @@ export default function Register({ countries = [] }: Props) {
                                         })}
                                     </div>
                                     {(clientErrors.gender || errors.gender) && (
-                                        <p className="text-xs text-[#DC2626] mt-1.5">
+                                        <p className="text-xs text-[#E53F01] mt-1.5">
                                             {clientErrors.gender || errors.gender}
                                         </p>
                                     )}
@@ -811,7 +793,7 @@ export default function Register({ countries = [] }: Props) {
                                         styles={selectStyles}
                                     />
                                     {(clientErrors.nationality || errors.nationality) && (
-                                        <p className="text-xs text-[#DC2626] mt-1.5">
+                                        <p className="text-xs text-[#E53F01] mt-1.5">
                                             {clientErrors.nationality || errors.nationality}
                                         </p>
                                     )}
@@ -840,7 +822,7 @@ export default function Register({ countries = [] }: Props) {
                                         styles={selectStyles}
                                     />
                                     {(clientErrors.nationality || errors.nationality) && (
-                                        <p className="text-xs text-[#DC2626] mt-1.5">
+                                        <p className="text-xs text-[#E53F01] mt-1.5">
                                             {clientErrors.country || errors.country}
                                         </p>
                                     )}
@@ -860,10 +842,10 @@ export default function Register({ countries = [] }: Props) {
                                             setData('organization_name', e.target.value)
                                         }
                                         placeholder="e.g. FC Porto Scouting"
-                                        className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                        className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
                                     />
                                     {(clientErrors.organization_name || errors.organization_name) && (
-                                        <p className="text-xs text-[#DC2626] mt-1.5">
+                                        <p className="text-xs text-[#E53F01] mt-1.5">
                                             {clientErrors.organization_name || errors.organization_name}
                                         </p>
                                     )}
@@ -882,7 +864,7 @@ export default function Register({ countries = [] }: Props) {
                                     onChange={(e) =>
                                         setData('terms', e.target.checked)
                                     }
-                                    className="peer appearance-none h-5 w-5 rounded-md border-2 border-[#2A2A2A] bg-[#111111] checked:bg-[#FF6B00] checked:border-[#FF6B00] focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition cursor-pointer"
+                                    className="peer appearance-none h-5 w-5 rounded-md border-2 border-[#2A2A2A] bg-[#111111] checked:bg-[#E53F01] checked:border-[#E53F01] focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition cursor-pointer"
                                 />
                                 <Check className="h-3.5 w-3.5 text-[#0D0D0D] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 peer-checked:opacity-100 pointer-events-none" />
                             </span>
@@ -890,14 +872,14 @@ export default function Register({ countries = [] }: Props) {
                                 I agree to the{' '}
                                 <Link
                                     href="/terms"
-                                    className="text-[#FF6B00] hover:underline font-semibold"
+                                    className="text-[#E53F01] hover:underline font-semibold"
                                 >
                                     Terms of Service
                                 </Link>{' '}
                                 and{' '}
                                 <Link
                                     href="/privacy"
-                                    className="text-[#FF6B00] hover:underline font-semibold"
+                                    className="text-[#E53F01] hover:underline font-semibold"
                                 >
                                     Privacy Policy
                                 </Link>
@@ -906,7 +888,7 @@ export default function Register({ countries = [] }: Props) {
                         </label>
                         <div>
                             {(clientErrors.terms || errors.terms) && (
-                                <p className="text-xs text-[#DC2626] mt-1.5">
+                                <p className="text-xs text-[#E53F01] mt-1.5">
                                     {clientErrors.terms || errors.terms}
                                 </p>
                             )}
@@ -915,7 +897,7 @@ export default function Register({ countries = [] }: Props) {
                         <button
                             type="submit"
                             disabled={processing}
-                            className="w-full h-12 cursor-pointer rounded-xl bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold text-sm uppercase tracking-wider transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                            className="w-full h-12 cursor-pointer rounded-xl bg-[#E53F01] hover:bg-[#E53F01] text-white font-bold text-sm uppercase tracking-wider transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                         >
                             {processing ? 'Creating account…' : 'Create my account'}
                         </button>
@@ -924,7 +906,7 @@ export default function Register({ countries = [] }: Props) {
                         Already have an account?{' '}
                         <Link
                             href="/login"
-                            className="text-[#FF6B00] hover:underline font-semibold"
+                            className="text-[#E53F01] hover:underline font-semibold"
                         >
                             Sign in
                         </Link>

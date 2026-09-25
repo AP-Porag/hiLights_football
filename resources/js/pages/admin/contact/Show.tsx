@@ -13,7 +13,7 @@ export default function ContactShow() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <div className="max-w-3xl mx-auto space-y-6">
-                <Link href="/admin/contact-messages" className="inline-flex items-center gap-2 text-[#FF6B00] hover:underline pt-5">
+                <Link href="/admin/contact-messages" className="inline-flex items-center gap-2 text-[#E53F01] hover:underline pt-5">
                     <ArrowLeft className="h-4 w-4" /> Back to messages
                 </Link>
                 <div className="bg-[#0D0D0D] border border-[#2A2A2A] rounded-2xl p-6">
@@ -26,7 +26,7 @@ export default function ContactShow() {
                                 <span className="flex items-center gap-1"><Calendar className="h-4 w-4" /> {new Date(message.created_at).toLocaleString()}</span>
                             </div>
                         </div>
-                        <span className={`inline-flex items-center gap-1.5 rounded-md border px-3 py-1 text-xs font-bold uppercase ${message.is_read ? 'border-green-700 bg-green-900/20 text-green-400' : 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00]'
+                        <span className={`inline-flex items-center gap-1.5 rounded-md border px-3 py-1 text-xs font-bold uppercase ${message.is_read ? 'border-green-700 bg-green-900/20 text-green-400' : 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01]'
                             }`}>
                             {message.is_read ? 'Read' : 'Unread'}
                         </span>

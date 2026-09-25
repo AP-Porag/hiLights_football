@@ -148,8 +148,8 @@ export default function PlayerNavbar() {
                                 className={[
                                     'relative text-sm font-medium transition-colors',
                                     active
-                                        ? 'text-[#FF6B00] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#FF6B00]'
-                                        : 'text-[#9A9A9A] hover:text-[#FF6B00]',
+                                        ? 'text-[#E53F01] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#E53F01]'
+                                        : 'text-[#9A9A9A] hover:text-[#E53F01]',
                                 ].join(' ')}
                             >
                                 {link.label}
@@ -166,7 +166,7 @@ export default function PlayerNavbar() {
                         className="relative rounded-md p-2 transition-colors hover:bg-[#1F1F1F]"
                         aria-label="Notifications"
                     >
-                        <Bell className="h-5 w-5 text-[#94A3B8] hover:text-[#FF6B00]" />
+                        <Bell className="h-5 w-5 text-[#94A3B8] hover:text-[#E53F01]" />
                         {unreadCount > 0 && (
                             <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white ring-2 ring-[#0D0D0D]">
                                 {unreadCount > 9 ? '9+' : unreadCount}
@@ -177,12 +177,12 @@ export default function PlayerNavbar() {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <button
-                                className="flex items-center gap-1.5 rounded-full p-0.5 transition-colors outline-none hover:bg-[#F8FAFC] focus-visible:ring-2 focus-visible:ring-[#FF6B00] dark:hover:bg-[#1F1F1F]"
+                                className="flex items-center gap-1.5 rounded-full p-0.5 transition-colors outline-none hover:bg-[#F8FAFC] focus-visible:ring-2 focus-visible:ring-[#E53F01] dark:hover:bg-[#1F1F1F]"
                                 aria-label="Account menu"
                             >
                                 <Avatar className="h-9 w-9 border border-[#E2E8F0] dark:border-[#2A2A2A]">
                                     {auth.user.avatar_url ? <AvatarImage src={auth.user.avatar_url} alt={auth.user.name} /> : null}
-                                    <AvatarFallback className="bg-[#FFF3EB] text-sm font-bold text-[#FF6B00] dark:bg-[rgba(255,107,0,0.15)]">
+                                    <AvatarFallback className="bg-[#FFF3EB] text-sm font-bold text-[#E53F01] dark:bg-[rgba(255,107,0,0.15)]">
                                         {initials}
                                     </AvatarFallback>
                                 </Avatar>
@@ -196,7 +196,7 @@ export default function PlayerNavbar() {
                             <div className="mb-1 border-b border-[#F1F5F9] px-3 py-2 dark:border-[#1F1F1F]">
                                 <div className="flex items-center justify-between gap-2">
                                     <div className="truncate text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]">{auth.user.name}</div>
-                                    <span className="shrink-0 rounded-full border border-[#FF6B00] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#CC5500] dark:bg-[rgba(255,107,0,0.12)]">
+                                    <span className="shrink-0 rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]">
                                         PLAYER
                                     </span>
                                 </div>
@@ -290,7 +290,7 @@ export default function PlayerNavbar() {
                                     />
                                     <div className="flex items-end gap-0.5 leading-none">
                                         <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>
-                                        <span className="text-xl font-black tracking-tight text-[#FF6B00] italic">Lights</span>
+                                        <span className="text-xl font-black tracking-tight text-[#E53F01] italic">Lights</span>
                                         <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.12em] text-[#94A3B8]">FOOTBALL</span>
                                     </div>
                                 </SheetTitle>
@@ -299,14 +299,14 @@ export default function PlayerNavbar() {
                             <div className="flex items-center gap-3 border-b border-[#E2E8F0] px-6 py-4 dark:border-[#2A2A2A]">
                                 <Avatar className="h-11 w-11 border border-[#E2E8F0] dark:border-[#2A2A2A]">
                                     {auth.user.avatar_url ? <AvatarImage src={auth.user.avatar_url} alt={auth.user.name} /> : null}
-                                    <AvatarFallback className="bg-[#FFF3EB] text-sm font-bold text-[#FF6B00] dark:bg-[rgba(255,107,0,0.15)]">
+                                    <AvatarFallback className="bg-[#FFF3EB] text-sm font-bold text-[#E53F01] dark:bg-[rgba(255,107,0,0.15)]">
                                         {initials}
                                     </AvatarFallback>
                                 </Avatar>
                                 <div className="min-w-0 flex-1">
                                     <div className="flex items-center gap-2">
                                         <div className="truncate text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]">{auth.user.name}</div>
-                                        <span className="shrink-0 rounded-full border border-[#FF6B00] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#CC5500] dark:bg-[rgba(255,107,0,0.12)]">
+                                        <span className="shrink-0 rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]">
                                             PLAYER
                                         </span>
                                     </div>
@@ -323,7 +323,7 @@ export default function PlayerNavbar() {
                                             onClick={() => setMobileOpen(false)}
                                             className={[
                                                 'block border-b border-[#F1F5F9] py-3 text-base font-medium transition-colors dark:border-[#1F1F1F]',
-                                                active ? 'text-[#FF6B00]' : 'text-[#0F172A] hover:text-[#FF6B00] dark:text-[#F5F5F5]',
+                                                active ? 'text-[#E53F01]' : 'text-[#0F172A] hover:text-[#E53F01] dark:text-[#F5F5F5]',
                                             ].join(' ')}
                                         >
                                             {link.label}
@@ -333,14 +333,14 @@ export default function PlayerNavbar() {
                                 <Link
                                     href={`/players/${auth.user.id}`}
                                     onClick={() => setMobileOpen(false)}
-                                    className="block border-b border-[#F1F5F9] py-3 text-base font-medium text-[#0F172A] transition-colors hover:text-[#FF6B00] dark:border-[#1F1F1F] dark:text-[#F5F5F5]"
+                                    className="block border-b border-[#F1F5F9] py-3 text-base font-medium text-[#0F172A] transition-colors hover:text-[#E53F01] dark:border-[#1F1F1F] dark:text-[#F5F5F5]"
                                 >
                                     View Public Profile
                                 </Link>
                                 <Link
                                     href="/player/settings"
                                     onClick={() => setMobileOpen(false)}
-                                    className="block border-b border-[#F1F5F9] py-3 text-base font-medium text-[#0F172A] transition-colors hover:text-[#FF6B00] dark:border-[#1F1F1F] dark:text-[#F5F5F5]"
+                                    className="block border-b border-[#F1F5F9] py-3 text-base font-medium text-[#0F172A] transition-colors hover:text-[#E53F01] dark:border-[#1F1F1F] dark:text-[#F5F5F5]"
                                 >
                                     Account Settings
                                 </Link>
@@ -394,7 +394,7 @@ export default function PlayerNavbar() {
                                 >
                                     <Avatar className="h-9 w-9 shrink-0 border border-[#2A2A2A]">
                                         {n.avatar ? <AvatarImage src={n.avatar} alt={n.name} /> : null}
-                                        <AvatarFallback className="bg-[rgba(255,107,0,0.15)] text-xs font-bold text-[#FF6B00]">
+                                        <AvatarFallback className="bg-[rgba(255,107,0,0.15)] text-xs font-bold text-[#E53F01]">
                                             {getInitials(n.name)}
                                         </AvatarFallback>
                                     </Avatar>
@@ -407,7 +407,7 @@ export default function PlayerNavbar() {
                                             {n.viewed_at}{n.role ? ` · ${n.role}` : ''}
                                         </p>
                                     </div>
-                                    {n.unread && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#FF6B00]" />}
+                                    {n.unread && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#E53F01]" />}
                                 </Link>
                             );
                         })}
@@ -416,7 +416,7 @@ export default function PlayerNavbar() {
                         <Link
                             href="/player/views"
                             onClick={() => setNotifOpen(false)}
-                            className="block rounded-lg py-2 text-center text-sm font-semibold text-[#FF6B00] transition-colors hover:bg-[#161616]"
+                            className="block rounded-lg py-2 text-center text-sm font-semibold text-[#E53F01] transition-colors hover:bg-[#161616]"
                         >
                             View all
                         </Link>

@@ -82,8 +82,8 @@ class DashboardController extends Controller
 
         $subscriptionData = [
             ['name' => 'Free',    'color' => '#94A3B8', 'count' => $freeCount,  'value' => (int) round($freeCount / $distTotal * 100)],
-            ['name' => 'Premium', 'color' => '#FF6B00', 'count' => $plan1Count, 'value' => (int) round($plan1Count / $distTotal * 100)],
-            ['name' => 'Elite',   'color' => '#CC5500', 'count' => $plan2Count, 'value' => (int) round($plan2Count / $distTotal * 100)],
+            ['name' => 'Premium', 'color' => '#E53F01', 'count' => $plan1Count, 'value' => (int) round($plan1Count / $distTotal * 100)],
+            ['name' => 'Elite',   'color' => '#E53F01', 'count' => $plan2Count, 'value' => (int) round($plan2Count / $distTotal * 100)],
         ];
 
         // ── Recent registrations (last 8) ──

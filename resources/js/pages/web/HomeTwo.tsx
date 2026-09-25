@@ -89,13 +89,13 @@ const HomeTwo = () => {
             desc: (
                 <>
                     Build an organized, professional profile with your{" "}
-                    <span className="text-[#ff6b00]">data</span>,{" "}
-                    <span className="text-[#ff6b00]">club history</span>,{" "}
-                    <span className="text-[#ff6b00]">
+                    <span className="text-[#E53F01]">data</span>,{" "}
+                    <span className="text-[#E53F01]">club history</span>,{" "}
+                    <span className="text-[#E53F01]">
                         physical and technical characteristics
                     </span>
                     , and your{" "}
-                    <span className="text-[#ff6b00]">achievements</span>.
+                    <span className="text-[#E53F01]">achievements</span>.
                 </>
             ),
         },
@@ -106,8 +106,8 @@ const HomeTwo = () => {
             desc: (
                 <>
                     Show the world your{" "}
-                    <span className="text-[#ff6b00]">best moments</span>. Get{" "}
-                    <span className="text-[#ff6b00]">improvement tips</span> to make
+                    <span className="text-[#E53F01]">best moments</span>. Get{" "}
+                    <span className="text-[#E53F01]">improvement tips</span> to make
                     your videos more attractive to scouts, agents and clubs.
                 </>
             ),
@@ -120,7 +120,7 @@ const HomeTwo = () => {
                 <>
                     A platform developed by professionals from various areas of football
                     with{" "}
-                    <span className="text-[#ff6b00]">
+                    <span className="text-[#E53F01]">
                         over 20 years of experience worldwide
                     </span>
                     .
@@ -154,7 +154,7 @@ const HomeTwo = () => {
                             <div className="max-w-xl 2xl:max-w-2xl">
                                 <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl md:text-[42px] lg:text-5xl xl:text-6xl 2xl:text-7xl">
                                     <span className="block text-white">Be Seen.</span>
-                                    <span className="block text-[#ee5e00]">
+                                    <span className="block text-[#E53F01]">
                                         Be Discovered <span className="text-white">!</span>
                                     </span>
                                 </h1>
@@ -173,7 +173,7 @@ const HomeTwo = () => {
                                 {/* Buttons */}
                                 <div className="mt-8 flex flex-wrap items-center gap-4 2xl:mt-10">
                                     <Link href={isLoggedIn ? dashboardHref : "/register"}>
-                                        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#ea3905] px-4 py-3 text-xs font-semibold  transition-all duration-300 hover:bg-orange-600 sm:text-sm lg:px-6 lg:py-3 lg:text-base 2xl:px-8 2xl:py-4 2xl:text-lg">
+                                        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#E53F01] px-4 py-3 text-xs font-semibold  transition-all duration-300 hover:bg-[#E53F01] sm:text-sm lg:px-6 lg:py-3 lg:text-base 2xl:px-8 2xl:py-4 2xl:text-lg">
                                             <UserRoundPlus className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
                                             <span className="text-left leading-tight">
 
@@ -218,7 +218,7 @@ const HomeTwo = () => {
                     <div>
                         {/* Heading */}
                         <h2 className="mb-6 text-2xl font-extrabold leading-tight sm:text-3xl lg:text-4xl 2xl:mb-8 2xl:text-5xl">
-                            A Simple. Professional. <span className="text-[#df5f18]">Effective Platform.</span>
+                            A Simple. Professional. <span className="text-[#E53F01]">Effective Platform.</span>
                         </h2>
 
                         {/* Steps */}
@@ -231,13 +231,13 @@ const HomeTwo = () => {
                                             {/* Icon */}
                                             <div className="flex justify-center">
                                                 <div className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-500 md:h-14 md:w-14 2xl:h-16 2xl:w-16">
-                                                    <Icon className="h-5 w-5 text-[#ff6100] md:h-8 md:w-8 2xl:h-9 2xl:w-9" />
+                                                    <Icon className="h-5 w-5 text-[#E53F01] md:h-8 md:w-8 2xl:h-9 2xl:w-9" />
                                                 </div>
                                             </div>
                                             {/* Step */}
                                             <div>
-                                                <p className="text-[10px] font-bold text-[#ff6b00] md:text-sm 2xl:text-base">STEP</p>
-                                                <h3 className="text-3xl leading-none font-extrabold text-[#ff6b00] md:text-5xl 2xl:text-6xl">{item.step}</h3>
+                                                <p className="text-[10px] font-bold text-[#E53F01] md:text-sm 2xl:text-base">STEP</p>
+                                                <h3 className="text-3xl leading-none font-extrabold text-[#E53F01] md:text-5xl 2xl:text-6xl">{item.step}</h3>
                                             </div>
                                             {/* Content */}
                                             <div className="border-l-4 border-[#1f1f1f] pl-3 md:pl-5">
@@ -258,14 +258,14 @@ const HomeTwo = () => {
                         <div className="flex items-center gap-4 border-b border-[#1f1f1f] py-6 sm:grid sm:grid-cols-[70px_1fr_200px] md:grid-cols-[90px_1fr_300px] lg:grid-cols-[110px_1fr_320px] 2xl:grid-cols-[130px_1fr_360px] 2xl:py-8">
                             {/* Left Icon */}
                             <div className="flex justify-center">
-                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e63e00] md:h-20 md:w-20 2xl:h-24 2xl:w-24">
+                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#E53F01] md:h-20 md:w-20 2xl:h-24 2xl:w-24">
                                     <Users className="text-white md:h-12 md:w-12 2xl:h-14 2xl:w-14" />
                                 </div>
                             </div>
                             {/* Text */}
                             <div>
                                 <h3 className="text-base leading-tight font-bold sm:text-lg md:text-xl lg:text-2xl 2xl:text-3xl">
-                                    Not part of the <span className="text-[#ff6100]">HiLights Football</span>
+                                    Not part of the <span className="text-[#E53F01]">HiLights Football</span>
                                     <br />
                                     community yet?
                                 </h3>
@@ -276,7 +276,7 @@ const HomeTwo = () => {
                             {/* Button */}
                             <div className="flex items-end justify-end lg:pr-4">
                                 <Link href={isLoggedIn ? dashboardHref : "/register"}>
-                                    <button className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#773a0c] px-4 py-2 transition hover:bg-[#ff6b00]/10 md:gap-4 lg:px-8 lg:py-4 2xl:px-10">
+                                    <button className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#E53F01] px-4 py-2 transition hover:bg-[#E53F01]/10 md:gap-4 lg:px-8 lg:py-4 2xl:px-10">
                                         <UserPlus className="h-6 w-6 shrink-0 text-white md:h-8 md:w-8 2xl:h-9 2xl:w-9" />
                                         <span className="text-left text-xs font-bold  sm:text-sm lg:text-base 2xl:text-lg">
                                             {isLoggedIn ? (
@@ -311,12 +311,12 @@ const HomeTwo = () => {
                         {/* Header */}
                         <div className="flex items-center justify-between pb-3">
                             <div className="flex items-center gap-2">
-                                <Star size={18} fill="#ff6b00" className="text-[#f25704]" />
+                                <Star size={18} fill="#E53F01" className="text-[#f25704]" />
                                 <h2 className="text-xs font-extrabold whitespace-nowrap text-[#222] md:text-sm lg:text-base 2xl:text-lg">
                                     Community Highlights
                                 </h2>
                             </div>
-                            <Link href={auth?.user ? auth.user.role === "player" ? "/player" : auth.user.role === "admin" ? "/admin" : auth.user.role === "agent" ? "/agent" : auth.user.role === "club" ? "/club" : "/scout" : "/register?role=scout"} > <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs"> View All <ArrowRight size={18} className="text-[#ff6b00] font-bold" /> </button> </Link>
+                            <Link href={auth?.user ? auth.user.role === "player" ? "/player" : auth.user.role === "admin" ? "/admin" : auth.user.role === "agent" ? "/agent" : auth.user.role === "club" ? "/club" : "/scout" : "/register?role=scout"} > <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs"> View All <ArrowRight size={18} className="text-[#E53F01] font-bold" /> </button> </Link>
                         </div>
 
                         {/* Rows */}
@@ -414,7 +414,7 @@ const HomeTwo = () => {
                             >
                                 <button
                                     onClick={() => setActiveVideo(null)}
-                                    className="absolute -top-10 right-0 text-white text-3xl leading-none hover:text-[#ff6b00]"
+                                    className="absolute -top-10 right-0 text-white text-3xl leading-none hover:text-[#E53F01]"
                                     aria-label="Close"
                                 >
                                     ×

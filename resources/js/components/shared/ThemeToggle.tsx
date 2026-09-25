@@ -28,7 +28,7 @@ export default function ThemeToggle() {
             size="icon"
             onClick={toggle}
             aria-label="Toggle theme"
-            className="h-9 w-9 text-[#475569] hover:bg-[#FFF3EB] hover:text-[#FF6B00] dark:text-[#9A9A9A] dark:hover:bg-[rgba(255,107,0,0.08)] dark:hover:text-[#FF6B00]"
+            className="h-9 w-9 text-[#475569] hover:bg-[#FFF3EB] hover:text-[#E53F01] dark:text-[#9A9A9A] dark:hover:bg-[rgba(255,107,0,0.08)] dark:hover:text-[#E53F01]"
         >
             <Moon className="block h-4 w-4 dark:hidden" />
             <Sun className="hidden h-4 w-4 dark:block" />

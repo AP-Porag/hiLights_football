@@ -96,7 +96,7 @@ Route::get('/scout', [HomeController::class, 'scout'])->name('scout');
 //     ->name('profile.public.detail');
 
 //all player routes
-Route::middleware(['auth', 'verified', 'whatsapp.verified'])->prefix('player')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('player')->group(function () {
 
 
 

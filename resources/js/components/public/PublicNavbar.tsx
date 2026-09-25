@@ -89,8 +89,8 @@ export default function PublicNavbar() {
                                 className={[
                                     'relative text-sm font-medium transition-colors xl:text-base 2xl:text-lg',
                                     active
-                                        ? 'text-[#FF6B00] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#FF6B00]'
-                                        : 'text-white hover:text-[#FF6B00] dark:text-[#9A9A9A]',
+                                        ? 'text-[#E53F01] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#E53F01]'
+                                        : 'text-white hover:text-[#E53F01] dark:text-[#9A9A9A]',
                                 ].join(' ')}
                             >
                                 {link.label}
@@ -106,7 +106,7 @@ export default function PublicNavbar() {
                         readOnly
                         onClick={() => setSearchOpen(true)}
                         placeholder="Search players..."
-                        className="h-9 cursor-pointer rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] pr-3 pl-8 text-sm text-[#0F172A] outline-none placeholder:text-[#94A3B8] focus:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 focus-visible:ring-offset-0 xl:h-10 xl:text-base 2xl:h-12 2xl:pl-10 2xl:text-lg dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#F5F5F5] dark:focus-visible:ring-[rgba(255,107,0,0.15)]"
+                        className="h-9 cursor-pointer rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] pr-3 pl-8 text-sm text-[#0F172A] outline-none placeholder:text-[#94A3B8] focus:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-100 focus-visible:ring-offset-0 xl:h-10 xl:text-base 2xl:h-12 2xl:pl-10 2xl:text-lg dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#F5F5F5] dark:focus-visible:ring-[rgba(255,107,0,0.15)]"
                     />
                 </div>
                 {/* RIGHT - Actions (desktop) */}
@@ -116,7 +116,7 @@ export default function PublicNavbar() {
                             <Button
                                 variant="outline"
                                 size="sm"
-                                className="cursor-pointer border-[#E2E8F0] bg-gray-50 text-sm font-medium text-[#0F172A] hover:border-[#FF6B00] hover:bg-transparent hover:text-[#FF6B00] xl:h-10 xl:text-base 2xl:h-12 2xl:px-6 2xl:text-lg"
+                                className="cursor-pointer border-[#E2E8F0] bg-gray-50 text-sm font-medium text-[#0F172A] hover:border-[#E53F01] hover:bg-transparent hover:text-[#E53F01] xl:h-10 xl:text-base 2xl:h-12 2xl:px-6 2xl:text-lg"
                             >
                                 Login
                             </Button>
@@ -125,7 +125,7 @@ export default function PublicNavbar() {
                     <Link href={isLoggedIn ? dashboardHref : "/register"}>
                         <Button
                             size="sm"
-                            className="cursor-pointer bg-[#e53f01] px-4 text-sm font-semibold text-white hover:bg-[#ff5e24] xl:h-10 xl:text-base 2xl:h-12 2xl:px-6 2xl:text-lg"
+                            className="cursor-pointer bg-[#E53F01] px-4 text-sm font-semibold text-white hover:bg-[#E53F01] xl:h-10 xl:text-base 2xl:h-12 2xl:px-6 2xl:text-lg"
                         >
                             {isLoggedIn ? "Dashboard" : "Create A Free Profile Now"}
                         </Button>
@@ -139,13 +139,13 @@ export default function PublicNavbar() {
                             const active = isActive(link.href);
                             const inner = (
                                 <>
-                                    <div className={['mb-1 transition-colors', active ? 'text-[#FF6B00]' : 'text-white'].join(' ')}>
+                                    <div className={['mb-1 transition-colors', active ? 'text-[#E53F01]' : 'text-white'].join(' ')}>
                                         {React.cloneElement(link.icon, {
                                             className: 'h-4 w-4 sm:h-5 sm:w-5',
                                         })}
                                     </div>
                                     <span
-                                        className={['text-[8px] font-medium whitespace-nowrap sm:text-[12px]', active ? 'text-[#FF6B00]' : 'text-white'].join(' ')}
+                                        className={['text-[8px] font-medium whitespace-nowrap sm:text-[12px]', active ? 'text-[#E53F01]' : 'text-white'].join(' ')}
                                     >
                                         {link.label}
                                     </span>
@@ -167,7 +167,7 @@ export default function PublicNavbar() {
                         })}
                     </div>
                     <Link href={isLoggedIn ? "/player/" : "/register"}>
-                        <Button className="h-9 rounded-md bg-[#FF6B00] px-2 text-[8px] leading-tight font-bold text-white uppercase hover:bg-[#e65c00] sm:h-11 sm:px-4 sm:text-[11px]">
+                        <Button className="h-9 rounded-md bg-[#E53F01] px-2 text-[8px] leading-tight font-bold text-white uppercase hover:bg-[#e65c00] sm:h-11 sm:px-4 sm:text-[11px]">
                             {isLoggedIn ? (
                                 "Dashboard"
                             ) : (
@@ -212,7 +212,7 @@ export default function PublicNavbar() {
                                         readOnly
                                         onClick={() => { setMobileOpen(false); setSearchOpen(true); }}
                                         placeholder="Search players..."
-                                        className="h-10 cursor-pointer rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] pr-3 pl-8 text-sm text-[#0F172A] outline-none placeholder:text-[#94A3B8] focus:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 focus-visible:ring-offset-0 dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#F5F5F5] dark:focus-visible:ring-[rgba(255,107,0,0.15)]"
+                                        className="h-10 cursor-pointer rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] pr-3 pl-8 text-sm text-[#0F172A] outline-none placeholder:text-[#94A3B8] focus:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-100 focus-visible:ring-offset-0 dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#F5F5F5] dark:focus-visible:ring-[rgba(255,107,0,0.15)]"
                                     />
                                 </div>
                             </div>
@@ -226,7 +226,7 @@ export default function PublicNavbar() {
                                             onClick={() => setMobileOpen(false)}
                                             className={[
                                                 'block border-b border-[#F1F5F9] py-3 text-base font-medium transition-colors dark:border-[#1F1F1F]',
-                                                active ? 'text-[#FF6B00]' : 'text-[#0F172A] hover:text-[#FF6B00] dark:text-[#F5F5F5]',
+                                                active ? 'text-[#E53F01]' : 'text-[#0F172A] hover:text-[#E53F01] dark:text-[#F5F5F5]',
                                             ].join(' ')}
                                         >
                                             {link.label}
@@ -239,7 +239,7 @@ export default function PublicNavbar() {
                                     <Link href="/login" onClick={() => setMobileOpen(false)}>
                                         <Button
                                             variant="outline"
-                                            className="w-full border-[#E2E8F0] bg-transparent text-sm font-medium text-[#0F172A] hover:border-[#FF6B00] hover:bg-transparent hover:text-[#FF6B00] dark:border-[#2A2A2A] dark:text-[#F5F5F5] dark:hover:bg-transparent"
+                                            className="w-full border-[#E2E8F0] bg-transparent text-sm font-medium text-[#0F172A] hover:border-[#E53F01] hover:bg-transparent hover:text-[#E53F01] dark:border-[#2A2A2A] dark:text-[#F5F5F5] dark:hover:bg-transparent"
                                         >
                                             Login
                                         </Button>
@@ -249,7 +249,7 @@ export default function PublicNavbar() {
                                     href={isLoggedIn ? "/player/" : "/register"}
                                     onClick={() => setMobileOpen(false)}
                                 >
-                                    <Button className="w-full bg-[#FF6B00] text-sm font-semibold text-white hover:bg-[#CC5500]">
+                                    <Button className="w-full bg-[#E53F01] text-sm font-semibold text-white hover:bg-[#E53F01]">
                                         {isLoggedIn ? "Dashboard" : "Create A Free Profile Now"}
                                     </Button>
                                 </Link>

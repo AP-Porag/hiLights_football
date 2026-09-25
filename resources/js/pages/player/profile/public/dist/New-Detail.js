@@ -116,7 +116,7 @@ exports.__esModule = true;
 //                     className="transition-transform hover:scale-110"
 //                     aria-label={`Rate ${n} stars`}
 //                 >
-//                     <Star className={`h-5 w-5 ${n <= value ? 'fill-[#FF6B00] text-[#FF6B00]' : 'text-[#FCD9BD] dark:text-[#2A2A2A]'}`} />
+//                     <Star className={`h-5 w-5 ${n <= value ? 'fill-[#E53F01] text-[#E53F01]' : 'text-[#FCD9BD] dark:text-[#2A2A2A]'}`} />
 //                 </button>
 //             ))}
 //         </div>
@@ -129,11 +129,11 @@ exports.__esModule = true;
 //             {/* BREADCRUMB */}
 //             <div className="mx-auto max-w-7xl bg-black px-4 py-3 sm:px-6 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]">
 //                 <nav className="flex items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A]">
-//                     <Link href="/" className="whitespace-nowrap hover:text-[#FF6B00]">Home</Link>
+//                     <Link href="/" className="whitespace-nowrap hover:text-[#E53F01]">Home</Link>
 //                     <ChevronRight className="h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" />
-//                     <Link href="/players" className="whitespace-nowrap hover:text-[#FF6B00]">Players</Link>
+//                     <Link href="/players" className="whitespace-nowrap hover:text-[#E53F01]">Players</Link>
 //                     <ChevronRight className="h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" />
-//                     <span className="font-medium whitespace-nowrap text-[#FF6B00] dark:text-[#F5F5F5]">Joao da Silva</span>
+//                     <span className="font-medium whitespace-nowrap text-[#E53F01] dark:text-[#F5F5F5]">Joao da Silva</span>
 //                 </nav>
 //             </div>
 //             <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6">
@@ -156,12 +156,12 @@ exports.__esModule = true;
 //                                 <h3 className="mt-1 text-base font-semibold text-[#eb6c0d] uppercase md:text-lg">Right Winger</h3>
 //                                 <div className="mt-3 space-y-1.5 text-sm md:text-base">
 //                                     <div className="flex items-center">
-//                                         <CalendarDays className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
+//                                         <CalendarDays className="mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" />
 //                                         <span className="text-[#e1e2e6]">Date of Birth / Age:</span>
 //                                         <span className="pl-2 text-gray-300">Jan 30, 2007 (19)</span>
 //                                     </div>
 //                                     <div className="flex items-center">
-//                                         <Users className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
+//                                         <Users className="mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" />
 //                                         <span className="pr-3 text-[#e1e2e6]">Nationality:</span>
 //                                         <ReactCountryFlag countryCode="BR" svg className="mr-1" />
 //                                         <span>Brazil</span>
@@ -170,7 +170,7 @@ exports.__esModule = true;
 //                                         <span>Italy III</span>
 //                                     </div>
 //                                     <div className="flex items-center">
-//                                         <Ruler className="mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" />
+//                                         <Ruler className="mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" />
 //                                         <span className="text-[#e1e2e6]">Height:</span>
 //                                         <span className="pl-2 text-gray-100">1.84 m</span>
 //                                     </div>
@@ -478,18 +478,18 @@ var viewerRole = 'scout';
 function StarRating(_a) {
     var value = _a.value, onChange = _a.onChange;
     return (react_1["default"].createElement("div", { className: "flex gap-1" }, [1, 2, 3, 4, 5].map(function (n) { return (react_1["default"].createElement("button", { key: n, type: "button", onClick: function () { return onChange(n); }, className: "transition-transform hover:scale-110", "aria-label": "Rate " + n + " stars" },
-        react_1["default"].createElement(lucide_react_1.Star, { className: "h-5 w-5 " + (n <= value ? 'fill-[#FF6B00] text-[#FF6B00]' : 'text-[#FCD9BD] dark:text-[#2A2A2A]') }))); })));
+        react_1["default"].createElement(lucide_react_1.Star, { className: "h-5 w-5 " + (n <= value ? 'fill-[#E53F01] text-[#E53F01]' : 'text-[#FCD9BD] dark:text-[#2A2A2A]') }))); })));
 }
 function NewDetail() {
     return (react_1["default"].createElement("div", { className: "min-h-screen bg-black pt-16 xl:pt-20 2xl:pt-24 dark:bg-[#0D0D0D]" },
         react_1["default"].createElement(PublicNavbar_1["default"], null),
         react_1["default"].createElement("div", { className: "mx-auto max-w-7xl bg-black px-4 py-3 sm:px-6 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]" },
             react_1["default"].createElement("nav", { className: "flex items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A]" },
-                react_1["default"].createElement(react_2.Link, { href: "/", className: "whitespace-nowrap hover:text-[#FF6B00]" }, "Home"),
+                react_1["default"].createElement(react_2.Link, { href: "/", className: "whitespace-nowrap hover:text-[#E53F01]" }, "Home"),
                 react_1["default"].createElement(lucide_react_1.ChevronRight, { className: "h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" }),
-                react_1["default"].createElement(react_2.Link, { href: "/players", className: "whitespace-nowrap hover:text-[#FF6B00]" }, "Players"),
+                react_1["default"].createElement(react_2.Link, { href: "/players", className: "whitespace-nowrap hover:text-[#E53F01]" }, "Players"),
                 react_1["default"].createElement(lucide_react_1.ChevronRight, { className: "h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" }),
-                react_1["default"].createElement("span", { className: "font-medium whitespace-nowrap text-[#FF6B00] dark:text-[#F5F5F5]" }, "Joao da Silva"))),
+                react_1["default"].createElement("span", { className: "font-medium whitespace-nowrap text-[#E53F01] dark:text-[#F5F5F5]" }, "Joao da Silva"))),
         react_1["default"].createElement("div", { className: "mx-auto max-w-7xl px-4 py-2 sm:px-6" },
             react_1["default"].createElement("main", { className: "min-w-0 space-y-6 overflow-x-hidden" },
                 react_1["default"].createElement("section", { className: "grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start" },
@@ -501,11 +501,11 @@ function NewDetail() {
                             react_1["default"].createElement("h3", { className: "mt-1 text-base font-semibold text-[#eb6c0d] uppercase md:text-lg" }, "Right Winger"),
                             react_1["default"].createElement("div", { className: "mt-3 space-y-1.25 text-sm md:text-base" },
                                 react_1["default"].createElement("div", { className: "flex items-center" },
-                                    react_1["default"].createElement(lucide_react_1.CalendarDays, { className: "mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" }),
+                                    react_1["default"].createElement(lucide_react_1.CalendarDays, { className: "mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" }),
                                     react_1["default"].createElement("span", { className: "text-[#e1e2e6]" }, "Date of Birth / Age:"),
                                     react_1["default"].createElement("span", { className: "pl-2 text-gray-300" }, "Jan 30, 2007 (19)")),
                                 react_1["default"].createElement("div", { className: "flex items-center" },
-                                    react_1["default"].createElement(lucide_react_1.Users, { className: "mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" }),
+                                    react_1["default"].createElement(lucide_react_1.Users, { className: "mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" }),
                                     react_1["default"].createElement("span", { className: "pr-3 text-[#e1e2e6]" }, "Nationality:"),
                                     react_1["default"].createElement(react_country_flag_1["default"], { countryCode: "BR", svg: true, className: "mr-1" }),
                                     react_1["default"].createElement("span", null, "Brazil"),
@@ -513,7 +513,7 @@ function NewDetail() {
                                     react_1["default"].createElement(react_country_flag_1["default"], { countryCode: "IT", svg: true, className: "mr-1" }),
                                     react_1["default"].createElement("span", null, "Italy III")),
                                 react_1["default"].createElement("div", { className: "flex items-center" },
-                                    react_1["default"].createElement(lucide_react_1.Ruler, { className: "mr-2 h-4 w-4 shrink-0 text-[#ff6100] md:h-5 md:w-5" }),
+                                    react_1["default"].createElement(lucide_react_1.Ruler, { className: "mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" }),
                                     react_1["default"].createElement("span", { className: "text-[#e1e2e6]" }, "Height:"),
                                     react_1["default"].createElement("span", { className: "pl-2 text-gray-100" }, "1.84 m")),
                                 react_1["default"].createElement("div", { className: "flex items-center" },

@@ -188,18 +188,17 @@ const summaryAverages = {
 function StarRow({ value, label }: { value: number; label: string }) {
     return (
         <div className="flex items-center justify-between gap-3">
-      <span className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-medium w-16">
-        {label}
-      </span>
+            <span className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-medium w-16">
+                {label}
+            </span>
             <div className="flex items-center gap-0.5">
                 {[1, 2, 3, 4, 5].map((i) => (
                     <Star
                         key={i}
-                        className={`w-3 h-3 ${
-                            i <= value
-                                ? 'fill-[#FF6B00] text-[#FF6B00]'
-                                : 'fill-transparent text-[#E2E8F0]'
-                        }`}
+                        className={`w-3 h-3 ${i <= value
+                            ? 'fill-[#E53F01] text-[#E53F01]'
+                            : 'fill-transparent text-[#E2E8F0]'
+                            }`}
                         strokeWidth={1.5}
                     />
                 ))}
@@ -211,9 +210,9 @@ function StarRow({ value, label }: { value: number; label: string }) {
 function InfoCell({ label, value }: { label: string; value: React.ReactNode }) {
     return (
         <div className="flex flex-col gap-0.5">
-      <span className="text-xs text-[#94A3B8] uppercase tracking-wide font-medium">
-        {label}
-      </span>
+            <span className="text-xs text-[#94A3B8] uppercase tracking-wide font-medium">
+                {label}
+            </span>
             <span className="text-sm font-medium text-[#0F172A]">{value}</span>
         </div>
     );
@@ -292,16 +291,15 @@ export default function PlayerDetail() {
                             <DropdownMenuTrigger asChild>
                                 <Button
                                     variant="outline"
-                                    className={`gap-2 ${
-                                        player.status === 'active'
-                                            ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100 hover:text-green-800'
-                                            : 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100 hover:text-red-800'
-                                    }`}
+                                    className={`gap-2 ${player.status === 'active'
+                                        ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100 hover:text-green-800'
+                                        : 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100 hover:text-red-800'
+                                        }`}
                                 >
                                     <span className="w-1.5 h-1.5 rounded-full bg-current" />
                                     <span className="text-sm font-semibold uppercase tracking-wide">
-                    {player.status}
-                  </span>
+                                        {player.status}
+                                    </span>
                                     <ChevronDown className="w-4 h-4" />
                                 </Button>
                             </DropdownMenuTrigger>
@@ -341,14 +339,14 @@ export default function PlayerDetail() {
                     {/* ▶ IDENTITY CARD */}
                     <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6">
                         <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
-              <span className="text-[10px] font-bold text-[#FF6B00] uppercase tracking-[0.14em]">
-                Player Profile
-              </span>
+                            <span className="text-[10px] font-bold text-[#E53F01] uppercase tracking-[0.14em]">
+                                Player Profile
+                            </span>
                             <div className="flex flex-wrap items-center gap-2">
                                 <Badge className="bg-green-50 text-green-700 border border-green-200 hover:bg-green-50 text-[10px] uppercase tracking-wide font-bold px-2 py-0.5 rounded-md">
                                     Active
                                 </Badge>
-                                <Badge className="bg-[#FF6B00] text-white hover:bg-[#FF6B00] text-[10px] uppercase tracking-wide font-bold px-2 py-0.5 rounded-md">
+                                <Badge className="bg-[#E53F01] text-white hover:bg-[#E53F01] text-[10px] uppercase tracking-wide font-bold px-2 py-0.5 rounded-md">
                                     Premium
                                 </Badge>
                                 {player.isFeatured && (
@@ -365,11 +363,11 @@ export default function PlayerDetail() {
                                 <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#1E293B] to-[#334155] flex items-center justify-center font-display font-black text-white text-2xl sm:text-3xl">
                                     BS
                                 </div>
-                                <span className="absolute -top-2 -right-2 bg-[#FF6B00] text-white text-[9px] font-black px-2 py-0.5 rounded-full">
-                  PRO
-                </span>
+                                <span className="absolute -top-2 -right-2 bg-[#E53F01] text-white text-[9px] font-black px-2 py-0.5 rounded-full">
+                                    PRO
+                                </span>
                                 {player.isVerified && (
-                                    <BadgeCheck className="absolute -bottom-2 -right-2 text-[#FF6B00] bg-white rounded-full w-5 h-5" />
+                                    <BadgeCheck className="absolute -bottom-2 -right-2 text-[#E53F01] bg-white rounded-full w-5 h-5" />
                                 )}
                             </div>
 
@@ -379,9 +377,9 @@ export default function PlayerDetail() {
                                     {player.name}
                                 </h1>
                                 <div className="flex items-center gap-2 mt-1">
-                  <span className="font-mono text-[#94A3B8] text-xs">
-                    {player.profileId}
-                  </span>
+                                    <span className="font-mono text-[#94A3B8] text-xs">
+                                        {player.profileId}
+                                    </span>
                                     <span className="text-xs text-[#94A3B8]">·</span>
                                     <span className="text-xs text-[#475569]">"{player.nickname}"</span>
                                 </div>
@@ -404,9 +402,9 @@ export default function PlayerDetail() {
                                 label="Nationality"
                                 value={
                                     <span className="inline-flex items-center gap-1.5">
-                    <span>{player.flag}</span>
-                    <span>{player.nationality}</span>
-                  </span>
+                                        <span>{player.flag}</span>
+                                        <span>{player.nationality}</span>
+                                    </span>
                                 }
                             />
                             <InfoCell label="Birthplace" value={player.birthplace} />
@@ -419,27 +417,27 @@ export default function PlayerDetail() {
                         </div>
 
                         <div className="mt-5 pt-5 border-t border-[#F1F5F9] flex flex-wrap items-center gap-2">
-              <span className="text-[10px] text-[#94A3B8] uppercase tracking-widest font-bold mr-2">
-                Positions:
-              </span>
+                            <span className="text-[10px] text-[#94A3B8] uppercase tracking-widest font-bold mr-2">
+                                Positions:
+                            </span>
                             {player.positions.map((pos) => (
                                 <span
                                     key={pos}
-                                    className="inline-flex items-center bg-[#FFF3EB] border border-[#FF6B00] text-[#CC5500] text-xs font-bold px-2.5 py-1 rounded-lg"
+                                    className="inline-flex items-center bg-[#FFF3EB] border border-[#E53F01] text-[#E53F01] text-xs font-bold px-2.5 py-1 rounded-lg"
                                 >
-                  {pos}
-                </span>
+                                    {pos}
+                                </span>
                             ))}
                             <span className="text-[10px] text-[#94A3B8] uppercase tracking-widest font-bold mx-2 sm:ml-4">
-                Modalities:
-              </span>
+                                Modalities:
+                            </span>
                             {player.modalities.map((mod) => (
                                 <span
                                     key={mod}
                                     className="inline-flex items-center bg-[#F1F5F9] text-[#475569] text-xs font-medium px-2.5 py-1 rounded-lg"
                                 >
-                  {mod}
-                </span>
+                                    {mod}
+                                </span>
                             ))}
                         </div>
                     </div>
@@ -453,39 +451,39 @@ export default function PlayerDetail() {
                         </div>
                         <div className="px-6 py-5 grid grid-cols-1 sm:grid-cols-3 gap-6">
                             <div>
-                <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
-                  Positions
-                </span>
+                                <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
+                                    Positions
+                                </span>
                                 <div className="flex flex-wrap gap-2">
                                     {player.positions.map((pos) => (
                                         <span
                                             key={pos}
-                                            className="inline-flex items-center bg-[#FFF3EB] border border-[#FF6B00] text-[#CC5500] text-xs font-bold px-2.5 py-1 rounded-lg"
+                                            className="inline-flex items-center bg-[#FFF3EB] border border-[#E53F01] text-[#E53F01] text-xs font-bold px-2.5 py-1 rounded-lg"
                                         >
-                      {pos}
-                    </span>
+                                            {pos}
+                                        </span>
                                     ))}
                                 </div>
                             </div>
                             <div>
-                <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
-                  Modalities
-                </span>
+                                <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
+                                    Modalities
+                                </span>
                                 <div className="flex flex-wrap gap-2">
                                     {player.modalities.map((mod) => (
                                         <span
                                             key={mod}
                                             className="inline-flex items-center bg-[#F1F5F9] text-[#475569] text-xs font-medium px-2.5 py-1 rounded-lg"
                                         >
-                      {mod}
-                    </span>
+                                            {mod}
+                                        </span>
                                     ))}
                                 </div>
                             </div>
                             <div>
-                <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
-                  Pitch Position · {player.foot} Foot
-                </span>
+                                <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
+                                    Pitch Position · {player.foot} Foot
+                                </span>
                                 {/* Simplified pitch SVG top-down */}
                                 <svg
                                     viewBox="0 0 120 80"
@@ -498,12 +496,12 @@ export default function PlayerDetail() {
                                     <rect x="0" y="20" width="12" height="40" fill="none" stroke="white" strokeOpacity="0.4" strokeWidth="0.5" />
                                     <rect x="108" y="20" width="12" height="40" fill="none" stroke="white" strokeOpacity="0.4" strokeWidth="0.5" />
                                     {/* ST zone — central forward */}
-                                    <circle cx="100" cy="40" r="5" fill="#FF6B00" />
+                                    <circle cx="100" cy="40" r="5" fill="#E53F01" />
                                     <text x="100" y="42" textAnchor="middle" fill="white" fontSize="4" fontWeight="bold">
                                         ST
                                     </text>
                                     {/* LW zone */}
-                                    <circle cx="92" cy="18" r="5" fill="#FF6B00" />
+                                    <circle cx="92" cy="18" r="5" fill="#E53F01" />
                                     <text x="92" y="20" textAnchor="middle" fill="white" fontSize="4" fontWeight="bold">
                                         LW
                                     </text>
@@ -520,7 +518,7 @@ export default function PlayerDetail() {
                             </h2>
                             <Link
                                 href={route('admin.players.edit', player.id)}
-                                className="text-[#FF6B00] text-xs font-semibold hover:underline cursor-pointer"
+                                className="text-[#E53F01] text-xs font-semibold hover:underline cursor-pointer"
                             >
                                 Edit URL
                             </Link>
@@ -534,9 +532,9 @@ export default function PlayerDetail() {
                                 title={`${player.name} highlights`}
                             />
                             <div className="absolute bottom-3 left-4 pointer-events-none">
-                <span className="font-display font-black text-white text-xl tracking-tight drop-shadow-lg">
-                  {player.name}
-                </span>
+                                <span className="font-display font-black text-white text-xl tracking-tight drop-shadow-lg">
+                                    {player.name}
+                                </span>
                             </div>
                             <div className="absolute top-3 right-3 pointer-events-none">
                                 <Video className="w-4 h-4 text-white/60" />
@@ -571,17 +569,15 @@ export default function PlayerDetail() {
                                 {player.clubHistory.map((entry, idx) => (
                                     <TableRow
                                         key={entry.year}
-                                        className={`border-b border-[#F1F5F9] hover:bg-[#F8FAFC] ${
-                                            idx === player.clubHistory.length - 1 ? 'border-b-0' : ''
-                                        }`}
+                                        className={`border-b border-[#F1F5F9] hover:bg-[#F8FAFC] ${idx === player.clubHistory.length - 1 ? 'border-b-0' : ''
+                                            }`}
                                     >
                                         <TableCell className="font-mono text-[#0F172A] font-semibold text-sm px-6 py-3">
                                             {entry.year}
                                         </TableCell>
                                         <TableCell
-                                            className={`text-sm px-6 py-3 ${
-                                                entry.club ? 'text-[#0F172A]' : 'text-[#94A3B8]'
-                                            }`}
+                                            className={`text-sm px-6 py-3 ${entry.club ? 'text-[#0F172A]' : 'text-[#94A3B8]'
+                                                }`}
                                         >
                                             {entry.club || '—'}
                                         </TableCell>
@@ -608,20 +604,20 @@ export default function PlayerDetail() {
                                 Scout Ratings
                             </h2>
                             <div className="flex items-center gap-1.5">
-                                <Star className="w-4 h-4 fill-[#FF6B00] text-[#FF6B00]" />
+                                <Star className="w-4 h-4 fill-[#E53F01] text-[#E53F01]" />
                                 <span className="text-sm font-semibold text-[#0F172A]">
-                  {player.avgRating.toFixed(1)} avg
-                </span>
+                                    {player.avgRating.toFixed(1)} avg
+                                </span>
                                 <span className="text-xs text-[#94A3B8]">
-                  from {player.scoutRatingsCount} ratings
-                </span>
+                                    from {player.scoutRatingsCount} ratings
+                                </span>
                             </div>
                         </div>
 
                         {/* Summary row */}
                         <div className="bg-[#F8FAFC] px-6 py-4 border-b border-[#E2E8F0] grid grid-cols-4 text-center">
                             <div>
-                                <div className="font-mono font-bold text-xl text-[#FF6B00]">
+                                <div className="font-mono font-bold text-xl text-[#E53F01]">
                                     {summaryAverages.technical.toFixed(1)}
                                 </div>
                                 <div className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
@@ -629,7 +625,7 @@ export default function PlayerDetail() {
                                 </div>
                             </div>
                             <div>
-                                <div className="font-mono font-bold text-xl text-[#FF6B00]">
+                                <div className="font-mono font-bold text-xl text-[#E53F01]">
                                     {summaryAverages.physical.toFixed(1)}
                                 </div>
                                 <div className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
@@ -637,7 +633,7 @@ export default function PlayerDetail() {
                                 </div>
                             </div>
                             <div>
-                                <div className="font-mono font-bold text-xl text-[#FF6B00]">
+                                <div className="font-mono font-bold text-xl text-[#E53F01]">
                                     {summaryAverages.mental.toFixed(1)}
                                 </div>
                                 <div className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
@@ -645,7 +641,7 @@ export default function PlayerDetail() {
                                 </div>
                             </div>
                             <div>
-                                <div className="font-mono font-bold text-xl text-[#FF6B00]">
+                                <div className="font-mono font-bold text-xl text-[#E53F01]">
                                     {summaryAverages.overall.toFixed(1)}
                                 </div>
                                 <div className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
@@ -659,15 +655,14 @@ export default function PlayerDetail() {
                             {player.ratings.map((rating, idx) => (
                                 <div
                                     key={rating.id}
-                                    className={`px-6 py-4 ${
-                                        idx !== player.ratings.length - 1
-                                            ? 'border-b border-[#F1F5F9]'
-                                            : ''
-                                    }`}
+                                    className={`px-6 py-4 ${idx !== player.ratings.length - 1
+                                        ? 'border-b border-[#F1F5F9]'
+                                        : ''
+                                        }`}
                                 >
                                     <div className="flex items-start gap-4">
                                         <Avatar className="w-10 h-10 shrink-0">
-                                            <AvatarFallback className="bg-orange-50 text-[#FF6B00] font-bold text-xs">
+                                            <AvatarFallback className="bg-orange-50 text-[#E53F01] font-bold text-xs">
                                                 {rating.scout
                                                     .split(' ')
                                                     .map((n) => n[0])
@@ -677,9 +672,9 @@ export default function PlayerDetail() {
 
                                         <div className="flex-1 min-w-0">
                                             <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-semibold text-sm text-[#0F172A]">
-                          {rating.scout}
-                        </span>
+                                                <span className="font-semibold text-sm text-[#0F172A]">
+                                                    {rating.scout}
+                                                </span>
                                             </div>
                                             <div className="flex items-center gap-2 mt-1">
                                                 <Badge
@@ -689,9 +684,9 @@ export default function PlayerDetail() {
                                                     {rating.role}
                                                 </Badge>
                                                 <span className="text-xs text-[#475569] inline-flex items-center gap-1">
-                          <span>{rating.flag}</span>
-                          <span>{rating.country}</span>
-                        </span>
+                                                    <span>{rating.flag}</span>
+                                                    <span>{rating.country}</span>
+                                                </span>
                                             </div>
                                             <div className="text-xs text-[#94A3B8] mt-1 font-mono">
                                                 {rating.date}
@@ -755,41 +750,41 @@ export default function PlayerDetail() {
                         </h3>
                         <div className="divide-y divide-[#F1F5F9]">
                             <div className="py-3 flex items-center justify-between first:pt-0">
-                <span className="text-sm text-[#475569] inline-flex items-center gap-2">
-                  <Eye className="w-3.5 h-3.5 text-[#94A3B8]" />
-                  Profile Views
-                </span>
-                                <span className="font-mono font-bold text-[#FF6B00] text-sm">
-                  {player.profileViews.toLocaleString()}
-                </span>
+                                <span className="text-sm text-[#475569] inline-flex items-center gap-2">
+                                    <Eye className="w-3.5 h-3.5 text-[#94A3B8]" />
+                                    Profile Views
+                                </span>
+                                <span className="font-mono font-bold text-[#E53F01] text-sm">
+                                    {player.profileViews.toLocaleString()}
+                                </span>
                             </div>
                             <div className="py-3 flex items-center justify-between">
-                <span className="text-sm text-[#475569] inline-flex items-center gap-2">
-                  <Globe2 className="w-3.5 h-3.5 text-[#94A3B8]" />
-                  Countries Reached
-                </span>
-                                <span className="font-mono font-bold text-[#FF6B00] text-sm">
-                  {player.countriesReached}
-                </span>
+                                <span className="text-sm text-[#475569] inline-flex items-center gap-2">
+                                    <Globe2 className="w-3.5 h-3.5 text-[#94A3B8]" />
+                                    Countries Reached
+                                </span>
+                                <span className="font-mono font-bold text-[#E53F01] text-sm">
+                                    {player.countriesReached}
+                                </span>
                             </div>
                             <div className="py-3 flex items-center justify-between">
-                <span className="text-sm text-[#475569] inline-flex items-center gap-2">
-                  <Users className="w-3.5 h-3.5 text-[#94A3B8]" />
-                  Scout Ratings
-                </span>
-                                <span className="font-mono font-bold text-[#FF6B00] text-sm">
-                  {player.scoutRatingsCount}
-                </span>
+                                <span className="text-sm text-[#475569] inline-flex items-center gap-2">
+                                    <Users className="w-3.5 h-3.5 text-[#94A3B8]" />
+                                    Scout Ratings
+                                </span>
+                                <span className="font-mono font-bold text-[#E53F01] text-sm">
+                                    {player.scoutRatingsCount}
+                                </span>
                             </div>
                             <div className="py-3 flex items-center justify-between last:pb-0">
-                <span className="text-sm text-[#475569] inline-flex items-center gap-2">
-                  <Star className="w-3.5 h-3.5 text-[#94A3B8]" />
-                  Average Rating
-                </span>
-                                <span className="font-mono font-bold text-[#FF6B00] text-sm inline-flex items-center gap-1">
-                  <Star className="w-3 h-3 fill-[#FF6B00] text-[#FF6B00]" />
+                                <span className="text-sm text-[#475569] inline-flex items-center gap-2">
+                                    <Star className="w-3.5 h-3.5 text-[#94A3B8]" />
+                                    Average Rating
+                                </span>
+                                <span className="font-mono font-bold text-[#E53F01] text-sm inline-flex items-center gap-1">
+                                    <Star className="w-3 h-3 fill-[#E53F01] text-[#E53F01]" />
                                     {player.avgRating.toFixed(1)}
-                </span>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -805,16 +800,16 @@ export default function PlayerDetail() {
                                 return (
                                     <div key={entry.country}>
                                         <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs text-[#0F172A] font-medium">
-                        {entry.country}
-                      </span>
-                                            <span className="font-mono font-bold text-[#FF6B00] text-xs">
-                        {entry.count}
-                      </span>
+                                            <span className="text-xs text-[#0F172A] font-medium">
+                                                {entry.country}
+                                            </span>
+                                            <span className="font-mono font-bold text-[#E53F01] text-xs">
+                                                {entry.count}
+                                            </span>
                                         </div>
                                         <div className="h-1.5 bg-[#FFF3EB] rounded-full overflow-hidden">
                                             <div
-                                                className="h-full bg-[#FF6B00] rounded-full transition-all"
+                                                className="h-full bg-[#E53F01] rounded-full transition-all"
                                                 style={{ width: `${pct}%` }}
                                             />
                                         </div>
@@ -852,7 +847,7 @@ export default function PlayerDetail() {
                                     />
                                     <Bar dataKey="count" radius={[0, 4, 4, 0]}>
                                         {player.viewsByCountry.map((_, idx) => (
-                                            <Cell key={idx} fill="#FF6B00" />
+                                            <Cell key={idx} fill="#E53F01" />
                                         ))}
                                     </Bar>
                                 </BarChart>
@@ -889,8 +884,8 @@ export default function PlayerDetail() {
                                                 {view.role}
                                             </Badge>
                                             <span className="text-xs text-[#94A3B8]">
-                        {view.flag} · {view.time}
-                      </span>
+                                                {view.flag} · {view.time}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -904,7 +899,7 @@ export default function PlayerDetail() {
                             Subscription
                         </h3>
                         <div className="flex items-center justify-between mb-3">
-                            <Badge className="bg-[#FF6B00] text-white hover:bg-[#FF6B00] text-xs uppercase tracking-wide font-bold px-2.5 py-1 rounded-md">
+                            <Badge className="bg-[#E53F01] text-white hover:bg-[#E53F01] text-xs uppercase tracking-wide font-bold px-2.5 py-1 rounded-md">
                                 Premium
                             </Badge>
                         </div>
@@ -946,11 +941,11 @@ export default function PlayerDetail() {
                             value={adminNote}
                             onChange={(e) => setAdminNote(e.target.value)}
                             placeholder="Add internal notes about this player..."
-                            className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl w-full h-24 text-sm px-3 py-2 text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 resize-none"
+                            className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl w-full h-24 text-sm px-3 py-2 text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-orange-100 resize-none"
                         />
                         <Button
                             onClick={handleSaveNote}
-                            className="bg-[#FF6B00] text-white hover:bg-[#CC5500] text-sm w-full mt-3 font-semibold"
+                            className="bg-[#E53F01] text-white hover:bg-[#E53F01] text-sm w-full mt-3 font-semibold"
                         >
                             Save Note
                         </Button>

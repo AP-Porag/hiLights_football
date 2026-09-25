@@ -20,29 +20,29 @@ var HomeTwo = function HomeTwo() {
     step: "01",
     title: "CREATE YOUR PROFILE",
     desc: react_1["default"].createElement(react_1["default"].Fragment, null, "Build an organized, professional profile with your", " ", react_1["default"].createElement("span", {
-      className: "text-[#ff6b00]"
+      className: "text-[#E53F01]"
     }, "data"), ",", " ", react_1["default"].createElement("span", {
-      className: "text-[#ff6b00]"
+      className: "text-[#E53F01]"
     }, "club history"), ",", " ", react_1["default"].createElement("span", {
-      className: "text-[#ff6b00]"
+      className: "text-[#E53F01]"
     }, "physical and technical characteristics"), ", and your", " ", react_1["default"].createElement("span", {
-      className: "text-[#ff6b00]"
+      className: "text-[#E53F01]"
     }, "achievements"), ".")
   }, {
     icon: lucide_react_1.Play,
     step: "02",
     title: "UPLOAD YOUR BEST VIDEOS",
     desc: react_1["default"].createElement(react_1["default"].Fragment, null, "Show the world your", " ", react_1["default"].createElement("span", {
-      className: "text-[#ff6b00]"
+      className: "text-[#E53F01]"
     }, "best moments"), ". Get", " ", react_1["default"].createElement("span", {
-      className: "text-[#ff6b00]"
+      className: "text-[#E53F01]"
     }, "improvement tips"), " to make your videos more attractive to scouts, agents and clubs.")
   }, {
     icon: lucide_react_1.Megaphone,
     step: "03",
     title: "BE SEEN. BE DISCOVERED.",
     desc: react_1["default"].createElement(react_1["default"].Fragment, null, "A platform developed by professionals from various areas of football with", " ", react_1["default"].createElement("span", {
-      className: "text-[#ff6b00]"
+      className: "text-[#E53F01]"
     }, "over 20 years of experience worldwide"), ".")
   }];
   var players = [{
@@ -103,7 +103,7 @@ var HomeTwo = function HomeTwo() {
   }, react_1["default"].createElement("span", {
     className: "block text-white"
   }, "Be Seen."), react_1["default"].createElement("span", {
-    className: "block text-[#ee5e00]"
+    className: "block text-[#E53F01]"
   }, "Be Discovered ", react_1["default"].createElement("span", {
     className: "text-white"
   }, "!"))), react_1["default"].createElement("p", {
@@ -125,7 +125,7 @@ var HomeTwo = function HomeTwo() {
   }), " in football."))))), react_1["default"].createElement("div", {
     className: "mb-10 flex w-[200%] flex-row gap-4 pl-6 sm:pl-10 lg:pl-16"
   }, react_1["default"].createElement("button", {
-    className: "flex items-center justify-center cursor-pointer rounded-md bg-[#ea3905] px-3 py-2 text-[10px] font-semibold uppercase transition-all duration-300 hover:bg-orange-600 md:px-6 md:py-2 md:text-sm"
+    className: "flex items-center justify-center cursor-pointer rounded-md bg-[#E53F01] px-3 py-2 text-[10px] font-semibold uppercase transition-all duration-300 hover:bg-[#E53F01] md:px-6 md:py-2 md:text-sm"
   }, react_1["default"].createElement(lucide_react_1.UserRoundPlus, {
     className: "h-6 w-6"
   }), react_1["default"].createElement("span", {
@@ -151,7 +151,7 @@ var HomeTwo = function HomeTwo() {
   }, react_1["default"].createElement("h2", {
     className: "mb-6 text-[20px] leading-tight font-extrabold uppercase md:text-3xl"
   }, "A SIMPLE. PROFESSIONAL. ", react_1["default"].createElement("span", {
-    className: "text-[#df5f18]"
+    className: "text-[#E53F01]"
   }, "EFFECTIVE PLATFORM.")), react_1["default"].createElement("div", {
     className: "lg:max-w-5xl"
   }, steps.map(function (item, index) {
@@ -166,11 +166,11 @@ var HomeTwo = function HomeTwo() {
     }, react_1["default"].createElement("div", {
       className: "flex h-9 w-9 items-center justify-center rounded-full border border-gray-500 md:h-14 md:w-14"
     }, react_1["default"].createElement(Icon, {
-      className: "h-5 w-5 text-[#ff6100] md:h-8 md:w-8"
+      className: "h-5 w-5 text-[#E53F01] md:h-8 md:w-8"
     }))), react_1["default"].createElement("div", null, react_1["default"].createElement("p", {
-      className: "text-[10px] font-bold text-[#ff6b00] md:text-sm"
+      className: "text-[10px] font-bold text-[#E53F01] md:text-sm"
     }, "STEP"), react_1["default"].createElement("h3", {
-      className: "text-3xl leading-none font-extrabold text-[#ff6b00] md:text-5xl"
+      className: "text-3xl leading-none font-extrabold text-[#E53F01] md:text-5xl"
     }, item.step)), react_1["default"].createElement("div", {
       className: "border-l-4 border-[#1f1f1f] pl-3 md:pl-5"
     }, react_1["default"].createElement("h3", {
@@ -183,19 +183,19 @@ var HomeTwo = function HomeTwo() {
   }, react_1["default"].createElement("div", {
     className: "flex justify-center"
   }, react_1["default"].createElement("div", {
-    className: "flex h-12 w-12 items-center justify-center rounded-full bg-[#e63e00] md:h-20 md:w-20"
+    className: "flex h-12 w-12 items-center justify-center rounded-full bg-[#E53F01] md:h-20 md:w-20"
   }, react_1["default"].createElement(lucide_react_1.Users, {
     className: "text-white md:h-12 md:w-12"
   }))), react_1["default"].createElement("div", null, react_1["default"].createElement("h3", {
     className: "text-[14px] leading-tight font-bold sm:text-[16px] md:text-[18px] lg:text-[22px]"
   }, "Not part of the ", react_1["default"].createElement("span", {
-    className: "text-[#ff6100]"
+    className: "text-[#E53F01]"
   }, "HiLights Football"), react_1["default"].createElement("br", null), "community yet?"), react_1["default"].createElement("p", {
     className: "mt-3 text-[10px] leading-relaxed text-[#efefef] sm:text-[12px] md:text-[14px] lg:text-[16px]"
   }, "Create your free profile, share your best moments and become visible to coaches, clubs and recruiters worldwide.")), react_1["default"].createElement("div", {
     className: "flex items-end justify-end lg:pr-10"
   }, react_1["default"].createElement("button", {
-    className: "sm:-w-45 flex cursor-pointer items-center gap-2 rounded-xl border border-[#773a0c] px-4 py-2 transition hover:bg-[#ff6b00]/10 md:gap-4 lg:px-8 lg:py-4"
+    className: "sm:-w-45 flex cursor-pointer items-center gap-2 rounded-xl border border-[#E53F01] px-4 py-2 transition hover:bg-[#E53F01]/10 md:gap-4 lg:px-8 lg:py-4"
   }, react_1["default"].createElement(lucide_react_1.UserPlus, {
     className: "h-6 w-6 text-white md:h-8 md:w-8"
   }), react_1["default"].createElement("span", {
@@ -220,7 +220,7 @@ var HomeTwo = function HomeTwo() {
     className: "flex items-center gap-2"
   }, react_1["default"].createElement(lucide_react_1.Star, {
     size: 18,
-    fill: "#ff6b00",
+    fill: "#E53F01",
     className: "text-[#f25704]"
   }), react_1["default"].createElement("h2", {
     className: "text-[12px] font-extrabold whitespace-nowrap text-[#222] uppercase md:text-sm"
@@ -228,7 +228,7 @@ var HomeTwo = function HomeTwo() {
     className: "flex cursor-pointer items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs"
   }, "View All", react_1["default"].createElement(lucide_react_1.ArrowRight, {
     size: 14,
-    className: "text-[#ff6b00]"
+    className: "text-[#E53F01]"
   }))), players.map(function (player, index) {
     return react_1["default"].createElement(react_2.Link, {
       key: index,

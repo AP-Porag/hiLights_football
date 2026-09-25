@@ -271,7 +271,7 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
 };
 
 const inputClass =
-    'h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none';
+    'h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none';
 
 // ── Generic list modal (repeatable rows) ──
 function ListModal({
@@ -415,7 +415,7 @@ function ListModal({
                                                 update(i, 'year_type', e.target.value);
                                                 setYearErrors((prev) => ({ ...prev, [i]: '' }));
                                             }}
-                                            className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-xs text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none font-sans"
+                                            className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-xs text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
                                         >
                                             <option value="european">European (26/27)</option>
                                             <option value="brazilian">Brazilian (2026)</option>
@@ -430,7 +430,7 @@ function ListModal({
                                                 validateYearFormat(i, e.target.value, yearType);
                                             }}
                                             placeholder={yearType === 'brazilian' ? '2026' : '26/27'}
-                                            className="h-10 w-full bg-[#111111] border border-[#2A2A2A] rounded-lg px-2 text-sm text-[#F5F5F5] font-mono focus:border-[#FF6B00] focus:outline-none"
+                                            className="h-10 w-full bg-[#111111] border border-[#2A2A2A] rounded-lg px-2 text-sm text-[#F5F5F5] font-mono focus:border-[#E53F01] focus:outline-none"
                                         />
 
                                         {/* Club Name */}
@@ -438,14 +438,14 @@ function ListModal({
                                             value={row.club}
                                             onChange={(e) => update(i, 'club', e.target.value)}
                                             placeholder="Club"
-                                            className="h-10 w-full bg-[#111111] border border-[#2A2A2A] rounded-lg px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none"
+                                            className="h-10 w-full bg-[#111111] border border-[#2A2A2A] rounded-lg px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none"
                                         />
 
                                         {/* Country */}
                                         <select
                                             value={row.country ?? ''}
                                             onChange={(e) => update(i, 'country', e.target.value)}
-                                            className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none font-sans"
+                                            className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
                                         >
                                             <option value="">Country...</option>
                                             {countries.map((c: any) => (
@@ -460,7 +460,7 @@ function ListModal({
                                             <button
                                                 type="button"
                                                 onClick={addRow}
-                                                className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#FF6B00] hover:border-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]"
+                                                className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#E53F01] hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]"
                                             >
                                                 <Plus className="w-4 h-4" />
                                             </button>
@@ -468,7 +468,7 @@ function ListModal({
                                             <button
                                                 type="button"
                                                 onClick={() => removeRow(i)}
-                                                className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"
+                                                className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01]"
                                             >
                                                 <X className="w-4 h-4" />
                                             </button>
@@ -502,7 +502,7 @@ function ListModal({
                                                         className="h-9 w-9 flex-shrink-0 rounded-md border border-[#2A2A2A] object-cover"
                                                     />
                                                 )}
-                                                <label className="flex h-9 flex-1 cursor-pointer items-center justify-center rounded-lg border border-dashed border-[#2A2A2A] bg-[#0D0D0D] px-2 text-xs text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00]">
+                                                <label className="flex h-9 flex-1 cursor-pointer items-center justify-center rounded-lg border border-dashed border-[#2A2A2A] bg-[#0D0D0D] px-2 text-xs text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01]">
                                                     {uploadingKey === `${i}-${f.name}`
                                                         ? 'Uploading...'
                                                         : nonEmpty(row[f.name])
@@ -558,7 +558,7 @@ function ListModal({
                                     <button
                                         type="button"
                                         onClick={() => removeRow(i)}
-                                        className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"
+                                        className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01]"
                                         aria-label="Remove"
                                     >
                                         <X className="h-4 w-4" />
@@ -573,7 +573,7 @@ function ListModal({
                     <button
                         type="button"
                         onClick={addRow}
-                        className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#FF6B00] hover:text-[#CC5500]"
+                        className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#E53F01] hover:text-[#E53F01]"
                     >
                         <Plus className="h-4 w-4" /> Add row
                     </button>
@@ -583,7 +583,7 @@ function ListModal({
                     <Button type="button" variant="ghost" onClick={onClose} className="text-[#9A9A9A] hover:bg-[#1F1F1F] hover:text-[#F5F5F5]">
                         Cancel
                     </Button>
-                    <Button type="button" onClick={save} disabled={saving} className="bg-[#FF6B00] text-white hover:bg-[#CC5500]">
+                    <Button type="button" onClick={save} disabled={saving} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">
                         {saving ? 'Saving...' : 'Save'}
                     </Button>
                 </div>
@@ -725,7 +725,7 @@ function FormModal({
                                 <input type="text" value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass} />
                             )}
                             {f.type === 'textarea' && (
-                                <textarea value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} rows={4} className="w-full rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] px-2 py-2 text-sm text-[#F5F5F5] focus:border-[#FF6B00] focus:outline-none resize-none" />
+                                <textarea value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} rows={4} className="w-full rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] px-2 py-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none resize-none" />
                             )}
                             {f.type === 'number' && (
                                 <input type="number" value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass} />
@@ -767,7 +767,7 @@ function FormModal({
                                                 <button
                                                     type="button"
                                                     onClick={() => setField(f.name, values[f.name].filter((c: string) => c !== code))}
-                                                    className="ml-1 text-[#9A9A9A] hover:text-red-400"
+                                                    className="ml-1 text-[#9A9A9A] hover:text-[#E53F01]"
                                                 >
                                                     ×
                                                 </button>
@@ -804,7 +804,7 @@ function FormModal({
                                                     key={id}
                                                     type="button"
                                                     onClick={() => togglePos(id)}
-                                                    className={`flex flex-col items-start rounded-lg border px-2.5 py-2 text-left ${on ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00]' : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A]'}`}
+                                                    className={`flex flex-col items-start rounded-lg border px-2.5 py-2 text-left ${on ? 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01]' : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A]'}`}
                                                 >
                                                     <span className="text-xs font-bold">{id}</span>
                                                     <span className="text-[10px] leading-tight opacity-80">{POSITION_FULL_NAMES[id]}</span>
@@ -820,8 +820,8 @@ function FormModal({
                                                 Reorder to set priority
                                             </span>
                                             {(values.positions || []).map((id: string, idx: number) => (
-                                                <div key={id} className="flex items-center gap-3 rounded-lg border border-[#FF6B00] bg-[rgba(255,107,0,0.08)] px-3 py-2">
-                                                    <span className="flex-shrink-0 rounded-md bg-[#FF6B00] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                                                <div key={id} className="flex items-center gap-3 rounded-lg border border-[#E53F01] bg-[rgba(255,107,0,0.08)] px-3 py-2">
+                                                    <span className="flex-shrink-0 rounded-md bg-[#E53F01] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
                                                         {PRIORITY_LABELS[idx] ?? `#${idx + 1}`}
                                                     </span>
                                                     <span className="flex-1 text-sm font-semibold text-[#F5F5F5]">
@@ -833,7 +833,7 @@ function FormModal({
                                                             type="button"
                                                             onClick={() => movePosition(idx, -1)}
                                                             disabled={idx === 0}
-                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00] disabled:opacity-30 disabled:cursor-not-allowed"
+                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01] disabled:opacity-30 disabled:cursor-not-allowed"
                                                             aria-label="Move up"
                                                         >
                                                             <ArrowUp className="h-3.5 w-3.5" />
@@ -842,7 +842,7 @@ function FormModal({
                                                             type="button"
                                                             onClick={() => movePosition(idx, 1)}
                                                             disabled={idx === (values.positions || []).length - 1}
-                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#FF6B00] hover:text-[#FF6B00] disabled:opacity-30 disabled:cursor-not-allowed"
+                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01] disabled:opacity-30 disabled:cursor-not-allowed"
                                                             aria-label="Move down"
                                                         >
                                                             <ArrowDown className="h-3.5 w-3.5" />
@@ -856,7 +856,7 @@ function FormModal({
                             )}
                             {f.type === 'file' && (
                                 <div className="flex items-center gap-4">
-                                    <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-[#FF6B00] bg-[#111111]">
+                                    <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-[#E53F01] bg-[#111111]">
                                         <img
                                             src={preview || "/images/img/placeholder.webp"}
                                             alt="Preview"
@@ -874,7 +874,7 @@ function FormModal({
                                         <button
                                             type="button"
                                             onClick={() => fileInputRef.current?.click()}
-                                            className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-[#FF6B00] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#E55F00]"
+                                            className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-[#E53F01] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#E53F01]"
                                         >
                                             <Upload className="h-4 w-4" />
                                             {preview ? "Change Photo" : "Upload Photo"}
@@ -885,7 +885,7 @@ function FormModal({
                                             JPG, PNG or WEBP
                                         </p>
                                         {photoError && (
-                                            <p className="mt-2 text-xs text-red-400">{photoError}</p>
+                                            <p className="mt-2 text-xs text-[#E53F01]">{photoError}</p>
                                         )}
                                     </div>
                                 </div>
@@ -897,7 +897,7 @@ function FormModal({
                     <Button type="button" variant="ghost" onClick={onClose} className="text-[#9A9A9A] hover:bg-[#1F1F1F] hover:text-[#F5F5F5]">
                         Cancel
                     </Button>
-                    <Button type="button" onClick={save} disabled={saving} className="bg-[#FF6B00] text-white hover:bg-[#CC5500]">
+                    <Button type="button" onClick={save} disabled={saving} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">
                         {saving ? 'Saving...' : 'Save'}
                     </Button>
                 </div>
@@ -978,7 +978,7 @@ export default function PlayerDashboard() {
                 setTimeout(() => setCopied(false), 2500);
             } catch (fallbackError) {
                 console.error('Fallback copy failed:', fallbackError);
-                alert('লিংক কপি করা সম্ভব হয়নি। দয়া করে ম্যানুয়ালি কপি করুন।');
+                alert('Failed to copy the link. Please copy it manually.');
             }
         }
     };
@@ -1167,39 +1167,6 @@ export default function PlayerDashboard() {
                 ? new Date(pp.in_team_since).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
                 : 'Not specified',
         },
-        // নিচের ফিল্ডগুলো Basic Info থেকে যুক্ত করা হলো
-        // {
-        //     icon: <User className="w-4 h-4 text-gray-300" />,
-        //     label: 'GENDER',
-        //     value: pp?.gender || 'Not specified',
-        // },
-        // {
-        //     icon: <MapPin className="w-4 h-4 text-gray-300" />,
-        //     label: 'BIRTH COUNTRY',
-        //     value: pp?.birth_country ? getCountryName(pp.birth_country) : 'Not specified',
-        // },
-        // {
-        //     icon: <Flag className="w-4 h-4 text-gray-300" />,
-        //     label: 'CLUB COUNTRY',
-        //     value: pp?.current_club_country ? getCountryName(pp.current_club_country) : 'Not specified',
-        // },
-        // {
-        //     icon: <UserPen className="w-4 h-4 text-gray-300" />,
-        //     label: 'AGENT',
-        //     value: pp?.agent || 'Not specified',
-        // },
-        // {
-        //     icon: <Smartphone className="w-4 h-4 text-gray-300" />,
-        //     label: 'WHATSAPP',
-        //     value: auth?.user?.whatsapp || 'Not specified',
-        // },
-        // {
-        //     icon: <ClipboardList className="w-4 h-4 text-gray-300" />,
-        //     label: 'DESCRIPTION',
-        //     value: pp?.description
-        //         ? (pp.description.length > 40 ? pp.description.substring(0, 40) + '...' : pp.description)
-        //         : 'Not specified',
-        // },
     ];
 
     const shareProfile = async () => {
@@ -1263,19 +1230,6 @@ export default function PlayerDashboard() {
             alert('Could not download card. Please try again.');
         }
     };
-    // const downloadCard = async () => {
-    //     if (!cardRef.current) return;
-    //     try {
-    //         const dataUrl = await toPng(cardRef.current, { cacheBust: true, pixelRatio: 2 });
-    //         const link = document.createElement('a');
-    //         link.download = `${auth?.user?.name ?? 'member'}-card.png`;
-    //         link.href = dataUrl;
-    //         link.click();
-    //     } catch (err) {
-    //         console.error('Card download failed:', err);
-    //         alert('Could not download card. Please try again.');
-    //     }
-    // };
 
     useEffect(() => {
         if (flash?.scrollTo) {
@@ -1307,14 +1261,14 @@ export default function PlayerDashboard() {
                             <div className="relative h-[112px] w-[112px]">
                                 <svg width="112" height="112" viewBox="0 0 112 112" className="-rotate-90">
                                     <circle cx="56" cy="56" r="44" fill="none" strokeWidth="10" className="stroke-[#2A2A2A]" />
-                                    <circle cx="56" cy="56" r="44" fill="none" stroke="#FF6B00" strokeWidth="10" strokeDasharray={circumference} strokeDashoffset={dashOffset} strokeLinecap="round" />
+                                    <circle cx="56" cy="56" r="44" fill="none" stroke="#E53F01" strokeWidth="10" strokeDasharray={circumference} strokeDashoffset={dashOffset} strokeLinecap="round" />
                                 </svg>
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <span className="font-display text-3xl font-black text-[#F5F5F5]">{profileComplete}%</span>
                                 </div>
                             </div>
                             <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Profile Complete</p>
-                            <p className="mt-2 text-[10px] font-medium text-[#FF6B00]">
+                            <p className="mt-2 text-[10px] font-medium text-[#E53F01]">
                                 {profileComplete < 100 ? `${100 - profileComplete}% left to complete your profile` : 'Your profile is complete'}
                             </p>
                         </div>
@@ -1325,30 +1279,30 @@ export default function PlayerDashboard() {
                                     <p className="font-mono text-3xl font-black text-[#F5F5F5]"> {totalViews}</p>
                                     <p className="mt-1 text-sm text-[#9A9A9A]">Profile Views</p>
                                 </div>
-                                <Eye className="h-5 w-5 text-[#FF6B00]" />
+                                <Eye className="h-5 w-5 text-[#E53F01]" />
                             </div>
                             <div className="mt-2 flex items-center gap-1">
                                 <TrendingUp
-                                    className={`h-3 w-3 ${viewsTrend < 0 ? 'rotate-180 text-red-400' : 'text-green-400'}`}
+                                    className={`h-3 w-3 ${viewsTrend < 0 ? 'rotate-180 text-[#E53F01]' : 'text-green-400'}`}
                                 />
                                 <span
-                                    className={`text-xs font-medium ${viewsTrend < 0 ? 'text-red-400' : viewsTrend > 0 ? 'text-green-400' : 'text-[#9A9A9A]'}`}
+                                    className={`text-xs font-medium ${viewsTrend < 0 ? 'text-[#E53F01]' : viewsTrend > 0 ? 'text-green-400' : 'text-[#9A9A9A]'}`}
                                 >
                                     {viewsTrend > 0 ? '+' : ''}{viewsTrend}% this week
                                 </span>
                             </div>
                             <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="mt-2 h-12 w-full">
-                                <polyline points={sparkPoints} fill="none" stroke="#FF6B00" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+                                <polyline points={sparkPoints} fill="none" stroke="#E53F01" strokeWidth="2" vectorEffect="non-scaling-stroke" />
                             </svg>
                         </div>
                         {/* [4] Subscription */}
                         <div className="flex flex-col rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                             {!hasSubscription ? (
                                 <>
-                                    <Badge className="w-fit border border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[10px] font-bold tracking-wider text-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]">FREE PLAN</Badge>
+                                    <Badge className="w-fit border border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[10px] font-bold tracking-wider text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]">FREE PLAN</Badge>
                                     <p className="mt-3 flex-1 text-sm text-[#9A9A9A]">Unlock all features and reach more scouts.</p>
                                     <Link href="/player/subscription" className="mt-3">
-                                        <Button className="w-full bg-[#FF6B00] p-3 font-semibold text-white hover:bg-[#CC5500]">
+                                        <Button className="w-full bg-[#E53F01] p-3 font-semibold text-white hover:bg-[#E53F01]">
                                             <Crown className="mr-1.5 h-3.5 w-3.5" />
                                             <span className="text-[12px]">Upgrade to <br className="block" /> Premium</span>
                                         </Button>
@@ -1372,7 +1326,7 @@ export default function PlayerDashboard() {
                                     </div>
                                     <div className="-translate-x-[15%] sm:-translate-x-[30%] translate-y-[20%]">
                                         <h2 className="text-center font-bold uppercase text-[11px] sm:text-[14px]">MEMBER CARD</h2>
-                                        <p className="text-center text-[8px] sm:text-[10px] font-semibold text-orange-500 uppercase">Official Member</p>
+                                        <p className="text-center text-[8px] sm:text-[10px] font-semibold text-[#E53F01] uppercase">Official Member</p>
                                         <svg width="130" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />
                                             <path d="M90 4L92.35 9.15L98 9.8L94 13.6L95.2 19L90 16L84.8 19L86 13.6L82 9.8L87.65 9.15L90 4Z" fill="#F97316" />
@@ -1387,27 +1341,20 @@ export default function PlayerDashboard() {
                                     <div>
                                         <div className="relative z-10">
                                             <h3 className="mt-2 text-[12px] sm:mt-4 sm:text-[16px] font-bold uppercase">{auth?.user?.name}</h3>
-                                            <div className="absolute mt-2 h-[1px] bg-orange-500 w-[80%] sm:w-[110%]"></div>
+                                            <div className="absolute mt-2 h-[1px] bg-[#E53F01] w-[80%] sm:w-[110%]"></div>
                                         </div>
                                         <div className="mt-6 space-y-1">
                                             <div className="flex items-center">
-                                                <User className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                                <User className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
                                                 <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">ID:<br /><span className="text-white">{auth?.user?.player_profile?.player_id}</span></p>
                                             </div>
                                             <div className="flex items-center">
-                                                <CalendarDays className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                                <CalendarDays className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
                                                 <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">DATE OF BIRTH:<br /><span className="text-white">{auth?.user?.dob && new Date(auth?.user?.dob).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></p>
                                             </div>
-                                            {/* <div className="flex items-center">
-                                                <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
-                                                <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">NATIONALITY:<br /><span className="text-white">
-                                                    {Array.isArray(auth?.user?.nationality) && auth?.user?.nationality.length > 0
-                                                        ? getCountryName(auth?.user?.nationality)
-                                                        : 'Not specified'}
-                                                </span></p>
-                                            </div> */}
+
                                             <div className="flex items-center">
-                                                <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                                <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
                                                 <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">NATIONALITY:<br />
                                                     <span className="text-white inline-flex flex-wrap items-center gap-1">
                                                         {Array.isArray(auth?.user?.nationality) && auth?.user?.nationality.length > 0
@@ -1423,7 +1370,7 @@ export default function PlayerDashboard() {
                                                 </p>
                                             </div>
                                             <div className="flex items-center">
-                                                <MapPin className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#f06200]" />
+                                                <MapPin className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
                                                 <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">CITY:<br /><span className="text-white">{auth?.user?.player_profile?.birth_city || 'N/A'}</span></p>
                                             </div>
                                         </div>
@@ -1451,9 +1398,9 @@ export default function PlayerDashboard() {
                                         </div>
                                     </div>
                                     <div className="pl-4 sm:pl-3">
-                                        <h2 className="text-[10px] font-bold text-[#f4620c] uppercase">Scan To View Profile</h2>
+                                        <h2 className="text-[10px] font-bold text-[#E53F01] uppercase">Scan To View Profile</h2>
                                         <p className="mt-1 mb-6 text-[8px] text-[#f1f1f1] uppercase">Open Your Camera And Scan</p>
-                                        <div className="w-fit rounded-[8px] sm:rounded-xl border-2 sm:border-[3px] border-[#ff6600] bg-white sm:p-3 p-2">
+                                        <div className="w-fit rounded-[8px] sm:rounded-xl border-2 sm:border-[3px] border-[#E53F01] bg-white sm:p-3 p-2">
                                             <QRCodeSVG
                                                 value={`${typeof window !== 'undefined' ? window.location.origin : ''}/player/profile/${auth?.user?.player_profile?.id}`}
                                                 size={90}
@@ -1463,7 +1410,7 @@ export default function PlayerDashboard() {
                                                 className="h-[70px] w-[70px] sm:h-[90px] sm:w-[90px]"
                                             />
                                         </div>
-                                        <button className="mt-2 flex items-center rounded-xl bg-[#ff6600] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#ff7a1a]">
+                                        <button className="mt-2 flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#E53F01]">
                                             <span className=" text-black pr-1"><Smartphone className="h-6 w-4" /></span>
                                             <span className="text-left text-[6px] sm:text-[8px] leading-tight">VIEW FULL PROFILE, VIDEOS,<br />STATS AND ACHIEVEMENTS</span>
                                         </button>
@@ -1477,7 +1424,7 @@ export default function PlayerDashboard() {
                                 </p>
                                 <p className="text-[6px] sm:text-[8px] text-white font-bold translate-x-[5px] sm:translate-x-[10%]">[WWW.HILIGHTSFOOTBALL.COM](https://WWW.HILIGHTSFOOTBALL.COM)</p>
                                 <div className="absolute -bottom-16 left-0 flex justify-between w-full">
-                                    <button className="capitalize flex items-center rounded-xl bg-[#e75502] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[16px] cursor-pointer text-[10px] transition-all hover:bg-[#ff7a1a]" onClick={() => setShareOpen(true)}>
+                                    <button className="capitalize flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[16px] cursor-pointer text-[10px] transition-all hover:bg-[#E53F01]" onClick={() => setShareOpen(true)}>
                                         <Share2 className="mr-2 w-[10px] h-[10px] sm:h-[12px]" /> Share full profile
                                     </button>
                                     <button onClick={downloadCard} className="capitalize cursor-pointer flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[10px] transition-all">
@@ -1492,14 +1439,14 @@ export default function PlayerDashboard() {
                 <section>
                     <div className="relative flex h-[90px] items-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-[#1a1a2e] to-[#0f3460] px-4 sm:gap-4 sm:px-6">
                         <div className="flex flex-shrink-0 items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#FF6B00]"><ArrowRight className="h-5 w-5 text-white" /></div>
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#E53F01]"><ArrowRight className="h-5 w-5 text-white" /></div>
                             <div className="hidden sm:block">
                                 <p className="text-lg leading-none font-black tracking-tight text-white">TRANSFERROOM</p>
                                 <p className="mt-0.5 text-[10px] tracking-wider text-white/50 uppercase">Football Transfer Network</p>
                             </div>
                         </div>
                         <p className="hidden flex-1 text-xs text-white/70 sm:text-sm md:block">The transfer platform trusted by 1,200+ clubs worldwide.</p>
-                        <Button size="sm" className="ml-auto flex-shrink-0 bg-[#FF6B00] font-semibold text-white hover:bg-[#CC5500]">Start Free →</Button>
+                        <Button size="sm" className="ml-auto flex-shrink-0 bg-[#E53F01] font-semibold text-white hover:bg-[#E53F01]">Start Free →</Button>
                         <span className="absolute top-1 right-2 text-[10px] text-white/30">Sponsored</span>
                     </div>
                 </section>
@@ -1508,9 +1455,9 @@ export default function PlayerDashboard() {
                     <section className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                         <div className="mb-1 flex items-center justify-between">
                             <h2 className="text-lg font-bold text-[#F5F5F5]">Complete Your Profile</h2>
-                            <span className="font-mono text-sm font-bold text-[#FF6B00]">{profileComplete}%</span>
+                            <span className="font-mono text-sm font-bold text-[#E53F01]">{profileComplete}%</span>
                         </div>
-                        <Progress value={profileComplete} className="mb-5 h-2 bg-[#2A2A2A] [&>div]:bg-[#FF6B00]" />
+                        <Progress value={profileComplete} className="mb-5 h-2 bg-[#2A2A2A] [&>div]:bg-[#E53F01]" />
                         <ul className="space-y-3">
                             {checklist.map((item, i) => {
                                 const Icon = item.icon;
@@ -1523,13 +1470,13 @@ export default function PlayerDashboard() {
                                         )}
                                         <span className={`flex-1 text-sm ${item.done ? 'text-[#F5F5F5]' : 'text-[#9A9A9A]'}`}>{item.label}</span>
                                         {(item.alwaysShow || !item.done) && item.modal && (
-                                            <Button size="sm" onClick={() => setActiveModal(item.modal!)} className="h-8 bg-[#FF6B00] text-xs text-white hover:bg-[#CC5500]">
+                                            <Button size="sm" onClick={() => setActiveModal(item.modal!)} className="h-8 bg-[#E53F01] text-xs text-white hover:bg-[#E53F01]">
                                                 {Icon && <Icon className="mr-1 h-3 w-3" />}{item.cta}
                                             </Button>
                                         )}
                                         {!item.done && !item.modal && item.href && (
                                             <Link href={item.href}>
-                                                <Button size="sm" className="h-8 bg-[#FF6B00] text-xs text-white hover:bg-[#CC5500]">
+                                                <Button size="sm" className="h-8 bg-[#E53F01] text-xs text-white hover:bg-[#E53F01]">
                                                     {Icon && <Icon className="mr-1 h-3 w-3" />}{item.cta}
                                                 </Button>
                                             </Link>
@@ -1540,7 +1487,6 @@ export default function PlayerDashboard() {
                         </ul>
                     </section>
                 </div>
-                {/* COUNTRY ANALYTICS */}
                 {/* COUNTRY ANALYTICS */}
                 <section className="relative overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                     <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -1559,7 +1505,7 @@ export default function PlayerDashboard() {
                                             type="button"
                                             onClick={() => changeCountryRange(opt.key)}
                                             className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors ${countryRange === opt.key
-                                                ? 'bg-[#FF6B00] text-white'
+                                                ? 'bg-[#E53F01] text-white'
                                                 : 'text-[#9A9A9A] hover:text-[#F5F5F5]'
                                                 }`}
                                         >
@@ -1570,7 +1516,7 @@ export default function PlayerDashboard() {
                             )}
 
                             {hasSubscription && (
-                                <Badge className="border border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[10px] font-bold tracking-wider text-[#FF6B00] hover:bg-[rgba(255,107,0,0.12)]">
+                                <Badge className="border border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[10px] font-bold tracking-wider text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]">
                                     PREMIUM
                                 </Badge>
                             )}
@@ -1609,7 +1555,7 @@ export default function PlayerDashboard() {
                                             }}
                                             cursor={{ fill: 'rgba(255,107,0,0.08)' }}
                                         />
-                                        <Bar dataKey="views" fill="#FF6B00" radius={[6, 6, 0, 0]} maxBarSize={80} />
+                                        <Bar dataKey="views" fill="#E53F01" radius={[6, 6, 0, 0]} maxBarSize={80} />
                                     </BarChart>
                                 </ResponsiveContainer>
                             </div>
@@ -1623,11 +1569,11 @@ export default function PlayerDashboard() {
                     {!hasSubscription && (
                         <div className="absolute inset-0 flex items-center justify-center bg-[#0D0D0D]/40">
                             <div className="mx-4 max-w-md rounded-2xl border border-[#2A2A2A] bg-[#1F1F1F] p-8 text-center shadow-xl">
-                                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[rgba(255,107,0,0.12)]"><Lock className="h-6 w-6 text-[#FF6B00]" /></div>
+                                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[rgba(255,107,0,0.12)]"><Lock className="h-6 w-6 text-[#E53F01]" /></div>
                                 <h3 className="text-base font-bold text-[#F5F5F5]">Country Analytics — Premium Feature</h3>
                                 <p className="mt-2 text-sm text-[#9A9A9A]">See exactly which countries are watching your highlights.</p>
                                 <Link href="/player/subscription" className="mt-4 inline-block">
-                                    <Button className="bg-[#FF6B00] font-semibold text-white hover:bg-[#CC5500]"><Crown className="mr-2 h-4 w-4" /> Upgrade to Premium</Button>
+                                    <Button className="bg-[#E53F01] font-semibold text-white hover:bg-[#E53F01]"><Crown className="mr-2 h-4 w-4" /> Upgrade to Premium</Button>
                                 </Link>
                             </div>
                         </div>

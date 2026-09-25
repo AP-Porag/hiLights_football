@@ -50,7 +50,7 @@ export default function ShowUser() {
                     <div className="mb-8">
                         <Link
                             href={route('users.index')}
-                            className="inline-flex items-center gap-1 text-sm text-[#FF6B00] hover:underline"
+                            className="inline-flex items-center gap-1 text-sm text-[#E53F01] hover:underline"
                         >
                             <ArrowLeft className="h-4 w-4" />
                             Back to Users
@@ -60,7 +60,7 @@ export default function ShowUser() {
                     {/* User Info Card */}
                     <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-8">
                         <h1 className="text-2xl font-bold text-[#F5F5F5] mb-6 flex items-center gap-2">
-                            <User className="h-6 w-6 text-[#FF6B00]" />
+                            <User className="h-6 w-6 text-[#E53F01]" />
                             User Details
                         </h1>
 

@@ -19,7 +19,7 @@
                     <tr>
                         <td align="center" style="padding-bottom:32px;">
                             <span style="font-size:24px; font-weight:900; font-style:italic; color:#F5F5F5;">
-                                Hi<span style="color:#FF6B00;">Lights</span>
+                                Hi<span style="color:#E53F01;">Lights</span>
                             </span>
                             <div
                                 style="font-size:11px; font-weight:700; letter-spacing:0.1em; color:#9A9A9A; margin-top:2px;">
@@ -70,7 +70,7 @@
                                 <tr>
                                     <td align="center" style="padding-bottom:24px;">
                                         <a href="{{ $url }}"
-                                            style="display:inline-block; background-color:#FF6B00; color:#ffffff; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; text-decoration:none; padding:14px 32px; border-radius:12px;">
+                                            style="display:inline-block; background-color:#E53F01; color:#ffffff; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; text-decoration:none; padding:14px 32px; border-radius:12px;">
                                             Reset Password
                                         </a>
                                     </td>
@@ -98,7 +98,7 @@
                                 style="margin:0; text-align:center; font-size:11px; color:#555555; word-break:break-all;">
                                 Or copy and paste this link into your browser:<br>
                                 <a href="{{ $url }}"
-                                    style="color:#FF6B00; text-decoration:none;">{{ $url }}</a>
+                                    style="color:#E53F01; text-decoration:none;">{{ $url }}</a>
                             </p>
 
                         </td>

@@ -257,14 +257,14 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 function MetricCard({
-                        label,
-                        value,
-                        change,
-                        trend,
-                        icon: Icon,
-                        prefix = '',
-                        suffix = '',
-                    }: {
+    label,
+    value,
+    change,
+    trend,
+    icon: Icon,
+    prefix = '',
+    suffix = '',
+}: {
     label: string;
     value: number;
     change: number;
@@ -279,14 +279,13 @@ function MetricCard({
             <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
                     <div className="h-10 w-10 rounded-lg bg-[#FFF3EB] flex items-center justify-center">
-                        <Icon className="h-5 w-5 text-[#FF6B00]" />
+                        <Icon className="h-5 w-5 text-[#E53F01]" />
                     </div>
                     <div
-                        className={`flex items-center gap-1 text-xs font-medium font-mono px-2 py-1 rounded-md ${
-                            isPositive
-                                ? 'bg-green-50 text-green-700'
-                                : 'bg-red-50 text-red-700'
-                        }`}
+                        className={`flex items-center gap-1 text-xs font-medium font-mono px-2 py-1 rounded-md ${isPositive
+                            ? 'bg-green-50 text-green-700'
+                            : 'bg-red-50 text-red-700'
+                            }`}
                     >
                         {isPositive ? (
                             <ArrowUpRight className="h-3 w-3" />
@@ -329,7 +328,7 @@ function PlanEditCard({ plan }: { plan: (typeof plansData)[0] }) {
                         <h3 className="font-display text-xl font-bold text-[#0F172A]">
                             {plan.name}
                         </h3>
-                        <Badge className="bg-[#FFF3EB] text-[#CC5500] border border-[#FF6B00] hover:bg-[#FFF3EB] text-xs px-2 py-0.5 rounded-md">
+                        <Badge className="bg-[#FFF3EB] text-[#E53F01] border border-[#E53F01] hover:bg-[#FFF3EB] text-xs px-2 py-0.5 rounded-md">
                             Active
                         </Badge>
                     </div>
@@ -338,7 +337,7 @@ function PlanEditCard({ plan }: { plan: (typeof plansData)[0] }) {
                     </p>
                 </div>
                 <div className="text-right">
-                    <p className="font-mono text-2xl font-bold text-[#FF6B00] tabular-nums">
+                    <p className="font-mono text-2xl font-bold text-[#E53F01] tabular-nums">
                         {plan.subscribers.toLocaleString()}
                     </p>
                     <p className="text-xs text-[#475569] mt-0.5">Active subscribers</p>
@@ -362,7 +361,7 @@ function PlanEditCard({ plan }: { plan: (typeof plansData)[0] }) {
                             type="number"
                             value={data.price}
                             onChange={(e) => setData('price', Number(e.target.value))}
-                            className="pl-7 font-mono bg-white border-[#E2E8F0] focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100"
+                            className="pl-7 font-mono bg-white border-[#E2E8F0] focus:border-[#E53F01] focus:ring-2 focus:ring-orange-100"
                         />
                     </div>
                     <p className="text-xs text-[#94A3B8] mt-2">
@@ -413,7 +412,7 @@ function PlanEditCard({ plan }: { plan: (typeof plansData)[0] }) {
                                         [feature.id]: checked,
                                     })
                                 }
-                                className="data-[state=checked]:bg-[#FF6B00]"
+                                className="data-[state=checked]:bg-[#E53F01]"
                             />
                         </div>
                     ))}
@@ -430,7 +429,7 @@ function PlanEditCard({ plan }: { plan: (typeof plansData)[0] }) {
                 <Button
                     onClick={handleSave}
                     disabled={processing}
-                    className="bg-[#FF6B00] text-white hover:bg-[#CC5500]"
+                    className="bg-[#E53F01] text-white hover:bg-[#E53F01]"
                 >
                     Save Changes
                 </Button>
@@ -463,7 +462,7 @@ export default function SubscriptionsIndex() {
                             <Download className="h-4 w-4 mr-2" />
                             Export
                         </Button>
-                        <Button className="bg-[#FF6B00] text-white hover:bg-[#CC5500]">
+                        <Button className="bg-[#E53F01] text-white hover:bg-[#E53F01]">
                             <CreditCard className="h-4 w-4 mr-2" />
                             New Subscription
                         </Button>
@@ -522,7 +521,7 @@ export default function SubscriptionsIndex() {
                                         placeholder="Search users..."
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
-                                        className="pl-9 bg-white border-[#E2E8F0] focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100"
+                                        className="pl-9 bg-white border-[#E2E8F0] focus:border-[#E53F01] focus:ring-2 focus:ring-orange-100"
                                     />
                                 </div>
                                 <Button
@@ -571,7 +570,7 @@ export default function SubscriptionsIndex() {
                                         >
                                             <TableCell className="py-4 px-6">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#FF6B00] to-[#CC5500] flex items-center justify-center text-white font-semibold text-sm shrink-0">
+                                                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#E53F01] to-[#E53F01] flex items-center justify-center text-white font-semibold text-sm shrink-0">
                                                         {sub.user.avatar}
                                                     </div>
                                                     <div className="min-w-0">
@@ -601,11 +600,10 @@ export default function SubscriptionsIndex() {
                                             </TableCell>
                                             <TableCell className="py-4">
                                                 <span
-                                                    className={`text-sm font-mono tabular-nums ${
-                                                        sub.renews === 'Cancelled'
-                                                            ? 'text-[#94A3B8] italic'
-                                                            : 'text-[#475569]'
-                                                    }`}
+                                                    className={`text-sm font-mono tabular-nums ${sub.renews === 'Cancelled'
+                                                        ? 'text-[#94A3B8] italic'
+                                                        : 'text-[#475569]'
+                                                        }`}
                                                 >
                                                     {sub.renews}
                                                 </span>
@@ -698,7 +696,7 @@ export default function SubscriptionsIndex() {
                                         each subscription level
                                     </p>
                                 </div>
-                                <Badge className="bg-[#FFF3EB] text-[#CC5500] border border-[#FF6B00] hover:bg-[#FFF3EB] font-mono">
+                                <Badge className="bg-[#FFF3EB] text-[#E53F01] border border-[#E53F01] hover:bg-[#FFF3EB] font-mono">
                                     {plansData.length} plans
                                 </Badge>
                             </div>
@@ -720,7 +718,7 @@ export default function SubscriptionsIndex() {
                                             <div className="flex items-center justify-between w-full pr-4">
                                                 <div className="flex items-center gap-4">
                                                     <div className="h-10 w-10 rounded-lg bg-[#FFF3EB] flex items-center justify-center shrink-0">
-                                                        <CreditCard className="h-5 w-5 text-[#FF6B00]" />
+                                                        <CreditCard className="h-5 w-5 text-[#E53F01]" />
                                                     </div>
                                                     <div className="text-left">
                                                         <p className="font-display text-lg font-bold text-[#0F172A]">
@@ -739,7 +737,7 @@ export default function SubscriptionsIndex() {
                                                     </div>
                                                 </div>
                                                 <div className="hidden sm:flex items-baseline gap-1">
-                                                    <span className="font-mono text-2xl font-bold text-[#FF6B00] tabular-nums">
+                                                    <span className="font-mono text-2xl font-bold text-[#E53F01] tabular-nums">
                                                         ${plan.price}
                                                     </span>
                                                     <span className="text-xs text-[#475569] font-mono">

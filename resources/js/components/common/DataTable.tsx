@@ -144,7 +144,7 @@ export default function DataTable({
                         value={filters.search}
                         onChange={handleFilterChange}
                         disabled={meta?.searchDisabled}
-                        className="px-3 py-2 md:w-1/3 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#FF6B00] focus-visible:ring-1 focus-visible:ring-orange-800"
+                        className="px-3 py-2 md:w-1/3 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800"
                     />
                 )}
                 {globalActions.status_filter && statusOptions.length > 0 && (
@@ -332,7 +332,7 @@ export default function DataTable({
                                             <DropdownMenuTrigger asChild>
                                                 <Button
                                                     size="action"
-                                                    className="cursor-pointer bg-[#FF6B00] text-white hover:bg-[#CC5500]"
+                                                    className="cursor-pointer bg-[#E53F01] text-white hover:bg-[#E53F01]"
                                                 >
                                                     <MoreVertical className="h-4 w-4" />
                                                 </Button>
@@ -477,7 +477,7 @@ export default function DataTable({
                                     key={page}
                                     onClick={() => goToPage(page)}
                                     className={`cursor-pointer rounded px-3 py-1 ${page === meta.current_page
-                                        ? 'bg-[#FF6B00] text-white'
+                                        ? 'bg-[#E53F01] text-white'
                                         : 'bg-[#1F1F1F] text-[#F5F5F5] hover:bg-[#2A2A2A]'
                                         }`}
                                 >

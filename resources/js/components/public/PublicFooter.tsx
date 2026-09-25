@@ -22,42 +22,42 @@ export const PublicFooter = () => {
 
                             {/* Quick Links */}
                             <div className="min-w-0 sm:pl-8 md:pl-10 lg:pl-14">
-                                <h3 className="mb-3 text-[12px] font-bold text-[#FF6A00] uppercase md:text-[14px] lg:text-[16px]">Quick Links</h3>
+                                <h3 className="mb-3 text-[12px] font-bold text-[#E53F01] uppercase md:text-[14px] lg:text-[16px]">Quick Links</h3>
 
                                 <ul className="space-y-1 text-[10px] sm:text-[12px] md:text-[14px]">
                                     <li>
                                         <Link href="/about" className="flex items-center gap-2 hover:text-white">
-                                            <span className="h-2 w-2 rounded-full bg-[#FF6A00]" />
+                                            <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
                                             About Us
                                         </Link>
                                     </li>
                                     <li>
                                         <Link href="/#" className="flex items-center gap-2 hover:text-white">
-                                            <span className="h-2 w-2 rounded-full bg-[#FF6A00]" />
+                                            <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
                                             How It Works
                                         </Link>
                                     </li>
                                     <li>
                                         <Link href="/#" className="flex items-center gap-2 hover:text-white">
-                                            <span className="h-2 w-2 rounded-full bg-[#FF6A00]" />
+                                            <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
                                             Plans
                                         </Link>
                                     </li>
                                     <li>
                                         <Link href="/contact" className="flex items-center gap-2 hover:text-white">
-                                            <span className="h-2 w-2 rounded-full bg-[#FF6A00]" />
+                                            <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
                                             Contact
                                         </Link>
                                     </li>
                                     <li>
                                         <Link href="/#" className="flex items-center gap-2 hover:text-white">
-                                            <span className="h-2 w-2 rounded-full bg-[#FF6A00]" />
+                                            <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
                                             Terms of Use
                                         </Link>
                                     </li>
                                     <li>
                                         <Link href="/#" className="flex items-center gap-2 hover:text-white">
-                                            <span className="h-2 w-2 rounded-full bg-[#FF6A00]" />
+                                            <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
                                             Privacy Policy
                                         </Link>
                                     </li>
@@ -66,7 +66,7 @@ export const PublicFooter = () => {
 
                             {/* Social Links */}
                             <div className="min-w-0">
-                                <h3 className="mb-3 text-[12px] font-bold text-[#FF6A00] uppercase md:text-[14px] lg:text-[16px]">Follow Us</h3>
+                                <h3 className="mb-3 text-[12px] font-bold text-[#E53F01] uppercase md:text-[14px] lg:text-[16px]">Follow Us</h3>
 
                                 <div className="flex flex-wrap gap-3">
                                     <a
@@ -87,7 +87,7 @@ export const PublicFooter = () => {
 
                                     <a
                                         href="#"
-                                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#FF0000] text-white shadow-md transition-transform duration-200 hover:scale-110 hover:shadow-lg md:h-12 md:w-12"
+                                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#E53F01] text-white shadow-md transition-transform duration-200 hover:scale-110 hover:shadow-lg md:h-12 md:w-12"
                                         aria-label="YouTube"
                                     >
                                         <Youtube className="h-5 w-5 md:h-6 md:w-6" />

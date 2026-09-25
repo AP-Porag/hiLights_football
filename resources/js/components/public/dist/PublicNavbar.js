@@ -48,29 +48,29 @@ function PublicNavbar() {
                 return (react_2["default"].createElement(react_1.Link, { key: link.href, href: link.href, className: [
                         'relative text-sm font-medium transition-colors xl:text-base 2xl:text-lg',
                         active
-                            ? 'text-[#FF6B00] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#FF6B00]'
-                            : 'text-white hover:text-[#FF6B00] dark:text-[#9A9A9A]',
+                            ? 'text-[#E53F01] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#E53F01]'
+                            : 'text-white hover:text-[#E53F01] dark:text-[#9A9A9A]',
                     ].join(' ') }, link.label));
             })),
             react_2["default"].createElement("div", { className: "relative hidden w-56 lg:block xl:w-64 2xl:w-80" },
                 react_2["default"].createElement(lucide_react_1.Search, { className: "pointer-events-none absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2 text-[#94A3B8] 2xl:h-5 2xl:w-5" }),
-                react_2["default"].createElement(input_1.Input, { type: "search", placeholder: "Search players...", className: "h-9 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] pr-3 pl-8 text-sm text-[#0F172A] outline-none placeholder:text-[#94A3B8] focus:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 focus-visible:ring-offset-0 xl:h-10 xl:text-base 2xl:h-12 2xl:pl-10 2xl:text-lg dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#F5F5F5] dark:focus-visible:ring-[rgba(255,107,0,0.15)]" })),
+                react_2["default"].createElement(input_1.Input, { type: "search", placeholder: "Search players...", className: "h-9 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] pr-3 pl-8 text-sm text-[#0F172A] outline-none placeholder:text-[#94A3B8] focus:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-100 focus-visible:ring-offset-0 xl:h-10 xl:text-base 2xl:h-12 2xl:pl-10 2xl:text-lg dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#F5F5F5] dark:focus-visible:ring-[rgba(255,107,0,0.15)]" })),
             react_2["default"].createElement("div", { className: "hidden shrink-0 items-center gap-2 lg:flex xl:gap-3" },
                 react_2["default"].createElement(react_1.Link, { href: "/login" },
-                    react_2["default"].createElement(button_1.Button, { variant: "outline", size: "sm", className: "cursor-pointer border-[#E2E8F0] bg-gray-50 text-sm font-medium text-[#0F172A] hover:border-[#FF6B00] hover:bg-transparent hover:text-[#FF6B00] xl:h-10 xl:text-base 2xl:h-12 2xl:px-6 2xl:text-lg dark:border-[#2A2A2A] dark:text-[#F5F5F5] dark:hover:bg-transparent" }, "Login")),
+                    react_2["default"].createElement(button_1.Button, { variant: "outline", size: "sm", className: "cursor-pointer border-[#E2E8F0] bg-gray-50 text-sm font-medium text-[#0F172A] hover:border-[#E53F01] hover:bg-transparent hover:text-[#E53F01] xl:h-10 xl:text-base 2xl:h-12 2xl:px-6 2xl:text-lg dark:border-[#2A2A2A] dark:text-[#F5F5F5] dark:hover:bg-transparent" }, "Login")),
                 react_2["default"].createElement(react_1.Link, { href: "/register" },
-                    react_2["default"].createElement(button_1.Button, { size: "sm", className: "cursor-pointer bg-[#e53f01] px-4 text-sm font-semibold text-white hover:bg-[#ff5e24] xl:h-10 xl:text-base 2xl:h-12 2xl:px-6 2xl:text-lg" }, "Create A Free Profile Now"))),
+                    react_2["default"].createElement(button_1.Button, { size: "sm", className: "cursor-pointer bg-[#E53F01] px-4 text-sm font-semibold text-white hover:bg-[#E53F01] xl:h-10 xl:text-base 2xl:h-12 2xl:px-6 2xl:text-lg" }, "Create A Free Profile Now"))),
             react_2["default"].createElement("div", { className: "flex items-center gap-1 lg:hidden" },
                 react_2["default"].createElement("div", { className: "flex items-center gap-0.5" }, NAV_LINKS_MOBILE.map(function (link) {
                     var active = isActive(link.href);
                     return (react_2["default"].createElement(react_1.Link, { key: link.href, href: link.href, className: "flex w-7 flex-col items-center justify-center sm:w-12" },
-                        react_2["default"].createElement("div", { className: ['mb-1 transition-colors', active ? 'text-[#FF6B00]' : 'text-white'].join(' ') }, react_2["default"].cloneElement(link.icon, {
+                        react_2["default"].createElement("div", { className: ['mb-1 transition-colors', active ? 'text-[#E53F01]' : 'text-white'].join(' ') }, react_2["default"].cloneElement(link.icon, {
                             className: 'h-4 w-4 sm:h-5 sm:w-5'
                         })),
-                        react_2["default"].createElement("span", { className: ['text-[8px] font-medium whitespace-nowrap sm:text-[12px]', active ? 'text-[#FF6B00]' : 'text-white'].join(' ') }, link.label)));
+                        react_2["default"].createElement("span", { className: ['text-[8px] font-medium whitespace-nowrap sm:text-[12px]', active ? 'text-[#E53F01]' : 'text-white'].join(' ') }, link.label)));
                 })),
                 react_2["default"].createElement(react_1.Link, { href: "/register" },
-                    react_2["default"].createElement(button_1.Button, { className: "h-9 rounded-md bg-[#FF6B00] px-2 text-[8px] leading-tight font-bold text-white uppercase hover:bg-[#e65c00] sm:h-11 sm:px-4 sm:text-[11px]" },
+                    react_2["default"].createElement(button_1.Button, { className: "h-9 rounded-md bg-[#E53F01] px-2 text-[8px] leading-tight font-bold text-white uppercase hover:bg-[#e65c00] sm:h-11 sm:px-4 sm:text-[11px]" },
                         "Create A Free",
                         react_2["default"].createElement("br", null),
                         "Profile Now")),
@@ -85,18 +85,18 @@ function PublicNavbar() {
                         react_2["default"].createElement("div", { className: "px-6 py-4" },
                             react_2["default"].createElement("div", { className: "relative" },
                                 react_2["default"].createElement(lucide_react_1.Search, { className: "pointer-events-none absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" }),
-                                react_2["default"].createElement(input_1.Input, { type: "search", placeholder: "Search players...", className: "h-10 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] pr-3 pl-8 text-sm text-[#0F172A] outline-none placeholder:text-[#94A3B8] focus:border-[#FF6B00] focus-visible:ring-2 focus-visible:ring-orange-100 focus-visible:ring-offset-0 dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#F5F5F5] dark:focus-visible:ring-[rgba(255,107,0,0.15)]" }))),
+                                react_2["default"].createElement(input_1.Input, { type: "search", placeholder: "Search players...", className: "h-10 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] pr-3 pl-8 text-sm text-[#0F172A] outline-none placeholder:text-[#94A3B8] focus:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-100 focus-visible:ring-offset-0 dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#F5F5F5] dark:focus-visible:ring-[rgba(255,107,0,0.15)]" }))),
                         react_2["default"].createElement("nav", { className: "flex-1 px-6" }, NAV_LINKS.map(function (link) {
                             var active = isActive(link.href);
                             return (react_2["default"].createElement(react_1.Link, { key: link.href, href: link.href, onClick: function () { return setMobileOpen(false); }, className: [
                                     'block border-b border-[#F1F5F9] py-3 text-base font-medium transition-colors dark:border-[#1F1F1F]',
-                                    active ? 'text-[#FF6B00]' : 'text-[#0F172A] hover:text-[#FF6B00] dark:text-[#F5F5F5]',
+                                    active ? 'text-[#E53F01]' : 'text-[#0F172A] hover:text-[#E53F01] dark:text-[#F5F5F5]',
                                 ].join(' ') }, link.label));
                         })),
                         react_2["default"].createElement("div", { className: "mt-4 flex flex-col gap-2 border-t border-[#E2E8F0] px-6 py-4 dark:border-[#2A2A2A]" },
                             react_2["default"].createElement(react_1.Link, { href: "/login", onClick: function () { return setMobileOpen(false); } },
-                                react_2["default"].createElement(button_1.Button, { variant: "outline", className: "w-full border-[#E2E8F0] bg-transparent text-sm font-medium text-[#0F172A] hover:border-[#FF6B00] hover:bg-transparent hover:text-[#FF6B00] dark:border-[#2A2A2A] dark:text-[#F5F5F5] dark:hover:bg-transparent" }, "Login")),
+                                react_2["default"].createElement(button_1.Button, { variant: "outline", className: "w-full border-[#E2E8F0] bg-transparent text-sm font-medium text-[#0F172A] hover:border-[#E53F01] hover:bg-transparent hover:text-[#E53F01] dark:border-[#2A2A2A] dark:text-[#F5F5F5] dark:hover:bg-transparent" }, "Login")),
                             react_2["default"].createElement(react_1.Link, { href: "/register", onClick: function () { return setMobileOpen(false); } },
-                                react_2["default"].createElement(button_1.Button, { className: "w-full bg-[#FF6B00] text-sm font-semibold text-white hover:bg-[#CC5500]" }, "Create A Free Profile Now")))))))));
+                                react_2["default"].createElement(button_1.Button, { className: "w-full bg-[#E53F01] text-sm font-semibold text-white hover:bg-[#E53F01]" }, "Create A Free Profile Now")))))))));
 }
 exports["default"] = PublicNavbar;

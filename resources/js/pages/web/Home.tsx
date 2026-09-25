@@ -110,7 +110,7 @@ export default function Home() {
 
             <main className="pt-16">
                 {/* ━━━ SECTION 1: HERO ━━━ */}
-                <section className="relative flex min-h-[88vh] items-center overflow-hidden bg-[#FF6B00]">
+                <section className="relative flex min-h-[88vh] items-center overflow-hidden bg-[#E53F01]">
                     {/* Pitch line texture */}
                     <div
                         className="pointer-events-none absolute inset-0 opacity-5"
@@ -147,7 +147,7 @@ export default function Home() {
 
                             {/* Search bar */}
                             <div className="mt-8 flex h-[60px] max-w-[560px] items-center overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-[#0D0D0D]">
-                                <Search className="ml-4 h-5 w-5 shrink-0 text-[#FF6B00]" />
+                                <Search className="ml-4 h-5 w-5 shrink-0 text-[#E53F01]" />
                                 <input
                                     type="text"
                                     placeholder="Search by name, club, position..."
@@ -161,7 +161,7 @@ export default function Home() {
                                     <option>Defender</option>
                                     <option>Goalkeeper</option>
                                 </select>
-                                <button className="h-full rounded-r-2xl border-l-2 border-white/20 bg-[#FF6B00] px-5 text-sm font-bold whitespace-nowrap text-white transition-colors hover:bg-[#CC5500] sm:px-8">
+                                <button className="h-full rounded-r-2xl border-l-2 border-white/20 bg-[#E53F01] px-5 text-sm font-bold whitespace-nowrap text-white transition-colors hover:bg-[#E53F01] sm:px-8">
                                     Search Players
                                 </button>
                             </div>
@@ -230,18 +230,18 @@ export default function Home() {
                                     className={`absolute ${c.pos} ${c.rot} w-[200px] rounded-2xl bg-white p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] transition-all ${c.delay} ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
                                         }`}
                                 >
-                                    <div className="mb-3 h-1 w-12 rounded bg-[#FF6B00]" />
+                                    <div className="mb-3 h-1 w-12 rounded bg-[#E53F01]" />
                                     <div className="flex h-[80px] items-center justify-center rounded-xl bg-gradient-to-br from-slate-200 to-slate-300">
                                         <User className="h-10 w-10 text-slate-400" />
                                     </div>
                                     <div className="mt-3 text-sm font-bold text-[#0F172A]">{c.name}</div>
                                     <div className="mt-1 flex items-center gap-2">
-                                        <span className="rounded-full border border-[#FF6B00] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#CC5500]">
+                                        <span className="rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#E53F01]">
                                             {c.position}
                                         </span>
                                         <span className="text-sm">{c.flag}</span>
                                     </div>
-                                    <div className="mt-2 font-mono text-xs text-[#FF6B00]">{c.views} views</div>
+                                    <div className="mt-2 font-mono text-xs text-[#E53F01]">{c.views} views</div>
                                 </div>
                             ))}
                         </div>
@@ -267,7 +267,7 @@ export default function Home() {
                             </div>
                             <button
                                 onClick={() => router.visit('/register')}
-                                className="shrink-0 rounded-lg bg-[#FF6B00] px-4 py-3 text-sm font-bold whitespace-nowrap text-white hover:bg-[#CC5500] sm:px-6"
+                                className="shrink-0 rounded-lg bg-[#E53F01] px-4 py-3 text-sm font-bold whitespace-nowrap text-white hover:bg-[#E53F01] sm:px-6"
                             >
                                 START FREE TRIAL →
                             </button>
@@ -279,7 +279,7 @@ export default function Home() {
                 <section className="bg-white py-16 dark:bg-[#0D0D0D]">
                     <div className="mx-auto flex max-w-[1300px] flex-col gap-4 px-6 md:flex-row md:items-end md:justify-between">
                         <div>
-                            <div className="text-xs font-bold tracking-[0.14em] text-[#FF6B00] uppercase">Featured Players</div>
+                            <div className="text-xs font-bold tracking-[0.14em] text-[#E53F01] uppercase">Featured Players</div>
                             <h2 className="font-display mt-1 text-4xl leading-tight font-black text-[#0F172A] dark:text-[#F5F5F5]">
                                 Rising Talent. Global Stage.
                             </h2>
@@ -290,7 +290,7 @@ export default function Home() {
                                     <TabsTrigger
                                         key={t}
                                         value={t.toLowerCase()}
-                                        className="rounded-none bg-transparent px-3 py-2 text-sm font-medium text-[#475569] data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B00] data-[state=active]:bg-transparent data-[state=active]:text-[#FF6B00] data-[state=active]:shadow-none dark:text-[#9A9A9A]"
+                                        className="rounded-none bg-transparent px-3 py-2 text-sm font-medium text-[#475569] data-[state=active]:border-b-2 data-[state=active]:border-[#E53F01] data-[state=active]:bg-transparent data-[state=active]:text-[#E53F01] data-[state=active]:shadow-none dark:text-[#9A9A9A]"
                                     >
                                         {t}
                                     </TabsTrigger>
@@ -305,15 +305,15 @@ export default function Home() {
                                 <Link
                                     key={p.id}
                                     href={`/player/profile/${p.id}`}
-                                    className="group w-[240px] shrink-0 cursor-pointer rounded-2xl border border-[#E2E8F0] bg-white p-5 transition-all duration-200 hover:-translate-y-1 hover:border-l-4 hover:border-[#FF6B00] hover:shadow-[0_4px_16px_rgba(255,107,0,0.12)] dark:border-[#2A2A2A] dark:bg-[#161616]"
+                                    className="group w-[240px] shrink-0 cursor-pointer rounded-2xl border border-[#E2E8F0] bg-white p-5 transition-all duration-200 hover:-translate-y-1 hover:border-l-4 hover:border-[#E53F01] hover:shadow-[0_4px_16px_rgba(255,107,0,0.12)] dark:border-[#2A2A2A] dark:bg-[#161616]"
                                 >
                                     <div className="relative flex h-[160px] items-center justify-center rounded-xl bg-[#F8FAFC] dark:bg-[#1F1F1F]">
                                         <User className="h-16 w-16 text-[#CBD5E1] dark:text-[#2A2A2A]" />
-                                        <span className="absolute top-3 left-3 rounded-full border border-[#FF6B00] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#CC5500] dark:bg-[rgba(255,107,0,0.12)]">
+                                        <span className="absolute top-3 left-3 rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]">
                                             {p.position}
                                         </span>
                                         {p.premium && (
-                                            <span className="absolute top-3 right-3 rounded-full bg-[#FF6B00] px-2 py-0.5 text-[9px] font-bold tracking-wide text-white">
+                                            <span className="absolute top-3 right-3 rounded-full bg-[#E53F01] px-2 py-0.5 text-[9px] font-bold tracking-wide text-white">
                                                 PREMIUM
                                             </span>
                                         )}
@@ -326,7 +326,7 @@ export default function Home() {
                                         <div className="mt-2 font-mono text-xs text-[#94A3B8]">
                                             {p.age}y · {p.height}cm · {p.foot}
                                         </div>
-                                        <div className="mt-3 text-xs font-bold text-[#FF6B00] group-hover:underline">VIEW PROFILE →</div>
+                                        <div className="mt-3 text-xs font-bold text-[#E53F01] group-hover:underline">VIEW PROFILE →</div>
                                     </div>
                                 </Link>
                             ))}
@@ -355,7 +355,7 @@ export default function Home() {
                             <div className="text-3xl font-black tracking-tight text-white">NIKE FOOTBALL</div>
                             <div className="mt-1 text-sm text-white/60">2025 Season Collection</div>
                             <div className="mt-3 text-sm font-semibold text-white/80 italic">"Just Do It."</div>
-                            <button className="mt-6 rounded-xl bg-[#FF6B00] px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-[#CC5500]">
+                            <button className="mt-6 rounded-xl bg-[#E53F01] px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-[#E53F01]">
                                 SHOP THE COLLECTION →
                             </button>
                         </div>
@@ -383,7 +383,7 @@ export default function Home() {
                 <section className="bg-white py-16 dark:bg-[#0D0D0D]">
                     <div className="mx-auto max-w-[1100px] px-6">
                         <div className="text-center">
-                            <div className="text-xs font-bold tracking-[0.14em] text-[#FF6B00] uppercase">The Platform</div>
+                            <div className="text-xs font-bold tracking-[0.14em] text-[#E53F01] uppercase">The Platform</div>
                             <h2 className="font-display mt-1 text-4xl font-black text-[#0F172A] dark:text-[#F5F5F5]">
                                 Simple. Professional. Effective.
                             </h2>
@@ -411,8 +411,8 @@ export default function Home() {
                                 },
                             ].map((s) => (
                                 <div key={s.num} className="text-center lg:text-left">
-                                    <div className="font-display text-[80px] leading-none font-black text-[#FF6B00]/10">{s.num}</div>
-                                    <s.Icon className="mx-auto -mt-6 mb-3 h-7 w-7 text-[#FF6B00] lg:mx-0" />
+                                    <div className="font-display text-[80px] leading-none font-black text-[#E53F01]/10">{s.num}</div>
+                                    <s.Icon className="mx-auto -mt-6 mb-3 h-7 w-7 text-[#E53F01] lg:mx-0" />
                                     <div className="text-lg font-bold text-[#0F172A] dark:text-[#F5F5F5]">{s.title}</div>
                                     <div className="mt-2 text-sm leading-relaxed text-[#475569] dark:text-[#9A9A9A]">{s.desc}</div>
                                 </div>
@@ -422,7 +422,7 @@ export default function Home() {
                 </section>
 
                 {/* ━━━ SECTION 6: STATS BAND ━━━ */}
-                <section className="bg-[#FF6B00] py-12">
+                <section className="bg-[#E53F01] py-12">
                     <div className="mx-auto grid max-w-[900px] grid-cols-2 gap-8 px-6 text-center lg:grid-cols-4">
                         {[
                             { v: stats.players.toLocaleString(), l: 'REGISTERED PLAYERS' },
@@ -446,7 +446,7 @@ export default function Home() {
                             {['SPORTRADAR', 'TRANSFERROOM', 'WYSCOUT', 'INSTAT', 'FOOTBALL MANAGER'].map((name) => (
                                 <div
                                     key={name}
-                                    className="flex h-16 w-36 items-center justify-center rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-xs font-black tracking-tight text-[#475569] grayscale transition-all hover:text-[#FF6B00] hover:grayscale-0 dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#9A9A9A] dark:hover:text-[#FF6B00]"
+                                    className="flex h-16 w-36 items-center justify-center rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-xs font-black tracking-tight text-[#475569] grayscale transition-all hover:text-[#E53F01] hover:grayscale-0 dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#9A9A9A] dark:hover:text-[#E53F01]"
                                 >
                                     {name}
                                 </div>
@@ -458,7 +458,7 @@ export default function Home() {
                             <span className="absolute top-3 right-3 text-[10px] tracking-wider text-white/30 uppercase">Sponsored</span>
                             {/* Orb decorations */}
                             <div
-                                className="pointer-events-none absolute rounded-full bg-[#FF6B00]"
+                                className="pointer-events-none absolute rounded-full bg-[#E53F01]"
                                 style={{
                                     width: 260,
                                     height: 260,
@@ -490,7 +490,7 @@ export default function Home() {
                                 <div className="mt-3 hidden max-w-md text-sm text-white/70 sm:block">
                                     Connecting clubs, agents, and players across 90+ countries with verified intelligence and live match data.
                                 </div>
-                                <button className="mt-4 rounded-xl bg-[#FF6B00] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#CC5500]">
+                                <button className="mt-4 rounded-xl bg-[#E53F01] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#E53F01]">
                                     JOIN THE NETWORK →
                                 </button>
                             </div>
@@ -507,7 +507,7 @@ export default function Home() {
                 <section className="bg-[#F8FAFC] py-16 dark:bg-[#111111]">
                     <div className="mx-auto max-w-[1300px] px-6">
                         <div>
-                            <div className="text-xs font-bold tracking-[0.14em] text-[#FF6B00] uppercase">Player Highlights</div>
+                            <div className="text-xs font-bold tracking-[0.14em] text-[#E53F01] uppercase">Player Highlights</div>
                             <h2 className="font-display mt-1 text-4xl font-black text-[#0F172A] dark:text-[#F5F5F5]">Watch Them Play</h2>
                         </div>
 
@@ -521,12 +521,12 @@ export default function Home() {
                                     }}
                                 />
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#FF6B00] shadow-2xl transition-transform group-hover:scale-110">
+                                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#E53F01] shadow-2xl transition-transform group-hover:scale-110">
                                         <Play className="ml-1 h-8 w-8 text-white" fill="white" />
                                     </div>
                                 </div>
                                 <div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                                    <span className="rounded-full border border-[#FF6B00] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#CC5500]">
+                                    <span className="rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#E53F01]">
                                         ST · Santos FC
                                     </span>
                                     <div className="font-display mt-3 text-3xl font-black tracking-tight text-white">LUCAS ALMEIDA</div>
@@ -545,7 +545,7 @@ export default function Home() {
                                             }}
                                         />
                                         <div className="absolute top-1/2 right-5 -translate-y-1/2">
-                                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FF6B00] shadow-xl transition-transform group-hover:scale-110">
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#E53F01] shadow-xl transition-transform group-hover:scale-110">
                                                 <Play className="ml-0.5 h-5 w-5 text-white" fill="white" />
                                             </div>
                                         </div>
@@ -561,7 +561,7 @@ export default function Home() {
                 </section>
 
                 {/* ━━━ SECTION 9: CTA BAND ━━━ */}
-                <section className="relative overflow-hidden bg-[#FF6B00] py-20 text-center">
+                <section className="relative overflow-hidden bg-[#E53F01] py-20 text-center">
                     <div
                         className="pointer-events-none absolute inset-0 opacity-5"
                         style={{
@@ -579,7 +579,7 @@ export default function Home() {
                         </p>
                         <Link
                             href="/register"
-                            className="mt-8 inline-block rounded-2xl bg-white px-10 py-4 text-base font-black text-[#FF6B00] transition-all hover:scale-105 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] sm:px-12 sm:py-5 sm:text-lg"
+                            className="mt-8 inline-block rounded-2xl bg-white px-10 py-4 text-base font-black text-[#E53F01] transition-all hover:scale-105 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] sm:px-12 sm:py-5 sm:text-lg"
                         >
                             CREATE YOUR FREE PROFILE
                         </Link>
@@ -600,7 +600,7 @@ export default function Home() {
                                         <a
                                             key={i}
                                             href="#"
-                                            className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 transition-colors hover:bg-[#FF6B00]"
+                                            className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 transition-colors hover:bg-[#E53F01]"
                                         >
                                             <I className="h-4 w-4 text-slate-400 hover:text-white" />
                                         </a>

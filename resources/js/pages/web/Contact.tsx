@@ -83,7 +83,7 @@ export default function Contact() {
     };
 
     const inputClasses =
-        'w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-11 px-4 text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)] transition-colors';
+        'w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-11 px-4 text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)] transition-colors';
 
     return (
         <div className="min-h-screen bg-white dark:bg-[#0D0D0D]">
@@ -91,7 +91,7 @@ export default function Contact() {
 
             <main className="pt-16">
                 {/* ============ HEADER BAND ============ */}
-                <section className="bg-[#FF5E24] py-16">
+                <section className="bg-[#E53F01] py-16">
                     <div className="max-w-[1100px] mx-auto px-6 text-center">
                         <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-tight">
                             Contact HiLights Football
@@ -143,7 +143,7 @@ export default function Contact() {
                                         required
                                     />
                                     {errors.name && (
-                                        <p className="mt-1 text-xs text-[#FF5E24]">{errors.name}</p>
+                                        <p className="mt-1 text-xs text-[#E53F01]">{errors.name}</p>
                                     )}
                                 </div>
 
@@ -165,7 +165,7 @@ export default function Contact() {
                                         required
                                     />
                                     {errors.email && (
-                                        <p className="mt-1 text-xs text-[#FF5E24]">{errors.email}</p>
+                                        <p className="mt-1 text-xs text-[#E53F01]">{errors.email}</p>
                                     )}
                                 </div>
 
@@ -188,7 +188,7 @@ export default function Contact() {
                                         required
                                     />
                                     {errors.subject && (
-                                        <p className="mt-1 text-xs text-[#FF5E24]">
+                                        <p className="mt-1 text-xs text-[#E53F01]">
                                             {errors.subject}
                                         </p>
                                     )}
@@ -207,11 +207,11 @@ export default function Contact() {
                                         value={data.message}
                                         onChange={(e) => setData('message', e.target.value)}
                                         placeholder="Tell us how we can help…"
-                                        className="w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-36 px-4 py-3 text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#FF5E24] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)] transition-colors resize-none"
+                                        className="w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-36 px-4 py-3 text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)] transition-colors resize-none"
                                         required
                                     />
                                     {errors.message && (
-                                        <p className="mt-1 text-xs text-[#FF5E24]">
+                                        <p className="mt-1 text-xs text-[#E53F01]">
                                             {errors.message}
                                         </p>
                                     )}
@@ -221,7 +221,7 @@ export default function Contact() {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="w-full h-12 bg-[#FF5E24] hover:bg-[#CC5500] text-white rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                                    className="w-full h-12 bg-[#E53F01] hover:bg-[#E53F01] text-white rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
                                     <Send className="h-4 w-4" />
                                     {processing ? 'Sending…' : 'Send Message →'}
@@ -231,7 +231,7 @@ export default function Contact() {
                                     By submitting, you agree to our{' '}
                                     <Link
                                         href="/privacy"
-                                        className="text-[#FF5E24] hover:underline"
+                                        className="text-[#E53F01] hover:underline"
                                     >
                                         Privacy Policy
                                     </Link>
@@ -254,7 +254,7 @@ export default function Contact() {
                                 <div className="mt-6 space-y-4">
                                     <div className="flex items-start gap-3">
                                         <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] flex items-center justify-center">
-                                            <Mail className="h-5 w-5 text-[#FF5E24]" />
+                                            <Mail className="h-5 w-5 text-[#E53F01]" />
                                         </div>
                                         <div>
                                             <p className="text-xs text-[#94A3B8] dark:text-[#555555] uppercase tracking-wider font-semibold">
@@ -262,7 +262,7 @@ export default function Contact() {
                                             </p>
                                             <a
                                                 href="mailto:hello@hilightsfootball.com"
-                                                className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5] hover:text-[#FF5E24] dark:hover:text-[#FF5E24] transition-colors break-all"
+                                                className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5] hover:text-[#E53F01] dark:hover:text-[#E53F01] transition-colors break-all"
                                             >
                                                 hello@hilightsfootball.com
                                             </a>
@@ -271,7 +271,7 @@ export default function Contact() {
 
                                     <div className="flex items-start gap-3">
                                         <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] flex items-center justify-center">
-                                            <Clock className="h-5 w-5 text-[#FF5E24]" />
+                                            <Clock className="h-5 w-5 text-[#E53F01]" />
                                         </div>
                                         <div>
                                             <p className="text-xs text-[#94A3B8] dark:text-[#555555] uppercase tracking-wider font-semibold">
@@ -302,7 +302,7 @@ export default function Contact() {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 aria-label={label}
-                                                className="w-10 h-10 rounded-xl border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] flex items-center justify-center text-[#475569] dark:text-[#9A9A9A] hover:text-[#FF5E24] dark:hover:text-[#FF5E24] hover:border-[#FF5E24] dark:hover:border-[#FF5E24] transition-colors"
+                                                className="w-10 h-10 rounded-xl border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] flex items-center justify-center text-[#475569] dark:text-[#9A9A9A] hover:text-[#E53F01] dark:hover:text-[#E53F01] hover:border-[#E53F01] dark:hover:border-[#E53F01] transition-colors"
                                             >
                                                 <Icon className="h-4 w-4" />
                                             </a>
@@ -348,9 +348,9 @@ export default function Contact() {
                                 <AccordionItem
                                     key={i}
                                     value={`item-${i}`}
-                                    className="bg-[#F8FAFC] dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl px-6 data-[state=open]:border-[#FF5E24] dark:data-[state=open]:border-[#FF5E24] transition-colors"
+                                    className="bg-[#F8FAFC] dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl px-6 data-[state=open]:border-[#E53F01] dark:data-[state=open]:border-[#E53F01] transition-colors"
                                 >
-                                    <AccordionTrigger className="text-left font-semibold text-sm sm:text-base text-[#0F172A] dark:text-[#F5F5F5] hover:no-underline py-5 font-sans hover:text-[#FF5E24] dark:hover:text-[#FF5E24] [&[data-state=open]]:text-[#FF5E24] dark:[&[data-state=open]]:text-[#FF5E24]">
+                                    <AccordionTrigger className="text-left font-semibold text-sm sm:text-base text-[#0F172A] dark:text-[#F5F5F5] hover:no-underline py-5 font-sans hover:text-[#E53F01] dark:hover:text-[#E53F01] [&[data-state=open]]:text-[#E53F01] dark:[&[data-state=open]]:text-[#E53F01]">
                                         {item.q}
                                     </AccordionTrigger>
                                     <AccordionContent className="text-sm text-[#475569] dark:text-[#9A9A9A] pb-5 leading-relaxed font-sans">

@@ -104,7 +104,7 @@ export default function Index() {
                             key={tab.key}
                             onClick={() => applyFilter(tab.key)}
                             className={`rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${(filters.status ?? 'all') === tab.key
-                                ? 'border-[#FF6B00] bg-[rgba(255,107,0,0.12)] text-[#FF6B00]'
+                                ? 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01]'
                                 : 'border-[#2A2A2A] bg-[#161616] text-[#9A9A9A] hover:text-[#F5F5F5]'
                                 }`}
                         >
@@ -125,10 +125,10 @@ export default function Index() {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Search name, email, organization…"
-                            className="w-full h-10 pl-9 pr-3 rounded-lg bg-[#161616] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00]"
+                            className="w-full h-10 pl-9 pr-3 rounded-lg bg-[#161616] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01]"
                         />
                     </div>
-                    <Button type="submit" className="bg-[#FF6B00] hover:bg-[#CC5500] text-white">Search</Button>
+                    <Button type="submit" className="bg-[#E53F01] hover:bg-[#E53F01] text-white">Search</Button>
                 </form>
 
                 {/* Table */}
@@ -155,7 +155,7 @@ export default function Index() {
                                         </td>
                                         <td className="whitespace-nowrap px-4 py-4 align-middle">
                                             <div className="flex flex-col gap-1">
-                                                <a href={`mailto:${r.email}`} className="inline-flex items-center gap-1 text-xs text-[#9A9A9A] hover:text-[#FF6B00]">
+                                                <a href={`mailto:${r.email}`} className="inline-flex items-center gap-1 text-xs text-[#9A9A9A] hover:text-[#E53F01]">
                                                     <Mail className="h-3 w-3 shrink-0" /> {r.email}
                                                 </a>
                                                 {r.phone && (
@@ -202,7 +202,7 @@ export default function Index() {
                                                     variant="ghost"
                                                     size="sm"
                                                     onClick={() => setViewRequest(r)}
-                                                    className="h-8 w-8 p-0 text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#FF6B00]"
+                                                    className="h-8 w-8 p-0 text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]"
                                                     aria-label="View details"
                                                 >
                                                     <Eye className="h-4 w-4" />
@@ -240,7 +240,7 @@ export default function Index() {
                                 key={page}
                                 href={`/admin/access-requests?page=${page}`}
                                 className={`h-8 w-8 flex items-center justify-center rounded-lg text-xs font-semibold ${page === requests.current_page
-                                    ? 'bg-[#FF6B00] text-white'
+                                    ? 'bg-[#E53F01] text-white'
                                     : 'bg-[#161616] border border-[#2A2A2A] text-[#9A9A9A] hover:text-[#F5F5F5]'
                                     }`}
                             >
@@ -286,10 +286,10 @@ export default function Index() {
                         <div className="space-y-4">
                             {/* Email */}
                             <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
-                                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-[#FF6B00]" />
+                                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                 <div className="min-w-0">
                                     <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Email</p>
-                                    <a href={`mailto:${viewRequest.email}`} className="text-sm break-all text-[#F5F5F5] hover:text-[#FF6B00]">
+                                    <a href={`mailto:${viewRequest.email}`} className="text-sm break-all text-[#F5F5F5] hover:text-[#E53F01]">
                                         {viewRequest.email}
                                     </a>
                                 </div>
@@ -298,7 +298,7 @@ export default function Index() {
                             {/* Phone */}
                             {viewRequest.phone && (
                                 <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
-                                    <Phone className="mt-0.5 h-4 w-4 shrink-0 text-[#FF6B00]" />
+                                    <Phone className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                     <div className="min-w-0">
                                         <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Phone</p>
                                         <p className="text-sm text-[#F5F5F5]">{viewRequest.phone}</p>
@@ -309,7 +309,7 @@ export default function Index() {
                             {/* Organization */}
                             {viewRequest.organization && (
                                 <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
-                                    <Building2 className="mt-0.5 h-4 w-4 shrink-0 text-[#FF6B00]" />
+                                    <Building2 className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                     <div className="min-w-0">
                                         <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Organization</p>
                                         <p className="text-sm text-[#F5F5F5]">{viewRequest.organization}</p>
@@ -320,7 +320,7 @@ export default function Index() {
                             {/* Country */}
                             {viewRequest.country && (
                                 <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
-                                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#FF6B00]" />
+                                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                     <div className="min-w-0">
                                         <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Country</p>
                                         <p className="text-sm text-[#F5F5F5]">{viewRequest.country}</p>
@@ -331,7 +331,7 @@ export default function Index() {
                             {/* Interest */}
                             {viewRequest.interest && (
                                 <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
-                                    <Briefcase className="mt-0.5 h-4 w-4 shrink-0 text-[#FF6B00]" />
+                                    <Briefcase className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                     <div className="min-w-0">
                                         <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Interested In</p>
                                         <p className="text-sm text-[#F5F5F5]">{viewRequest.interest}</p>
@@ -342,7 +342,7 @@ export default function Index() {
                             {/* Message */}
                             {viewRequest.message && (
                                 <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
-                                    <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-[#FF6B00]" />
+                                    <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                     <div className="min-w-0">
                                         <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Message</p>
                                         <p className="whitespace-pre-wrap text-sm leading-relaxed text-[#F5F5F5]">{viewRequest.message}</p>
@@ -352,7 +352,7 @@ export default function Index() {
 
                             {/* Received */}
                             <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
-                                <Calendar className="mt-0.5 h-4 w-4 shrink-0 text-[#FF6B00]" />
+                                <Calendar className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                 <div className="min-w-0">
                                     <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Received</p>
                                     <p className="font-mono text-sm text-[#9A9A9A]">{viewRequest.created_at}</p>
@@ -364,7 +364,7 @@ export default function Index() {
                             <Button
                                 type="button"
                                 onClick={() => setViewRequest(null)}
-                                className="bg-[#FF6B00] text-white hover:bg-[#CC5500]"
+                                className="bg-[#E53F01] text-white hover:bg-[#E53F01]"
                             >
                                 Close
                             </Button>

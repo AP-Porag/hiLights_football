@@ -51,7 +51,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                 <div className="bg-[#161616] rounded-2xl border border-[#2A2A2A] p-8">
                     <div className="text-center mb-6">
                         <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[rgba(255,107,0,0.12)]">
-                            <KeyRound className="h-6 w-6 text-[#FF6B00]" />
+                            <KeyRound className="h-6 w-6 text-[#E53F01]" />
                         </div>
                         <h1 className="font-display font-black text-2xl text-[#F5F5F5]">
                             Reset Your Password
@@ -103,7 +103,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                     value={data.password}
                                     onChange={(e) => setData('password', e.target.value)}
                                     placeholder="Minimum 8 characters"
-                                    className="w-full h-11 pl-3.5 pr-11 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                    className="w-full h-11 pl-3.5 pr-11 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
                                 />
                                 <button
                                     type="button"
@@ -136,7 +136,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                     value={data.password_confirmation}
                                     onChange={(e) => setData('password_confirmation', e.target.value)}
                                     placeholder="Re-enter your new password"
-                                    className="w-full h-11 pl-3.5 pr-11 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                    className="w-full h-11 pl-3.5 pr-11 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
                                 />
                                 <button
                                     type="button"
@@ -155,7 +155,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                         <button
                             type="submit"
                             disabled={processing}
-                            className="w-full h-12 cursor-pointer rounded-xl bg-[#FF6B00] hover:bg-[#CC5500] text-white font-bold text-sm uppercase tracking-wider transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className="w-full h-12 cursor-pointer rounded-xl bg-[#E53F01] hover:bg-[#E53F01] text-white font-bold text-sm uppercase tracking-wider transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                             Reset Password
