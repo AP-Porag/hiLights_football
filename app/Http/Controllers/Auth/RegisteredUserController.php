@@ -102,7 +102,12 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         // Email verify na kora porjonto dashboard e na pathiye verification notice e pathao
-        return to_route('verification.notice');
+        // return to_route('verification.notice');
+        return match ($user->role) {
+            'player' => redirect()->route('player.dashboard'),
+            'scout', 'agent', 'club' => redirect()->route('scouting.dashboard'),
+            default => redirect()->route('home'),
+        };
     }
     private function generatePlayerId()
     {
