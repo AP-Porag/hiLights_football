@@ -135,22 +135,13 @@ const HomeTwo = () => {
     return (
         <div className="bg-black text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]">
             <PublicNavbar />
-            <main className="w-full max-w-screen-2xl mx-auto pt-16 xl:pt-20 2xl:pt-24">
+            <main className="w-full pt-16 xl:pt-20 2xl:pt-24">
 
                 {/* SECTION 1: HERO */}
-                <section
-                    className="relative w-full overflow-hidden text-white"
-                    style={{
-                        backgroundImage: "url('/images/img/hero.jpeg')",
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'right center',
-                        backgroundSize: 'contain',
-                        height: '100vh',
-                    }}
-                >
-                    <div className="grid min-h-[23.75rem] grid-cols-1 items-center sm:min-h-[27.5rem] md:min-h-[32.5rem] md:grid-cols-2 lg:min-h-[37.5rem] xl:min-h-[42.5rem] 2xl:min-h-[47.5rem]">
-                        {/* Left Content */}
-                        <div className="px-6 py-14 sm:px-10 md:py-20 lg:px-16 2xl:px-20">
+                <section className="relative w-full overflow-hidden bg-black text-white">
+                    {/* Text sits in the same wrapper every other section uses, so all headings share one left edge */}
+                    <div className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
+                        <div className="py-14 md:py-20 lg:flex lg:min-h-[calc(100vh-4rem)] lg:w-1/2 lg:flex-col lg:justify-center xl:min-h-[calc(100vh-5rem)] 2xl:min-h-[calc(100vh-6rem)]">
                             <div className="max-w-xl 2xl:max-w-2xl">
                                 <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl md:text-[2.625rem] lg:text-5xl xl:text-6xl 2xl:text-7xl">
                                     <span className="block text-white">Be Seen.</span>
@@ -199,22 +190,30 @@ const HomeTwo = () => {
                             </div>
                         </div>
 
-                        {/* Right side is filled by the background image */}
-                        <div className="hidden md:block" aria-hidden="true" />
+                    </div>
+
+                    {/* Right side visual — bleeds to the screen edge on lg+, stacks below the text on tablet and mobile */}
+                    <div className="h-64 w-full sm:h-80 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-1/2">
+                        <img
+                            src="/images/img/hero.jpeg"
+                            alt=""
+                            aria-hidden="true"
+                            className="h-full w-full object-cover object-center"
+                        />
                     </div>
                 </section>
 
                 {/* ADVERTISING */}
-                <aside className="space-y-3 lg:px-10">
-                    <div className="container mx-auto my-6 px-4">
-                        <div className="mx-auto flex w-full max-w-7xl items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">
+                <aside className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
+                    <div className="my-6">
+                        <div className="flex w-full items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">
                             <p className="text-sm font-medium tracking-widest text-white/50 2xl:text-base">ADVERTISING SPACE</p>
                         </div>
                     </div>
                 </aside>
 
                 {/* SECTION 2: STEPS */}
-                <section className="mx-auto max-w-7xl bg-black px-6 pt-10 text-white sm:px-10 lg:px-16 2xl:pt-14">
+                <section className="mx-auto w-full max-w-7xl bg-black px-6 pt-10 text-white sm:px-10 lg:px-16 2xl:pt-14">
                     <div>
                         {/* Heading */}
                         <h2 className="mb-6 text-2xl font-extrabold leading-tight sm:text-3xl lg:text-4xl 2xl:mb-8 2xl:text-5xl">
@@ -297,16 +296,16 @@ const HomeTwo = () => {
                 </section>
 
                 {/* ADVERTISING */}
-                <aside className="space-y-3 lg:px-10">
-                    <div className="container mx-auto my-6 px-4">
-                        <div className="mx-auto flex w-full max-w-7xl items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">
+                <aside className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
+                    <div className="my-6">
+                        <div className="flex w-full items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">
                             <p className="text-sm font-medium tracking-widest text-white/50 2xl:text-base">ADVERTISING SPACE</p>
                         </div>
                     </div>
                 </aside>
 
                 {/* SECTION 3: COMMUNITY HIGHLIGHTS */}
-                <section className="mx-auto mb-6 max-w-7xl overflow-x-hidden px-4 lg:px-13">
+                <section className="mx-auto mb-6 w-full max-w-7xl overflow-x-hidden px-6 sm:px-10 lg:px-16">
                     <div className="rounded-xl bg-[#f9f9f9] p-3 md:p-6 2xl:p-8">
                         {/* Header */}
                         <div className="flex items-center justify-between gap-2 pb-3">
