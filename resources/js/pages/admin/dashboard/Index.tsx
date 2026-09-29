@@ -206,18 +206,18 @@ export default function Index() {
                             </Badge>
                         </CardHeader>
                         <CardContent className="p-6 pt-4">
-                            <div className="h-[200px] w-full">
+                            <div className="h-[12.5rem] w-full">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <LineChart data={chartData} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
                                         <CartesianGrid stroke="#2A2A2A" strokeDasharray="3 3" vertical={false} />
                                         <XAxis
                                             dataKey="day"
-                                            tick={{ fontSize: 10, fill: '#6B6B6B' }}
+                                            tick={{ fontSize: '0.625rem', fill: '#6B6B6B' }}
                                             tickLine={false}
                                             axisLine={{ stroke: '#2A2A2A' }}
                                             interval={4}
                                         />
-                                        <YAxis tick={{ fontSize: 10, fill: '#6B6B6B' }} tickLine={false} axisLine={false} />
+                                        <YAxis tick={{ fontSize: '0.625rem', fill: '#6B6B6B' }} tickLine={false} axisLine={false} />
                                         <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#E53F01', strokeOpacity: 0.2, strokeWidth: 2 }} />
                                         <Line
                                             type="monotone"
@@ -240,15 +240,15 @@ export default function Index() {
                         </CardHeader>
                         <CardContent className="p-6 pt-4">
                             <div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2">
-                                <div className="h-[200px] w-full">
+                                <div className="h-[12.5rem] w-full">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <PieChart>
                                             <Pie
                                                 data={subscriptionData}
                                                 cx="50%"
                                                 cy="50%"
-                                                innerRadius={50}
-                                                outerRadius={80}
+                                                innerRadius="52.632%"
+                                                outerRadius="84.211%"
                                                 paddingAngle={2}
                                                 dataKey="value"
                                                 stroke="#161616"
@@ -263,7 +263,7 @@ export default function Index() {
                                                     backgroundColor: '#161616',
                                                     border: '1px solid #2A2A2A',
                                                     borderRadius: '8px',
-                                                    fontSize: '12px',
+                                                    fontSize: '0.75rem',
                                                     color: '#F5F5F5',
                                                 }}
                                             />

@@ -140,9 +140,9 @@ function SidebarContent({ url, user, onNavigate, onLogout }: SidebarContentProps
                 <img src="/images/logo/hilights_logo_dark_200.png" className="h-8 w-auto" alt="HiLights Football" />
                 <div className="flex items-end gap-0.5 leading-none">
                     <span className="text-lg font-black tracking-tight text-white">HiLights</span>
-                    <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.14em] text-[#555555]">FOOTBALL</span>
+                    <span className="mb-0.5 ml-1 self-end text-[0.625rem] font-bold tracking-[0.14em] text-[#555555]">FOOTBALL</span>
                 </div>
-                <span className="ml-1 rounded bg-[#E53F01] px-2 py-0.5 text-[9px] font-black tracking-wider text-white">ADMIN</span>
+                <span className="ml-1 rounded bg-[#E53F01] px-2 py-0.5 text-[0.5625rem] font-black tracking-wider text-white">ADMIN</span>
             </div>
 
             {/* NAV */}
@@ -151,7 +151,7 @@ function SidebarContent({ url, user, onNavigate, onLogout }: SidebarContentProps
                     <div key={group.label}>
                         <div
                             className={[
-                                'px-3 py-2 text-[9px] font-bold tracking-[0.14em] text-[#555555] uppercase',
+                                'px-3 py-2 text-[0.5625rem] font-bold tracking-[0.14em] text-[#555555] uppercase',
                                 gIdx === 0 ? 'mt-0' : 'mt-3',
                             ].join(' ')}
                         >
@@ -176,7 +176,7 @@ function SidebarContent({ url, user, onNavigate, onLogout }: SidebarContentProps
                                                 >
                                                     <Icon className="h-4 w-4 shrink-0 text-[#555555]" />
                                                     <span className="truncate">{item.label}</span>
-                                                    <span className="ml-auto rounded bg-[rgba(255,107,0,0.10)] px-1.5 py-0.5 text-[9px] font-bold text-[#E53F01]">
+                                                    <span className="ml-auto rounded bg-[rgba(255,107,0,0.10)] px-1.5 py-0.5 text-[0.5625rem] font-bold text-[#E53F01]">
                                                         SOON
                                                     </span>
                                                 </div>
@@ -197,7 +197,7 @@ function SidebarContent({ url, user, onNavigate, onLogout }: SidebarContentProps
                                     className={[
                                         baseClasses,
                                         active
-                                            ? 'rounded-l-none border-l-[3px] border-[#E53F01] bg-[rgba(255,107,0,0.10)] pl-[9px] text-[#F5F5F5]'
+                                            ? 'rounded-l-none border-l-[3px] border-[#E53F01] bg-[rgba(255,107,0,0.10)] pl-[0.5625rem] text-[#F5F5F5]'
                                             : 'text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.05)] hover:text-[#F5F5F5]',
                                     ].join(' ')}
                                 >
@@ -274,7 +274,7 @@ export default function AdminLayout({ children, pageTitle, breadcrumb }: AdminLa
             {/* CONTENT */}
             <div className="flex min-h-screen flex-1 flex-col overflow-auto bg-[#F8FAFC] md:ml-60">
                 {/* TOP HEADER */}
-                <header className="sticky top-0 z-20 flex h-[60px] items-center justify-between border-b border-[#E2E8F0] bg-white px-4 md:px-8">
+                <header className="sticky top-0 z-20 flex h-[3.75rem] items-center justify-between border-b border-[#E2E8F0] bg-white px-4 md:px-8">
                     <div className="flex min-w-0 items-center gap-3">
                         {/* MOBILE — hamburger */}
                         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -290,7 +290,7 @@ export default function AdminLayout({ children, pageTitle, breadcrumb }: AdminLa
                             </SheetTrigger>
                             <SheetContent
                                 side="left"
-                                className="flex w-[260px] flex-col border-r border-[#1F1F1F] bg-[#0D0D0D] p-0 [&>button]:text-[#9A9A9A] [&>button]:hover:text-white"
+                                className="flex w-[16.25rem] flex-col border-r border-[#1F1F1F] bg-[#0D0D0D] p-0 [&>button]:text-[#9A9A9A] [&>button]:hover:text-white"
                             >
                                 <SidebarContent
                                     url={url}

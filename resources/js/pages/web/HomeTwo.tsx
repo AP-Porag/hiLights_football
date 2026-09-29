@@ -148,11 +148,11 @@ const HomeTwo = () => {
                         height: '100vh',
                     }}
                 >
-                    <div className="grid min-h-[380px] grid-cols-1 items-center sm:min-h-[440px] md:min-h-[520px] md:grid-cols-2 lg:min-h-[600px] xl:min-h-[680px] 2xl:min-h-[760px]">
+                    <div className="grid min-h-[23.75rem] grid-cols-1 items-center sm:min-h-[27.5rem] md:min-h-[32.5rem] md:grid-cols-2 lg:min-h-[37.5rem] xl:min-h-[42.5rem] 2xl:min-h-[47.5rem]">
                         {/* Left Content */}
                         <div className="px-6 py-14 sm:px-10 md:py-20 lg:px-16 2xl:px-20">
                             <div className="max-w-xl 2xl:max-w-2xl">
-                                <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl md:text-[42px] lg:text-5xl xl:text-6xl 2xl:text-7xl">
+                                <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl md:text-[2.625rem] lg:text-5xl xl:text-6xl 2xl:text-7xl">
                                     <span className="block text-white">Be Seen.</span>
                                     <span className="block text-[#E53F01]">
                                         Be Discovered <span className="text-white">!</span>
@@ -227,7 +227,7 @@ const HomeTwo = () => {
                                 const Icon = item.icon;
                                 return (
                                     <div key={index} className="border-b border-[#1f1f1f]">
-                                        <div className="grid grid-cols-[50px_60px_1fr] items-center py-5 md:grid-cols-[70px_90px_1fr] lg:max-w-4xl 2xl:max-w-5xl 2xl:py-7">
+                                        <div className="grid grid-cols-[3.125rem_3.75rem_1fr] items-center py-5 md:grid-cols-[4.375rem_5.625rem_1fr] lg:max-w-4xl 2xl:max-w-5xl 2xl:py-7">
                                             {/* Icon */}
                                             <div className="flex justify-center">
                                                 <div className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-500 md:h-14 md:w-14 2xl:h-16 2xl:w-16">
@@ -236,7 +236,7 @@ const HomeTwo = () => {
                                             </div>
                                             {/* Step */}
                                             <div>
-                                                <p className="text-[10px] font-bold text-[#E53F01] md:text-sm 2xl:text-base">STEP</p>
+                                                <p className="text-[0.625rem] font-bold text-[#E53F01] md:text-sm 2xl:text-base">STEP</p>
                                                 <h3 className="text-3xl leading-none font-extrabold text-[#E53F01] md:text-5xl 2xl:text-6xl">{item.step}</h3>
                                             </div>
                                             {/* Content */}
@@ -255,7 +255,7 @@ const HomeTwo = () => {
                         </div>
 
                         {/* Bottom CTA */}
-                        <div className="flex items-center gap-4 border-b border-[#1f1f1f] py-6 sm:grid sm:grid-cols-[70px_1fr_200px] md:grid-cols-[90px_1fr_300px] lg:grid-cols-[110px_1fr_320px] 2xl:grid-cols-[130px_1fr_360px] 2xl:py-8">
+                        <div className="flex flex-wrap items-center gap-4 border-b border-[#1f1f1f] py-6 sm:grid sm:grid-cols-[4.375rem_1fr_12.5rem] md:grid-cols-[5.625rem_1fr_18.75rem] lg:grid-cols-[6.875rem_1fr_20rem] 2xl:grid-cols-[8.125rem_1fr_22.5rem] 2xl:py-8">
                             {/* Left Icon */}
                             <div className="flex justify-center">
                                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#E53F01] md:h-20 md:w-20 2xl:h-24 2xl:w-24">
@@ -263,7 +263,7 @@ const HomeTwo = () => {
                                 </div>
                             </div>
                             {/* Text */}
-                            <div>
+                            <div className="min-w-0 flex-1">
                                 <h3 className="text-base leading-tight font-bold sm:text-lg md:text-xl lg:text-2xl 2xl:text-3xl">
                                     Not part of the <span className="text-[#E53F01]">HiLights Football</span>
                                     <br />
@@ -274,7 +274,7 @@ const HomeTwo = () => {
                                 </p>
                             </div>
                             {/* Button */}
-                            <div className="flex items-end justify-end lg:pr-4">
+                            <div className="flex w-full items-end justify-end sm:w-auto lg:pr-4">
                                 <Link href={isLoggedIn ? dashboardHref : "/register"}>
                                     <button className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#E53F01] px-4 py-2 transition hover:bg-[#E53F01]/10 md:gap-4 lg:px-8 lg:py-4 2xl:px-10">
                                         <UserPlus className="h-6 w-6 shrink-0 text-white md:h-8 md:w-8 2xl:h-9 2xl:w-9" />
@@ -309,14 +309,14 @@ const HomeTwo = () => {
                 <section className="mx-auto mb-6 max-w-7xl overflow-x-hidden px-4 lg:px-13">
                     <div className="rounded-xl bg-[#f9f9f9] p-3 md:p-6 2xl:p-8">
                         {/* Header */}
-                        <div className="flex items-center justify-between pb-3">
-                            <div className="flex items-center gap-2">
-                                <Star size={18} fill="#E53F01" className="text-[#f25704]" />
-                                <h2 className="text-xs font-extrabold whitespace-nowrap text-[#222] md:text-sm lg:text-base 2xl:text-lg">
+                        <div className="flex items-center justify-between gap-2 pb-3">
+                            <div className="flex min-w-0 items-center gap-2">
+                                <Star fill="#E53F01" className="size-[1.125rem] shrink-0 text-[#f25704]" />
+                                <h2 className="truncate text-xs font-extrabold whitespace-nowrap text-[#222] md:text-sm lg:text-base 2xl:text-lg">
                                     Community Highlights
                                 </h2>
                             </div>
-                            <Link href={auth?.user ? auth.user.role === "player" ? "/player" : auth.user.role === "admin" ? "/admin" : auth.user.role === "agent" ? "/agent" : auth.user.role === "club" ? "/club" : "/scout" : "/register?role=scout"} > <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs"> View All <ArrowRight size={18} className="text-[#E53F01] font-bold" /> </button> </Link>
+                            <Link href={auth?.user ? auth.user.role === "player" ? "/player" : auth.user.role === "admin" ? "/admin" : auth.user.role === "agent" ? "/agent" : auth.user.role === "club" ? "/club" : "/scout" : "/register?role=scout"} > <button className="flex shrink-0 items-center gap-1 rounded-[0.625rem] bg-white px-3 py-2 text-[0.625rem] font-bold whitespace-nowrap text-gray-700 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:gap-2 sm:px-4 md:text-xs"> View All <ArrowRight className="size-[1.125rem] text-[#E53F01] font-bold" /> </button> </Link>
                         </div>
 
                         {/* Rows */}
@@ -325,13 +325,13 @@ const HomeTwo = () => {
                             //     ? `/player/profile/${player.id}`
                             //     : "/register?role=scout"}>
                             <Link key={player.id} href={`/player/profile/${player.id}`}>
-                                <div className="mb-2 grid grid-cols-[40px_1fr_70px_70px] items-center rounded-[12px] bg-white pr-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:grid-cols-[70px_1fr_80px_120px] md:grid-cols-[150px_1fr_120px_170px] 2xl:grid-cols-[180px_1fr_150px_200px]">
+                                <div className="mb-2 grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center rounded-[0.75rem] bg-white pr-3 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:grid-cols-[4.375rem_minmax(0,1fr)_5rem_7.5rem] sm:pr-4 md:grid-cols-[9.375rem_minmax(0,1fr)_7.5rem_10.625rem] 2xl:grid-cols-[11.25rem_minmax(0,1fr)_9.375rem_12.5rem]">
                                     {/* Thumbnail */}
-                                    <div className="relative">
+                                    <div className="relative row-span-2 sm:row-span-1">
                                         <img
                                             src={player.photo_url || '/images/img/placeholder.webp'}
                                             alt={player.name ?? ''}
-                                            className="rounded rounded-tl-[12px] rounded-bl-[12px] object-cover"
+                                            className="rounded rounded-tl-[0.75rem] rounded-bl-[0.75rem] object-cover"
                                         />
                                         {player.video_url && (
                                             <button
@@ -343,14 +343,14 @@ const HomeTwo = () => {
                                                 }}
                                                 className="absolute right-3 bottom-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00] cursor-pointer"
                                             >
-                                                <Play size={12} fill="white" className="text-white" />
+                                                <Play fill="white" className="size-[0.75rem] text-white" />
                                             </button>
                                         )}
                                     </div>
                                     {/* Info */}
-                                    <div className="mr-2 px-1 md:px-6">
-                                        <h3 className="text-sm font-bold whitespace-nowrap text-[#222] md:text-[15px] lg:text-base 2xl:text-lg">{player.name}</h3>
-                                        <p className="text-xs whitespace-nowrap text-gray-600 md:text-sm 2xl:text-base">
+                                    <div className="row-span-2 mr-2 min-w-0 px-2 sm:row-span-1 md:px-6">
+                                        <h3 className="truncate text-sm font-bold whitespace-nowrap text-[#222] md:text-[0.9375rem] lg:text-base 2xl:text-lg">{player.name}</h3>
+                                        <p className="truncate text-xs whitespace-nowrap text-gray-600 md:text-sm 2xl:text-base">
                                             {getPositionName(player.positions ?? [])}
                                         </p>
                                         <div className="mt-1 flex flex-wrap items-center gap-1.5">
@@ -372,13 +372,13 @@ const HomeTwo = () => {
                                         </div>
                                     </div>
                                     {/* Height */}
-                                    <div className="mr-3 flex items-center justify-center gap-2 text-xs whitespace-nowrap text-[#222] md:text-sm lg:text-base 2xl:text-lg">
-                                        <Ruler size={14} />
+                                    <div className="col-start-3 flex items-center justify-end gap-2 text-xs whitespace-nowrap text-[#222] sm:col-start-auto sm:mr-3 sm:justify-center md:text-sm lg:text-base 2xl:text-lg">
+                                        <Ruler className="size-[0.875rem]" />
                                         <p>{player.height} cm</p>
                                     </div>
                                     {/* Age */}
-                                    <div className="flex items-center justify-end gap-2 text-xs whitespace-nowrap text-[#222] md:ml-4 md:text-sm lg:text-base 2xl:text-lg">
-                                        <Clock3 size={14} />
+                                    <div className="col-start-3 flex items-center justify-end gap-2 text-xs whitespace-nowrap text-[#222] sm:col-start-auto md:ml-4 md:text-sm lg:text-base 2xl:text-lg">
+                                        <Clock3 className="size-[0.875rem]" />
                                         {player?.dob && (() => {
                                             const dob = new Date(player.dob);
                                             const today = new Date();

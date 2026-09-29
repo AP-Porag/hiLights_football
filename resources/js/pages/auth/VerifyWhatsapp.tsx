@@ -94,7 +94,7 @@ export default function VerifyWhatsapp({ whatsapp, status }: Props) {
 
     return (
         <div className="relative min-h-screen bg-[#0D0D0D] flex items-center justify-center px-6 py-12 font-sans">
-            <div className="w-full max-w-[440px]">
+            <div className="w-full max-w-[27.5rem]">
                 <div className="text-center mb-8">
                     <Link href="/" className="inline-block">
                         <img
@@ -125,7 +125,7 @@ export default function VerifyWhatsapp({ whatsapp, status }: Props) {
                     )}
 
                     <form onSubmit={handleSubmit} className="mt-6">
-                        <div className="flex items-center justify-center gap-2">
+                        <div className="flex items-center justify-center gap-1.5 sm:gap-2">
                             {digits.map((d, idx) => (
                                 <input
                                     key={idx}
@@ -137,7 +137,7 @@ export default function VerifyWhatsapp({ whatsapp, status }: Props) {
                                     onChange={(e) => handleChange(idx, e.target.value)}
                                     onKeyDown={(e) => handleKeyDown(idx, e)}
                                     onPaste={handlePaste}
-                                    className="h-14 w-12 text-center text-xl font-bold rounded-xl bg-[#111111] border border-[#2A2A2A] text-[#F5F5F5] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                    className="h-12 w-10 min-w-0 text-center sm:h-14 sm:w-12 text-xl font-bold rounded-xl bg-[#111111] border border-[#2A2A2A] text-[#F5F5F5] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
                                 />
                             ))}
                         </div>

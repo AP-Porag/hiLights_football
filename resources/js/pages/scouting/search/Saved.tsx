@@ -263,7 +263,7 @@ export default function SavedPlayers() {
 
                             {/* Sort */}
                             <Select value={sort} onValueChange={setSort}>
-                                <SelectTrigger className="w-[170px] bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] text-sm">
+                                <SelectTrigger className="w-[10.625rem] bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] text-sm">
                                     <SelectValue placeholder="Sort by" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white dark:bg-[#161616] border-[#E2E8F0] dark:border-[#2A2A2A]">
@@ -309,7 +309,7 @@ export default function SavedPlayers() {
                 </div> */}
 
                 {/* MAIN CONTENT */}
-                <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div className="max-w-[81.25rem] mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     {isEmpty ? (
                         <div className="py-24 text-center">
                             <Bookmark className="w-16 h-16 text-[#E2E8F0] dark:text-[#2A2A2A] mx-auto" />
@@ -340,7 +340,7 @@ export default function SavedPlayers() {
                                             {sp.player.positions.slice(0, 2).map((pos) => (
                                                 <span
                                                     key={pos}
-                                                    className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-bold px-2 py-0.5 rounded-full"
+                                                    className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[0.625rem] font-bold px-2 py-0.5 rounded-full"
                                                 >
                                                     {pos}
                                                 </span>
@@ -387,7 +387,7 @@ export default function SavedPlayers() {
 
                                         {/* Premium badge */}
                                         {sp.player.isPremium && (
-                                            <span className="absolute bottom-2 left-2 bg-[#E53F01] text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                            <span className="absolute bottom-2 left-2 bg-[#E53F01] text-white text-[0.5625rem] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
                                                 Premium
                                             </span>
                                         )}
@@ -423,7 +423,7 @@ export default function SavedPlayers() {
                                             {sp.player.modalities.map((m) => (
                                                 <span
                                                     key={m}
-                                                    className="text-[10px] bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] px-2 py-0.5 rounded-full"
+                                                    className="text-[0.625rem] bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] px-2 py-0.5 rounded-full"
                                                 >
                                                     {m}
                                                 </span>
@@ -454,19 +454,19 @@ export default function SavedPlayers() {
                                                         })()
                                                         : '—'}
                                                 </div>
-                                                <div className="text-[9px] text-[#94A3B8] uppercase tracking-wider mt-0.5">Age</div>
+                                                <div className="text-[0.5625rem] text-[#94A3B8] uppercase tracking-wider mt-0.5">Age</div>
                                             </div>
                                             <div className="border-x border-[#F1F5F9] dark:border-[#1F1F1F]">
                                                 <div className="font-mono font-semibold text-sm text-[#0F172A] dark:text-[#F5F5F5]">
                                                     {sp.player.height ? `${sp.player.height}cm` : '—'}
                                                 </div>
-                                                <div className="text-[9px] text-[#94A3B8] uppercase tracking-wider mt-0.5">Height</div>
+                                                <div className="text-[0.5625rem] text-[#94A3B8] uppercase tracking-wider mt-0.5">Height</div>
                                             </div>
                                             <div>
                                                 <div className="font-mono font-semibold text-sm text-[#0F172A] dark:text-[#F5F5F5]">
                                                     {sp.player.foot}
                                                 </div>
-                                                <div className="text-[9px] text-[#94A3B8] uppercase tracking-wider mt-0.5">Foot</div>
+                                                <div className="text-[0.5625rem] text-[#94A3B8] uppercase tracking-wider mt-0.5">Foot</div>
                                             </div>
                                         </div>
 
@@ -498,7 +498,7 @@ export default function SavedPlayers() {
                                         </div>
 
                                         {/* Saved date */}
-                                        <p className="text-[10px] text-[#94A3B8] font-mono mt-2">
+                                        <p className="text-[0.625rem] text-[#94A3B8] font-mono mt-2">
                                             Saved {sp.savedAt}
                                         </p>
 
@@ -515,7 +515,7 @@ export default function SavedPlayers() {
                                         )}
 
                                         {/* CTA buttons */}
-                                        <div className="mt-4 flex gap-2">
+                                        <div className="mt-4 flex flex-col gap-2 min-[360px]:flex-row">
                                             <Link href={`/scouting/players/${sp.player.id}`} className="flex-1">
                                                 <Button
                                                     variant="outline"
@@ -552,7 +552,7 @@ export default function SavedPlayers() {
                                             </span>
                                         )}
                                         {sp.player.isPremium && (
-                                            <span className="absolute -top-1 -right-1 bg-[#E53F01] text-white text-[8px] font-black px-1.5 py-0.5 rounded-full">
+                                            <span className="absolute -top-1 -right-1 bg-[#E53F01] text-white text-[0.5rem] font-black px-1.5 py-0.5 rounded-full">
                                                 PRO
                                             </span>
                                         )}
@@ -573,7 +573,7 @@ export default function SavedPlayers() {
                                             {sp.player.positions.slice(0, 2).map((pos) => (
                                                 <span
                                                     key={pos}
-                                                    className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-bold px-2 py-0.5 rounded-full"
+                                                    className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[0.625rem] font-bold px-2 py-0.5 rounded-full"
                                                 >
                                                     {pos}
                                                 </span>
@@ -618,14 +618,14 @@ export default function SavedPlayers() {
                                             ) : (
                                                 <span className="text-[#94A3B8] text-xs italic">Not yet rated</span>
                                             )}
-                                            <span className="text-[10px] text-[#94A3B8] font-mono">
+                                            <span className="text-[0.625rem] text-[#94A3B8] font-mono">
                                                 Saved {sp.savedAt}
                                             </span>
                                             <div className="flex gap-1 flex-wrap">
                                                 {sp.player.modalities.map((m) => (
                                                     <span
                                                         key={m}
-                                                        className="text-[10px] bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] px-2 py-0.5 rounded-full"
+                                                        className="text-[0.625rem] bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] px-2 py-0.5 rounded-full"
                                                     >
                                                         {m}
                                                     </span>
@@ -647,7 +647,7 @@ export default function SavedPlayers() {
 
                                         {/* Mobile actions */}
                                         <div className="flex md:hidden gap-2 mt-4 flex-wrap">
-                                            <Link href={`/scouting/player/${sp.player.id}`} className="flex-1 min-w-[120px]">
+                                            <Link href={`/scouting/player/${sp.player.id}`} className="flex-1 min-w-[7.5rem]">
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
@@ -659,7 +659,7 @@ export default function SavedPlayers() {
                                             {sp.player.isPremium && (
                                                 <Button
                                                     size="sm"
-                                                    className="flex-1 min-w-[120px] bg-[#E53F01] text-white hover:bg-[#E53F01]"
+                                                    className="flex-1 min-w-[7.5rem] bg-[#E53F01] text-white hover:bg-[#E53F01]"
                                                 >
                                                     Rate
                                                 </Button>
@@ -681,7 +681,7 @@ export default function SavedPlayers() {
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                className="border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] hover:border-[#E53F01] hover:text-[#E53F01] w-[120px]"
+                                                className="border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] hover:border-[#E53F01] hover:text-[#E53F01] w-[7.5rem]"
                                             >
                                                 View Profile
                                             </Button>
@@ -689,7 +689,7 @@ export default function SavedPlayers() {
                                         {sp.player.isPremium && (
                                             <Button
                                                 size="sm"
-                                                className="bg-[#E53F01] text-white hover:bg-[#E53F01] w-[120px]"
+                                                className="bg-[#E53F01] text-white hover:bg-[#E53F01] w-[7.5rem]"
                                             >
                                                 Rate Player
                                             </Button>
@@ -711,11 +711,11 @@ export default function SavedPlayers() {
 
                     {/* Sponsored Ad */}
                     {!isEmpty && (
-                        <div className="max-w-[728px] mx-auto mt-8">
-                            {/* <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider mb-2 text-center">
+                        <div className="max-w-[45.5rem] mx-auto mt-8">
+                            {/* <p className="text-[0.625rem] text-[#94A3B8] uppercase tracking-wider mb-2 text-center">
                                 Sponsored
                             </p> */}
-                            <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl h-[80px] flex items-center px-6 gap-4 border border-[#334155] mx-auto">
+                            <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl h-[5rem] flex items-center px-6 gap-4 border border-[#334155] mx-auto">
                                 {/* <div className="font-display font-black text-lg text-white shrink-0">
                                     TRANSFERROOM
                                 </div>

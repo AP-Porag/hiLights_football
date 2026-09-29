@@ -68,12 +68,12 @@ export default function PublicNavbar() {
                 'transition-shadow duration-200',
             ].join(' ')}
         >
-            <div className="mx-auto flex h-full max-w-7xl 2xl:max-w-[90rem] items-center justify-between gap-4 px-2 sm:px-4 md:px-6 xl:px-8">
+            <div className="mx-auto flex h-full max-w-7xl 2xl:max-w-[90rem] items-center justify-between gap-2 sm:gap-4 px-2 sm:px-4 md:px-6 xl:px-8">
                 {/* LEFT - Logo */}
-                <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football home">
+                <Link href="/" className="flex min-w-0 shrink items-center gap-2 lg:shrink-0" aria-label="HiLights Football home">
                     <img
                         src="/images/logo/final_logo.png"
-                        className="h-6 w-auto sm:h-8 lg:h-10 xl:h-12 2xl:h-14 md:mt-2 lg:mt-3"
+                        className="h-6 w-auto min-w-0 max-w-full max-lg:object-contain max-lg:object-left sm:h-8 lg:h-10 xl:h-12 2xl:h-14 md:mt-2 lg:mt-3"
                         alt="HiLights Football"
                     />
                     {/* <img src="/images/logo/final_logo.png" className="hidden h-12 w-auto md:h-20 dark:block" alt="HiLights Football" /> */}
@@ -89,7 +89,7 @@ export default function PublicNavbar() {
                                 className={[
                                     'relative text-sm font-medium transition-colors xl:text-base 2xl:text-lg',
                                     active
-                                        ? 'text-[#E53F01] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#E53F01]'
+                                        ? 'text-[#E53F01] after:absolute after:right-0 after:bottom-[-1.375rem] after:left-0 after:h-[0.125rem] after:bg-[#E53F01]'
                                         : 'text-white hover:text-[#E53F01] dark:text-[#9A9A9A]',
                                 ].join(' ')}
                             >
@@ -132,10 +132,10 @@ export default function PublicNavbar() {
                     </Link>
                 </div>
                 {/* MOBILE - Icons + Hamburger (below lg) */}
-                <div className="flex items-center gap-1 lg:hidden">
+                <div className="flex shrink-0 items-center gap-1 lg:hidden">
                     {/*<ThemeToggle />*/}
                     <div className="flex items-center gap-0.5">
-                        {NAV_LINKS_MOBILE.map((link) => {
+                        {NAV_LINKS_MOBILE.filter((link) => !(isLoggedIn && link.routeName === 'login')).map((link) => {
                             const active = isActive(link.href);
                             const inner = (
                                 <>
@@ -145,13 +145,13 @@ export default function PublicNavbar() {
                                         })}
                                     </div>
                                     <span
-                                        className={['text-[8px] font-medium whitespace-nowrap sm:text-[12px]', active ? 'text-[#E53F01]' : 'text-white'].join(' ')}
+                                        className={['text-[0.5rem] font-medium whitespace-nowrap sm:text-[0.75rem]', active ? 'text-[#E53F01]' : 'text-white'].join(' ')}
                                     >
                                         {link.label}
                                     </span>
                                 </>
                             );
-                            const cls = 'flex w-7 flex-col items-center justify-center sm:w-12';
+                            const cls = ['flex w-7 flex-col items-center justify-center sm:w-12', link.label === 'Search' || link.label === 'Plans' ? 'max-[359px]:hidden' : ''].join(' ');
                             if (link.label === 'Search') {
                                 return (
                                     <button key={link.label} type="button" onClick={() => setSearchOpen(true)} className={cls}>
@@ -166,8 +166,8 @@ export default function PublicNavbar() {
                             );
                         })}
                     </div>
-                    <Link href={isLoggedIn ? "/player/" : "/register"}>
-                        <Button className="h-9 rounded-md bg-[#E53F01] px-2 text-[8px] leading-tight font-bold text-white uppercase hover:bg-[#e65c00] sm:h-11 sm:px-4 sm:text-[11px]">
+                    <Link href={isLoggedIn ? dashboardHref : "/register"}>
+                        <Button className="h-9 rounded-md bg-[#E53F01] px-2 text-[0.5rem] leading-tight font-bold text-white uppercase hover:bg-[#e65c00] sm:h-11 sm:px-4 sm:text-[0.6875rem]">
                             {isLoggedIn ? (
                                 "Dashboard"
                             ) : (
@@ -192,7 +192,7 @@ export default function PublicNavbar() {
                         </SheetTrigger>
                         <SheetContent
                             side="left"
-                            className="flex w-[300px] flex-col border-r border-[#E2E8F0] bg-white p-0 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]"
+                            className="flex w-[18.75rem] flex-col border-r border-[#E2E8F0] bg-white p-0 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]"
                         >
                             <SheetHeader className="border-b border-[#E2E8F0] px-6 py-4 dark:border-[#2A2A2A]">
                                 <SheetTitle className="flex items-center gap-2">
@@ -246,7 +246,7 @@ export default function PublicNavbar() {
                                     </Link>
                                 )}
                                 <Link
-                                    href={isLoggedIn ? "/player/" : "/register"}
+                                    href={isLoggedIn ? dashboardHref : "/register"}
                                     onClick={() => setMobileOpen(false)}
                                 >
                                     <Button className="w-full bg-[#E53F01] text-sm font-semibold text-white hover:bg-[#E53F01]">

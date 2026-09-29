@@ -115,7 +115,7 @@ export default function EditUser() {
                     </div>
                 )}
 
-                <div className="max-w-[700px] mx-auto">
+                <div className="max-w-[43.75rem] mx-auto">
                     <div className="flex items-center gap-4 mb-8">
                         <Link
                             href={route('users.index')}

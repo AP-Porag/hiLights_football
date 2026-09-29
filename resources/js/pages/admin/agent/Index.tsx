@@ -320,7 +320,7 @@ export default function AgentIndex() {
                             </Table>
                         </div>
                         {/* Agent Pagination */}
-                        <div className="flex flex-col items-start gap-3 border-t border-[#2A2A2A] p-6 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="flex flex-col items-start gap-3 border-t border-[#2A2A2A] p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                             <div className="text-xs text-[#94A3B8]">
                                 Showing{' '}
                                 <span className="font-mono font-semibold text-white">
@@ -332,7 +332,7 @@ export default function AgentIndex() {
                                 </span>{' '}
                                 agents
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-2">
                                 <Button
                                     variant="outline"
                                     size="sm"
@@ -510,7 +510,7 @@ export default function AgentIndex() {
                                                             <div className="flex items-center gap-2">
                                                                 <span className="text-sm font-semibold text-white">{rating.player.name}</span>
                                                                 {rating.player.position && (
-                                                                    <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#E53F01]">
+                                                                    <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[0.625rem] font-semibold text-[#E53F01]">
                                                                         {rating.player.position}
                                                                     </span>
                                                                 )}
@@ -549,12 +549,12 @@ export default function AgentIndex() {
                                 </TableBody>
                             </Table>
                         </div>
-                        <div className="flex flex-col items-start gap-3 border-t border-[#2A2A2A] p-6 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="flex flex-col items-start gap-3 border-t border-[#2A2A2A] p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                             <div className="text-xs text-[#94A3B8]">
                                 Showing <span className="font-mono font-semibold text-white">{ratings.from ?? 0}-{ratings.to ?? 0}</span> of{' '}
                                 <span className="font-mono font-semibold text-white">{ratings.total.toLocaleString()}</span> ratings
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-2">
                                 <Button variant="outline" size="sm" disabled={ratings.current_page <= 1} onClick={() => goToPage(ratings.current_page - 1)} className="border-[#2A2A2A] bg-[#1A1A1A] text-white hover:bg-[#2A2A2A] disabled:opacity-50">
                                     <ChevronLeft className="mr-1 h-4 w-4" /> Previous
                                 </Button>
@@ -591,7 +591,7 @@ export default function AgentIndex() {
                                         <div className="min-w-0 flex-1">
                                             <div className="flex items-center gap-2">
                                                 <span className="truncate text-sm font-semibold text-white">{player.name}</span>
-                                                {player.position && <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#E53F01]">{player.position}</span>}
+                                                {player.position && <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[0.625rem] font-semibold text-[#E53F01]">{player.position}</span>}
                                             </div>
                                             <div className="truncate text-xs text-[#94A3B8]">{player.club ?? '—'}</div>
                                         </div>
@@ -642,7 +642,7 @@ export default function AgentIndex() {
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex items-center gap-2">
                                                     <span className="truncate font-display text-base font-semibold text-white">{viewRating.player.name}</span>
-                                                    {viewRating.player.position && <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#E53F01]">{viewRating.player.position}</span>}
+                                                    {viewRating.player.position && <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[0.625rem] font-semibold text-[#E53F01]">{viewRating.player.position}</span>}
                                                 </div>
                                                 <div className="truncate text-xs text-[#94A3B8]">{viewRating.player.club ?? '—'}</div>
                                                 {viewRating.player.age !== null && <div className="text-xs text-[#94A3B8]">Age <span className="font-mono">{viewRating.player.age}</span></div>}

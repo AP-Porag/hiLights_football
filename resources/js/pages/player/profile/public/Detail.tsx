@@ -111,7 +111,7 @@ export default function Detail() {
 
             {/* BREADCRUMB */}
             <div className="bg-white dark:bg-[#0D0D0D] border-b border-[#E2E8F0] dark:border-[#2A2A2A] py-3 px-4 sm:px-6">
-                <nav className="max-w-[1400px] mx-auto flex items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A] overflow-x-auto">
+                <nav className="max-w-[87.5rem] mx-auto flex items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A] overflow-x-auto">
                     <Link
                         href="/"
                         className="hover:text-[#E53F01] dark:hover:text-[#E53F01] whitespace-nowrap"
@@ -141,12 +141,12 @@ export default function Detail() {
 
             {/* LEADERBOARD AD */}
             <div className="bg-[#F4F6F9] dark:bg-[#0D0D0D] py-3 px-4 sm:px-6">
-                <div className="max-w-[1400px] mx-auto">
-                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider mb-2">
+                <div className="max-w-[87.5rem] mx-auto">
+                    <p className="text-[0.625rem] text-[#94A3B8] uppercase tracking-wider mb-2">
                         Sponsored
                     </p>
-                    <div className="bg-[#111] rounded-xl h-[90px] max-w-[728px] mx-auto flex items-center px-4 sm:px-6 gap-3 sm:gap-4 relative overflow-hidden">
-                        <span className="text-white/5 absolute -right-4 top-1/2 -translate-y-1/2 font-black text-[100px] leading-none select-none">
+                    <div className="bg-[#111] rounded-xl h-[5.625rem] max-w-[45.5rem] mx-auto flex items-center px-4 sm:px-6 gap-3 sm:gap-4 relative overflow-hidden">
+                        <span className="text-white/5 absolute -right-4 top-1/2 -translate-y-1/2 font-black text-[6.25rem] leading-none select-none">
                             ✓
                         </span>
                         <span className="text-white font-black text-2xl sm:text-4xl relative z-10">
@@ -164,15 +164,15 @@ export default function Detail() {
             </div>
 
             {/* 3-COLUMN LAYOUT */}
-            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-[280px_1fr_280px] gap-5">
+            <div className="max-w-[87.5rem] mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-[17.5rem_1fr_17.5rem] gap-5">
                 {/* LEFT AD COLUMN */}
                 <aside className="hidden lg:block sticky top-20 self-start space-y-3">
-                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider">
+                    <p className="text-[0.625rem] text-[#94A3B8] uppercase tracking-wider">
                         Sponsored
                     </p>
 
                     {/* NIKE AD */}
-                    <div className="h-[350px] bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center">
+                    <div className="h-[21.875rem] bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center">
                         <div
                             className="absolute inset-0 opacity-20"
                             style={{
@@ -180,7 +180,7 @@ export default function Detail() {
                                     'radial-gradient(circle at 50% 0%, #E53F01 0%, transparent 60%)',
                             }}
                         />
-                        <span className="text-white/10 font-black text-[100px] leading-none absolute -top-4 select-none">
+                        <span className="text-white/10 font-black text-[6.25rem] leading-none absolute -top-4 select-none">
                             ✓
                         </span>
                         <div className="relative z-10 flex flex-col items-center">
@@ -202,7 +202,7 @@ export default function Detail() {
                     </div>
 
                     {/* ADIDAS AD */}
-                    <div className="h-[280px] bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-5 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                    <div className="h-[17.5rem] bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-5 flex flex-col items-center justify-center text-center relative overflow-hidden">
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col gap-1 pt-3">
                             <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
                             <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
@@ -224,7 +224,7 @@ export default function Detail() {
                     </div>
 
                     {/* PUMA AD */}
-                    <div className="h-[100px] bg-gradient-to-r from-[#CC0000] to-[#990000] rounded-2xl flex items-center justify-center flex-col gap-1 px-4">
+                    <div className="h-[6.25rem] bg-gradient-to-r from-[#CC0000] to-[#990000] rounded-2xl flex items-center justify-center flex-col gap-1 px-4">
                         <span className="text-white font-black text-sm tracking-wide">
                             PUMA FOOTBALL
                         </span>
@@ -242,12 +242,12 @@ export default function Detail() {
                         <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
                             {/* PHOTO */}
                             <div className="shrink-0 mx-auto sm:mx-0">
-                                <div className="w-[200px] h-[200px] rounded-2xl bg-gradient-to-br from-[#1E293B] to-[#334155] border-2 border-[#E2E8F0] dark:border-[#2A2A2A] relative flex items-center justify-center">
+                                <div className="w-[12.5rem] h-[12.5rem] rounded-2xl bg-gradient-to-br from-[#1E293B] to-[#334155] border-2 border-[#E2E8F0] dark:border-[#2A2A2A] relative flex items-center justify-center">
                                     <span className="text-white font-display font-black text-5xl tracking-tight">
                                         {initials}
                                     </span>
                                     {player.isPremium && (
-                                        <span className="absolute top-2 right-2 bg-gradient-to-r from-[#E53F01] to-[#E53F01] text-white text-[10px] font-black px-3 py-1 rounded-full tracking-wider">
+                                        <span className="absolute top-2 right-2 bg-gradient-to-r from-[#E53F01] to-[#E53F01] text-white text-[0.625rem] font-black px-3 py-1 rounded-full tracking-wider">
                                             PREMIUM
                                         </span>
                                     )}
@@ -264,7 +264,7 @@ export default function Detail() {
                                 <p className="font-mono text-[#94A3B8] text-xs mb-1">
                                     {player.profileId}
                                 </p>
-                                <h1 className="font-display font-black text-[42px] leading-none text-[#0F172A] dark:text-[#F5F5F5] tracking-tight">
+                                <h1 className="font-display font-black text-[2.625rem] leading-none text-[#0F172A] dark:text-[#F5F5F5] tracking-tight">
                                     {player.name}
                                 </h1>
                                 <p className="text-[#94A3B8] text-sm mt-1">
@@ -420,10 +420,10 @@ export default function Detail() {
 
                     {/* IN-CONTENT AD */}
                     <div>
-                        <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider mb-1">
+                        <p className="text-[0.625rem] text-[#94A3B8] uppercase tracking-wider mb-1">
                             Sponsored
                         </p>
-                        <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl min-h-[80px] flex flex-col sm:flex-row items-center px-4 sm:px-6 py-3 sm:py-0 gap-3 sm:gap-4">
+                        <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl min-h-[5rem] flex flex-col sm:flex-row items-center px-4 sm:px-6 py-3 sm:py-0 gap-3 sm:gap-4">
                             <span className="text-white font-black text-base tracking-wide shrink-0">
                                 TRANSFERROOM
                             </span>
@@ -440,7 +440,7 @@ export default function Detail() {
                     <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden">
                         <div className="grid grid-cols-1 md:grid-cols-2">
                             <div className="md:border-r border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase border-b border-[#E2E8F0] dark:border-[#2A2A2A]">
+                                <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 text-[0.625rem] font-bold text-[#94A3B8] tracking-[0.14em] uppercase border-b border-[#E2E8F0] dark:border-[#2A2A2A]">
                                     Player Details
                                 </div>
                                 {[
@@ -463,7 +463,7 @@ export default function Detail() {
                                 ))}
                             </div>
                             <div>
-                                <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase border-b border-[#E2E8F0] dark:border-[#2A2A2A]">
+                                <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 text-[0.625rem] font-bold text-[#94A3B8] tracking-[0.14em] uppercase border-b border-[#E2E8F0] dark:border-[#2A2A2A]">
                                     Physical Profile
                                 </div>
                                 {[
@@ -489,25 +489,25 @@ export default function Detail() {
                     {/* CLUB HISTORY */}
                     <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden">
                         <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 border-b border-[#E2E8F0] dark:border-[#2A2A2A] flex items-center justify-between">
-                            <span className="text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase">
+                            <span className="text-[0.625rem] font-bold text-[#94A3B8] tracking-[0.14em] uppercase">
                                 Club History
                             </span>
-                            <span className="text-[10px] text-[#94A3B8] font-mono">
+                            <span className="text-[0.625rem] text-[#94A3B8] font-mono">
                                 2020 — 2026
                             </span>
                         </div>
-                        <div className="grid grid-cols-[80px_1fr] px-5 py-2 border-b border-[#E2E8F0] dark:border-[#2A2A2A] bg-[#FAFBFC] dark:bg-[#161616]">
-                            <span className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold">
+                        <div className="grid grid-cols-[5rem_1fr] px-5 py-2 border-b border-[#E2E8F0] dark:border-[#2A2A2A] bg-[#FAFBFC] dark:bg-[#161616]">
+                            <span className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold">
                                 Year
                             </span>
-                            <span className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold">
+                            <span className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold">
                                 Club
                             </span>
                         </div>
                         {player.clubHistory.map((entry) => (
                             <div
                                 key={entry.year}
-                                className="grid grid-cols-[80px_1fr] px-5 py-3 border-b border-[#F1F5F9] dark:border-[#1F1F1F] hover:bg-[#FAFBFC] dark:hover:bg-[#1A1A1A] transition-colors last:border-b-0"
+                                className="grid grid-cols-[5rem_1fr] px-5 py-3 border-b border-[#F1F5F9] dark:border-[#1F1F1F] hover:bg-[#FAFBFC] dark:hover:bg-[#1A1A1A] transition-colors last:border-b-0"
                             >
                                 <span className="font-mono font-semibold text-sm text-[#0F172A] dark:text-[#F5F5F5]">
                                     {entry.year}
@@ -528,7 +528,7 @@ export default function Detail() {
                     {/* ABOUT */}
                     <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden">
                         <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 border-b border-[#E2E8F0] dark:border-[#2A2A2A]">
-                            <span className="text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase">
+                            <span className="text-[0.625rem] font-bold text-[#94A3B8] tracking-[0.14em] uppercase">
                                 About This Player
                             </span>
                         </div>
@@ -600,12 +600,12 @@ export default function Detail() {
 
                 {/* RIGHT AD COLUMN */}
                 <aside className="hidden lg:block sticky top-20 self-start space-y-3">
-                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider">
+                    <p className="text-[0.625rem] text-[#94A3B8] uppercase tracking-wider">
                         Sponsored
                     </p>
 
                     {/* SCOUTPRO AD */}
-                    <div className="h-[280px] bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-2xl border border-[#334155] p-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                    <div className="h-[17.5rem] bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-2xl border border-[#334155] p-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 bg-[#E53F01] rounded-full blur-2xl opacity-15" />
                         <Search className="w-10 h-10 text-[#E53F01] mb-3 relative z-10" />
                         <span className="text-white font-black text-lg relative z-10">
@@ -621,7 +621,7 @@ export default function Detail() {
                     </div>
 
                     {/* ADIDAS X CRAZYFAST */}
-                    <div className="h-[250px] bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-5 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                    <div className="h-[15.625rem] bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-5 flex flex-col items-center justify-center text-center relative overflow-hidden">
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col gap-1 pt-3">
                             <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
                             <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
@@ -643,7 +643,7 @@ export default function Detail() {
                     </div>
 
                     {/* WYSCOUT AD */}
-                    <div className="h-[150px] bg-gradient-to-br from-[#1a1a2e] to-[#16213e] rounded-2xl border border-[#334155] flex flex-col items-center justify-center px-4">
+                    <div className="h-[9.375rem] bg-gradient-to-br from-[#1a1a2e] to-[#16213e] rounded-2xl border border-[#334155] flex flex-col items-center justify-center px-4">
                         <span className="text-[#4FC3F7] font-black text-xl tracking-wide">
                             WYSCOUT
                         </span>
@@ -658,12 +658,12 @@ export default function Detail() {
 
                 {/* MOBILE ADS (below content) */}
                 <div className="lg:hidden space-y-3">
-                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider">
+                    <p className="text-[0.625rem] text-[#94A3B8] uppercase tracking-wider">
                         Sponsored
                     </p>
 
                     {/* Mobile Nike */}
-                    <div className="bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]">
+                    <div className="bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[17.5rem]">
                         <div
                             className="absolute inset-0 opacity-20"
                             style={{
@@ -671,7 +671,7 @@ export default function Detail() {
                                     'radial-gradient(circle at 50% 0%, #E53F01 0%, transparent 60%)',
                             }}
                         />
-                        <span className="text-white/10 font-black text-[100px] leading-none absolute -top-4 select-none">
+                        <span className="text-white/10 font-black text-[6.25rem] leading-none absolute -top-4 select-none">
                             ✓
                         </span>
                         <div className="relative z-10 flex flex-col items-center">
@@ -690,7 +690,7 @@ export default function Detail() {
                     </div>
 
                     {/* Mobile ScoutPro */}
-                    <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-2xl border border-[#334155] p-6 flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[220px]">
+                    <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-2xl border border-[#334155] p-6 flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[13.75rem]">
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 bg-[#E53F01] rounded-full blur-2xl opacity-15" />
                         <Search className="w-10 h-10 text-[#E53F01] mb-3 relative z-10" />
                         <span className="text-white font-black text-lg relative z-10">

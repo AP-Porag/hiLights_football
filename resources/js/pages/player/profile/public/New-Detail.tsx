@@ -167,12 +167,12 @@ export default function NewDetail() {
 
             {/* BREADCRUMB */}
             <div className="mx-auto max-w-7xl bg-black px-4 py-3 sm:px-6 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]">
-                <nav className="flex items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A]">
+                <nav className="flex min-w-0 items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A]">
                     <Link href="/" className="whitespace-nowrap hover:text-[#E53F01]">Home</Link>
-                    <ChevronRight className="h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" />
+                    <ChevronRight className="h-3.5 w-3.5 shrink-0 text-[#CBD5E1] dark:text-[#555]" />
                     <Link href="/players" className="whitespace-nowrap hover:text-[#E53F01]">Players</Link>
-                    <ChevronRight className="h-3.5 w-3.5 text-[#CBD5E1] dark:text-[#555]" />
-                    <span className="font-medium whitespace-nowrap text-[#E53F01] dark:text-[#F5F5F5]">{
+                    <ChevronRight className="h-3.5 w-3.5 shrink-0 text-[#CBD5E1] dark:text-[#555]" />
+                    <span className="min-w-0 truncate font-medium whitespace-nowrap text-[#E53F01] dark:text-[#F5F5F5]">{
                         player?.user?.name}</span>
                 </nav>
             </div>
@@ -184,20 +184,20 @@ export default function NewDetail() {
                     <section className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
 
                         {/* Player info */}
-                        <div className="flex gap-4 text-white sm:gap-6 ">
+                        <div className="flex flex-col gap-4 text-white min-[420px]:flex-row sm:gap-6">
                             {/* Smaller photo */}
                             <div className="shrink-0">
                                 <img
                                     src={player.photo_url || '/images/img/placeholder.webp'}
                                     alt={player.user?.name ?? ''}
-                                    className="h-[160px] w-[120px] rounded-md border border-[#233247] object-cover sm:h-[190px] sm:w-[145px] lg:h-[210px] lg:w-[160px]"
+                                    className="h-[10rem] w-[7.5rem] rounded-md border border-[#233247] object-cover sm:h-[11.875rem] sm:w-[9.0625rem] lg:h-[13.125rem] lg:w-[10rem]"
                                 />
 
                             </div>
 
                             {/* Bigger info text */}
                             <div className="min-w-0 flex-1">
-                                <h1 className="text-2xl font-bold tracking-wide uppercase md:text-3xl">
+                                <h1 className="text-2xl font-bold tracking-wide break-words uppercase md:text-3xl">
                                     {player.user?.name}
                                 </h1>
                                 {/* <h3 className="mt-1 text-base font-semibold text-[#eb6c0d] uppercase md:text-lg">
@@ -205,7 +205,7 @@ export default function NewDetail() {
                                 </h3> */}
 
                                 <div className="mt-3 space-y-1.25 text-sm md:text-base">
-                                    <div className="flex items-center">
+                                    <div className="flex flex-wrap items-center gap-y-1">
                                         <CalendarDays className="mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" />
                                         <span className="">
                                             <span className=" text-white">Date of Birth:</span>{' '}
@@ -220,7 +220,7 @@ export default function NewDetail() {
                                                 : '—'}
                                         </span>
                                     </div>
-                                    <div className="flex items-center">
+                                    <div className="flex flex-wrap items-center gap-y-1">
                                         <Users className="mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" />
                                         <span className="pr-3 text-[#e1e2e6]">Nationality:</span>
                                         {Array.isArray(player.user?.nationality) && player.user.nationality.length > 0 ? (
@@ -235,22 +235,22 @@ export default function NewDetail() {
                                             <span>{getCountryName(player.user?.nationality)}</span>
                                         )}
                                     </div>
-                                    <div className="flex items-center">
+                                    <div className="flex flex-wrap items-center gap-y-1">
                                         <Ruler className="mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Height:</span>
                                         <span className="pl-2 text-gray-100">{player.height ? `${player.height} cm` : '—'}</span>
                                     </div>
-                                    <div className="flex items-center">
+                                    <div className="flex flex-wrap items-center gap-y-1">
                                         <Crosshair className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Position:</span>
                                         <span className="pl-2 text-gray-100">{getPositionFullName(player.positions ?? [])}</span>
                                     </div>
-                                    <div className="flex items-center">
+                                    <div className="flex flex-wrap items-center gap-y-1">
                                         <Footprints className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Dominant Foot:</span>
                                         <span className="pl-2 text-gray-100">{player.foot ?? '—'}</span>
                                     </div>
-                                    <div className="flex items-center">
+                                    <div className="flex flex-wrap items-center gap-y-1">
                                         <Shield className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Current Club:</span>
 
@@ -258,7 +258,7 @@ export default function NewDetail() {
                                             <ReactCountryFlag countryCode={player.current_club_country} svg className="mr-1" />
                                         )}{player.current_club ?? '—'}</span>
                                     </div>
-                                    {/* <div className="flex items-center">
+                                    {/* <div className="flex flex-wrap items-center gap-y-1">
                                         <Shirt className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Previous Club:</span>
                                         <span className="pl-2 text-gray-100">Bangu</span>
@@ -269,7 +269,7 @@ export default function NewDetail() {
 
                         {/* Main video — visible on first view, no scroll needed */}
                         <div className="w-full">
-                            {/* <p className="mb-2 text-[16px] font-bold text-white">HIGHLIGHTS VIDEO</p> */}
+                            {/* <p className="mb-2 text-[1rem] font-bold text-white">HIGHLIGHTS VIDEO</p> */}
                             <div className="overflow-hidden rounded-2xl">
                                 {getEmbedUrl(player.video_url) ? (
                                     <iframe
@@ -285,7 +285,7 @@ export default function NewDetail() {
                                     </div>
                                 )}
                             </div>
-                            <div className="mt-2 flex items-center justify-between text-[14px] text-white">
+                            <div className="mt-2 flex items-center justify-between text-[0.875rem] text-white">
                                 <h3>{player?.user?.name} - Best Moments</h3>
                                 <span>07:32</span>
                             </div>
@@ -300,23 +300,23 @@ export default function NewDetail() {
                                 .slice(1) // Skip first video (already shown as main)
                                 .map((v: any, i: number) => (
                                     <div key={i}>
-                                        <div className="overflow-hidden rounded-[12px] ">
+                                        <div className="overflow-hidden rounded-[0.75rem] ">
                                             {getEmbedUrl(v.url) ? (
                                                 <iframe
                                                     src={getEmbedUrl(v.url)!}
                                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                     allowFullScreen
-                                                    className="aspect-video w-full rounded-[12px] bg-gray-800"
+                                                    className="aspect-video w-full rounded-[0.75rem] bg-gray-800"
                                                 />
                                             ) : (
-                                                <div className="flex aspect-video w-full flex-col items-center justify-center rounded-[12px] bg-gray-800">
+                                                <div className="flex aspect-video w-full flex-col items-center justify-center rounded-[0.75rem] bg-gray-800">
                                                     <Video className="mb-2 h-10 w-10 text-white/30" />
                                                     <p className="text-sm text-white/40">Invalid video</p>
                                                 </div>
                                             )}
                                         </div>
                                         {v.label && (
-                                            <p className="py-2 text-center text-[16px] font-bold text-white">{v.label}</p>
+                                            <p className="py-2 text-center text-[1rem] font-bold text-white">{v.label}</p>
                                         )}
                                     </div>
                                 ))}
@@ -325,7 +325,7 @@ export default function NewDetail() {
 
                     {/* IN-CONTENT AD (mobile only) */}
                     <aside className="block space-y-3 lg:hidden">
-                        <p className="text-[10px] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>
+                        <p className="text-[0.625rem] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>
                         <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center">
                             <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
                         </div>
@@ -336,22 +336,22 @@ export default function NewDetail() {
                         <div className="grid gap-2 grid-cols-1 md:gap-4">
                             {/* Positions */}
                             <div className="rounded-xl border border-slate-800 bg-[#06111d] p-5">
-                                <h2 className="mb-6 text-[13px] font-bold text-white uppercase md:text-[18px]">Positions On The Pitch</h2>
+                                <h2 className="mb-6 text-[0.8125rem] font-bold text-white uppercase md:text-[1.125rem]">Positions On The Pitch</h2>
                                 <PitchPriority selected={player.positions ?? []} />
-                                <div className="mt-6 space-y-2 text-[11px] font-bold text-white uppercase md:text-[16px]">
+                                <div className="mt-6 space-y-2 text-[0.6875rem] font-bold text-white uppercase md:text-[1rem]">
                                     <p>
-                                        <span className="mb-3 text-[13px] font-bold text-white italic uppercase md:text-[18px]">Main Position:</span>{' '}
+                                        <span className="mb-3 text-[0.8125rem] font-bold text-white italic uppercase md:text-[1.125rem]">Main Position:</span>{' '}
                                         {player.positions?.[0] ? getPositionFullName([player.positions[0]]) : 'Not specified'}
                                     </p>
                                     {player.positions?.[1] && (
                                         <p>
-                                            <span className="text-[13px] font-bold text-white uppercase italic md:text-[18px]">Secondary Position:</span>{' '}
+                                            <span className="text-[0.8125rem] font-bold text-white uppercase italic md:text-[1.125rem]">Secondary Position:</span>{' '}
                                             {getPositionFullName([player.positions[1]])}
                                         </p>
                                     )}
                                     {player.positions?.[2] && (
                                         <p>
-                                            <span className="text-[13px] font-bold text-white uppercase italic md:text-[18px]">Third Position:</span>{' '}
+                                            <span className="text-[0.8125rem] font-bold text-white uppercase italic md:text-[1.125rem]">Third Position:</span>{' '}
                                             {getPositionFullName([player.positions[2]])}
                                         </p>
                                     )}
@@ -361,28 +361,28 @@ export default function NewDetail() {
                     </section>
 
                     {/* ACHIEVEMENTS + DESCRIPTION */}
-                    <div className="grid grid-cols-1 sm:grid-cols-[250px_1fr] gap-2 md:gap-4 md:grid-cols-[400px_1fr]">
+                    <div className="grid grid-cols-1 sm:grid-cols-[15.625rem_1fr] gap-2 md:gap-4 md:grid-cols-[25rem_1fr]">
                         {/* Achievements */}
                         <div className="rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5">
-                            <h2 className="mb-5 text-[12px] font-semibold text-white uppercase md:text-sm">Achievements</h2>
+                            <h2 className="mb-5 text-[0.75rem] font-semibold text-white uppercase md:text-sm">Achievements</h2>
                             <div className="space-y-2 md:space-y-4">
                                 {(player.achievements ?? []).filter((item: any) => item?.title).map((item: any, index: number) => (
                                     <div key={index} className="flex items-start gap-1 md:gap-3">
-                                        <span className="text-[12px] text-yellow-500 md:text-sm">🏆</span>
-                                        <div className="flex gap-3 md:grid md:grid-cols-[100px_1fr]">
-                                            <p className="text-[12px] font-medium text-orange-500 md:text-sm">{item.year}</p>
-                                            <p className="text-[10px] leading-relaxed text-gray-300 md:text-sm">{item.title}</p>
+                                        <span className="text-[0.75rem] text-yellow-500 md:text-sm">🏆</span>
+                                        <div className="flex gap-3 md:grid md:grid-cols-[6.25rem_1fr]">
+                                            <p className="text-[0.75rem] font-medium text-orange-500 md:text-sm">{item.year}</p>
+                                            <p className="text-[0.625rem] leading-relaxed text-gray-300 md:text-sm">{item.title}</p>
                                         </div>
                                     </div>
                                 ))}
                             </div>
-                            {/* <button className="mt-6 text-[12px] font-medium text-orange-500 transition hover:text-orange-400 md:text-sm">
+                            {/* <button className="mt-6 text-[0.75rem] font-medium text-orange-500 transition hover:text-orange-400 md:text-sm">
                                 View all achievements →
                             </button> */}
                         </div>
                         {/* Player Description */}
                         <div className="rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5">
-                            <h2 className="mb-4 text-[12px] font-semibold text-white uppercase md:text-sm">
+                            <h2 className="mb-4 text-[0.75rem] font-semibold text-white uppercase md:text-sm">
                                 Player Description
                             </h2>
                             <div className="w-full">
@@ -395,7 +395,7 @@ export default function NewDetail() {
 
                     {/* IN-CONTENT AD (mobile only) */}
                     <aside className="block space-y-3 lg:hidden">
-                        <p className="text-[10px] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>
+                        <p className="text-[0.625rem] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>
                         <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center">
                             <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
                         </div>
@@ -405,7 +405,7 @@ export default function NewDetail() {
                     <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.50fr] gap-2 md:gap-4 lg:grid-cols-[1fr_1.25fr]">
                         {/* Competition History */}
                         <div className="rounded-lg border border-[#152538] bg-[#07111d] p-4 md:p-6">
-                            <h2 className="mb-6 text-[14px] font-bold text-white uppercase md:text-xl">Competition History</h2>
+                            <h2 className="mb-6 text-[0.875rem] font-bold text-white uppercase md:text-xl">Competition History</h2>
                             <div className="space-y-2 md:space-y-4">
                                 {(player.competitions ?? [])
                                     .filter((item: any) => item?.name)
@@ -413,27 +413,27 @@ export default function NewDetail() {
                                     .map((item: any, index: number) => (
                                         <div key={index} className="flex items-start justify-between gap-2 md:gap-4">
                                             <div className="flex items-start gap-1 md:gap-3">
-                                                <Trophy size={18} strokeWidth={1.5} className="mt-0.5 shrink-0 text-gray-300" />
-                                                <span className="text-[10px] text-gray-200 md:text-sm">{item.name}</span>
+                                                <Trophy strokeWidth={1.5} className="size-[1.125rem] mt-0.5 shrink-0 text-gray-300" />
+                                                <span className="text-[0.625rem] text-gray-200 md:text-sm">{item.name}</span>
                                             </div>
-                                            <span className="text-[10px] whitespace-nowrap text-[#f97316] md:text-sm">{item.year}</span>
+                                            <span className="text-[0.625rem] whitespace-nowrap text-[#f97316] md:text-sm">{item.year}</span>
                                         </div>
                                     ))}
                             </div>
                             {/* <div className="mt-8 flex justify-end">
-                                <button className="flex items-center gap-2 text-[13px] text-[#f97316] transition hover:text-orange-400 md:text-[18px]">
+                                <button className="flex items-center gap-2 text-[0.8125rem] text-[#f97316] transition hover:text-orange-400 md:text-[1.125rem]">
                                     View all competitions
-                                    <ChevronRight size={22} />
+                                    <ChevronRight className="size-[1.375rem]" />
                                 </button>
                             </div>*/}
                         </div>
                         {/* Recent Matches */}
                         <div className="overflow-hidden rounded-lg border border-[#152538] bg-[#07111d] p-6">
-                            <h2 className="mb-6 text-[14px] font-bold text-white uppercase md:text-xl">Recent Matches</h2>
+                            <h2 className="mb-6 text-[0.875rem] font-bold text-white uppercase md:text-xl">Recent Matches</h2>
                             <div className="overflow-x-auto">
                                 <table className="w-full">
                                     <thead>
-                                        <tr className="border-b border-gray-300/10 text-left text-[12px] text-gray-300 uppercase md:text-sm">
+                                        <tr className="border-b border-gray-300/10 text-left text-[0.75rem] text-gray-300 uppercase md:text-sm">
                                             <th className="pb-4">Match</th>
                                             <th className="pb-4 text-center">Goals</th>
                                             <th className="px-2 pb-4 text-center">Assists</th>
@@ -442,7 +442,7 @@ export default function NewDetail() {
                                     </thead>
                                     <tbody>
                                         {(player.matches ?? []).filter((match: any) => match?.home).map((match: any, index: number) => (
-                                            <tr key={index} className="border-b border-gray-300/10 text-[10px] text-gray-200 md:text-[14px]">
+                                            <tr key={index} className="border-b border-gray-300/10 text-[0.625rem] text-gray-200 md:text-[0.875rem]">
                                                 <td className="py-3">
                                                     <div className="flex items-center gap-2 md:gap-4">
                                                         <span>{match.home}</span>

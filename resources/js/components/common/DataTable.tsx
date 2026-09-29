@@ -157,7 +157,7 @@ export default function DataTable({
                             })
                         }
                     >
-                        <SelectTrigger className="w-[180px] bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]">
+                        <SelectTrigger className="w-[11.25rem] bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]">
                             <SelectValue placeholder="Select Status" />
                         </SelectTrigger>
                         <SelectContent className="bg-[#161616] border-[#2A2A2A] text-[#F5F5F5]">
@@ -170,14 +170,14 @@ export default function DataTable({
                     </Select>
                 )}
                 {isAllowedRoute && globalActions.industry_filter && (
-                    <div className="min-w-[250px]">
+                    <div className="min-w-[15.625rem]">
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Button variant="outline" className="w-[220px] justify-between bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1F1F1F] hover:text-[#F5F5F5]">
+                                <Button variant="outline" className="w-[13.75rem] justify-between bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1F1F1F] hover:text-[#F5F5F5]">
                                     Industries ({filters.industries.length})
                                 </Button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-[220px] p-2 bg-[#161616] border-[#2A2A2A] text-[#F5F5F5]">
+                            <PopoverContent className="w-[13.75rem] p-2 bg-[#161616] border-[#2A2A2A] text-[#F5F5F5]">
                                 {industries.map((industry) => {
                                     const id = String(industry.id);
                                     const checked = filters.industries.includes(id);
@@ -223,7 +223,7 @@ export default function DataTable({
                             });
                         }}
                     >
-                        <SelectTrigger className="w-[220px] bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]">
+                        <SelectTrigger className="w-[13.75rem] bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]">
                             <SelectValue placeholder="Sort By" />
                         </SelectTrigger>
                         <SelectContent className="bg-[#161616] border-[#2A2A2A] text-[#F5F5F5]">
@@ -275,7 +275,7 @@ export default function DataTable({
                         }
                         className="px-3 py-2 md:w-1/6"
                     >
-                        <SelectTrigger className="w-[180px] bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]">
+                        <SelectTrigger className="w-[11.25rem] bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]">
                             <SelectValue placeholder="Select Status" />
                         </SelectTrigger>
                         <SelectContent className="bg-[#161616] border-[#2A2A2A] text-[#F5F5F5]">

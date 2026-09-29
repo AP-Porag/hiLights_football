@@ -14,7 +14,7 @@ export const PublicFooter = () => {
                             <div className="min-w-0">
                                 <img src="/images/logo/final_logo.png" className="h-8 w-auto sm:h-10 lg:h-14 md:mt-2 lg:mt-3" alt="HiLights Football" />
 
-                                <p className="mt-5 text-[10px] leading-[1.5] break-words sm:text-[12px] md:text-[16px]">
+                                <p className="mt-5 text-[0.625rem] leading-[1.5] break-words sm:text-[0.75rem] md:text-[1rem]">
                                     The platform dedicated <br className="md:hidden" /> to promoting and discovering <br className="md:hidden" /> football
                                     talent.
                                 </p>
@@ -22,9 +22,9 @@ export const PublicFooter = () => {
 
                             {/* Quick Links */}
                             <div className="min-w-0 sm:pl-8 md:pl-10 lg:pl-14">
-                                <h3 className="mb-3 text-[12px] font-bold text-[#E53F01] uppercase md:text-[14px] lg:text-[16px]">Quick Links</h3>
+                                <h3 className="mb-3 text-[0.75rem] font-bold text-[#E53F01] uppercase md:text-[0.875rem] lg:text-[1rem]">Quick Links</h3>
 
-                                <ul className="space-y-1 text-[10px] sm:text-[12px] md:text-[14px]">
+                                <ul className="space-y-1 text-[0.625rem] sm:text-[0.75rem] md:text-[0.875rem]">
                                     <li>
                                         <Link href="/about" className="flex items-center gap-2 hover:text-white">
                                             <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
@@ -66,7 +66,7 @@ export const PublicFooter = () => {
 
                             {/* Social Links */}
                             <div className="min-w-0">
-                                <h3 className="mb-3 text-[12px] font-bold text-[#E53F01] uppercase md:text-[14px] lg:text-[16px]">Follow Us</h3>
+                                <h3 className="mb-3 text-[0.75rem] font-bold text-[#E53F01] uppercase md:text-[0.875rem] lg:text-[1rem]">Follow Us</h3>
 
                                 <div className="flex flex-wrap gap-3">
                                     <a
@@ -108,7 +108,7 @@ export const PublicFooter = () => {
                                 <img
                                     src="/images/img/dummy-player.png"
                                     alt="Football Player"
-                                    className="h-auto w-full max-w-[140px] object-contain md:max-w-[180px]"
+                                    className="h-auto w-full max-w-[8.75rem] object-contain md:max-w-[11.25rem]"
                                 />
                             </div>
                         </div>
@@ -118,7 +118,7 @@ export const PublicFooter = () => {
                 {/* Copyright */}
                 <div className="border-t border-[#2B2B2B]">
                     <div className="mx-auto max-w-7xl px-3 py-3 text-center">
-                        <p className="text-[12px] break-words text-[#BFBFBF] sm:text-[12px] md:text-[14px] lg:text-[16px]">
+                        <p className="text-[0.75rem] break-words text-[#BFBFBF] sm:text-[0.75rem] md:text-[0.875rem] lg:text-[1rem]">
                             © 2024 HiLights Football. All rights reserved.
                         </p>
                     </div>

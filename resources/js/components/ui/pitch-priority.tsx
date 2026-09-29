@@ -32,7 +32,7 @@ export const PitchPriority = ({ selected = [] }: PitchPriorityProps) => {
     return (
         <div>
             {/* SVG pitch — top-3 priority circles (bordered, target-style), no text labels */}
-            <div className="mx-auto w-full max-w-[840px]">
+            <div className="mx-auto w-full max-w-[52.5rem]">
                 <svg viewBox="0 0 300 200" className="w-full">
                     <defs>
                         <linearGradient id="pitchPriorityBg" x1="0%" y1="0%" x2="100%" y2="0%">

@@ -336,18 +336,18 @@ function DobCalendar({ value, onChange, onClose }: { value: string; onChange: (v
     const pick = (d: number) => { const mm = String(viewMonth + 1).padStart(2, '0'); const dd = String(d).padStart(2, '0'); onChange(`${viewYear}-${mm}-${dd}`); onClose(); };
     const selectClass = 'flex-1 rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] text-[#0F172A] dark:text-[#F5F5F5] text-sm font-medium px-2 py-2 focus:outline-none focus:ring-2 focus:ring-orange-100 dark:focus-ring-orange-800 focus:border-[#E53F01] [color-scheme:light] dark:[color-scheme:dark] cursor-pointer';
     return (
-        <div className="p-4 w-[320px]">
+        <div className="p-4 w-[20rem]">
             <div className="flex items-center gap-2 mb-4">
                 <select value={viewMonth} onChange={(e) => setViewMonth(Number(e.target.value))} className={selectClass}>
                     {MONTHS.map((m, i) => <option key={m.v} value={i}>{m.l}</option>)}
                 </select>
-                <select value={viewYear} onChange={(e) => setViewYear(Number(e.target.value))} className={`${selectClass} font-mono max-w-[90px]`}>
+                <select value={viewYear} onChange={(e) => setViewYear(Number(e.target.value))} className={`${selectClass} font-mono max-w-[5.625rem]`}>
                     {years.map((y) => <option key={y} value={y}>{y}</option>)}
                 </select>
             </div>
             <div className="grid grid-cols-7 gap-1 mb-1">
                 {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(w => (
-                    <div key={w} className="text-center text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold py-1">{w}</div>
+                    <div key={w} className="text-center text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold py-1">{w}</div>
                 ))}
             </div>
             <div className="grid grid-cols-7 gap-1">
@@ -561,7 +561,7 @@ export default function Edit() {
         <div className="min-h-screen bg-[#0D0D0D] pt-16 pb-32">
             <PlayerNavbar />
             <div className="bg-[#0D0D0D] border-b border-[#2A2A2A] sticky top-16 z-20 px-4 sm:px-8 py-4">
-                <div className="max-w-[1100px] mx-auto">
+                <div className="max-w-[68.75rem] mx-auto">
                     <div className="flex items-center">
                         {STEPS.map((s, idx) => {
                             const completed = idx < step;
@@ -586,24 +586,24 @@ export default function Edit() {
                     </div>
                     <div className="hidden sm:flex items-center justify-between mt-3">
                         {STEPS.map((s, idx) => (
-                            <div key={s.id} className={`text-[10px] uppercase tracking-widest font-semibold font-sans ${idx === step ? 'text-[#E53F01]' : 'text-[#94A3B8]'}`}
+                            <div key={s.id} className={`text-[0.625rem] uppercase tracking-widest font-semibold font-sans ${idx === step ? 'text-[#E53F01]' : 'text-[#94A3B8]'}`}
                                 style={{ width: `${100 / STEPS.length}%`, textAlign: idx === 0 ? 'left' : idx === STEPS.length - 1 ? 'right' : 'center' }}>
                                 {s.label}
                             </div>
                         ))}
                     </div>
                     <div className="sm:hidden mt-3 text-center">
-                        <div className="text-[10px] uppercase tracking-widest font-semibold font-sans text-[#E53F01]">
+                        <div className="text-[0.625rem] uppercase tracking-widest font-semibold font-sans text-[#E53F01]">
                             Step {step + 1} of {STEPS.length} — {STEPS[step].label}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="max-w-[1100px] mx-auto px-4 py-8">
+            <div className="max-w-[68.75rem] mx-auto px-4 py-8">
                 {step === 0 && (
                     <section>
-                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">01 / Basic Information</div>
+                        <div className="text-[#E53F01] text-[0.625rem] font-bold tracking-[0.14em] uppercase mb-4 font-sans">01 / Basic Information</div>
                         <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-5">
                                 <div>
@@ -719,7 +719,7 @@ export default function Edit() {
 
                 {step === 1 && (
                     <section>
-                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">02 / Football Details</div>
+                        <div className="text-[#E53F01] text-[0.625rem] font-bold tracking-[0.14em] uppercase mb-4 font-sans">02 / Football Details</div>
                         <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                             <div className="mb-8">
                                 <Label className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Modality</Label>
@@ -786,9 +786,9 @@ export default function Edit() {
                                 {/* Selected positions with priority ordering */}
                                 <div className="mt-5">
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Selected Positions</span>
+                                        <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Selected Positions</span>
                                         {data.positions.length > 1 && (
-                                            <span className="text-[10px] text-[#94A3B8] font-sans">Reorder to set priority</span>
+                                            <span className="text-[0.625rem] text-[#94A3B8] font-sans">Reorder to set priority</span>
                                         )}
                                     </div>
 
@@ -798,7 +798,7 @@ export default function Edit() {
                                         <div className="space-y-2">
                                             {data.positions.map((id, idx) => (
                                                 <div key={id} className="flex items-center gap-3 rounded-xl border border-[#E53F01] bg-[rgba(255,107,0,0.08)] px-3 py-2.5">
-                                                    <span className="flex-shrink-0 rounded-md bg-[#E53F01] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white font-sans">
+                                                    <span className="flex-shrink-0 rounded-md bg-[#E53F01] px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-white font-sans">
                                                         {PRIORITY_LABELS[idx] ?? `#${idx + 1}`}
                                                     </span>
                                                     <span className="flex-1 text-sm font-semibold text-[#F5F5F5] font-sans">
@@ -858,7 +858,7 @@ export default function Edit() {
 
                 {step === 2 && (
                     <section>
-                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">03 / Media</div>
+                        <div className="text-[#E53F01] text-[0.625rem] font-bold tracking-[0.14em] uppercase mb-4 font-sans">03 / Media</div>
                         <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8 space-y-8">
                             <div>
                                 <Label className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Profile Photo</Label>
@@ -915,7 +915,7 @@ export default function Edit() {
 
                 {step === 3 && (
                     <section>
-                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">04 / Career History</div>
+                        <div className="text-[#E53F01] text-[0.625rem] font-bold tracking-[0.14em] uppercase mb-4 font-sans">04 / Career History</div>
                         <div className="space-y-8">
                             {/* Club History */}
                             {/* Club History */}
@@ -923,17 +923,17 @@ export default function Edit() {
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Club History</h3>
 
                                 {/* Header Row */}
-                                <div className="grid grid-cols-[110px_80px_minmax(0,1fr)_130px_40px] gap-3 items-center mb-2">
-                                    <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
+                                <div className="grid grid-cols-[6.875rem_5rem_minmax(0,1fr)_8.125rem_2.5rem] gap-3 items-center mb-2">
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
                                         Format
                                     </span>
-                                    <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
                                         Year
                                     </span>
-                                    <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
                                         Club Name
                                     </span>
-                                    <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
                                         Country
                                     </span>
                                     <span className="w-10" />
@@ -945,7 +945,7 @@ export default function Edit() {
 
                                     return (
                                         <div key={idx} className="mb-3">
-                                            <div className="grid grid-cols-[110px_80px_minmax(0,1fr)_130px_40px] gap-3 items-start">
+                                            <div className="grid grid-cols-[6.875rem_5rem_minmax(0,1fr)_8.125rem_2.5rem] gap-3 items-start">
                                                 {/* Year Format Dropdown */}
                                                 <select
                                                     value={yearType}
@@ -1029,7 +1029,7 @@ export default function Edit() {
 
                                             {/* Year format error message */}
                                             {yearError && (
-                                                <p className="mt-1 ml-[198px] text-xs text-red-400">
+                                                <p className="mt-1 ml-[12.375rem] text-xs text-red-400">
                                                     ⚠️ {yearError}
                                                 </p>
                                             )}
@@ -1042,9 +1042,9 @@ export default function Edit() {
                             {/* <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Transfer History</h3>
                                 <div className="flex items-center gap-3 mb-2">
-                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
-                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Club</span>
-                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Country</span>
+                                    <span className="w-24 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
+                                    <span className="flex-1 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Club</span>
+                                    <span className="flex-1 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Country</span>
                                     <span className="w-10 flex-shrink-0" />
                                 </div>
                                 {data.transfer_history.map((row: any, idx: number) => (
@@ -1065,8 +1065,8 @@ export default function Edit() {
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Achievements</h3>
                                 <div className="flex items-center gap-3 mb-2">
-                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
-                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Title</span>
+                                    <span className="w-24 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
+                                    <span className="flex-1 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Title</span>
                                     <span className="w-10 flex-shrink-0" />
                                 </div>
                                 {data.achievements.map((row: any, idx: number) => (
@@ -1083,8 +1083,8 @@ export default function Edit() {
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Competition History</h3>
                                 <div className="flex items-center gap-3 mb-2">
-                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
-                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Competition</span>
+                                    <span className="w-24 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
+                                    <span className="flex-1 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Competition</span>
                                     <span className="w-10 flex-shrink-0" />
                                 </div>
                                 {data.competitions.map((row: any, idx: number) => (
@@ -1101,12 +1101,12 @@ export default function Edit() {
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Recent Matches</h3>
                                 <div className="flex items-center gap-3 mb-2">
-                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Home</span>
-                                    <span className="w-20 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Score</span>
-                                    <span className="w-24 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Away</span>
-                                    <span className="w-14 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">G</span>
-                                    <span className="w-14 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">A</span>
-                                    <span className="w-20 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Min</span>
+                                    <span className="w-24 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Home</span>
+                                    <span className="w-20 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Score</span>
+                                    <span className="w-24 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Away</span>
+                                    <span className="w-14 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">G</span>
+                                    <span className="w-14 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">A</span>
+                                    <span className="w-20 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Min</span>
                                     <span className="w-6" />
                                 </div>
                                 {data.matches.map((row: any, idx: number) => (
@@ -1128,7 +1128,7 @@ export default function Edit() {
 
                 {step === 4 && (
                     <section>
-                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">05 / About You</div>
+                        <div className="text-[#E53F01] text-[0.625rem] font-bold tracking-[0.14em] uppercase mb-4 font-sans">05 / About You</div>
                         <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                             <Label htmlFor="description" className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Description</Label>
                             <Textarea id="description" rows={5} maxLength={500} value={data.description} onChange={(e) => setData('description', e.target.value)} placeholder="Describe your playing style, strengths, and football journey..." className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01] resize-none" />
@@ -1217,7 +1217,7 @@ export default function Edit() {
             </div>
 
             {/* Sticky Bottom */}
-            <div className="bg-[#0D0D0D] border-t border-[#2A2A2A] fixed bottom-0 left-0 right-0 z-20 h-[68px] px-4 sm:px-8 flex items-center justify-between">
+            <div className="bg-[#0D0D0D] border-t border-[#2A2A2A] fixed bottom-0 left-0 right-0 z-20 h-[4.25rem] px-4 sm:px-8 flex items-center justify-between">
                 <div className="hidden sm:flex items-center gap-2">
                     {/* <CheckCircle2 className="text-green-500 w-4 h-4" />
                     <span className="text-xs text-[#94A3B8] font-sans">Draft saved 2 min ago</span> */}

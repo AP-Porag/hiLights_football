@@ -268,8 +268,8 @@ export default function Detail() {
             <div className="w-full bg-[#111111] border-b border-[#2A2A2A] pt-20 pb-3">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="flex justify-center">
-                        <div className="relative w-full max-w-[728px] h-[90px] bg-black rounded-2xl overflow-hidden flex items-center justify-between px-6">
-                            {/* <span className="absolute top-1 right-2 text-[10px] text-white/40 uppercase tracking-wider">Ad</span> */}
+                        <div className="relative w-full max-w-[45.5rem] h-[5.625rem] bg-black rounded-2xl overflow-hidden flex items-center justify-between px-6">
+                            {/* <span className="absolute top-1 right-2 text-[0.625rem] text-white/40 uppercase tracking-wider">Ad</span> */}
                             {/* <div className="flex items-center gap-4">
                                 <div className="text-white font-display text-3xl font-black italic">NIKE</div>
                                 <div className="hidden sm:block h-12 w-px bg-white/20" />
@@ -358,19 +358,19 @@ export default function Detail() {
                             </div>
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                                 <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4">
-                                    <div className="text-[10px] uppercase tracking-wider text-white/50 mb-1">Goals / Assists</div>
+                                    <div className="text-[0.625rem] uppercase tracking-wider text-white/50 mb-1">Goals / Assists</div>
                                     <div className="font-mono text-xl sm:text-2xl font-bold text-[#E53F01]">{stats.goals}/{stats.assists}</div>
                                 </div>
                                 <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4">
-                                    <div className="text-[10px] uppercase tracking-wider text-white/50 mb-1">Appearances</div>
+                                    <div className="text-[0.625rem] uppercase tracking-wider text-white/50 mb-1">Appearances</div>
                                     <div className="font-mono text-xl sm:text-2xl font-bold">{stats.appearances}</div>
                                 </div>
                                 <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4">
-                                    <div className="text-[10px] uppercase tracking-wider text-white/50 mb-1">Videos</div>
+                                    <div className="text-[0.625rem] uppercase tracking-wider text-white/50 mb-1">Videos</div>
                                     <div className="font-mono text-xl sm:text-2xl font-bold">{videos.length}</div>
                                 </div>
                                 <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4">
-                                    <div className="text-[10px] uppercase tracking-wider text-white/50 mb-1">Trophies</div>
+                                    <div className="text-[0.625rem] uppercase tracking-wider text-white/50 mb-1">Trophies</div>
                                     <div className="font-mono text-xl sm:text-2xl font-bold">{achievements.length}</div>
                                 </div>
                             </div>
@@ -385,8 +385,8 @@ export default function Detail() {
                         {/* LEFT SIDEBAR AD */}
                         <aside className="hidden lg:block lg:col-span-3">
                             <div className="sticky top-24 space-y-6">
-                                <div className="relative w-full max-w-[300px] mx-auto h-[600px] bg-[#0B1929] rounded-2xl overflow-hidden">
-                                    {/* <span className="absolute top-2 left-2 text-[10px] text-white/40 uppercase tracking-wider z-10">Sponsored</span> */}
+                                <div className="relative w-full max-w-[18.75rem] mx-auto h-[37.5rem] bg-[#0B1929] rounded-2xl overflow-hidden">
+                                    {/* <span className="absolute top-2 left-2 text-[0.625rem] text-white/40 uppercase tracking-wider z-10">Sponsored</span> */}
                                     <div className="absolute inset-0 flex flex-col items-center justify-between p-6 text-white">
                                         <div className="text-center pt-6">
                                             {/* <div className="font-display text-3xl font-black tracking-tight mb-1">WYSCOUT</div> */}
@@ -398,11 +398,11 @@ export default function Detail() {
                                             <p className="text-sm text-white/70 mb-6">Advanced video analysis, player databases & opposition reports trusted by elite clubs worldwide.</p> */}
                                             <div className="grid grid-cols-2 gap-2 mb-6 text-left">
                                                 <div className="bg-white/5 rounded-lg p-2">
-                                                    {/* <div className="text-blue-400 text-[10px] uppercase font-bold">Players</div>
+                                                    {/* <div className="text-blue-400 text-[0.625rem] uppercase font-bold">Players</div>
                                                     <div className="font-mono text-lg font-bold">600K+</div> */}
                                                 </div>
                                                 <div className="bg-white/5 rounded-lg p-2">
-                                                    {/* <div className="text-blue-400 text-[10px] uppercase font-bold">Clubs</div>
+                                                    {/* <div className="text-blue-400 text-[0.625rem] uppercase font-bold">Clubs</div>
                                                     <div className="font-mono text-lg font-bold">3,200</div> */}
                                                 </div>
                                             </div>
@@ -418,10 +418,10 @@ export default function Detail() {
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                                 <div className="flex items-center justify-between gap-3 mb-5">
                                     <div className="min-w-0">
-                                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">{roleLabel} Toolkit</div>
+                                        <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">{roleLabel} Toolkit</div>
                                         <h2 className="font-display text-2xl font-bold uppercase italic">{roleLabel} Actions</h2>
                                     </div>
-                                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] uppercase font-bold tracking-wider flex-shrink-0">
+                                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[0.625rem] uppercase font-bold tracking-wider flex-shrink-0">
                                         <Eye className="w-3 h-3" />
                                         {roleLabel} View
                                     </span>
@@ -461,7 +461,7 @@ export default function Detail() {
                                         </div>
                                         {averageRating > 0 && (
                                             <div className="text-right">
-                                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold">Overall</div>
+                                                <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold">Overall</div>
                                                 <div className="font-mono text-2xl font-bold text-[#E53F01]">{averageRating.toFixed(1)}</div>
                                             </div>
                                         )}
@@ -482,7 +482,7 @@ export default function Detail() {
                                                             <Icon className="w-4 h-4 text-[#E53F01] flex-shrink-0" />
                                                             <div className="min-w-0">
                                                                 <div className="text-sm font-semibold">{cat.label}</div>
-                                                                <div className="text-[11px] text-[#555555] truncate">{cat.desc}</div>
+                                                                <div className="text-[0.6875rem] text-[#555555] truncate">{cat.desc}</div>
                                                             </div>
                                                         </div>
                                                         <div className="font-mono text-lg font-bold text-[#E53F01] w-10 text-right flex-shrink-0">{value || '—'}</div>
@@ -509,7 +509,7 @@ export default function Detail() {
                                         })}
                                     </div>
                                     <div className="mt-6">
-                                        <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">{roleLabel} Notes</label>
+                                        <label className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">{roleLabel} Notes</label>
                                         <textarea
                                             value={rating.notes}
                                             onChange={(e) => setRating({ ...rating, notes: e.target.value })}
@@ -538,41 +538,41 @@ export default function Detail() {
                             </div>
                             {/* BIO */}
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
-                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">About</div>
+                                <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">About</div>
                                 <h2 className="font-display text-2xl font-bold uppercase mb-3 italic">Player Profile</h2>
                                 <p className="text-sm text-[#9A9A9A] leading-relaxed mb-6">
                                     {player?.description || 'No description added yet.'}
                                 </p>
                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                                     <div>
-                                        <div className="text-[10px] uppercase tracking-wider text-[#555555] mb-1">Height</div>
+                                        <div className="text-[0.625rem] uppercase tracking-wider text-[#555555] mb-1">Height</div>
                                         <div className="font-mono text-base font-bold flex items-center gap-1.5">
                                             <Ruler className="w-4 h-4 text-[#E53F01]" />
                                             {player?.height ? `${player.height} cm` : '—'}
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="text-[10px] uppercase tracking-wider text-[#555555] mb-1">Weight</div>
+                                        <div className="text-[0.625rem] uppercase tracking-wider text-[#555555] mb-1">Weight</div>
                                         <div className="font-mono text-base font-bold flex items-center gap-1.5">
                                             <Weight className="w-4 h-4 text-[#E53F01]" />
                                             {player?.weight ? `${player.weight} kg` : '—'}
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="text-[10px] uppercase tracking-wider text-[#555555] mb-1">Foot</div>
+                                        <div className="text-[0.625rem] uppercase tracking-wider text-[#555555] mb-1">Foot</div>
                                         <div className="font-mono text-base font-bold flex items-center gap-1.5">
                                             <Footprints className="w-4 h-4 text-[#E53F01]" />
                                             {player?.foot || '—'}
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="text-[10px] uppercase tracking-wider text-[#555555] mb-1">In Team Since</div>
+                                        <div className="text-[0.625rem] uppercase tracking-wider text-[#555555] mb-1">In Team Since</div>
                                         <div className="font-mono text-base font-bold">{memberSince || '—'}</div>
                                     </div>
                                 </div>
                                 {positions.length > 0 && (
                                     <div className="mt-5 pt-5 border-t border-[#2A2A2A]">
-                                        <div className="text-[10px] uppercase tracking-wider text-[#555555] mb-2">Positions</div>
+                                        <div className="text-[0.625rem] uppercase tracking-wider text-[#555555] mb-2">Positions</div>
                                         <div className="flex flex-wrap gap-2">
                                             {positions.map((p) => (
                                                 <span key={p} className="inline-flex items-center px-2.5 py-1 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-xs font-bold uppercase tracking-wider">
@@ -584,8 +584,8 @@ export default function Detail() {
                                 )}
                             </div>
                             {/* IN-CONTENT AD */}
-                            <div className="relative w-full h-[100px] bg-black rounded-2xl overflow-hidden flex items-center justify-between gap-3 px-6">
-                                {/* <span className="absolute top-1 right-2 text-[10px] text-white/40 uppercase tracking-wider">Ad</span> */}
+                            <div className="relative w-full h-[6.25rem] bg-black rounded-2xl overflow-hidden flex items-center justify-between gap-3 px-6">
+                                {/* <span className="absolute top-1 right-2 text-[0.625rem] text-white/40 uppercase tracking-wider">Ad</span> */}
                                 <div className="flex items-center gap-4 min-w-0">
                                     {/* <div className="flex flex-col flex-shrink-0">
                                         <div className="w-12 h-2 bg-white rounded-sm mb-1" />
@@ -604,7 +604,7 @@ export default function Detail() {
                                 <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
                                     <div className="flex items-center justify-between mb-5">
                                         <div>
-                                            <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">Video Library</div>
+                                            <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">Video Library</div>
                                             {/* <h2 className="font-display text-2xl font-bold uppercase">Highlights</h2> */}
                                         </div>
                                         <span className="font-mono text-xs text-[#9A9A9A]">{videos.length} videos</span>
@@ -640,7 +640,7 @@ export default function Detail() {
                             {/* SEASON STATS */}
                             {matches.length > 0 && (
                                 <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
-                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">From Recent Matches</div>
+                                    <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">From Recent Matches</div>
                                     <h2 className="font-display text-2xl font-bold uppercase mb-5 italic">Statistics</h2>
                                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
                                         {[
@@ -654,7 +654,7 @@ export default function Detail() {
                                                 <div key={stat.label} className="bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl p-4">
                                                     <Icon className="w-4 h-4 text-[#E53F01] mb-2" />
                                                     <div className="font-mono text-2xl font-bold">{stat.value}</div>
-                                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mt-1">{stat.label}</div>
+                                                    <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mt-1">{stat.label}</div>
                                                 </div>
                                             );
                                         })}
@@ -681,7 +681,7 @@ export default function Detail() {
                             {/* ACHIEVEMENTS */}
                             {achievements.length > 0 && (
                                 <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
-                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Honours</div>
+                                    <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Honours</div>
                                     <h2 className="font-display text-2xl font-bold uppercase mb-5 italic">Achievements</h2>
                                     <div className="space-y-3">
                                         {achievements.map((a, i) => (
@@ -701,7 +701,7 @@ export default function Detail() {
                             {/* COMPETITIONS */}
                             {competitions.length > 0 && (
                                 <section className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
-                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">
+                                    <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">
                                         Experience
                                     </div>
                                     <h2 className="font-display text-2xl font-bold uppercase mb-5 italic">
@@ -729,7 +729,7 @@ export default function Detail() {
                             {/* CAREER — club history */}
                             {clubHistory.length > 0 && (
                                 <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
-                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Trajectory</div>
+                                    <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Trajectory</div>
                                     <h2 className="font-display text-2xl font-bold uppercase mb-5 italic">Career History</h2>
                                     <div className="space-y-4">
                                         {clubHistory.map((entry, i) => (
@@ -751,7 +751,7 @@ export default function Detail() {
                             {/* TRANSFER HISTORY */}
                             {transferHistory.length > 0 && (
                                 <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
-                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Movements</div>
+                                    <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Movements</div>
                                     <h2 className="font-display text-2xl font-bold uppercase mb-5">Transfer History</h2>
                                     <div className="space-y-4">
                                         {transferHistory.map((entry, i) => (
@@ -778,8 +778,8 @@ export default function Detail() {
                             {/* CONTACT INFO */}
                             <div className="relative bg-[rgba(22,163,74,0.08)] border border-green-800 rounded-2xl p-6">
                                 <div className="flex items-center justify-between mb-4">
-                                    <div className="text-[10px] uppercase font-bold tracking-wider text-green-400">Player Contact</div>
-                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-green-600 text-white text-[10px] font-bold uppercase tracking-wider">Available</span>
+                                    <div className="text-[0.625rem] uppercase font-bold tracking-wider text-green-400">Player Contact</div>
+                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-green-600 text-white text-[0.625rem] font-bold uppercase tracking-wider">Available</span>
                                 </div>
                                 <div className="space-y-3">
 
@@ -793,7 +793,7 @@ export default function Detail() {
                                             </div>
 
                                             <div className="min-w-0 flex-1">
-                                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold">
+                                                <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold">
                                                     Email
                                                 </div>
                                                 <div className="font-mono text-sm font-semibold truncate">
@@ -815,7 +815,7 @@ export default function Detail() {
                                             </div>
 
                                             <div className="min-w-0 flex-1">
-                                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold">
+                                                <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold">
                                                     WhatsApp
                                                 </div>
                                                 <div className="font-mono text-sm font-semibold truncate">
@@ -832,7 +832,7 @@ export default function Detail() {
                                                 <MessageCircle className="w-5 h-5 text-green-400" />
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold">Agent</div>
+                                                <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold">Agent</div>
                                                 <div className="font-mono text-sm font-semibold truncate">{player.agent}</div>
                                             </div>
                                         </div>
@@ -840,13 +840,13 @@ export default function Detail() {
                                     {!player?.user?.email && !player?.agent && (
                                         <p className="text-xs text-[#9A9A9A]">No contact details added yet.</p>
                                     )}
-                                    <div className="text-[11px] text-green-400 px-1 pt-1 leading-relaxed">Please be professional and verify your scouting credentials before reaching out.</div>
+                                    <div className="text-[0.6875rem] text-green-400 px-1 pt-1 leading-relaxed">Please be professional and verify your scouting credentials before reaching out.</div>
                                 </div>
                             </div>
                             {/* RIGHT SIDEBAR AD */}
                             <div className="hidden md:block">
-                                <div className="relative w-full max-w-[300px] mx-auto h-[600px] bg-[#001E2E] rounded-2xl overflow-hidden">
-                                    {/* <span className="absolute top-2 left-2 text-[10px] text-white/40 uppercase tracking-wider z-10">Sponsored</span> */}
+                                <div className="relative w-full max-w-[18.75rem] mx-auto h-[37.5rem] bg-[#001E2E] rounded-2xl overflow-hidden">
+                                    {/* <span className="absolute top-2 left-2 text-[0.625rem] text-white/40 uppercase tracking-wider z-10">Sponsored</span> */}
                                     <div className="absolute inset-0 flex flex-col p-6 text-white">
                                         <div className="text-center pt-4 mb-6">
                                             {/* <div className="font-display text-3xl font-black italic tracking-tight">TRANSFER<span className="text-[#E53F01]">ROOM</span></div> */}
@@ -875,12 +875,12 @@ export default function Detail() {
                                 </div>
                             </div>
                             {/* HALF PAGE AD */}
-                            <div className="relative w-full max-w-[300px] mx-auto h-[250px] bg-[#001E2E] rounded-2xl overflow-hidden">
-                                {/* <span className="absolute top-2 right-2 text-[10px] text-white/40 uppercase tracking-wider z-10">Ad</span> */}
+                            <div className="relative w-full max-w-[18.75rem] mx-auto h-[15.625rem] bg-[#001E2E] rounded-2xl overflow-hidden">
+                                {/* <span className="absolute top-2 right-2 text-[0.625rem] text-white/40 uppercase tracking-wider z-10">Ad</span> */}
                                 <div className="absolute inset-0 flex flex-col items-center justify-between p-5 text-white">
                                     <div className="text-center pt-2">
                                         {/* <div className="font-display text-2xl font-black tracking-tight">SPORT<span className="text-[#0091EA]">RADAR</span></div>
-                                        <div className="text-[10px] uppercase tracking-widest text-blue-300 mt-1">Data & Analytics</div> */}
+                                        <div className="text-[0.625rem] uppercase tracking-widest text-blue-300 mt-1">Data & Analytics</div> */}
                                     </div>
                                     <div className="text-center">
                                         {/* <div className="font-display text-lg font-bold leading-tight mb-2">ELITE FOOTBALL ANALYTICS</div>
@@ -899,7 +899,7 @@ export default function Detail() {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6">
                         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
                             <div>
-                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">Discover More Talent</div>
+                                <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">Discover More Talent</div>
                                 <h2 className="font-display text-3xl sm:text-4xl font-bold uppercase">Similar Players</h2>
                             </div>
                             <Link href="/scouting/dashboard" className="inline-flex items-center gap-1.5 text-[#E53F01] hover:text-[#E53F01] text-sm font-semibold">
@@ -930,7 +930,7 @@ export default function Detail() {
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2 mb-1.5">
                                                     {spPositions[0] && (
-                                                        <span className="inline-flex items-center px-2 py-0.5 rounded bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-bold uppercase tracking-wider">
+                                                        <span className="inline-flex items-center px-2 py-0.5 rounded bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[0.625rem] font-bold uppercase tracking-wider">
                                                             {spPositions[0]}
                                                         </span>
                                                     )}
@@ -942,15 +942,15 @@ export default function Detail() {
                                         </div>
                                         <div className="grid grid-cols-3 gap-2 pt-4 border-t border-[#2A2A2A]">
                                             <div>
-                                                <div className="text-[9px] uppercase tracking-wider text-[#555555] font-bold">Age</div>
+                                                <div className="text-[0.5625rem] uppercase tracking-wider text-[#555555] font-bold">Age</div>
                                                 <div className="font-mono text-sm font-bold">{spAge ?? '—'}</div>
                                             </div>
                                             <div>
-                                                <div className="text-[9px] uppercase tracking-wider text-[#555555] font-bold">G/A</div>
+                                                <div className="text-[0.5625rem] uppercase tracking-wider text-[#555555] font-bold">G/A</div>
                                                 <div className="font-mono text-sm font-bold">{spGoals}/{spAssists}</div>
                                             </div>
                                             <div>
-                                                <div className="text-[9px] uppercase tracking-wider text-[#555555] font-bold">Height</div>
+                                                <div className="text-[0.5625rem] uppercase tracking-wider text-[#555555] font-bold">Height</div>
                                                 <div className="font-mono text-sm font-bold text-[#E53F01]">{sp.height ? `${sp.height}` : '—'}</div>
                                             </div>
                                         </div>
@@ -990,7 +990,7 @@ export default function Detail() {
                             <p className="text-sm text-white/60 max-w-sm">The enterprise football scouting platform connecting clubs, agents, and the next generation of talent.</p>
                         </div>
                         <div>
-                            <div className="text-[10px] uppercase tracking-wider text-white/40 font-bold mb-3">Scout</div>
+                            <div className="text-[0.625rem] uppercase tracking-wider text-white/40 font-bold mb-3">Scout</div>
                             <ul className="space-y-2 text-sm">
                                 <li><Link href="/scouting/dashboard" className="text-white/70 hover:text-white">Browse Players</Link></li>
                                 <li><Link href="/scout/shortlist" className="text-white/70 hover:text-white">My Shortlist</Link></li>
@@ -998,7 +998,7 @@ export default function Detail() {
                             </ul>
                         </div>
                         <div>
-                            <div className="text-[10px] uppercase tracking-wider text-white/40 font-bold mb-3">Company</div>
+                            <div className="text-[0.625rem] uppercase tracking-wider text-white/40 font-bold mb-3">Company</div>
                             <ul className="space-y-2 text-sm">
                                 <li><Link href="/about" className="text-white/70 hover:text-white">About</Link></li>
                                 <li><Link href="/contact" className="text-white/70 hover:text-white">Contact</Link></li>

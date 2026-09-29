@@ -407,7 +407,7 @@ function ListModal({
                             const yearError = yearErrors[i] || '';
                             return (
                                 <div key={i} className="mb-3">
-                                    <div className="grid grid-cols-[110px_80px_minmax(0,1fr)_130px_40px] gap-3 items-start">
+                                    <div className="grid grid-cols-[6.875rem_5rem_minmax(0,1fr)_8.125rem_2.5rem] gap-3 items-start">
                                         {/* Year Format Dropdown */}
                                         <select
                                             value={yearType}
@@ -477,7 +477,7 @@ function ListModal({
 
                                     {/* Year format error message */}
                                     {yearError && (
-                                        <p className="mt-1 ml-[198px] text-xs text-red-400">
+                                        <p className="mt-1 ml-[12.375rem] text-xs text-red-400">
                                             ⚠️ {yearError}
                                         </p>
                                     )}
@@ -489,8 +489,8 @@ function ListModal({
                         rows.map((row, i) => (
                             <div key={i} className="flex flex-wrap items-end gap-2 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
                                 {cfg.fields.map((f) => (
-                                    <div key={f.name} className="flex-1 min-w-[90px]">
-                                        <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-[#94A3B8]">
+                                    <div key={f.name} className="flex-1 min-w-[5.625rem]">
+                                        <label className="mb-1 block text-[0.625rem] font-semibold uppercase tracking-wider text-[#94A3B8]">
                                             {f.label}
                                         </label>
                                         {f.type === 'file' ? (
@@ -718,7 +718,7 @@ function FormModal({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {cfg.fields.map((f) => (
                         <div key={f.name} className={f.type === 'positions' || f.type === 'file' || f.type === 'textarea' || f.type === 'multi_country' ? 'sm:col-span-2' : ''}>
-                            <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-wider text-[#94A3B8]">
+                            <label className="mb-1.5 block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#94A3B8]">
                                 {f.label}
                             </label>
                             {f.type === 'text' && (
@@ -807,7 +807,7 @@ function FormModal({
                                                     className={`flex flex-col items-start rounded-lg border px-2.5 py-2 text-left ${on ? 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01]' : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A]'}`}
                                                 >
                                                     <span className="text-xs font-bold">{id}</span>
-                                                    <span className="text-[10px] leading-tight opacity-80">{POSITION_FULL_NAMES[id]}</span>
+                                                    <span className="text-[0.625rem] leading-tight opacity-80">{POSITION_FULL_NAMES[id]}</span>
                                                 </button>
                                             );
                                         })}
@@ -816,12 +816,12 @@ function FormModal({
                                     {/* Selected positions — priority order (Main / Secondary / Third) */}
                                     {(values.positions || []).length > 1 && (
                                         <div className="mt-3 space-y-2">
-                                            <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold">
+                                            <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold">
                                                 Reorder to set priority
                                             </span>
                                             {(values.positions || []).map((id: string, idx: number) => (
                                                 <div key={id} className="flex items-center gap-3 rounded-lg border border-[#E53F01] bg-[rgba(255,107,0,0.08)] px-3 py-2">
-                                                    <span className="flex-shrink-0 rounded-md bg-[#E53F01] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                                                    <span className="flex-shrink-0 rounded-md bg-[#E53F01] px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-white">
                                                         {PRIORITY_LABELS[idx] ?? `#${idx + 1}`}
                                                     </span>
                                                     <span className="flex-1 text-sm font-semibold text-[#F5F5F5]">
@@ -1245,20 +1245,20 @@ export default function PlayerDashboard() {
             <PlayerNavbar />
             {/* PAGE HEADER */}
             <header className="border-b border-[#2A2A2A] bg-[#0D0D0D] px-4 py-5 sm:px-8">
-                <div className="mx-auto max-w-[1300px]">
+                <div className="mx-auto max-w-[81.25rem]">
                     <h1 className="font-display text-2xl font-bold text-[#F5F5F5] sm:text-3xl">
                         {greeting}, {auth?.user?.name}
                     </h1>
                     <p className="mt-1 text-sm text-[#9A9A9A]">{dateStr}</p>
                 </div>
             </header>
-            <main className="mx-auto max-w-[1300px] space-y-6 px-4 py-6 sm:px-8 sm:py-8">
+            <main className="mx-auto max-w-[81.25rem] space-y-6 px-4 py-6 sm:px-8 sm:py-8">
                 {/* WIDGETS ROW */}
-                <section className="grid grid-cols-1 gap-2 md:grid-cols-[1fr_450px]">
+                <section className="grid grid-cols-1 gap-2 md:grid-cols-[1fr_28.125rem]">
                     {/* [1] Profile Complete */}
-                    <div className="grid grid-cols-2 gap-4 h-[500px]">
+                    <div className="grid grid-cols-2 gap-4 h-[31.25rem]">
                         <div className="flex flex-col items-center rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
-                            <div className="relative h-[112px] w-[112px]">
+                            <div className="relative h-[7rem] w-[7rem]">
                                 <svg width="112" height="112" viewBox="0 0 112 112" className="-rotate-90">
                                     <circle cx="56" cy="56" r="44" fill="none" strokeWidth="10" className="stroke-[#2A2A2A]" />
                                     <circle cx="56" cy="56" r="44" fill="none" stroke="#E53F01" strokeWidth="10" strokeDasharray={circumference} strokeDashoffset={dashOffset} strokeLinecap="round" />
@@ -1268,7 +1268,7 @@ export default function PlayerDashboard() {
                                 </div>
                             </div>
                             <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Profile Complete</p>
-                            <p className="mt-2 text-[10px] font-medium text-[#E53F01]">
+                            <p className="mt-2 text-[0.625rem] font-medium text-[#E53F01]">
                                 {profileComplete < 100 ? `${100 - profileComplete}% left to complete your profile` : 'Your profile is complete'}
                             </p>
                         </div>
@@ -1299,34 +1299,34 @@ export default function PlayerDashboard() {
                         <div className="flex flex-col rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                             {!hasSubscription ? (
                                 <>
-                                    <Badge className="w-fit border border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[10px] font-bold tracking-wider text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]">FREE PLAN</Badge>
+                                    <Badge className="w-fit border border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[0.625rem] font-bold tracking-wider text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]">FREE PLAN</Badge>
                                     <p className="mt-3 flex-1 text-sm text-[#9A9A9A]">Unlock all features and reach more scouts.</p>
                                     <Link href="/player/subscription" className="mt-3">
                                         <Button className="w-full bg-[#E53F01] p-3 font-semibold text-white hover:bg-[#E53F01]">
                                             <Crown className="mr-1.5 h-3.5 w-3.5" />
-                                            <span className="text-[12px]">Upgrade to <br className="block" /> Premium</span>
+                                            <span className="text-[0.75rem]">Upgrade to <br className="block" /> Premium</span>
                                         </Button>
                                     </Link>
                                 </>
                             ) : (
                                 <>
-                                    <Badge className="w-fit border border-green-600 bg-green-950/30 text-[10px] font-bold tracking-wider text-green-400 hover:bg-green-950/30">PREMIUM ACTIVE</Badge>
+                                    <Badge className="w-fit border border-green-600 bg-green-950/30 text-[0.625rem] font-bold tracking-wider text-green-400 hover:bg-green-950/30">PREMIUM ACTIVE</Badge>
                                     <p className="mt-3 flex-1 text-sm text-[#9A9A9A]">All features unlocked.</p>
                                 </>
                             )}
                         </div>
                     </div>
                     {/* right side */}
-                    <div className="mx-auto mb-16">
-                        <div ref={cardRef} className="w-[300px] sm:w-[420px] border-1 border-gray-600 rounded-[16px] bg-black">
+                    <div className="mx-auto mb-16 max-[331px]:[zoom:0.95] max-[316px]:[zoom:0.82]">
+                        <div ref={cardRef} className="w-[18.75rem] sm:w-[26.25rem] border-1 border-gray-600 rounded-[1rem] bg-black">
                             <div className="overflow-hidden text-white">
                                 <div className="flex items-center justify-between">
                                     <div className="pl-3 sm:pl-4">
-                                        <img src="/images/logo/final_logo.png" alt="new-logo" className="w-[125px] sm:w-[170px]" />
+                                        <img src="/images/logo/final_logo.png" alt="new-logo" className="w-[7.8125rem] sm:w-[10.625rem]" />
                                     </div>
                                     <div className="-translate-x-[15%] sm:-translate-x-[30%] translate-y-[20%]">
-                                        <h2 className="text-center font-bold uppercase text-[11px] sm:text-[14px]">MEMBER CARD</h2>
-                                        <p className="text-center text-[8px] sm:text-[10px] font-semibold text-[#E53F01] uppercase">Official Member</p>
+                                        <h2 className="text-center font-bold uppercase text-[0.6875rem] sm:text-[0.875rem]">MEMBER CARD</h2>
+                                        <p className="text-center text-[0.5rem] sm:text-[0.625rem] font-semibold text-[#E53F01] uppercase">Official Member</p>
                                         <svg width="130" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />
                                             <path d="M90 4L92.35 9.15L98 9.8L94 13.6L95.2 19L90 16L84.8 19L86 13.6L82 9.8L87.65 9.15L90 4Z" fill="#F97316" />
@@ -1335,27 +1335,27 @@ export default function PlayerDashboard() {
                                     </div>
                                 </div>
                                 <div className="relative flex gap-2 sm:gap-4 pl-4 pt-2 border-b-1 border-gray-400">
-                                    <div className="h-[160px] w-[95px] sm:h-[210px] sm:w-[130px] mb-3">
-                                        <img src={auth?.user?.player_profile?.photo_url || '/images/img/placeholder.webp'} alt="player" className="h-full w-full rounded-[10px] sm:rounded-[12px] border-1 border-gray-400" />
+                                    <div className="h-[10rem] w-[5.9375rem] sm:h-[13.125rem] sm:w-[8.125rem] mb-3">
+                                        <img src={auth?.user?.player_profile?.photo_url || '/images/img/placeholder.webp'} alt="player" className="h-full w-full rounded-[0.625rem] sm:rounded-[0.75rem] border-1 border-gray-400" />
                                     </div>
                                     <div>
                                         <div className="relative z-10">
-                                            <h3 className="mt-2 text-[12px] sm:mt-4 sm:text-[16px] font-bold uppercase">{auth?.user?.name}</h3>
-                                            <div className="absolute mt-2 h-[1px] bg-[#E53F01] w-[80%] sm:w-[110%]"></div>
+                                            <h3 className="mt-2 text-[0.75rem] sm:mt-4 sm:text-[1rem] font-bold uppercase">{auth?.user?.name}</h3>
+                                            <div className="absolute mt-2 h-[0.0625rem] bg-[#E53F01] w-[80%] sm:w-[110%]"></div>
                                         </div>
                                         <div className="mt-6 space-y-1">
                                             <div className="flex items-center">
-                                                <User className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
-                                                <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">ID:<br /><span className="text-white">{auth?.user?.player_profile?.player_id}</span></p>
+                                                <User className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
+                                                <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">ID:<br /><span className="text-white">{auth?.user?.player_profile?.player_id}</span></p>
                                             </div>
                                             <div className="flex items-center">
-                                                <CalendarDays className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
-                                                <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">DATE OF BIRTH:<br /><span className="text-white">{auth?.user?.dob && new Date(auth?.user?.dob).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></p>
+                                                <CalendarDays className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
+                                                <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">DATE OF BIRTH:<br /><span className="text-white">{auth?.user?.dob && new Date(auth?.user?.dob).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></p>
                                             </div>
 
                                             <div className="flex items-center">
-                                                <Flag className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
-                                                <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">NATIONALITY:<br />
+                                                <Flag className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
+                                                <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">NATIONALITY:<br />
                                                     <span className="text-white inline-flex flex-wrap items-center gap-1">
                                                         {Array.isArray(auth?.user?.nationality) && auth?.user?.nationality.length > 0
                                                             ? auth.user.nationality.map((code: string, idx: number) => (
@@ -1370,12 +1370,12 @@ export default function PlayerDashboard() {
                                                 </p>
                                             </div>
                                             <div className="flex items-center">
-                                                <MapPin className="mr-[5px] sm:mr-[10px] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
-                                                <p className="z-10 text-[8px] md:text-[10px] text-[#c7c7c7] uppercase">CITY:<br /><span className="text-white">{auth?.user?.player_profile?.birth_city || 'N/A'}</span></p>
+                                                <MapPin className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
+                                                <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">CITY:<br /><span className="text-white">{auth?.user?.player_profile?.birth_city || 'N/A'}</span></p>
                                             </div>
                                         </div>
                                         <div className="absolute right-0 bottom-0 z-0">
-                                            <img src="/images/img/orange-img.png" alt="" className="w-[50px] sm:w-[60px]" />
+                                            <img src="/images/img/orange-img.png" alt="" className="w-[3.125rem] sm:w-[3.75rem]" />
                                         </div>
                                     </div>
                                 </div>
@@ -1383,52 +1383,52 @@ export default function PlayerDashboard() {
                             <div className="bg-[#191917] p-4 sm:p-6 text-white">
                                 <div className="grid gap-3 sm:gap-6 grid-cols-2">
                                     <div className="relative">
-                                        <div className="absolute top-0 -right-4 w-[1px] h-full border-r border-white/10"></div>
-                                        <h2 className="mb-2 text-[10px] font-bold text-[#f4620c] uppercase">Player Info</h2>
+                                        <div className="absolute top-0 -right-4 w-[0.0625rem] h-full border-r border-white/10"></div>
+                                        <h2 className="mb-2 text-[0.625rem] font-bold text-[#f4620c] uppercase">Player Info</h2>
                                         <div className="space-y-2">
                                             {playerInfo.map((item, index) => (
                                                 <div key={index} className="flex items-center justify-between border-b border-white/10 pb-4 last:border-b-0">
                                                     <div className="flex items-center gap-2">
                                                         <span className="text-[#d2d2d2]">{item.icon}</span>
-                                                        <span className="text-[8px] pr-2 text-[#d2d2d2] uppercase">{item.label}</span>
+                                                        <span className="text-[0.5rem] pr-2 text-[#d2d2d2] uppercase">{item.label}</span>
                                                     </div>
-                                                    <span className="text-[7px] sm:text-[8px] font-medium text-white uppercase">{item.value}</span>
+                                                    <span className="text-[0.4375rem] sm:text-[0.5rem] font-medium text-white uppercase">{item.value}</span>
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
                                     <div className="pl-4 sm:pl-3">
-                                        <h2 className="text-[10px] font-bold text-[#E53F01] uppercase">Scan To View Profile</h2>
-                                        <p className="mt-1 mb-6 text-[8px] text-[#f1f1f1] uppercase">Open Your Camera And Scan</p>
-                                        <div className="w-fit rounded-[8px] sm:rounded-xl border-2 sm:border-[3px] border-[#E53F01] bg-white sm:p-3 p-2">
+                                        <h2 className="text-[0.625rem] font-bold text-[#E53F01] uppercase">Scan To View Profile</h2>
+                                        <p className="mt-1 mb-6 text-[0.5rem] text-[#f1f1f1] uppercase">Open Your Camera And Scan</p>
+                                        <div className="w-fit rounded-[0.5rem] sm:rounded-xl border-2 sm:border-[3px] border-[#E53F01] bg-white sm:p-3 p-2">
                                             <QRCodeSVG
                                                 value={`${typeof window !== 'undefined' ? window.location.origin : ''}/player/profile/${auth?.user?.player_profile?.id}`}
                                                 size={90}
                                                 level="M"
                                                 bgColor="#ffffff"
                                                 fgColor="#000000"
-                                                className="h-[70px] w-[70px] sm:h-[90px] sm:w-[90px]"
+                                                className="h-[4.375rem] w-[4.375rem] sm:h-[5.625rem] sm:w-[5.625rem]"
                                             />
                                         </div>
                                         <button className="mt-2 flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#E53F01]">
                                             <span className=" text-black pr-1"><Smartphone className="h-6 w-4" /></span>
-                                            <span className="text-left text-[6px] sm:text-[8px] leading-tight">VIEW FULL PROFILE, VIDEOS,<br />STATS AND ACHIEVEMENTS</span>
+                                            <span className="text-left text-[0.375rem] sm:text-[0.5rem] leading-tight">VIEW FULL PROFILE, VIDEOS,<br />STATS AND ACHIEVEMENTS</span>
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex justify-between items-center relative w-full -mt-2  border-t-1 border-gray-600 p-3 sm:p-6 bg-[url('/images/img/layer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[16px] rounded-br-[16px]">
-                                <p className=" flex justify-between items-center text-[7px] sm:text-[8px] -ml-3 text-gray-300 pl-1">
+                            <div className="flex justify-between items-center relative w-full -mt-2  border-t-1 border-gray-600 p-3 sm:p-6 bg-[url('/images/img/layer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[1rem] rounded-br-[1rem]">
+                                <p className=" flex justify-between items-center text-[0.4375rem] sm:text-[0.5rem] -ml-3 text-gray-300 pl-1">
                                     <Shield className="w-6 h-6 " />
                                     <span className="pl-2">THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br className="hidden sm:block" />MEMBER OF HILIGHTS FOOTBALL PLATFORM.</span>
                                 </p>
-                                <p className="text-[6px] sm:text-[8px] text-white font-bold translate-x-[5px] sm:translate-x-[10%]">[WWW.HILIGHTSFOOTBALL.COM](https://WWW.HILIGHTSFOOTBALL.COM)</p>
+                                <p className="text-[0.375rem] sm:text-[0.5rem] text-white font-bold translate-x-[0.3125rem] sm:translate-x-[10%]">[WWW.HILIGHTSFOOTBALL.COM](https://WWW.HILIGHTSFOOTBALL.COM)</p>
                                 <div className="absolute -bottom-16 left-0 flex justify-between w-full">
-                                    <button className="capitalize flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[16px] cursor-pointer text-[10px] transition-all hover:bg-[#E53F01]" onClick={() => setShareOpen(true)}>
-                                        <Share2 className="mr-2 w-[10px] h-[10px] sm:h-[12px]" /> Share full profile
+                                    <button className="capitalize flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[1rem] cursor-pointer text-[0.625rem] transition-all hover:bg-[#E53F01]" onClick={() => setShareOpen(true)}>
+                                        <Share2 className="mr-2 w-[0.625rem] h-[0.625rem] sm:h-[0.75rem]" /> Share full profile
                                     </button>
-                                    <button onClick={downloadCard} className="capitalize cursor-pointer flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[10px] transition-all">
-                                        <Download className="mr-2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px]" /> download member card
+                                    <button onClick={downloadCard} className="capitalize cursor-pointer flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[0.625rem] transition-all">
+                                        <Download className="mr-2 w-[0.625rem] h-[0.625rem] sm:w-[0.75rem] sm:h-[0.75rem]" /> download member card
                                     </button>
                                 </div>
                             </div>
@@ -1437,17 +1437,17 @@ export default function PlayerDashboard() {
                 </section>
                 {/* AD ZONE */}
                 <section>
-                    <div className="relative flex h-[90px] items-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-[#1a1a2e] to-[#0f3460] px-4 sm:gap-4 sm:px-6">
+                    <div className="relative flex h-[5.625rem] items-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-[#1a1a2e] to-[#0f3460] px-4 sm:gap-4 sm:px-6">
                         <div className="flex flex-shrink-0 items-center gap-3">
                             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#E53F01]"><ArrowRight className="h-5 w-5 text-white" /></div>
                             <div className="hidden sm:block">
                                 <p className="text-lg leading-none font-black tracking-tight text-white">TRANSFERROOM</p>
-                                <p className="mt-0.5 text-[10px] tracking-wider text-white/50 uppercase">Football Transfer Network</p>
+                                <p className="mt-0.5 text-[0.625rem] tracking-wider text-white/50 uppercase">Football Transfer Network</p>
                             </div>
                         </div>
                         <p className="hidden flex-1 text-xs text-white/70 sm:text-sm md:block">The transfer platform trusted by 1,200+ clubs worldwide.</p>
                         <Button size="sm" className="ml-auto flex-shrink-0 bg-[#E53F01] font-semibold text-white hover:bg-[#E53F01]">Start Free →</Button>
-                        <span className="absolute top-1 right-2 text-[10px] text-white/30">Sponsored</span>
+                        <span className="absolute top-1 right-2 text-[0.625rem] text-white/30">Sponsored</span>
                     </div>
                 </section>
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">
@@ -1516,7 +1516,7 @@ export default function PlayerDashboard() {
                             )}
 
                             {hasSubscription && (
-                                <Badge className="border border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[10px] font-bold tracking-wider text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]">
+                                <Badge className="border border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[0.625rem] font-bold tracking-wider text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]">
                                     PREMIUM
                                 </Badge>
                             )}
@@ -1525,7 +1525,7 @@ export default function PlayerDashboard() {
 
                     <div className={!hasSubscription ? 'pointer-events-none blur-md filter select-none' : ''}>
                         {hasCountryData ? (
-                            <div className="h-[280px] w-full">
+                            <div className="h-[17.5rem] w-full">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <BarChart
                                         data={countryData}
@@ -1535,13 +1535,13 @@ export default function PlayerDashboard() {
                                         <XAxis
                                             dataKey="country"
                                             stroke="#94A3B8"
-                                            style={{ fontSize: '12px' }}
+                                            style={{ fontSize: '0.75rem' }}
                                             tickLine={false}
                                             axisLine={false}
                                         />
                                         <YAxis
                                             stroke="#94A3B8"
-                                            style={{ fontSize: '12px' }}
+                                            style={{ fontSize: '0.75rem' }}
                                             tickLine={false}
                                             axisLine={false}
                                         />
@@ -1551,7 +1551,7 @@ export default function PlayerDashboard() {
                                                 border: '1px solid #2A2A2A',
                                                 borderRadius: '8px',
                                                 color: '#F5F5F5',
-                                                fontSize: '12px',
+                                                fontSize: '0.75rem',
                                             }}
                                             cursor={{ fill: 'rgba(255,107,0,0.08)' }}
                                         />
@@ -1560,7 +1560,7 @@ export default function PlayerDashboard() {
                                 </ResponsiveContainer>
                             </div>
                         ) : (
-                            <div className="flex h-[280px] items-center justify-center text-sm text-[#9A9A9A]">
+                            <div className="flex h-[17.5rem] items-center justify-center text-sm text-[#9A9A9A]">
                                 No country data available yet.
                             </div>
                         )}

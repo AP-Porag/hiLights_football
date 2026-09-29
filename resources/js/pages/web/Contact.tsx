@@ -92,7 +92,7 @@ export default function Contact() {
             <main className="pt-16">
                 {/* ============ HEADER BAND ============ */}
                 <section className="bg-[#E53F01] py-16">
-                    <div className="max-w-[1100px] mx-auto px-6 text-center">
+                    <div className="max-w-[68.75rem] mx-auto px-6 text-center">
                         <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-tight">
                             Contact HiLights Football
                         </h1>
@@ -105,7 +105,7 @@ export default function Contact() {
 
                 {/* ============ FORM + INFO SIDEBAR ============ */}
                 <section className="bg-[#F8FAFC] dark:bg-[#0D0D0D] py-16">
-                    <div className="max-w-[1100px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-10">
+                    <div className="max-w-[68.75rem] mx-auto px-6 grid grid-cols-1 lg:grid-cols-[1fr_25rem] gap-10">
                         {/* -------- FORM CARD -------- */}
                         <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-10">
                             <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#0F172A] dark:text-[#F5F5F5] tracking-tight">
@@ -312,7 +312,7 @@ export default function Contact() {
                             </div>
 
                             {/* AD — ScoutPro */}
-                            <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden h-[280px] relative">
+                            <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden h-[17.5rem] relative">
 
                                 <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628] via-[#0F2347] to-[#0A1628] p-6 flex flex-col justify-between">
                                     {/* Brand top */}
@@ -332,7 +332,7 @@ export default function Contact() {
 
                 {/* ============ FAQ ============ */}
                 <section className="bg-white dark:bg-[#111111] py-12 sm:py-16">
-                    <div className="max-w-[1100px] mx-auto px-6">
+                    <div className="max-w-[68.75rem] mx-auto px-6">
                         <div className="text-center mb-10">
                             <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#0F172A] dark:text-[#F5F5F5] tracking-tight">
                                 Frequently Asked Questions

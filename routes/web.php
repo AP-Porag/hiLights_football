@@ -48,7 +48,7 @@ Route::get('/execute-command', function () {
 // })->name('home');
 
 Route::get('/register/scout', function () {
-    return Inertia::render('auth/Register', [
+    return Inertia::render('auth/register', [
         'forceRole' => 'scout',
     ]);
 })->name('register.scout');

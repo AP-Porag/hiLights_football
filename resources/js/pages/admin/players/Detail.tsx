@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from '@inertiajs/react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
@@ -188,7 +188,7 @@ const summaryAverages = {
 function StarRow({ value, label }: { value: number; label: string }) {
     return (
         <div className="flex items-center justify-between gap-3">
-            <span className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-medium w-16">
+            <span className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-medium w-16">
                 {label}
             </span>
             <div className="flex items-center gap-0.5">
@@ -222,6 +222,15 @@ export default function PlayerDetail() {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [suspendDialogOpen, setSuspendDialogOpen] = useState(false);
     const [adminNote, setAdminNote] = useState('');
+    // Root font-size in px (16 by default, larger on big screens) so chart axis width scales with the rem layout
+    const [rootFontPx, setRootFontPx] = useState(16);
+
+    useEffect(() => {
+        const update = () => setRootFontPx(parseFloat(getComputedStyle(document.documentElement).fontSize) || 16);
+        update();
+        window.addEventListener('resize', update);
+        return () => window.removeEventListener('resize', update);
+    }, []);
 
     const maxCountryViews = Math.max(...player.viewsByCountry.map((v) => v.count));
 
@@ -333,24 +342,24 @@ export default function PlayerDetail() {
             </div>
 
             {/* ━━━ LAYOUT ━━━ */}
-            <div className="grid lg:grid-cols-[1fr_320px] gap-6">
+            <div className="grid lg:grid-cols-[1fr_20rem] gap-6">
                 {/* ━━━ LEFT COLUMN ━━━ */}
                 <div className="space-y-5 min-w-0">
                     {/* ▶ IDENTITY CARD */}
                     <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6">
                         <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
-                            <span className="text-[10px] font-bold text-[#E53F01] uppercase tracking-[0.14em]">
+                            <span className="text-[0.625rem] font-bold text-[#E53F01] uppercase tracking-[0.14em]">
                                 Player Profile
                             </span>
                             <div className="flex flex-wrap items-center gap-2">
-                                <Badge className="bg-green-50 text-green-700 border border-green-200 hover:bg-green-50 text-[10px] uppercase tracking-wide font-bold px-2 py-0.5 rounded-md">
+                                <Badge className="bg-green-50 text-green-700 border border-green-200 hover:bg-green-50 text-[0.625rem] uppercase tracking-wide font-bold px-2 py-0.5 rounded-md">
                                     Active
                                 </Badge>
-                                <Badge className="bg-[#E53F01] text-white hover:bg-[#E53F01] text-[10px] uppercase tracking-wide font-bold px-2 py-0.5 rounded-md">
+                                <Badge className="bg-[#E53F01] text-white hover:bg-[#E53F01] text-[0.625rem] uppercase tracking-wide font-bold px-2 py-0.5 rounded-md">
                                     Premium
                                 </Badge>
                                 {player.isFeatured && (
-                                    <Badge className="bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-50 text-[10px] uppercase tracking-wide font-bold px-2 py-0.5 rounded-md gap-1">
+                                    <Badge className="bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-50 text-[0.625rem] uppercase tracking-wide font-bold px-2 py-0.5 rounded-md gap-1">
                                         Featured <Star className="w-2.5 h-2.5 fill-amber-500 text-amber-500" />
                                     </Badge>
                                 )}
@@ -363,7 +372,7 @@ export default function PlayerDetail() {
                                 <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#1E293B] to-[#334155] flex items-center justify-center font-display font-black text-white text-2xl sm:text-3xl">
                                     BS
                                 </div>
-                                <span className="absolute -top-2 -right-2 bg-[#E53F01] text-white text-[9px] font-black px-2 py-0.5 rounded-full">
+                                <span className="absolute -top-2 -right-2 bg-[#E53F01] text-white text-[0.5625rem] font-black px-2 py-0.5 rounded-full">
                                     PRO
                                 </span>
                                 {player.isVerified && (
@@ -417,7 +426,7 @@ export default function PlayerDetail() {
                         </div>
 
                         <div className="mt-5 pt-5 border-t border-[#F1F5F9] flex flex-wrap items-center gap-2">
-                            <span className="text-[10px] text-[#94A3B8] uppercase tracking-widest font-bold mr-2">
+                            <span className="text-[0.625rem] text-[#94A3B8] uppercase tracking-widest font-bold mr-2">
                                 Positions:
                             </span>
                             {player.positions.map((pos) => (
@@ -428,7 +437,7 @@ export default function PlayerDetail() {
                                     {pos}
                                 </span>
                             ))}
-                            <span className="text-[10px] text-[#94A3B8] uppercase tracking-widest font-bold mx-2 sm:ml-4">
+                            <span className="text-[0.625rem] text-[#94A3B8] uppercase tracking-widest font-bold mx-2 sm:ml-4">
                                 Modalities:
                             </span>
                             {player.modalities.map((mod) => (
@@ -445,13 +454,13 @@ export default function PlayerDetail() {
                     {/* ━━━ FOOTBALL DETAILS CARD ━━━ */}
                     <div className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden">
                         <div className="bg-[#F8FAFC] px-6 py-3 border-b border-[#E2E8F0]">
-                            <h2 className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold">
+                            <h2 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold">
                                 Football Details
                             </h2>
                         </div>
                         <div className="px-6 py-5 grid grid-cols-1 sm:grid-cols-3 gap-6">
                             <div>
-                                <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
+                                <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
                                     Positions
                                 </span>
                                 <div className="flex flex-wrap gap-2">
@@ -466,7 +475,7 @@ export default function PlayerDetail() {
                                 </div>
                             </div>
                             <div>
-                                <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
+                                <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
                                     Modalities
                                 </span>
                                 <div className="flex flex-wrap gap-2">
@@ -481,13 +490,13 @@ export default function PlayerDetail() {
                                 </div>
                             </div>
                             <div>
-                                <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
+                                <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
                                     Pitch Position · {player.foot} Foot
                                 </span>
                                 {/* Simplified pitch SVG top-down */}
                                 <svg
                                     viewBox="0 0 120 80"
-                                    className="w-[120px] h-[80px] rounded-md"
+                                    className="w-[7.5rem] h-[5rem] rounded-md"
                                     xmlns="http://www.w3.org/2000/svg"
                                 >
                                     <rect width="120" height="80" fill="#1a3a1a" />
@@ -513,7 +522,7 @@ export default function PlayerDetail() {
                     {/* ━━━ VIDEO CARD ━━━ */}
                     <div className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden">
                         <div className="bg-[#F8FAFC] px-6 py-3 border-b border-[#E2E8F0] flex items-center justify-between">
-                            <h2 className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold">
+                            <h2 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold">
                                 Highlight Video
                             </h2>
                             <Link
@@ -550,17 +559,17 @@ export default function PlayerDetail() {
                     {/* ━━━ CLUB HISTORY CARD ━━━ */}
                     <div className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden">
                         <div className="bg-[#F8FAFC] px-6 py-3 border-b border-[#E2E8F0]">
-                            <h2 className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold">
+                            <h2 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold">
                                 Club History
                             </h2>
                         </div>
                         <Table>
                             <TableHeader>
                                 <TableRow className="bg-[#F8FAFC] hover:bg-[#F8FAFC] border-b border-[#E2E8F0]">
-                                    <TableHead className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold w-32 px-6">
+                                    <TableHead className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold w-32 px-6">
                                         Year
                                     </TableHead>
-                                    <TableHead className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold px-6">
+                                    <TableHead className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold px-6">
                                         Club
                                     </TableHead>
                                 </TableRow>
@@ -589,7 +598,7 @@ export default function PlayerDetail() {
 
                     {/* ━━━ DESCRIPTION CARD ━━━ */}
                     <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6">
-                        <h2 className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
+                        <h2 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
                             Player Description
                         </h2>
                         <p className="text-sm text-[#475569] leading-relaxed">
@@ -600,7 +609,7 @@ export default function PlayerDetail() {
                     {/* ━━━ SCOUT RATINGS CARD ━━━ */}
                     <div className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden">
                         <div className="bg-[#F8FAFC] px-6 py-3 border-b border-[#E2E8F0] flex items-center justify-between">
-                            <h2 className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold">
+                            <h2 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold">
                                 Scout Ratings
                             </h2>
                             <div className="flex items-center gap-1.5">
@@ -620,7 +629,7 @@ export default function PlayerDetail() {
                                 <div className="font-mono font-bold text-xl text-[#E53F01]">
                                     {summaryAverages.technical.toFixed(1)}
                                 </div>
-                                <div className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
+                                <div className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
                                     Technical
                                 </div>
                             </div>
@@ -628,7 +637,7 @@ export default function PlayerDetail() {
                                 <div className="font-mono font-bold text-xl text-[#E53F01]">
                                     {summaryAverages.physical.toFixed(1)}
                                 </div>
-                                <div className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
+                                <div className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
                                     Physical
                                 </div>
                             </div>
@@ -636,7 +645,7 @@ export default function PlayerDetail() {
                                 <div className="font-mono font-bold text-xl text-[#E53F01]">
                                     {summaryAverages.mental.toFixed(1)}
                                 </div>
-                                <div className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
+                                <div className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
                                     Mental
                                 </div>
                             </div>
@@ -644,7 +653,7 @@ export default function PlayerDetail() {
                                 <div className="font-mono font-bold text-xl text-[#E53F01]">
                                     {summaryAverages.overall.toFixed(1)}
                                 </div>
-                                <div className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
+                                <div className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
                                     Overall
                                 </div>
                             </div>
@@ -679,7 +688,7 @@ export default function PlayerDetail() {
                                             <div className="flex items-center gap-2 mt-1">
                                                 <Badge
                                                     variant="outline"
-                                                    className="text-[10px] uppercase tracking-wide font-bold px-2 py-0 h-5 border-[#E2E8F0] text-[#475569] bg-[#F8FAFC]"
+                                                    className="text-[0.625rem] uppercase tracking-wide font-bold px-2 py-0 h-5 border-[#E2E8F0] text-[#475569] bg-[#F8FAFC]"
                                                 >
                                                     {rating.role}
                                                 </Badge>
@@ -745,7 +754,7 @@ export default function PlayerDetail() {
                 <aside className="space-y-4 min-w-0">
                     {/* ▶ QUICK STATS */}
                     <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
-                        <h3 className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
+                        <h3 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
                             Analytics Overview
                         </h3>
                         <div className="divide-y divide-[#F1F5F9]">
@@ -791,7 +800,7 @@ export default function PlayerDetail() {
 
                     {/* ▶ VIEW BY COUNTRY */}
                     <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
-                        <h3 className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold mb-4">
+                        <h3 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold mb-4">
                             Views by Country
                         </h3>
                         <div className="space-y-2.5">
@@ -820,7 +829,7 @@ export default function PlayerDetail() {
 
                         <Separator className="my-4 bg-[#F1F5F9]" />
 
-                        <div className="h-[140px] -mx-2">
+                        <div className="h-[8.75rem] -mx-2">
                             <ResponsiveContainer width="100%" height="100%">
                                 <BarChart
                                     data={player.viewsByCountry}
@@ -831,10 +840,10 @@ export default function PlayerDetail() {
                                     <YAxis
                                         type="category"
                                         dataKey="country"
-                                        tick={{ fontSize: 10, fill: '#94A3B8' }}
+                                        tick={{ fontSize: '0.625rem', fill: '#94A3B8' }}
                                         axisLine={false}
                                         tickLine={false}
-                                        width={60}
+                                        width={(60 * rootFontPx) / 16}
                                     />
                                     <Tooltip
                                         cursor={{ fill: '#FFF3EB' }}
@@ -842,7 +851,7 @@ export default function PlayerDetail() {
                                             backgroundColor: '#FFFFFF',
                                             border: '1px solid #E2E8F0',
                                             borderRadius: '8px',
-                                            fontSize: '12px',
+                                            fontSize: '0.75rem',
                                         }}
                                     />
                                     <Bar dataKey="count" radius={[0, 4, 4, 0]}>
@@ -857,14 +866,14 @@ export default function PlayerDetail() {
 
                     {/* ▶ RECENT VIEWS */}
                     <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
-                        <h3 className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
+                        <h3 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
                             Recent Views
                         </h3>
                         <div className="space-y-3">
                             {player.recentViews.map((view) => (
                                 <div key={view.id} className="flex items-center gap-3">
                                     <Avatar className="w-9 h-9 shrink-0">
-                                        <AvatarFallback className="bg-[#F1F5F9] text-[#475569] font-bold text-[10px]">
+                                        <AvatarFallback className="bg-[#F1F5F9] text-[#475569] font-bold text-[0.625rem]">
                                             {view.viewer
                                                 .split(' ')
                                                 .slice(0, 2)
@@ -879,7 +888,7 @@ export default function PlayerDetail() {
                                         <div className="flex items-center gap-1.5 mt-0.5">
                                             <Badge
                                                 variant="outline"
-                                                className="text-[9px] uppercase tracking-wide font-bold px-1.5 py-0 h-4 border-[#E2E8F0] text-[#475569] bg-[#F8FAFC]"
+                                                className="text-[0.5625rem] uppercase tracking-wide font-bold px-1.5 py-0 h-4 border-[#E2E8F0] text-[#475569] bg-[#F8FAFC]"
                                             >
                                                 {view.role}
                                             </Badge>
@@ -895,7 +904,7 @@ export default function PlayerDetail() {
 
                     {/* ▶ SUBSCRIPTION */}
                     <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
-                        <h3 className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
+                        <h3 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
                             Subscription
                         </h3>
                         <div className="flex items-center justify-between mb-3">
@@ -934,7 +943,7 @@ export default function PlayerDetail() {
 
                     {/* ▶ ADMIN NOTES */}
                     <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
-                        <h3 className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
+                        <h3 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
                             Admin Notes
                         </h3>
                         <textarea
@@ -953,7 +962,7 @@ export default function PlayerDetail() {
 
                     {/* ▶ DANGER ZONE */}
                     <div className="bg-white border border-red-100 rounded-2xl p-5">
-                        <h3 className="text-red-600 text-[10px] uppercase tracking-widest font-bold mb-3">
+                        <h3 className="text-red-600 text-[0.625rem] uppercase tracking-widest font-bold mb-3">
                             Danger Zone
                         </h3>
                         <Dialog open={suspendDialogOpen} onOpenChange={setSuspendDialogOpen}>

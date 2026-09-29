@@ -146,7 +146,7 @@ export default function RequestAccess({ countries = [] }: Props) {
             <main className="pt-16">
                 {/* HEADER BAND */}
                 <section className="bg-[#E53F01] py-16">
-                    <div className="max-w-[900px] mx-auto px-6 text-center">
+                    <div className="max-w-[56.25rem] mx-auto px-6 text-center">
                         <h1 className="font-display font-bold text-4xl sm:text-5xl text-white tracking-tight leading-tight">
                             Request Access
                         </h1>
@@ -158,7 +158,7 @@ export default function RequestAccess({ countries = [] }: Props) {
 
                 {/* WHO IS THIS FOR */}
                 <section className="bg-[#F8FAFC] dark:bg-[#0D0D0D] py-10">
-                    <div className="max-w-[720px] mx-auto px-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="max-w-[45rem] mx-auto px-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
                         {[
                             { Icon: Users, label: 'Scouts', desc: 'Discover and track talent' },
                             { Icon: Building2, label: 'Clubs', desc: 'Recruit for your academy' },
@@ -180,7 +180,7 @@ export default function RequestAccess({ countries = [] }: Props) {
 
                 {/* FORM */}
                 <section className="bg-[#F8FAFC] dark:bg-[#0D0D0D] pb-16">
-                    <div className="max-w-[720px] mx-auto px-6">
+                    <div className="max-w-[45rem] mx-auto px-6">
                         <div className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-10">
                             <h2 className="font-display font-bold text-2xl text-[#0F172A] dark:text-[#F5F5F5] tracking-tight">
                                 Tell us about yourself

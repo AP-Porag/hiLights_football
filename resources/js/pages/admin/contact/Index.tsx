@@ -164,7 +164,7 @@ export default function ContactIndex() {
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Message</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Date</TableHead>
                                     <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Status</TableHead>
-                                    <TableHead className="w-[160px] text-right text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Actions</TableHead>
+                                    <TableHead className="w-[10rem] text-right text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -190,7 +190,7 @@ export default function ContactIndex() {
                                             <TableCell className="py-4 text-sm text-[#F5F5F5]">
                                                 {msg.subject || '—'}
                                             </TableCell>
-                                            <TableCell className="py-4 text-sm text-[#94A3B8] truncate max-w-[200px]">
+                                            <TableCell className="py-4 text-sm text-[#94A3B8] truncate max-w-[12.5rem]">
                                                 {msg.message.substring(0, 60)}...
                                             </TableCell>
                                             <TableCell className="py-4 text-sm font-mono text-[#94A3B8]">
@@ -205,7 +205,7 @@ export default function ContactIndex() {
                                             <TableCell className="py-4 text-center">
                                                 <button
                                                     onClick={() => handleReadToggle(msg.id)}
-                                                    className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-[10px] font-bold uppercase tracking-wider transition-colors ${msg.is_read
+                                                    className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-[0.625rem] font-bold uppercase tracking-wider transition-colors ${msg.is_read
                                                         ? 'border-green-700 bg-green-900/20 text-green-400 hover:bg-green-900/40'
                                                         : 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01] hover:bg-[rgba(255,107,0,0.2)]'
                                                         }`}

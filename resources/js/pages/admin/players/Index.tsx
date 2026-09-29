@@ -61,7 +61,7 @@ function SubscriptionBadge({ sub }: { sub: Player['subscription'] }) {
         Elite: 'bg-[rgba(255,107,0,0.12)] text-[#E53F01] border-[#E53F01]',
     } as const;
     return (
-        <span className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wider ${styles[sub]}`}>
+        <span className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 font-mono text-[0.6875rem] font-medium uppercase tracking-wider ${styles[sub]}`}>
             {sub === 'Elite' && <Star className="h-2.5 w-2.5 fill-current" />}
             {sub}
         </span>
@@ -75,7 +75,7 @@ function StatusBadge({ status }: { status: Player['status'] }) {
         Suspended: 'bg-red-900/30 text-red-400 border-red-700',
     } as const;
     return (
-        <span className={`inline-flex items-center rounded-md border px-2 py-0.5 text-[11px] font-medium ${styles[status]}`}>
+        <span className={`inline-flex items-center rounded-md border px-2 py-0.5 text-[0.6875rem] font-medium ${styles[status]}`}>
             {status}
         </span>
     );
@@ -205,7 +205,7 @@ export default function PlayersIndex() {
                         <Table>
                             <TableHeader>
                                 <TableRow className="border-[#2A2A2A] bg-[#1A1A1A] hover:bg-[#1A1A1A]">
-                                    <TableHead className="w-[60px]"></TableHead>
+                                    <TableHead className="w-[3.75rem]"></TableHead>
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Player</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Position</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Country</TableHead>
@@ -213,7 +213,7 @@ export default function PlayersIndex() {
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Subscription</TableHead>
                                     <TableHead className="text-right text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Views</TableHead>
                                     <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Featured</TableHead>
-                                    <TableHead className="w-[80px] text-right text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Actions</TableHead>
+                                    <TableHead className="w-[5rem] text-right text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -323,7 +323,7 @@ export default function PlayersIndex() {
 
             {/* Edit Sheet (dark themed) */}
             <Sheet open={!!editPlayer} onOpenChange={(open) => !open && setEditPlayer(null)}>
-                <SheetContent side="right" className="flex w-full flex-col gap-0 border-l border-[#2A2A2A] bg-[#0D0D0D] p-0 sm:max-w-[600px]">
+                <SheetContent side="right" className="flex w-full flex-col gap-0 border-l border-[#2A2A2A] bg-[#0D0D0D] p-0 sm:max-w-[37.5rem]">
                     {editPlayer && <EditPlayerForm player={editPlayer} onClose={() => setEditPlayer(null)} />}
                 </SheetContent>
             </Sheet>

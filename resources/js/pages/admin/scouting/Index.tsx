@@ -338,7 +338,7 @@ export default function RatingsIndex() {
                             </Table>
                         </div>
                         {/* Scout Pagination */}
-                        <div className="flex flex-col items-start gap-3 border-t border-[#2A2A2A] p-6 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="flex flex-col items-start gap-3 border-t border-[#2A2A2A] p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                             <div className="text-xs text-[#94A3B8]">
                                 Showing{' '}
                                 <span className="font-mono font-semibold text-white">
@@ -350,7 +350,7 @@ export default function RatingsIndex() {
                                 </span>{' '}
                                 scouts
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-2">
                                 <Button
                                     variant="outline"
                                     size="sm"
@@ -587,7 +587,7 @@ export default function RatingsIndex() {
                                                             <div className="flex items-center gap-2">
                                                                 <span className="text-sm font-semibold text-white">{rating.player.name}</span>
                                                                 {rating.player.position && (
-                                                                    <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#E53F01]">
+                                                                    <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[0.625rem] font-semibold text-[#E53F01]">
                                                                         {rating.player.position}
                                                                     </span>
                                                                 )}
@@ -645,7 +645,7 @@ export default function RatingsIndex() {
                             </Table>
                         </div>
                         {/* Ratings Pagination */}
-                        <div className="flex flex-col items-start gap-3 border-t border-[#2A2A2A] p-6 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="flex flex-col items-start gap-3 border-t border-[#2A2A2A] p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                             <div className="text-xs text-[#94A3B8]">
                                 Showing{' '}
                                 <span className="font-mono font-semibold text-white">
@@ -657,7 +657,7 @@ export default function RatingsIndex() {
                                 </span>{' '}
                                 ratings
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-2">
                                 <Button
                                     variant="outline"
                                     size="sm"
@@ -737,7 +737,7 @@ export default function RatingsIndex() {
                                             <div className="flex items-center gap-2">
                                                 <span className="truncate text-sm font-semibold text-white">{player.name}</span>
                                                 {player.position && (
-                                                    <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#E53F01]">
+                                                    <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[0.625rem] font-semibold text-[#E53F01]">
                                                         {player.position}
                                                     </span>
                                                 )}
@@ -807,7 +807,7 @@ export default function RatingsIndex() {
                                                 <div className="flex items-center gap-2">
                                                     <span className="truncate font-display text-base font-semibold text-white">{viewRating.player.name}</span>
                                                     {viewRating.player.position && (
-                                                        <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#E53F01]">
+                                                        <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[0.625rem] font-semibold text-[#E53F01]">
                                                             {viewRating.player.position}
                                                         </span>
                                                     )}

@@ -197,17 +197,17 @@ export default function Report() {
                         )}
                         <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2 mb-2">
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-bold uppercase tracking-wider">
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[0.625rem] font-bold uppercase tracking-wider">
                                     <FileText className="w-3 h-3" />
                                     {roleLabel} Report
                                 </span>
                                 {report?.status === 'final' && (
-                                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-green-500/20 border border-green-400 text-green-300 text-[10px] font-bold uppercase tracking-wider">
+                                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-green-500/20 border border-green-400 text-green-300 text-[0.625rem] font-bold uppercase tracking-wider">
                                         Submitted
                                     </span>
                                 )}
                                 {report?.status === 'draft' && (
-                                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white/10 border border-white/20 text-white/70 text-[10px] font-bold uppercase tracking-wider">
+                                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white/10 border border-white/20 text-white/70 text-[0.625rem] font-bold uppercase tracking-wider">
                                         Draft
                                     </span>
                                 )}
@@ -239,7 +239,7 @@ export default function Report() {
                         </div>
                         {lastUpdated && (
                             <div className="text-left sm:text-right flex-shrink-0">
-                                <div className="text-[10px] uppercase tracking-wider text-white/40 font-bold">Last updated</div>
+                                <div className="text-[0.625rem] uppercase tracking-wider text-white/40 font-bold">Last updated</div>
                                 <div className="font-mono text-sm">{lastUpdated}</div>
                             </div>
                         )}
@@ -250,15 +250,15 @@ export default function Report() {
             <section className="py-8 sm:py-10">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-6">
                     {/* SAVED RATING SUMMARY */}
-                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
+                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-4 sm:p-6">
                         <div className="flex items-center justify-between gap-3 mb-5">
                             <div>
-                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">From your profile rating</div>
+                                <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1">From your profile rating</div>
                                 <h2 className="font-display text-2xl font-bold uppercase italic">Rating Summary</h2>
                             </div>
                             {averageRating > 0 && (
                                 <div className="text-right flex-shrink-0">
-                                    <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold">Overall</div>
+                                    <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold">Overall</div>
                                     <div className="font-mono text-3xl font-bold text-[#E53F01]">{averageRating.toFixed(1)}</div>
                                 </div>
                             )}
@@ -273,14 +273,14 @@ export default function Report() {
                                             <div key={cat.key} className="bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl p-4">
                                                 <Icon className="w-4 h-4 text-[#E53F01] mb-2" />
                                                 <div className="font-mono text-2xl font-bold">{value || '—'}</div>
-                                                <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mt-1">{cat.label}</div>
+                                                <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mt-1">{cat.label}</div>
                                             </div>
                                         );
                                     })}
                                 </div>
                                 {rating.notes && (
                                     <div className="mt-4 bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl p-4">
-                                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1.5">{roleLabel} Notes</div>
+                                        <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-1.5">{roleLabel} Notes</div>
                                         <p className="text-sm text-[#9A9A9A] leading-relaxed whitespace-pre-line">{rating.notes}</p>
                                     </div>
                                 )}
@@ -301,9 +301,9 @@ export default function Report() {
                         )}
                     </div>
                     {/* RECOMMENDATION */}
-                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
-                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Your verdict</div>
-                        <h2 className="font-display text-2xl font-bold uppercase mb-5 italic">Recommendation</h2>
+                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-4 sm:p-6">
+                        <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Your verdict</div>
+                        <h2 className="font-display text-xl font-bold uppercase mb-5 italic break-words sm:text-2xl">Recommendation</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             {RECOMMENDATIONS.map((rec) => {
                                 const Icon = rec.icon;
@@ -322,7 +322,7 @@ export default function Report() {
                                         <div className={`font-display text-lg font-bold uppercase ${active ? 'text-[#E53F01]' : ''}`}>
                                             {rec.label}
                                         </div>
-                                        <div className="text-[11px] text-[#9A9A9A] leading-snug mt-0.5">{rec.desc}</div>
+                                        <div className="text-[0.6875rem] text-[#9A9A9A] leading-snug mt-0.5">{rec.desc}</div>
                                     </button>
                                 );
                             })}
@@ -332,7 +332,7 @@ export default function Report() {
                         )}
                         {/* MATCH CONTEXT */}
                         <div className="mt-6">
-                            <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">
+                            <label className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">
                                 Match / Observation Context
                             </label>
                             <input
@@ -348,12 +348,12 @@ export default function Report() {
                         </div>
                     </div>
                     {/* WRITTEN REPORT */}
-                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
-                        <div className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Observations</div>
-                        <h2 className="font-display text-2xl font-bold uppercase mb-5 italic">Written Report</h2>
+                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-4 sm:p-6">
+                        <div className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2">Observations</div>
+                        <h2 className="font-display text-xl font-bold uppercase mb-5 italic break-words sm:text-2xl">Written Report</h2>
                         <div className="space-y-5">
                             <div>
-                                <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">
+                                <label className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">
                                     Strengths
                                 </label>
                                 <textarea
@@ -368,7 +368,7 @@ export default function Report() {
                                 )}
                             </div>
                             <div>
-                                <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">
+                                <label className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">
                                     Weaknesses / Development Areas
                                 </label>
                                 <textarea
@@ -383,7 +383,7 @@ export default function Report() {
                                 )}
                             </div>
                             <div>
-                                <label className="text-[10px] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">
+                                <label className="text-[0.625rem] uppercase tracking-wider text-[#9A9A9A] font-bold mb-2 block">
                                     Summary & Conclusion
                                 </label>
                                 <textarea
@@ -400,7 +400,7 @@ export default function Report() {
                         </div>
                     </div>
                     {/* ACTIONS */}
-                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6">
+                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-4 sm:p-6">
                         <div className="flex flex-col sm:flex-row gap-3">
                             <button
                                 type="button"
@@ -421,7 +421,7 @@ export default function Report() {
                                 {processing ? 'Submitting...' : 'Submit Report'}
                             </button>
                         </div>
-                        <p className="text-[11px] text-[#555555] mt-3 text-center">
+                        <p className="text-[0.6875rem] text-[#555555] mt-3 text-center">
                             Drafts stay private to you. Submitted reports are marked final and can still be updated.
                         </p>
                     </div>

@@ -45,7 +45,7 @@ export default function ShowUser() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <div className="min-h-screen bg-[#0D0D0D] pt-4 px-4 sm:px-8">
-                <div className="max-w-[700px] mx-auto">
+                <div className="max-w-[43.75rem] mx-auto">
                     {/* Back Link */}
                     <div className="mb-8">
                         <Link
