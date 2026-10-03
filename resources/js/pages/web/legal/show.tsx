@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { ArrowRight, Calendar, ChevronDown, ChevronRight, Clock, FileCheck2, Printer } from 'lucide-react';
 import PublicNavbar from '@/components/public/PublicNavbar';
 import { PublicFooter } from '@/components/public/PublicFooter';
@@ -19,11 +19,31 @@ import {
     type LegalSection,
     type LegalUi,
     type LocaleCode,
-} from '@/components/web/legal/LegalShared';
+} from '@/Components/Web/Legal/LegalShared';
+
+type ItemStyle = 'bullet' | 'checkbox';
+
+interface Section extends LegalSection {
+    number?: string | null;
+    part?: string | null;
+    part_intro?: string[];
+    item_style?: ItemStyle;
+}
+
+interface ShowDocument extends LegalDocument {
+    intro?: string[];
+    sections: Section[];
+}
 
 interface ShowProps extends LegalPageProps {
-    document: LegalDocument;
+    document: ShowDocument;
     related: LegalDocumentMeta[];
+}
+
+function sectionNumber(section: Section, index: number): string {
+    const n = section.number?.trim();
+    if (!n) return String(index + 1).padStart(2, '0');
+    return /^\d+$/.test(n) ? n.padStart(2, '0') : n;
 }
 
 export default function Show({ locale, locales, ui, contact, document: doc, related }: ShowProps) {
@@ -118,7 +138,7 @@ export default function Show({ locale, locales, ui, contact, document: doc, rela
 
                 <section className="bg-[#F8FAFC] dark:bg-[#111111]">
                     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-                        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[240px_minmax(0,1fr)] xl:grid-cols-[240px_minmax(0,1fr)_300px]">
+                        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)_300px]">
                             <aside className="min-w-0 print:hidden lg:sticky lg:top-24 lg:self-start">
                                 <TableOfContents
                                     title={ui.on_this_page}
@@ -144,6 +164,16 @@ export default function Show({ locale, locales, ui, contact, document: doc, rela
                                         </button>
                                     </div>
 
+                                    {doc.intro && doc.intro.length > 0 && (
+                                        <div className="mb-8 space-y-4 border-b border-[#E2E8F0] pb-8 dark:border-[#2A2A2A]">
+                                            {doc.intro.map((paragraph, i) => (
+                                                <p key={i} className="text-sm leading-7 text-[#0F172A] dark:text-[#F5F5F5]">
+                                                    {paragraph}
+                                                </p>
+                                            ))}
+                                        </div>
+                                    )}
+
                                     <div className="space-y-8">
                                         {doc.sections.map((section, index) => (
                                             <DocumentSection key={section.id} section={section} index={index} />
@@ -157,7 +187,7 @@ export default function Show({ locale, locales, ui, contact, document: doc, rela
 
                                 <LegalContactCard ui={ui} email={contactEmail} />
 
-                                <RelatedDocuments documents={related} ui={ui} locale={locale} />
+                                {/* <RelatedDocuments documents={related} ui={ui} locale={locale} /> */}
                             </div>
 
                             <aside className="hidden min-w-0 print:hidden xl:block">
@@ -177,7 +207,7 @@ export default function Show({ locale, locales, ui, contact, document: doc, rela
 
 interface TableOfContentsProps {
     title: string;
-    sections: LegalSection[];
+    sections: Section[];
     activeId: string;
     onSelect: (id: string) => void;
 }
@@ -188,7 +218,7 @@ function TableOfContents({ title, sections, activeId, onSelect }: TableOfContent
     return (
         <nav
             aria-label={title}
-            className="rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]"
+            className="rounded-2xl border border-[#E2E8F0] bg-white p-6 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto dark:border-[#2A2A2A] dark:bg-[#161616]"
         >
             <button
                 type="button"
@@ -208,27 +238,34 @@ function TableOfContents({ title, sections, activeId, onSelect }: TableOfContent
                 {sections.map((section, index) => {
                     const active = section.id === activeId;
                     return (
-                        <li key={section.id}>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    onSelect(section.id);
-                                    setOpen(false);
-                                }}
-                                className={`flex w-full items-start gap-3 rounded-r-lg border-l-2 px-3 py-2 text-left text-sm transition-colors ${active
-                                    ? 'border-[#FF6B00] bg-[#FFF3EB] font-semibold text-[#CC5500] dark:bg-[rgba(255,107,0,0.12)] dark:text-[#FF6B00]'
-                                    : 'border-transparent text-[#475569] hover:bg-[#F8FAFC] hover:text-[#0F172A] dark:text-[#9A9A9A] dark:hover:bg-[#1F1F1F] dark:hover:text-[#F5F5F5]'
-                                    }`}
-                            >
-                                <span
-                                    className={`font-mono text-xs leading-5 ${active ? 'text-[#FF6B00]' : 'text-[#94A3B8] dark:text-[#555555]'
+                        <Fragment key={section.id}>
+                            {section.part && (
+                                <li className="px-3 pb-1 pt-4 text-xs font-semibold uppercase tracking-wider text-[#94A3B8] first:pt-0 dark:text-[#555555]">
+                                    {section.part}
+                                </li>
+                            )}
+                            <li>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        onSelect(section.id);
+                                        setOpen(false);
+                                    }}
+                                    className={`flex w-full items-start gap-3 rounded-r-lg border-l-2 px-3 py-2 text-left text-sm transition-colors ${active
+                                        ? 'border-[#FF6B00] bg-[#FFF3EB] font-semibold text-[#CC5500] dark:bg-[rgba(255,107,0,0.12)] dark:text-[#FF6B00]'
+                                        : 'border-transparent text-[#475569] hover:bg-[#F8FAFC] hover:text-[#0F172A] dark:text-[#9A9A9A] dark:hover:bg-[#1F1F1F] dark:hover:text-[#F5F5F5]'
                                         }`}
                                 >
-                                    {String(index + 1).padStart(2, '0')}
-                                </span>
-                                <span className="leading-5">{section.heading}</span>
-                            </button>
-                        </li>
+                                    <span
+                                        className={`shrink-0 font-mono text-xs leading-5 ${active ? 'text-[#FF6B00]' : 'text-[#94A3B8] dark:text-[#555555]'
+                                            }`}
+                                    >
+                                        {sectionNumber(section, index)}
+                                    </span>
+                                    <span className="leading-5">{section.heading}</span>
+                                </button>
+                            </li>
+                        </Fragment>
                     );
                 })}
             </ol>
@@ -243,18 +280,33 @@ function splitLabel(item: string): [string | null, string] {
 }
 
 interface DocumentSectionProps {
-    section: LegalSection;
+    section: Section;
     index: number;
 }
 
 function DocumentSection({ section, index }: DocumentSectionProps) {
+    const isCheckbox = section.item_style === 'checkbox';
+
     return (
         <section
             id={section.id}
             className="scroll-mt-28 border-t border-[#E2E8F0] pt-8 first:border-t-0 first:pt-0 dark:border-[#2A2A2A]"
         >
+            {section.part && (
+                <div className="mb-8 rounded-xl border-l-4 border-[#FF6B00] bg-[#FFF3EB] px-5 py-4 dark:bg-[rgba(255,107,0,0.12)]">
+                    <p className="font-display text-xl font-bold uppercase tracking-wide text-[#CC5500] dark:text-[#FF6B00]">
+                        {section.part}
+                    </p>
+                    {section.part_intro?.map((paragraph, i) => (
+                        <p key={`pi-${i}`} className="mt-2 text-sm leading-7 text-[#475569] dark:text-[#9A9A9A]">
+                            {paragraph}
+                        </p>
+                    ))}
+                </div>
+            )}
+
             <div className="flex items-baseline gap-3">
-                <span className="font-mono text-xs font-semibold text-[#FF6B00]">{String(index + 1).padStart(2, '0')}</span>
+                <span className="font-mono text-xs font-semibold text-[#FF6B00]">{sectionNumber(section, index)}</span>
                 <h2 className="font-display text-xl font-bold uppercase tracking-wide text-[#0F172A] dark:text-[#F5F5F5]">
                     {section.heading}
                 </h2>
@@ -273,7 +325,14 @@ function DocumentSection({ section, index }: DocumentSectionProps) {
                             const [label, body] = splitLabel(item);
                             return (
                                 <li key={`i-${i}`} className="flex gap-3 text-sm leading-7 text-[#475569] dark:text-[#9A9A9A]">
-                                    <span className="mt-[11px] h-1.5 w-1.5 shrink-0 rounded-sm bg-[#FF6B00]" aria-hidden="true" />
+                                    {isCheckbox ? (
+                                        <span
+                                            className="mt-[7px] h-3.5 w-3.5 shrink-0 rounded-[3px] border-2 border-[#FF6B00]"
+                                            aria-hidden="true"
+                                        />
+                                    ) : (
+                                        <span className="mt-[11px] h-1.5 w-1.5 shrink-0 rounded-sm bg-[#FF6B00]" aria-hidden="true" />
+                                    )}
                                     <span>
                                         {label && (
                                             <strong className="font-semibold text-[#0F172A] dark:text-[#F5F5F5]">{label}</strong>

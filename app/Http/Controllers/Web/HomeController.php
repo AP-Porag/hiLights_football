@@ -12,6 +12,7 @@ class HomeController extends Controller
     {
         // player-profile soho user data
         $players = PlayerProfile::with('user')
+            ->where('featured', 1)
             ->latest()
             ->get()
             ->map(function ($profile) {
@@ -29,7 +30,7 @@ class HomeController extends Controller
                 ];
             });
 
-        return Inertia::render('web/HomeTwo', [
+        return Inertia::render('web/Home', [
             'players' => $players,
         ]);
     }

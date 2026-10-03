@@ -28,6 +28,7 @@ use App\Http\Controllers\Auth\WhatsappVerificationController;
 use App\Http\Controllers\Web\AccessRequestController;
 use App\Http\Controllers\Web\LegalController;
 use App\Services\Web\LegalService;
+use App\Http\Controllers\Web\YouTubeController;
 
 
 Route::get('/execute-command', function () {
@@ -114,7 +115,9 @@ Route::redirect('/cookie-policy', '/legal/cookie-policy', 301);
 Route::redirect('/refund-policy', '/legal/refund-policy', 301);
 
 
-
+Route::get('/youtube/durations', [YouTubeController::class, 'durations'])
+    ->middleware('throttle:60,1')
+    ->name('youtube.durations');
 
 
 //all player routes

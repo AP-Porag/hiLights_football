@@ -31,11 +31,12 @@ class LegalService
             'effective_date' => '2026-09-01',
             'last_updated' => '2026-09-15',
         ],
+        // TODO: Update with the client's official effective date
         'terms-and-conditions' => [
             'icon' => 'terms',
-            'version' => '2.0',
-            'effective_date' => '2026-09-01',
-            'last_updated' => '2026-09-15',
+            'version' => '3.0',
+            'effective_date' => '2026-10-03',
+            'last_updated' => '2026-10-03',
         ],
         'cookie-policy' => [
             'icon' => 'cookies',
@@ -53,7 +54,7 @@ class LegalService
 
     // TODO: Move to config/hilights.php / .env before production
     private const CONTACT = [
-        'legal' => 'legal@hilightsfootball.com',
+        'legal' => 'hello@hilightsfootball.com',
         'privacy' => 'privacy@hilightsfootball.com',
         'support' => 'support@hilightsfootball.com',
     ];
@@ -124,11 +125,16 @@ class LegalService
 
         return [
             ...$this->summarise($slug, $locale),
+            'intro' => $document['intro'] ?? [],
             'sections' => array_map(fn(array $section) => [
                 'id' => $section['id'],
+                'number' => isset($section['number']) ? (string) $section['number'] : null,
+                'part' => $section['part'] ?? null,
+                'part_intro' => $section['part_intro'] ?? [],
                 'heading' => $section['heading'],
                 'paragraphs' => $section['paragraphs'] ?? [],
                 'items' => $section['items'] ?? [],
+                'item_style' => $section['item_style'] ?? 'bullet',
                 'closing' => $section['closing'] ?? [],
             ], $document['sections'] ?? []),
         ];
@@ -189,7 +195,16 @@ class LegalService
             $content = Lang::get('legal', [], self::DEFAULT_LOCALE);
         }
 
-        return $this->cache[$locale] = $this->replaceTokens(is_array($content) ? $content : []);
+        $content = is_array($content) ? $content : [];
+
+        // Terms of Use & Global Privacy Policy lives in its own file (lang/{locale}/legal_terms.php)
+        $terms = Lang::get('legal_terms', [], $locale);
+
+        if (is_array($terms) && isset($terms['sections'])) {
+            $content['documents']['terms-and-conditions'] = $terms;
+        }
+
+        return $this->cache[$locale] = $this->replaceTokens($content);
     }
 
     private function replaceTokens(array $content): array
@@ -211,10 +226,12 @@ class LegalService
         $text = collect($document['sections'] ?? [])
             ->flatMap(fn(array $section) => [
                 $section['heading'] ?? '',
+                ...($section['part_intro'] ?? []),
                 ...($section['paragraphs'] ?? []),
                 ...($section['items'] ?? []),
                 ...($section['closing'] ?? []),
             ])
+            ->merge($document['intro'] ?? [])
             ->implode(' ');
 
         $words = count(preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY));

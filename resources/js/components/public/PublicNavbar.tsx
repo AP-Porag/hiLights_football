@@ -17,12 +17,12 @@ const NAV_LINKS: NavLink[] = [
     { label: 'About', href: '/about', routeName: 'about' },
     // { label: 'Scout', href: '/scout', routeName: 'scout' },
     // { label: 'Pricing', href: '/pricing', routeName: 'pricing' },
-    { label: 'Plans', href: '/plans', routeName: 'plans' },
+    // { label: 'Plans', href: '/plans', routeName: 'plans' },
     { label: 'Contact', href: '/contact', routeName: 'contact' },
 ];
 const NAV_LINKS_MOBILE = [
     { label: 'Search', href: '#', routeName: '', icon: <Search /> },
-    { label: 'Plans', href: '/plans', routeName: 'plans', icon: <Shield /> },
+    // { label: 'Plans', href: '/plans', routeName: 'plans', icon: <Shield /> },
     { label: 'Login', href: '/login', routeName: 'login', icon: <User /> },
 ];
 export default function PublicNavbar() {
@@ -73,7 +73,7 @@ export default function PublicNavbar() {
                 <Link href="/" className="flex min-w-0 shrink items-center gap-2 lg:shrink-0" aria-label="HiLights Football home">
                     <img
                         src="/images/logo/final_logo.png"
-                        className="h-6 w-auto min-w-0 max-w-full max-lg:object-contain max-lg:object-left sm:h-8 lg:h-10 xl:h-12 2xl:h-14 md:mt-2 lg:mt-3"
+                        className="h-8 w-auto min-w-0 max-w-full max-lg:object-contain max-lg:object-left sm:h-10 lg:h-10 xl:h-12 2xl:h-14 md:mt-2 lg:mt-3"
                         alt="HiLights Football"
                     />
                     {/* <img src="/images/logo/final_logo.png" className="hidden h-12 w-auto md:h-20 dark:block" alt="HiLights Football" /> */}
@@ -196,12 +196,10 @@ export default function PublicNavbar() {
                         >
                             <SheetHeader className="border-b border-[#E2E8F0] px-6 py-4 dark:border-[#2A2A2A]">
                                 <SheetTitle className="flex items-center gap-2">
+                                    {/* Light theme — white sheet background */}
                                     <img src="/images/logo/mobile-nav-logo.png" className="h-10 w-auto dark:hidden" alt="HiLights Football" />
-                                    {/* <img
-                                        src="/images/logo/logo_version_light_2.png"
-                                        className="hidden h-20 w-auto dark:block"
-                                        alt="HiLights Football"
-                                    /> */}
+                                    {/* Dark theme — same logo used on the black header */}
+                                    <img src="/images/logo/final_logo.png" className="hidden h-10 w-auto dark:block" alt="HiLights Football" />
                                 </SheetTitle>
                             </SheetHeader>
                             <div className="px-6 py-4">

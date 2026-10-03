@@ -117,8 +117,8 @@ export function LanguageSwitcher({ locales, current, path, label }: LanguageSwit
                             preserveScroll
                             aria-current={active ? 'true' : undefined}
                             className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${active
-                                    ? 'border-white bg-white text-[#CC5500]'
-                                    : 'border-white/40 text-white hover:border-white hover:bg-white/10'
+                                ? 'border-white bg-white text-[#CC5500]'
+                                : 'border-white/40 text-white hover:border-white hover:bg-white/10'
                                 }`}
                         >
                             <span aria-hidden="true">{item.flag}</span>
@@ -222,11 +222,11 @@ export function WyscoutSidebarAd({ label }: { label: string }) {
         <div className="w-full max-w-[300px] print:hidden">
             <p className="mb-2 text-right text-xs uppercase tracking-[0.16em] text-[#94A3B8] dark:text-[#555555]">{label}</p>
             <div className="relative flex min-h-[250px] flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-[#0A1630] via-[#0E2148] to-[#123067] p-6">
-                <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full border border-[#2F80ED]/25" />
+                {/* <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full border border-[#2F80ED]/25" />
                 <div className="pointer-events-none absolute -right-6 -top-6 h-28 w-28 rounded-full border border-[#2F80ED]/20" />
-                <div className="pointer-events-none absolute bottom-0 left-1/2 h-px w-full -translate-x-1/2 bg-[#2F80ED]/20" />
+                <div className="pointer-events-none absolute bottom-0 left-1/2 h-px w-full -translate-x-1/2 bg-[#2F80ED]/20" /> */}
                 <div className="relative">
-                    <div className="flex items-center gap-2">
+                    {/* <div className="flex items-center gap-2">
                         <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[#2F80ED] font-display text-sm font-bold text-white">
                             W
                         </span>
@@ -237,16 +237,16 @@ export function WyscoutSidebarAd({ label }: { label: string }) {
                     </p>
                     <p className="mt-2 text-sm leading-relaxed text-[#B6C8E8]">
                         Video, data and reports trusted by professional clubs worldwide.
-                    </p>
+                    </p> */}
                 </div>
-                <button
+                {/* <button
                     type="button"
                     onClick={() => window.open('https://wyscout.com', '_blank', 'noopener,noreferrer')}
                     className="relative mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#2F80ED] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#1F6BD1]"
                 >
                     Start free trial
                     <ArrowRight className="h-4 w-4" />
-                </button>
+                </button> */}
             </div>
         </div>
     );

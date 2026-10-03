@@ -744,7 +744,7 @@ export default function Register({ countries = [] }: Props) {
                                         {[
                                             { v: 'M', l: 'Male' },
                                             { v: 'F', l: 'Female' },
-                                            { v: 'Other', l: 'Other' },
+
                                         ].map((g) => {
                                             const selected = data.gender === g.v;
                                             return (

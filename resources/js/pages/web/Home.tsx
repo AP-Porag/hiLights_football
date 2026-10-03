@@ -1,673 +1,444 @@
+import React from 'react'
 import PublicNavbar from '@/components/public/PublicNavbar';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Link, router } from '@inertiajs/react';
-import { Eye, Github, Instagram, Play, Search, TrendingUp, Twitter, User, Video, Youtube } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { PublicFooter } from '@/components/public/PublicFooter';
+import ReactCountryFlag from "react-country-flag";
+import { usePage } from '@inertiajs/react';
+import { getPositionName } from '@/utils/helper';
+import {
+    CirclePlay,
+    UserRoundPlus,
+    User,
+    Play,
+    Megaphone,
+    Users,
+    UserPlus,
+    Star,
+    Ruler,
+    Clock3,
+    ArrowRight
+} from "lucide-react";
+import { Link } from '@inertiajs/react';
 
-// TODO: Replace with usePage<Props>().props
-const stats = { players: 12847, scouts: 1243, clubs: 387, countries: 67 };
+const getCountryName = (code?: string | string[] | null): string => {
+    if (!code) return '';
 
-// TODO: Replace with usePage<Props>().props
-const featuredPlayers = [
-    {
-        id: 1,
-        name: 'Lucas Almeida',
-        position: 'ST',
-        club: 'Santos FC',
-        country: 'Brazil',
-        flag: '🇧🇷',
-        age: 19,
-        height: 184,
-        foot: 'Right',
-        views: '14.2K',
-        premium: true,
-    },
-    {
-        id: 2,
-        name: 'Rafael Costa',
-        position: 'CM',
-        club: 'Sporting CP B',
-        country: 'Portugal',
-        flag: '🇵🇹',
-        age: 21,
-        height: 178,
-        foot: 'Left',
-        views: '9.8K',
-        premium: false,
-    },
-    {
-        id: 3,
-        name: 'Mathys Dubois',
-        position: 'CB',
-        club: 'Lyon Académie',
-        country: 'France',
-        flag: '🇫🇷',
-        age: 18,
-        height: 191,
-        foot: 'Right',
-        views: '11.5K',
-        premium: true,
-    },
-    {
-        id: 4,
-        name: 'João Pereira',
-        position: 'RW',
-        club: 'Flamengo Sub-20',
-        country: 'Brazil',
-        flag: '🇧🇷',
-        age: 20,
-        height: 175,
-        foot: 'Right',
-        views: '22.1K',
-        premium: true,
-    },
-    {
-        id: 5,
-        name: 'Théo Laurent',
-        position: 'GK',
-        club: 'Stade Rennais',
-        country: 'France',
-        flag: '🇫🇷',
-        age: 22,
-        height: 193,
-        foot: 'Right',
-        views: '7.4K',
-        premium: false,
-    },
-    {
-        id: 6,
-        name: 'Diogo Ferreira',
-        position: 'LB',
-        club: 'FC Porto B',
-        country: 'Portugal',
-        flag: '🇵🇹',
-        age: 19,
-        height: 180,
-        foot: 'Left',
-        views: '13.6K',
-        premium: false,
-    },
-];
+    const codes = Array.isArray(code) ? code : [code];
 
-// TODO: Replace with usePage<Props>().props
-const featuredVideos = [
-    { id: 1, name: 'LUCAS ALMEIDA', position: 'ST · Santos FC' },
-    { id: 2, name: 'JOÃO PEREIRA', position: 'RW · Flamengo' },
-    { id: 3, name: 'MATHYS DUBOIS', position: 'CB · Lyon' },
-];
+    const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
-export default function Home() {
-    const [mounted, setMounted] = useState(false);
+    return codes
+        .map(c => {
+            try {
+                return regionNames.of(c) || c;
+            } catch {
+                return c; // invalid code fallback
+            }
+        })
+        .join(', ');
+};
 
-    useEffect(() => {
-        const t = setTimeout(() => setMounted(true), 50);
-        return () => clearTimeout(t);
-    }, []);
+interface PlayerItem {
+    id: number;
+    name: string | null;
+    nationality: string[] | null;  // ✅ array of ISO country codes
+    positions: string[] | null;
+    current_club: string | null;
+    photo_url: string | null;
+    birth_city: string | null;
+    height: string | null;
+    dob: string | null;
+    video_url: string | null;
+}
+
+const getEmbedUrl = (url?: string | null): string | null => {
+    if (!url) return null;
+    const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    if (yt) return `https://www.youtube.com/embed/${yt[1]}?autoplay=1`;
+    const vm = url.match(/vimeo\.com\/(\d+)/);
+    if (vm) return `https://player.vimeo.com/video/${vm[1]}?autoplay=1`;
+    return null;
+};
+
+const HomeTwo = () => {
+    const { url, props } = usePage();
+    const auth = props.auth as {
+        user?: {
+            id: number;
+            name: string;
+            email: string;
+            role: string
+        } | null;
+    };
+    const isLoggedIn = !!auth?.user;
+    const dashboardHref =
+        auth?.user?.role === 'player'
+            ? '/player'
+            : auth?.user?.role === 'agent'
+                ? '/agent'
+                : auth?.user?.role === 'club'
+                    ? '/club'
+                    : auth?.user?.role === 'admin'
+                        ? '/admin'
+                        : '/scouting';
+
+    const steps = [
+        {
+            icon: User,
+            step: "01",
+            title: "Create Your Profile.",
+            desc: (
+                <>
+                    Build an organized, professional profile with your{" "}
+                    <span className="text-[#E53F01]">data</span>,{" "}
+                    <span className="text-[#E53F01]">club history</span>,{" "}
+                    <span className="text-[#E53F01]">
+                        physical and technical characteristics
+                    </span>
+                    , and your{" "}
+                    <span className="text-[#E53F01]">achievements</span>.
+                </>
+            ),
+        },
+        {
+            icon: Play,
+            step: "02",
+            title: "Upload Your Best Videos.",
+            desc: (
+                <>
+                    Show the world your{" "}
+                    <span className="text-[#E53F01]">best moments</span>. Get{" "}
+                    <span className="text-[#E53F01]">improvement tips</span> to make
+                    your videos more attractive to scouts, agents and clubs.
+                </>
+            ),
+        },
+        {
+            icon: Megaphone,
+            step: "03",
+            title: "Be Seen. Be Discovered.",
+            desc: (
+                <>
+                    A platform developed by professionals from various areas of football
+                    with{" "}
+                    <span className="text-[#E53F01]">
+                        over 20 years of experience worldwide
+                    </span>
+                    .
+                </>
+            ),
+        },
+    ];
+    const [activeVideo, setActiveVideo] = React.useState<string | null>(null);
+
+    const { players } = usePage<{ players: PlayerItem[] }>().props;
 
     return (
-        <div className="min-h-screen bg-black text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]">
+        <div className="bg-black text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]">
             <PublicNavbar />
+            <main className="w-full pt-16 xl:pt-20 2xl:pt-24">
 
-            <main className="pt-16">
-                {/* ━━━ SECTION 1: HERO ━━━ */}
-                <section className="relative flex min-h-[88vh] items-center overflow-hidden bg-[#E53F01]">
-                    {/* Pitch line texture */}
-                    <div
-                        className="pointer-events-none absolute inset-0 opacity-5"
-                        style={{
-                            backgroundImage:
-                                'linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)',
-                            backgroundSize: '80px 80px',
-                        }}
-                    />
-                    {/* Center circle decoration */}
-                    <div
-                        className="pointer-events-none absolute rounded-full border-2 border-white opacity-5"
-                        style={{ width: 500, height: 500, right: -180, bottom: -180 }}
-                    />
-
-                    <div className="relative mx-auto grid w-full max-w-[1300px] items-center gap-12 px-6 py-20 lg:grid-cols-[1fr_460px]">
-                        {/* LEFT */}
-                        <div>
-                            <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/15 px-4 py-1.5 text-xs font-semibold tracking-wide text-white">
-                                ⚽ Football Discovery Platform — Trusted by 1,200+ Scouts Worldwide
-                            </span>
-
-                            <h1 className="font-display mt-6 text-[48px] leading-[0.9] font-black tracking-[-2px] text-white sm:text-[58px] lg:text-[68px]">
-                                DISCOVER
-                                <br />
-                                YOUR NEXT
-                                <br />
-                                SIGNING.
-                            </h1>
-
-                            <p className="mt-4 max-w-md text-lg leading-relaxed font-normal text-white/80 sm:text-xl">
-                                The professional scouting database connecting amateur talent with clubs, agents, and scouts across 67 countries.
-                            </p>
-
-                            {/* Search bar */}
-                            <div className="mt-8 flex h-[60px] max-w-[560px] items-center overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-[#0D0D0D]">
-                                <Search className="ml-4 h-5 w-5 shrink-0 text-[#E53F01]" />
-                                <input
-                                    type="text"
-                                    placeholder="Search by name, club, position..."
-                                    className="min-w-0 flex-1 border-none bg-transparent px-3 text-base text-[#0F172A] outline-none placeholder:text-[#94A3B8] dark:text-[#F5F5F5]"
-                                />
-                                <div className="mx-2 hidden h-8 w-px bg-[#E2E8F0] sm:block dark:bg-[#2A2A2A]" />
-                                <select className="hidden cursor-pointer border-none bg-transparent px-3 text-sm text-[#475569] outline-none sm:block dark:text-[#9A9A9A]">
-                                    <option>All Positions</option>
-                                    <option>Forward</option>
-                                    <option>Midfielder</option>
-                                    <option>Defender</option>
-                                    <option>Goalkeeper</option>
-                                </select>
-                                <button className="h-full rounded-r-2xl border-l-2 border-white/20 bg-[#E53F01] px-5 text-sm font-bold whitespace-nowrap text-white transition-colors hover:bg-[#E53F01] sm:px-8">
-                                    Search Players
-                                </button>
-                            </div>
-
-                            {/* Stats row */}
-                            <div className="mt-8 grid grid-cols-2 gap-4 sm:flex sm:items-center sm:gap-6">
-                                {[
-                                    { v: stats.players.toLocaleString(), l: 'PLAYERS' },
-                                    { v: stats.scouts.toLocaleString(), l: 'SCOUTS' },
-                                    { v: stats.clubs.toLocaleString(), l: 'CLUBS' },
-                                    { v: stats.countries.toString(), l: 'COUNTRIES' },
-                                ].map((s, i) => (
-                                    <React.Fragment key={s.l}>
-                                        <div className="flex flex-col">
-                                            <span className="font-display text-3xl leading-none font-black text-white">{s.v}</span>
-                                            <span className="mt-1 text-xs font-medium tracking-wide text-white/70">{s.l}</span>
-                                        </div>
-                                        {i < 3 && <div className="hidden h-10 w-px bg-white/25 sm:block" />}
-                                    </React.Fragment>
-                                ))}
-                            </div>
-
-                            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/75">
-                                <Link href="/register/player" className="font-medium underline-offset-4 hover:underline">
-                                    Register as Player →
-                                </Link>
-                                <Link href="/register/scout" className="font-medium underline-offset-4 hover:underline">
-                                    Join as Scout / Club →
-                                </Link>
-                            </div>
-                        </div>
-
-                        {/* RIGHT — floating cards */}
-                        <div className="relative hidden h-[460px] lg:block">
-                            {[
-                                {
-                                    pos: 'top-0 left-0',
-                                    rot: 'rotate-[-4deg]',
-                                    name: 'Lucas Almeida',
-                                    position: 'ST',
-                                    flag: '🇧🇷',
-                                    views: '14,247',
-                                    delay: 'duration-700 delay-100',
-                                },
-                                {
-                                    pos: 'top-[110px] left-[150px] z-10',
-                                    rot: 'rotate-[2deg]',
-                                    name: 'Mathys Dubois',
-                                    position: 'CB',
-                                    flag: '🇫🇷',
-                                    views: '11,512',
-                                    delay: 'duration-700 delay-300',
-                                },
-                                {
-                                    pos: 'top-[230px] left-[40px]',
-                                    rot: 'rotate-[-3deg]',
-                                    name: 'Rafael Costa',
-                                    position: 'CM',
-                                    flag: '🇵🇹',
-                                    views: '9,803',
-                                    delay: 'duration-700 delay-500',
-                                },
-                            ].map((c, i) => (
-                                <div
-                                    key={i}
-                                    className={`absolute ${c.pos} ${c.rot} w-[200px] rounded-2xl bg-white p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] transition-all ${c.delay} ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-                                        }`}
-                                >
-                                    <div className="mb-3 h-1 w-12 rounded bg-[#E53F01]" />
-                                    <div className="flex h-[80px] items-center justify-center rounded-xl bg-gradient-to-br from-slate-200 to-slate-300">
-                                        <User className="h-10 w-10 text-slate-400" />
-                                    </div>
-                                    <div className="mt-3 text-sm font-bold text-[#0F172A]">{c.name}</div>
-                                    <div className="mt-1 flex items-center gap-2">
-                                        <span className="rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#E53F01]">
-                                            {c.position}
-                                        </span>
-                                        <span className="text-sm">{c.flag}</span>
-                                    </div>
-                                    <div className="mt-2 font-mono text-xs text-[#E53F01]">{c.views} views</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* ━━━ SECTION 2: LEADERBOARD AD ━━━ */}
-                <section className="bg-white py-4 dark:bg-[#111111]">
-                    <div className="mx-auto max-w-[728px] px-4">
-                        <div className="mb-2 text-center text-[10px] tracking-wider text-[#94A3B8] uppercase">Sponsored</div>
-                        <div className="relative mx-auto flex h-[90px] items-center gap-4 overflow-hidden rounded-xl bg-[#0F172A] px-6">
-                            <span
-                                className="pointer-events-none absolute top-[-10px] right-4 text-[120px] leading-none font-black text-white select-none"
-                                style={{ opacity: 0.03 }}
-                            >
-                                W
-                            </span>
-                            <div className="shrink-0 text-2xl font-black tracking-tight text-white">WYSCOUT</div>
-                            <div className="h-10 w-px shrink-0 bg-white/30" />
-                            <div className="hidden min-w-0 flex-1 sm:block">
-                                <div className="truncate text-sm font-semibold text-white">The #1 professional scouting platform</div>
-                                <div className="truncate text-xs text-white/50">4,000+ leagues · 400M+ data points · Used by 4,000 clubs</div>
-                            </div>
-                            <button
-                                onClick={() => router.visit('/register')}
-                                className="shrink-0 rounded-lg bg-[#E53F01] px-4 py-3 text-sm font-bold whitespace-nowrap text-white hover:bg-[#E53F01] sm:px-6"
-                            >
-                                START FREE TRIAL →
-                            </button>
-                        </div>
-                    </div>
-                </section>
-
-                {/* ━━━ SECTION 3: FEATURED PLAYERS ━━━ */}
-                <section className="bg-white py-16 dark:bg-[#0D0D0D]">
-                    <div className="mx-auto flex max-w-[1300px] flex-col gap-4 px-6 md:flex-row md:items-end md:justify-between">
-                        <div>
-                            <div className="text-xs font-bold tracking-[0.14em] text-[#E53F01] uppercase">Featured Players</div>
-                            <h2 className="font-display mt-1 text-4xl leading-tight font-black text-[#0F172A] dark:text-[#F5F5F5]">
-                                Rising Talent. Global Stage.
-                            </h2>
-                        </div>
-                        <Tabs defaultValue="all">
-                            <TabsList className="h-auto flex-wrap gap-1 rounded-none border-b border-[#E2E8F0] bg-transparent p-0 dark:border-[#2A2A2A]">
-                                {['All', 'Forwards', 'Midfielders', 'Defenders', 'Goalkeepers'].map((t) => (
-                                    <TabsTrigger
-                                        key={t}
-                                        value={t.toLowerCase()}
-                                        className="rounded-none bg-transparent px-3 py-2 text-sm font-medium text-[#475569] data-[state=active]:border-b-2 data-[state=active]:border-[#E53F01] data-[state=active]:bg-transparent data-[state=active]:text-[#E53F01] data-[state=active]:shadow-none dark:text-[#9A9A9A]"
-                                    >
-                                        {t}
-                                    </TabsTrigger>
-                                ))}
-                            </TabsList>
-                        </Tabs>
-                    </div>
-
-                    <div className="mx-auto mt-6 max-w-[1300px]">
-                        <div className="scrollbar-none flex gap-4 overflow-x-auto px-6 pb-4" style={{ scrollbarWidth: 'none' }}>
-                            {featuredPlayers.map((p) => (
-                                <Link
-                                    key={p.id}
-                                    href={`/player/profile/${p.id}`}
-                                    className="group w-[240px] shrink-0 cursor-pointer rounded-2xl border border-[#E2E8F0] bg-white p-5 transition-all duration-200 hover:-translate-y-1 hover:border-l-4 hover:border-[#E53F01] hover:shadow-[0_4px_16px_rgba(255,107,0,0.12)] dark:border-[#2A2A2A] dark:bg-[#161616]"
-                                >
-                                    <div className="relative flex h-[160px] items-center justify-center rounded-xl bg-[#F8FAFC] dark:bg-[#1F1F1F]">
-                                        <User className="h-16 w-16 text-[#CBD5E1] dark:text-[#2A2A2A]" />
-                                        <span className="absolute top-3 left-3 rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]">
-                                            {p.position}
-                                        </span>
-                                        {p.premium && (
-                                            <span className="absolute top-3 right-3 rounded-full bg-[#E53F01] px-2 py-0.5 text-[9px] font-bold tracking-wide text-white">
-                                                PREMIUM
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div className="p-3">
-                                        <div className="text-sm font-bold text-[#0F172A] dark:text-[#F5F5F5]">{p.name}</div>
-                                        <div className="mt-0.5 text-xs text-[#475569] dark:text-[#9A9A9A]">
-                                            {p.club} {p.flag}
-                                        </div>
-                                        <div className="mt-2 font-mono text-xs text-[#94A3B8]">
-                                            {p.age}y · {p.height}cm · {p.foot}
-                                        </div>
-                                        <div className="mt-3 text-xs font-bold text-[#E53F01] group-hover:underline">VIEW PROFILE →</div>
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* ━━━ SECTION 4: HALF-PAGE ADS ━━━ */}
-                <section className="bg-[#F8FAFC] py-8 dark:bg-[#111111]">
-                    <div className="mx-auto grid max-w-[1300px] gap-6 px-6 lg:grid-cols-2">
-                        {/* Nike */}
-                        <div
-                            className="relative flex h-[260px] flex-col items-center justify-center overflow-hidden rounded-2xl bg-[#111]"
-                            style={{
-                                backgroundImage: 'radial-gradient(ellipse at 50% 0%, rgba(255,107,0,0.3) 0%, transparent 60%)',
-                                backgroundColor: '#111',
-                            }}
-                        >
-                            <span className="absolute top-3 right-3 text-[10px] tracking-wider text-white/30 uppercase">Ad</span>
-                            <span
-                                className="pointer-events-none absolute -top-4 -right-4 text-[120px] leading-none font-black text-white select-none"
-                                style={{ opacity: 0.08 }}
-                            >
-                                ✓
-                            </span>
-                            <div className="text-3xl font-black tracking-tight text-white">NIKE FOOTBALL</div>
-                            <div className="mt-1 text-sm text-white/60">2025 Season Collection</div>
-                            <div className="mt-3 text-sm font-semibold text-white/80 italic">"Just Do It."</div>
-                            <button className="mt-6 rounded-xl bg-[#E53F01] px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-[#E53F01]">
-                                SHOP THE COLLECTION →
-                            </button>
-                        </div>
-
-                        {/* Adidas */}
-                        <div className="relative flex h-[260px] flex-col items-center justify-center rounded-2xl border border-[#E2E8F0] bg-white p-8 dark:border-[#2A2A2A] dark:bg-[#161616]">
-                            <span className="absolute top-3 right-3 text-[10px] tracking-wider text-[#94A3B8] uppercase">Ad</span>
-                            <div className="absolute top-6 right-8 left-8 flex flex-col gap-1">
-                                <div className="h-1 w-full bg-[#0F172A] dark:bg-[#F5F5F5]" />
-                                <div className="h-1 w-full bg-[#0F172A] dark:bg-[#F5F5F5]" />
-                                <div className="h-1 w-full bg-[#0F172A] dark:bg-[#F5F5F5]" />
-                            </div>
-                            <div className="mt-4 text-3xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">adidas</div>
-                            <div className="text-sm font-semibold text-[#475569] dark:text-[#9A9A9A]">Predator Elite</div>
-                            <div className="mt-2 mb-2 text-5xl">⚽</div>
-                            <div className="text-center text-sm font-bold text-[#0F172A] dark:text-[#F5F5F5]">Precision. Power. Control.</div>
-                            <button className="mt-4 rounded-lg bg-[#0F172A] px-8 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90 dark:bg-[#F5F5F5] dark:text-[#0F172A]">
-                                EXPLORE NOW
-                            </button>
-                        </div>
-                    </div>
-                </section>
-
-                {/* ━━━ SECTION 5: HOW IT WORKS ━━━ */}
-                <section className="bg-white py-16 dark:bg-[#0D0D0D]">
-                    <div className="mx-auto max-w-[1100px] px-6">
-                        <div className="text-center">
-                            <div className="text-xs font-bold tracking-[0.14em] text-[#E53F01] uppercase">The Platform</div>
-                            <h2 className="font-display mt-1 text-4xl font-black text-[#0F172A] dark:text-[#F5F5F5]">
-                                Simple. Professional. Effective.
-                            </h2>
-                        </div>
-
-                        <div className="mt-10 grid gap-8 lg:grid-cols-3">
-                            {[
-                                {
-                                    num: '01',
-                                    Icon: User,
-                                    title: 'Create Profile',
-                                    desc: 'Build a complete professional profile with stats, position data, club history, physical attributes, and verified credentials.',
-                                },
-                                {
-                                    num: '02',
-                                    Icon: Video,
-                                    title: 'Upload Highlights',
-                                    desc: 'Showcase your best matches with HD video reels, tactical clips, and skill demonstrations reviewed by our scouting team.',
-                                },
-                                {
-                                    num: '03',
-                                    Icon: Eye,
-                                    title: 'Get Discovered',
-                                    desc: 'Be seen by 1,200+ verified scouts and 387 professional clubs actively searching for talent across 67 countries.',
-                                },
-                            ].map((s) => (
-                                <div key={s.num} className="text-center lg:text-left">
-                                    <div className="font-display text-[80px] leading-none font-black text-[#E53F01]/10">{s.num}</div>
-                                    <s.Icon className="mx-auto -mt-6 mb-3 h-7 w-7 text-[#E53F01] lg:mx-0" />
-                                    <div className="text-lg font-bold text-[#0F172A] dark:text-[#F5F5F5]">{s.title}</div>
-                                    <div className="mt-2 text-sm leading-relaxed text-[#475569] dark:text-[#9A9A9A]">{s.desc}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* ━━━ SECTION 6: STATS BAND ━━━ */}
-                <section className="bg-[#E53F01] py-12">
-                    <div className="mx-auto grid max-w-[900px] grid-cols-2 gap-8 px-6 text-center lg:grid-cols-4">
-                        {[
-                            { v: stats.players.toLocaleString(), l: 'REGISTERED PLAYERS' },
-                            { v: stats.scouts.toLocaleString(), l: 'ACTIVE SCOUTS' },
-                            { v: stats.clubs.toString(), l: 'PARTNER CLUBS' },
-                            { v: stats.countries.toString(), l: 'COUNTRIES' },
-                        ].map((s) => (
-                            <div key={s.l}>
-                                <div className="font-display text-5xl leading-none font-black text-white lg:text-6xl">{s.v}</div>
-                                <div className="mt-2 text-sm font-medium tracking-wide text-white/75">{s.l}</div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                {/* ━━━ SECTION 7: SPONSOR PARTNERS ━━━ */}
-                <section className="bg-white py-10 dark:bg-[#0D0D0D]">
-                    <div className="mx-auto max-w-[1300px] px-6">
-                        <div className="mb-8 text-center text-xs tracking-widest text-[#94A3B8] uppercase">Our Partners</div>
-                        <div className="flex flex-wrap justify-center gap-4">
-                            {['SPORTRADAR', 'TRANSFERROOM', 'WYSCOUT', 'INSTAT', 'FOOTBALL MANAGER'].map((name) => (
-                                <div
-                                    key={name}
-                                    className="flex h-16 w-36 items-center justify-center rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-xs font-black tracking-tight text-[#475569] grayscale transition-all hover:text-[#E53F01] hover:grayscale-0 dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#9A9A9A] dark:hover:text-[#E53F01]"
-                                >
-                                    {name}
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Hero sponsor banner */}
-                        <div className="relative mx-auto mt-8 flex h-[250px] max-w-[970px] items-center gap-6 overflow-hidden rounded-2xl bg-gradient-to-r from-[#1a1a2e] to-[#16213e] px-6 sm:px-12">
-                            <span className="absolute top-3 right-3 text-[10px] tracking-wider text-white/30 uppercase">Sponsored</span>
-                            {/* Orb decorations */}
-                            <div
-                                className="pointer-events-none absolute rounded-full bg-[#E53F01]"
-                                style={{
-                                    width: 260,
-                                    height: 260,
-                                    left: -80,
-                                    top: -80,
-                                    opacity: 0.15,
-                                    filter: 'blur(20px)',
-                                }}
-                            />
-                            <div
-                                className="pointer-events-none absolute rounded-full bg-[#3b82f6]"
-                                style={{
-                                    width: 200,
-                                    height: 200,
-                                    right: -40,
-                                    bottom: -60,
-                                    opacity: 0.18,
-                                    filter: 'blur(20px)',
-                                }}
-                            />
-
-                            <div className="relative min-w-0 flex-1">
-                                <div className="text-xs font-bold tracking-[0.2em] text-white/60 uppercase">ScoutPro Network</div>
-                                <div className="font-display mt-2 text-3xl leading-tight font-black text-white sm:text-4xl">
-                                    GLOBAL SCOUTING.
-                                    <br />
-                                    ONE NETWORK.
-                                </div>
-                                <div className="mt-3 hidden max-w-md text-sm text-white/70 sm:block">
-                                    Connecting clubs, agents, and players across 90+ countries with verified intelligence and live match data.
-                                </div>
-                                <button className="mt-4 rounded-xl bg-[#E53F01] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#E53F01]">
-                                    JOIN THE NETWORK →
-                                </button>
-                            </div>
-                            <div className="relative hidden w-[180px] shrink-0 items-center justify-center md:flex">
-                                <div className="flex h-[140px] w-[140px] items-center justify-center rounded-full border-2 border-white/20">
-                                    <TrendingUp className="h-14 w-14 text-white/80" strokeWidth={1.5} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* ━━━ SECTION 8: FEATURED VIDEOS ━━━ */}
-                <section className="bg-[#F8FAFC] py-16 dark:bg-[#111111]">
-                    <div className="mx-auto max-w-[1300px] px-6">
-                        <div>
-                            <div className="text-xs font-bold tracking-[0.14em] text-[#E53F01] uppercase">Player Highlights</div>
-                            <h2 className="font-display mt-1 text-4xl font-black text-[#0F172A] dark:text-[#F5F5F5]">Watch Them Play</h2>
-                        </div>
-
-                        <div className="mt-8 grid gap-4 lg:grid-cols-[1.6fr_1fr]">
-                            {/* Large video */}
-                            <div className="group relative h-[300px] cursor-pointer overflow-hidden rounded-2xl bg-[#0F172A]">
-                                <div
-                                    className="pointer-events-none absolute inset-0"
-                                    style={{
-                                        backgroundImage: 'radial-gradient(ellipse at 30% 30%, rgba(255,107,0,0.25) 0%, transparent 60%)',
-                                    }}
-                                />
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#E53F01] shadow-2xl transition-transform group-hover:scale-110">
-                                        <Play className="ml-1 h-8 w-8 text-white" fill="white" />
-                                    </div>
-                                </div>
-                                <div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                                    <span className="rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#E53F01]">
-                                        ST · Santos FC
+                {/* SECTION 1: HERO */}
+                <section className="relative w-full overflow-hidden bg-black text-white">
+                    {/* Text sits in the same wrapper every other section uses, so all headings share one left edge */}
+                    <div className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
+                        <div className="py-14 md:py-20 lg:flex lg:min-h-[calc(100vh-4rem)] lg:w-1/2 lg:flex-col lg:justify-center xl:min-h-[calc(100vh-5rem)] 2xl:min-h-[calc(100vh-6rem)]">
+                            <div className="max-w-xl 2xl:max-w-2xl">
+                                <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl md:text-[2.625rem] lg:text-5xl xl:text-6xl 2xl:text-7xl">
+                                    <span className="block text-white">Be Seen.</span>
+                                    <span className="block text-[#E53F01]">
+                                        Be Discovered <span className="text-white">!</span>
                                     </span>
-                                    <div className="font-display mt-3 text-3xl font-black tracking-tight text-white">LUCAS ALMEIDA</div>
-                                    <div className="mt-1 font-mono text-xs text-white/60">Season Highlights · 4:32</div>
+                                </h1>
+
+                                <p className="mt-6 max-w-lg text-sm leading-relaxed text-[#f4f4f4] sm:text-base xl:text-lg 2xl:mt-8 2xl:max-w-xl 2xl:text-xl">
+                                    The platform that connects players, clubs, agents and
+                                    scouts through videos, statistics and professional
+                                    profiles.
+                                </p>
+
+                                <p className="mt-4 max-w-lg border-l-2 border-[#b2300e] pl-3 text-sm leading-relaxed text-[#f4f4f4] sm:text-base xl:text-lg 2xl:max-w-xl 2xl:text-xl">
+                                    Show your talent to the world and increase your
+                                    opportunities in football.
+                                </p>
+
+                                {/* Buttons */}
+                                <div className="mt-8 flex flex-wrap items-center gap-4 2xl:mt-10">
+                                    <Link href={isLoggedIn ? dashboardHref : "/register"}>
+                                        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#E53F01] px-4 py-3 text-xs font-semibold  transition-all duration-300 hover:bg-[#E53F01] sm:text-sm lg:px-6 lg:py-3 lg:text-base 2xl:px-8 2xl:py-4 2xl:text-lg">
+                                            <UserRoundPlus className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
+                                            <span className="text-left leading-tight">
+
+                                                {isLoggedIn ? (
+                                                    "Dashboard"
+                                                ) : (
+                                                    <>
+                                                        Create A Free
+                                                        <br />
+                                                        Profile Now
+                                                    </>
+                                                )}
+                                            </span>
+                                        </button>
+                                    </Link>
+                                    <Link href="/about">
+                                        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-gray-600 px-4 py-3 text-xs font-semibold transition-all duration-300 hover:border-white sm:text-sm lg:px-6 lg:py-4 lg:text-base 2xl:px-8 2xl:text-lg">
+                                            <CirclePlay className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
+                                            <span>Learn More</span>
+                                        </button>
+                                    </Link>
                                 </div>
                             </div>
+                        </div>
 
-                            {/* Two small videos */}
-                            <div className="flex flex-col gap-4">
-                                {featuredVideos.slice(1).map((v) => (
-                                    <div key={v.id} className="group relative h-[140px] cursor-pointer overflow-hidden rounded-2xl bg-[#0F172A]">
-                                        <div
-                                            className="pointer-events-none absolute inset-0"
-                                            style={{
-                                                backgroundImage: 'radial-gradient(ellipse at 70% 50%, rgba(255,107,0,0.2) 0%, transparent 60%)',
-                                            }}
-                                        />
-                                        <div className="absolute top-1/2 right-5 -translate-y-1/2">
-                                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#E53F01] shadow-xl transition-transform group-hover:scale-110">
-                                                <Play className="ml-0.5 h-5 w-5 text-white" fill="white" />
+                    </div>
+
+                    {/* Right side visual — bleeds to the screen edge on lg+, stacks below the text on tablet and mobile */}
+                    <div className="w-full lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full bg-black">
+                        <img
+                            src="/images/img/hero.jpeg"
+                            alt=""
+                            aria-hidden="true"
+                            className="w-full h-auto object-cover lg:h-full lg:w-full lg:object-contain"
+                        />
+                    </div>
+                </section>
+
+                {/* ADVERTISING */}
+                <aside className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
+                    <div className="my-6">
+                        <div className="flex w-full items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">
+                            <p className="text-sm font-medium tracking-widest text-white/50 2xl:text-base">ADVERTISING SPACE</p>
+                        </div>
+                    </div>
+                </aside>
+
+                {/* SECTION 2: STEPS */}
+                <section className="mx-auto w-full max-w-7xl bg-black px-6 pt-10 text-white sm:px-10 lg:px-16 2xl:pt-14">
+                    <div>
+                        {/* Heading */}
+                        <h2 className="mb-6 text-2xl font-extrabold leading-tight sm:text-3xl lg:text-4xl 2xl:mb-8 2xl:text-5xl">
+                            A Simple. Professional. <span className="text-[#E53F01]">Effective Platform.</span>
+                        </h2>
+
+                        {/* Steps */}
+                        <div className="lg:max-w-5xl 2xl:max-w-6xl">
+                            {steps.map((item, index) => {
+                                const Icon = item.icon;
+                                return (
+                                    <div key={index} className="border-b border-[#1f1f1f]">
+                                        <div className="grid grid-cols-[3.125rem_3.75rem_1fr] items-center py-5 md:grid-cols-[4.375rem_5.625rem_1fr] lg:max-w-4xl 2xl:max-w-5xl 2xl:py-7">
+                                            {/* Icon */}
+                                            <div className="flex justify-center">
+                                                <div className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-500 md:h-14 md:w-14 2xl:h-16 2xl:w-16">
+                                                    <Icon className="h-5 w-5 text-[#E53F01] md:h-8 md:w-8 2xl:h-9 2xl:w-9" />
+                                                </div>
+                                            </div>
+                                            {/* Step */}
+                                            <div>
+                                                <p className="text-[0.625rem] font-bold text-[#E53F01] md:text-sm 2xl:text-base">STEP</p>
+                                                <h3 className="text-3xl leading-none font-extrabold text-[#E53F01] md:text-5xl 2xl:text-6xl">{item.step}</h3>
+                                            </div>
+                                            {/* Content */}
+                                            <div className="border-l-4 border-[#1f1f1f] pl-3 md:pl-5">
+                                                <h3 className="mb-1 text-base font-extrabold sm:text-lg md:text-xl lg:text-2xl 2xl:text-3xl">
+                                                    {item.title}
+                                                </h3>
+                                                <p className="text-sm leading-relaxed text-gray-300 sm:text-base lg:text-lg 2xl:text-xl">
+                                                    {item.desc}
+                                                </p>
                                             </div>
                                         </div>
-                                        <div className="absolute right-0 bottom-0 left-0 p-4">
-                                            <div className="font-display text-xl font-black tracking-tight text-white">{v.name}</div>
-                                            <div className="mt-0.5 text-[11px] text-white/60">{v.position}</div>
-                                        </div>
                                     </div>
-                                ))}
-                            </div>
+                                );
+                            })}
                         </div>
-                    </div>
-                </section>
 
-                {/* ━━━ SECTION 9: CTA BAND ━━━ */}
-                <section className="relative overflow-hidden bg-[#E53F01] py-20 text-center">
-                    <div
-                        className="pointer-events-none absolute inset-0 opacity-5"
-                        style={{
-                            backgroundImage:
-                                'linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)',
-                            backgroundSize: '60px 60px',
-                        }}
-                    />
-                    <div className="relative mx-auto max-w-3xl px-6">
-                        <h2 className="font-display text-[40px] leading-tight font-black tracking-tight text-white sm:text-[52px]">
-                            ARE YOU THE NEXT GREAT TALENT?
-                        </h2>
-                        <p className="mx-auto mt-4 max-w-xl text-lg text-white/80 sm:text-xl">
-                            Join 12,000+ players already building their professional career on HiLights Football.
-                        </p>
-                        <Link
-                            href="/register"
-                            className="mt-8 inline-block rounded-2xl bg-white px-10 py-4 text-base font-black text-[#E53F01] transition-all hover:scale-105 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] sm:px-12 sm:py-5 sm:text-lg"
-                        >
-                            CREATE YOUR FREE PROFILE
-                        </Link>
-                    </div>
-                </section>
-
-                {/* ━━━ FOOTER ━━━ */}
-                <footer className="bg-[#0F172A] py-12 text-white">
-                    <div className="mx-auto max-w-[1300px] px-6">
-                        <div className="grid gap-10 lg:grid-cols-4">
-                            <div>
-                                <img src="/images/logo/hilights_logo_dark_200.png" className="h-12 w-auto" alt="HiLights Football" />
-                                <p className="mt-4 text-sm leading-relaxed text-slate-400">
-                                    The professional football discovery platform connecting talent with opportunity worldwide.
-                                </p>
-                                <div className="mt-5 flex gap-3">
-                                    {[Github, Twitter, Instagram, Youtube].map((I, i) => (
-                                        <a
-                                            key={i}
-                                            href="#"
-                                            className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 transition-colors hover:bg-[#E53F01]"
-                                        >
-                                            <I className="h-4 w-4 text-slate-400 hover:text-white" />
-                                        </a>
-                                    ))}
+                        {/* Bottom CTA */}
+                        <div className="flex flex-wrap items-center gap-4 border-b border-[#1f1f1f] py-6 sm:grid sm:grid-cols-[4.375rem_1fr_12.5rem] md:grid-cols-[5.625rem_1fr_18.75rem] lg:grid-cols-[6.875rem_1fr_20rem] 2xl:grid-cols-[8.125rem_1fr_22.5rem] 2xl:py-8">
+                            {/* Left Icon */}
+                            <div className="flex justify-center">
+                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#E53F01] md:h-20 md:w-20 2xl:h-24 2xl:w-24">
+                                    <Users className="text-white md:h-12 md:w-12 2xl:h-14 2xl:w-14" />
                                 </div>
                             </div>
-
-                            <div>
-                                <div className="mb-4 text-sm font-bold tracking-wide text-white">PLATFORM</div>
-                                <ul className="space-y-2.5">
-                                    {['About', 'How It Works', 'Pricing', 'Press', 'Careers'].map((l) => (
-                                        <li key={l}>
-                                            <Link href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                                                {l}
-                                            </Link>
-                                        </li>
-                                    ))}
-                                </ul>
+                            {/* Text */}
+                            <div className="min-w-0 flex-1">
+                                <h3 className="text-base leading-tight font-bold sm:text-lg md:text-xl lg:text-2xl 2xl:text-3xl">
+                                    Not part of the <span className="text-[#E53F01]">HiLights Football</span>
+                                    <br />
+                                    community yet?
+                                </h3>
+                                <p className="mt-3 max-w-xl text-xs leading-relaxed text-[#efefef] sm:text-sm md:text-base 2xl:text-lg">
+                                    Create your free profile, share your best moments and become visible to coaches, clubs and recruiters worldwide.
+                                </p>
                             </div>
-
-                            <div>
-                                <div className="mb-4 text-sm font-bold tracking-wide text-white">FOR PLAYERS</div>
-                                <ul className="space-y-2.5">
-                                    {['Create Profile', 'Upload Highlights', 'Pricing Plans', 'Success Stories', 'Player Support'].map((l) => (
-                                        <li key={l}>
-                                            <Link href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                                                {l}
-                                            </Link>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            <div>
-                                <div className="mb-4 text-sm font-bold tracking-wide text-white">FOR SCOUTS</div>
-                                <ul className="space-y-2.5">
-                                    {['Join as Scout', 'Search Database', 'Scout Tools', 'Club Partnerships', 'API Access'].map((l) => (
-                                        <li key={l}>
-                                            <Link href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                                                {l}
-                                            </Link>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div className="mt-10 flex flex-col justify-between gap-3 border-t border-white/10 pt-6 text-xs text-slate-500 sm:flex-row">
-                            <div>© 2026 HiLights Football. All rights reserved.</div>
-                            <div className="flex flex-wrap gap-4">
-                                <Link href="#" className="transition-colors hover:text-white">
-                                    Terms
-                                </Link>
-                                <Link href="#" className="transition-colors hover:text-white">
-                                    Privacy
-                                </Link>
-                                <Link href="#" className="transition-colors hover:text-white">
-                                    Cookies
-                                </Link>
-                                <Link href="#" className="transition-colors hover:text-white">
-                                    Contact
+                            {/* Button */}
+                            <div className="flex w-full items-end justify-end sm:w-auto lg:pr-4">
+                                <Link href={isLoggedIn ? dashboardHref : "/register"}>
+                                    <button className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#E53F01] px-4 py-2 transition hover:bg-[#E53F01]/10 md:gap-4 lg:px-8 lg:py-4 2xl:px-10">
+                                        <UserPlus className="h-6 w-6 shrink-0 text-white md:h-8 md:w-8 2xl:h-9 2xl:w-9" />
+                                        <span className="text-left text-xs font-bold  sm:text-sm lg:text-base 2xl:text-lg">
+                                            {isLoggedIn ? (
+                                                "Dashboard"
+                                            ) : (
+                                                <>
+                                                    Create A Free
+                                                    <br />
+                                                    Profile Now
+                                                </>
+                                            )}
+                                        </span>
+                                    </button>
                                 </Link>
                             </div>
                         </div>
                     </div>
-                </footer>
+                </section>
+
+                {/* ADVERTISING */}
+                <aside className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
+                    <div className="my-6">
+                        <div className="flex w-full items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">
+                            <p className="text-sm font-medium tracking-widest text-white/50 2xl:text-base">ADVERTISING SPACE</p>
+                        </div>
+                    </div>
+                </aside>
+
+                {/* SECTION 3: COMMUNITY HIGHLIGHTS */}
+                <section className="mx-auto mb-6 w-full max-w-7xl overflow-x-hidden px-6 sm:px-10 lg:px-16">
+                    <div className="rounded-xl bg-[#f9f9f9] p-3 md:p-6 2xl:p-8">
+                        {/* Header */}
+                        <div className="flex items-center justify-between gap-2 pb-3">
+                            <div className="flex min-w-0 items-center gap-2">
+                                <Star fill="#E53F01" className="size-[1.125rem] shrink-0 text-[#f25704]" />
+                                <h2 className="truncate text-xs font-extrabold whitespace-nowrap text-[#222] md:text-sm lg:text-base 2xl:text-lg">
+                                    Community Highlights
+                                </h2>
+                            </div>
+                            <Link href="/request-access" > <button className="flex shrink-0 items-center gap-1 rounded-[0.625rem] bg-white px-3 py-2 text-[0.625rem] font-bold whitespace-nowrap text-gray-700 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:gap-2 sm:px-4 md:text-xs"> View All <ArrowRight className="size-[1.125rem] text-[#E53F01] font-bold" /> </button> </Link>
+                        </div>
+
+                        {/* Rows */}
+                        {players.slice(0, 5).map((player, index) => (
+                            // <Link key={player.id} href={auth?.user
+                            //     ? `/player/profile/${player.id}`
+                            //     : "/register?role=scout"}>
+                            <Link key={player.id} href={`/player/profile/${player.id}`}>
+                                <div className="mb-2 grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center rounded-[0.75rem] bg-white pr-3 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:grid-cols-[4.375rem_minmax(0,1fr)_5rem_7.5rem] sm:pr-4 md:grid-cols-[9.375rem_minmax(0,1fr)_7.5rem_10.625rem] 2xl:grid-cols-[11.25rem_minmax(0,1fr)_9.375rem_12.5rem]">
+                                    {/* Thumbnail */}
+                                    <div className="relative row-span-2 sm:row-span-1">
+                                        <img
+                                            src={player.photo_url || '/images/img/placeholder.webp'}
+                                            alt={player.name ?? ''}
+                                            className="rounded rounded-tl-[0.75rem] rounded-bl-[0.75rem] object-cover"
+                                        />
+                                        {player.video_url && (
+                                            <button
+                                                type="button"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    setActiveVideo(player.video_url);
+                                                }}
+                                                className="absolute right-3 bottom-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00] cursor-pointer"
+                                            >
+                                                <Play fill="white" className="size-[0.75rem] text-white" />
+                                            </button>
+                                        )}
+                                    </div>
+                                    {/* Info */}
+                                    <div className="row-span-2 mr-2 min-w-0 px-2 sm:row-span-1 md:px-6">
+                                        <h3 className="truncate text-sm font-bold whitespace-nowrap text-[#222] md:text-[0.9375rem] lg:text-base 2xl:text-lg">{player.name}</h3>
+                                        <p className="truncate text-xs whitespace-nowrap text-gray-600 md:text-sm 2xl:text-base">
+                                            {getPositionName(player.positions ?? [])}
+                                        </p>
+                                        <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                                            {player?.nationality && player.nationality.length > 0 ? (
+                                                player.nationality.map((code, idx) => (
+                                                    <span key={`${code}-${idx}`} className="inline-flex items-center gap-1 text-xs whitespace-nowrap text-gray-700 md:text-sm 2xl:text-base">
+                                                        <ReactCountryFlag
+                                                            countryCode={code}
+                                                            svg
+                                                            style={{ width: '1.2em', height: '1.2em' }}
+                                                        />
+                                                        <span>{getCountryName(code)}</span>
+                                                        {idx < player.nationality.length - 1 && <span>,</span>}
+                                                    </span>
+                                                ))
+                                            ) : (
+                                                <span className="text-xs text-gray-700">—</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    {/* Height */}
+                                    <div className="col-start-3 flex items-center justify-end gap-2 text-xs whitespace-nowrap text-[#222] sm:col-start-auto sm:mr-3 sm:justify-center md:text-sm lg:text-base 2xl:text-lg">
+                                        <Ruler className="size-[0.875rem]" />
+                                        <p>{player.height} cm</p>
+                                    </div>
+                                    {/* Age */}
+                                    <div className="col-start-3 flex items-center justify-end gap-2 text-xs whitespace-nowrap text-[#222] sm:col-start-auto md:ml-4 md:text-sm lg:text-base 2xl:text-lg">
+                                        <Clock3 className="size-[0.875rem]" />
+                                        {player?.dob && (() => {
+                                            const dob = new Date(player.dob);
+                                            const today = new Date();
+
+                                            let age = today.getFullYear() - dob.getFullYear();
+
+                                            const hasBirthdayPassed =
+                                                today.getMonth() > dob.getMonth() ||
+                                                (today.getMonth() === dob.getMonth() &&
+                                                    today.getDate() >= dob.getDate());
+
+                                            if (!hasBirthdayPassed) {
+                                                age--;
+                                            }
+
+                                            return age < 18
+                                                ? dob.getFullYear()
+                                                : `${age} years`;
+                                        })()}
+                                    </div>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                    {activeVideo && (
+                        <div
+                            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+                            onClick={() => setActiveVideo(null)}
+                        >
+                            <div
+                                className="relative w-full max-w-3xl aspect-video"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <button
+                                    onClick={() => setActiveVideo(null)}
+                                    className="absolute -top-10 right-0 text-white text-3xl leading-none hover:text-[#E53F01]"
+                                    aria-label="Close"
+                                >
+                                    ×
+                                </button>
+                                {getEmbedUrl(activeVideo) ? (
+                                    <iframe
+                                        src={getEmbedUrl(activeVideo)!}
+                                        title="Player video"
+                                        className="w-full h-full rounded-xl"
+                                        allow="autoplay; fullscreen"
+                                        allowFullScreen
+                                    />
+                                ) : (
+                                    <div className="flex h-full items-center justify-center rounded-xl bg-[#161616] text-white">
+                                        Invalid video URL
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </section>
             </main>
+            <PublicFooter />
         </div>
     );
 }
+
+export default HomeTwo;

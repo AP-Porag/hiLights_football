@@ -213,8 +213,9 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
         fields: [
             { name: 'name', label: 'Competition', type: 'text' },
             { name: 'year', label: 'Year', type: 'text' },
+            { name: 'country', label: 'Country', type: 'country' },
         ],
-        empty: { name: '', year: '' },
+        empty: { name: '', year: '', country: '' },
     },
     matches: {
         title: 'Recent Matches',
@@ -1269,7 +1270,7 @@ export default function PlayerDashboard() {
                             </div>
                             <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Profile Complete</p>
                             <p className="mt-2 text-[0.625rem] font-medium text-[#E53F01]">
-                                {profileComplete < 100 ? `${100 - profileComplete}% left to complete your profile` : 'Your profile is complete'}
+                                {profileComplete < 100 ? `${100 - profileComplete}% left to complete your football identity` : 'Your football identity is complete'}
                             </p>
                         </div>
                         {/* [2] Profile Views */}
@@ -1296,7 +1297,7 @@ export default function PlayerDashboard() {
                             </svg>
                         </div>
                         {/* [4] Subscription */}
-                        <div className="flex flex-col rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
+                        {/* <div className="flex flex-col rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                             {!hasSubscription ? (
                                 <>
                                     <Badge className="w-fit border border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[0.625rem] font-bold tracking-wider text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]">FREE PLAN</Badge>
@@ -1314,7 +1315,7 @@ export default function PlayerDashboard() {
                                     <p className="mt-3 flex-1 text-sm text-[#9A9A9A]">All features unlocked.</p>
                                 </>
                             )}
-                        </div>
+                        </div> */}
                     </div>
                     {/* right side */}
                     <div className="mx-auto mb-16 max-[331px]:[zoom:0.95] max-[316px]:[zoom:0.82]">
@@ -1454,7 +1455,7 @@ export default function PlayerDashboard() {
                     {/* COMPLETION CHECKLIST */}
                     <section className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                         <div className="mb-1 flex items-center justify-between">
-                            <h2 className="text-lg font-bold text-[#F5F5F5]">Complete Your Profile</h2>
+                            <h2 className="text-lg font-bold text-[#F5F5F5]">Complete Your Football Identity</h2>
                             <span className="font-mono text-sm font-bold text-[#E53F01]">{profileComplete}%</span>
                         </div>
                         <Progress value={profileComplete} className="mb-5 h-2 bg-[#2A2A2A] [&>div]:bg-[#E53F01]" />
@@ -1488,7 +1489,7 @@ export default function PlayerDashboard() {
                     </section>
                 </div>
                 {/* COUNTRY ANALYTICS */}
-                <section className="relative overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
+                {/* <section className="relative overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                     <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div>
                             <h2 className="text-lg font-bold text-[#F5F5F5]">Country Analytics</h2>
@@ -1496,7 +1497,7 @@ export default function PlayerDashboard() {
                         </div>
 
                         <div className="flex items-center gap-3">
-                            {/* Period selector — shudhu premium hole interactive */}
+
                             {hasSubscription && (
                                 <div className="flex items-center gap-1 rounded-lg border border-[#2A2A2A] bg-[#111111] p-1">
                                     {RANGE_OPTIONS.map((opt) => (
@@ -1578,7 +1579,7 @@ export default function PlayerDashboard() {
                             </div>
                         </div>
                     )}
-                </section>
+                </section> */}
             </main>
             {/* MODALS */}
             {

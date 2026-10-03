@@ -38,7 +38,7 @@ const NAV_LINKS: NavLink[] = [
     { label: 'Dashboard', href: '/player/' },
     { label: 'My Profile', href: '/player/profile/data/edit' },
     // { label: 'Analytics', href: '/player/analytics' },
-    { label: 'Subscription', href: '/player/subscription' },
+    // { label: 'Subscription', href: '/player/subscription' },
 ];
 function getInitials(name: string): string {
     if (!name) return 'P';
