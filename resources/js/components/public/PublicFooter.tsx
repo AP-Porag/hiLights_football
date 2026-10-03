@@ -50,17 +50,30 @@ export const PublicFooter = () => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/#" className="flex items-center gap-2 hover:text-white">
-                                            <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
-                                            Terms of Use
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/#" className="flex items-center gap-2 hover:text-white">
+                                        <Link href="/legal/privacy-policy" className="flex items-center gap-2 hover:text-white">
                                             <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
                                             Privacy Policy
                                         </Link>
                                     </li>
+                                    <li>
+                                        <Link href="/legal/terms-and-conditions" className="flex items-center gap-2 hover:text-white">
+                                            <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
+                                            Terms and Conditions
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/legal/cookie-policy" className="flex items-center gap-2 hover:text-white">
+                                            <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
+                                            Cookie Policy
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/legal/refund-policy" className="flex items-center gap-2 hover:text-white">
+                                            <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
+                                            Refund Policy
+                                        </Link>
+                                    </li>
+
                                 </ul>
                             </div>
 

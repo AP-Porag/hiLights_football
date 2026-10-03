@@ -193,12 +193,12 @@ const HomeTwo = () => {
                     </div>
 
                     {/* Right side visual — bleeds to the screen edge on lg+, stacks below the text on tablet and mobile */}
-                    <div className="h-64 w-full sm:h-80 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-1/2">
+                    <div className="w-full lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full bg-black">
                         <img
                             src="/images/img/hero.jpeg"
                             alt=""
                             aria-hidden="true"
-                            className="h-full w-full object-cover object-center"
+                            className="w-full h-auto object-cover lg:h-full lg:w-full lg:object-contain"
                         />
                     </div>
                 </section>

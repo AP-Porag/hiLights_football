@@ -26,6 +26,9 @@ use App\Http\Controllers\Web\PlayerSearchController;
 use App\Http\Controllers\Player\NotificationController;
 use App\Http\Controllers\Auth\WhatsappVerificationController;
 use App\Http\Controllers\Web\AccessRequestController;
+use App\Http\Controllers\Web\LegalController;
+use App\Services\Web\LegalService;
+
 
 Route::get('/execute-command', function () {
     //    return redirect()->route('login');
@@ -94,6 +97,25 @@ Route::get('/scout', [HomeController::class, 'scout'])->name('scout');
 
 // Route::get('/profile/{id}', [ProfileController::class, 'detail'])
 //     ->name('profile.public.detail');
+
+
+
+Route::prefix('legal')->name('legal.')->group(function () {
+    Route::get('/', [LegalController::class, 'index'])->name('index');
+    Route::get('/{slug}', [LegalController::class, 'show'])
+        ->whereIn('slug', LegalService::DOCUMENT_SLUGS)
+        ->name('show');
+});
+
+// Short aliases for footer links
+Route::redirect('/privacy-policy', '/legal/privacy-policy', 301);
+Route::redirect('/terms', '/legal/terms-and-conditions', 301);
+Route::redirect('/cookie-policy', '/legal/cookie-policy', 301);
+Route::redirect('/refund-policy', '/legal/refund-policy', 301);
+
+
+
+
 
 //all player routes
 Route::middleware(['auth'])->prefix('player')->group(function () {
