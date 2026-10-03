@@ -101,16 +101,16 @@ export default function ScoutNavbar() {
                 'transition-shadow duration-200',
             ].join(' ')}
         >
-            <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between gap-4 px-6">
+            <div className="mx-auto flex h-full max-w-[87.5rem] items-center justify-between gap-2 px-4 sm:gap-4 sm:px-6">
                 {/* LEFT — Logo */}
                 <Link
                     href="/"
-                    className="flex shrink-0 items-center gap-2"
+                    className="flex min-w-0 shrink items-center gap-2 md:shrink-0"
                     aria-label="HiLights Football"
                 >
                     <img
                         src="/images/logo/final_logo.png"
-                        className="h-9 w-auto"
+                        className="h-9 w-auto min-w-0 max-w-full max-md:object-contain max-md:object-left"
                         alt="HiLights Football"
                     />
                 </Link>
@@ -127,7 +127,7 @@ export default function ScoutNavbar() {
                                     'relative text-sm transition-colors',
                                     link.prominent ? 'font-semibold' : 'font-medium',
                                     active
-                                        ? 'text-[#E53F01] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#E53F01]'
+                                        ? 'text-[#E53F01] after:absolute after:right-0 after:bottom-[-1.375rem] after:left-0 after:h-[0.125rem] after:bg-[#E53F01]'
                                         : 'text-[#9A9A9A] hover:text-[#E53F01]',
                                 ].join(' ')}
                             >
@@ -170,7 +170,7 @@ export default function ScoutNavbar() {
                                     </div>
                                     <span
                                         className={[
-                                            'shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-bold tracking-wider',
+                                            'shrink-0 rounded-full border px-2 py-0.5 text-[0.625rem] font-bold tracking-wider',
                                             roleChip,
                                         ].join(' ')}
                                     >
@@ -194,7 +194,7 @@ export default function ScoutNavbar() {
                 </div>
 
                 {/* MOBILE — Hamburger */}
-                <div className="flex items-center gap-1 md:hidden">
+                <div className="flex shrink-0 items-center gap-1 md:hidden">
                     <Link
                         href="/scout/notifications"
                         className="relative rounded-md p-2 transition-colors hover:bg-[#1F1F1F]"
@@ -219,7 +219,7 @@ export default function ScoutNavbar() {
                         </SheetTrigger>
                         <SheetContent
                             side="left"
-                            className="flex w-[300px] flex-col border-r border-[#2A2A2A] bg-[#0D0D0D] p-0"
+                            className="flex w-[18.75rem] flex-col border-r border-[#2A2A2A] bg-[#0D0D0D] p-0"
                         >
                             <SheetHeader className="border-b border-[#2A2A2A] px-6 py-4">
                                 <SheetTitle className="flex items-center gap-2">
@@ -235,7 +235,7 @@ export default function ScoutNavbar() {
                                         <span className="text-xl font-black tracking-tight text-[#E53F01] italic">
                                             Lights
                                         </span>
-                                        <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.12em] text-[#94A3B8]">
+                                        <span className="mb-0.5 ml-1 self-end text-[0.625rem] font-bold tracking-[0.12em] text-[#94A3B8]">
                                             FOOTBALL
                                         </span>
                                     </div>
@@ -261,7 +261,7 @@ export default function ScoutNavbar() {
                                         </div>
                                         <span
                                             className={[
-                                                'shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-bold tracking-wider',
+                                                'shrink-0 rounded-full border px-2 py-0.5 text-[0.625rem] font-bold tracking-wider',
                                                 roleChip,
                                             ].join(' ')}
                                         >

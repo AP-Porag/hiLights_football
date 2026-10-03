@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
+import ReactCountryFlag from "react-country-flag";
+import { getPositionName } from '@/utils/helper';
 import {
     MapPin,
     Flag,
@@ -18,56 +20,134 @@ import {
     Footprints,
     Eye,
     Globe2,
+    Trophy,
+    CalendarDays,
+    Users,
+    Crosshair,
+    Shield,
+    Shirt
 } from 'lucide-react';
 import PublicNavbar from '@/components/public/PublicNavbar';
+import { PublicFooter } from '@/components/public/PublicFooter';
+import { PitchPriority } from '@/components/ui/pitch-priority';
 
 // MOCK DATA
-const player = {
-    id: 247,
-    name: 'BENJAMIN SILVA',
-    nickname: 'Benja',
-    profileId: '#00247',
-    isMinor: true,
-    dob: '30/01/2009',
-    age: 17,
-    height: 178,
-    nationality: 'Brazil',
-    flag: '🇧🇷',
-    birthplace: 'Rio de Janeiro, Brazil',
-    currentClub: 'Anápolis Sub-15',
-    teamSince: '03/2025',
-    agent: 'Talentos S/A',
-    foot: 'Right',
-    positions: ['ST', 'LW'],
-    modalities: ['Football', 'Futsal', 'Beach Soccer'],
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    profileViews: 1247,
-    countriesCount: 23,
-    scoutRatings: 8,
-    avgRating: 4.2,
-    description:
-        'Fast, focused player with exceptional game vision and strong ball control. Comfortable in tight spaces, confident in 1v1 situations and excellent at creating chances from wide positions.',
-    clubHistory: [
-        { year: 2026, club: 'Anápolis Sub-15' },
-        { year: 2025, club: '' },
-        { year: 2024, club: '' },
-        { year: 2023, club: 'Flamengo Base' },
-        { year: 2022, club: '' },
-        { year: 2021, club: '' },
-        { year: 2020, club: '' },
-    ],
-    isPremium: true,
-    isVerified: true,
-};
-// TODO: Replace with usePage<PageProps & { player: typeof player, viewerRole?: string, existingRating?: ScoutRating }>().props
 
-const viewerRole = 'scout'; // TODO: usePage().props.viewerRole
+const transferHistory = [
+    { year: 2024, club: "São Cristóvão - RJ", img: "/images/club-logo/cl-1.png" },
+    { year: 2023, club: "Bangu - RJ", img: "/images/club-logo/cl-2.png" },
+    { year: 2022, club: "Portuguesa RJ - RJ", img: "/images/club-logo/cl-3.png" },
+    { year: 2021, club: "Madureira - RJ", img: "/images/club-logo/cl-4.png" },
+    { year: 2020, club: "Flamengo U-17 - RJ", img: "/images/club-logo/cl-5.png" },
+    { year: 2019, club: "Fluminense U-15 - RJ", img: "/images/club-logo/cl-6.png" },
+    { year: 2018, club: "Nova Iguaçu - RJ", img: "/images/club-logo/cl-7.png" },
+    { year: 2017, club: "Boa Vista - RJ", img: "/images/club-logo/cl-8.png" },
+    { year: 2016, club: "Serrano - RJ", img: "/images/club-logo/cl-9.png" },
+    { year: 2015, club: "Macaé - RJ", img: "/images/club-logo/cl-10.png" },
+];
+
+const achievements = [
+    { year: "2024", title: "Copinha" },
+    { year: "2025", title: "Gaúcho U-20" },
+    { year: "2025", title: "BH Cup" },
+    { year: "2019", title: "Gazetinha Cup" },
+    { year: "2019", title: "Rio Grande do Sul State Championship U11" },
+];
+
+const competitions = [
+    { name: "Copinha", year: "2024" },
+    { name: "Gaúcho U-20", year: "2025" },
+    { name: "BH Cup", year: "2025" },
+    { name: "Gazetinha Cup", year: "2019" },
+    { name: "Rio Grande do Sul State Championship U11", year: "2019" },
+];
+
+const matches = [
+    { home: "São Cristóvão", score: "3 x 1", away: "Juventude", goals: 1, assists: 0, minutes: "90'" },
+    { home: "São Cristóvão", score: "2 x 2", away: "Grêmio", goals: 0, assists: 1, minutes: "90'" },
+    { home: "São Cristóvão", score: "4 x 0", away: "Internacional", goals: 2, assists: 0, minutes: "90'" },
+];
+
+const viewerRole = 'scout';
+
+// Position code → full form name
+const POSITION_FULL_NAMES: Record<string, string> = {
+    'GK': 'Goalkeeper',
+    'LB': 'Left Back',
+    'CB-L': 'Centre Back (Left)',
+    'CB-R': 'Centre Back (Right)',
+    'RB': 'Right Back',
+    'LM': 'Left Midfielder',
+    'CM-L': 'Central Midfielder (Left)',
+    'CM-R': 'Central Midfielder (Right)',
+    'RM': 'Right Midfielder',
+    'CAM': 'Central Attacking Midfielder',
+    'LW': 'Left Winger',
+    'ST': 'Striker',
+    'RW': 'Right Winger',
+    'CF': 'Centre Forward',
+};
+
+const getPositionFullName = (codes?: string | string[] | null): string => {
+    if (!codes) return 'Not specified';
+    const arr = Array.isArray(codes) ? codes : [codes];
+    return arr
+        .map((c) => {
+            const key = String(c).trim().toUpperCase(); // normalize: gk / Gk / " GK " → GK
+            return POSITION_FULL_NAMES[key] ?? c;
+        })
+        .join(', ');
+};
+
+const getCountryName = (code?: string | string[] | null): string => {
+    if (!code) return '';
+
+    const codes = Array.isArray(code) ? code : [code];
+
+    const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+
+    return codes
+        .map(c => {
+            try {
+                return regionNames.of(c) || c;
+            } catch {
+                return c;
+            }
+        })
+        .join(', ');
+};
+
+const getEmbedUrl = (url?: string | null): string | null => {
+    if (!url) return null;
+    const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
+    const vm = url.match(/vimeo\.com\/(\d+)/);
+    if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+    return null;
+};
+
+// Same pattern as backend YouTubeService::extractVideoId
+const getYouTubeVideoId = (url?: string | null): string | null => {
+    if (!url) return null;
+    const match = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/|v\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    return match ? match[1] : null;
+};
+
+const calcAge = (dob?: string | null): number | null => {
+    if (!dob) return null;
+    const b = new Date(dob);
+    if (isNaN(b.getTime())) return null;
+    const t = new Date();
+    let age = t.getFullYear() - b.getFullYear();
+    const m = t.getMonth() - b.getMonth();
+    if (m < 0 || (m === 0 && t.getDate() < b.getDate())) age--;
+    return age;
+};
 
 interface StarRatingProps {
     value: number;
     onChange: (v: number) => void;
 }
-
 function StarRating({ value, onChange }: StarRatingProps) {
     return (
         <div className="flex gap-1">
@@ -79,646 +159,412 @@ function StarRating({ value, onChange }: StarRatingProps) {
                     className="transition-transform hover:scale-110"
                     aria-label={`Rate ${n} stars`}
                 >
-                    <Star
-                        className={`w-5 h-5 ${n <= value
-                            ? 'fill-[#E53F01] text-[#E53F01]'
-                            : 'text-[#FCD9BD] dark:text-[#2A2A2A]'
-                            }`}
-                    />
+                    <Star className={`h-5 w-5 ${n <= value ? 'fill-[#E53F01] text-[#E53F01]' : 'text-[#FCD9BD] dark:text-[#2A2A2A]'}`} />
                 </button>
             ))}
         </div>
     );
 }
 
-export default function Detail() {
-    // const { player, viewerRole } = usePage<any>().props;
-    const [technical, setTechnical] = useState(4);
-    const [physical, setPhysical] = useState(4);
-    const [mental, setMental] = useState(5);
-    const [overall, setOverall] = useState(4);
-    const [notes, setNotes] = useState('');
+export default function NewDetail() {
+    const { player } = usePage<{ player: any }>().props;
 
-    const initials = player.name
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .slice(0, 2);
+    // Minor check — based on users.dob
+    const playerAge = calcAge(player?.user?.dob);
+    const isMinor = playerAge !== null && playerAge < 18;
 
+    const [videoDuration, setVideoDuration] = useState<string>('');
+
+    React.useEffect(() => {
+        const videoUrl: string | undefined = player?.video_url;
+
+        if (!videoUrl) {
+            setVideoDuration('');
+            return;
+        }
+
+        const videoId = getYouTubeVideoId(videoUrl);
+
+        if (!videoId) {
+            setVideoDuration('');
+            return;
+        }
+
+        const controller = new AbortController();
+        const params = new URLSearchParams();
+        params.append('urls[]', videoUrl);
+
+        fetch(`/youtube/durations?${params.toString()}`, {
+            headers: { Accept: 'application/json' },
+            signal: controller.signal,
+        })
+            .then((res) => (res.ok ? res.json() : null))
+            .then((data) => setVideoDuration(data?.durations?.[videoId] ?? ''))
+            .catch((err) => {
+                if (err?.name !== 'AbortError') {
+                    console.error('Error fetching video duration:', err);
+                    setVideoDuration('');
+                }
+            });
+
+        return () => controller.abort();
+    }, [player?.video_url]);
     return (
-        <div className="min-h-screen bg-[#F4F6F9] dark:bg-[#0D0D0D] pt-16">
+        <div className="min-h-screen bg-black pt-16 xl:pt-20 2xl:pt-24 dark:bg-[#0D0D0D]">
             <PublicNavbar />
 
             {/* BREADCRUMB */}
-            <div className="bg-white dark:bg-[#0D0D0D] border-b border-[#E2E8F0] dark:border-[#2A2A2A] py-3 px-4 sm:px-6">
-                <nav className="max-w-[1400px] mx-auto flex items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A] overflow-x-auto">
-                    <Link
-                        href="/"
-                        className="hover:text-[#E53F01] dark:hover:text-[#E53F01] whitespace-nowrap"
-                    >
-                        Home
-                    </Link>
-                    <ChevronRight className="w-3.5 h-3.5 text-[#CBD5E1] dark:text-[#555]" />
-                    <Link
-                        href="/players"
-                        className="hover:text-[#E53F01] dark:hover:text-[#E53F01] whitespace-nowrap"
-                    >
-                        Players
-                    </Link>
-                    <ChevronRight className="w-3.5 h-3.5 text-[#CBD5E1] dark:text-[#555]" />
-                    <Link
-                        href="/players?country=brazil"
-                        className="hover:text-[#E53F01] dark:hover:text-[#E53F01] whitespace-nowrap"
-                    >
-                        Brazil
-                    </Link>
-                    <ChevronRight className="w-3.5 h-3.5 text-[#CBD5E1] dark:text-[#555]" />
-                    <span className="text-[#0F172A] dark:text-[#F5F5F5] font-medium whitespace-nowrap">
-                        Benjamin Silva
-                    </span>
+            <div className="mx-auto max-w-7xl bg-black px-4 py-3 sm:px-6 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]">
+                <nav className="flex min-w-0 items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A]">
+                    <Link href="/" className="whitespace-nowrap hover:text-[#E53F01]">Home</Link>
+                    <ChevronRight className="h-3.5 w-3.5 shrink-0 text-[#CBD5E1] dark:text-[#555]" />
+                    <Link href="/players" className="whitespace-nowrap hover:text-[#E53F01]">Players</Link>
+                    <ChevronRight className="h-3.5 w-3.5 shrink-0 text-[#CBD5E1] dark:text-[#555]" />
+                    <span className="min-w-0 truncate font-medium whitespace-nowrap text-[#E53F01] dark:text-[#F5F5F5]">{
+                        player?.user?.name}</span>
                 </nav>
             </div>
 
-            {/* LEADERBOARD AD */}
-            <div className="bg-[#F4F6F9] dark:bg-[#0D0D0D] py-3 px-4 sm:px-6">
-                <div className="max-w-[1400px] mx-auto">
-                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider mb-2">
-                        Sponsored
-                    </p>
-                    <div className="bg-[#111] rounded-xl h-[90px] max-w-[728px] mx-auto flex items-center px-4 sm:px-6 gap-3 sm:gap-4 relative overflow-hidden">
-                        <span className="text-white/5 absolute -right-4 top-1/2 -translate-y-1/2 font-black text-[100px] leading-none select-none">
-                            ✓
-                        </span>
-                        <span className="text-white font-black text-2xl sm:text-4xl relative z-10">
-                            NIKE
-                        </span>
-                        <div className="w-px h-10 bg-white/20 relative z-10" />
-                        <span className="text-white font-semibold text-xs sm:text-sm flex-1 relative z-10 line-clamp-2">
-                            Just Play. New Season 2025-26 Collection
-                        </span>
-                        <button className="bg-[#E53F01] hover:bg-[#E53F01] text-white font-bold text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg relative z-10 whitespace-nowrap transition-colors">
-                            Shop Now →
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6">
+                <main className="min-w-0 space-y-6 overflow-x-hidden">
 
-            {/* 3-COLUMN LAYOUT */}
-            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-[280px_1fr_280px] gap-5">
-                {/* LEFT AD COLUMN */}
-                <aside className="hidden lg:block sticky top-20 self-start space-y-3">
-                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider">
-                        Sponsored
-                    </p>
+                    {/* ═══════════ TOP: player info (left) + main video (right) ═══════════ */}
+                    <section className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
 
-                    {/* NIKE AD */}
-                    <div className="h-[350px] bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center">
-                        <div
-                            className="absolute inset-0 opacity-20"
-                            style={{
-                                background:
-                                    'radial-gradient(circle at 50% 0%, #E53F01 0%, transparent 60%)',
-                            }}
-                        />
-                        <span className="text-white/10 font-black text-[100px] leading-none absolute -top-4 select-none">
-                            ✓
-                        </span>
-                        <div className="relative z-10 flex flex-col items-center">
-                            <span className="text-white font-black text-2xl tracking-tight">
-                                NIKE FC
-                            </span>
-                            <div className="bg-[#E53F01] w-8 h-0.5 mx-auto my-2" />
-                            <span className="text-white/70 text-sm">2025 Season Boots</span>
-                            <div className="w-20 h-20 bg-[#E53F01]/20 rounded-full flex items-center justify-center text-4xl my-3">
-                                👟
-                            </div>
-                            <span className="text-white/60 text-xs tracking-widest">
-                                MERCURIAL VAPOR
-                            </span>
-                            <button className="bg-[#E53F01] hover:bg-[#E53F01] text-white font-bold px-6 py-2 rounded-lg text-sm mt-2 transition-colors">
-                                SHOP NOW →
-                            </button>
-                        </div>
-                    </div>
+                        {/* Player info */}
+                        <div className="flex flex-col gap-4 text-white min-[420px]:flex-row sm:gap-6">
+                            {/* Smaller photo */}
+                            <div className="shrink-0">
+                                <img
+                                    src={player.photo_url || '/images/img/placeholder.webp'}
+                                    alt={player.user?.name ?? ''}
+                                    className="h-[10rem] w-[7.5rem] rounded-md border border-[#233247] object-cover sm:h-[11.875rem] sm:w-[9.0625rem] lg:h-[13.125rem] lg:w-[10rem]"
+                                />
 
-                    {/* ADIDAS AD */}
-                    <div className="h-[280px] bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-5 flex flex-col items-center justify-center text-center relative overflow-hidden">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col gap-1 pt-3">
-                            <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
-                            <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
-                            <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
-                        </div>
-                        <span className="text-[#0F172A] dark:text-[#F5F5F5] font-black text-2xl mt-4">
-                            adidas
-                        </span>
-                        <span className="text-[#475569] dark:text-[#9A9A9A] text-sm mt-1">
-                            Predator Elite FG
-                        </span>
-                        <span className="text-5xl my-3">⚽</span>
-                        <span className="text-[#0F172A] dark:text-[#F5F5F5] font-bold text-sm">
-                            Precision. Control.
-                        </span>
-                        <button className="bg-[#0F172A] dark:bg-[#F5F5F5] text-white dark:text-[#0F172A] font-bold px-6 py-2 rounded-lg text-sm mt-3 hover:opacity-90 transition-opacity">
-                            EXPLORE
-                        </button>
-                    </div>
-
-                    {/* PUMA AD */}
-                    <div className="h-[100px] bg-gradient-to-r from-[#CC0000] to-[#990000] rounded-2xl flex items-center justify-center flex-col gap-1 px-4">
-                        <span className="text-white font-black text-sm tracking-wide">
-                            PUMA FOOTBALL
-                        </span>
-                        <span className="text-white/70 text-xs">Future 8 Pro</span>
-                        <button className="bg-white text-[#CC0000] font-bold text-xs px-4 py-1 rounded-md hover:bg-white/90 transition-colors">
-                            View Boot
-                        </button>
-                    </div>
-                </aside>
-
-                {/* CENTER COLUMN */}
-                <main className="min-w-0 space-y-4">
-                    {/* IDENTITY CARD */}
-                    <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
-                        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
-                            {/* PHOTO */}
-                            <div className="shrink-0 mx-auto sm:mx-0">
-                                <div className="w-[200px] h-[200px] rounded-2xl bg-gradient-to-br from-[#1E293B] to-[#334155] border-2 border-[#E2E8F0] dark:border-[#2A2A2A] relative flex items-center justify-center">
-                                    <span className="text-white font-display font-black text-5xl tracking-tight">
-                                        {initials}
-                                    </span>
-                                    {player.isPremium && (
-                                        <span className="absolute top-2 right-2 bg-gradient-to-r from-[#E53F01] to-[#E53F01] text-white text-[10px] font-black px-3 py-1 rounded-full tracking-wider">
-                                            PREMIUM
-                                        </span>
-                                    )}
-                                    {player.isVerified && (
-                                        <div className="absolute bottom-2 right-2 bg-white rounded-full w-6 h-6 flex items-center justify-center shadow">
-                                            <BadgeCheck className="w-5 h-5 text-[#E53F01] fill-white" />
-                                        </div>
-                                    )}
-                                </div>
                             </div>
 
-                            {/* INFO */}
-                            <div className="flex-1 min-w-0">
-                                <p className="font-mono text-[#94A3B8] text-xs mb-1">
-                                    {player.profileId}
-                                </p>
-                                <h1 className="font-display font-black text-[42px] leading-none text-[#0F172A] dark:text-[#F5F5F5] tracking-tight">
-                                    {player.name}
+                            {/* Bigger info text */}
+                            <div className="min-w-0 flex-1">
+                                <h1 className="text-2xl font-bold tracking-wide break-words uppercase md:text-3xl">
+                                    {player.user?.name}
                                 </h1>
-                                <p className="text-[#94A3B8] text-sm mt-1">
-                                    ({player.nickname})
-                                </p>
-
-                                {player.isMinor && (
-                                    <div className="inline-flex items-center gap-1.5 mt-3 bg-amber-50 border border-amber-300 text-amber-700 dark:bg-amber-950 dark:border-amber-800 dark:text-amber-400 text-xs font-semibold px-3 py-1 rounded-md">
-                                        <AlertTriangle className="w-3.5 h-3.5" />
-                                        Under 18 — Guardian Managed
+                                {isMinor && (
+                                    <div className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#E53F01]/60 bg-[#E53F01]/10 px-3 py-1 text-xs font-semibold text-[#ff8a4c]">
+                                        <Users className="h-3.5 w-3.5 shrink-0" />
+                                        Profile managed by parents
                                     </div>
                                 )}
+                                {/* <h3 className="mt-1 text-base font-semibold text-[#eb6c0d] uppercase md:text-lg">
+                                    {getPositionName(player.positions ?? [])}
+                                </h3> */}
 
-                                {/* Info grid */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 mt-5">
-                                    <div className="flex items-center gap-2">
-                                        <MapPin className="w-3.5 h-3.5 text-[#E53F01] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">Birthplace:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5] truncate">
-                                            Rio de Janeiro
+                                <div className="mt-3 space-y-1.25 text-sm md:text-base">
+                                    <div className="flex flex-wrap items-center gap-y-1">
+                                        <CalendarDays className="mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" />
+                                        <span className="">
+                                            <span className=" text-white">Date of Birth:</span>{' '}
+                                            {player.user?.dob
+                                                ? calcAge(player.user.dob) < 18
+                                                    ? new Date(player.user.dob).getFullYear()
+                                                    : `${new Date(player.user.dob).toLocaleDateString('en-US', {
+                                                        day: 'numeric',
+                                                        month: 'short',
+                                                        year: 'numeric',
+                                                    })} (${calcAge(player.user.dob)})`
+                                                : '—'}
                                         </span>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <Flag className="w-3.5 h-3.5 text-[#E53F01] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">Nationality:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                                            {player.flag} {player.nationality}
-                                        </span>
+                                    <div className="flex flex-wrap items-center gap-y-1">
+                                        <Users className="mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" />
+                                        <span className="pr-3 text-[#e1e2e6]">Nationality:</span>
+                                        {Array.isArray(player.user?.nationality) && player.user.nationality.length > 0 ? (
+                                            player.user.nationality.map((code, idx) => (
+                                                <span key={code} className="mr-1 inline-flex items-center">
+                                                    <ReactCountryFlag countryCode={code} svg style={{ width: '1.2em', height: '1.2em' }} />
+                                                    <span className="ml-1">{getCountryName(code)}</span>
+                                                    {idx < player.user.nationality.length - 1 && <span className="mr-1">,</span>}
+                                                </span>
+                                            ))
+                                        ) : (
+                                            <span>{getCountryName(player.user?.nationality)}</span>
+                                        )}
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <Building2 className="w-3.5 h-3.5 text-[#E53F01] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">Club:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5] truncate">
-                                            {player.currentClub}
-                                        </span>
+                                    <div className="flex flex-wrap items-center gap-y-1">
+                                        <Ruler className="mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" />
+                                        <span className="text-[#e1e2e6]">Height:</span>
+                                        <span className="pl-2 text-gray-100">{player.height ? `${player.height} cm` : '—'}</span>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <Calendar className="w-3.5 h-3.5 text-[#E53F01] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">Since:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                                            {player.teamSince}
-                                        </span>
+                                    <div className="flex flex-wrap items-center gap-y-1">
+                                        <Crosshair className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
+                                        <span className="text-[#e1e2e6]">Position:</span>
+                                        <span className="pl-2 text-gray-100">{getPositionFullName(player.positions ?? [])}</span>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <Calendar className="w-3.5 h-3.5 text-[#E53F01] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">DOB:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                                            {player.dob} · {player.age} yrs
-                                        </span>
+                                    <div className="flex flex-wrap items-center gap-y-1">
+                                        <Footprints className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
+                                        <span className="text-[#e1e2e6]">Dominant Foot:</span>
+                                        <span className="pl-2 text-gray-100">{player.foot ?? '—'}</span>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <Ruler className="w-3.5 h-3.5 text-[#E53F01] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">Physical:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                                            {player.height} cm · {player.foot}
-                                        </span>
-                                    </div>
-                                    <div className="flex items-center gap-2 sm:col-span-2">
-                                        <User className="w-3.5 h-3.5 text-[#E53F01] shrink-0" />
-                                        <span className="text-xs text-[#94A3B8]">Agent:</span>
-                                        <span className="text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5]">
-                                            {player.agent}
-                                        </span>
-                                    </div>
-                                </div>
+                                    <div className="flex flex-wrap items-center gap-y-1">
+                                        <Shield className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
+                                        <span className="text-[#e1e2e6]">Current Club:</span>
 
-                                {/* Positions */}
-                                <div className="flex flex-wrap gap-2 mt-4">
-                                    {player.positions.map((pos) => (
-                                        <span
-                                            key={pos}
-                                            className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-sm font-black px-4 py-1.5 rounded-lg tracking-wide"
-                                        >
-                                            {pos}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                {/* Modalities */}
-                                <div className="flex flex-wrap gap-2 mt-2">
-                                    {player.modalities.map((m) => (
-                                        <span
-                                            key={m}
-                                            className="bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] text-xs px-3 py-1 rounded-full"
-                                        >
-                                            {m}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                {/* Stats strip */}
-                                <div className="border-t border-[#E2E8F0] dark:border-[#2A2A2A] mt-5 pt-5 grid grid-cols-3 text-center">
-                                    <div>
-                                        <p className="font-mono font-black text-xl text-[#E53F01]">
-                                            {player.profileViews.toLocaleString()}
-                                        </p>
-                                        <p className="text-xs text-[#94A3B8] mt-0.5 flex items-center justify-center gap-1">
-                                            <Eye className="w-3 h-3" />
-                                            Views
-                                        </p>
+                                        <span className="pl-2 text-gray-100">{player.user?.nationality && (
+                                            <ReactCountryFlag countryCode={player.current_club_country} svg className="mr-1" />
+                                        )}{player.current_club ?? '—'}</span>
                                     </div>
-                                    <div className="border-x border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                        <p className="font-mono font-black text-xl text-[#E53F01]">
-                                            {player.countriesCount}
-                                        </p>
-                                        <p className="text-xs text-[#94A3B8] mt-0.5 flex items-center justify-center gap-1">
-                                            <Globe2 className="w-3 h-3" />
-                                            Countries
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p className="font-mono font-black text-xl text-[#E53F01]">
-                                            ★ {player.avgRating}
-                                        </p>
-                                        <p className="text-xs text-[#94A3B8] mt-0.5">Avg Rating</p>
-                                    </div>
+                                    {/* <div className="flex flex-wrap items-center gap-y-1">
+                                        <Shirt className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
+                                        <span className="text-[#e1e2e6]">Previous Club:</span>
+                                        <span className="pl-2 text-gray-100">Bangu</span>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
-                    </section>
 
-                    {/* VIDEO SECTION */}
-                    <section className="bg-[#0F172A] rounded-2xl overflow-hidden relative">
-                        <div className="aspect-video w-full relative">
-                            {player.videoUrl ? (
-                                <>
+                        {/* Main video — visible on first view, no scroll needed */}
+                        <div className="w-full">
+                            {/* <p className="mb-2 text-[1rem] font-bold text-white">HIGHLIGHTS VIDEO</p> */}
+                            <div className="overflow-hidden rounded-2xl">
+                                {getEmbedUrl(player.video_url) ? (
                                     <iframe
-                                        src={player.videoUrl}
-                                        title={`${player.name} highlights`}
+                                        src={getEmbedUrl(player.video_url)!}
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowFullScreen
-                                        className="w-full h-full"
+                                        className="aspect-video w-full rounded-2xl bg-gray-800"
                                     />
-                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pointer-events-none">
-                                        <p className="text-[#E53F01] text-xs font-bold tracking-widest">
-                                            STRIKER · HIGHLIGHT REEL 2025
-                                        </p>
-                                        <h2 className="font-display font-black text-2xl text-white">
-                                            {player.name}
-                                        </h2>
-                                    </div>
-                                </>
-                            ) : (
-                                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                    <Video className="text-white/30 w-12 h-12 mb-2" />
-                                    <p className="text-white/40 text-sm">
-                                        No highlights uploaded yet
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-                    </section>
-
-                    {/* IN-CONTENT AD */}
-                    <div>
-                        <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider mb-1">
-                            Sponsored
-                        </p>
-                        <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl min-h-[80px] flex flex-col sm:flex-row items-center px-4 sm:px-6 py-3 sm:py-0 gap-3 sm:gap-4">
-                            <span className="text-white font-black text-base tracking-wide shrink-0">
-                                TRANSFERROOM
-                            </span>
-                            <span className="text-white/70 text-xs sm:text-sm flex-1 text-center sm:text-left">
-                                Join 1,200+ clubs on the professional transfer network
-                            </span>
-                            <button className="bg-[#E53F01] hover:bg-[#E53F01] text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
-                                Start Free Trial →
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* STRUCTURED DATA CARD */}
-                    <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden">
-                        <div className="grid grid-cols-1 md:grid-cols-2">
-                            <div className="md:border-r border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase border-b border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                    Player Details
-                                </div>
-                                {[
-                                    { k: 'Position', v: player.positions.join(' / ') },
-                                    { k: 'Preferred Foot', v: player.foot },
-                                    { k: 'Modality', v: player.modalities[0] },
-                                    { k: 'Nationality', v: `${player.flag} ${player.nationality}` },
-                                    { k: 'Birthplace', v: player.birthplace },
-                                    { k: 'Agent', v: player.agent },
-                                ].map((row) => (
-                                    <div
-                                        key={row.k}
-                                        className="px-5 py-3 border-b border-[#F1F5F9] dark:border-[#1F1F1F] flex justify-between items-center last:border-b-0 md:last:border-b"
-                                    >
-                                        <span className="text-xs text-[#94A3B8]">{row.k}</span>
-                                        <span className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] text-right ml-2">
-                                            {row.v}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                            <div>
-                                <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase border-b border-[#E2E8F0] dark:border-[#2A2A2A]">
-                                    Physical Profile
-                                </div>
-                                {[
-                                    { k: 'Height', v: `${player.height} cm` },
-                                    { k: 'Age', v: `${player.age} years` },
-                                    { k: 'Profile Type', v: 'Premium · Verified' },
-                                    { k: 'Registered Since', v: player.teamSince },
-                                ].map((row) => (
-                                    <div
-                                        key={row.k}
-                                        className="px-5 py-3 border-b border-[#F1F5F9] dark:border-[#1F1F1F] flex justify-between items-center last:border-b-0"
-                                    >
-                                        <span className="text-xs text-[#94A3B8]">{row.k}</span>
-                                        <span className="text-xs font-semibold text-[#0F172A] dark:text-[#F5F5F5] text-right ml-2">
-                                            {row.v}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* CLUB HISTORY */}
-                    <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden">
-                        <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 border-b border-[#E2E8F0] dark:border-[#2A2A2A] flex items-center justify-between">
-                            <span className="text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase">
-                                Club History
-                            </span>
-                            <span className="text-[10px] text-[#94A3B8] font-mono">
-                                2020 — 2026
-                            </span>
-                        </div>
-                        <div className="grid grid-cols-[80px_1fr] px-5 py-2 border-b border-[#E2E8F0] dark:border-[#2A2A2A] bg-[#FAFBFC] dark:bg-[#161616]">
-                            <span className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold">
-                                Year
-                            </span>
-                            <span className="text-[9px] uppercase tracking-widest text-[#94A3B8] font-bold">
-                                Club
-                            </span>
-                        </div>
-                        {player.clubHistory.map((entry) => (
-                            <div
-                                key={entry.year}
-                                className="grid grid-cols-[80px_1fr] px-5 py-3 border-b border-[#F1F5F9] dark:border-[#1F1F1F] hover:bg-[#FAFBFC] dark:hover:bg-[#1A1A1A] transition-colors last:border-b-0"
-                            >
-                                <span className="font-mono font-semibold text-sm text-[#0F172A] dark:text-[#F5F5F5]">
-                                    {entry.year}
-                                </span>
-                                {entry.club ? (
-                                    <span className="text-sm text-[#0F172A] dark:text-[#F5F5F5]">
-                                        {entry.club}
-                                    </span>
                                 ) : (
-                                    <span className="text-sm text-[#CBD5E1] dark:text-[#333]">
-                                        —
-                                    </span>
+                                    <div className="flex aspect-video w-full flex-col items-center justify-center rounded-2xl bg-gray-800">
+                                        <Video className="mb-2 h-12 w-12 text-white/30" />
+                                        <p className="text-sm text-white/40">No highlights uploaded yet</p>
+                                    </div>
                                 )}
                             </div>
-                        ))}
-                    </section>
-
-                    {/* ABOUT */}
-                    <section className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden">
-                        <div className="bg-[#F8FAFC] dark:bg-[#1F1F1F] px-5 py-3 border-b border-[#E2E8F0] dark:border-[#2A2A2A]">
-                            <span className="text-[10px] font-bold text-[#94A3B8] tracking-[0.14em] uppercase">
-                                About This Player
-                            </span>
-                        </div>
-                        <div className="p-6">
-                            <p className="text-sm leading-relaxed text-[#475569] dark:text-[#9A9A9A]">
-                                {player.description}
-                            </p>
-                        </div>
-                    </section>
-
-                    {/* SCOUT ACTIONS PANEL */}
-                    {viewerRole && (
-                        <section className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.08)] border-2 border-[#E53F01] rounded-2xl overflow-hidden">
-                            <div className="bg-[#E53F01] px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                                <h2 className="font-display font-black text-lg text-white tracking-wide">
-                                    SCOUT ACTIONS
-                                </h2>
-                                <span className="text-white/80 text-sm font-medium">
-                                    ★ {player.avgRating} avg from {player.scoutRatings} ratings
-                                </span>
+                            <div className="mt-2 flex items-center justify-between text-[0.875rem] text-white">
+                                {player?.video_url ? (
+                                    <>
+                                        <h3 className="min-w-0 truncate pr-2 font-medium">
+                                            {player?.videos?.[0]?.label
+                                                || player?.video_label
+                                                || `${player?.user?.name} - Best Moments`}
+                                        </h3>
+                                        <span className="shrink-0 text-gray-300">
+                                            {videoDuration}
+                                        </span>
+                                    </>
+                                ) : (
+                                    <h3 className="italic text-gray-400">No video uploaded yet</h3>
+                                )}
                             </div>
-                            <div className="px-6 py-5 space-y-4">
-                                {[
-                                    { label: 'Technical', value: technical, set: setTechnical },
-                                    { label: 'Physical', value: physical, set: setPhysical },
-                                    { label: 'Mental', value: mental, set: setMental },
-                                    { label: 'Overall', value: overall, set: setOverall },
-                                ].map((cat) => (
-                                    <div
-                                        key={cat.label}
-                                        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
-                                    >
-                                        <label className="text-sm font-semibold text-[#92400E] dark:text-[#E53F01]">
-                                            {cat.label}
-                                        </label>
-                                        <StarRating value={cat.value} onChange={cat.set} />
+                        </div>
+                    </section>
+
+                    {/* SUB VIDEOS */}
+                    <section>
+                        <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                            {(player.videos ?? [])
+                                .filter((v: any) => v?.url)
+                                .slice(1) // Skip first video (already shown as main)
+                                .map((v: any, i: number) => (
+                                    <div key={i}>
+                                        <div className="overflow-hidden rounded-[0.75rem] ">
+                                            {getEmbedUrl(v.url) ? (
+                                                <iframe
+                                                    src={getEmbedUrl(v.url)!}
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                    className="aspect-video w-full rounded-[0.75rem] bg-gray-800"
+                                                />
+                                            ) : (
+                                                <div className="flex aspect-video w-full flex-col items-center justify-center rounded-[0.75rem] bg-gray-800">
+                                                    <Video className="mb-2 h-10 w-10 text-white/30" />
+                                                    <p className="text-sm text-white/40">Invalid video</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                        {v.label && (
+                                            <p className="py-2 text-center text-[1rem] font-bold text-white">{v.label}</p>
+                                        )}
                                     </div>
                                 ))}
+                        </div>
+                    </section>
 
-                                <div>
-                                    <textarea
-                                        value={notes}
-                                        onChange={(e) => setNotes(e.target.value)}
-                                        placeholder="Add scouting notes (optional)..."
-                                        className="w-full h-20 bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] placeholder-[#94A3B8] dark:placeholder-[#555] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-800 resize-none"
-                                    />
-                                </div>
+                    {/* IN-CONTENT AD (mobile only) */}
+                    <aside className="block space-y-3 lg:hidden">
+                        <p className="text-[0.625rem] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>
+                        <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center">
+                            <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
+                        </div>
+                    </aside>
 
-                                <div className="flex flex-col sm:flex-row gap-3 pt-1">
-                                    <button
-                                        type="button"
-                                        className="bg-[#E53F01] hover:bg-[#E53F01] text-white font-bold text-sm flex-1 px-5 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-colors"
-                                    >
-                                        <Star className="w-4 h-4 fill-white" />
-                                        Submit Rating
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="border-2 border-[#E53F01] text-[#E53F01] hover:bg-[#FFF3EB] dark:hover:bg-[rgba(255,107,0,0.12)] font-bold text-sm flex-1 px-5 py-2.5 rounded-lg bg-transparent flex items-center justify-center gap-2 transition-colors"
-                                    >
-                                        <Bookmark className="w-4 h-4" />
-                                        Save Player
-                                    </button>
+                    {/* CLUB HISTORY */}
+                    <section className="overflow-hidden">
+                        <div className="grid gap-2 grid-cols-1 md:gap-4">
+                            {/* Positions */}
+                            <div className="rounded-xl border border-slate-800 bg-[#06111d] p-5">
+                                <h2 className="mb-6 text-[0.8125rem] font-bold text-white uppercase md:text-[1.125rem]">Positions On The Pitch</h2>
+
+                                <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
+                                    {/* Pitch (left) — full width of the column */}
+                                    <div className="min-w-0 w-full">
+                                        <PitchPriority selected={player.positions ?? []} />
+                                    </div>
+
+                                    {/* Positions list (right, top-aligned) */}
+                                    <div className="divide-y divide-[#1b2a3d] overflow-hidden rounded-lg border border-[#1b2a3d] bg-[#0b1523]">
+                                        <div className="flex items-center justify-between gap-4 px-4 py-3">
+                                            <span className="flex shrink-0 items-center gap-2 text-xs font-medium text-gray-400 md:text-sm">
+                                                <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
+                                                Main Position
+                                            </span>
+                                            <span className="min-w-0 truncate text-right text-sm font-semibold text-white md:text-base">
+                                                {player.positions?.[0] ? getPositionFullName([player.positions[0]]) : 'Not specified'}
+                                            </span>
+                                        </div>
+                                        {player.positions?.[1] && (
+                                            <div className="flex items-center justify-between gap-4 px-4 py-3">
+                                                <span className="flex shrink-0 items-center gap-2 text-xs font-medium text-gray-400 md:text-sm">
+                                                    <span className="h-2 w-2 rounded-full bg-gray-500" />
+                                                    Secondary Position
+                                                </span>
+                                                <span className="min-w-0 truncate text-right text-sm font-semibold text-white md:text-base">
+                                                    {getPositionFullName([player.positions[1]])}
+                                                </span>
+                                            </div>
+                                        )}
+                                        {player.positions?.[2] && (
+                                            <div className="flex items-center justify-between gap-4 px-4 py-3">
+                                                <span className="flex shrink-0 items-center gap-2 text-xs font-medium text-gray-400 md:text-sm">
+                                                    <span className="h-2 w-2 rounded-full bg-gray-500" />
+                                                    Third Position
+                                                </span>
+                                                <span className="min-w-0 truncate text-right text-sm font-semibold text-white md:text-base">
+                                                    {getPositionFullName([player.positions[2]])}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </section>
-                    )}
+                        </div>
+                    </section>
+
+                    {/* ACHIEVEMENTS + DESCRIPTION */}
+                    <div className="grid grid-cols-1 sm:grid-cols-[15.625rem_1fr] gap-2 md:gap-4 md:grid-cols-[25rem_1fr]">
+                        {/* Achievements */}
+                        <div className="rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5">
+                            <h2 className="mb-5 text-[0.75rem] font-semibold text-white uppercase md:text-sm">Achievements</h2>
+                            <div className="space-y-2 md:space-y-4">
+                                {(player.achievements ?? []).filter((item: any) => item?.title).map((item: any, index: number) => (
+                                    <div key={index} className="flex items-start gap-1 md:gap-3">
+                                        <span className="text-[0.75rem] text-yellow-500 md:text-sm">🏆</span>
+                                        <div className="flex gap-3 md:grid md:grid-cols-[6.25rem_1fr]">
+                                            <p className="text-[0.75rem] font-medium text-orange-500 md:text-sm">{item.year}</p>
+                                            <p className="text-[0.625rem] leading-relaxed text-gray-300 md:text-sm">{item.title}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            {/* <button className="mt-6 text-[0.75rem] font-medium text-orange-500 transition hover:text-orange-400 md:text-sm">
+                                View all achievements →
+                            </button> */}
+                        </div>
+                        {/* Player Description */}
+                        <div className="rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5">
+                            <h2 className="mb-4 text-[0.75rem] font-semibold text-white uppercase md:text-sm">
+                                Player Description
+                            </h2>
+                            <div className="w-full">
+                                <p className="min-h-48 w-full rounded-lg border border-[#1b2a3d] bg-[#08111d] p-2 text-gray-300 md:p-4">
+                                    {player?.description}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* IN-CONTENT AD (mobile only) */}
+                    <aside className="block space-y-3 lg:hidden">
+                        <p className="text-[0.625rem] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>
+                        <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center">
+                            <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
+                        </div>
+                    </aside>
+
+                    {/* COMPETITIONS + RECENT MATCHES */}
+                    <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.50fr] gap-2 md:gap-4 lg:grid-cols-[1fr_1.25fr]">
+                        {/* Competition History */}
+                        <div className="rounded-lg border border-[#152538] bg-[#07111d] p-4 md:p-6">
+                            <h2 className="mb-6 text-[0.875rem] font-bold text-white uppercase md:text-xl">Competition History</h2>
+                            <div className="space-y-2 md:space-y-4">
+                                {(player.competitions ?? [])
+                                    .filter((item: any) => item?.name)
+                                    .sort((a: any, b: any) => (Number(b.year) || 0) - (Number(a.year) || 0)) // recent year আগে
+                                    .map((item: any, index: number) => (
+                                        <div key={index} className="flex items-start justify-between gap-2 md:gap-4">
+                                            <div className="flex items-start gap-1 md:gap-3">
+                                                {item.country && (
+                                                    <ReactCountryFlag countryCode={item.country} svg style={{ width: '1.1em', height: '1.1em' }} className="shrink-0" />
+                                                )}
+                                                <span className="text-[0.625rem] text-gray-200 md:text-sm">{item.name}</span>
+                                            </div>
+                                            <span className="text-[0.625rem] whitespace-nowrap text-[#f97316] md:text-sm">{item.year}</span>
+                                        </div>
+                                    ))}
+                            </div>
+                            {/* <div className="mt-8 flex justify-end">
+                                <button className="flex items-center gap-2 text-[0.8125rem] text-[#f97316] transition hover:text-orange-400 md:text-[1.125rem]">
+                                    View all competitions
+                                    <ChevronRight className="size-[1.375rem]" />
+                                </button>
+                            </div>*/}
+                        </div>
+                        {/* Recent Matches */}
+                        {(() => {
+                            // Only goalkeeper (e.g. ["GK"]) → hide Goals & Assists
+                            const isGoalkeeperOnly =
+                                Array.isArray(player?.positions) &&
+                                player.positions.length === 1 &&
+                                String(player.positions[0]).trim().toUpperCase() === 'GK';
+
+                            return (
+                                <div className="overflow-hidden rounded-lg border border-[#152538] bg-[#07111d] p-6">
+                                    <h2 className="mb-6 text-[0.875rem] font-bold text-white uppercase md:text-xl">Recent Matches</h2>
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full">
+                                            <thead>
+                                                <tr className="border-b border-gray-300/10 text-left text-[0.75rem] text-gray-300 uppercase md:text-sm">
+                                                    <th className="pb-4">Match</th>
+                                                    {!isGoalkeeperOnly && <th className="pb-4 text-center">Goals</th>}
+                                                    {!isGoalkeeperOnly && <th className="px-2 pb-4 text-center">Assists</th>}
+                                                    <th className="pb-4 text-center">Minutes</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {(player.matches ?? []).filter((match: any) => match?.home).map((match: any, index: number) => (
+                                                    <tr key={index} className="border-b border-gray-300/10 text-[0.625rem] text-gray-200 md:text-[0.875rem]">
+                                                        <td className="py-3">
+                                                            <div className="flex items-center gap-2 md:gap-4">
+                                                                <span>{match.home}</span>
+                                                                <span className="font-semibold">{match.score}</span>
+                                                                <span>{match.away}</span>
+                                                            </div>
+                                                        </td>
+                                                        {!isGoalkeeperOnly && <td className="py-3 text-center">{match.goals}</td>}
+                                                        {!isGoalkeeperOnly && <td className="py-3 text-center">{match.assists}</td>}
+                                                        <td className="py-3 text-center">{match.minutes}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            );
+                        })()}
+                    </div>
                 </main>
-
-                {/* RIGHT AD COLUMN */}
-                <aside className="hidden lg:block sticky top-20 self-start space-y-3">
-                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider">
-                        Sponsored
-                    </p>
-
-                    {/* SCOUTPRO AD */}
-                    <div className="h-[280px] bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-2xl border border-[#334155] p-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 bg-[#E53F01] rounded-full blur-2xl opacity-15" />
-                        <Search className="w-10 h-10 text-[#E53F01] mb-3 relative z-10" />
-                        <span className="text-white font-black text-lg relative z-10">
-                            ScoutPro Network
-                        </span>
-                        <p className="text-white/60 text-xs leading-relaxed mt-2 relative z-10">
-                            Discover players across 67 countries. Join 4,000+ professional
-                            scouts.
-                        </p>
-                        <button className="bg-[#E53F01] hover:bg-[#E53F01] text-white font-bold px-6 py-2 rounded-lg mt-4 text-sm relative z-10 transition-colors">
-                            Join Free →
-                        </button>
-                    </div>
-
-                    {/* ADIDAS X CRAZYFAST */}
-                    <div className="h-[250px] bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-5 flex flex-col items-center justify-center text-center relative overflow-hidden">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col gap-1 pt-3">
-                            <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
-                            <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
-                            <div className="w-12 h-0.5 bg-[#0F172A] dark:bg-[#F5F5F5]" />
-                        </div>
-                        <span className="text-[#0F172A] dark:text-[#F5F5F5] font-black text-2xl mt-4">
-                            adidas
-                        </span>
-                        <span className="text-[#475569] dark:text-[#9A9A9A] text-sm mt-1">
-                            X Crazyfast
-                        </span>
-                        <span className="text-4xl my-2">⚡</span>
-                        <span className="text-[#0F172A] dark:text-[#F5F5F5] font-bold text-sm">
-                            Speed Unleashed.
-                        </span>
-                        <button className="bg-[#0F172A] dark:bg-[#F5F5F5] text-white dark:text-[#0F172A] font-bold px-6 py-2 rounded-lg text-sm mt-3 hover:opacity-90 transition-opacity">
-                            EXPLORE
-                        </button>
-                    </div>
-
-                    {/* WYSCOUT AD */}
-                    <div className="h-[150px] bg-gradient-to-br from-[#1a1a2e] to-[#16213e] rounded-2xl border border-[#334155] flex flex-col items-center justify-center px-4">
-                        <span className="text-[#4FC3F7] font-black text-xl tracking-wide">
-                            WYSCOUT
-                        </span>
-                        <p className="text-white/60 text-xs mt-1 text-center">
-                            Professional scouting platform
-                        </p>
-                        <button className="bg-[#4FC3F7] hover:bg-[#29B6F6] text-[#1a1a2e] font-bold text-xs px-5 py-2 rounded-lg mt-3 transition-colors">
-                            Try 14 days free
-                        </button>
-                    </div>
-                </aside>
-
-                {/* MOBILE ADS (below content) */}
-                <div className="lg:hidden space-y-3">
-                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider">
-                        Sponsored
-                    </p>
-
-                    {/* Mobile Nike */}
-                    <div className="bg-[#111] rounded-2xl border border-[#222] p-5 flex flex-col items-center justify-center relative overflow-hidden text-center min-h-[280px]">
-                        <div
-                            className="absolute inset-0 opacity-20"
-                            style={{
-                                background:
-                                    'radial-gradient(circle at 50% 0%, #E53F01 0%, transparent 60%)',
-                            }}
-                        />
-                        <span className="text-white/10 font-black text-[100px] leading-none absolute -top-4 select-none">
-                            ✓
-                        </span>
-                        <div className="relative z-10 flex flex-col items-center">
-                            <span className="text-white font-black text-2xl tracking-tight">
-                                NIKE FC
-                            </span>
-                            <div className="bg-[#E53F01] w-8 h-0.5 mx-auto my-2" />
-                            <span className="text-white/70 text-sm">2025 Season Boots</span>
-                            <span className="text-white/60 text-xs tracking-widest mt-2">
-                                MERCURIAL VAPOR
-                            </span>
-                            <button className="bg-[#E53F01] hover:bg-[#E53F01] text-white font-bold px-6 py-2 rounded-lg text-sm mt-3 transition-colors">
-                                SHOP NOW →
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Mobile ScoutPro */}
-                    <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-2xl border border-[#334155] p-6 flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[220px]">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 bg-[#E53F01] rounded-full blur-2xl opacity-15" />
-                        <Search className="w-10 h-10 text-[#E53F01] mb-3 relative z-10" />
-                        <span className="text-white font-black text-lg relative z-10">
-                            ScoutPro Network
-                        </span>
-                        <p className="text-white/60 text-xs leading-relaxed mt-2 relative z-10">
-                            Discover players across 67 countries.
-                        </p>
-                        <button className="bg-[#E53F01] hover:bg-[#E53F01] text-white font-bold px-6 py-2 rounded-lg mt-4 text-sm relative z-10 transition-colors">
-                            Join Free →
-                        </button>
-                    </div>
-
-                    {/* Mobile Puma banner (sticky-style) */}
-                    <div className="bg-gradient-to-r from-[#CC0000] to-[#990000] rounded-2xl flex items-center justify-center flex-col gap-1 px-4 py-4">
-                        <span className="text-white font-black text-sm tracking-wide">
-                            PUMA FOOTBALL
-                        </span>
-                        <span className="text-white/70 text-xs">Future 8 Pro</span>
-                        <button className="bg-white text-[#CC0000] font-bold text-xs px-4 py-1 rounded-md mt-1 hover:bg-white/90 transition-colors">
-                            View Boot
-                        </button>
-                    </div>
-                </div>
             </div>
 
-            {/* FOOTER SPACING */}
-            <div className="h-12" />
+            <PublicFooter />
         </div>
     );
 }

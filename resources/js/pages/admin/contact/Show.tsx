@@ -12,26 +12,26 @@ export default function ContactShow() {
     ];
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <div className="max-w-3xl mx-auto space-y-6">
+            <div className="mx-auto w-full max-w-3xl space-y-6 px-4 pb-8 sm:px-6">
                 <Link href="/admin/contact-messages" className="inline-flex items-center gap-2 text-[#E53F01] hover:underline pt-5">
                     <ArrowLeft className="h-4 w-4" /> Back to messages
                 </Link>
-                <div className="bg-[#0D0D0D] border border-[#2A2A2A] rounded-2xl p-6">
-                    <div className="flex items-start justify-between">
-                        <div>
-                            <h1 className="font-display text-2xl font-bold text-[#F5F5F5]">{message.subject || 'No Subject'}</h1>
-                            <div className="mt-2 flex items-center gap-4 text-sm text-[#94A3B8]">
+                <div className="bg-[#0D0D0D] border border-[#2A2A2A] rounded-2xl p-4 sm:p-6">
+                    <div className="flex flex-col-reverse items-start gap-3 sm:flex-row sm:justify-between">
+                        <div className="min-w-0">
+                            <h1 className="font-display text-2xl font-bold break-words text-[#F5F5F5]">{message.subject || 'No Subject'}</h1>
+                            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[#94A3B8]">
                                 <span className="flex items-center gap-1"><User className="h-4 w-4" /> {message.name}</span>
-                                <span className="flex items-center gap-1"><Mail className="h-4 w-4" /> {message.email}</span>
+                                <span className="flex min-w-0 items-center gap-1 break-all"><Mail className="h-4 w-4 shrink-0" /> {message.email}</span>
                                 <span className="flex items-center gap-1"><Calendar className="h-4 w-4" /> {new Date(message.created_at).toLocaleString()}</span>
                             </div>
                         </div>
-                        <span className={`inline-flex items-center gap-1.5 rounded-md border px-3 py-1 text-xs font-bold uppercase ${message.is_read ? 'border-green-700 bg-green-900/20 text-green-400' : 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01]'
+                        <span className={`inline-flex shrink-0 items-center gap-1.5 rounded-md border px-3 py-1 text-xs font-bold uppercase ${message.is_read ? 'border-green-700 bg-green-900/20 text-green-400' : 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01]'
                             }`}>
                             {message.is_read ? 'Read' : 'Unread'}
                         </span>
                     </div>
-                    <div className="mt-6 p-4 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl text-[#F5F5F5] whitespace-pre-wrap">
+                    <div className="mt-6 p-4 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl text-[#F5F5F5] whitespace-pre-wrap break-words">
                         {message.message}
                     </div>
                 </div>

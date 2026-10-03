@@ -36,7 +36,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
         <div className="relative min-h-screen bg-[#0D0D0D] flex items-center justify-center px-6 py-12 font-sans">
             <Head title="Reset password" />
 
-            <div className="w-full max-w-[440px]">
+            <div className="w-full max-w-[27.5rem]">
                 {/* Logo */}
                 <div className="text-center mb-8">
                     <Link href="/" className="inline-block">

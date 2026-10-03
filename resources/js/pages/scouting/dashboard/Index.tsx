@@ -313,7 +313,7 @@ function FilterPanel({
                 <h3 className="text-xs font-bold text-[#F5F5F5] tracking-widest uppercase">
                     Filters
                     {activeFilterCount > 0 && (
-                        <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[#E53F01] px-1.5 py-0.5 text-[9px] font-black text-white">
+                        <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[#E53F01] px-1.5 py-0.5 text-[0.5625rem] font-black text-white">
                             {activeFilterCount}
                         </span>
                     )}
@@ -330,7 +330,7 @@ function FilterPanel({
 
             {/* POSITION */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">Position</h4>
+                <h4 className="text-[0.6875rem] font-bold text-[#9A9A9A] tracking-widest uppercase">Position</h4>
                 <div className="space-y-2.5">
                     {positionOptions.map((p) => (
                         <div key={p.code} className="flex items-center gap-2.5">
@@ -348,7 +348,7 @@ function FilterPanel({
                                     <span className="font-mono font-bold text-[#E53F01]">{p.code}</span>
                                     <span className="text-[#9A9A9A]"> — {p.label}</span>
                                 </span>
-                                <span className="text-[10px] font-mono text-[#555555]">{p.count}</span>
+                                <span className="text-[0.625rem] font-mono text-[#555555]">{p.count}</span>
                             </Label>
                         </div>
                     ))}
@@ -360,7 +360,7 @@ function FilterPanel({
             {/* AGE RANGE */}
             <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                    <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">Age Range</h4>
+                    <h4 className="text-[0.6875rem] font-bold text-[#9A9A9A] tracking-widest uppercase">Age Range</h4>
                     <span className="font-mono text-[#E53F01] text-sm font-semibold">
                         {ageActive ? `${ageMin} – ${ageMax}` : 'Any'}
                     </span>
@@ -383,7 +383,7 @@ function FilterPanel({
                         className="w-full h-1.5 bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-[#E53F01]"
                     />
                 </div>
-                <div className="flex justify-between text-[10px] font-mono text-[#555555]">
+                <div className="flex justify-between text-[0.625rem] font-mono text-[#555555]">
                     <span>{AGE_FLOOR}</span>
                     <span>{AGE_CEIL}</span>
                 </div>
@@ -392,7 +392,7 @@ function FilterPanel({
 
             {/* NATIONALITY */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">Nationality</h4>
+                <h4 className="text-[0.6875rem] font-bold text-[#9A9A9A] tracking-widest uppercase">Nationality</h4>
                 <div className="relative">
                     <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#94A3B8]" />
                     <Input
@@ -421,7 +421,7 @@ function FilterPanel({
                                         <span className="text-base leading-none">{c.flag}</span>
                                         <span>{c.name}</span>
                                     </span>
-                                    <span className="text-[10px] font-mono text-[#555555]">{c.count}</span>
+                                    <span className="text-[0.625rem] font-mono text-[#555555]">{c.count}</span>
                                 </Label>
                             </div>
                         ))}
@@ -436,7 +436,7 @@ function FilterPanel({
 
             {/* PREFERRED FOOT */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">Preferred Foot</h4>
+                <h4 className="text-[0.6875rem] font-bold text-[#9A9A9A] tracking-widest uppercase">Preferred Foot</h4>
                 <RadioGroup value={preferredFoot} onValueChange={setPreferredFoot} className="space-y-2">
                     {['any', 'right', 'left', 'both'].map((foot) => (
                         <div key={foot} className="flex items-center gap-2.5">
@@ -456,7 +456,7 @@ function FilterPanel({
 
             {/* MODALITY */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">Modality</h4>
+                <h4 className="text-[0.6875rem] font-bold text-[#9A9A9A] tracking-widest uppercase">Modality</h4>
                 <div className="space-y-2.5">
                     {modalityOptions.map((m) => (
                         <div key={m.name} className="flex items-center gap-2.5">
@@ -471,7 +471,7 @@ function FilterPanel({
                                 className="flex-1 flex items-center justify-between text-sm font-normal text-[#F5F5F5] cursor-pointer"
                             >
                                 <span>{m.name}</span>
-                                <span className="text-[10px] font-mono text-[#555555]">{m.count}</span>
+                                <span className="text-[0.625rem] font-mono text-[#555555]">{m.count}</span>
                             </Label>
                         </div>
                     ))}
@@ -482,7 +482,7 @@ function FilterPanel({
 
             {/* HEIGHT */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">Height (cm)</h4>
+                <h4 className="text-[0.6875rem] font-bold text-[#9A9A9A] tracking-widest uppercase">Height (cm)</h4>
                 <div className="flex items-center gap-2">
                     <Input
                         type="number"
@@ -504,9 +504,9 @@ function FilterPanel({
 
             {/* AD ZONE - ScoutPro */}
             <div className="space-y-2 pt-2">
-                {/* <p className="text-[10px] uppercase tracking-widest text-[#555555] text-center">Sponsored</p> */}
-                <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-xl h-[240px] p-5 flex flex-col items-center justify-center text-center border border-[#334155] relative overflow-hidden">
-                    {/* <div className="absolute top-2 right-2 text-[9px] text-white/30 uppercase tracking-widest">Ad</div> */}
+                {/* <p className="text-[0.625rem] uppercase tracking-widest text-[#555555] text-center">Sponsored</p> */}
+                <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-xl h-[15rem] p-5 flex flex-col items-center justify-center text-center border border-[#334155] relative overflow-hidden">
+                    {/* <div className="absolute top-2 right-2 text-[0.5625rem] text-white/30 uppercase tracking-widest">Ad</div> */}
                     {/* <div className="w-14 h-14 rounded-full bg-[#E53F01]/20 border border-[#E53F01]/40 flex items-center justify-center mb-3">
                         <Network className="w-7 h-7 text-[#E53F01]" strokeWidth={2.2} />
                     </div> */}
@@ -845,7 +845,7 @@ export default function Index({
             <ScoutNavbar />
             <div className="pt-16 flex min-h-screen">
                 {/* DESKTOP FILTER PANEL */}
-                <aside className="hidden lg:block w-72 shrink-0 bg-[#0D0D0D] border-r border-[#2A2A2A] px-6 py-6 sticky top-16 h-[calc(100vh-64px)] overflow-y-auto">
+                <aside className="hidden lg:block w-72 shrink-0 bg-[#0D0D0D] border-r border-[#2A2A2A] px-6 py-6 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
                     <FilterPanel {...filterProps} />
                 </aside>
 
@@ -889,7 +889,7 @@ export default function Index({
                                         <SlidersHorizontal className="w-4 h-4 mr-2" />
                                         Filters
                                         {activeFilterCount > 0 && (
-                                            <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[#E53F01] px-1.5 py-0.5 text-[10px] font-black text-white">
+                                            <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[#E53F01] px-1.5 py-0.5 text-[0.625rem] font-black text-white">
                                                 {activeFilterCount}
                                             </span>
                                         )}
@@ -897,7 +897,7 @@ export default function Index({
                                 </SheetTrigger>
                                 <SheetContent
                                     side="left"
-                                    className="w-[300px] sm:w-[340px] bg-[#0D0D0D] border-r border-[#2A2A2A] overflow-y-auto p-6"
+                                    className="w-[18.75rem] sm:w-[21.25rem] bg-[#0D0D0D] border-r border-[#2A2A2A] overflow-y-auto p-6"
                                 >
                                     <SheetHeader className="mb-4">
                                         <SheetTitle className="text-[#F5F5F5] font-display text-xl">
@@ -939,7 +939,7 @@ export default function Index({
 
                             {/* Sort */}
                             <Select value={sortBy} onValueChange={(v) => { setSortBy(v); setPage(1); }}>
-                                <SelectTrigger className="h-10 w-[140px] bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] text-sm">
+                                <SelectTrigger className="h-10 w-[8.75rem] bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] text-sm">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent className="bg-[#161616] border-[#2A2A2A]">
@@ -982,8 +982,8 @@ export default function Index({
 
                     {/* AD ZONE - TransferRoom Leaderboard */}
                     <div className="mb-4">
-                        <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl min-h-[80px] flex flex-col sm:flex-row items-center px-6 py-3 sm:py-0 gap-3 sm:gap-4 border border-[#334155] relative overflow-hidden">
-                            {/* <div className="absolute top-1.5 right-2.5 text-[10px] text-white/30 uppercase tracking-widest">
+                        <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl min-h-[5rem] flex flex-col sm:flex-row items-center px-6 py-3 sm:py-0 gap-3 sm:gap-4 border border-[#334155] relative overflow-hidden">
+                            {/* <div className="absolute top-1.5 right-2.5 text-[0.625rem] text-white/30 uppercase tracking-widest">
                                 Sponsored
                             </div> */}
                             <div className="flex items-center gap-3 shrink-0">
@@ -992,7 +992,7 @@ export default function Index({
                                 </div> */}
                                 {/* <div className="text-white">
                                     <p className="font-display text-lg font-bold leading-tight">TransferRoom</p>
-                                    <p className="text-[10px] text-white/50 uppercase tracking-widest">
+                                    <p className="text-[0.625rem] text-white/50 uppercase tracking-widest">
                                         Global Transfer Network
                                     </p>
                                 </div> */}
@@ -1054,7 +1054,7 @@ export default function Index({
                                                     />
                                                 )}
                                                 {/* Position badge */}
-                                                <span className="absolute top-3 left-3 bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-black px-2.5 py-0.5 rounded-full tracking-wider">
+                                                <span className="absolute top-3 left-3 bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[0.625rem] font-black px-2.5 py-0.5 rounded-full tracking-wider">
                                                     {p.position}
                                                 </span>
                                                 {/* Flag */}
@@ -1071,7 +1071,7 @@ export default function Index({
                                                 {/* Stats */}
                                                 <div className="grid grid-cols-3 mt-3 text-center border-t border-[#1F1F1F] pt-3">
                                                     <div>
-                                                        <p className="text-[9px] text-[#555555] uppercase tracking-wider">
+                                                        <p className="text-[0.5625rem] text-[#555555] uppercase tracking-wider">
                                                             {getAgeDisplay(p.age, p.dob).label}
                                                         </p>
 
@@ -1080,7 +1080,7 @@ export default function Index({
                                                         </p>
                                                     </div>
                                                     <div className="border-x border-[#1F1F1F]">
-                                                        <p className="text-[9px] text-[#555555] uppercase tracking-wider">
+                                                        <p className="text-[0.5625rem] text-[#555555] uppercase tracking-wider">
                                                             Height
                                                         </p>
                                                         <p className="text-xs font-semibold font-mono text-[#F5F5F5] mt-0.5">
@@ -1088,7 +1088,7 @@ export default function Index({
                                                         </p>
                                                     </div>
                                                     <div>
-                                                        <p className="text-[9px] text-[#555555] uppercase tracking-wider">
+                                                        <p className="text-[0.5625rem] text-[#555555] uppercase tracking-wider">
                                                             Foot
                                                         </p>
                                                         <p className="text-xs font-semibold font-mono text-[#F5F5F5] mt-0.5">
@@ -1133,28 +1133,28 @@ export default function Index({
                                 <Table>
                                     <TableHeader>
                                         <TableRow className="border-b border-[#2A2A2A] hover:bg-transparent">
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A] py-4">
+                                            <TableHead className="text-[0.625rem] uppercase tracking-widest font-bold text-[#9A9A9A] py-4">
                                                 Player
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
+                                            <TableHead className="text-[0.625rem] uppercase tracking-widest font-bold text-[#9A9A9A]">
                                                 Position
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
+                                            <TableHead className="text-[0.625rem] uppercase tracking-widest font-bold text-[#9A9A9A]">
                                                 Age
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
+                                            <TableHead className="text-[0.625rem] uppercase tracking-widest font-bold text-[#9A9A9A]">
                                                 Country
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
+                                            <TableHead className="text-[0.625rem] uppercase tracking-widest font-bold text-[#9A9A9A]">
                                                 Height
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
+                                            <TableHead className="text-[0.625rem] uppercase tracking-widest font-bold text-[#9A9A9A]">
                                                 Foot
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
+                                            <TableHead className="text-[0.625rem] uppercase tracking-widest font-bold text-[#9A9A9A]">
                                                 Modality
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A] text-right">
+                                            <TableHead className="text-[0.625rem] uppercase tracking-widest font-bold text-[#9A9A9A] text-right">
                                                 Actions
                                             </TableHead>
                                         </TableRow>
@@ -1195,7 +1195,7 @@ export default function Index({
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <span className="bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-black px-2 py-0.5 rounded-full tracking-wider">
+                                                        <span className="bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[0.625rem] font-black px-2 py-0.5 rounded-full tracking-wider">
                                                             {p.position}
                                                         </span>
                                                     </TableCell>

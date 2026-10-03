@@ -40,13 +40,13 @@ export default function Show({ subscription }) {
                 <h1 className="text-2xl font-bold mb-4 text-[#F5F5F5]">Subscription Details</h1>
 
                 {/* Tabs */}
-                <div className="mb-4 flex gap-1 border-b border-[#2A2A2A]">
+                <div className="mb-4 flex gap-1 overflow-x-auto border-b border-[#2A2A2A]">
                     {tabs.map((tab) => (
                         <button
                             key={tab.key}
                             type="button"
                             onClick={() => setActiveTab(tab.key)}
-                            className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${activeTab === tab.key
+                            className={`shrink-0 whitespace-nowrap px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors sm:px-4 ${activeTab === tab.key
                                 ? 'border-[#E53F01] text-[#E53F01]'
                                 : 'border-transparent text-[#9A9A9A] hover:text-[#F5F5F5]'
                                 }`}
@@ -58,7 +58,7 @@ export default function Show({ subscription }) {
 
                 {/* Subscription Tab */}
                 {activeTab === 'subscription' && (
-                    <div className="bg-[#161616] border border-[#2A2A2A] shadow rounded p-6 space-y-3 text-[#F5F5F5]">
+                    <div className="bg-[#161616] border border-[#2A2A2A] shadow rounded p-4 sm:p-6 space-y-3 break-words text-[#F5F5F5]">
                         <div><strong className="text-[#9A9A9A] font-medium">User:</strong> {user?.name}</div>
                         <div><strong className="text-[#9A9A9A] font-medium">Email:</strong> {user?.email}</div>
                         <div><strong className="text-[#9A9A9A] font-medium">Status:</strong> {subscription.stripe_status}</div>
@@ -72,7 +72,7 @@ export default function Show({ subscription }) {
 
                 {/* Card Details Tab */}
                 {activeTab === 'card' && (
-                    <div className="bg-[#161616] border border-[#2A2A2A] shadow rounded p-6 space-y-3 text-[#F5F5F5]">
+                    <div className="bg-[#161616] border border-[#2A2A2A] shadow rounded p-4 sm:p-6 space-y-3 break-words text-[#F5F5F5]">
                         {user?.pm_last_four ? (
                             <>
                                 <div><strong className="text-[#9A9A9A] font-medium">Card Type:</strong> {user.pm_type ? user.pm_type.toUpperCase() : '—'}</div>
@@ -88,7 +88,7 @@ export default function Show({ subscription }) {
 
                 {/* Subscription Items Tab */}
                 {activeTab === 'items' && (
-                    <div className="bg-[#161616] border border-[#2A2A2A] shadow rounded p-6">
+                    <div className="bg-[#161616] border border-[#2A2A2A] shadow rounded p-4 sm:p-6">
                         {items.length > 0 ? (
                             <div className="overflow-x-auto">
                                 <table className="min-w-full text-sm">

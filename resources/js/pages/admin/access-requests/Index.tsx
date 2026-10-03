@@ -134,7 +134,7 @@ export default function Index() {
                 {/* Table */}
                 <div className="w-full overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616] shadow-sm">
                     <div className="max-h-[65vh] w-full overflow-auto">
-                        <table className="w-full min-w-[1000px] caption-bottom text-sm">
+                        <table className="w-full min-w-[62.5rem] caption-bottom text-sm">
                             <thead className="sticky top-0 z-10 bg-[#161616]">
                                 <tr className="border-b border-[#2A2A2A]">
                                     <th className="h-12 whitespace-nowrap px-6 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Name</th>
@@ -177,7 +177,7 @@ export default function Index() {
                                             </span>
                                         </td>
                                         <td className="px-4 py-4 align-middle">
-                                            <span className="block max-w-[200px] truncate text-xs text-[#9A9A9A]" title={r.interest ?? ''}>
+                                            <span className="block max-w-[12.5rem] truncate text-xs text-[#9A9A9A]" title={r.interest ?? ''}>
                                                 {r.interest || '—'}
                                             </span>
                                         </td>
@@ -288,7 +288,7 @@ export default function Index() {
                             <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
                                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                 <div className="min-w-0">
-                                    <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Email</p>
+                                    <p className="text-[0.625rem] font-semibold uppercase tracking-wider text-[#555555]">Email</p>
                                     <a href={`mailto:${viewRequest.email}`} className="text-sm break-all text-[#F5F5F5] hover:text-[#E53F01]">
                                         {viewRequest.email}
                                     </a>
@@ -300,7 +300,7 @@ export default function Index() {
                                 <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
                                     <Phone className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                     <div className="min-w-0">
-                                        <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Phone</p>
+                                        <p className="text-[0.625rem] font-semibold uppercase tracking-wider text-[#555555]">Phone</p>
                                         <p className="text-sm text-[#F5F5F5]">{viewRequest.phone}</p>
                                     </div>
                                 </div>
@@ -311,7 +311,7 @@ export default function Index() {
                                 <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
                                     <Building2 className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                     <div className="min-w-0">
-                                        <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Organization</p>
+                                        <p className="text-[0.625rem] font-semibold uppercase tracking-wider text-[#555555]">Organization</p>
                                         <p className="text-sm text-[#F5F5F5]">{viewRequest.organization}</p>
                                     </div>
                                 </div>
@@ -322,7 +322,7 @@ export default function Index() {
                                 <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
                                     <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                     <div className="min-w-0">
-                                        <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Country</p>
+                                        <p className="text-[0.625rem] font-semibold uppercase tracking-wider text-[#555555]">Country</p>
                                         <p className="text-sm text-[#F5F5F5]">{viewRequest.country}</p>
                                     </div>
                                 </div>
@@ -333,7 +333,7 @@ export default function Index() {
                                 <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
                                     <Briefcase className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                     <div className="min-w-0">
-                                        <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Interested In</p>
+                                        <p className="text-[0.625rem] font-semibold uppercase tracking-wider text-[#555555]">Interested In</p>
                                         <p className="text-sm text-[#F5F5F5]">{viewRequest.interest}</p>
                                     </div>
                                 </div>
@@ -344,7 +344,7 @@ export default function Index() {
                                 <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
                                     <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                     <div className="min-w-0">
-                                        <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Message</p>
+                                        <p className="text-[0.625rem] font-semibold uppercase tracking-wider text-[#555555]">Message</p>
                                         <p className="whitespace-pre-wrap text-sm leading-relaxed text-[#F5F5F5]">{viewRequest.message}</p>
                                     </div>
                                 </div>
@@ -354,7 +354,7 @@ export default function Index() {
                             <div className="flex items-start gap-3 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
                                 <Calendar className="mt-0.5 h-4 w-4 shrink-0 text-[#E53F01]" />
                                 <div className="min-w-0">
-                                    <p className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">Received</p>
+                                    <p className="text-[0.625rem] font-semibold uppercase tracking-wider text-[#555555]">Received</p>
                                     <p className="font-mono text-sm text-[#9A9A9A]">{viewRequest.created_at}</p>
                                 </div>
                             </div>

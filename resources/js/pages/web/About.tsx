@@ -92,11 +92,11 @@ export default function About() {
             <main className="pt-16">
                 {/* HERO */}
                 <section className="bg-[#E53F01] py-24 px-6">
-                    <div className="max-w-[1100px] mx-auto text-center">
+                    <div className="max-w-[68.75rem] mx-auto text-center">
                         <div className="text-white/70 text-xs tracking-[0.2em] uppercase font-semibold mb-6">
                             About HiLights Football
                         </div>
-                        <h1 className="font-display font-black text-white leading-[1.05] text-4xl sm:text-5xl lg:text-[56px]">
+                        <h1 className="font-display font-black text-white leading-[1.05] text-4xl sm:text-5xl lg:text-[3.5rem]">
                             We Exist to Make Talent Visible
                         </h1>
                         <p className="text-base sm:text-lg lg:text-xl text-white/80 max-w-2xl mx-auto mt-6 leading-relaxed">
@@ -108,12 +108,12 @@ export default function About() {
 
                 {/* MISSION */}
                 <section className="bg-white dark:bg-[#0D0D0D] py-16 lg:py-20 px-6">
-                    <div className="max-w-[1100px] mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                    <div className="max-w-[68.75rem] mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                         {/* LEFT */}
                         <div className="relative">
                             <span
                                 aria-hidden="true"
-                                className="absolute -top-12 -left-4 font-display font-black text-[120px] lg:text-[140px] text-[#E53F01] opacity-[0.08] leading-none select-none pointer-events-none"
+                                className="absolute -top-12 -left-4 font-display font-black text-[7.5rem] lg:text-[8.75rem] text-[#E53F01] opacity-[0.08] leading-none select-none pointer-events-none"
                             >
                                 01
                             </span>
@@ -175,7 +175,7 @@ export default function About() {
 
                 {/* STATS BAND */}
                 <section className="bg-[#E53F01] py-14 px-6">
-                    <div className="max-w-[1100px] mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
+                    <div className="max-w-[68.75rem] mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
                         {stats.map((stat) => (
                             <div key={stat.label} className="text-center">
                                 <div className="font-mono font-bold text-white text-4xl sm:text-5xl tracking-tight">
@@ -191,7 +191,7 @@ export default function About() {
 
                 {/* VISION */}
                 <section className="bg-[#F8FAFC] dark:bg-[#111111] py-16 lg:py-20 px-6">
-                    <div className="max-w-[1100px] mx-auto">
+                    <div className="max-w-[68.75rem] mx-auto">
                         <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-14">
                             <div className="text-[#E53F01] text-xs tracking-[0.2em] uppercase font-bold">
                                 Our Vision
@@ -227,7 +227,7 @@ export default function About() {
 
                 {/* FOR WHOM */}
                 <section className="bg-white dark:bg-[#0D0D0D] py-16 lg:py-20 px-6">
-                    <div className="max-w-[1100px] mx-auto">
+                    <div className="max-w-[68.75rem] mx-auto">
                         <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-14">
                             <div className="text-[#E53F01] text-xs tracking-[0.2em] uppercase font-bold">
                                 Built For Both Sides Of The Pitch

@@ -246,6 +246,7 @@ class PlayerProfileController extends Controller
             'competitions'               => ['sometimes', 'array'],
             'competitions.*.name'        => ['nullable', 'string', 'max:255'],
             'competitions.*.year'        => ['nullable'],
+            'competitions.*.country' => ['nullable', 'string', 'size:2'],
             'matches'                    => ['sometimes', 'array'],
             'matches.*.home'             => ['nullable', 'string', 'max:255'],
             'matches.*.score'            => ['nullable', 'string', 'max:20'],
@@ -350,30 +351,6 @@ class PlayerProfileController extends Controller
         return back();
     }
 
-    // public function playerDetails($id, Request $request)
-    // {
-    //     $player = PlayerProfile::with('user')->findOrFail($id);
-
-    //     $player->increment('views');
-
-    //     $viewer = auth()->user();
-
-    //     $ip = $request->ip();
-    //     $location = Location::get($ip);
-
-    //     ProfileView::create([
-    //         'player_profile_id' => $player->id,
-    //         'viewer_id'         => $viewer?->id,
-    //         'country'           => $location?->countryName,
-    //         'country_code'      => $location?->countryCode,
-    //         'ip_address'        => $ip,
-    //     ]);
-
-    //     return Inertia::render('player/profile/public/New-Detail', [
-    //         'player' => $player,
-    //     ]);
-    // }
-
     public function playerDetails($id, Request $request)
     {
         $player = PlayerProfile::with('user')->findOrFail($id);
@@ -408,7 +385,7 @@ class PlayerProfileController extends Controller
             ]);
         }
 
-        return Inertia::render('player/profile/public/New-Detail', [
+        return Inertia::render('player/profile/public/Detail', [
             'player' => $player,
         ]);
     }
@@ -482,35 +459,6 @@ class PlayerProfileController extends Controller
         ]);
     }
 
-    // public function publicPlayerDetails(Request $request, $id)
-    // {
-    //     $player = PlayerProfile::with('user')->findOrFail($id);
-
-    //     // Increase profile views
-    //     $player->increment('views');
-
-    //     $viewer = auth()->user();
-
-    //     // Visitor IP
-    //     $ip = app()->environment('local')
-    //         ? '8.8.8.8' // Localhost testing
-    //         : $request->ip();
-
-    //     $location = Location::get($ip);
-
-    //     ProfileView::create([
-    //         'player_profile_id' => $player->id,
-    //         'viewer_id'         => $viewer?->id,
-    //         'country'           => $location?->countryName,
-    //         'country_code'      => $location?->countryCode,
-    //         'ip_address'        => $ip,
-    //         // 'user_agent'        => $request->userAgent(),
-    //     ]);
-
-    //     return Inertia::render('player/profile/public/New-Detail', [
-    //         'player' => $player,
-    //     ]);
-    // }
 
     public function publicPlayerDetails(Request $request, $id)
     {
@@ -550,7 +498,7 @@ class PlayerProfileController extends Controller
             ]);
         }
 
-        return Inertia::render('player/profile/public/New-Detail', [
+        return Inertia::render('player/profile/public/Detail', [
             'player' => $player,
         ]);
     }

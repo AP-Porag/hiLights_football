@@ -38,7 +38,7 @@ const NAV_LINKS: NavLink[] = [
     { label: 'Dashboard', href: '/player/' },
     { label: 'My Profile', href: '/player/profile/data/edit' },
     // { label: 'Analytics', href: '/player/analytics' },
-    { label: 'Subscription', href: '/player/subscription' },
+    // { label: 'Subscription', href: '/player/subscription' },
 ];
 function getInitials(name: string): string {
     if (!name) return 'P';
@@ -128,7 +128,7 @@ export default function PlayerNavbar() {
                 'transition-shadow duration-200',
             ].join(' ')}
         >
-            <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between gap-4 px-2 sm:px-6">
+            <div className="mx-auto flex h-full max-w-[87.5rem] items-center justify-between gap-4 px-2 sm:px-6">
                 {/* LEFT — Logo */}
                 <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football dashboard">
                     <img
@@ -148,7 +148,7 @@ export default function PlayerNavbar() {
                                 className={[
                                     'relative text-sm font-medium transition-colors',
                                     active
-                                        ? 'text-[#E53F01] after:absolute after:right-0 after:bottom-[-22px] after:left-0 after:h-[2px] after:bg-[#E53F01]'
+                                        ? 'text-[#E53F01] after:absolute after:right-0 after:bottom-[-1.375rem] after:left-0 after:h-[0.125rem] after:bg-[#E53F01]'
                                         : 'text-[#9A9A9A] hover:text-[#E53F01]',
                                 ].join(' ')}
                             >
@@ -168,7 +168,7 @@ export default function PlayerNavbar() {
                     >
                         <Bell className="h-5 w-5 text-[#94A3B8] hover:text-[#E53F01]" />
                         {unreadCount > 0 && (
-                            <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white ring-2 ring-[#0D0D0D]">
+                            <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[0.5625rem] font-bold text-white ring-2 ring-[#0D0D0D]">
                                 {unreadCount > 9 ? '9+' : unreadCount}
                             </span>
                         )}
@@ -196,7 +196,7 @@ export default function PlayerNavbar() {
                             <div className="mb-1 border-b border-[#F1F5F9] px-3 py-2 dark:border-[#1F1F1F]">
                                 <div className="flex items-center justify-between gap-2">
                                     <div className="truncate text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]">{auth.user.name}</div>
-                                    <span className="shrink-0 rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]">
+                                    <span className="shrink-0 rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[0.625rem] font-bold tracking-wider text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]">
                                         PLAYER
                                     </span>
                                 </div>
@@ -256,7 +256,7 @@ export default function PlayerNavbar() {
                     >
                         <Bell className="h-5 w-5 text-[#94A3B8]" />
                         {unreadCount > 0 && (
-                            <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white ring-2 ring-[#0D0D0D]">
+                            <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[0.5625rem] font-bold text-white ring-2 ring-[#0D0D0D]">
                                 {unreadCount > 9 ? '9+' : unreadCount}
                             </span>
                         )}
@@ -274,7 +274,7 @@ export default function PlayerNavbar() {
                         </SheetTrigger>
                         <SheetContent
                             side="left"
-                            className="flex w-[300px] flex-col border-r border-[#E2E8F0] bg-white p-0 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]"
+                            className="flex w-[18.75rem] flex-col border-r border-[#E2E8F0] bg-white p-0 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]"
                         >
                             <SheetHeader className="border-b px-6 py-4 border-[#2A2A2A]">
                                 <SheetTitle className="flex items-center gap-2">
@@ -291,7 +291,7 @@ export default function PlayerNavbar() {
                                     <div className="flex items-end gap-0.5 leading-none">
                                         <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>
                                         <span className="text-xl font-black tracking-tight text-[#E53F01] italic">Lights</span>
-                                        <span className="mb-0.5 ml-1 self-end text-[10px] font-bold tracking-[0.12em] text-[#94A3B8]">FOOTBALL</span>
+                                        <span className="mb-0.5 ml-1 self-end text-[0.625rem] font-bold tracking-[0.12em] text-[#94A3B8]">FOOTBALL</span>
                                     </div>
                                 </SheetTitle>
                             </SheetHeader>
@@ -306,7 +306,7 @@ export default function PlayerNavbar() {
                                 <div className="min-w-0 flex-1">
                                     <div className="flex items-center gap-2">
                                         <div className="truncate text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]">{auth.user.name}</div>
-                                        <span className="shrink-0 rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]">
+                                        <span className="shrink-0 rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[0.625rem] font-bold tracking-wider text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]">
                                             PLAYER
                                         </span>
                                     </div>
@@ -366,7 +366,7 @@ export default function PlayerNavbar() {
             <Sheet open={notifOpen} onOpenChange={setNotifOpen}>
                 <SheetContent
                     side="right"
-                    className="flex w-[340px] flex-col border-l border-[#2A2A2A] bg-[#0D0D0D] p-0 sm:w-[380px]"
+                    className="flex w-[21.25rem] flex-col border-l border-[#2A2A2A] bg-[#0D0D0D] p-0 sm:w-[23.75rem]"
                 >
                     <SheetHeader className="border-b border-[#2A2A2A] px-5 py-4">
                         <SheetTitle className="text-left text-[#F5F5F5]">Notifications</SheetTitle>

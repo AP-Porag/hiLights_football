@@ -181,10 +181,35 @@ html {
         @apply border-border;
     }
 
+    /*
+      Lucide icons: default 24px expressed in rem so icons scale with the
+      root font-size on large screens. Any Tailwind size class (h-*, w-*,
+      size-*) still overrides this, because utilities win over base.
+    */
+    svg.lucide {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
     body {
         @apply bg-background text-foreground;
     }
 }
 button{
     cursor: pointer;
+}
+
+/*
+  Large screens (big monitors, 4K TVs, ultrawide):
+  Up to 1919px the root font-size stays 16px, so nothing changes.
+  From 1920px it grows with the viewport width (1920px = 16px,
+  2560px ≈ 21.3px, 3840px = 32px), so the whole rem-based layout
+  scales up proportionally instead of sitting small in the middle.
+  Tailwind breakpoints use the browser default font-size in media
+  queries, so this does not shift any breakpoint.
+*/
+@media (min-width: 1920px) {
+    html {
+        font-size: clamp(16px, calc(100vw / 120), 32px);
+    }
 }

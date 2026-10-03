@@ -268,7 +268,7 @@ export default function SubscriptionIndex() {
                         </div>
                         <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {/* Free Profile */}
-                            <div className="relative rounded-[20px] border border-gray-700 bg-black p-6 md:relative">
+                            <div className="relative rounded-[1.25rem] border border-gray-700 bg-black p-6 md:relative">
                                 {currentPlanId === 'free' && (
                                     <div className="absolute -top-3 left-1/2 z-10 -translate-x-1/2">
                                         <span className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-1 text-xs font-bold uppercase text-white">
@@ -278,14 +278,14 @@ export default function SubscriptionIndex() {
                                 )}
                                 <div className="mb-6 flex -translate-y-[85%] justify-center">
                                     <div className="flex h-14 w-14 items-center justify-center rounded-full border border-gray-600 bg-black">
-                                        <User size={32} className="text-white" />
+                                        <User className="size-[2rem] text-white" />
                                     </div>
                                 </div>
                                 <h3 className="mb-6 text-center text-2xl font-bold text-white uppercase italic">Free Profile</h3>
                                 <div className="mb-8 space-y-3">
                                     {freePlan.map((item, index) => (
                                         <div key={index} className="flex items-center gap-3">
-                                            <CheckCircle size={18} className="text-green-500" />
+                                            <CheckCircle className="size-[1.125rem] text-green-500" />
                                             <span className="text-[#ececec]">{item}</span>
                                         </div>
                                     ))}
@@ -298,7 +298,7 @@ export default function SubscriptionIndex() {
                                 </button> */}
                             </div>
                             {/* Premium — 12 months fidelity (plan_one) */}
-                            <div className="relative rounded-[20px] border border-orange-500 bg-black p-6">
+                            <div className="relative rounded-[1.25rem] border border-orange-500 bg-black p-6">
                                 {currentPlanId === 'premium' ? (
                                     <div className="absolute -top-3 left-1/2 z-10 -translate-x-1/2">
                                         <span className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-1 text-xs font-bold uppercase text-white">
@@ -315,14 +315,14 @@ export default function SubscriptionIndex() {
                                 </div>
                                 <h3 className="text-center text-2xl font-bold text-white uppercase italic">HiLights Premium</h3>
                                 <p className="mb-6 text-center">
-                                    <span className="text-[20px] font-semibold text-white">R$ <span className="pl-1 text-[30px] font-bold text-[#E53F01]">47</span></span>
+                                    <span className="text-[1.25rem] font-semibold text-white">R$ <span className="pl-1 text-[1.875rem] font-bold text-[#E53F01]">47</span></span>
                                     <span className="ml-2 text-sm text-white">/month</span>
                                     <span className="ml-4 text-xs text-orange-500">(12 months fidelity)</span>
                                 </p>
                                 <div className="mb-8 space-y-3">
                                     {premiumPlan.map((item, index) => (
                                         <div key={index} className="flex items-start gap-3">
-                                            <CheckCircle size={18} className="mt-1 shrink-0 text-green-500" />
+                                            <CheckCircle className="size-[1.125rem] mt-1 shrink-0 text-green-500" />
                                             <span className="text-[#ececec]">{item}</span>
                                         </div>
                                     ))}
@@ -343,7 +343,7 @@ export default function SubscriptionIndex() {
                                 </button>
                             </div>
                             {/* Premium — no fidelity (plan_two) */}
-                            <div className="relative rounded-[20px] border border-orange-500 bg-black p-6">
+                            <div className="relative rounded-[1.25rem] border border-orange-500 bg-black p-6">
                                 {currentPlanId === 'elite' && (
                                     <div className="absolute -top-3 left-1/2 z-10 -translate-x-1/2">
                                         <span className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-1 text-xs font-bold uppercase text-white">
@@ -356,14 +356,14 @@ export default function SubscriptionIndex() {
                                 </div>
                                 <h3 className="text-center text-2xl font-bold text-white uppercase italic">HiLights Premium</h3>
                                 <p className="mb-6 text-center">
-                                    <span className="text-[20px] font-semibold text-white">R$ <span className="pl-1 text-[30px] font-bold text-[#E53F01]">94</span></span>
+                                    <span className="text-[1.25rem] font-semibold text-white">R$ <span className="pl-1 text-[1.875rem] font-bold text-[#E53F01]">94</span></span>
                                     <span className="ml-2 text-sm text-white">/month</span>
                                     <span className="ml-6 text-xs text-orange-500">(no fidelity)</span>
                                 </p>
                                 <div className="mb-8 space-y-3">
                                     {premiumPlan.map((item, index) => (
                                         <div key={index} className="flex items-start gap-3">
-                                            <CheckCircle size={18} className="mt-1 shrink-0 text-green-500" />
+                                            <CheckCircle className="size-[1.125rem] mt-1 shrink-0 text-green-500" />
                                             <span className="text-[#ececec]">{item}</span>
                                         </div>
                                     ))}
@@ -474,10 +474,10 @@ export default function SubscriptionIndex() {
                                             className={`px-6 py-6 text-center transition-all duration-300 hover:bg-[#121212] ${index !== items.length - 1 ? 'border-zinc-800 lg:border-r-2' : ''}`}
                                         >
                                             <div className="flex justify-center">
-                                                <Icon size={42} className="text-[#ff3500]" strokeWidth={2} />
+                                                <Icon className="size-[2.625rem] text-[#ff3500]" strokeWidth={2} />
                                             </div>
-                                            <h3 className="mt-5 text-[18px] font-bold tracking-wide text-white">{item.title}</h3>
-                                            <p className="mt-3 text-[14px] leading-6 text-[#d3d3d3]">{item.description}</p>
+                                            <h3 className="mt-5 text-[1.125rem] font-bold tracking-wide text-white">{item.title}</h3>
+                                            <p className="mt-3 text-[0.875rem] leading-6 text-[#d3d3d3]">{item.description}</p>
                                         </div>
                                     );
                                 })}
@@ -518,7 +518,7 @@ export default function SubscriptionIndex() {
                                 </div>
                             </div>
                             <div className="mt-10 border-t border-[#2A2A2A] pt-8">
-                                <p className="text-center font-mono text-[11px] font-medium uppercase tracking-widest text-[#555555]">
+                                <p className="text-center font-mono text-[0.6875rem] font-medium uppercase tracking-widest text-[#555555]">
                                     Secure payments powered by
                                 </p>
                                 <div className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 sm:gap-x-12">
@@ -535,7 +535,7 @@ export default function SubscriptionIndex() {
                                     <div className="flex items-center gap-0 rounded-md border border-[#2A2A2A] bg-[#1F1F1F] px-3 py-2.5">
                                         <div className="h-5 w-5 rounded-full bg-[#EB001B]" />
                                         <div className="-ml-2 h-5 w-5 rounded-full bg-[#F79E1B] opacity-90" />
-                                        <span className="ml-2 font-sans text-[10px] font-bold uppercase tracking-wider text-[#F5F5F5]">
+                                        <span className="ml-2 font-sans text-[0.625rem] font-bold uppercase tracking-wider text-[#F5F5F5]">
                                             Mastercard
                                         </span>
                                     </div>

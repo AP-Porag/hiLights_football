@@ -118,7 +118,7 @@ function DobCalendar({
     const canGoNext = nextMonthStart <= today;
     const canGoPrev = new Date(year, month, 1) > minDate;
     return (
-        <div className="w-[320px] p-4">
+        <div className="w-[20rem] p-4">
             {/* Header — month/year dropdowns + arrows */}
             <div className="flex items-center justify-between gap-2 mb-4">
                 <button
@@ -135,7 +135,7 @@ function DobCalendar({
                         onChange={(e) =>
                             setViewDate(new Date(year, Number(e.target.value), 1))
                         }
-                        className="h-8 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[13px] font-medium text-[#F5F5F5] cursor-pointer focus:outline-none focus:border-[#E53F01] hover:border-[#3A3A3A] transition-colors"
+                        className="h-8 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[0.8125rem] font-medium text-[#F5F5F5] cursor-pointer focus:outline-none focus:border-[#E53F01] hover:border-[#3A3A3A] transition-colors"
                     >
                         {MONTHS.map((m, i) => (
                             <option key={m} value={i} className="bg-[#1F1F1F]">
@@ -148,7 +148,7 @@ function DobCalendar({
                         onChange={(e) =>
                             setViewDate(new Date(Number(e.target.value), month, 1))
                         }
-                        className="h-8 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[13px] font-medium text-[#F5F5F5] cursor-pointer focus:outline-none focus:border-[#E53F01] hover:border-[#3A3A3A] transition-colors"
+                        className="h-8 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[0.8125rem] font-medium text-[#F5F5F5] cursor-pointer focus:outline-none focus:border-[#E53F01] hover:border-[#3A3A3A] transition-colors"
                     >
                         {years.map((y) => (
                             <option key={y} value={y} className="bg-[#1F1F1F]">
@@ -171,7 +171,7 @@ function DobCalendar({
                 {WEEKDAYS.map((w) => (
                     <div
                         key={w}
-                        className="h-8 flex items-center justify-center text-[11px] font-semibold uppercase text-[#9A9A9A]"
+                        className="h-8 flex items-center justify-center text-[0.6875rem] font-semibold uppercase text-[#9A9A9A]"
                     >
                         {w}
                     </div>
@@ -191,7 +191,7 @@ function DobCalendar({
                             disabled={disabled}
                             onClick={() => onSelect(d)}
                             className={[
-                                'h-9 w-9 mx-auto flex items-center justify-center rounded-lg text-[13px] font-medium transition-colors',
+                                'h-9 w-9 mx-auto flex items-center justify-center rounded-lg text-[0.8125rem] font-medium transition-colors',
                                 selected
                                     ? 'bg-[#E53F01] text-[#0D0D0D] font-semibold'
                                     : disabled
@@ -450,7 +450,7 @@ export default function Register({ countries = [] }: Props) {
             )}
             {/* STEP 1 — ROLE CARDS */}
             {step === 0 && (
-                <div className="max-w-[860px] mx-auto px-6 pb-16">
+                <div className="max-w-[53.75rem] mx-auto px-6 pb-16">
                     <div className="flex flex-wrap justify-center gap-4 mt-2">
                         {ROLES.map((role) => {
                             const isSelected = selectedRole === role.id;
@@ -461,7 +461,7 @@ export default function Register({ countries = [] }: Props) {
                                     type="button"
                                     onClick={() => handleSelectRole(role.id)}
                                     className={
-                                        'group w-full sm:w-[280px] text-center cursor-pointer rounded-2xl border-2 p-7 transition-all duration-200 '
+                                        'group w-full sm:w-[17.5rem] text-center cursor-pointer rounded-2xl border-2 p-7 transition-all duration-200 '
                                         +
                                         (isSelected
                                             ? 'border-[#E53F01] bg-[rgba(255,107,0,0.08)] shadow-[0_0_0_4px_rgba(255,107,0,0.15)]'
@@ -470,7 +470,7 @@ export default function Register({ countries = [] }: Props) {
                                 >
                                     <div className="mx-auto inline-flex items-center justify-center bg-[rgba(255,107,0,0.15)] rounded-full p-3">
                                         <Icon
-                                            className="h-[44px] w-[44px] text-[#E53F01]"
+                                            className="h-[2.75rem] w-[2.75rem] text-[#E53F01]"
                                             strokeWidth={2}
                                         />
                                     </div>
@@ -497,7 +497,7 @@ export default function Register({ countries = [] }: Props) {
             )}
             {/* STEP 2 — FORM */}
             {step === 1 && selectedRoleObj && (
-                <div className="max-w-[440px] mx-auto px-6 pb-16">
+                <div className="max-w-[27.5rem] mx-auto px-6 pb-16">
                     <form
                         onSubmit={handleSubmit}
                         className="bg-[#161616] rounded-2xl border border-[#2A2A2A] p-8"
@@ -561,7 +561,7 @@ export default function Register({ countries = [] }: Props) {
                                 placeholder="you@example.com"
                                 className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
                             />
-                            <p className="text-[11px] text-[#94A3B8] mt-1.5">
+                            <p className="text-[0.6875rem] text-[#94A3B8] mt-1.5">
                                 We'll send a verification code to this email. You must verify it before accessing your account.
                             </p>
                             {(clientErrors.email || errors.email) && (
@@ -681,7 +681,7 @@ export default function Register({ countries = [] }: Props) {
                                 onChange={(value) => setData('whatsapp', value || '')}
                                 placeholder="Enter WhatsApp number"
                             />
-                            <p className="text-[11px] text-[#94A3B8] mt-1.5">
+                            <p className="text-[0.6875rem] text-[#94A3B8] mt-1.5">
                                 We'll verify this via a WhatsApp OTP (or SMS if WhatsApp isn't available on this number).
                             </p>
                             {(clientErrors.whatsapp || errors.whatsapp) && (
@@ -744,7 +744,7 @@ export default function Register({ countries = [] }: Props) {
                                         {[
                                             { v: 'M', l: 'Male' },
                                             { v: 'F', l: 'Female' },
-                                            { v: 'Other', l: 'Other' },
+
                                         ].map((g) => {
                                             const selected = data.gender === g.v;
                                             return (

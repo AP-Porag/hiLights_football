@@ -123,11 +123,11 @@ const Scout = () => {
                     }}
                 >
                     <div className="mx-auto max-w-7xl">
-                        <div className="mb-26 grid grid-cols-[270px_1fr] sm:mb-10 sm:grid-cols-[300px_1fr] md:grid-cols-[380px_1fr] lg:grid-cols-2">
+                        <div className="mb-26 grid grid-cols-[16.875rem_1fr] sm:mb-10 sm:grid-cols-[18.75rem_1fr] md:grid-cols-[23.75rem_1fr] lg:grid-cols-2">
                             {/* Left Content */}
                             <div className="flex px-6 pt-16 sm:px-10 lg:px-16">
                                 <div className="max-w-xl">
-                                    <h1 className="text-[18px] leading-tight font-extrabold md:text-2xl lg:text-4xl">
+                                    <h1 className="text-[1.125rem] leading-tight font-extrabold md:text-2xl lg:text-4xl">
                                         <span className="block text-white">Be the First</span>
 
                                         <span className="block text-[#fa5418]">To See a Rare Talent.</span>
@@ -138,11 +138,11 @@ const Scout = () => {
                                     </h1>
 
                                     <div className="relative">
-                                        <p className="mt-6 text-[12px] leading-relaxed text-[#e8e8e8] md:pr-8 md:text-[14px] lg:w-[300px] lg:text-base">
+                                        <p className="mt-6 text-[0.75rem] leading-relaxed text-[#e8e8e8] md:pr-8 md:text-[0.875rem] lg:w-[18.75rem] lg:text-base">
                                             At HiLights Football, you have the opportunity to discover, follow and contact great talents for free.
                                         </p>
                                         <div className="absolute top-17 left-0 z-0 flex w-[200%] flex-row gap-4 md:top-22 lg:top-25">
-                                            <button className="flex items-center justify-center rounded-md bg-[#dd3e06] px-3 py-2 text-[10px] font-semibold transition-all duration-300 hover:bg-[#E53F01] md:px-6 md:text-sm">
+                                            <button className="flex items-center justify-center rounded-md bg-[#dd3e06] px-3 py-2 text-[0.625rem] font-semibold transition-all duration-300 hover:bg-[#E53F01] md:px-6 md:text-sm">
 
                                                 <Link
                                                     href={
@@ -178,7 +178,7 @@ const Scout = () => {
 
                                             </button>
 
-                                            <button className="flex items-center justify-center rounded-md border border-gray-600 bg-black px-3 py-2 text-[10px] font-semibold transition-all duration-300 hover:border-white md:px-6 md:py-4 md:text-sm">
+                                            <button className="flex items-center justify-center rounded-md border border-gray-600 bg-black px-3 py-2 text-[0.625rem] font-semibold transition-all duration-300 hover:border-white md:px-6 md:py-4 md:text-sm">
                                                 <CirclePlay className="h-6 w-6" />
                                                 <span className="pl-2">Learn More</span>
                                             </button>
@@ -193,8 +193,8 @@ const Scout = () => {
                 </section>
 
                 <section className="mx-auto max-w-7xl bg-black px-6 pt-2 text-white sm:px-10 lg:px-16">
-                    <div className="mb-4 bg-[#363636] px-6 py-8 rounded-tl-[10px] rounded-tr-[10px]">
-                        <p className="text-center text-white text-[12px] sm:text-[14px] md:text-[16px]"> </p>
+                    <div className="mb-4 bg-[#363636] px-6 py-8 rounded-tl-[0.625rem] rounded-tr-[0.625rem]">
+                        <p className="text-center text-white text-[0.75rem] sm:text-[0.875rem] md:text-[1rem]"> </p>
                     </div>
 
                     <div className="">
@@ -205,7 +205,7 @@ const Scout = () => {
 
                                 return (
                                     <div className="lg:max-w-5x border-b border-[#1f1f1f]">
-                                        <div key={index} className="grid grid-cols-[50px_1fr] items-center py-5 md:grid-cols-[70px_1fr] lg:max-w-4xl">
+                                        <div key={index} className="grid grid-cols-[3.125rem_1fr] items-center py-5 md:grid-cols-[4.375rem_1fr] lg:max-w-4xl">
                                             {/* Icon */}
                                             <div className="flex justify-center">
                                                 <div className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-500 md:h-14 md:w-14">
@@ -215,11 +215,11 @@ const Scout = () => {
 
                                             {/* Content */}
                                             <div className="border-[#1f1f1f] pl-3 md:pl-5">
-                                                <h3 className="mb-1 text-[14px] font-extrabold text-[#f93f04]  sm:text-[16px] md:text-[18px] lg:text-[22px]">
+                                                <h3 className="mb-1 text-[0.875rem] font-extrabold text-[#f93f04]  sm:text-[1rem] md:text-[1.125rem] lg:text-[1.375rem]">
                                                     {item.title}
                                                 </h3>
 
-                                                <p className="text-[12px] leading-relaxed text-[#eeeeee] sm:text-[14px] md:text-[16px] lg:text-[18px]">
+                                                <p className="text-[0.75rem] leading-relaxed text-[#eeeeee] sm:text-[0.875rem] md:text-[1rem] lg:text-[1.125rem]">
                                                     {item.desc}
                                                 </p>
                                             </div>
@@ -230,7 +230,7 @@ const Scout = () => {
                         </div>
 
                         {/* Bottom CTA */}
-                        <div className="flex items-center gap-2 md:gap-4 border-1 border-[#393939] rounded-2xl py-6 sm:grid sm:grid-cols-[50px_1fr_150px] md:grid-cols-[90px_1fr_250px] lg:grid-cols-[110px_1fr_450px] px-2 md:px-4">
+                        <div className="flex flex-wrap items-center gap-2 md:gap-4 border-1 border-[#393939] rounded-2xl py-6 sm:grid sm:grid-cols-[3.125rem_1fr_9.375rem] md:grid-cols-[5.625rem_1fr_15.625rem] lg:grid-cols-[6.875rem_1fr_28.125rem] px-2 md:px-4">
                             {/* Left Icon */}
                             <div className="flex justify-center">
                                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#dc4108] md:h-20 md:w-20">
@@ -239,18 +239,18 @@ const Scout = () => {
                             </div>
 
                             {/* Text */}
-                            <div>
-                                <h3 className="text-[13px] leading-tight font-bold text-white sm:text-[14px] md:text-[16px] lg:text-[18px]">
+                            <div className="min-w-0 flex-1">
+                                <h3 className="text-[0.8125rem] leading-tight font-bold text-white sm:text-[0.875rem] md:text-[1rem] lg:text-[1.125rem]">
                                     Join Thousands of Scouts, Agents and Clubs Already on HiLights Football.
                                 </h3>
 
-                                <p className="mt-1 text-[10px] leading-relaxed text-[#d9d9d9] sm:text-[12px] md:text-[14px] lg:text-[16px]">
+                                <p className="mt-1 text-[0.625rem] leading-relaxed text-[#d9d9d9] sm:text-[0.75rem] md:text-[0.875rem] lg:text-[1rem]">
                                     Register now and start discovering the future of football.
                                 </p>
                             </div>
 
                             {/* Button */}
-                            <div className="flex items-end justify-end lg:pr-10">
+                            <div className="flex w-full items-end justify-end sm:w-auto lg:pr-10">
                                 <button className="sm:-w-45 flex items-center gap-2 rounded-xl bg-[#dc4108] px-4 py-2 transition md:gap-4 lg:px-6 lg:py-2">
 
 
@@ -295,11 +295,11 @@ const Scout = () => {
                 <section className="mx-auto mt-10 mb-6 max-w-7xl overflow-x-hidden">
                     <div className="mx-auto w-[90%] rounded-xl bg-[#f9f9f9] p-3 md:p-6">
                         {/* Header */}
-                        <div className="flex items-center justify-between pb-3">
-                            <div className="flex items-center gap-2">
-                                <Star size={18} fill="#E53F01" className="text-[#c45504]" />
+                        <div className="flex items-center justify-between gap-2 pb-3">
+                            <div className="flex min-w-0 items-center gap-2">
+                                <Star fill="#E53F01" className="size-[1.125rem] shrink-0 text-[#c45504]" />
 
-                                <h2 className="text-[12px] font-extrabold whitespace-nowrap text-[#222] uppercase md:text-sm">
+                                <h2 className="text-[0.75rem] font-extrabold text-[#222] uppercase sm:whitespace-nowrap md:text-sm">
                                     TOP TALENTS YOU CAN DISCOVER TODAY
                                 </h2>
                             </div>
@@ -308,8 +308,8 @@ const Scout = () => {
                                 href={auth?.user ? auth.user.role === "player" ? "/player" : auth.user.role === "admin" ? "/admin" : auth.user.role === "agent" ? "/agent" : auth.user.role === "club" ? "/club" : "/scout" : "/register?role=scout"}
                                 className="hidden sm:block"
                             >
-                                <button className="flex items-center gap-2 rounded-[10px] bg-white px-4 py-2 text-[10px] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs">
-                                    View All <ArrowRight size={18} className="text-[#E53F01] font-bold" />
+                                <button className="flex items-center gap-2 rounded-[0.625rem] bg-white px-4 py-2 text-[0.625rem] font-bold whitespace-nowrap text-gray-700 uppercase shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:text-xs">
+                                    View All <ArrowRight className="size-[1.125rem] text-[#E53F01] font-bold" />
                                 </button>
                             </Link>
                         </div>
@@ -319,12 +319,12 @@ const Scout = () => {
                             {players.map((player: any, index: number) => (
                                 <div
                                     key={index}
-                                    className="w-[85%] flex-shrink-0 snap-center rounded-[8px] shadow-[0_4px_12px_rgba(0,0,0,0.10)] sm:w-[48%] md:w-[32%] lg:w-[24%] sm:snap-align-none"
+                                    className="w-[85%] flex-shrink-0 snap-center rounded-[0.5rem] shadow-[0_4px_12px_rgba(0,0,0,0.10)] sm:w-[48%] md:w-[32%] lg:w-[24%] sm:snap-align-none"
                                 >
                                     <Link href={`/player/profile/${player.id}`}>
                                         {/* Thumbnail */}
                                         <div className="relative">
-                                            <img src={player.photo_url || '/images/img/placeholder.webp'} className="h-[300px] w-full rounded object-cover" />
+                                            <img src={player.photo_url || '/images/img/placeholder.webp'} className="h-[18.75rem] w-full rounded object-cover" />
 
                                             {player.video_url && (
                                                 <button
@@ -336,7 +336,7 @@ const Scout = () => {
                                                     }}
                                                     className="absolute right-3 bottom-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00] cursor-pointer"
                                                 >
-                                                    <Play size={12} fill="white" className="text-white" />
+                                                    <Play fill="white" className="size-[0.75rem] text-white" />
                                                 </button>
                                             )}
 
@@ -344,9 +344,9 @@ const Scout = () => {
 
                                         {/* Info */}
                                         <div className="mr-2 px-4 md:px-6">
-                                            <h3 className="mt-2 text-[12px] font-bold whitespace-nowrap text-[#222] md:text-[15px]">{player.name}</h3>
+                                            <h3 className="mt-2 text-[0.75rem] font-bold whitespace-nowrap text-[#222] md:text-[0.9375rem]">{player.name}</h3>
 
-                                            <p className="mt-1 text-[10px] whitespace-nowrap text-[#1a1a1a] md:text-xs">{getPositionName(player.positions ?? [])}</p>
+                                            <p className="mt-1 text-[0.625rem] whitespace-nowrap text-[#1a1a1a] md:text-xs">{getPositionName(player.positions ?? [])}</p>
 
                                             <div className="mt-2 flex items-center gap-2">
                                                 <span className="inline-flex items-center gap-1.5 text-xs whitespace-nowrap text-gray-700 md:text-sm 2xl:text-base">
@@ -363,20 +363,20 @@ const Scout = () => {
                                                     )}
                                                 </span>
 
-                                                <span className="text-[10px] whitespace-nowrap text-[#545454] md:text-xs">{player.country}</span>
+                                                <span className="text-[0.625rem] whitespace-nowrap text-[#545454] md:text-xs">{player.country}</span>
                                             </div>
                                         </div>
 
                                         {/* Height */}
                                         <div className="mt-5 flex flex-col md:flex-row md:justify-between px-4 pb-5">
-                                            <div className="flex gap-2 text-[12px] whitespace-nowrap text-[#222] md:text-sm">
-                                                <Ruler size={14} className="mt-1 md:ml-2" />
+                                            <div className="flex gap-2 text-[0.75rem] whitespace-nowrap text-[#222] md:text-sm">
+                                                <Ruler className="size-[0.875rem] mt-1 md:ml-2" />
                                                 <p>{player.height}</p>
                                             </div>
 
                                             {/* Age */}
-                                            <div className="flex gap-2 text-[12px] whitespace-nowrap text-[#222] md:ml-4 md:text-sm">
-                                                <Clock3 size={14} className="mt-[2px]" />
+                                            <div className="flex gap-2 text-[0.75rem] whitespace-nowrap text-[#222] md:ml-4 md:text-sm">
+                                                <Clock3 className="size-[0.875rem] mt-[0.125rem]" />
                                                 {player?.dob && (() => {
                                                     const dob = new Date(player.dob);
                                                     const today = new Date();
@@ -406,8 +406,8 @@ const Scout = () => {
                             href={auth?.user ? auth.user.role === "player" ? "/player" : auth.user.role === "admin" ? "/admin" : auth.user.role === "agent" ? "/agent" : auth.user.role === "club" ? "/club" : "/scout" : "/register?role=scout"}
                             className="block sm:hidden"
                         >
-                            <button className="flex w-full items-center justify-center gap-2 rounded-[10px] bg-white px-4 py-3 text-xs font-bold uppercase text-gray-700 shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-                                View All <ArrowRight size={18} className="text-[#E53F01] font-bold" />
+                            <button className="flex w-full items-center justify-center gap-2 rounded-[0.625rem] bg-white px-4 py-3 text-xs font-bold uppercase text-gray-700 shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+                                View All <ArrowRight className="size-[1.125rem] text-[#E53F01] font-bold" />
                             </button>
                         </Link>
                     </div>

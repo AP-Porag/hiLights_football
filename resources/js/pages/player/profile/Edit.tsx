@@ -111,6 +111,15 @@ const FIELD_STEP: Record<string, number> = {
     description: 4,
 };
 
+// Career History list fields — errors for these are shown in a summary box on step 3
+const LIST_FIELD_LABELS: Record<string, string> = {
+    club_history: 'Club History',
+    transfer_history: 'Transfer History',
+    achievements: 'Achievements',
+    competitions: 'Competition History',
+    matches: 'Recent Matches',
+};
+
 const parseYmd = (s?: string | null): Date | undefined => {
     if (!s) return undefined;
     const [y, m, d] = s.split('-').map(Number);
@@ -145,6 +154,111 @@ interface PageProps {
 
 const FieldError = ({ msg }: { msg?: string }) =>
     msg ? <p className="mt-1 text-xs text-red-500 font-sans">{msg}</p> : null;
+
+// function ListErrors({ errors }: { errors: Record<string, string | undefined> }) {
+//     const entries = Object.entries(errors).filter(
+//         ([key, msg]) => !!msg && key.split('.')[0] in LIST_FIELD_LABELS,
+//     );
+
+//     if (!entries.length) return null;
+
+//     return (
+//         <Alert className="mb-6 bg-red-950/40 border-red-800">
+//             <AlertTriangle className="h-4 w-4 text-red-400" />
+//             <AlertDescription className="text-red-200 text-sm font-sans">
+//                 <p className="font-semibold mb-1">Please fix the following and save again:</p>
+//                 <ul className="list-disc pl-4 space-y-0.5">
+//                     {entries.map(([key, msg]) => {
+//                         const [field, index] = key.split('.');
+//                         const row = index !== undefined && !isNaN(Number(index)) ? ` (row ${Number(index) + 1})` : '';
+//                         return (
+//                             <li key={key}>
+//                                 {LIST_FIELD_LABELS[field]}{row}: {msg}
+//                             </li>
+//                         );
+//                     })}
+//                 </ul>
+//             </AlertDescription>
+//         </Alert>
+//     );
+// }
+// Sub-field key → readable label (used in Career History error messages)
+const LIST_SUBFIELD_LABELS: Record<string, string> = {
+    year: 'Year',
+    year_type: 'Year format',
+    club: 'Club name',
+    country: 'Country',
+    title: 'Achievement title',
+    name: 'Competition name',
+    home: 'Home team',
+    away: 'Away team',
+    score: 'Score',
+    goals: 'Goals',
+    assists: 'Assists',
+    minutes: 'Minutes played',
+};
+
+// Converts a raw Laravel validation message into a clear, player-friendly sentence
+const friendlyListError = (key: string, rawMsg: string): string => {
+    const [field, index, subfield] = key.split('.');
+    const section = LIST_FIELD_LABELS[field] ?? 'Career History';
+    const rowNumber = index !== undefined && !isNaN(Number(index)) ? Number(index) + 1 : null;
+    const where = rowNumber ? `${section}, row ${rowNumber}` : section;
+    const msg = rawMsg.toLowerCase();
+
+    // Whole-section error (e.g. "club_history must be an array")
+    if (!subfield) {
+        return `${where}: something doesn't look right in this section. Please review it and try again.`;
+    }
+
+    const label = LIST_SUBFIELD_LABELS[subfield] ?? subfield.replace(/_/g, ' ');
+
+    // Club history year accepts two formats — explain both
+    if (field === 'club_history' && subfield === 'year') {
+        return `${where}: Please enter the season as 26/27 (European) or the year as 2026 (Brazilian).`;
+    }
+
+    if (msg.includes('required')) {
+        return `${where}: ${label} is required.`;
+    }
+    if (/(integer|numeric|number)/.test(msg)) {
+        return `${where}: ${label} must be a number.`;
+    }
+    if (/(greater than|characters|too long)/.test(msg)) {
+        return `${where}: ${label} is too long. Please shorten it.`;
+    }
+    if (/(selected|is invalid|size)/.test(msg)) {
+        return `${where}: please choose a valid ${label.toLowerCase()}.`;
+    }
+    if (msg.includes('format')) {
+        return `${where}: ${label} is not in the correct format.`;
+    }
+
+    return `${where}: please check the ${label.toLowerCase()}.`;
+};
+function ListErrors({ errors }: { errors: Record<string, string | undefined> }) {
+    const entries = Object.entries(errors).filter(
+        ([key, msg]) => !!msg && key.split('.')[0] in LIST_FIELD_LABELS,
+    );
+
+    if (!entries.length) return null;
+
+    return (
+        <Alert className="mb-6 bg-red-950/40 border-red-800">
+            <AlertTriangle className="h-4 w-4 text-red-400" />
+            <AlertDescription className="text-red-200 text-sm font-sans">
+                <p className="font-semibold mb-2">
+                    Some details in your career history need your attention before we can save your profile:
+                </p>
+                <ul className="list-disc pl-4 space-y-1">
+                    {entries.map(([key, msg]) => (
+                        <li key={key}>{friendlyListError(key, msg as string)}</li>
+                    ))}
+                </ul>
+            </AlertDescription>
+        </Alert>
+    );
+}
 
 function CountryCombobox({
     value,
@@ -315,7 +429,7 @@ function MultiCountryCombobox({
     );
 }
 
-function DobCalendar({ value, onChange, onClose }: { value: string; onChange: (v: string) => void }) {
+function DobCalendar({ value, onChange, onClose }: { value: string; onChange: (v: string) => void; onClose: () => void }) {
     const selectedDate = parseYmd(value);
     const today = new Date(); today.setHours(0, 0, 0, 0);
     const [viewMonth, setViewMonth] = useState<number>(selectedDate ? selectedDate.getMonth() : 0);
@@ -336,18 +450,18 @@ function DobCalendar({ value, onChange, onClose }: { value: string; onChange: (v
     const pick = (d: number) => { const mm = String(viewMonth + 1).padStart(2, '0'); const dd = String(d).padStart(2, '0'); onChange(`${viewYear}-${mm}-${dd}`); onClose(); };
     const selectClass = 'flex-1 rounded-lg border border-[#E2E8F0] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] text-[#0F172A] dark:text-[#F5F5F5] text-sm font-medium px-2 py-2 focus:outline-none focus:ring-2 focus:ring-orange-100 dark:focus-ring-orange-800 focus:border-[#E53F01] [color-scheme:light] dark:[color-scheme:dark] cursor-pointer';
     return (
-        <div className="p-4 w-[320px]">
+        <div className="p-4 w-[20rem]">
             <div className="flex items-center gap-2 mb-4">
                 <select value={viewMonth} onChange={(e) => setViewMonth(Number(e.target.value))} className={selectClass}>
                     {MONTHS.map((m, i) => <option key={m.v} value={i}>{m.l}</option>)}
                 </select>
-                <select value={viewYear} onChange={(e) => setViewYear(Number(e.target.value))} className={`${selectClass} font-mono max-w-[90px]`}>
+                <select value={viewYear} onChange={(e) => setViewYear(Number(e.target.value))} className={`${selectClass} font-mono max-w-[5.625rem]`}>
                     {years.map((y) => <option key={y} value={y}>{y}</option>)}
                 </select>
             </div>
             <div className="grid grid-cols-7 gap-1 mb-1">
                 {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(w => (
-                    <div key={w} className="text-center text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold py-1">{w}</div>
+                    <div key={w} className="text-center text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold py-1">{w}</div>
                 ))}
             </div>
             <div className="grid grid-cols-7 gap-1">
@@ -434,10 +548,17 @@ export default function Edit() {
         photo: null as File | null,
         photo_preview: profile?.photo_url ?? '',
         video_url: profile?.video_url ?? '',
-        club_history: (profile?.club_history?.length ? profile.club_history.map((h: any) => ({ year: h.year ?? '', club: h.club ?? '', country: h.country ?? '' })) : [{ year: new Date().getFullYear(), club: '', country: '' }]) as any[],
+        club_history: (profile?.club_history?.length
+            ? profile.club_history.map((h: any) => ({
+                year: h.year ?? '',
+                club: h.club ?? '',
+                country: h.country ?? '',
+                year_type: h.year_type ?? (String(h.year ?? '').includes('/') ? 'european' : 'brazilian'),
+            }))
+            : [{ year: '', club: '', country: '', year_type: 'european' }]) as any[],
         transfer_history: (profile?.transfer_history?.length ? profile.transfer_history.map((h: any) => ({ year: h.year ?? '', club: h.club ?? '', country: h.country ?? '' })) : []) as any[],
         achievements: (profile?.achievements?.length ? profile.achievements.map((a: any) => ({ year: a.year ?? '', title: a.title ?? '' })) : []) as any[],
-        competitions: (profile?.competitions?.length ? profile.competitions.map((c: any) => ({ name: c.name ?? '', year: c.year ?? '' })) : []) as any[],
+        competitions: (profile?.competitions?.length ? profile.competitions.map((c: any) => ({ name: c.name ?? '', year: c.year ?? '', country: c.country ?? '' })) : []) as any[],
         matches: (profile?.matches?.length ? profile.matches.map((m: any) => ({ home: m.home ?? '', score: m.score ?? '', away: m.away ?? '', goals: m.goals ?? '', assists: m.assists ?? '', minutes: m.minutes ?? '' })) : []) as any[],
         description: profile?.description ?? '',
         supported_club: profile?.supported_club ?? '',
@@ -446,7 +567,19 @@ export default function Edit() {
         boot_brand_other: profile?.boot_brand_other ?? '',
     });
 
-    transform((d) => { const { photo_preview, ...rest } = d as any; return rest; });
+    // Strip preview + drop empty rows so backend validation doesn't fail on blank lines
+    transform((d) => {
+        const { photo_preview, ...rest } = d as any;
+        const filled = (v: any) => String(v ?? '').trim() !== '';
+        return {
+            ...rest,
+            club_history: rest.club_history.filter((r: any) => filled(r.club)),
+            transfer_history: rest.transfer_history.filter((r: any) => filled(r.club)),
+            achievements: rest.achievements.filter((r: any) => filled(r.title)),
+            competitions: rest.competitions.filter((r: any) => filled(r.name)),
+            matches: rest.matches.filter((r: any) => filled(r.home) || filled(r.away)),
+        };
+    });
 
     const age = useMemo(() => calculateAge(data.dob), [data.dob]);
     const isMinor = age !== null && age < 18;
@@ -486,15 +619,13 @@ export default function Edit() {
     // generic updaters for each list
     const updateClubHistory = (idx: number, field: string, value: string) => { const copy = [...data.club_history]; copy[idx] = { ...copy[idx], [field]: value }; setData('club_history', copy); };
     const addClubRow = () => {
-        setData(prev => ({
-            ...prev,
-            club_history: [
-                ...prev.club_history,
-                { year: '', club: '', country: '', year_type: 'european' }
-            ]
-        }));
+        const newIndex = data.club_history.length;
+        setData('club_history', [
+            ...data.club_history,
+            { year: '', club: '', country: '', year_type: 'european' },
+        ]);
         // নতুন row-এর জন্য error clear
-        setYearErrors(prev => ({ ...prev, [prev.club_history.length]: '' }));
+        setYearErrors((prev) => ({ ...prev, [newIndex]: '' }));
     };
     const removeClubRow = (idx: number) => setData('club_history', data.club_history.filter((_, i) => i !== idx));
 
@@ -507,7 +638,7 @@ export default function Edit() {
     const removeAchievementRow = (idx: number) => setData('achievements', data.achievements.filter((_, i) => i !== idx));
 
     const updateCompetition = (idx: number, field: string, value: string) => { const copy = [...data.competitions]; copy[idx] = { ...copy[idx], [field]: value }; setData('competitions', copy); };
-    const addCompetitionRow = () => setData('competitions', [...data.competitions, { name: '', year: '' }]);
+    const addCompetitionRow = () => setData('competitions', [...data.competitions, { name: '', year: '', country: '' }]);
     const removeCompetitionRow = (idx: number) => setData('competitions', data.competitions.filter((_, i) => i !== idx));
 
     const updateMatch = (idx: number, field: string, value: string) => { const copy = [...data.matches]; copy[idx] = { ...copy[idx], [field]: value }; setData('matches', copy); };
@@ -547,12 +678,21 @@ export default function Edit() {
     const goBack = () => setStep(s => Math.max(s - 1, 0));
 
     const submit = () => {
+        // Club history year format bhul thakle submit hobe na
+        if (Object.values(yearErrors).some(Boolean)) {
+            setStep(3);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
         post(route('player.profile.update'), {
             forceFormData: true,
             preserveScroll: true,
             onError: (errs) => {
+                console.error('Profile validation errors:', errs);
                 const steps = Object.keys(errs).map((k) => FIELD_STEP[k.split('.')[0]] ?? 99).filter((n) => n !== 99);
                 if (steps.length) setStep(Math.min(...steps));
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             },
         });
     };
@@ -561,7 +701,7 @@ export default function Edit() {
         <div className="min-h-screen bg-[#0D0D0D] pt-16 pb-32">
             <PlayerNavbar />
             <div className="bg-[#0D0D0D] border-b border-[#2A2A2A] sticky top-16 z-20 px-4 sm:px-8 py-4">
-                <div className="max-w-[1100px] mx-auto">
+                <div className="max-w-[68.75rem] mx-auto">
                     <div className="flex items-center">
                         {STEPS.map((s, idx) => {
                             const completed = idx < step;
@@ -586,24 +726,24 @@ export default function Edit() {
                     </div>
                     <div className="hidden sm:flex items-center justify-between mt-3">
                         {STEPS.map((s, idx) => (
-                            <div key={s.id} className={`text-[10px] uppercase tracking-widest font-semibold font-sans ${idx === step ? 'text-[#E53F01]' : 'text-[#94A3B8]'}`}
+                            <div key={s.id} className={`text-[0.625rem] uppercase tracking-widest font-semibold font-sans ${idx === step ? 'text-[#E53F01]' : 'text-[#94A3B8]'}`}
                                 style={{ width: `${100 / STEPS.length}%`, textAlign: idx === 0 ? 'left' : idx === STEPS.length - 1 ? 'right' : 'center' }}>
                                 {s.label}
                             </div>
                         ))}
                     </div>
                     <div className="sm:hidden mt-3 text-center">
-                        <div className="text-[10px] uppercase tracking-widest font-semibold font-sans text-[#E53F01]">
+                        <div className="text-[0.625rem] uppercase tracking-widest font-semibold font-sans text-[#E53F01]">
                             Step {step + 1} of {STEPS.length} — {STEPS[step].label}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="max-w-[1100px] mx-auto px-4 py-8">
+            <div className="max-w-[68.75rem] mx-auto px-4 py-8">
                 {step === 0 && (
                     <section>
-                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">01 / Basic Information</div>
+                        <div className="text-[#E53F01] text-[0.625rem] font-bold tracking-[0.14em] uppercase mb-4 font-sans">01 / Basic Information</div>
                         <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-5">
                                 <div>
@@ -719,7 +859,7 @@ export default function Edit() {
 
                 {step === 1 && (
                     <section>
-                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">02 / Football Details</div>
+                        <div className="text-[#E53F01] text-[0.625rem] font-bold tracking-[0.14em] uppercase mb-4 font-sans">02 / Football Details</div>
                         <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                             <div className="mb-8">
                                 <Label className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Modality</Label>
@@ -786,9 +926,9 @@ export default function Edit() {
                                 {/* Selected positions with priority ordering */}
                                 <div className="mt-5">
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Selected Positions</span>
+                                        <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Selected Positions</span>
                                         {data.positions.length > 1 && (
-                                            <span className="text-[10px] text-[#94A3B8] font-sans">Reorder to set priority</span>
+                                            <span className="text-[0.625rem] text-[#94A3B8] font-sans">Reorder to set priority</span>
                                         )}
                                     </div>
 
@@ -798,7 +938,7 @@ export default function Edit() {
                                         <div className="space-y-2">
                                             {data.positions.map((id, idx) => (
                                                 <div key={id} className="flex items-center gap-3 rounded-xl border border-[#E53F01] bg-[rgba(255,107,0,0.08)] px-3 py-2.5">
-                                                    <span className="flex-shrink-0 rounded-md bg-[#E53F01] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white font-sans">
+                                                    <span className="flex-shrink-0 rounded-md bg-[#E53F01] px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-white font-sans">
                                                         {PRIORITY_LABELS[idx] ?? `#${idx + 1}`}
                                                     </span>
                                                     <span className="flex-1 text-sm font-semibold text-[#F5F5F5] font-sans">
@@ -858,7 +998,7 @@ export default function Edit() {
 
                 {step === 2 && (
                     <section>
-                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">03 / Media</div>
+                        <div className="text-[#E53F01] text-[0.625rem] font-bold tracking-[0.14em] uppercase mb-4 font-sans">03 / Media</div>
                         <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8 space-y-8">
                             <div>
                                 <Label className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Profile Photo</Label>
@@ -915,25 +1055,26 @@ export default function Edit() {
 
                 {step === 3 && (
                     <section>
-                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">04 / Career History</div>
+                        <div className="text-[#E53F01] text-[0.625rem] font-bold tracking-[0.14em] uppercase mb-4 font-sans">04 / Career History</div>
+                        <ListErrors errors={errors as Record<string, string | undefined>} />
                         <div className="space-y-8">
-                            {/* Club History */}
+
                             {/* Club History */}
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Club History</h3>
 
                                 {/* Header Row */}
-                                <div className="grid grid-cols-[110px_80px_minmax(0,1fr)_130px_40px] gap-3 items-center mb-2">
-                                    <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
+                                <div className="grid grid-cols-[6.875rem_5rem_minmax(0,1fr)_8.125rem_2.5rem] gap-3 items-center mb-2">
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
                                         Format
                                     </span>
-                                    <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
                                         Year
                                     </span>
-                                    <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
                                         Club Name
                                     </span>
-                                    <span className="text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
                                         Country
                                     </span>
                                     <span className="w-10" />
@@ -945,7 +1086,7 @@ export default function Edit() {
 
                                     return (
                                         <div key={idx} className="mb-3">
-                                            <div className="grid grid-cols-[110px_80px_minmax(0,1fr)_130px_40px] gap-3 items-start">
+                                            <div className="grid grid-cols-[6.875rem_5rem_minmax(0,1fr)_8.125rem_2.5rem] gap-3 items-start">
                                                 {/* Year Format Dropdown */}
                                                 <select
                                                     value={yearType}
@@ -980,7 +1121,7 @@ export default function Edit() {
                                                             updateClubHistory(idx, 'year', e.target.value);
                                                             validateYearFormat(idx, e.target.value, 'brazilian');
                                                         }}
-                                                        placeholder="2026"
+                                                        placeholder="YYYY"
                                                         className="h-10 w-full bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]"
                                                     />
                                                 )}
@@ -1029,7 +1170,7 @@ export default function Edit() {
 
                                             {/* Year format error message */}
                                             {yearError && (
-                                                <p className="mt-1 ml-[198px] text-xs text-red-400">
+                                                <p className="mt-1 ml-[12.375rem] text-xs text-red-400">
                                                     ⚠️ {yearError}
                                                 </p>
                                             )}
@@ -1042,9 +1183,9 @@ export default function Edit() {
                             {/* <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Transfer History</h3>
                                 <div className="flex items-center gap-3 mb-2">
-                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
-                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Club</span>
-                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Country</span>
+                                    <span className="w-24 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
+                                    <span className="flex-1 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Club</span>
+                                    <span className="flex-1 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Country</span>
                                     <span className="w-10 flex-shrink-0" />
                                 </div>
                                 {data.transfer_history.map((row: any, idx: number) => (
@@ -1065,8 +1206,8 @@ export default function Edit() {
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Achievements</h3>
                                 <div className="flex items-center gap-3 mb-2">
-                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
-                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Title</span>
+                                    <span className="w-24 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
+                                    <span className="flex-1 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Title</span>
                                     <span className="w-10 flex-shrink-0" />
                                 </div>
                                 {data.achievements.map((row: any, idx: number) => (
@@ -1083,14 +1224,27 @@ export default function Edit() {
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Competition History</h3>
                                 <div className="flex items-center gap-3 mb-2">
-                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
-                                    <span className="flex-1 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Competition</span>
+                                    <span className="w-24 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
+                                    <span className="flex-1 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Competition</span>
+                                    <span className="w-40 sm:w-48 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Country</span>
                                     <span className="w-10 flex-shrink-0" />
                                 </div>
                                 {data.competitions.map((row: any, idx: number) => (
                                     <div key={idx} className="flex items-center gap-3 mb-2">
                                         <Input value={row.year ?? ''} onChange={(e) => updateCompetition(idx, 'year', e.target.value)} placeholder="Year" className="w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <Input value={row.name ?? ''} onChange={(e) => updateCompetition(idx, 'name', e.target.value)} placeholder="Competition" className="flex-1 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.name ?? ''} onChange={(e) => updateCompetition(idx, 'name', e.target.value)} placeholder="Competition" className="flex-1 min-w-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <select
+                                            value={row.country ?? ''}
+                                            onChange={(e) => updateCompetition(idx, 'country', e.target.value)}
+                                            className="w-40 sm:w-48 flex-shrink-0 h-10 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
+                                        >
+                                            <option value="">Country...</option>
+                                            {countries.map((c) => (
+                                                <option key={c.code} value={c.code}>
+                                                    {c.flag ?? ''} {c.name}
+                                                </option>
+                                            ))}
+                                        </select>
                                         <button type="button" onClick={() => removeCompetitionRow(idx)} className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"><X className="w-4 h-4" /></button>
                                     </div>
                                 ))}
@@ -1101,12 +1255,12 @@ export default function Edit() {
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Recent Matches</h3>
                                 <div className="flex items-center gap-3 mb-2">
-                                    <span className="w-24 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Home</span>
-                                    <span className="w-20 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Score</span>
-                                    <span className="w-24 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Away</span>
-                                    <span className="w-14 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">G</span>
-                                    <span className="w-14 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">A</span>
-                                    <span className="w-20 text-[10px] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Min</span>
+                                    <span className="w-24 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Home</span>
+                                    <span className="w-20 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Score</span>
+                                    <span className="w-24 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Away</span>
+                                    <span className="w-14 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">G</span>
+                                    <span className="w-14 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">A</span>
+                                    <span className="w-20 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Min</span>
                                     <span className="w-6" />
                                 </div>
                                 {data.matches.map((row: any, idx: number) => (
@@ -1128,7 +1282,7 @@ export default function Edit() {
 
                 {step === 4 && (
                     <section>
-                        <div className="text-[#E53F01] text-[10px] font-bold tracking-[0.14em] uppercase mb-4 font-sans">05 / About You</div>
+                        <div className="text-[#E53F01] text-[0.625rem] font-bold tracking-[0.14em] uppercase mb-4 font-sans">05 / About You</div>
                         <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                             <Label htmlFor="description" className="text-xs font-semibold text-[#F5F5F5] mb-3 block font-sans">Description</Label>
                             <Textarea id="description" rows={5} maxLength={500} value={data.description} onChange={(e) => setData('description', e.target.value)} placeholder="Describe your playing style, strengths, and football journey..." className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01] resize-none" />
@@ -1216,20 +1370,22 @@ export default function Edit() {
                 )}
             </div>
 
-            {/* Sticky Bottom */}
-            <div className="bg-[#0D0D0D] border-t border-[#2A2A2A] fixed bottom-0 left-0 right-0 z-20 h-[68px] px-4 sm:px-8 flex items-center justify-between">
-                <div className="hidden sm:flex items-center gap-2">
-                    {/* <CheckCircle2 className="text-green-500 w-4 h-4" />
-                    <span className="text-xs text-[#94A3B8] font-sans">Draft saved 2 min ago</span> */}
-                </div>
-                <div className="flex items-center gap-2 sm:gap-3 ml-auto">
-                    <Button type="button" variant="ghost" onClick={goBack} disabled={step === 0} className="text-[#9A9A9A] hover:text-[#F5F5F5] hover:bg-[#1F1F1F] disabled:opacity-30"><ArrowLeft className="w-4 h-4 mr-1" /> Back</Button>
-                    <Button type="button" variant="outline" className="border-[#2A2A2A] text-[#F5F5F5] hover:border-[#E53F01] hover:text-[#E53F01] bg-[#1F1F1F]">Save Draft</Button>
-                    {step < STEPS.length - 1 ? (
-                        <Button type="button" onClick={goNext} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">Next <ArrowRight className="w-4 h-4 ml-1" /></Button>
-                    ) : (
-                        <Button type="button" disabled={processing} onClick={submit} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">Save & Publish <ArrowRight className="w-4 h-4 ml-1" /></Button>
-                    )}
+            {/* Sticky Bottom — full-width bar, buttons aligned to main container */}
+            <div className="bg-[#0D0D0D] border-t border-[#2A2A2A] fixed bottom-0 left-0 right-0 z-20 h-[4.25rem]">
+                <div className="max-w-[68.75rem] mx-auto h-full px-4 flex items-center justify-between">
+                    <div className="hidden sm:flex items-center gap-2">
+                        {/* <CheckCircle2 className="text-green-500 w-4 h-4" />
+                        <span className="text-xs text-[#94A3B8] font-sans">Draft saved 2 min ago</span> */}
+                    </div>
+                    <div className="flex items-center gap-2 sm:gap-3 ml-auto">
+                        <Button type="button" variant="ghost" onClick={goBack} disabled={step === 0} className="text-[#9A9A9A] hover:text-[#F5F5F5] hover:bg-[#1F1F1F] disabled:opacity-30"><ArrowLeft className="w-4 h-4 mr-1" /> Back</Button>
+                        <Button type="button" variant="outline" className="border-[#2A2A2A] text-[#F5F5F5] hover:border-[#E53F01] hover:text-[#E53F01] bg-[#1F1F1F]">Save Draft</Button>
+                        {step < STEPS.length - 1 ? (
+                            <Button type="button" onClick={goNext} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">Next <ArrowRight className="w-4 h-4 ml-1" /></Button>
+                        ) : (
+                            <Button type="button" disabled={processing} onClick={submit} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">Save & Publish <ArrowRight className="w-4 h-4 ml-1" /></Button>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

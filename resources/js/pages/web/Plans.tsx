@@ -178,14 +178,14 @@ export default function Plans() {
                     <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 md:grid-cols-[38%_1fr] lg:px-16">
                         {/* Left Side */}
                         <div>
-                            <h1 className="text-[42px] font-extrabold tracking-wide italic sm:text-[55px] md:text-[65px] lg:text-[80px]">PLANS</h1>
-                            <h2 className="-mt-2 text-[14px] font-bold text-[#E53F01] uppercase italic sm:text-[18px] md:-mt-3 md:text-[22px] lg:text-[24px]">
+                            <h1 className="text-[2.625rem] font-extrabold tracking-wide italic sm:text-[3.4375rem] md:text-[4.0625rem] lg:text-[5rem]">PLANS</h1>
+                            <h2 className="-mt-2 text-[0.875rem] font-bold text-[#E53F01] uppercase italic sm:text-[1.125rem] md:-mt-3 md:text-[1.375rem] lg:text-[1.5rem]">
                                 Choose the plan that drives
                             </h2>
-                            <h3 className="text-[16px] font-bold text-white uppercase sm:text-[20px] md:text-[20px] lg:text-[22px]">
+                            <h3 className="text-[1rem] font-bold text-white uppercase sm:text-[1.25rem] md:text-[1.25rem] lg:text-[1.375rem]">
                                 Your football career.
                             </h3>
-                            <div className="mt-6 text-[12px] text-[#feffff] sm:text-[14px] md:text-[16px] lg:text-[18px]">
+                            <div className="mt-6 text-[0.75rem] text-[#feffff] sm:text-[0.875rem] md:text-[1rem] lg:text-[1.125rem]">
                                 <p>
                                     More visibility. More connections. <br />
                                     More opportunities.
@@ -194,33 +194,33 @@ export default function Plans() {
                         </div>
 
                         {/* ═══════════ MEMBER CARD (fixed, responsive, no stretch) ═══════════ */}
-                        <div className="relative mx-auto w-full max-w-[720px] overflow-hidden rounded-2xl border border-gray-700 bg-black text-white">
+                        <div className="relative mx-auto w-full max-w-[45rem] overflow-hidden rounded-2xl border border-gray-700 bg-black text-white">
                             {/* Orange side band */}
-                            <div className="absolute top-0 right-0 h-full w-[46px] overflow-hidden sm:w-[54px] lg:w-[64px]">
+                            <div className="absolute top-0 right-0 h-full w-[2.875rem] overflow-hidden sm:w-[3.375rem] lg:w-[4rem]">
                                 <svg viewBox="0 0 90 520" preserveAspectRatio="none" className="block h-full w-full">
                                     <path
                                         d="M0 520 L0 85 C0 45 20 15 50 0 L72 0 C82 0 90 8 90 18 L90 485 C90 505 75 520 55 520 Z"
                                         fill="#e53f01"
                                     />
                                 </svg>
-                                <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90 text-[16px] font-bold tracking-[6px] whitespace-nowrap text-white sm:text-[18px] sm:tracking-[8px] pb-2 lg:pb-4">
+                                <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90 text-[1rem] font-bold tracking-[0.375rem] whitespace-nowrap text-white sm:text-[1.125rem] sm:tracking-[0.5rem] pb-2 lg:pb-4">
                                     2024
                                 </p>
-                                <p className="absolute top-1/2 left-[72%] -translate-x-1/2 -translate-y-1/2 -rotate-90 text-[8px] tracking-wider whitespace-nowrap text-white uppercase sm:text-[10px]">
+                                <p className="absolute top-1/2 left-[72%] -translate-x-1/2 -translate-y-1/2 -rotate-90 text-[0.5rem] tracking-wider whitespace-nowrap text-white uppercase sm:text-[0.625rem]">
                                     HIGHLIGHTS FOOTBALL MEMBER
                                 </p>
                             </div>
 
                             {/* Inner content — right padding clears the band */}
-                            <div className="p-3 pr-[54px] sm:p-5 sm:pr-[64px] lg:pr-[76px]">
+                            <div className="p-3 pr-[3.375rem] sm:p-5 sm:pr-[4rem] lg:pr-[4.75rem]">
                                 {/* TOP ROW: logo + title */}
-                                <div className="flex items-start justify-between gap-3">
-                                    <img src="/images/logo/final_logo.png" alt="HiLights Football" className="w-[110px] shrink-0 sm:w-[180px] lg:w-[200px] mt-3" />
+                                <div className="flex flex-col items-center gap-1 min-[360px]:flex-row min-[360px]:items-start min-[360px]:justify-between min-[360px]:gap-3">
+                                    <img src="/images/logo/final_logo.png" alt="HiLights Football" className="w-[6.875rem] shrink-0 sm:w-[11.25rem] lg:w-[12.5rem] mt-3" />
 
-                                    <div className="pt-1 text-center">
-                                        <h2 className="text-[11px] font-bold uppercase sm:text-[13px] lg:text-[15px]">MEMBER CARD</h2>
-                                        <p className="text-[8px] font-semibold text-[#e24b12] uppercase sm:text-[9px] lg:text-[10px]">Official Member</p>
-                                        <svg width="150" height="20" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-auto mt-1 w-[110px] sm:w-[140px]">
+                                    <div className="min-w-0 pt-1 text-center">
+                                        <h2 className="text-[0.6875rem] font-bold uppercase sm:text-[0.8125rem] lg:text-[0.9375rem]">MEMBER CARD</h2>
+                                        <p className="text-[0.5rem] font-semibold text-[#e24b12] uppercase sm:text-[0.5625rem] lg:text-[0.625rem]">Official Member</p>
+                                        <svg width="150" height="20" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-auto mt-1 w-[6.875rem] sm:w-[8.75rem]">
                                             <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />
                                             <path d="M90 4L92.35 9.15L98 9.8L94 13.6L95.2 19L90 16L84.8 19L86 13.6L82 9.8L87.65 9.15L90 4Z" fill="#e24b12" />
                                             <line x1="110" y1="12" x2="170" y2="12" stroke="#6B7280" strokeWidth="1" />
@@ -231,49 +231,49 @@ export default function Plans() {
                                 {/* BODY: photo | details | qr */}
                                 <div className="flex flex-col gap-5 sm:flex-row sm:justify-between sm:items-start sm:gap-4 md:flex-col md:gap-5 lg:flex-row lg:justify-between lg:items-start lg:gap-4">
                                     {/* Photo */}
-                                    <div className="h-[190px] w-full shrink-0 sm:h-[190px] sm:w-[150px]
-                                     md:h-[190px]] md:w-full lg:h-[210px] lg:w-[170px] mt-4 sm:mt-1 md:mt-4 lg:mt-1">
+                                    <div className="h-[11.875rem] w-full shrink-0 sm:h-[11.875rem] sm:w-[9.375rem]
+                                     md:h-[11.875rem]] md:w-full lg:h-[13.125rem] lg:w-[10.625rem] mt-4 sm:mt-1 md:mt-4 lg:mt-1">
                                         <img
                                             src="/images/img/p-6.png"
                                             alt="player"
-                                            className="h-full w-full rounded-[12px] border border-gray-400 object-cover"
+                                            className="h-full w-full rounded-[0.75rem] border border-gray-400 object-cover"
                                         />
                                     </div>
 
                                     {/* Details */}
                                     <div className="min-w-0 flex-1 sm:pl-2 md:pl-0-10 lg:pl-2">
-                                        <h3 className="text-[15px] font-bold uppercase lg:text-[17px]">JOÃO DA SILVA</h3>
-                                        <p className="text-[9px] text-[#e24b12] uppercase lg:text-[10px]">ATTACKING MIDFIELDER</p>
+                                        <h3 className="text-[0.9375rem] font-bold uppercase lg:text-[1.0625rem]">JOÃO DA SILVA</h3>
+                                        <p className="text-[0.5625rem] text-[#e24b12] uppercase lg:text-[0.625rem]">ATTACKING MIDFIELDER</p>
                                         <div className="mt-1 h-px w-28 bg-[#e24b12]" />
 
                                         <div className="mt-4 space-y-2">
                                             <div className="flex items-start">
-                                                <User size={16} className="mt-[2px] mr-[10px] shrink-0 text-[#e24b12]" />
-                                                <p className="text-[10px] text-[#e2e2e2] uppercase">
+                                                <User className="size-[1rem] mt-[0.125rem] mr-[0.625rem] shrink-0 text-[#e24b12]" />
+                                                <p className="text-[0.625rem] text-[#e2e2e2] uppercase">
                                                     ID:
                                                     <br />
                                                     <span className="text-white">HLF-00012345</span>
                                                 </p>
                                             </div>
                                             <div className="flex items-start">
-                                                <CalendarDays size={16} className="mt-[2px] mr-[10px] shrink-0 text-[#e24b12]" />
-                                                <p className="text-[10px] text-[#e2e2e2] uppercase">
+                                                <CalendarDays className="size-[1rem] mt-[0.125rem] mr-[0.625rem] shrink-0 text-[#e24b12]" />
+                                                <p className="text-[0.625rem] text-[#e2e2e2] uppercase">
                                                     DATE OF BIRTH:
                                                     <br />
                                                     <span className="text-white">15 / 05 / 2006</span>
                                                 </p>
                                             </div>
                                             <div className="flex items-start">
-                                                <Flag size={16} className="mt-[2px] mr-[10px] shrink-0 text-[#e24b12]" />
-                                                <p className="text-[10px] text-[#e2e2e2] uppercase">
+                                                <Flag className="size-[1rem] mt-[0.125rem] mr-[0.625rem] shrink-0 text-[#e24b12]" />
+                                                <p className="text-[0.625rem] text-[#e2e2e2] uppercase">
                                                     NATIONALITY:
                                                     <br />
                                                     <span className="text-white">Brazil</span>
                                                 </p>
                                             </div>
                                             <div className="flex items-start">
-                                                <MapPin size={16} className="mt-[2px] mr-[10px] shrink-0 text-[#e24b12]" />
-                                                <p className="text-[10px] text-[#e2e2e2] uppercase">
+                                                <MapPin className="size-[1rem] mt-[0.125rem] mr-[0.625rem] shrink-0 text-[#e24b12]" />
+                                                <p className="text-[0.625rem] text-[#e2e2e2] uppercase">
                                                     CITY:
                                                     <br />
                                                     <span className="text-white">RIO DE JANEIRO - RJ</span>
@@ -284,13 +284,13 @@ export default function Plans() {
 
                                     {/* QR */}
                                     <div className="flex shrink-0 flex-col items-center sm:pt-6 sm:items-start md:items-center lg:items-start md:mx-auto">
-                                        <h4 className="pb-2 text-[8px] font-bold text-[#e24b12] uppercase lg:text-[10px]">Scan To View Profile</h4>
-                                        <div className="rounded-[12px] border-[3px] border-[#e24b12] bg-white p-2">
-                                            <img src="/images/img/qr.png" alt="QR" className="h-[70px] w-[70px] rounded-md object-cover lg:h-[90px] lg:w-[90px]" />
+                                        <h4 className="pb-2 text-[0.5rem] font-bold text-[#e24b12] uppercase lg:text-[0.625rem]">Scan To View Profile</h4>
+                                        <div className="rounded-[0.75rem] border-[3px] border-[#e24b12] bg-white p-2">
+                                            <img src="/images/img/qr.png" alt="QR" className="h-[4.375rem] w-[4.375rem] rounded-md object-cover lg:h-[5.625rem] lg:w-[5.625rem]" />
                                         </div>
                                         <div className="mt-2 flex items-center">
-                                            <Smartphone size={20} className="mr-1 shrink-0 text-[#e24b12]" />
-                                            <span className="text-left text-[8px] leading-tight text-[#e24b12] uppercase">
+                                            <Smartphone className="size-[1.25rem] mr-1 shrink-0 text-[#e24b12]" />
+                                            <span className="text-left text-[0.5rem] leading-tight text-[#e24b12] uppercase">
                                                 VIEW FULL PROFILE,
                                                 <br />
                                                 VIDEOS, STATS AND
@@ -304,7 +304,7 @@ export default function Plans() {
                                 {/* BOTTOM: shield text */}
                                 <div className="mt-5 flex items-center gap-2">
                                     <Shield className="h-6 w-6 shrink-0 text-white" />
-                                    <p className="text-[10px] leading-relaxed text-white uppercase lg:text-[12px]">
+                                    <p className="text-[0.625rem] leading-relaxed text-white uppercase lg:text-[0.75rem]">
                                         This card identifies the holder as an official<br className="hidden sm:block lg:block" /> member of HiLights Football platform.
                                     </p>
                                 </div>
@@ -318,17 +318,17 @@ export default function Plans() {
                 <section className="bg-black px-4 py-12">
                     <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {/* Free Profile */}
-                        <div className="rounded-[20px] border border-gray-700 bg-black p-6 md:relative">
+                        <div className="rounded-[1.25rem] border border-gray-700 bg-black p-6 md:relative">
                             <div className="mb-6 flex -translate-y-[85%] justify-center">
                                 <div className="flex h-14 w-14 items-center justify-center rounded-full border border-gray-600 bg-black">
-                                    <User size={32} className="text-white" />
+                                    <User className="size-[2rem] text-white" />
                                 </div>
                             </div>
                             <h3 className="mb-6 text-center text-2xl font-bold text-white uppercase italic">Free Profile</h3>
                             <div className="mb-8 space-y-3">
                                 {freePlan.map((item, index) => (
                                     <div key={index} className="flex items-center gap-3">
-                                        <CheckCircle size={18} className="text-green-500" />
+                                        <CheckCircle className="size-[1.125rem] text-green-500" />
                                         <span className="text-[#ececec]">{item}</span>
                                     </div>
                                 ))}
@@ -342,7 +342,7 @@ export default function Plans() {
                         </div>
 
                         {/* Premium Monthly */}
-                        <div className="relative rounded-[20px] border border-orange-500 bg-black p-6">
+                        <div className="relative rounded-[1.25rem] border border-orange-500 bg-black p-6">
                             <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-md bg-[#E53F01] px-4 py-1 text-xs font-bold text-white uppercase">
                                 Most Popular
                             </div>
@@ -351,14 +351,14 @@ export default function Plans() {
                             </div>
                             <h3 className="text-center text-2xl font-bold text-white uppercase italic">HiLights Premium</h3>
                             <p className="mb-6 text-center">
-                                <span className="text-[20px] font-semibold text-white">R$ <span className="pl-1 text-[30px] font-bold text-[#E53F01]">47</span></span>
+                                <span className="text-[1.25rem] font-semibold text-white">R$ <span className="pl-1 text-[1.875rem] font-bold text-[#E53F01]">47</span></span>
                                 <span className="ml-2 text-sm text-white">/month</span>
                                 <span className="ml-4 text-xs text-orange-500">(12 months fidelity)</span>
                             </p>
                             <div className="mb-8 space-y-3">
                                 {premiumPlan.map((item, index) => (
                                     <div key={index} className="flex items-start gap-3">
-                                        <CheckCircle size={18} className="mt-1 shrink-0 text-green-500" />
+                                        <CheckCircle className="size-[1.125rem] mt-1 shrink-0 text-green-500" />
                                         <span className="text-[#ececec]">{item}</span>
                                     </div>
                                 ))}
@@ -376,20 +376,20 @@ export default function Plans() {
                         </div>
 
                         {/* Premium No Fidelity */}
-                        <div className="rounded-[20px] border border-orange-500 bg-black p-6">
+                        <div className="rounded-[1.25rem] border border-orange-500 bg-black p-6">
                             <div className="mb-4 flex justify-center">
                                 <img src="/images/club-logo/hlf_logo.png" alt="logo" className="h-12 w-12" />
                             </div>
                             <h3 className="text-center text-2xl font-bold text-white uppercase italic">HiLights Premium</h3>
                             <p className="mb-6 text-center">
-                                <span className="text-[20px] font-semibold text-white">R$ <span className="pl-1 text-[30px] font-bold text-[#E53F01]">94</span></span>
+                                <span className="text-[1.25rem] font-semibold text-white">R$ <span className="pl-1 text-[1.875rem] font-bold text-[#E53F01]">94</span></span>
                                 <span className="ml-2 text-sm text-white">/month</span>
                                 <span className="ml-6 text-xs text-orange-500">(no fidelity)</span>
                             </p>
                             <div className="mb-8 space-y-3">
                                 {premiumPlan.map((item, index) => (
                                     <div key={index} className="flex items-start gap-3">
-                                        <CheckCircle size={18} className="mt-1 shrink-0 text-green-500" />
+                                        <CheckCircle className="size-[1.125rem] mt-1 shrink-0 text-green-500" />
                                         <span className="text-[#ececec]">{item}</span>
                                     </div>
                                 ))}
@@ -421,10 +421,10 @@ export default function Plans() {
                                             className={`px-6 py-6 text-center transition-all duration-300 hover:bg-[#121212] ${index !== items.length - 1 ? 'border-zinc-800 lg:border-r-2' : ''}`}
                                         >
                                             <div className="flex justify-center">
-                                                <Icon size={42} className="text-[#ff3500]" strokeWidth={2} />
+                                                <Icon className="size-[2.625rem] text-[#ff3500]" strokeWidth={2} />
                                             </div>
-                                            <h3 className="mt-5 text-[18px] font-bold tracking-wide text-white">{item.title}</h3>
-                                            <p className="mt-3 text-[14px] leading-6 text-[#d3d3d3]">{item.description}</p>
+                                            <h3 className="mt-5 text-[1.125rem] font-bold tracking-wide text-white">{item.title}</h3>
+                                            <p className="mt-3 text-[0.875rem] leading-6 text-[#d3d3d3]">{item.description}</p>
                                         </div>
                                     );
                                 })}
@@ -436,7 +436,7 @@ export default function Plans() {
                 {/* CTA */}
                 <section className="w-full px-4">
                     <div
-                        className="mx-auto mt-10 flex max-w-7xl items-center gap-2 rounded-3xl border border-zinc-800 p-4 py-6 sm:grid sm:grid-cols-[70px_1fr_150px] sm:gap-4 md:grid-cols-[90px_1fr_250px] lg:grid-cols-[110px_1fr_450px]"
+                        className="mx-auto mt-10 flex max-w-7xl items-center gap-2 rounded-3xl border border-zinc-800 p-4 py-6 sm:grid sm:grid-cols-[4.375rem_1fr_9.375rem] sm:gap-4 md:grid-cols-[5.625rem_1fr_15.625rem] lg:grid-cols-[6.875rem_1fr_28.125rem]"
                         style={{
                             backgroundImage: "url('/images/img/plan_cta_bg.jpeg')",
                             backgroundRepeat: 'no-repeat',
@@ -450,16 +450,16 @@ export default function Plans() {
                             </div>
                         </div>
                         <div>
-                            <h3 className="text-[14px] leading-tight font-bold text-white sm:text-[16px] md:text-[20px] lg:text-[28px]">
+                            <h3 className="text-[0.875rem] leading-tight font-bold text-white sm:text-[1rem] md:text-[1.25rem] lg:text-[1.75rem]">
                                 Take Your Career To The <span className="text-[#fa2e00]">Next Level.</span>
                             </h3>
-                            <p className="mt-3 pr-2 text-[10px] leading-relaxed text-gray-300 sm:pr-16 sm:text-[12px] md:text-[14px] lg:pr-24 lg:text-[18px]">
+                            <p className="mt-3 pr-2 text-[0.625rem] leading-relaxed text-gray-300 sm:pr-16 sm:text-[0.75rem] md:text-[0.875rem] lg:pr-24 lg:text-[1.125rem]">
                                 Join thousands of players using HiLights PRO to showcase their talent and stand out in the football world.
                             </p>
                         </div>
                         <div className="flex items-end justify-end lg:pr-10">
-                            <Link href="/register" className="flex items-center gap-2 rounded-[10px] bg-[#E53F01] px-4 py-1 text-white transition sm:py-2 md:gap-4 lg:px-8 lg:py-2">
-                                <span className="text-left text-[10px] font-bold uppercase sm:text-[12px] md:text-[14px] lg:text-[16px]">
+                            <Link href="/register" className="flex items-center gap-2 rounded-[0.625rem] bg-[#E53F01] px-4 py-1 text-white transition sm:py-2 md:gap-4 lg:px-8 lg:py-2">
+                                <span className="text-left text-[0.625rem] font-bold uppercase sm:text-[0.75rem] md:text-[0.875rem] lg:text-[1rem]">
                                     UPGRADE NOW
                                 </span>
                             </Link>

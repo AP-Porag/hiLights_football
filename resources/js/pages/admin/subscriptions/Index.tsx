@@ -321,10 +321,10 @@ function PlanEditCard({ plan }: { plan: (typeof plansData)[0] }) {
     };
 
     return (
-        <div className="bg-white border border-[#E2E8F0] rounded-xl p-6">
-            <div className="flex items-start justify-between mb-6 pb-6 border-b border-[#E2E8F0]">
-                <div>
-                    <div className="flex items-center gap-2 mb-1">
+        <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 sm:p-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between mb-6 pb-6 border-b border-[#E2E8F0]">
+                <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
                         <h3 className="font-display text-xl font-bold text-[#0F172A]">
                             {plan.name}
                         </h3>
@@ -336,7 +336,7 @@ function PlanEditCard({ plan }: { plan: (typeof plansData)[0] }) {
                         Manage pricing, features, and access tiers
                     </p>
                 </div>
-                <div className="text-right">
+                <div className="sm:text-right">
                     <p className="font-mono text-2xl font-bold text-[#E53F01] tabular-nums">
                         {plan.subscribers.toLocaleString()}
                     </p>
@@ -419,7 +419,7 @@ function PlanEditCard({ plan }: { plan: (typeof plansData)[0] }) {
                 </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 mt-6 pt-6 border-t border-[#E2E8F0]">
+            <div className="flex flex-wrap items-center justify-end gap-2 mt-6 pt-6 border-t border-[#E2E8F0]">
                 <Button
                     variant="outline"
                     className="border-[#E2E8F0] text-[#475569] hover:bg-[#F8FAFC]"
@@ -443,7 +443,7 @@ export default function SubscriptionsIndex() {
 
     return (
         <AppLayout>
-            <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
+            <div className="mx-auto w-full max-w-[100rem] p-4 sm:p-6 lg:p-8">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
                     <div>
@@ -454,7 +454,7 @@ export default function SubscriptionsIndex() {
                             Monitor recurring revenue, manage subscribers and plan tiers
                         </p>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                         <Button
                             variant="outline"
                             className="border-[#E2E8F0] text-[#475569] hover:bg-white"
