@@ -228,17 +228,26 @@ export default function NewDetail() {
             <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6">
                 <main className="min-w-0 space-y-6 overflow-x-hidden">
 
+                    {/* ═══════════ MINOR NOTICE — own row above player info + video ═══════════ */}
+
+                    <div>
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E53F01]/60 bg-[#E53F01]/10 px-3 py-1 text-xs font-semibold text-[#ff8a4c]">
+                            <Users className="h-3.5 w-3.5 shrink-0" />
+                            Profile managed by parents
+                        </span>
+                    </div>
+
                     {/* ═══════════ TOP: player info (left) + main video (right) ═══════════ */}
-                    <section className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
+                    <section className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start">
 
                         {/* Player info */}
-                        <div className="flex flex-col gap-4 text-white min-[420px]:flex-row sm:gap-6">
+                        <div className="flex min-w-0 flex-col gap-4 text-white min-[420px]:flex-row sm:gap-6">
                             {/* Smaller photo */}
                             <div className="shrink-0">
                                 <img
                                     src={player.photo_url || '/images/img/placeholder.webp'}
                                     alt={player.user?.name ?? ''}
-                                    className="h-[10rem] w-[7.5rem] rounded-md border border-[#233247] object-cover sm:h-[11.875rem] sm:w-[9.0625rem] lg:h-[13.125rem] lg:w-[10rem]"
+                                    className="h-[10rem] w-[7.5rem] rounded-md border border-[#233247] object-cover sm:h-[11.875rem] sm:w-[9.0625rem] xl:h-[13.125rem] xl:w-[10rem]"
                                 />
 
                             </div>
@@ -248,12 +257,6 @@ export default function NewDetail() {
                                 <h1 className="text-2xl font-bold tracking-wide break-words uppercase md:text-3xl">
                                     {player.user?.name}
                                 </h1>
-                                {isMinor && (
-                                    <div className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#E53F01]/60 bg-[#E53F01]/10 px-3 py-1 text-xs font-semibold text-[#ff8a4c]">
-                                        <Users className="h-3.5 w-3.5 shrink-0" />
-                                        Profile managed by parents
-                                    </div>
-                                )}
                                 {/* <h3 className="mt-1 text-base font-semibold text-[#eb6c0d] uppercase md:text-lg">
                                     {getPositionName(player.positions ?? [])}
                                 </h3> */}
@@ -321,25 +324,25 @@ export default function NewDetail() {
                             </div>
                         </div>
 
-                        {/* Main video — visible on first view, no scroll needed */}
-                        <div className="w-full">
+                        {/* Main video — inside card */}
+                        <div className="w-full rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-3 sm:p-4">
                             {/* <p className="mb-2 text-[1rem] font-bold text-white">HIGHLIGHTS VIDEO</p> */}
-                            <div className="overflow-hidden rounded-2xl">
+                            <div className="overflow-hidden rounded-md">
                                 {getEmbedUrl(player.video_url) ? (
                                     <iframe
                                         src={getEmbedUrl(player.video_url)!}
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowFullScreen
-                                        className="aspect-video w-full rounded-2xl bg-gray-800"
+                                        className="aspect-video w-full rounded-md bg-gray-800"
                                     />
                                 ) : (
-                                    <div className="flex aspect-video w-full flex-col items-center justify-center rounded-2xl bg-gray-800">
+                                    <div className="flex aspect-video w-full flex-col items-center justify-center rounded-md bg-gray-800">
                                         <Video className="mb-2 h-12 w-12 text-white/30" />
                                         <p className="text-sm text-white/40">No highlights uploaded yet</p>
                                     </div>
                                 )}
                             </div>
-                            <div className="mt-2 flex items-center justify-between text-[0.875rem] text-white">
+                            <div className="mt-3 flex items-center justify-between text-[0.875rem] text-white">
                                 {player?.video_url ? (
                                     <>
                                         <h3 className="min-w-0 truncate pr-2 font-medium">
@@ -358,31 +361,31 @@ export default function NewDetail() {
                         </div>
                     </section>
 
-                    {/* SUB VIDEOS */}
+                    {/* SUB VIDEOS — each inside card */}
                     <section>
-                        <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
                             {(player.videos ?? [])
                                 .filter((v: any) => v?.url)
                                 .slice(1) // Skip first video (already shown as main)
                                 .map((v: any, i: number) => (
-                                    <div key={i}>
-                                        <div className="overflow-hidden rounded-[0.75rem] ">
+                                    <div key={i} className="flex flex-col rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-3 sm:p-4">
+                                        <div className="overflow-hidden rounded-md">
                                             {getEmbedUrl(v.url) ? (
                                                 <iframe
                                                     src={getEmbedUrl(v.url)!}
                                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                     allowFullScreen
-                                                    className="aspect-video w-full rounded-[0.75rem] bg-gray-800"
+                                                    className="aspect-video w-full rounded-md bg-gray-800"
                                                 />
                                             ) : (
-                                                <div className="flex aspect-video w-full flex-col items-center justify-center rounded-[0.75rem] bg-gray-800">
+                                                <div className="flex aspect-video w-full flex-col items-center justify-center rounded-md bg-gray-800">
                                                     <Video className="mb-2 h-10 w-10 text-white/30" />
                                                     <p className="text-sm text-white/40">Invalid video</p>
                                                 </div>
                                             )}
                                         </div>
                                         {v.label && (
-                                            <p className="py-2 text-center text-[1rem] font-bold text-white">{v.label}</p>
+                                            <p className="pt-3 text-center text-[1rem] font-bold text-white">{v.label}</p>
                                         )}
                                     </div>
                                 ))}
@@ -402,11 +405,27 @@ export default function NewDetail() {
                         <div className="grid gap-2 grid-cols-1 md:gap-4">
                             {/* Positions */}
                             <div className="rounded-xl border border-slate-800 bg-[#06111d] p-5">
-                                <h2 className="mb-6 text-[0.8125rem] font-bold text-white uppercase md:text-[1.125rem]">Positions On The Pitch</h2>
+                                <h2 className="mb-4 text-[0.8125rem] font-bold text-white uppercase md:text-[1.125rem]">Positions On The Pitch</h2>
 
                                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
                                     {/* Pitch (left) — full width of the column */}
                                     <div className="min-w-0 w-full">
+                                        {/* Direction arrow — field positions start from the left */}
+                                        <div
+                                            className="mb-3 flex items-center"
+                                            role="img"
+                                            aria-label="Field direction: left to right"
+                                        >
+                                            <span className="h-[0.1875rem] flex-1 rounded-full bg-[#E53F01]" />
+                                            <svg
+                                                viewBox="0 0 12 12"
+                                                fill="currentColor"
+                                                className="-ml-px h-3 w-3 shrink-0 text-[#E53F01] md:h-4 md:w-4"
+                                                aria-hidden="true"
+                                            >
+                                                <path d="M0 0 L12 6 L0 12 Z" />
+                                            </svg>
+                                        </div>
                                         <PitchPriority selected={player.positions ?? []} />
                                     </div>
 
