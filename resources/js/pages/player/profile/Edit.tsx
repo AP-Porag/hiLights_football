@@ -1258,8 +1258,8 @@ export default function Edit() {
                                     <span className="w-24 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Home</span>
                                     <span className="w-20 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Score</span>
                                     <span className="w-24 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Away</span>
-                                    <span className="w-14 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">G</span>
-                                    <span className="w-14 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">A</span>
+                                    <span className="w-14 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Goal</span>
+                                    <span className="w-14 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Assist</span>
                                     <span className="w-20 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Min</span>
                                     <span className="w-6" />
                                 </div>
