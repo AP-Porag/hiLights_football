@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('dob')->nullable();
             $table->json('nationality')->nullable();
             $table->string('country', 3)->nullable();
+            $table->string('slug', 120)->nullable()->unique();
             $table->string('email_verification_code', 6)->nullable();
             $table->timestamp('whatsapp_verified_at')->nullable();
             $table->timestamp('email_verification_code_expires_at')->nullable();

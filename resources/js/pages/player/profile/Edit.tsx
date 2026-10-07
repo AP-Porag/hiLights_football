@@ -248,7 +248,7 @@ function ListErrors({ errors }: { errors: Record<string, string | undefined> }) 
             <AlertTriangle className="h-4 w-4 text-red-400" />
             <AlertDescription className="text-red-200 text-sm font-sans">
                 <p className="font-semibold mb-2">
-                    Some details in your career history need your attention before we can save your profile:
+                    Some details in your career history need your attention before we can save your football identity:
                 </p>
                 <ul className="list-disc pl-4 space-y-1">
                     {entries.map(([key, msg]) => (
@@ -689,7 +689,7 @@ export default function Edit() {
             forceFormData: true,
             preserveScroll: true,
             onError: (errs) => {
-                console.error('Profile validation errors:', errs);
+                // console.error('Profile validation errors:', errs);
                 const steps = Object.keys(errs).map((k) => FIELD_STEP[k.split('.')[0]] ?? 99).filter((n) => n !== 99);
                 if (steps.length) setStep(Math.min(...steps));
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -845,7 +845,7 @@ export default function Edit() {
                             </div>
                             {isMinor && (
                                 <div className="mt-6">
-                                    <Alert className="bg-amber-950 border-amber-700"><AlertTriangle className="h-4 w-4 text-amber-400" /><AlertDescription className="text-amber-200 text-sm font-sans">Player is under 18. This profile must be managed by a parent or legal guardian.</AlertDescription></Alert>
+                                    <Alert className="bg-amber-950 border-amber-700"><AlertTriangle className="h-4 w-4 text-amber-400" /><AlertDescription className="text-amber-200 text-sm font-sans">Player is under 18. This football identity must be managed by a parent or legal guardian.</AlertDescription></Alert>
                                     <div className="mt-4">
                                         <Label htmlFor="guardian_name" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Guardian Name <span className="text-[#E53F01]">*</span></Label>
                                         <Input id="guardian_name" value={data.guardian_name} onChange={(e) => setData('guardian_name', e.target.value)} placeholder="Parent or legal guardian's full name" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]" />

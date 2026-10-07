@@ -50,13 +50,13 @@ export default function PlayerNavbar() {
     const auth = props.auth?.user
         ? props.auth
         : {
-              user: {
-                  id: 1,
-                  name: 'Lucas Pereira',
-                  email: 'lucas@hilights.fc',
-                  avatar_url: null,
-              },
-          };
+            user: {
+                id: 1,
+                name: 'Lucas Pereira',
+                email: 'lucas@hilights.fc',
+                avatar_url: null,
+            },
+        };
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [notifOpen, setNotifOpen] = useState(false);
@@ -326,7 +326,7 @@ export default function PlayerNavbar() {
                                     onClick={() => setMobileOpen(false)}
                                     className="block border-b border-[#F1F5F9] py-3 text-base font-medium text-[#0F172A] transition-colors hover:text-[#E53F01] dark:border-[#1F1F1F] dark:text-[#F5F5F5]"
                                 >
-                                    View Public Profile
+                                    View Public Football Identity
                                 </Link>
                                 <Link
                                     href="/player/settings"

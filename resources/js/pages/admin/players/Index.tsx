@@ -184,11 +184,10 @@ export default function PlayersIndex() {
                                         key={tab}
                                         type="button"
                                         onClick={() => handleTabChange(tab)}
-                                        className={`rounded px-3 py-1.5 text-xs font-medium transition-colors ${
-                                            activeFilter === tab
-                                                ? 'border border-[#3A3A3A] bg-[#0D0D0D] text-[#F5F5F5] shadow-sm'
-                                                : 'text-[#94A3B8] hover:text-[#F5F5F5]'
-                                        }`}
+                                        className={`rounded px-3 py-1.5 text-xs font-medium transition-colors ${activeFilter === tab
+                                            ? 'border border-[#3A3A3A] bg-[#0D0D0D] text-[#F5F5F5] shadow-sm'
+                                            : 'text-[#94A3B8] hover:text-[#F5F5F5]'
+                                            }`}
                                     >
                                         {tab}
                                         <span className={`ml-1.5 font-mono ${activeFilter === tab ? 'text-[#E53F01]' : 'text-[#555555]'}`}>
@@ -303,7 +302,7 @@ export default function PlayersIndex() {
                                                             onClick={() => window.open(`/player/profile/${player.id}`, '_blank')}
                                                             className="text-sm text-[#F5F5F5] hover:bg-[#1A1A1A] focus:bg-[#1A1A1A]"
                                                         >
-                                                            <Eye className="mr-2 h-4 w-4" /> View Profile
+                                                            <Eye className="mr-2 h-4 w-4" /> View Football Identity
                                                         </DropdownMenuItem>
                                                         <DropdownMenuSeparator className="bg-[#2A2A2A]" />
                                                         <DropdownMenuItem

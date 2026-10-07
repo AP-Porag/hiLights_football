@@ -7,7 +7,7 @@ import { Link } from '@inertiajs/react';
 
 const sidebarNavItems: NavItem[] = [
     {
-        title: 'Profile',
+        title: 'Football Identity',
         url: '/settings/profile',
         icon: null,
     },

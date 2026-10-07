@@ -200,22 +200,20 @@ export default function SavedPlayers() {
                             <div className="flex items-center gap-1 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-1 dark:border-[#2A2A2A] dark:bg-[#111111]">
                                 <button
                                     onClick={() => setView('grid')}
-                                    className={`rounded-md p-1.5 transition-colors ${
-                                        view === 'grid'
-                                            ? 'bg-[#FFF3EB] text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]'
-                                            : 'text-[#94A3B8] hover:text-[#475569] dark:hover:text-[#9A9A9A]'
-                                    }`}
+                                    className={`rounded-md p-1.5 transition-colors ${view === 'grid'
+                                        ? 'bg-[#FFF3EB] text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]'
+                                        : 'text-[#94A3B8] hover:text-[#475569] dark:hover:text-[#9A9A9A]'
+                                        }`}
                                     aria-label="Grid view"
                                 >
                                     <LayoutGrid className="h-4 w-4" />
                                 </button>
                                 <button
                                     onClick={() => setView('list')}
-                                    className={`rounded-md p-1.5 transition-colors ${
-                                        view === 'list'
-                                            ? 'bg-[#FFF3EB] text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]'
-                                            : 'text-[#94A3B8] hover:text-[#475569] dark:hover:text-[#9A9A9A]'
-                                    }`}
+                                    className={`rounded-md p-1.5 transition-colors ${view === 'list'
+                                        ? 'bg-[#FFF3EB] text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]'
+                                        : 'text-[#94A3B8] hover:text-[#475569] dark:hover:text-[#9A9A9A]'
+                                        }`}
                                     aria-label="List view"
                                 >
                                     <List className="h-4 w-4" />
@@ -323,7 +321,7 @@ export default function SavedPlayers() {
                                             <Link
                                                 href={`/scouting/player/${sp.player.id}`}
                                                 className="rounded p-1 text-[#94A3B8] transition-colors hover:text-[#E53F01]"
-                                                aria-label="View full profile"
+                                                aria-label="View full football identity"
                                             >
                                                 <ExternalLink className="h-4 w-4" />
                                             </Link>
@@ -387,22 +385,22 @@ export default function SavedPlayers() {
                                                 <div className="font-mono text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]">
                                                     {sp.player.dob
                                                         ? (() => {
-                                                              const birthDate = new Date(sp.player.dob);
-                                                              const today = new Date();
+                                                            const birthDate = new Date(sp.player.dob);
+                                                            const today = new Date();
 
-                                                              let age = today.getFullYear() - birthDate.getFullYear();
+                                                            let age = today.getFullYear() - birthDate.getFullYear();
 
-                                                              const hasBirthdayPassed =
-                                                                  today.getMonth() > birthDate.getMonth() ||
-                                                                  (today.getMonth() === birthDate.getMonth() &&
-                                                                      today.getDate() >= birthDate.getDate());
+                                                            const hasBirthdayPassed =
+                                                                today.getMonth() > birthDate.getMonth() ||
+                                                                (today.getMonth() === birthDate.getMonth() &&
+                                                                    today.getDate() >= birthDate.getDate());
 
-                                                              if (!hasBirthdayPassed) {
-                                                                  age--;
-                                                              }
+                                                            if (!hasBirthdayPassed) {
+                                                                age--;
+                                                            }
 
-                                                              return age < 18 ? birthDate.getFullYear() : age;
-                                                          })()
+                                                            return age < 18 ? birthDate.getFullYear() : age;
+                                                        })()
                                                         : '—'}
                                                 </div>
                                                 <div className="mt-0.5 text-[9px] tracking-wider text-[#94A3B8] uppercase">Age</div>
@@ -429,11 +427,10 @@ export default function SavedPlayers() {
                                                         {[1, 2, 3, 4, 5].map((i) => (
                                                             <Star
                                                                 key={i}
-                                                                className={`h-3.5 w-3.5 ${
-                                                                    i <= Math.round(sp.player.avgRating)
-                                                                        ? 'fill-[#E53F01] text-[#E53F01]'
-                                                                        : 'fill-[#E2E8F0] text-[#E2E8F0] dark:fill-[#2A2A2A] dark:text-[#2A2A2A]'
-                                                                }`}
+                                                                className={`h-3.5 w-3.5 ${i <= Math.round(sp.player.avgRating)
+                                                                    ? 'fill-[#E53F01] text-[#E53F01]'
+                                                                    : 'fill-[#E2E8F0] text-[#E2E8F0] dark:fill-[#2A2A2A] dark:text-[#2A2A2A]'
+                                                                    }`}
                                                             />
                                                         ))}
                                                         <span className="ml-1 font-mono text-sm font-bold text-[#E53F01]">
@@ -540,11 +537,10 @@ export default function SavedPlayers() {
                                                     {[1, 2, 3, 4, 5].map((i) => (
                                                         <Star
                                                             key={i}
-                                                            className={`h-3 w-3 ${
-                                                                i <= Math.round(sp.player.avgRating)
-                                                                    ? 'fill-[#E53F01] text-[#E53F01]'
-                                                                    : 'fill-[#E2E8F0] text-[#E2E8F0] dark:fill-[#2A2A2A] dark:text-[#2A2A2A]'
-                                                            }`}
+                                                            className={`h-3 w-3 ${i <= Math.round(sp.player.avgRating)
+                                                                ? 'fill-[#E53F01] text-[#E53F01]'
+                                                                : 'fill-[#E2E8F0] text-[#E2E8F0] dark:fill-[#2A2A2A] dark:text-[#2A2A2A]'
+                                                                }`}
                                                         />
                                                     ))}
                                                     <span className="ml-1 font-mono text-xs font-bold text-[#E53F01]">

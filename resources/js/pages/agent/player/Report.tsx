@@ -132,10 +132,10 @@ export default function Report() {
     const averageRating = rating ? (rating.technical + rating.physical + rating.tactical + rating.mental) / 4 : 0;
     const lastUpdated = report?.updated_at
         ? new Date(report.updated_at).toLocaleDateString('en-US', {
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric',
-          })
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+        })
         : null;
     return (
         <div className="min-h-screen bg-[#111111] font-sans text-[#F5F5F5]">
@@ -224,7 +224,7 @@ export default function Report() {
                     <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                         <div className="mb-5 flex items-center justify-between gap-3">
                             <div>
-                                <div className="mb-1 text-[10px] font-bold tracking-wider text-[#9A9A9A] uppercase">From your profile rating</div>
+                                <div className="mb-1 text-[10px] font-bold tracking-wider text-[#9A9A9A] uppercase">From your football identity rating</div>
                                 <h2 className="font-display text-2xl font-bold uppercase">Rating Summary</h2>
                             </div>
                             {averageRating > 0 && (
@@ -282,11 +282,10 @@ export default function Report() {
                                         key={rec.value}
                                         type="button"
                                         onClick={() => setData('recommendation', rec.value)}
-                                        className={`rounded-xl border p-4 text-left transition-colors ${
-                                            active
+                                        className={`rounded-xl border p-4 text-left transition-colors ${active
                                                 ? 'border-[#E53F01] bg-[rgba(255,107,0,0.12)]'
                                                 : 'border-[#2A2A2A] bg-[#1F1F1F] hover:border-[#E53F01]'
-                                        }`}
+                                            }`}
                                     >
                                         <Icon className={`mb-2 h-5 w-5 ${active ? 'text-[#E53F01]' : 'text-[#9A9A9A]'}`} />
                                         <div className={`font-display text-lg font-bold uppercase ${active ? 'text-[#E53F01]' : ''}`}>
