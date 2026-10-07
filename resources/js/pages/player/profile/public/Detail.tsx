@@ -1,91 +1,66 @@
-import React, { useState } from 'react';
-import { Link, usePage } from '@inertiajs/react';
-import ReactCountryFlag from "react-country-flag";
-import { getPositionName } from '@/utils/helper';
-import {
-    MapPin,
-    Flag,
-    Building2,
-    Calendar,
-    Ruler,
-    User,
-    BadgeCheck,
-    AlertTriangle,
-    Video,
-    Play,
-    Search,
-    Star,
-    Bookmark,
-    ChevronRight,
-    Footprints,
-    Eye,
-    Globe2,
-    Trophy,
-    CalendarDays,
-    Users,
-    Crosshair,
-    Shield,
-    Shirt
-} from 'lucide-react';
-import PublicNavbar from '@/components/public/PublicNavbar';
 import { PublicFooter } from '@/components/public/PublicFooter';
+import PublicNavbar from '@/components/public/PublicNavbar';
 import { PitchPriority } from '@/components/ui/pitch-priority';
+import { Link, usePage } from '@inertiajs/react';
+import { CalendarDays, ChevronRight, Crosshair, Footprints, Ruler, Shield, Star, Users, Video } from 'lucide-react';
+import React, { useState } from 'react';
+import ReactCountryFlag from 'react-country-flag';
 
 // MOCK DATA
 
 const transferHistory = [
-    { year: 2024, club: "São Cristóvão - RJ", img: "/images/club-logo/cl-1.png" },
-    { year: 2023, club: "Bangu - RJ", img: "/images/club-logo/cl-2.png" },
-    { year: 2022, club: "Portuguesa RJ - RJ", img: "/images/club-logo/cl-3.png" },
-    { year: 2021, club: "Madureira - RJ", img: "/images/club-logo/cl-4.png" },
-    { year: 2020, club: "Flamengo U-17 - RJ", img: "/images/club-logo/cl-5.png" },
-    { year: 2019, club: "Fluminense U-15 - RJ", img: "/images/club-logo/cl-6.png" },
-    { year: 2018, club: "Nova Iguaçu - RJ", img: "/images/club-logo/cl-7.png" },
-    { year: 2017, club: "Boa Vista - RJ", img: "/images/club-logo/cl-8.png" },
-    { year: 2016, club: "Serrano - RJ", img: "/images/club-logo/cl-9.png" },
-    { year: 2015, club: "Macaé - RJ", img: "/images/club-logo/cl-10.png" },
+    { year: 2024, club: 'São Cristóvão - RJ', img: '/images/club-logo/cl-1.png' },
+    { year: 2023, club: 'Bangu - RJ', img: '/images/club-logo/cl-2.png' },
+    { year: 2022, club: 'Portuguesa RJ - RJ', img: '/images/club-logo/cl-3.png' },
+    { year: 2021, club: 'Madureira - RJ', img: '/images/club-logo/cl-4.png' },
+    { year: 2020, club: 'Flamengo U-17 - RJ', img: '/images/club-logo/cl-5.png' },
+    { year: 2019, club: 'Fluminense U-15 - RJ', img: '/images/club-logo/cl-6.png' },
+    { year: 2018, club: 'Nova Iguaçu - RJ', img: '/images/club-logo/cl-7.png' },
+    { year: 2017, club: 'Boa Vista - RJ', img: '/images/club-logo/cl-8.png' },
+    { year: 2016, club: 'Serrano - RJ', img: '/images/club-logo/cl-9.png' },
+    { year: 2015, club: 'Macaé - RJ', img: '/images/club-logo/cl-10.png' },
 ];
 
 const achievements = [
-    { year: "2024", title: "Copinha" },
-    { year: "2025", title: "Gaúcho U-20" },
-    { year: "2025", title: "BH Cup" },
-    { year: "2019", title: "Gazetinha Cup" },
-    { year: "2019", title: "Rio Grande do Sul State Championship U11" },
+    { year: '2024', title: 'Copinha' },
+    { year: '2025', title: 'Gaúcho U-20' },
+    { year: '2025', title: 'BH Cup' },
+    { year: '2019', title: 'Gazetinha Cup' },
+    { year: '2019', title: 'Rio Grande do Sul State Championship U11' },
 ];
 
 const competitions = [
-    { name: "Copinha", year: "2024" },
-    { name: "Gaúcho U-20", year: "2025" },
-    { name: "BH Cup", year: "2025" },
-    { name: "Gazetinha Cup", year: "2019" },
-    { name: "Rio Grande do Sul State Championship U11", year: "2019" },
+    { name: 'Copinha', year: '2024' },
+    { name: 'Gaúcho U-20', year: '2025' },
+    { name: 'BH Cup', year: '2025' },
+    { name: 'Gazetinha Cup', year: '2019' },
+    { name: 'Rio Grande do Sul State Championship U11', year: '2019' },
 ];
 
 const matches = [
-    { home: "São Cristóvão", score: "3 x 1", away: "Juventude", goals: 1, assists: 0, minutes: "90'" },
-    { home: "São Cristóvão", score: "2 x 2", away: "Grêmio", goals: 0, assists: 1, minutes: "90'" },
-    { home: "São Cristóvão", score: "4 x 0", away: "Internacional", goals: 2, assists: 0, minutes: "90'" },
+    { home: 'São Cristóvão', score: '3 x 1', away: 'Juventude', goals: 1, assists: 0, minutes: "90'" },
+    { home: 'São Cristóvão', score: '2 x 2', away: 'Grêmio', goals: 0, assists: 1, minutes: "90'" },
+    { home: 'São Cristóvão', score: '4 x 0', away: 'Internacional', goals: 2, assists: 0, minutes: "90'" },
 ];
 
 const viewerRole = 'scout';
 
 // Position code → full form name
 const POSITION_FULL_NAMES: Record<string, string> = {
-    'GK': 'Goalkeeper',
-    'LB': 'Left Back',
+    GK: 'Goalkeeper',
+    LB: 'Left Back',
     'CB-L': 'Centre Back (Left)',
     'CB-R': 'Centre Back (Right)',
-    'RB': 'Right Back',
-    'LM': 'Left Midfielder',
+    RB: 'Right Back',
+    LM: 'Left Midfielder',
     'CM-L': 'Central Midfielder (Left)',
     'CM-R': 'Central Midfielder (Right)',
-    'RM': 'Right Midfielder',
-    'CAM': 'Central Attacking Midfielder',
-    'LW': 'Left Winger',
-    'ST': 'Striker',
-    'RW': 'Right Winger',
-    'CF': 'Centre Forward',
+    RM: 'Right Midfielder',
+    CAM: 'Central Attacking Midfielder',
+    LW: 'Left Winger',
+    ST: 'Striker',
+    RW: 'Right Winger',
+    CF: 'Centre Forward',
 };
 
 const getPositionFullName = (codes?: string | string[] | null): string => {
@@ -107,7 +82,7 @@ const getCountryName = (code?: string | string[] | null): string => {
     const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
     return codes
-        .map(c => {
+        .map((c) => {
             try {
                 return regionNames.of(c) || c;
             } catch {
@@ -216,30 +191,31 @@ export default function NewDetail() {
             {/* BREADCRUMB */}
             <div className="mx-auto max-w-7xl bg-black px-4 py-3 sm:px-6 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]">
                 <nav className="flex min-w-0 items-center gap-1.5 text-sm text-[#475569] dark:text-[#9A9A9A]">
-                    <Link href="/" className="whitespace-nowrap hover:text-[#E53F01]">Home</Link>
+                    <Link href="/" className="whitespace-nowrap hover:text-[#E53F01]">
+                        Home
+                    </Link>
                     <ChevronRight className="h-3.5 w-3.5 shrink-0 text-[#CBD5E1] dark:text-[#555]" />
-                    <Link href="/players" className="whitespace-nowrap hover:text-[#E53F01]">Players</Link>
+                    <Link href="/players" className="whitespace-nowrap hover:text-[#E53F01]">
+                        Players
+                    </Link>
                     <ChevronRight className="h-3.5 w-3.5 shrink-0 text-[#CBD5E1] dark:text-[#555]" />
-                    <span className="min-w-0 truncate font-medium whitespace-nowrap text-[#E53F01] dark:text-[#F5F5F5]">{
-                        player?.user?.name}</span>
+                    <span className="min-w-0 truncate font-medium whitespace-nowrap text-[#E53F01] dark:text-[#F5F5F5]">{player?.user?.name}</span>
                 </nav>
             </div>
 
             <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6">
                 <main className="min-w-0 space-y-6 overflow-x-hidden">
-
                     {/* ═══════════ MINOR NOTICE — own row above player info + video ═══════════ */}
 
                     <div>
                         <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E53F01]/60 bg-[#E53F01]/10 px-3 py-1 text-xs font-semibold text-[#ff8a4c]">
                             <Users className="h-3.5 w-3.5 shrink-0" />
-                            Profile managed by parents
+                            Football identity managed by parents
                         </span>
                     </div>
 
                     {/* ═══════════ TOP: player info (left) + main video (right) ═══════════ */}
                     <section className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start">
-
                         {/* Player info */}
                         <div className="flex min-w-0 flex-col gap-4 text-white min-[420px]:flex-row sm:gap-6">
                             {/* Smaller photo */}
@@ -249,14 +225,11 @@ export default function NewDetail() {
                                     alt={player.user?.name ?? ''}
                                     className="h-[10rem] w-[7.5rem] rounded-md border border-[#233247] object-cover sm:h-[11.875rem] sm:w-[9.0625rem] xl:h-[13.125rem] xl:w-[10rem]"
                                 />
-
                             </div>
 
                             {/* Bigger info text */}
                             <div className="min-w-0 flex-1">
-                                <h1 className="text-2xl font-bold tracking-wide break-words uppercase md:text-3xl">
-                                    {player.user?.name}
-                                </h1>
+                                <h1 className="text-2xl font-bold tracking-wide break-words uppercase md:text-3xl">{player.user?.name}</h1>
                                 {/* <h3 className="mt-1 text-base font-semibold text-[#eb6c0d] uppercase md:text-lg">
                                     {getPositionName(player.positions ?? [])}
                                 </h3> */}
@@ -265,15 +238,15 @@ export default function NewDetail() {
                                     <div className="flex flex-wrap items-center gap-y-1">
                                         <CalendarDays className="mr-2 h-4 w-4 shrink-0 text-[#E53F01] md:h-5 md:w-5" />
                                         <span className="">
-                                            <span className=" text-white">Date of Birth:</span>{' '}
+                                            <span className="text-white">Date of Birth:</span>{' '}
                                             {player.user?.dob
                                                 ? calcAge(player.user.dob) < 18
                                                     ? new Date(player.user.dob).getFullYear()
                                                     : `${new Date(player.user.dob).toLocaleDateString('en-US', {
-                                                        day: 'numeric',
-                                                        month: 'short',
-                                                        year: 'numeric',
-                                                    })} (${calcAge(player.user.dob)})`
+                                                          day: 'numeric',
+                                                          month: 'short',
+                                                          year: 'numeric',
+                                                      })} (${calcAge(player.user.dob)})`
                                                 : '—'}
                                         </span>
                                     </div>
@@ -311,9 +284,12 @@ export default function NewDetail() {
                                         <Shield className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
                                         <span className="text-[#e1e2e6]">Current Club:</span>
 
-                                        <span className="pl-2 text-gray-100">{player.user?.nationality && (
-                                            <ReactCountryFlag countryCode={player.current_club_country} svg className="mr-1" />
-                                        )}{player.current_club ?? '—'}</span>
+                                        <span className="pl-2 text-gray-100">
+                                            {player.user?.nationality && (
+                                                <ReactCountryFlag countryCode={player.current_club_country} svg className="mr-1" />
+                                            )}
+                                            {player.current_club ?? '—'}
+                                        </span>
                                     </div>
                                     {/* <div className="flex flex-wrap items-center gap-y-1">
                                         <Shirt className="mr-2 h-4 w-4 shrink-0 text-[#ff600d] md:h-5 md:w-5" />
@@ -346,16 +322,12 @@ export default function NewDetail() {
                                 {player?.video_url ? (
                                     <>
                                         <h3 className="min-w-0 truncate pr-2 font-medium">
-                                            {player?.videos?.[0]?.label
-                                                || player?.video_label
-                                                || `${player?.user?.name} - Best Moments`}
+                                            {player?.videos?.[0]?.label || player?.video_label || `${player?.user?.name} - Best Moments`}
                                         </h3>
-                                        <span className="shrink-0 text-gray-300">
-                                            {videoDuration}
-                                        </span>
+                                        <span className="shrink-0 text-gray-300">{videoDuration}</span>
                                     </>
                                 ) : (
-                                    <h3 className="italic text-gray-400">No video uploaded yet</h3>
+                                    <h3 className="text-gray-400 italic">No video uploaded yet</h3>
                                 )}
                             </div>
                         </div>
@@ -363,7 +335,7 @@ export default function NewDetail() {
 
                     {/* SUB VIDEOS — each inside card */}
                     <section>
-                        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
                             {(player.videos ?? [])
                                 .filter((v: any) => v?.url)
                                 .slice(1) // Skip first video (already shown as main)
@@ -384,9 +356,7 @@ export default function NewDetail() {
                                                 </div>
                                             )}
                                         </div>
-                                        {v.label && (
-                                            <p className="pt-3 text-center text-[1rem] font-bold text-white">{v.label}</p>
-                                        )}
+                                        {v.label && <p className="pt-3 text-center text-[1rem] font-bold text-white">{v.label}</p>}
                                     </div>
                                 ))}
                         </div>
@@ -402,20 +372,16 @@ export default function NewDetail() {
 
                     {/* CLUB HISTORY */}
                     <section className="overflow-hidden">
-                        <div className="grid gap-2 grid-cols-1 md:gap-4">
+                        <div className="grid grid-cols-1 gap-2 md:gap-4">
                             {/* Positions */}
                             <div className="rounded-xl border border-slate-800 bg-[#06111d] p-5">
                                 <h2 className="mb-4 text-[0.8125rem] font-bold text-white uppercase md:text-[1.125rem]">Positions On The Pitch</h2>
 
                                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
                                     {/* Pitch (left) — full width of the column */}
-                                    <div className="min-w-0 w-full">
+                                    <div className="w-full min-w-0">
                                         {/* Direction arrow — field positions start from the left */}
-                                        <div
-                                            className="mb-3 flex items-center"
-                                            role="img"
-                                            aria-label="Field direction: left to right"
-                                        >
+                                        <div className="mb-3 flex items-center" role="img" aria-label="Field direction: left to right">
                                             <span className="h-[0.1875rem] flex-1 rounded-full bg-[#E53F01]" />
                                             <svg
                                                 viewBox="0 0 12 12"
@@ -469,20 +435,22 @@ export default function NewDetail() {
                     </section>
 
                     {/* ACHIEVEMENTS + DESCRIPTION */}
-                    <div className="grid grid-cols-1 sm:grid-cols-[15.625rem_1fr] gap-2 md:gap-4 md:grid-cols-[25rem_1fr]">
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-[15.625rem_1fr] md:grid-cols-[25rem_1fr] md:gap-4">
                         {/* Achievements */}
                         <div className="rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5">
                             <h2 className="mb-5 text-[0.75rem] font-semibold text-white uppercase md:text-sm">Achievements</h2>
                             <div className="space-y-2 md:space-y-4">
-                                {(player.achievements ?? []).filter((item: any) => item?.title).map((item: any, index: number) => (
-                                    <div key={index} className="flex items-start gap-1 md:gap-3">
-                                        <span className="text-[0.75rem] text-yellow-500 md:text-sm">🏆</span>
-                                        <div className="flex gap-3 md:grid md:grid-cols-[6.25rem_1fr]">
-                                            <p className="text-[0.75rem] font-medium text-orange-500 md:text-sm">{item.year}</p>
-                                            <p className="text-[0.625rem] leading-relaxed text-gray-300 md:text-sm">{item.title}</p>
+                                {(player.achievements ?? [])
+                                    .filter((item: any) => item?.title)
+                                    .map((item: any, index: number) => (
+                                        <div key={index} className="flex items-start gap-1 md:gap-3">
+                                            <span className="text-[0.75rem] text-yellow-500 md:text-sm">🏆</span>
+                                            <div className="flex gap-3 md:grid md:grid-cols-[6.25rem_1fr]">
+                                                <p className="text-[0.75rem] font-medium text-orange-500 md:text-sm">{item.year}</p>
+                                                <p className="text-[0.625rem] leading-relaxed text-gray-300 md:text-sm">{item.title}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
                             </div>
                             {/* <button className="mt-6 text-[0.75rem] font-medium text-orange-500 transition hover:text-orange-400 md:text-sm">
                                 View all achievements →
@@ -490,9 +458,7 @@ export default function NewDetail() {
                         </div>
                         {/* Player Description */}
                         <div className="rounded-lg border border-[#1b2a3d] bg-[#0b1523] p-5">
-                            <h2 className="mb-4 text-[0.75rem] font-semibold text-white uppercase md:text-sm">
-                                Player Description
-                            </h2>
+                            <h2 className="mb-4 text-[0.75rem] font-semibold text-white uppercase md:text-sm">Player Description</h2>
                             <div className="w-full">
                                 <p className="min-h-48 w-full rounded-lg border border-[#1b2a3d] bg-[#08111d] p-2 text-gray-300 md:p-4">
                                     {player?.description}
@@ -510,7 +476,7 @@ export default function NewDetail() {
                     </aside>
 
                     {/* COMPETITIONS + RECENT MATCHES */}
-                    <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.50fr] gap-2 md:gap-4 lg:grid-cols-[1fr_1.25fr]">
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1.50fr] md:gap-4 lg:grid-cols-[1fr_1.25fr]">
                         {/* Competition History */}
                         <div className="rounded-lg border border-[#152538] bg-[#07111d] p-4 md:p-6">
                             <h2 className="mb-6 text-[0.875rem] font-bold text-white uppercase md:text-xl">Competition History</h2>
@@ -522,7 +488,12 @@ export default function NewDetail() {
                                         <div key={index} className="flex items-start justify-between gap-2 md:gap-4">
                                             <div className="flex items-start gap-1 md:gap-3">
                                                 {item.country && (
-                                                    <ReactCountryFlag countryCode={item.country} svg style={{ width: '1.1em', height: '1.1em' }} className="shrink-0" />
+                                                    <ReactCountryFlag
+                                                        countryCode={item.country}
+                                                        svg
+                                                        style={{ width: '1.1em', height: '1.1em' }}
+                                                        className="shrink-0"
+                                                    />
                                                 )}
                                                 <span className="text-[0.625rem] text-gray-200 md:text-sm">{item.name}</span>
                                             </div>
@@ -559,20 +530,25 @@ export default function NewDetail() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {(player.matches ?? []).filter((match: any) => match?.home).map((match: any, index: number) => (
-                                                    <tr key={index} className="border-b border-gray-300/10 text-[0.625rem] text-gray-200 md:text-[0.875rem]">
-                                                        <td className="py-3">
-                                                            <div className="flex items-center gap-2 md:gap-4">
-                                                                <span>{match.home}</span>
-                                                                <span className="font-semibold">{match.score}</span>
-                                                                <span>{match.away}</span>
-                                                            </div>
-                                                        </td>
-                                                        {!isGoalkeeperOnly && <td className="py-3 text-center">{match.goals}</td>}
-                                                        {!isGoalkeeperOnly && <td className="py-3 text-center">{match.assists}</td>}
-                                                        <td className="py-3 text-center">{match.minutes}</td>
-                                                    </tr>
-                                                ))}
+                                                {(player.matches ?? [])
+                                                    .filter((match: any) => match?.home)
+                                                    .map((match: any, index: number) => (
+                                                        <tr
+                                                            key={index}
+                                                            className="border-b border-gray-300/10 text-[0.625rem] text-gray-200 md:text-[0.875rem]"
+                                                        >
+                                                            <td className="py-3">
+                                                                <div className="flex items-center gap-2 md:gap-4">
+                                                                    <span>{match.home}</span>
+                                                                    <span className="font-semibold">{match.score}</span>
+                                                                    <span>{match.away}</span>
+                                                                </div>
+                                                            </td>
+                                                            {!isGoalkeeperOnly && <td className="py-3 text-center">{match.goals}</td>}
+                                                            {!isGoalkeeperOnly && <td className="py-3 text-center">{match.assists}</td>}
+                                                            <td className="py-3 text-center">{match.minutes}</td>
+                                                        </tr>
+                                                    ))}
                                             </tbody>
                                         </table>
                                     </div>

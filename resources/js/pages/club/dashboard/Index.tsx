@@ -1,48 +1,26 @@
-import React, { useState, useMemo } from 'react';
-import { Link, usePage, router } from '@inertiajs/react';
 import ScoutNavbar from '@/components/scout/ScoutNavbar';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import axios from 'axios';
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
 import {
     Pagination,
     PaginationContent,
+    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
-    PaginationEllipsis,
 } from '@/components/ui/pagination';
-import {
-    Search as SearchIcon,
-    LayoutGrid,
-    List,
-    SlidersHorizontal,
-    Network,
-    ChevronRight,
-    X,
-    Heart,
-} from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Link, usePage } from '@inertiajs/react';
+import axios from 'axios';
+import { ChevronRight, Heart, LayoutGrid, List, Network, Search as SearchIcon, SlidersHorizontal, X } from 'lucide-react';
+import { useMemo, useState } from 'react';
 
 // ── DB থেকে আসা PlayerProfile (with user) ──
 interface PlayerProfileRow {
@@ -132,7 +110,7 @@ const getCountryName = (code?: string | string[] | null): string => {
     const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
     return codes
-        .map(c => {
+        .map((c) => {
             try {
                 return regionNames.of(c) || c;
             } catch {
@@ -150,10 +128,13 @@ const codeToFlag = (code?: string | string[] | null): string => {
     if (codes.length === 0) return '🏳️';
 
     return codes
-        .map(c => {
+        .map((c) => {
             if (typeof c !== 'string' || c.length !== 2) return '🏳️';
             return String.fromCodePoint(
-                ...c.toUpperCase().split('').map((ch) => 0x1f1a5 + ch.charCodeAt(0))
+                ...c
+                    .toUpperCase()
+                    .split('')
+                    .map((ch) => 0x1f1a5 + ch.charCodeAt(0)),
             );
         })
         .join(', '); // ← কমা ও স্পেস দিয়ে আলাদা
@@ -186,10 +167,7 @@ const normalizePlayer = (p: PlayerProfileRow): Player => {
         photoUrl: p.photo_url ?? null,
     };
 };
-const getAgeDisplay = (
-    age: number | null,
-    dob: string | null
-): { label: string; value: string } => {
+const getAgeDisplay = (age: number | null, dob: string | null): { label: string; value: string } => {
     if (!dob || age === null) {
         return {
             label: 'Age',
@@ -294,7 +272,7 @@ function FilterPanel({
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold text-[#F5F5F5] tracking-widest uppercase">
+                <h3 className="text-xs font-bold tracking-widest text-[#F5F5F5] uppercase">
                     Filters
                     {activeFilterCount > 0 && (
                         <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[#E53F01] px-1.5 py-0.5 text-[9px] font-black text-white">
@@ -305,7 +283,7 @@ function FilterPanel({
                 <button
                     onClick={clearAll}
                     disabled={activeFilterCount === 0}
-                    className="text-[#E53F01] text-xs hover:underline font-semibold disabled:opacity-40 disabled:cursor-not-allowed disabled:no-underline"
+                    className="text-xs font-semibold text-[#E53F01] hover:underline disabled:cursor-not-allowed disabled:no-underline disabled:opacity-40"
                 >
                     Clear All
                 </button>
@@ -314,7 +292,7 @@ function FilterPanel({
 
             {/* POSITION */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">Position</h4>
+                <h4 className="text-[11px] font-bold tracking-widest text-[#9A9A9A] uppercase">Position</h4>
                 <div className="space-y-2.5">
                     {positionOptions.map((p) => (
                         <div key={p.code} className="flex items-center gap-2.5">
@@ -322,17 +300,17 @@ function FilterPanel({
                                 id={`pos-${p.code}`}
                                 checked={selectedPositions.includes(p.code)}
                                 onCheckedChange={() => togglePosition(p.code)}
-                                className="border-[#2A2A2A] data-[state=checked]:bg-[#E53F01] data-[state=checked]:border-[#E53F01]"
+                                className="border-[#2A2A2A] data-[state=checked]:border-[#E53F01] data-[state=checked]:bg-[#E53F01]"
                             />
                             <Label
                                 htmlFor={`pos-${p.code}`}
-                                className="flex-1 flex items-center justify-between text-sm font-normal text-[#F5F5F5] cursor-pointer"
+                                className="flex flex-1 cursor-pointer items-center justify-between text-sm font-normal text-[#F5F5F5]"
                             >
                                 <span>
                                     <span className="font-mono font-bold text-[#E53F01]">{p.code}</span>
                                     <span className="text-[#9A9A9A]"> — {p.label}</span>
                                 </span>
-                                <span className="text-[10px] font-mono text-[#555555]">{p.count}</span>
+                                <span className="font-mono text-[10px] text-[#555555]">{p.count}</span>
                             </Label>
                         </div>
                     ))}
@@ -344,10 +322,8 @@ function FilterPanel({
             {/* AGE RANGE */}
             <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                    <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">Age Range</h4>
-                    <span className="font-mono text-[#E53F01] text-sm font-semibold">
-                        {ageActive ? `${ageMin} – ${ageMax}` : 'Any'}
-                    </span>
+                    <h4 className="text-[11px] font-bold tracking-widest text-[#9A9A9A] uppercase">Age Range</h4>
+                    <span className="font-mono text-sm font-semibold text-[#E53F01]">{ageActive ? `${ageMin} – ${ageMax}` : 'Any'}</span>
                 </div>
                 <div className="space-y-2 pt-1">
                     <input
@@ -356,7 +332,7 @@ function FilterPanel({
                         max={AGE_CEIL}
                         value={ageMin}
                         onChange={(e) => setAgeMin(Math.min(Number(e.target.value), ageMax))}
-                        className="w-full h-1.5 bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-[#E53F01]"
+                        className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-[#2A2A2A] accent-[#E53F01]"
                     />
                     <input
                         type="range"
@@ -364,10 +340,10 @@ function FilterPanel({
                         max={AGE_CEIL}
                         value={ageMax}
                         onChange={(e) => setAgeMax(Math.max(Number(e.target.value), ageMin))}
-                        className="w-full h-1.5 bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-[#E53F01]"
+                        className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-[#2A2A2A] accent-[#E53F01]"
                     />
                 </div>
-                <div className="flex justify-between text-[10px] font-mono text-[#555555]">
+                <div className="flex justify-between font-mono text-[10px] text-[#555555]">
                     <span>{AGE_FLOOR}</span>
                     <span>{AGE_CEIL}</span>
                 </div>
@@ -376,17 +352,17 @@ function FilterPanel({
 
             {/* NATIONALITY */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">Nationality</h4>
+                <h4 className="text-[11px] font-bold tracking-widest text-[#9A9A9A] uppercase">Nationality</h4>
                 <div className="relative">
-                    <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#94A3B8]" />
+                    <SearchIcon className="absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-[#94A3B8]" />
                     <Input
                         value={countrySearch}
                         onChange={(e) => setCountrySearch(e.target.value)}
                         placeholder="Search country..."
-                        className="pl-9 h-9 text-sm bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800"
+                        className="h-9 border-[#2A2A2A] bg-[#111111] pl-9 text-sm text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800"
                     />
                 </div>
-                <div className="space-y-1.5 max-h-44 overflow-y-auto pr-1">
+                <div className="max-h-44 space-y-1.5 overflow-y-auto pr-1">
                     {countryOptions
                         .filter((c) => c.name.toLowerCase().includes(countrySearch.toLowerCase()))
                         .map((c) => (
@@ -395,41 +371,37 @@ function FilterPanel({
                                     id={`country-${c.name}`}
                                     checked={selectedCountries.includes(c.name)}
                                     onCheckedChange={() => toggleCountry(c.name)}
-                                    className="border-[#2A2A2A] data-[state=checked]:bg-[#E53F01] data-[state=checked]:border-[#E53F01]"
+                                    className="border-[#2A2A2A] data-[state=checked]:border-[#E53F01] data-[state=checked]:bg-[#E53F01]"
                                 />
                                 <Label
                                     htmlFor={`country-${c.name}`}
-                                    className="flex-1 flex items-center justify-between text-sm font-normal text-[#F5F5F5] cursor-pointer"
+                                    className="flex flex-1 cursor-pointer items-center justify-between text-sm font-normal text-[#F5F5F5]"
                                 >
                                     <span className="flex items-center gap-2">
                                         <span className="text-base leading-none">{c.flag}</span>
                                         <span>{c.name}</span>
                                     </span>
-                                    <span className="text-[10px] font-mono text-[#555555]">{c.count}</span>
+                                    <span className="font-mono text-[10px] text-[#555555]">{c.count}</span>
                                 </Label>
                             </div>
                         ))}
                     {countryOptions.length === 0 && <p className="text-xs text-[#555555]">No data yet</p>}
                     {countryOptions.length > 0 &&
-                        countryOptions.filter((c) =>
-                            c.name.toLowerCase().includes(countrySearch.toLowerCase())
-                        ).length === 0 && <p className="text-xs text-[#555555]">No country matched</p>}
+                        countryOptions.filter((c) => c.name.toLowerCase().includes(countrySearch.toLowerCase())).length === 0 && (
+                            <p className="text-xs text-[#555555]">No country matched</p>
+                        )}
                 </div>
             </div>
             <Separator className="bg-[#2A2A2A]" />
 
             {/* PREFERRED FOOT */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">Preferred Foot</h4>
+                <h4 className="text-[11px] font-bold tracking-widest text-[#9A9A9A] uppercase">Preferred Foot</h4>
                 <RadioGroup value={preferredFoot} onValueChange={setPreferredFoot} className="space-y-2">
                     {['any', 'right', 'left', 'both'].map((foot) => (
                         <div key={foot} className="flex items-center gap-2.5">
-                            <RadioGroupItem
-                                id={`foot-${foot}`}
-                                value={foot}
-                                className="border-[#2A2A2A] text-[#E53F01]"
-                            />
-                            <Label htmlFor={`foot-${foot}`} className="text-sm font-normal text-[#F5F5F5] capitalize cursor-pointer">
+                            <RadioGroupItem id={`foot-${foot}`} value={foot} className="border-[#2A2A2A] text-[#E53F01]" />
+                            <Label htmlFor={`foot-${foot}`} className="cursor-pointer text-sm font-normal text-[#F5F5F5] capitalize">
                                 {foot}
                             </Label>
                         </div>
@@ -440,7 +412,7 @@ function FilterPanel({
 
             {/* MODALITY */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">Modality</h4>
+                <h4 className="text-[11px] font-bold tracking-widest text-[#9A9A9A] uppercase">Modality</h4>
                 <div className="space-y-2.5">
                     {modalityOptions.map((m) => (
                         <div key={m.name} className="flex items-center gap-2.5">
@@ -448,14 +420,14 @@ function FilterPanel({
                                 id={`mod-${m.name}`}
                                 checked={selectedModalities.includes(m.name)}
                                 onCheckedChange={() => toggleModality(m.name)}
-                                className="border-[#2A2A2A] data-[state=checked]:bg-[#E53F01] data-[state=checked]:border-[#E53F01]"
+                                className="border-[#2A2A2A] data-[state=checked]:border-[#E53F01] data-[state=checked]:bg-[#E53F01]"
                             />
                             <Label
                                 htmlFor={`mod-${m.name}`}
-                                className="flex-1 flex items-center justify-between text-sm font-normal text-[#F5F5F5] cursor-pointer"
+                                className="flex flex-1 cursor-pointer items-center justify-between text-sm font-normal text-[#F5F5F5]"
                             >
                                 <span>{m.name}</span>
-                                <span className="text-[10px] font-mono text-[#555555]">{m.count}</span>
+                                <span className="font-mono text-[10px] text-[#555555]">{m.count}</span>
                             </Label>
                         </div>
                     ))}
@@ -466,39 +438,39 @@ function FilterPanel({
 
             {/* HEIGHT */}
             <div className="space-y-3">
-                <h4 className="text-[11px] font-bold text-[#9A9A9A] tracking-widest uppercase">Height (cm)</h4>
+                <h4 className="text-[11px] font-bold tracking-widest text-[#9A9A9A] uppercase">Height (cm)</h4>
                 <div className="flex items-center gap-2">
                     <Input
                         type="number"
                         value={heightMin}
                         onChange={(e) => setHeightMin(e.target.value)}
                         placeholder="Min"
-                        className="h-9 text-sm font-mono bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800"
+                        className="h-9 border-[#2A2A2A] bg-[#111111] font-mono text-sm text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800"
                     />
-                    <span className="text-[#94A3B8] text-sm">–</span>
+                    <span className="text-sm text-[#94A3B8]">–</span>
                     <Input
                         type="number"
                         value={heightMax}
                         onChange={(e) => setHeightMax(e.target.value)}
                         placeholder="Max"
-                        className="h-9 text-sm font-mono bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800"
+                        className="h-9 border-[#2A2A2A] bg-[#111111] font-mono text-sm text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800"
                     />
                 </div>
             </div>
 
             {/* AD ZONE - ScoutPro */}
             <div className="space-y-2 pt-2">
-                <p className="text-[10px] uppercase tracking-widest text-[#555555] text-center">Sponsored</p>
-                <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-xl h-[240px] p-5 flex flex-col items-center justify-center text-center border border-[#334155] relative overflow-hidden">
-                    <div className="absolute top-2 right-2 text-[9px] text-white/30 uppercase tracking-widest">Ad</div>
-                    <div className="w-14 h-14 rounded-full bg-[#E53F01]/20 border border-[#E53F01]/40 flex items-center justify-center mb-3">
-                        <Network className="w-7 h-7 text-[#E53F01]" strokeWidth={2.2} />
+                <p className="text-center text-[10px] tracking-widest text-[#555555] uppercase">Sponsored</p>
+                <div className="relative flex h-[240px] flex-col items-center justify-center overflow-hidden rounded-xl border border-[#334155] bg-gradient-to-br from-[#0F172A] to-[#1E293B] p-5 text-center">
+                    <div className="absolute top-2 right-2 text-[9px] tracking-widest text-white/30 uppercase">Ad</div>
+                    <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full border border-[#E53F01]/40 bg-[#E53F01]/20">
+                        <Network className="h-7 w-7 text-[#E53F01]" strokeWidth={2.2} />
                     </div>
-                    <h4 className="font-display text-xl font-bold text-white tracking-tight">ScoutPro Network</h4>
-                    <p className="text-xs text-white/60 leading-snug mt-2 mb-4 px-2">
+                    <h4 className="font-display text-xl font-bold tracking-tight text-white">ScoutPro Network</h4>
+                    <p className="mt-2 mb-4 px-2 text-xs leading-snug text-white/60">
                         Connect with 12,000+ verified scouts. Direct messaging, market insights, and exclusive reports.
                     </p>
-                    <button className="bg-[#E53F01] hover:bg-[#E53F01] text-white text-xs font-bold uppercase tracking-wider px-5 py-2 rounded-lg transition-colors">
+                    <button className="rounded-lg bg-[#E53F01] px-5 py-2 text-xs font-bold tracking-wider text-white uppercase transition-colors hover:bg-[#E53F01]">
                         Join Free
                     </button>
                 </div>
@@ -508,29 +480,15 @@ function FilterPanel({
 }
 
 // ─── Main Component ──────────────────────────────────────────────────────────────
-export default function Index({
-    players: playersProp,
-    savedIds: savedIdsProp,
-}: {
-    players?: PlayerProfileRow[];
-    savedIds?: number[];
-}) {
+export default function Index({ players: playersProp, savedIds: savedIdsProp }: { players?: PlayerProfileRow[]; savedIds?: number[] }) {
     const pageProps = usePage<{
         players?: PlayerProfileRow[];
         savedIds?: number[];
     }>().props;
 
-    const rawPlayers: PlayerProfileRow[] = Array.isArray(playersProp)
-        ? playersProp
-        : Array.isArray(pageProps.players)
-            ? pageProps.players
-            : [];
+    const rawPlayers: PlayerProfileRow[] = Array.isArray(playersProp) ? playersProp : Array.isArray(pageProps.players) ? pageProps.players : [];
 
-    const initialSavedIds = Array.isArray(savedIdsProp)
-        ? savedIdsProp
-        : Array.isArray(pageProps.savedIds)
-            ? pageProps.savedIds
-            : [];
+    const initialSavedIds = Array.isArray(savedIdsProp) ? savedIdsProp : Array.isArray(pageProps.savedIds) ? pageProps.savedIds : [];
 
     // ── State ──
     const [view, setView] = useState<'grid' | 'list'>('grid');
@@ -614,21 +572,15 @@ export default function Index({
     // ── Toggle functions ──
     const togglePosition = (code: string) => {
         setPage(1);
-        setSelectedPositions((prev) =>
-            prev.includes(code) ? prev.filter((x) => x !== code) : [...prev, code]
-        );
+        setSelectedPositions((prev) => (prev.includes(code) ? prev.filter((x) => x !== code) : [...prev, code]));
     };
     const toggleCountry = (name: string) => {
         setPage(1);
-        setSelectedCountries((prev) =>
-            prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name]
-        );
+        setSelectedCountries((prev) => (prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name]));
     };
     const toggleModality = (m: string) => {
         setPage(1);
-        setSelectedModalities((prev) =>
-            prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]
-        );
+        setSelectedModalities((prev) => (prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]));
     };
 
     const clearAll = () => {
@@ -662,10 +614,7 @@ export default function Index({
         const q = searchQuery.trim().toLowerCase();
         const hMin = heightMin ? Number(heightMin) : null;
         const hMax = heightMax ? Number(heightMax) : null;
-        const footWanted =
-            preferredFoot === 'right' ? 'R' :
-                preferredFoot === 'left' ? 'L' :
-                    preferredFoot === 'both' ? 'B' : null;
+        const footWanted = preferredFoot === 'right' ? 'R' : preferredFoot === 'left' ? 'L' : preferredFoot === 'both' ? 'B' : null;
 
         return allPlayers.filter((p) => {
             if (q) {
@@ -738,7 +687,7 @@ export default function Index({
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                }
+                },
             );
 
             const data = response.data;
@@ -771,22 +720,20 @@ export default function Index({
         ...selectedModalities.map((m) => ({ label: m, onRemove: () => toggleModality(m) })),
         ...(ageActive
             ? [
-                {
-                    label: `Age ${ageMin}–${ageMax}`,
-                    onRemove: () => {
-                        setAgeActive(false);
-                        setAgeMinRaw(AGE_FLOOR);
-                        setAgeMaxRaw(AGE_CEIL);
-                        setPage(1);
-                    },
-                },
-            ]
+                  {
+                      label: `Age ${ageMin}–${ageMax}`,
+                      onRemove: () => {
+                          setAgeActive(false);
+                          setAgeMinRaw(AGE_FLOOR);
+                          setAgeMaxRaw(AGE_CEIL);
+                          setPage(1);
+                      },
+                  },
+              ]
             : []),
         ...(heightMin ? [{ label: `Min ${heightMin} cm`, onRemove: () => setHeightMin('') }] : []),
         ...(heightMax ? [{ label: `Max ${heightMax} cm`, onRemove: () => setHeightMax('') }] : []),
-        ...(preferredFoot !== 'any'
-            ? [{ label: `${preferredFoot} foot`, onRemove: () => setPreferredFoot('any') }]
-            : []),
+        ...(preferredFoot !== 'any' ? [{ label: `${preferredFoot} foot`, onRemove: () => setPreferredFoot('any') }] : []),
     ];
 
     const filterProps: FilterPanelProps = {
@@ -819,18 +766,18 @@ export default function Index({
     return (
         <div className="min-h-screen bg-[#0D0D0D]">
             <ScoutNavbar />
-            <div className="pt-16 flex min-h-screen">
+            <div className="flex min-h-screen pt-16">
                 {/* DESKTOP FILTER PANEL */}
-                <aside className="hidden lg:block w-72 shrink-0 bg-[#0D0D0D] border-r border-[#2A2A2A] px-6 py-6 sticky top-16 h-[calc(100vh-64px)] overflow-y-auto">
+                <aside className="sticky top-16 hidden h-[calc(100vh-64px)] w-72 shrink-0 overflow-y-auto border-r border-[#2A2A2A] bg-[#0D0D0D] px-6 py-6 lg:block">
                     <FilterPanel {...filterProps} />
                 </aside>
 
                 {/* MAIN CONTENT */}
-                <main className="flex-1 min-w-0 p-4 sm:p-6">
+                <main className="min-w-0 flex-1 p-4 sm:p-6">
                     {/* TOP BAR */}
-                    <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-4 mb-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <div className="mb-4 flex flex-col items-stretch gap-3 rounded-2xl border border-[#2A2A2A] bg-[#161616] p-4 sm:flex-row sm:items-center">
                         <div className="relative flex-1">
-                            <SearchIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
+                            <SearchIcon className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" />
                             <Input
                                 value={searchQuery}
                                 onChange={(e) => {
@@ -838,7 +785,7 @@ export default function Index({
                                     setPage(1);
                                 }}
                                 placeholder="Search by name, club, or nationality..."
-                                className="pl-10 pr-10 h-11 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800"
+                                className="h-11 border-[#2A2A2A] bg-[#111111] pr-10 pl-10 text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-orange-800"
                             />
                             {searchQuery && (
                                 <button
@@ -846,23 +793,20 @@ export default function Index({
                                         setSearchQuery('');
                                         setPage(1);
                                     }}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#E53F01]"
+                                    className="absolute top-1/2 right-3 -translate-y-1/2 text-[#94A3B8] hover:text-[#E53F01]"
                                     aria-label="Clear search"
                                 >
-                                    <X className="w-4 h-4" />
+                                    <X className="h-4 w-4" />
                                 </button>
                             )}
                         </div>
 
-                        <div className="flex items-center gap-3 flex-wrap">
+                        <div className="flex flex-wrap items-center gap-3">
                             {/* Mobile filter trigger */}
                             <Sheet>
                                 <SheetTrigger asChild>
-                                    <Button
-                                        variant="outline"
-                                        className="lg:hidden h-10 border-[#2A2A2A] text-[#F5F5F5] bg-[#111111]"
-                                    >
-                                        <SlidersHorizontal className="w-4 h-4 mr-2" />
+                                    <Button variant="outline" className="h-10 border-[#2A2A2A] bg-[#111111] text-[#F5F5F5] lg:hidden">
+                                        <SlidersHorizontal className="mr-2 h-4 w-4" />
                                         Filters
                                         {activeFilterCount > 0 && (
                                             <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[#E53F01] px-1.5 py-0.5 text-[10px] font-black text-white">
@@ -873,52 +817,53 @@ export default function Index({
                                 </SheetTrigger>
                                 <SheetContent
                                     side="left"
-                                    className="w-[300px] sm:w-[340px] bg-[#0D0D0D] border-r border-[#2A2A2A] overflow-y-auto p-6"
+                                    className="w-[300px] overflow-y-auto border-r border-[#2A2A2A] bg-[#0D0D0D] p-6 sm:w-[340px]"
                                 >
                                     <SheetHeader className="mb-4">
-                                        <SheetTitle className="text-[#F5F5F5] font-display text-xl">
-                                            Refine Search
-                                        </SheetTitle>
+                                        <SheetTitle className="font-display text-xl text-[#F5F5F5]">Refine Search</SheetTitle>
                                     </SheetHeader>
                                     <FilterPanel {...filterProps} />
                                 </SheetContent>
                             </Sheet>
 
-                            <p className="hidden sm:block text-sm text-[#9A9A9A] font-mono whitespace-nowrap">
-                                <span className="font-bold text-[#F5F5F5]">{totalPlayers.toLocaleString()}</span> players
-                                found
+                            <p className="hidden font-mono text-sm whitespace-nowrap text-[#9A9A9A] sm:block">
+                                <span className="font-bold text-[#F5F5F5]">{totalPlayers.toLocaleString()}</span> players found
                             </p>
 
                             {/* View toggle */}
-                            <div className="flex items-center gap-1 bg-[#111111] border border-[#2A2A2A] rounded-lg p-1">
+                            <div className="flex items-center gap-1 rounded-lg border border-[#2A2A2A] bg-[#111111] p-1">
                                 <button
                                     onClick={() => setView('grid')}
-                                    className={`p-1.5 rounded-md transition-colors ${view === 'grid'
-                                        ? 'text-[#E53F01] bg-[rgba(255,107,0,0.12)]'
-                                        : 'text-[#555555] hover:text-[#9A9A9A]'
-                                        }`}
+                                    className={`rounded-md p-1.5 transition-colors ${
+                                        view === 'grid' ? 'bg-[rgba(255,107,0,0.12)] text-[#E53F01]' : 'text-[#555555] hover:text-[#9A9A9A]'
+                                    }`}
                                     aria-label="Grid view"
                                 >
-                                    <LayoutGrid className="w-4 h-4" />
+                                    <LayoutGrid className="h-4 w-4" />
                                 </button>
                                 <button
                                     onClick={() => setView('list')}
-                                    className={`p-1.5 rounded-md transition-colors ${view === 'list'
-                                        ? 'text-[#E53F01] bg-[rgba(255,107,0,0.12)]'
-                                        : 'text-[#555555] hover:text-[#9A9A9A]'
-                                        }`}
+                                    className={`rounded-md p-1.5 transition-colors ${
+                                        view === 'list' ? 'bg-[rgba(255,107,0,0.12)] text-[#E53F01]' : 'text-[#555555] hover:text-[#9A9A9A]'
+                                    }`}
                                     aria-label="List view"
                                 >
-                                    <List className="w-4 h-4" />
+                                    <List className="h-4 w-4" />
                                 </button>
                             </div>
 
                             {/* Sort */}
-                            <Select value={sortBy} onValueChange={(v) => { setSortBy(v); setPage(1); }}>
-                                <SelectTrigger className="h-10 w-[140px] bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] text-sm">
+                            <Select
+                                value={sortBy}
+                                onValueChange={(v) => {
+                                    setSortBy(v);
+                                    setPage(1);
+                                }}
+                            >
+                                <SelectTrigger className="h-10 w-[140px] border-[#2A2A2A] bg-[#111111] text-sm text-[#F5F5F5]">
                                     <SelectValue />
                                 </SelectTrigger>
-                                <SelectContent className="bg-[#161616] border-[#2A2A2A]">
+                                <SelectContent className="border-[#2A2A2A] bg-[#161616]">
                                     <SelectItem value="newest">Newest</SelectItem>
                                     <SelectItem value="name">Name A–Z</SelectItem>
                                     <SelectItem value="age-asc">Age ↑</SelectItem>
@@ -931,53 +876,45 @@ export default function Index({
 
                     {/* ACTIVE FILTER CHIPS */}
                     {chips.length > 0 && (
-                        <div className="flex flex-wrap items-center gap-2 mb-4">
+                        <div className="mb-4 flex flex-wrap items-center gap-2">
                             {chips.map((chip, i) => (
                                 <button
                                     key={`${chip.label}-${i}`}
                                     onClick={chip.onRemove}
-                                    className="inline-flex items-center gap-1.5 rounded-full border border-[#E53F01] bg-[rgba(255,107,0,0.12)] px-3 py-1 text-xs font-semibold text-[#E53F01] hover:bg-[#E53F01] hover:text-white transition-colors"
+                                    className="inline-flex items-center gap-1.5 rounded-full border border-[#E53F01] bg-[rgba(255,107,0,0.12)] px-3 py-1 text-xs font-semibold text-[#E53F01] transition-colors hover:bg-[#E53F01] hover:text-white"
                                 >
                                     {chip.label}
-                                    <X className="w-3 h-3" />
+                                    <X className="h-3 w-3" />
                                 </button>
                             ))}
-                            <button
-                                onClick={clearAll}
-                                className="text-xs font-bold text-[#9A9A9A] hover:text-[#E53F01] hover:underline"
-                            >
+                            <button onClick={clearAll} className="text-xs font-bold text-[#9A9A9A] hover:text-[#E53F01] hover:underline">
                                 Clear all
                             </button>
                         </div>
                     )}
 
                     {/* Mobile count display */}
-                    <p className="sm:hidden mb-3 text-sm text-[#9A9A9A] font-mono px-1">
+                    <p className="mb-3 px-1 font-mono text-sm text-[#9A9A9A] sm:hidden">
                         <span className="font-bold text-[#F5F5F5]">{totalPlayers.toLocaleString()}</span> players found
                     </p>
 
                     {/* AD ZONE - TransferRoom Leaderboard */}
                     <div className="mb-4">
-                        <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl min-h-[80px] flex flex-col sm:flex-row items-center px-6 py-3 sm:py-0 gap-3 sm:gap-4 border border-[#334155] relative overflow-hidden">
-                            <div className="absolute top-1.5 right-2.5 text-[10px] text-white/30 uppercase tracking-widest">
-                                Sponsored
-                            </div>
-                            <div className="flex items-center gap-3 shrink-0">
-                                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#E53F01] to-[#E53F01] flex items-center justify-center font-display font-black text-white text-lg">
+                        <div className="relative flex min-h-[80px] flex-col items-center gap-3 overflow-hidden rounded-xl border border-[#334155] bg-gradient-to-r from-[#0F172A] to-[#1E293B] px-6 py-3 sm:flex-row sm:gap-4 sm:py-0">
+                            <div className="absolute top-1.5 right-2.5 text-[10px] tracking-widest text-white/30 uppercase">Sponsored</div>
+                            <div className="flex shrink-0 items-center gap-3">
+                                <div className="font-display flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#E53F01] to-[#E53F01] text-lg font-black text-white">
                                     TR
                                 </div>
                                 <div className="text-white">
-                                    <p className="font-display text-lg font-bold leading-tight">TransferRoom</p>
-                                    <p className="text-[10px] text-white/50 uppercase tracking-widest">
-                                        Global Transfer Network
-                                    </p>
+                                    <p className="font-display text-lg leading-tight font-bold">TransferRoom</p>
+                                    <p className="text-[10px] tracking-widest text-white/50 uppercase">Global Transfer Network</p>
                                 </div>
                             </div>
-                            <p className="flex-1 text-sm text-white/80 text-center sm:text-left sm:px-4">
-                                Direct club-to-club deals. No agents. 800+ clubs trust TransferRoom for the transfer
-                                window.
+                            <p className="flex-1 text-center text-sm text-white/80 sm:px-4 sm:text-left">
+                                Direct club-to-club deals. No agents. 800+ clubs trust TransferRoom for the transfer window.
                             </p>
-                            <button className="bg-white text-[#0F172A] hover:bg-white/90 text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg transition-colors shrink-0">
+                            <button className="shrink-0 rounded-lg bg-white px-5 py-2.5 text-xs font-bold tracking-wider text-[#0F172A] uppercase transition-colors hover:bg-white/90">
                                 Request Demo
                             </button>
                         </div>
@@ -985,13 +922,13 @@ export default function Index({
 
                     {/* EMPTY STATE */}
                     {totalPlayers === 0 && (
-                        <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-12 text-center">
+                        <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-12 text-center">
                             {rawPlayers.length === 0 ? (
                                 <p className="text-sm text-[#9A9A9A]">No players in the directory yet.</p>
                             ) : (
                                 <>
                                     <p className="text-sm text-[#9A9A9A]">No players match your filters.</p>
-                                    <button onClick={clearAll} className="mt-3 text-[#E53F01] text-xs font-bold hover:underline">
+                                    <button onClick={clearAll} className="mt-3 text-xs font-bold text-[#E53F01] hover:underline">
                                         Clear all filters
                                     </button>
                                 </>
@@ -1001,20 +938,20 @@ export default function Index({
 
                     {/* GRID VIEW */}
                     {totalPlayers > 0 && view === 'grid' && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
                             {players.map((p) => {
                                 const isSaved = savedIds.includes(p.id);
                                 return (
                                     <div
                                         key={p.id}
-                                        className="bg-[#161616] border border-[#2A2A2A] rounded-2xl overflow-hidden cursor-pointer group transition-all hover:-translate-y-1 hover:shadow-[0_4px_20px_rgba(255,107,0,0.08)] hover:border-[#E53F01] relative"
+                                        className="group relative cursor-pointer overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616] transition-all hover:-translate-y-1 hover:border-[#E53F01] hover:shadow-[0_4px_20px_rgba(255,107,0,0.08)]"
                                     >
                                         <Link href={`/club/player/${p.id}`} className="block">
                                             {/* Photo area */}
                                             <div
                                                 className={`h-48 ${positionGradient(
-                                                    p.position
-                                                )} bg-[#1F1F1F] relative flex items-center justify-center`}
+                                                    p.position,
+                                                )} relative flex items-center justify-center bg-[#1F1F1F]`}
                                             >
                                                 {p.photoUrl ? (
                                                     <img
@@ -1030,7 +967,7 @@ export default function Index({
                                                     />
                                                 )}
                                                 {/* Position badge */}
-                                                <span className="absolute top-3 left-3 bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-black px-2.5 py-0.5 rounded-full tracking-wider">
+                                                <span className="absolute top-3 left-3 rounded-full border border-[#E53F01] bg-[rgba(255,107,0,0.12)] px-2.5 py-0.5 text-[10px] font-black tracking-wider text-[#E53F01]">
                                                     {p.position}
                                                 </span>
                                                 {/* Flag */}
@@ -1039,43 +976,33 @@ export default function Index({
 
                                             {/* Info */}
                                             <div className="p-5">
-                                                <h3 className="font-bold text-base text-[#F5F5F5] leading-tight truncate">
-                                                    {p.name}
-                                                </h3>
-                                                <p className="text-sm text-[#9A9A9A] mt-0.5 truncate">{p.club}</p>
+                                                <h3 className="truncate text-base leading-tight font-bold text-[#F5F5F5]">{p.name}</h3>
+                                                <p className="mt-0.5 truncate text-sm text-[#9A9A9A]">{p.club}</p>
 
                                                 {/* Stats */}
-                                                <div className="grid grid-cols-3 mt-3 text-center border-t border-[#1F1F1F] pt-3">
+                                                <div className="mt-3 grid grid-cols-3 border-t border-[#1F1F1F] pt-3 text-center">
                                                     <div>
-                                                        <p className="text-[9px] text-[#555555] uppercase tracking-wider">
+                                                        <p className="text-[9px] tracking-wider text-[#555555] uppercase">
                                                             {getAgeDisplay(p.age, p.dob).label}
                                                         </p>
 
-                                                        <p className="text-xs font-semibold font-mono text-[#F5F5F5] mt-0.5">
+                                                        <p className="mt-0.5 font-mono text-xs font-semibold text-[#F5F5F5]">
                                                             {getAgeDisplay(p.age, p.dob).value}
                                                         </p>
                                                     </div>
                                                     <div className="border-x border-[#1F1F1F]">
-                                                        <p className="text-[9px] text-[#555555] uppercase tracking-wider">
-                                                            Height
-                                                        </p>
-                                                        <p className="text-xs font-semibold font-mono text-[#F5F5F5] mt-0.5">
-                                                            {p.height ?? '—'}
-                                                        </p>
+                                                        <p className="text-[9px] tracking-wider text-[#555555] uppercase">Height</p>
+                                                        <p className="mt-0.5 font-mono text-xs font-semibold text-[#F5F5F5]">{p.height ?? '—'}</p>
                                                     </div>
                                                     <div>
-                                                        <p className="text-[9px] text-[#555555] uppercase tracking-wider">
-                                                            Foot
-                                                        </p>
-                                                        <p className="text-xs font-semibold font-mono text-[#F5F5F5] mt-0.5">
-                                                            {p.foot}
-                                                        </p>
+                                                        <p className="text-[9px] tracking-wider text-[#555555] uppercase">Foot</p>
+                                                        <p className="mt-0.5 font-mono text-xs font-semibold text-[#F5F5F5]">{p.foot}</p>
                                                     </div>
                                                 </div>
 
-                                                <p className="mt-3 text-[#E53F01] text-xs font-bold tracking-wider group-hover:underline flex items-center gap-1">
-                                                    VIEW PROFILE
-                                                    <ChevronRight className="w-3 h-3" />
+                                                <p className="mt-3 flex items-center gap-1 text-xs font-bold tracking-wider text-[#E53F01] group-hover:underline">
+                                                    VIEW FOOTBALL IDENTITY
+                                                    <ChevronRight className="h-3 w-3" />
                                                 </p>
                                             </div>
                                         </Link>
@@ -1087,13 +1014,13 @@ export default function Index({
                                                 e.stopPropagation();
                                                 toggleSave(p.id);
                                             }}
-                                            className="absolute top-3 right-3 z-10 p-1.5 rounded-full bg-black/40 backdrop-blur-sm hover:bg-black/60 transition-colors"
+                                            className="absolute top-3 right-3 z-10 rounded-full bg-black/40 p-1.5 backdrop-blur-sm transition-colors hover:bg-black/60"
                                             aria-label={isSaved ? 'Unsave player' : 'Save player'}
                                         >
                                             {isSaved ? (
-                                                <Heart className="w-5 h-5 fill-[#E53F01] text-[#E53F01]" />
+                                                <Heart className="h-5 w-5 fill-[#E53F01] text-[#E53F01]" />
                                             ) : (
-                                                <Heart className="w-5 h-5 text-white" />
+                                                <Heart className="h-5 w-5 text-white" />
                                             )}
                                         </button>
                                     </div>
@@ -1104,33 +1031,21 @@ export default function Index({
 
                     {/* LIST VIEW */}
                     {totalPlayers > 0 && view === 'list' && (
-                        <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl overflow-hidden">
+                        <div className="overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616]">
                             <div className="overflow-x-auto">
                                 <Table>
                                     <TableHeader>
                                         <TableRow className="border-b border-[#2A2A2A] hover:bg-transparent">
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A] py-4">
+                                            <TableHead className="py-4 text-[10px] font-bold tracking-widest text-[#9A9A9A] uppercase">
                                                 Player
                                             </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
-                                                Position
-                                            </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
-                                                Age
-                                            </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
-                                                Country
-                                            </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
-                                                Height
-                                            </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
-                                                Foot
-                                            </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A]">
-                                                Modality
-                                            </TableHead>
-                                            <TableHead className="text-[10px] uppercase tracking-widest font-bold text-[#9A9A9A] text-right">
+                                            <TableHead className="text-[10px] font-bold tracking-widest text-[#9A9A9A] uppercase">Position</TableHead>
+                                            <TableHead className="text-[10px] font-bold tracking-widest text-[#9A9A9A] uppercase">Age</TableHead>
+                                            <TableHead className="text-[10px] font-bold tracking-widest text-[#9A9A9A] uppercase">Country</TableHead>
+                                            <TableHead className="text-[10px] font-bold tracking-widest text-[#9A9A9A] uppercase">Height</TableHead>
+                                            <TableHead className="text-[10px] font-bold tracking-widest text-[#9A9A9A] uppercase">Foot</TableHead>
+                                            <TableHead className="text-[10px] font-bold tracking-widest text-[#9A9A9A] uppercase">Modality</TableHead>
+                                            <TableHead className="text-right text-[10px] font-bold tracking-widest text-[#9A9A9A] uppercase">
                                                 Actions
                                             </TableHead>
                                         </TableRow>
@@ -1139,80 +1054,65 @@ export default function Index({
                                         {players.map((p) => {
                                             const isSaved = savedIds.includes(p.id);
                                             return (
-                                                <TableRow
-                                                    key={p.id}
-                                                    className="border-b border-[#1F1F1F] hover:bg-[#1A1A1A] transition-colors"
-                                                >
+                                                <TableRow key={p.id} className="border-b border-[#1F1F1F] transition-colors hover:bg-[#1A1A1A]">
                                                     <TableCell className="py-3">
                                                         <div className="flex items-center gap-3">
                                                             {p.photoUrl ? (
                                                                 <img
                                                                     src={p.photoUrl}
                                                                     alt={p.name}
-                                                                    className="w-10 h-10 rounded-full object-cover shrink-0"
+                                                                    className="h-10 w-10 shrink-0 rounded-full object-cover"
                                                                 />
                                                             ) : (
                                                                 <div
-                                                                    className={`w-10 h-10 rounded-full ${positionGradient(
-                                                                        p.position
-                                                                    )} flex items-center justify-center font-display font-black text-white text-xs shrink-0`}
+                                                                    className={`h-10 w-10 rounded-full ${positionGradient(
+                                                                        p.position,
+                                                                    )} font-display flex shrink-0 items-center justify-center text-xs font-black text-white`}
                                                                 >
                                                                     {initials(p.name)}
                                                                 </div>
                                                             )}
                                                             <div className="min-w-0">
-                                                                <p className="font-bold text-sm text-[#F5F5F5] truncate">
-                                                                    {p.name}
-                                                                </p>
-                                                                <p className="text-xs text-[#9A9A9A] truncate">
-                                                                    {p.club}
-                                                                </p>
+                                                                <p className="truncate text-sm font-bold text-[#F5F5F5]">{p.name}</p>
+                                                                <p className="truncate text-xs text-[#9A9A9A]">{p.club}</p>
                                                             </div>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <span className="bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-black px-2 py-0.5 rounded-full tracking-wider">
+                                                        <span className="rounded-full border border-[#E53F01] bg-[rgba(255,107,0,0.12)] px-2 py-0.5 text-[10px] font-black tracking-wider text-[#E53F01]">
                                                             {p.position}
                                                         </span>
                                                     </TableCell>
-                                                    <TableCell className="font-mono text-sm text-[#F5F5F5]">
-                                                        {p.age ?? '—'}
-                                                    </TableCell>
+                                                    <TableCell className="font-mono text-sm text-[#F5F5F5]">{p.age ?? '—'}</TableCell>
                                                     <TableCell>
                                                         <div className="flex items-center gap-1.5 text-sm text-[#F5F5F5]">
                                                             <span className="text-base leading-none">{p.flag}</span>
                                                             <span className="hidden md:inline">{p.country || '—'}</span>
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell className="font-mono text-sm text-[#F5F5F5]">
-                                                        {p.height ?? '—'}
-                                                    </TableCell>
-                                                    <TableCell className="font-mono text-sm text-[#F5F5F5]">
-                                                        {p.foot}
-                                                    </TableCell>
-                                                    <TableCell className="text-sm text-[#9A9A9A]">
-                                                        {p.modality}
-                                                    </TableCell>
+                                                    <TableCell className="font-mono text-sm text-[#F5F5F5]">{p.height ?? '—'}</TableCell>
+                                                    <TableCell className="font-mono text-sm text-[#F5F5F5]">{p.foot}</TableCell>
+                                                    <TableCell className="text-sm text-[#9A9A9A]">{p.modality}</TableCell>
                                                     <TableCell className="text-right">
                                                         <div className="flex items-center justify-end gap-2">
                                                             {/* Save button */}
                                                             <button
                                                                 onClick={() => toggleSave(p.id)}
-                                                                className="p-1 rounded-full hover:bg-[#2A2A2A] transition-colors"
+                                                                className="rounded-full p-1 transition-colors hover:bg-[#2A2A2A]"
                                                                 aria-label={isSaved ? 'Unsave player' : 'Save player'}
                                                             >
                                                                 {isSaved ? (
-                                                                    <Heart className="w-5 h-5 fill-[#E53F01] text-[#E53F01]" />
+                                                                    <Heart className="h-5 w-5 fill-[#E53F01] text-[#E53F01]" />
                                                                 ) : (
-                                                                    <Heart className="w-5 h-5 text-[#9A9A9A] hover:text-white" />
+                                                                    <Heart className="h-5 w-5 text-[#9A9A9A] hover:text-white" />
                                                                 )}
                                                             </button>
                                                             <Link
                                                                 href={`/scouting/player/${p.id}`}
-                                                                className="inline-flex items-center gap-1 text-[#E53F01] text-xs font-bold tracking-wider hover:underline"
+                                                                className="inline-flex items-center gap-1 text-xs font-bold tracking-wider text-[#E53F01] hover:underline"
                                                             >
                                                                 VIEW
-                                                                <ChevronRight className="w-3 h-3" />
+                                                                <ChevronRight className="h-3 w-3" />
                                                             </Link>
                                                         </div>
                                                     </TableCell>
@@ -1227,11 +1127,13 @@ export default function Index({
 
                     {/* PAGINATION */}
                     {totalPlayers > 0 && totalPages > 1 && (
-                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-6 gap-3">
-                            <p className="text-sm text-[#9A9A9A] font-mono">
+                        <div className="mt-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+                            <p className="font-mono text-sm text-[#9A9A9A]">
                                 Showing{' '}
-                                <span className="font-bold text-[#F5F5F5]">{rangeStart}–{rangeEnd}</span> of{' '}
-                                <span className="font-bold text-[#F5F5F5]">{totalPlayers.toLocaleString()}</span>
+                                <span className="font-bold text-[#F5F5F5]">
+                                    {rangeStart}–{rangeEnd}
+                                </span>{' '}
+                                of <span className="font-bold text-[#F5F5F5]">{totalPlayers.toLocaleString()}</span>
                             </p>
                             <Pagination className="mx-0 w-auto justify-end">
                                 <PaginationContent>
@@ -1242,8 +1144,9 @@ export default function Index({
                                                 e.preventDefault();
                                                 setPage(Math.max(1, currentPage - 1));
                                             }}
-                                            className={`text-[#9A9A9A] hover:bg-[#1A1A1A] hover:text-[#F5F5F5] border-[#2A2A2A] ${currentPage === 1 ? 'pointer-events-none opacity-40' : ''
-                                                }`}
+                                            className={`border-[#2A2A2A] text-[#9A9A9A] hover:bg-[#1A1A1A] hover:text-[#F5F5F5] ${
+                                                currentPage === 1 ? 'pointer-events-none opacity-40' : ''
+                                            }`}
                                         />
                                     </PaginationItem>
                                     {pageNumbers.map((n) => (
@@ -1257,8 +1160,8 @@ export default function Index({
                                                 }}
                                                 className={
                                                     n === currentPage
-                                                        ? 'bg-[#E53F01] text-white border-[#E53F01] hover:bg-[#E53F01] hover:text-white'
-                                                        : 'text-[#9A9A9A] hover:bg-[#1A1A1A] border-[#2A2A2A]'
+                                                        ? 'border-[#E53F01] bg-[#E53F01] text-white hover:bg-[#E53F01] hover:text-white'
+                                                        : 'border-[#2A2A2A] text-[#9A9A9A] hover:bg-[#1A1A1A]'
                                                 }
                                             >
                                                 {n}
@@ -1277,7 +1180,7 @@ export default function Index({
                                                         e.preventDefault();
                                                         setPage(totalPages);
                                                     }}
-                                                    className="text-[#9A9A9A] hover:bg-[#1A1A1A] border-[#2A2A2A]"
+                                                    className="border-[#2A2A2A] text-[#9A9A9A] hover:bg-[#1A1A1A]"
                                                 >
                                                     {totalPages}
                                                 </PaginationLink>
@@ -1291,8 +1194,9 @@ export default function Index({
                                                 e.preventDefault();
                                                 setPage(Math.min(totalPages, currentPage + 1));
                                             }}
-                                            className={`text-[#9A9A9A] hover:bg-[#1A1A1A] hover:text-[#F5F5F5] border-[#2A2A2A] ${currentPage === totalPages ? 'pointer-events-none opacity-40' : ''
-                                                }`}
+                                            className={`border-[#2A2A2A] text-[#9A9A9A] hover:bg-[#1A1A1A] hover:text-[#F5F5F5] ${
+                                                currentPage === totalPages ? 'pointer-events-none opacity-40' : ''
+                                            }`}
                                         />
                                     </PaginationItem>
                                 </PaginationContent>

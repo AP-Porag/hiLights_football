@@ -1,36 +1,12 @@
-import React, { useState } from 'react';
-import { Link, usePage, router } from '@inertiajs/react';
-import axios from 'axios';
 import ScoutNavbar from '@/components/scout/ScoutNavbar';
 import { Button } from '@/components/ui/button';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import {
-    LayoutGrid,
-    List,
-    Download,
-    Bookmark,
-    BookmarkX,
-    StickyNote,
-    ExternalLink,
-    Play,
-    Star,
-    User,
-} from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import axios from 'axios';
+import { Bookmark, BookmarkX, ExternalLink, LayoutGrid, List, Play, Star, StickyNote } from 'lucide-react';
+import { useState } from 'react';
 
 // ── ইন্টারফেস ──
 interface Player {
@@ -136,11 +112,7 @@ export default function SavedPlayers() {
                 notes: notesDraft,
             });
             // Local update
-            setSavedPlayers((prev) =>
-                prev.map((sp) =>
-                    sp.id === activeSaved.id ? { ...sp, notes: notesDraft } : sp
-                )
-            );
+            setSavedPlayers((prev) => prev.map((sp) => (sp.id === activeSaved.id ? { ...sp, notes: notesDraft } : sp)));
             setNotesOpen(false);
         } catch (error) {
             console.error('Error saving notes:', error);
@@ -168,24 +140,16 @@ export default function SavedPlayers() {
     if (activeFilter !== 'all') {
         switch (activeFilter) {
             case 'forwards':
-                filtered = filtered.filter((sp) =>
-                    sp.player.positions.some((p) => ['LW', 'ST', 'RW', 'CF'].includes(p))
-                );
+                filtered = filtered.filter((sp) => sp.player.positions.some((p) => ['LW', 'ST', 'RW', 'CF'].includes(p)));
                 break;
             case 'midfielders':
-                filtered = filtered.filter((sp) =>
-                    sp.player.positions.some((p) => ['LM', 'CM-L', 'CM-R', 'RM', 'CAM'].includes(p))
-                );
+                filtered = filtered.filter((sp) => sp.player.positions.some((p) => ['LM', 'CM-L', 'CM-R', 'RM', 'CAM'].includes(p)));
                 break;
             case 'defenders':
-                filtered = filtered.filter((sp) =>
-                    sp.player.positions.some((p) => ['LB', 'CB-L', 'CB-R', 'RB'].includes(p))
-                );
+                filtered = filtered.filter((sp) => sp.player.positions.some((p) => ['LB', 'CB-L', 'CB-R', 'RB'].includes(p)));
                 break;
             case 'goalkeepers':
-                filtered = filtered.filter((sp) =>
-                    sp.player.positions.some((p) => ['GK'].includes(p))
-                );
+                filtered = filtered.filter((sp) => sp.player.positions.some((p) => ['GK'].includes(p)));
                 break;
             case 'premium':
                 filtered = filtered.filter((sp) => sp.player.isPremium);
@@ -222,50 +186,46 @@ export default function SavedPlayers() {
         <>
             <ScoutNavbar />
 
-            <div className="pt-16 bg-[#F8FAFC] dark:bg-[#0D0D0D] min-h-screen">
+            <div className="min-h-screen bg-[#F8FAFC] pt-16 dark:bg-[#0D0D0D]">
                 {/* HEADER */}
-                <div className="bg-white dark:bg-[#0D0D0D] border-b border-[#E2E8F0] dark:border-[#2A2A2A]">
-                    <div className="px-4 sm:px-6 lg:px-8 py-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div className="border-b border-[#E2E8F0] bg-white dark:border-[#2A2A2A] dark:bg-[#0D0D0D]">
+                    <div className="flex flex-col gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
                         <div>
-                            <h1 className="font-display font-bold text-2xl text-[#0F172A] dark:text-[#F5F5F5]">
-                                Saved Players
-                            </h1>
-                            <p className="text-sm text-[#475569] dark:text-[#9A9A9A] mt-0.5">
-                                {savedPlayers.length} players on your shortlist
-                            </p>
+                            <h1 className="font-display text-2xl font-bold text-[#0F172A] dark:text-[#F5F5F5]">Saved Players</h1>
+                            <p className="mt-0.5 text-sm text-[#475569] dark:text-[#9A9A9A]">{savedPlayers.length} players on your shortlist</p>
                         </div>
 
-                        <div className="flex items-center gap-3 flex-wrap">
+                        <div className="flex flex-wrap items-center gap-3">
                             {/* View Toggle */}
-                            <div className="flex items-center gap-1 bg-[#F8FAFC] dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-lg p-1">
+                            <div className="flex items-center gap-1 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-1 dark:border-[#2A2A2A] dark:bg-[#111111]">
                                 <button
                                     onClick={() => setView('grid')}
                                     className={`rounded-md p-1.5 transition-colors ${view === 'grid'
-                                        ? 'text-[#E53F01] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]'
+                                        ? 'bg-[#FFF3EB] text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]'
                                         : 'text-[#94A3B8] hover:text-[#475569] dark:hover:text-[#9A9A9A]'
                                         }`}
                                     aria-label="Grid view"
                                 >
-                                    <LayoutGrid className="w-4 h-4" />
+                                    <LayoutGrid className="h-4 w-4" />
                                 </button>
                                 <button
                                     onClick={() => setView('list')}
                                     className={`rounded-md p-1.5 transition-colors ${view === 'list'
-                                        ? 'text-[#E53F01] bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]'
+                                        ? 'bg-[#FFF3EB] text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]'
                                         : 'text-[#94A3B8] hover:text-[#475569] dark:hover:text-[#9A9A9A]'
                                         }`}
                                     aria-label="List view"
                                 >
-                                    <List className="w-4 h-4" />
+                                    <List className="h-4 w-4" />
                                 </button>
                             </div>
 
                             {/* Sort */}
                             <Select value={sort} onValueChange={setSort}>
-                                <SelectTrigger className="w-[170px] bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] text-sm">
+                                <SelectTrigger className="w-[170px] border-[#E2E8F0] bg-white text-sm text-[#0F172A] dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#F5F5F5]">
                                     <SelectValue placeholder="Sort by" />
                                 </SelectTrigger>
-                                <SelectContent className="bg-white dark:bg-[#161616] border-[#E2E8F0] dark:border-[#2A2A2A]">
+                                <SelectContent className="border-[#E2E8F0] bg-white dark:border-[#2A2A2A] dark:bg-[#161616]">
                                     <SelectItem value="date_desc">Date Saved ↓</SelectItem>
                                     <SelectItem value="name_asc">Name A–Z</SelectItem>
                                     <SelectItem value="age_asc">Age ↑</SelectItem>
@@ -308,38 +268,34 @@ export default function SavedPlayers() {
                 </div> */}
 
                 {/* MAIN CONTENT */}
-                <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div className="mx-auto max-w-[1300px] px-4 py-6 sm:px-6 lg:px-8">
                     {isEmpty ? (
                         <div className="py-24 text-center">
-                            <Bookmark className="w-16 h-16 text-[#E2E8F0] dark:text-[#2A2A2A] mx-auto" />
-                            <h2 className="font-display font-bold text-xl text-[#0F172A] dark:text-[#F5F5F5] mt-4">
-                                No saved players yet
-                            </h2>
-                            <p className="text-[#475569] dark:text-[#9A9A9A] text-sm mt-2 max-w-sm mx-auto">
+                            <Bookmark className="mx-auto h-16 w-16 text-[#E2E8F0] dark:text-[#2A2A2A]" />
+                            <h2 className="font-display mt-4 text-xl font-bold text-[#0F172A] dark:text-[#F5F5F5]">No saved players yet</h2>
+                            <p className="mx-auto mt-2 max-w-sm text-sm text-[#475569] dark:text-[#9A9A9A]">
                                 Start browsing players and save the ones you're interested in.
                             </p>
-                            <Link href="/scouting" className="inline-block mt-6">
-                                <Button className="bg-[#E53F01] text-white hover:bg-[#E53F01]">
-                                    Browse Players →
-                                </Button>
+                            <Link href="/scouting" className="mt-6 inline-block">
+                                <Button className="bg-[#E53F01] text-white hover:bg-[#E53F01]">Browse Players →</Button>
                             </Link>
                         </div>
                     ) : view === 'grid' ? (
                         // ── GRID VIEW ──
-                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
                             {sorted.map((sp) => (
                                 <div
                                     key={sp.id}
-                                    className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all group"
+                                    className="group overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:border-[#2A2A2A] dark:bg-[#161616]"
                                 >
                                     {/* TOP — Photo area */}
-                                    <div className="h-70 relative bg-gradient-to-br from-[#F8FAFC] dark:from-[#1F1F1F] to-[#E2E8F0] dark:to-[#161616] flex items-center justify-center">
+                                    <div className="relative flex h-70 items-center justify-center bg-gradient-to-br from-[#F8FAFC] to-[#E2E8F0] dark:from-[#1F1F1F] dark:to-[#161616]">
                                         {/* Position badges */}
                                         <div className="absolute top-2 left-2 flex gap-1">
                                             {sp.player.positions.slice(0, 2).map((pos) => (
                                                 <span
                                                     key={pos}
-                                                    className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-bold px-2 py-0.5 rounded-full"
+                                                    className="rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]"
                                                 >
                                                     {pos}
                                                 </span>
@@ -347,27 +303,27 @@ export default function SavedPlayers() {
                                         </div>
 
                                         {/* Action buttons */}
-                                        <div className="absolute top-2 right-2 flex gap-1 bg-white/80 dark:bg-[#0D0D0D]/80 rounded-lg p-1">
+                                        <div className="absolute top-2 right-2 flex gap-1 rounded-lg bg-white/80 p-1 dark:bg-[#0D0D0D]/80">
                                             <button
                                                 onClick={() => openRemove(sp)}
-                                                className="p-1 rounded text-[#94A3B8] hover:text-red-500 transition-colors"
+                                                className="rounded p-1 text-[#94A3B8] transition-colors hover:text-red-500"
                                                 aria-label="Remove from saved"
                                             >
-                                                <BookmarkX className="w-4 h-4" />
+                                                <BookmarkX className="h-4 w-4" />
                                             </button>
                                             <button
                                                 onClick={() => openNotes(sp)}
-                                                className="p-1 rounded text-[#94A3B8] hover:text-[#E53F01] transition-colors"
+                                                className="rounded p-1 text-[#94A3B8] transition-colors hover:text-[#E53F01]"
                                                 aria-label="Edit notes"
                                             >
-                                                <StickyNote className="w-4 h-4" />
+                                                <StickyNote className="h-4 w-4" />
                                             </button>
                                             <Link
                                                 href={`/scouting/player/${sp.player.id}`}
-                                                className="p-1 rounded text-[#94A3B8] hover:text-[#E53F01] transition-colors"
-                                                aria-label="View full profile"
+                                                className="rounded p-1 text-[#94A3B8] transition-colors hover:text-[#E53F01]"
+                                                aria-label="View full football identity"
                                             >
-                                                <ExternalLink className="w-4 h-4" />
+                                                <ExternalLink className="h-4 w-4" />
                                             </Link>
                                         </div>
 
@@ -379,50 +335,44 @@ export default function SavedPlayers() {
                                                 className="absolute inset-0 h-full w-full object-cover object-top"
                                             />
                                         ) : (
-                                            <span className="font-display font-black text-3xl text-[#CBD5E1] dark:text-[#2A2A2A]">
+                                            <span className="font-display text-3xl font-black text-[#CBD5E1] dark:text-[#2A2A2A]">
                                                 {getInitials(sp.player.name)}
                                             </span>
                                         )}
 
                                         {/* Premium badge */}
                                         {sp.player.isPremium && (
-                                            <span className="absolute bottom-2 left-2 bg-[#E53F01] text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                            <span className="absolute bottom-2 left-2 rounded-full bg-[#E53F01] px-2 py-0.5 text-[9px] font-black tracking-wider text-white uppercase">
                                                 Premium
                                             </span>
                                         )}
 
                                         {/* Video indicator */}
                                         {sp.player.videoUrl && (
-                                            <div className="absolute bottom-2 right-2 bg-[#0F172A] text-white rounded-full p-1">
-                                                <Play className="w-3 h-3" fill="currentColor" />
+                                            <div className="absolute right-2 bottom-2 rounded-full bg-[#0F172A] p-1 text-white">
+                                                <Play className="h-3 w-3" fill="currentColor" />
                                             </div>
                                         )}
                                     </div>
 
                                     {/* BOTTOM — Info */}
                                     <div className="p-5">
-                                        <div className="flex items-baseline gap-2 flex-wrap">
-                                            <h3 className="font-bold text-base text-[#0F172A] dark:text-[#F5F5F5]">
-                                                {sp.player.name}
-                                            </h3>
-                                            {sp.player.nickname && (
-                                                <span className="text-[#94A3B8] text-sm">
-                                                    ({sp.player.nickname})
-                                                </span>
-                                            )}
+                                        <div className="flex flex-wrap items-baseline gap-2">
+                                            <h3 className="text-base font-bold text-[#0F172A] dark:text-[#F5F5F5]">{sp.player.name}</h3>
+                                            {sp.player.nickname && <span className="text-sm text-[#94A3B8]">({sp.player.nickname})</span>}
                                         </div>
 
-                                        <p className="text-sm text-[#475569] dark:text-[#9A9A9A] mt-0.5">
+                                        <p className="mt-0.5 text-sm text-[#475569] dark:text-[#9A9A9A]">
                                             {/* <span className="mr-1">{sp.player.flag || '🏳️'}</span> */}
                                             {sp.player.currentClub}
                                         </p>
 
                                         {/* Modalities */}
-                                        <div className="flex gap-1 mt-2 flex-wrap">
+                                        <div className="mt-2 flex flex-wrap gap-1">
                                             {sp.player.modalities.map((m) => (
                                                 <span
                                                     key={m}
-                                                    className="text-[10px] bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] px-2 py-0.5 rounded-full"
+                                                    className="rounded-full border border-[#E2E8F0] bg-[#F8FAFC] px-2 py-0.5 text-[10px] text-[#475569] dark:border-[#2A2A2A] dark:bg-[#1F1F1F] dark:text-[#9A9A9A]"
                                                 >
                                                     {m}
                                                 </span>
@@ -430,9 +380,9 @@ export default function SavedPlayers() {
                                         </div>
 
                                         {/* Stats row */}
-                                        <div className="grid grid-cols-3 mt-3 pt-3 border-t border-[#F1F5F9] dark:border-[#1F1F1F] text-center">
+                                        <div className="mt-3 grid grid-cols-3 border-t border-[#F1F5F9] pt-3 text-center dark:border-[#1F1F1F]">
                                             <div>
-                                                <div className="font-mono font-semibold text-sm text-[#0F172A] dark:text-[#F5F5F5]">
+                                                <div className="font-mono text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]">
                                                     {sp.player.dob
                                                         ? (() => {
                                                             const birthDate = new Date(sp.player.dob);
@@ -453,19 +403,19 @@ export default function SavedPlayers() {
                                                         })()
                                                         : '—'}
                                                 </div>
-                                                <div className="text-[9px] text-[#94A3B8] uppercase tracking-wider mt-0.5">Age</div>
+                                                <div className="mt-0.5 text-[9px] tracking-wider text-[#94A3B8] uppercase">Age</div>
                                             </div>
                                             <div className="border-x border-[#F1F5F9] dark:border-[#1F1F1F]">
-                                                <div className="font-mono font-semibold text-sm text-[#0F172A] dark:text-[#F5F5F5]">
+                                                <div className="font-mono text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]">
                                                     {sp.player.height ? `${sp.player.height}cm` : '—'}
                                                 </div>
-                                                <div className="text-[9px] text-[#94A3B8] uppercase tracking-wider mt-0.5">Height</div>
+                                                <div className="mt-0.5 text-[9px] tracking-wider text-[#94A3B8] uppercase">Height</div>
                                             </div>
                                             <div>
-                                                <div className="font-mono font-semibold text-sm text-[#0F172A] dark:text-[#F5F5F5]">
+                                                <div className="font-mono text-sm font-semibold text-[#0F172A] dark:text-[#F5F5F5]">
                                                     {sp.player.foot}
                                                 </div>
-                                                <div className="text-[9px] text-[#94A3B8] uppercase tracking-wider mt-0.5">Foot</div>
+                                                <div className="mt-0.5 text-[9px] tracking-wider text-[#94A3B8] uppercase">Foot</div>
                                             </div>
                                         </div>
 
@@ -477,38 +427,32 @@ export default function SavedPlayers() {
                                                         {[1, 2, 3, 4, 5].map((i) => (
                                                             <Star
                                                                 key={i}
-                                                                className={`w-3.5 h-3.5 ${i <= Math.round(sp.player.avgRating)
-                                                                    ? 'text-[#E53F01] fill-[#E53F01]'
-                                                                    : 'text-[#E2E8F0] dark:text-[#2A2A2A] fill-[#E2E8F0] dark:fill-[#2A2A2A]'
+                                                                className={`h-3.5 w-3.5 ${i <= Math.round(sp.player.avgRating)
+                                                                    ? 'fill-[#E53F01] text-[#E53F01]'
+                                                                    : 'fill-[#E2E8F0] text-[#E2E8F0] dark:fill-[#2A2A2A] dark:text-[#2A2A2A]'
                                                                     }`}
                                                             />
                                                         ))}
-                                                        <span className="font-mono text-[#E53F01] text-sm font-bold ml-1">
+                                                        <span className="ml-1 font-mono text-sm font-bold text-[#E53F01]">
                                                             {sp.player.avgRating.toFixed(1)}
                                                         </span>
                                                     </div>
-                                                    <span className="text-[#94A3B8] text-xs">
-                                                        ({sp.player.ratingCount} ratings)
-                                                    </span>
+                                                    <span className="text-xs text-[#94A3B8]">({sp.player.ratingCount} ratings)</span>
                                                 </>
                                             ) : (
-                                                <span className="text-[#94A3B8] text-xs italic">Not yet rated</span>
+                                                <span className="text-xs text-[#94A3B8] italic">Not yet rated</span>
                                             )}
                                         </div>
 
                                         {/* Saved date */}
-                                        <p className="text-[10px] text-[#94A3B8] font-mono mt-2">
-                                            Saved {sp.savedAt}
-                                        </p>
+                                        <p className="mt-2 font-mono text-[10px] text-[#94A3B8]">Saved {sp.savedAt}</p>
 
                                         {/* Notes */}
                                         {sp.notes && (
-                                            <div className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.08)] border border-[#FFD4AA] dark:border-[rgba(255,107,0,0.2)] rounded-xl px-3 py-2 mt-3">
+                                            <div className="mt-3 rounded-xl border border-[#FFD4AA] bg-[#FFF3EB] px-3 py-2 dark:border-[rgba(255,107,0,0.2)] dark:bg-[rgba(255,107,0,0.08)]">
                                                 <div className="flex gap-1.5">
-                                                    <StickyNote className="w-3 h-3 text-[#E53F01] shrink-0 mt-0.5" />
-                                                    <p className="text-xs text-[#92400E] dark:text-[#E53F01] italic leading-relaxed">
-                                                        {sp.notes}
-                                                    </p>
+                                                    <StickyNote className="mt-0.5 h-3 w-3 shrink-0 text-[#E53F01]" />
+                                                    <p className="text-xs leading-relaxed text-[#92400E] italic dark:text-[#E53F01]">{sp.notes}</p>
                                                 </div>
                                             </div>
                                         )}
@@ -518,15 +462,13 @@ export default function SavedPlayers() {
                                             <Link href={`/club/player/${sp.player.id}`} className="flex-1">
                                                 <Button
                                                     variant="outline"
-                                                    className="w-full text-sm border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] hover:border-[#E53F01] hover:text-[#E53F01] bg-white dark:bg-[#161616]"
+                                                    className="w-full border-[#E2E8F0] bg-white text-sm text-[#475569] hover:border-[#E53F01] hover:text-[#E53F01] dark:border-[#2A2A2A] dark:bg-[#161616] dark:text-[#9A9A9A]"
                                                 >
-                                                    View Profile
+                                                    View Football Identity
                                                 </Button>
                                             </Link>
                                             {sp.player.isPremium && (
-                                                <Button className="flex-1 text-sm bg-[#E53F01] text-white hover:bg-[#E53F01]">
-                                                    Rate Player
-                                                </Button>
+                                                <Button className="flex-1 bg-[#E53F01] text-sm text-white hover:bg-[#E53F01]">Rate Player</Button>
                                             )}
                                         </div>
                                     </div>
@@ -539,53 +481,47 @@ export default function SavedPlayers() {
                             {sorted.map((sp) => (
                                 <div
                                     key={sp.id}
-                                    className="bg-white dark:bg-[#161616] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-2xl p-5 flex flex-col md:flex-row items-start gap-5 hover:border-[#E53F01] transition-colors"
+                                    className="flex flex-col items-start gap-5 rounded-2xl border border-[#E2E8F0] bg-white p-5 transition-colors hover:border-[#E53F01] md:flex-row dark:border-[#2A2A2A] dark:bg-[#161616]"
                                 >
                                     {/* LEFT — Photo */}
-                                    <div className="relative w-16 h-16 shrink-0 rounded-xl overflow-hidden bg-gradient-to-br from-[#F8FAFC] dark:from-[#1F1F1F] to-[#E2E8F0] dark:to-[#161616] flex items-center justify-center">
+                                    <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-[#F8FAFC] to-[#E2E8F0] dark:from-[#1F1F1F] dark:to-[#161616]">
                                         {sp.player.photoUrl ? (
                                             <img src={sp.player.photoUrl} alt={sp.player.name} className="h-full w-full object-cover" />
                                         ) : (
-                                            <span className="font-display font-black text-lg text-[#CBD5E1] dark:text-[#2A2A2A]">
+                                            <span className="font-display text-lg font-black text-[#CBD5E1] dark:text-[#2A2A2A]">
                                                 {getInitials(sp.player.name)}
                                             </span>
                                         )}
                                         {sp.player.isPremium && (
-                                            <span className="absolute -top-1 -right-1 bg-[#E53F01] text-white text-[8px] font-black px-1.5 py-0.5 rounded-full">
+                                            <span className="absolute -top-1 -right-1 rounded-full bg-[#E53F01] px-1.5 py-0.5 text-[8px] font-black text-white">
                                                 PRO
                                             </span>
                                         )}
                                     </div>
 
                                     {/* CENTER — Info */}
-                                    <div className="flex-1 min-w-0 w-full">
+                                    <div className="w-full min-w-0 flex-1">
                                         {/* Row 1: Name + positions + badges */}
-                                        <div className="flex items-center gap-2 flex-wrap">
-                                            <h3 className="font-bold text-base text-[#0F172A] dark:text-[#F5F5F5]">
-                                                {sp.player.name}
-                                            </h3>
-                                            {sp.player.nickname && (
-                                                <span className="text-[#94A3B8] text-sm">
-                                                    ({sp.player.nickname})
-                                                </span>
-                                            )}
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            <h3 className="text-base font-bold text-[#0F172A] dark:text-[#F5F5F5]">{sp.player.name}</h3>
+                                            {sp.player.nickname && <span className="text-sm text-[#94A3B8]">({sp.player.nickname})</span>}
                                             {sp.player.positions.slice(0, 2).map((pos) => (
                                                 <span
                                                     key={pos}
-                                                    className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)] border border-[#E53F01] text-[#E53F01] text-[10px] font-bold px-2 py-0.5 rounded-full"
+                                                    className="rounded-full border border-[#E53F01] bg-[#FFF3EB] px-2 py-0.5 text-[10px] font-bold text-[#E53F01] dark:bg-[rgba(255,107,0,0.12)]"
                                                 >
                                                     {pos}
                                                 </span>
                                             ))}
                                             {sp.player.videoUrl && (
-                                                <div className="bg-[#0F172A] text-white rounded-full p-1">
-                                                    <Play className="w-2.5 h-2.5" fill="currentColor" />
+                                                <div className="rounded-full bg-[#0F172A] p-1 text-white">
+                                                    <Play className="h-2.5 w-2.5" fill="currentColor" />
                                                 </div>
                                             )}
                                         </div>
 
                                         {/* Row 2: Club + stats */}
-                                        <div className="flex items-center gap-4 mt-1 flex-wrap text-sm text-[#475569] dark:text-[#9A9A9A]">
+                                        <div className="mt-1 flex flex-wrap items-center gap-4 text-sm text-[#475569] dark:text-[#9A9A9A]">
                                             <span>
                                                 {sp.player.flag} {sp.player.currentClub}
                                             </span>
@@ -595,36 +531,32 @@ export default function SavedPlayers() {
                                         </div>
 
                                         {/* Row 3: Rating + saved date + modalities */}
-                                        <div className="flex items-center gap-4 mt-2 flex-wrap">
+                                        <div className="mt-2 flex flex-wrap items-center gap-4">
                                             {sp.player.ratingCount > 0 ? (
                                                 <div className="flex items-center gap-1">
                                                     {[1, 2, 3, 4, 5].map((i) => (
                                                         <Star
                                                             key={i}
-                                                            className={`w-3 h-3 ${i <= Math.round(sp.player.avgRating)
-                                                                ? 'text-[#E53F01] fill-[#E53F01]'
-                                                                : 'text-[#E2E8F0] dark:text-[#2A2A2A] fill-[#E2E8F0] dark:fill-[#2A2A2A]'
+                                                            className={`h-3 w-3 ${i <= Math.round(sp.player.avgRating)
+                                                                ? 'fill-[#E53F01] text-[#E53F01]'
+                                                                : 'fill-[#E2E8F0] text-[#E2E8F0] dark:fill-[#2A2A2A] dark:text-[#2A2A2A]'
                                                                 }`}
                                                         />
                                                     ))}
-                                                    <span className="font-mono text-[#E53F01] text-xs font-bold ml-1">
+                                                    <span className="ml-1 font-mono text-xs font-bold text-[#E53F01]">
                                                         {sp.player.avgRating.toFixed(1)}
                                                     </span>
-                                                    <span className="text-[#94A3B8] text-xs ml-1">
-                                                        ({sp.player.ratingCount})
-                                                    </span>
+                                                    <span className="ml-1 text-xs text-[#94A3B8]">({sp.player.ratingCount})</span>
                                                 </div>
                                             ) : (
-                                                <span className="text-[#94A3B8] text-xs italic">Not yet rated</span>
+                                                <span className="text-xs text-[#94A3B8] italic">Not yet rated</span>
                                             )}
-                                            <span className="text-[10px] text-[#94A3B8] font-mono">
-                                                Saved {sp.savedAt}
-                                            </span>
-                                            <div className="flex gap-1 flex-wrap">
+                                            <span className="font-mono text-[10px] text-[#94A3B8]">Saved {sp.savedAt}</span>
+                                            <div className="flex flex-wrap gap-1">
                                                 {sp.player.modalities.map((m) => (
                                                     <span
                                                         key={m}
-                                                        className="text-[10px] bg-[#F8FAFC] dark:bg-[#1F1F1F] border border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] px-2 py-0.5 rounded-full"
+                                                        className="rounded-full border border-[#E2E8F0] bg-[#F8FAFC] px-2 py-0.5 text-[10px] text-[#475569] dark:border-[#2A2A2A] dark:bg-[#1F1F1F] dark:text-[#9A9A9A]"
                                                     >
                                                         {m}
                                                     </span>
@@ -634,32 +566,27 @@ export default function SavedPlayers() {
 
                                         {/* Row 4: Notes */}
                                         {sp.notes && (
-                                            <div className="bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.08)] border border-[#FFD4AA] dark:border-[rgba(255,107,0,0.2)] rounded-xl px-3 py-2 mt-3">
+                                            <div className="mt-3 rounded-xl border border-[#FFD4AA] bg-[#FFF3EB] px-3 py-2 dark:border-[rgba(255,107,0,0.2)] dark:bg-[rgba(255,107,0,0.08)]">
                                                 <div className="flex gap-1.5">
-                                                    <StickyNote className="w-3 h-3 text-[#E53F01] shrink-0 mt-0.5" />
-                                                    <p className="text-xs text-[#92400E] dark:text-[#E53F01] italic leading-relaxed">
-                                                        {sp.notes}
-                                                    </p>
+                                                    <StickyNote className="mt-0.5 h-3 w-3 shrink-0 text-[#E53F01]" />
+                                                    <p className="text-xs leading-relaxed text-[#92400E] italic dark:text-[#E53F01]">{sp.notes}</p>
                                                 </div>
                                             </div>
                                         )}
 
                                         {/* Mobile actions */}
-                                        <div className="flex md:hidden gap-2 mt-4 flex-wrap">
-                                            <Link href={`/scouting/player/${sp.player.id}`} className="flex-1 min-w-[120px]">
+                                        <div className="mt-4 flex flex-wrap gap-2 md:hidden">
+                                            <Link href={`/scouting/player/${sp.player.id}`} className="min-w-[120px] flex-1">
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
-                                                    className="w-full border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] hover:border-[#E53F01] hover:text-[#E53F01]"
+                                                    className="w-full border-[#E2E8F0] text-[#475569] hover:border-[#E53F01] hover:text-[#E53F01] dark:border-[#2A2A2A] dark:text-[#9A9A9A]"
                                                 >
-                                                    View Profile
+                                                    View Football Identity
                                                 </Button>
                                             </Link>
                                             {sp.player.isPremium && (
-                                                <Button
-                                                    size="sm"
-                                                    className="flex-1 min-w-[120px] bg-[#E53F01] text-white hover:bg-[#E53F01]"
-                                                >
+                                                <Button size="sm" className="min-w-[120px] flex-1 bg-[#E53F01] text-white hover:bg-[#E53F01]">
                                                     Rate
                                                 </Button>
                                             )}
@@ -669,27 +596,24 @@ export default function SavedPlayers() {
                                                 onClick={() => openRemove(sp)}
                                                 className="text-[#94A3B8] hover:text-red-500"
                                             >
-                                                <BookmarkX className="w-4 h-4" />
+                                                <BookmarkX className="h-4 w-4" />
                                             </Button>
                                         </div>
                                     </div>
 
                                     {/* RIGHT — Actions (desktop) */}
-                                    <div className="hidden md:flex shrink-0 flex-col items-end gap-2 ml-4">
+                                    <div className="ml-4 hidden shrink-0 flex-col items-end gap-2 md:flex">
                                         <Link href={`/scouting/player/${sp.player.id}`}>
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                className="border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A] hover:border-[#E53F01] hover:text-[#E53F01] w-[120px]"
+                                                className="w-[120px] border-[#E2E8F0] text-[#475569] hover:border-[#E53F01] hover:text-[#E53F01] dark:border-[#2A2A2A] dark:text-[#9A9A9A]"
                                             >
-                                                View Profile
+                                                View Football Identity
                                             </Button>
                                         </Link>
                                         {sp.player.isPremium && (
-                                            <Button
-                                                size="sm"
-                                                className="bg-[#E53F01] text-white hover:bg-[#E53F01] w-[120px]"
-                                            >
+                                            <Button size="sm" className="w-[120px] bg-[#E53F01] text-white hover:bg-[#E53F01]">
                                                 Rate Player
                                             </Button>
                                         )}
@@ -699,7 +623,7 @@ export default function SavedPlayers() {
                                             onClick={() => openRemove(sp)}
                                             className="text-[#94A3B8] hover:text-red-500"
                                         >
-                                            <BookmarkX className="w-4 h-4 mr-1" />
+                                            <BookmarkX className="mr-1 h-4 w-4" />
                                             Remove
                                         </Button>
                                     </div>
@@ -710,11 +634,11 @@ export default function SavedPlayers() {
 
                     {/* Sponsored Ad */}
                     {!isEmpty && (
-                        <div className="max-w-[728px] mx-auto mt-8">
+                        <div className="mx-auto mt-8 max-w-[728px]">
                             {/* <p className="text-[10px] text-[#94A3B8] uppercase tracking-wider mb-2 text-center">
                                 Sponsored
                             </p> */}
-                            <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-xl h-[80px] flex items-center px-6 gap-4 border border-[#334155] mx-auto">
+                            <div className="mx-auto flex h-[80px] items-center gap-4 rounded-xl border border-[#334155] bg-gradient-to-r from-[#0F172A] to-[#1E293B] px-6">
                                 {/* <div className="font-display font-black text-lg text-white shrink-0">
                                     TRANSFERROOM
                                 </div>
@@ -732,7 +656,7 @@ export default function SavedPlayers() {
 
             {/* ─── NOTES DIALOG ─── */}
             <Dialog open={notesOpen} onOpenChange={setNotesOpen}>
-                <DialogContent className="bg-white dark:bg-[#161616] border-[#E2E8F0] dark:border-[#2A2A2A] sm:max-w-lg">
+                <DialogContent className="border-[#E2E8F0] bg-white sm:max-w-lg dark:border-[#2A2A2A] dark:bg-[#161616]">
                     <DialogHeader>
                         <DialogTitle className="font-display text-xl text-[#0F172A] dark:text-[#F5F5F5]">
                             Scouting Notes — {activeSaved?.player.name}
@@ -747,27 +671,21 @@ export default function SavedPlayers() {
                             value={notesDraft}
                             onChange={(e) => setNotesDraft(e.target.value.slice(0, 500))}
                             placeholder="Add your scouting observations, next steps, or reminders..."
-                            className="h-32 bg-white dark:bg-[#111111] border-[#E2E8F0] dark:border-[#2A2A2A] text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01] resize-none"
+                            className="h-32 resize-none border-[#E2E8F0] bg-white text-[#0F172A] placeholder:text-[#94A3B8] focus-visible:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-100 dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#F5F5F5] dark:focus-visible:ring-orange-800"
                         />
-                        <div className="text-xs text-[#94A3B8] text-right mt-1 font-mono">
-                            {notesDraft.length}/500
-                        </div>
+                        <div className="mt-1 text-right font-mono text-xs text-[#94A3B8]">{notesDraft.length}/500</div>
                     </div>
 
                     <DialogFooter className="gap-2">
                         <Button
                             variant="outline"
                             onClick={() => setNotesOpen(false)}
-                            className="border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A]"
+                            className="border-[#E2E8F0] text-[#475569] dark:border-[#2A2A2A] dark:text-[#9A9A9A]"
                             disabled={loading}
                         >
                             Cancel
                         </Button>
-                        <Button
-                            onClick={handleSaveNotes}
-                            className="bg-[#E53F01] text-white hover:bg-[#E53F01]"
-                            disabled={loading}
-                        >
+                        <Button onClick={handleSaveNotes} className="bg-[#E53F01] text-white hover:bg-[#E53F01]" disabled={loading}>
                             {loading ? 'Saving...' : 'Save Notes'}
                         </Button>
                     </DialogFooter>
@@ -776,17 +694,12 @@ export default function SavedPlayers() {
 
             {/* ─── REMOVE CONFIRMATION ─── */}
             <Dialog open={removeOpen} onOpenChange={setRemoveOpen}>
-                <DialogContent className="bg-white dark:bg-[#161616] border-[#E2E8F0] dark:border-[#2A2A2A] sm:max-w-md">
+                <DialogContent className="border-[#E2E8F0] bg-white sm:max-w-md dark:border-[#2A2A2A] dark:bg-[#161616]">
                     <DialogHeader>
-                        <DialogTitle className="font-display text-xl text-[#0F172A] dark:text-[#F5F5F5]">
-                            Remove from Saved?
-                        </DialogTitle>
-                        <DialogDescription className="text-sm text-[#475569] dark:text-[#9A9A9A] leading-relaxed pt-2">
-                            <strong className="text-[#0F172A] dark:text-[#F5F5F5]">
-                                {activeSaved?.player.name}
-                            </strong>{' '}
-                            will be removed from your shortlist. Your scouting notes for this
-                            player will also be deleted.
+                        <DialogTitle className="font-display text-xl text-[#0F172A] dark:text-[#F5F5F5]">Remove from Saved?</DialogTitle>
+                        <DialogDescription className="pt-2 text-sm leading-relaxed text-[#475569] dark:text-[#9A9A9A]">
+                            <strong className="text-[#0F172A] dark:text-[#F5F5F5]">{activeSaved?.player.name}</strong> will be removed from your
+                            shortlist. Your scouting notes for this player will also be deleted.
                         </DialogDescription>
                     </DialogHeader>
 
@@ -794,17 +707,13 @@ export default function SavedPlayers() {
                         <Button
                             variant="outline"
                             onClick={() => setRemoveOpen(false)}
-                            className="border-[#E2E8F0] dark:border-[#2A2A2A] text-[#475569] dark:text-[#9A9A9A]"
+                            className="border-[#E2E8F0] text-[#475569] dark:border-[#2A2A2A] dark:text-[#9A9A9A]"
                             disabled={loading}
                         >
                             Cancel
                         </Button>
-                        <Button
-                            onClick={handleRemove}
-                            className="bg-red-500 text-white hover:bg-red-600"
-                            disabled={loading}
-                        >
-                            <BookmarkX className="w-4 h-4 mr-2" />
+                        <Button onClick={handleRemove} className="bg-red-500 text-white hover:bg-red-600" disabled={loading}>
+                            <BookmarkX className="mr-2 h-4 w-4" />
                             {loading ? 'Removing...' : 'Remove Player'}
                         </Button>
                     </DialogFooter>

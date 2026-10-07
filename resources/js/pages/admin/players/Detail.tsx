@@ -1,60 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from '@inertiajs/react';
 import AdminLayout from '@/components/admin/AdminLayout';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Separator } from '@/components/ui/separator';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Link } from '@inertiajs/react';
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-    DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-    ArrowLeft,
-    ExternalLink,
-    Edit,
-    ChevronDown,
-    CheckCircle2,
-    Ban,
-    Trash2,
-    BadgeCheck,
     AlertTriangle,
-    Video,
-    Star,
-    MoreHorizontal,
+    ArrowLeft,
+    BadgeCheck,
+    Ban,
+    CheckCircle2,
+    ChevronDown,
+    Edit,
+    ExternalLink,
     Eye,
     Globe2,
+    MoreHorizontal,
+    Star,
+    Trash2,
     Users,
+    Video,
 } from 'lucide-react';
-import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    Tooltip,
-    ResponsiveContainer,
-    Cell,
-} from 'recharts';
+import React, { useEffect, useState } from 'react';
+import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 // TODO: Replace with usePage<PageProps & { player: typeof player }>().props
 const player = {
@@ -188,17 +159,12 @@ const summaryAverages = {
 function StarRow({ value, label }: { value: number; label: string }) {
     return (
         <div className="flex items-center justify-between gap-3">
-            <span className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-medium w-16">
-                {label}
-            </span>
+            <span className="w-16 text-[0.5625rem] font-medium tracking-widest text-[#94A3B8] uppercase">{label}</span>
             <div className="flex items-center gap-0.5">
                 {[1, 2, 3, 4, 5].map((i) => (
                     <Star
                         key={i}
-                        className={`w-3 h-3 ${i <= value
-                            ? 'fill-[#E53F01] text-[#E53F01]'
-                            : 'fill-transparent text-[#E2E8F0]'
-                            }`}
+                        className={`h-3 w-3 ${i <= value ? 'fill-[#E53F01] text-[#E53F01]' : 'fill-transparent text-[#E2E8F0]'}`}
                         strokeWidth={1.5}
                     />
                 ))}
@@ -210,9 +176,7 @@ function StarRow({ value, label }: { value: number; label: string }) {
 function InfoCell({ label, value }: { label: string; value: React.ReactNode }) {
     return (
         <div className="flex flex-col gap-0.5">
-            <span className="text-xs text-[#94A3B8] uppercase tracking-wide font-medium">
-                {label}
-            </span>
+            <span className="text-xs font-medium tracking-wide text-[#94A3B8] uppercase">{label}</span>
             <span className="text-sm font-medium text-[#0F172A]">{value}</span>
         </div>
     );
@@ -257,42 +221,29 @@ export default function PlayerDetail() {
     };
 
     return (
-        <AdminLayout pageTitle="Player Profile — Benjamin Silva">
+        <AdminLayout pageTitle="Player Football Identity — Benjamin Silva">
             {/* ━━━ TOP ACTION BAR ━━━ */}
-            <div className="bg-white border-b border-[#E2E8F0] -mx-4 -mt-4 sm:-mx-6 sm:-mt-6 lg:-mx-8 lg:-mt-8 px-4 sm:px-6 lg:px-8 py-4 mb-6">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="-mx-4 -mt-4 mb-6 border-b border-[#E2E8F0] bg-white px-4 py-4 sm:-mx-6 sm:-mt-6 sm:px-6 lg:-mx-8 lg:-mt-8 lg:px-8">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <Link href={route('admin.players')}>
-                        <Button
-                            variant="ghost"
-                            className="text-[#475569] hover:text-[#0F172A] hover:bg-[#F1F5F9] gap-2 -ml-2"
-                        >
-                            <ArrowLeft className="w-4 h-4" />
+                        <Button variant="ghost" className="-ml-2 gap-2 text-[#475569] hover:bg-[#F1F5F9] hover:text-[#0F172A]">
+                            <ArrowLeft className="h-4 w-4" />
                             <span className="text-sm font-medium">Back to Players</span>
                         </Button>
                     </Link>
 
                     <div className="flex flex-wrap items-center gap-2">
-                        <a
-                            href={route('player.profile.show', player.id)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <Button
-                                variant="outline"
-                                className="border-[#E2E8F0] text-[#475569] hover:bg-[#F8FAFC] hover:text-[#0F172A] gap-2"
-                            >
-                                <ExternalLink className="w-4 h-4" />
-                                <span className="text-sm">View Public Profile</span>
+                        <a href={route('player.profile.show', player.id)} target="_blank" rel="noopener noreferrer">
+                            <Button variant="outline" className="gap-2 border-[#E2E8F0] text-[#475569] hover:bg-[#F8FAFC] hover:text-[#0F172A]">
+                                <ExternalLink className="h-4 w-4" />
+                                <span className="text-sm">View Public Football Identity</span>
                             </Button>
                         </a>
 
                         <Link href={route('admin.players.edit', player.id)}>
-                            <Button
-                                variant="outline"
-                                className="border-[#E2E8F0] text-[#475569] hover:bg-[#F8FAFC] hover:text-[#0F172A] gap-2"
-                            >
-                                <Edit className="w-4 h-4" />
-                                <span className="text-sm">Edit Profile</span>
+                            <Button variant="outline" className="gap-2 border-[#E2E8F0] text-[#475569] hover:bg-[#F8FAFC] hover:text-[#0F172A]">
+                                <Edit className="h-4 w-4" />
+                                <span className="text-sm">Edit Football Identity</span>
                             </Button>
                         </Link>
 
@@ -300,40 +251,33 @@ export default function PlayerDetail() {
                             <DropdownMenuTrigger asChild>
                                 <Button
                                     variant="outline"
-                                    className={`gap-2 ${player.status === 'active'
-                                        ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100 hover:text-green-800'
-                                        : 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100 hover:text-red-800'
-                                        }`}
+                                    className={`gap-2 ${
+                                        player.status === 'active'
+                                            ? 'border-green-200 bg-green-50 text-green-700 hover:bg-green-100 hover:text-green-800'
+                                            : 'border-red-200 bg-red-50 text-red-700 hover:bg-red-100 hover:text-red-800'
+                                    }`}
                                 >
-                                    <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                                    <span className="text-sm font-semibold uppercase tracking-wide">
-                                        {player.status}
-                                    </span>
-                                    <ChevronDown className="w-4 h-4" />
+                                    <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                                    <span className="text-sm font-semibold tracking-wide uppercase">{player.status}</span>
+                                    <ChevronDown className="h-4 w-4" />
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-52 rounded-xl">
-                                <DropdownMenuItem
-                                    onClick={() => handleStatusChange('active')}
-                                    className="gap-2 cursor-pointer"
-                                >
-                                    <CheckCircle2 className="w-4 h-4 text-green-600" />
+                                <DropdownMenuItem onClick={() => handleStatusChange('active')} className="cursor-pointer gap-2">
+                                    <CheckCircle2 className="h-4 w-4 text-green-600" />
                                     <span className="text-sm">Set Active</span>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() => setSuspendDialogOpen(true)}
-                                    className="gap-2 cursor-pointer"
-                                >
-                                    <Ban className="w-4 h-4 text-amber-600" />
-                                    <span className="text-sm">Suspend Profile</span>
+                                <DropdownMenuItem onClick={() => setSuspendDialogOpen(true)} className="cursor-pointer gap-2">
+                                    <Ban className="h-4 w-4 text-amber-600" />
+                                    <span className="text-sm">Suspend Football Identity</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem
                                     onClick={() => setDeleteDialogOpen(true)}
-                                    className="gap-2 cursor-pointer text-red-600 focus:text-red-700"
+                                    className="cursor-pointer gap-2 text-red-600 focus:text-red-700"
                                 >
-                                    <Trash2 className="w-4 h-4" />
-                                    <span className="text-sm">Delete Profile</span>
+                                    <Trash2 className="h-4 w-4" />
+                                    <span className="text-sm">Delete Football Identity</span>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -342,25 +286,23 @@ export default function PlayerDetail() {
             </div>
 
             {/* ━━━ LAYOUT ━━━ */}
-            <div className="grid lg:grid-cols-[1fr_20rem] gap-6">
+            <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
                 {/* ━━━ LEFT COLUMN ━━━ */}
-                <div className="space-y-5 min-w-0">
+                <div className="min-w-0 space-y-5">
                     {/* ▶ IDENTITY CARD */}
-                    <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6">
-                        <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
-                            <span className="text-[0.625rem] font-bold text-[#E53F01] uppercase tracking-[0.14em]">
-                                Player Profile
-                            </span>
+                    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-6">
+                        <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
+                            <span className="text-[0.625rem] font-bold tracking-[0.14em] text-[#E53F01] uppercase">Player Football Identity</span>
                             <div className="flex flex-wrap items-center gap-2">
-                                <Badge className="bg-green-50 text-green-700 border border-green-200 hover:bg-green-50 text-[0.625rem] uppercase tracking-wide font-bold px-2 py-0.5 rounded-md">
+                                <Badge className="rounded-md border border-green-200 bg-green-50 px-2 py-0.5 text-[0.625rem] font-bold tracking-wide text-green-700 uppercase hover:bg-green-50">
                                     Active
                                 </Badge>
-                                <Badge className="bg-[#E53F01] text-white hover:bg-[#E53F01] text-[0.625rem] uppercase tracking-wide font-bold px-2 py-0.5 rounded-md">
+                                <Badge className="rounded-md bg-[#E53F01] px-2 py-0.5 text-[0.625rem] font-bold tracking-wide text-white uppercase hover:bg-[#E53F01]">
                                     Premium
                                 </Badge>
                                 {player.isFeatured && (
-                                    <Badge className="bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-50 text-[0.625rem] uppercase tracking-wide font-bold px-2 py-0.5 rounded-md gap-1">
-                                        Featured <Star className="w-2.5 h-2.5 fill-amber-500 text-amber-500" />
+                                    <Badge className="gap-1 rounded-md border border-amber-200 bg-amber-50 px-2 py-0.5 text-[0.625rem] font-bold tracking-wide text-amber-700 uppercase hover:bg-amber-50">
+                                        Featured <Star className="h-2.5 w-2.5 fill-amber-500 text-amber-500" />
                                     </Badge>
                                 )}
                             </div>
@@ -368,41 +310,37 @@ export default function PlayerDetail() {
 
                         <div className="grid grid-cols-[auto_1fr] gap-4 sm:gap-6">
                             {/* Photo */}
-                            <div className="shrink-0 relative">
-                                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#1E293B] to-[#334155] flex items-center justify-center font-display font-black text-white text-2xl sm:text-3xl">
+                            <div className="relative shrink-0">
+                                <div className="font-display flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#1E293B] to-[#334155] text-2xl font-black text-white sm:h-24 sm:w-24 sm:text-3xl">
                                     BS
                                 </div>
-                                <span className="absolute -top-2 -right-2 bg-[#E53F01] text-white text-[0.5625rem] font-black px-2 py-0.5 rounded-full">
+                                <span className="absolute -top-2 -right-2 rounded-full bg-[#E53F01] px-2 py-0.5 text-[0.5625rem] font-black text-white">
                                     PRO
                                 </span>
                                 {player.isVerified && (
-                                    <BadgeCheck className="absolute -bottom-2 -right-2 text-[#E53F01] bg-white rounded-full w-5 h-5" />
+                                    <BadgeCheck className="absolute -right-2 -bottom-2 h-5 w-5 rounded-full bg-white text-[#E53F01]" />
                                 )}
                             </div>
 
                             {/* Info */}
                             <div className="min-w-0">
-                                <h1 className="font-display font-black text-2xl text-[#0F172A] tracking-tight leading-none">
-                                    {player.name}
-                                </h1>
-                                <div className="flex items-center gap-2 mt-1">
-                                    <span className="font-mono text-[#94A3B8] text-xs">
-                                        {player.profileId}
-                                    </span>
+                                <h1 className="font-display text-2xl leading-none font-black tracking-tight text-[#0F172A]">{player.name}</h1>
+                                <div className="mt-1 flex items-center gap-2">
+                                    <span className="font-mono text-xs text-[#94A3B8]">{player.profileId}</span>
                                     <span className="text-xs text-[#94A3B8]">·</span>
                                     <span className="text-xs text-[#475569]">"{player.nickname}"</span>
                                 </div>
 
                                 {player.isMinor && (
-                                    <div className="inline-flex items-center gap-1.5 mt-3 bg-amber-50 border border-amber-200 text-amber-700 text-xs px-2 py-1 rounded-lg">
-                                        <AlertTriangle className="w-3 h-3" />
+                                    <div className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50 px-2 py-1 text-xs text-amber-700">
+                                        <AlertTriangle className="h-3 w-3" />
                                         <span className="font-medium">Under 18 — Guardian: {player.guardian}</span>
                                     </div>
                                 )}
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-4 mt-6 pt-5 border-t border-[#F1F5F9]">
+                        <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-[#F1F5F9] pt-5 sm:grid-cols-4">
                             <InfoCell label="DOB" value={player.dob} />
                             <InfoCell label="Age" value={`${player.age} yrs`} />
                             <InfoCell label="Gender" value={player.gender} />
@@ -425,25 +363,21 @@ export default function PlayerDetail() {
                             <InfoCell label="Last Active" value={player.lastActive} />
                         </div>
 
-                        <div className="mt-5 pt-5 border-t border-[#F1F5F9] flex flex-wrap items-center gap-2">
-                            <span className="text-[0.625rem] text-[#94A3B8] uppercase tracking-widest font-bold mr-2">
-                                Positions:
-                            </span>
+                        <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-[#F1F5F9] pt-5">
+                            <span className="mr-2 text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Positions:</span>
                             {player.positions.map((pos) => (
                                 <span
                                     key={pos}
-                                    className="inline-flex items-center bg-[#FFF3EB] border border-[#E53F01] text-[#E53F01] text-xs font-bold px-2.5 py-1 rounded-lg"
+                                    className="inline-flex items-center rounded-lg border border-[#E53F01] bg-[#FFF3EB] px-2.5 py-1 text-xs font-bold text-[#E53F01]"
                                 >
                                     {pos}
                                 </span>
                             ))}
-                            <span className="text-[0.625rem] text-[#94A3B8] uppercase tracking-widest font-bold mx-2 sm:ml-4">
-                                Modalities:
-                            </span>
+                            <span className="mx-2 text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase sm:ml-4">Modalities:</span>
                             {player.modalities.map((mod) => (
                                 <span
                                     key={mod}
-                                    className="inline-flex items-center bg-[#F1F5F9] text-[#475569] text-xs font-medium px-2.5 py-1 rounded-lg"
+                                    className="inline-flex items-center rounded-lg bg-[#F1F5F9] px-2.5 py-1 text-xs font-medium text-[#475569]"
                                 >
                                     {mod}
                                 </span>
@@ -452,22 +386,18 @@ export default function PlayerDetail() {
                     </div>
 
                     {/* ━━━ FOOTBALL DETAILS CARD ━━━ */}
-                    <div className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden">
-                        <div className="bg-[#F8FAFC] px-6 py-3 border-b border-[#E2E8F0]">
-                            <h2 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold">
-                                Football Details
-                            </h2>
+                    <div className="overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white">
+                        <div className="border-b border-[#E2E8F0] bg-[#F8FAFC] px-6 py-3">
+                            <h2 className="text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Football Details</h2>
                         </div>
-                        <div className="px-6 py-5 grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 gap-6 px-6 py-5 sm:grid-cols-3">
                             <div>
-                                <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
-                                    Positions
-                                </span>
+                                <span className="mb-3 block text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Positions</span>
                                 <div className="flex flex-wrap gap-2">
                                     {player.positions.map((pos) => (
                                         <span
                                             key={pos}
-                                            className="inline-flex items-center bg-[#FFF3EB] border border-[#E53F01] text-[#E53F01] text-xs font-bold px-2.5 py-1 rounded-lg"
+                                            className="inline-flex items-center rounded-lg border border-[#E53F01] bg-[#FFF3EB] px-2.5 py-1 text-xs font-bold text-[#E53F01]"
                                         >
                                             {pos}
                                         </span>
@@ -475,14 +405,12 @@ export default function PlayerDetail() {
                                 </div>
                             </div>
                             <div>
-                                <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
-                                    Modalities
-                                </span>
+                                <span className="mb-3 block text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Modalities</span>
                                 <div className="flex flex-wrap gap-2">
                                     {player.modalities.map((mod) => (
                                         <span
                                             key={mod}
-                                            className="inline-flex items-center bg-[#F1F5F9] text-[#475569] text-xs font-medium px-2.5 py-1 rounded-lg"
+                                            className="inline-flex items-center rounded-lg bg-[#F1F5F9] px-2.5 py-1 text-xs font-medium text-[#475569]"
                                         >
                                             {mod}
                                         </span>
@@ -490,15 +418,11 @@ export default function PlayerDetail() {
                                 </div>
                             </div>
                             <div>
-                                <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold block mb-3">
+                                <span className="mb-3 block text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">
                                     Pitch Position · {player.foot} Foot
                                 </span>
                                 {/* Simplified pitch SVG top-down */}
-                                <svg
-                                    viewBox="0 0 120 80"
-                                    className="w-[7.5rem] h-[5rem] rounded-md"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
+                                <svg viewBox="0 0 120 80" className="h-[5rem] w-[7.5rem] rounded-md" xmlns="http://www.w3.org/2000/svg">
                                     <rect width="120" height="80" fill="#1a3a1a" />
                                     <line x1="60" y1="0" x2="60" y2="80" stroke="white" strokeOpacity="0.4" strokeWidth="0.5" />
                                     <circle cx="60" cy="40" r="8" fill="none" stroke="white" strokeOpacity="0.4" strokeWidth="0.5" />
@@ -520,74 +444,60 @@ export default function PlayerDetail() {
                     </div>
 
                     {/* ━━━ VIDEO CARD ━━━ */}
-                    <div className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden">
-                        <div className="bg-[#F8FAFC] px-6 py-3 border-b border-[#E2E8F0] flex items-center justify-between">
-                            <h2 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold">
-                                Highlight Video
-                            </h2>
+                    <div className="overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white">
+                        <div className="flex items-center justify-between border-b border-[#E2E8F0] bg-[#F8FAFC] px-6 py-3">
+                            <h2 className="text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Highlight Video</h2>
                             <Link
                                 href={route('admin.players.edit', player.id)}
-                                className="text-[#E53F01] text-xs font-semibold hover:underline cursor-pointer"
+                                className="cursor-pointer text-xs font-semibold text-[#E53F01] hover:underline"
                             >
                                 Edit URL
                             </Link>
                         </div>
-                        <div className="bg-[#0F172A] aspect-video relative">
+                        <div className="relative aspect-video bg-[#0F172A]">
                             <iframe
                                 src={player.videoUrl}
-                                className="w-full h-full"
+                                className="h-full w-full"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
                                 title={`${player.name} highlights`}
                             />
-                            <div className="absolute bottom-3 left-4 pointer-events-none">
-                                <span className="font-display font-black text-white text-xl tracking-tight drop-shadow-lg">
-                                    {player.name}
-                                </span>
+                            <div className="pointer-events-none absolute bottom-3 left-4">
+                                <span className="font-display text-xl font-black tracking-tight text-white drop-shadow-lg">{player.name}</span>
                             </div>
-                            <div className="absolute top-3 right-3 pointer-events-none">
-                                <Video className="w-4 h-4 text-white/60" />
+                            <div className="pointer-events-none absolute top-3 right-3">
+                                <Video className="h-4 w-4 text-white/60" />
                             </div>
                         </div>
-                        <div className="px-6 py-3 border-t border-[#F1F5F9]">
-                            <p className="font-mono text-xs text-[#475569] truncate">
-                                {player.videoUrl}
-                            </p>
+                        <div className="border-t border-[#F1F5F9] px-6 py-3">
+                            <p className="truncate font-mono text-xs text-[#475569]">{player.videoUrl}</p>
                         </div>
                     </div>
 
                     {/* ━━━ CLUB HISTORY CARD ━━━ */}
-                    <div className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden">
-                        <div className="bg-[#F8FAFC] px-6 py-3 border-b border-[#E2E8F0]">
-                            <h2 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold">
-                                Club History
-                            </h2>
+                    <div className="overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white">
+                        <div className="border-b border-[#E2E8F0] bg-[#F8FAFC] px-6 py-3">
+                            <h2 className="text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Club History</h2>
                         </div>
                         <Table>
                             <TableHeader>
-                                <TableRow className="bg-[#F8FAFC] hover:bg-[#F8FAFC] border-b border-[#E2E8F0]">
-                                    <TableHead className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold w-32 px-6">
+                                <TableRow className="border-b border-[#E2E8F0] bg-[#F8FAFC] hover:bg-[#F8FAFC]">
+                                    <TableHead className="w-32 px-6 text-[0.5625rem] font-bold tracking-widest text-[#94A3B8] uppercase">
                                         Year
                                     </TableHead>
-                                    <TableHead className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold px-6">
-                                        Club
-                                    </TableHead>
+                                    <TableHead className="px-6 text-[0.5625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Club</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {player.clubHistory.map((entry, idx) => (
                                     <TableRow
                                         key={entry.year}
-                                        className={`border-b border-[#F1F5F9] hover:bg-[#F8FAFC] ${idx === player.clubHistory.length - 1 ? 'border-b-0' : ''
-                                            }`}
+                                        className={`border-b border-[#F1F5F9] hover:bg-[#F8FAFC] ${
+                                            idx === player.clubHistory.length - 1 ? 'border-b-0' : ''
+                                        }`}
                                     >
-                                        <TableCell className="font-mono text-[#0F172A] font-semibold text-sm px-6 py-3">
-                                            {entry.year}
-                                        </TableCell>
-                                        <TableCell
-                                            className={`text-sm px-6 py-3 ${entry.club ? 'text-[#0F172A]' : 'text-[#94A3B8]'
-                                                }`}
-                                        >
+                                        <TableCell className="px-6 py-3 font-mono text-sm font-semibold text-[#0F172A]">{entry.year}</TableCell>
+                                        <TableCell className={`px-6 py-3 text-sm ${entry.club ? 'text-[#0F172A]' : 'text-[#94A3B8]'}`}>
                                             {entry.club || '—'}
                                         </TableCell>
                                     </TableRow>
@@ -597,81 +507,49 @@ export default function PlayerDetail() {
                     </div>
 
                     {/* ━━━ DESCRIPTION CARD ━━━ */}
-                    <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6">
-                        <h2 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
-                            Player Description
-                        </h2>
-                        <p className="text-sm text-[#475569] leading-relaxed">
-                            {player.description}
-                        </p>
+                    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-6">
+                        <h2 className="mb-3 text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Player Description</h2>
+                        <p className="text-sm leading-relaxed text-[#475569]">{player.description}</p>
                     </div>
 
                     {/* ━━━ SCOUT RATINGS CARD ━━━ */}
-                    <div className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden">
-                        <div className="bg-[#F8FAFC] px-6 py-3 border-b border-[#E2E8F0] flex items-center justify-between">
-                            <h2 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold">
-                                Scout Ratings
-                            </h2>
+                    <div className="overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white">
+                        <div className="flex items-center justify-between border-b border-[#E2E8F0] bg-[#F8FAFC] px-6 py-3">
+                            <h2 className="text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Scout Ratings</h2>
                             <div className="flex items-center gap-1.5">
-                                <Star className="w-4 h-4 fill-[#E53F01] text-[#E53F01]" />
-                                <span className="text-sm font-semibold text-[#0F172A]">
-                                    {player.avgRating.toFixed(1)} avg
-                                </span>
-                                <span className="text-xs text-[#94A3B8]">
-                                    from {player.scoutRatingsCount} ratings
-                                </span>
+                                <Star className="h-4 w-4 fill-[#E53F01] text-[#E53F01]" />
+                                <span className="text-sm font-semibold text-[#0F172A]">{player.avgRating.toFixed(1)} avg</span>
+                                <span className="text-xs text-[#94A3B8]">from {player.scoutRatingsCount} ratings</span>
                             </div>
                         </div>
 
                         {/* Summary row */}
-                        <div className="bg-[#F8FAFC] px-6 py-4 border-b border-[#E2E8F0] grid grid-cols-4 text-center">
+                        <div className="grid grid-cols-4 border-b border-[#E2E8F0] bg-[#F8FAFC] px-6 py-4 text-center">
                             <div>
-                                <div className="font-mono font-bold text-xl text-[#E53F01]">
-                                    {summaryAverages.technical.toFixed(1)}
-                                </div>
-                                <div className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
-                                    Technical
-                                </div>
+                                <div className="font-mono text-xl font-bold text-[#E53F01]">{summaryAverages.technical.toFixed(1)}</div>
+                                <div className="mt-1 text-[0.5625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Technical</div>
                             </div>
                             <div>
-                                <div className="font-mono font-bold text-xl text-[#E53F01]">
-                                    {summaryAverages.physical.toFixed(1)}
-                                </div>
-                                <div className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
-                                    Physical
-                                </div>
+                                <div className="font-mono text-xl font-bold text-[#E53F01]">{summaryAverages.physical.toFixed(1)}</div>
+                                <div className="mt-1 text-[0.5625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Physical</div>
                             </div>
                             <div>
-                                <div className="font-mono font-bold text-xl text-[#E53F01]">
-                                    {summaryAverages.mental.toFixed(1)}
-                                </div>
-                                <div className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
-                                    Mental
-                                </div>
+                                <div className="font-mono text-xl font-bold text-[#E53F01]">{summaryAverages.mental.toFixed(1)}</div>
+                                <div className="mt-1 text-[0.5625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Mental</div>
                             </div>
                             <div>
-                                <div className="font-mono font-bold text-xl text-[#E53F01]">
-                                    {summaryAverages.overall.toFixed(1)}
-                                </div>
-                                <div className="text-[0.5625rem] uppercase tracking-widest text-[#94A3B8] font-bold mt-1">
-                                    Overall
-                                </div>
+                                <div className="font-mono text-xl font-bold text-[#E53F01]">{summaryAverages.overall.toFixed(1)}</div>
+                                <div className="mt-1 text-[0.5625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Overall</div>
                             </div>
                         </div>
 
                         {/* Rating rows */}
                         <div>
                             {player.ratings.map((rating, idx) => (
-                                <div
-                                    key={rating.id}
-                                    className={`px-6 py-4 ${idx !== player.ratings.length - 1
-                                        ? 'border-b border-[#F1F5F9]'
-                                        : ''
-                                        }`}
-                                >
+                                <div key={rating.id} className={`px-6 py-4 ${idx !== player.ratings.length - 1 ? 'border-b border-[#F1F5F9]' : ''}`}>
                                     <div className="flex items-start gap-4">
-                                        <Avatar className="w-10 h-10 shrink-0">
-                                            <AvatarFallback className="bg-orange-50 text-[#E53F01] font-bold text-xs">
+                                        <Avatar className="h-10 w-10 shrink-0">
+                                            <AvatarFallback className="bg-orange-50 text-xs font-bold text-[#E53F01]">
                                                 {rating.scout
                                                     .split(' ')
                                                     .map((n) => n[0])
@@ -679,30 +557,26 @@ export default function PlayerDetail() {
                                             </AvatarFallback>
                                         </Avatar>
 
-                                        <div className="flex-1 min-w-0">
+                                        <div className="min-w-0 flex-1">
                                             <div className="flex flex-wrap items-center gap-2">
-                                                <span className="font-semibold text-sm text-[#0F172A]">
-                                                    {rating.scout}
-                                                </span>
+                                                <span className="text-sm font-semibold text-[#0F172A]">{rating.scout}</span>
                                             </div>
-                                            <div className="flex items-center gap-2 mt-1">
+                                            <div className="mt-1 flex items-center gap-2">
                                                 <Badge
                                                     variant="outline"
-                                                    className="text-[0.625rem] uppercase tracking-wide font-bold px-2 py-0 h-5 border-[#E2E8F0] text-[#475569] bg-[#F8FAFC]"
+                                                    className="h-5 border-[#E2E8F0] bg-[#F8FAFC] px-2 py-0 text-[0.625rem] font-bold tracking-wide text-[#475569] uppercase"
                                                 >
                                                     {rating.role}
                                                 </Badge>
-                                                <span className="text-xs text-[#475569] inline-flex items-center gap-1">
+                                                <span className="inline-flex items-center gap-1 text-xs text-[#475569]">
                                                     <span>{rating.flag}</span>
                                                     <span>{rating.country}</span>
                                                 </span>
                                             </div>
-                                            <div className="text-xs text-[#94A3B8] mt-1 font-mono">
-                                                {rating.date}
-                                            </div>
+                                            <div className="mt-1 font-mono text-xs text-[#94A3B8]">{rating.date}</div>
                                         </div>
 
-                                        <div className="hidden sm:flex flex-col gap-1.5 shrink-0">
+                                        <div className="hidden shrink-0 flex-col gap-1.5 sm:flex">
                                             <StarRow value={rating.technical} label="Tech" />
                                             <StarRow value={rating.physical} label="Phys" />
                                             <StarRow value={rating.mental} label="Mental" />
@@ -714,17 +588,15 @@ export default function PlayerDetail() {
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
-                                                    className="text-[#94A3B8] hover:text-[#0F172A] hover:bg-[#F1F5F9] shrink-0 w-8 h-8"
+                                                    className="h-8 w-8 shrink-0 text-[#94A3B8] hover:bg-[#F1F5F9] hover:text-[#0F172A]"
                                                 >
-                                                    <MoreHorizontal className="w-4 h-4" />
+                                                    <MoreHorizontal className="h-4 w-4" />
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end" className="rounded-xl">
-                                                <DropdownMenuItem className="text-sm cursor-pointer">
-                                                    View Full
-                                                </DropdownMenuItem>
+                                                <DropdownMenuItem className="cursor-pointer text-sm">View Full</DropdownMenuItem>
                                                 <DropdownMenuSeparator />
-                                                <DropdownMenuItem className="text-sm text-red-600 focus:text-red-700 cursor-pointer">
+                                                <DropdownMenuItem className="cursor-pointer text-sm text-red-600 focus:text-red-700">
                                                     Delete
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
@@ -732,7 +604,7 @@ export default function PlayerDetail() {
                                     </div>
 
                                     {/* Mobile stars */}
-                                    <div className="sm:hidden grid grid-cols-2 gap-2 mt-3 pl-14">
+                                    <div className="mt-3 grid grid-cols-2 gap-2 pl-14 sm:hidden">
                                         <StarRow value={rating.technical} label="Tech" />
                                         <StarRow value={rating.physical} label="Phys" />
                                         <StarRow value={rating.mental} label="Mental" />
@@ -740,7 +612,7 @@ export default function PlayerDetail() {
                                     </div>
 
                                     {rating.notes && (
-                                        <div className="bg-[#F8FAFC] border border-[#F1F5F9] rounded-lg px-3 py-2 text-xs text-[#475569] italic mt-3">
+                                        <div className="mt-3 rounded-lg border border-[#F1F5F9] bg-[#F8FAFC] px-3 py-2 text-xs text-[#475569] italic">
                                             "{rating.notes}"
                                         </div>
                                     )}
@@ -751,47 +623,39 @@ export default function PlayerDetail() {
                 </div>
 
                 {/* ━━━ RIGHT COLUMN ━━━ */}
-                <aside className="space-y-4 min-w-0">
+                <aside className="min-w-0 space-y-4">
                     {/* ▶ QUICK STATS */}
-                    <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
-                        <h3 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
-                            Analytics Overview
-                        </h3>
+                    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-5">
+                        <h3 className="mb-3 text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Analytics Overview</h3>
                         <div className="divide-y divide-[#F1F5F9]">
-                            <div className="py-3 flex items-center justify-between first:pt-0">
-                                <span className="text-sm text-[#475569] inline-flex items-center gap-2">
-                                    <Eye className="w-3.5 h-3.5 text-[#94A3B8]" />
-                                    Profile Views
+                            <div className="flex items-center justify-between py-3 first:pt-0">
+                                <span className="inline-flex items-center gap-2 text-sm text-[#475569]">
+                                    <Eye className="h-3.5 w-3.5 text-[#94A3B8]" />
+                                    Football Identity Views
                                 </span>
-                                <span className="font-mono font-bold text-[#E53F01] text-sm">
-                                    {player.profileViews.toLocaleString()}
-                                </span>
+                                <span className="font-mono text-sm font-bold text-[#E53F01]">{player.profileViews.toLocaleString()}</span>
                             </div>
-                            <div className="py-3 flex items-center justify-between">
-                                <span className="text-sm text-[#475569] inline-flex items-center gap-2">
-                                    <Globe2 className="w-3.5 h-3.5 text-[#94A3B8]" />
+                            <div className="flex items-center justify-between py-3">
+                                <span className="inline-flex items-center gap-2 text-sm text-[#475569]">
+                                    <Globe2 className="h-3.5 w-3.5 text-[#94A3B8]" />
                                     Countries Reached
                                 </span>
-                                <span className="font-mono font-bold text-[#E53F01] text-sm">
-                                    {player.countriesReached}
-                                </span>
+                                <span className="font-mono text-sm font-bold text-[#E53F01]">{player.countriesReached}</span>
                             </div>
-                            <div className="py-3 flex items-center justify-between">
-                                <span className="text-sm text-[#475569] inline-flex items-center gap-2">
-                                    <Users className="w-3.5 h-3.5 text-[#94A3B8]" />
+                            <div className="flex items-center justify-between py-3">
+                                <span className="inline-flex items-center gap-2 text-sm text-[#475569]">
+                                    <Users className="h-3.5 w-3.5 text-[#94A3B8]" />
                                     Scout Ratings
                                 </span>
-                                <span className="font-mono font-bold text-[#E53F01] text-sm">
-                                    {player.scoutRatingsCount}
-                                </span>
+                                <span className="font-mono text-sm font-bold text-[#E53F01]">{player.scoutRatingsCount}</span>
                             </div>
-                            <div className="py-3 flex items-center justify-between last:pb-0">
-                                <span className="text-sm text-[#475569] inline-flex items-center gap-2">
-                                    <Star className="w-3.5 h-3.5 text-[#94A3B8]" />
+                            <div className="flex items-center justify-between py-3 last:pb-0">
+                                <span className="inline-flex items-center gap-2 text-sm text-[#475569]">
+                                    <Star className="h-3.5 w-3.5 text-[#94A3B8]" />
                                     Average Rating
                                 </span>
-                                <span className="font-mono font-bold text-[#E53F01] text-sm inline-flex items-center gap-1">
-                                    <Star className="w-3 h-3 fill-[#E53F01] text-[#E53F01]" />
+                                <span className="inline-flex items-center gap-1 font-mono text-sm font-bold text-[#E53F01]">
+                                    <Star className="h-3 w-3 fill-[#E53F01] text-[#E53F01]" />
                                     {player.avgRating.toFixed(1)}
                                 </span>
                             </div>
@@ -799,28 +663,19 @@ export default function PlayerDetail() {
                     </div>
 
                     {/* ▶ VIEW BY COUNTRY */}
-                    <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
-                        <h3 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold mb-4">
-                            Views by Country
-                        </h3>
+                    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-5">
+                        <h3 className="mb-4 text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Views by Country</h3>
                         <div className="space-y-2.5">
                             {player.viewsByCountry.map((entry) => {
                                 const pct = (entry.count / maxCountryViews) * 100;
                                 return (
                                     <div key={entry.country}>
-                                        <div className="flex items-center justify-between mb-1">
-                                            <span className="text-xs text-[#0F172A] font-medium">
-                                                {entry.country}
-                                            </span>
-                                            <span className="font-mono font-bold text-[#E53F01] text-xs">
-                                                {entry.count}
-                                            </span>
+                                        <div className="mb-1 flex items-center justify-between">
+                                            <span className="text-xs font-medium text-[#0F172A]">{entry.country}</span>
+                                            <span className="font-mono text-xs font-bold text-[#E53F01]">{entry.count}</span>
                                         </div>
-                                        <div className="h-1.5 bg-[#FFF3EB] rounded-full overflow-hidden">
-                                            <div
-                                                className="h-full bg-[#E53F01] rounded-full transition-all"
-                                                style={{ width: `${pct}%` }}
-                                            />
+                                        <div className="h-1.5 overflow-hidden rounded-full bg-[#FFF3EB]">
+                                            <div className="h-full rounded-full bg-[#E53F01] transition-all" style={{ width: `${pct}%` }} />
                                         </div>
                                     </div>
                                 );
@@ -829,13 +684,9 @@ export default function PlayerDetail() {
 
                         <Separator className="my-4 bg-[#F1F5F9]" />
 
-                        <div className="h-[8.75rem] -mx-2">
+                        <div className="-mx-2 h-[8.75rem]">
                             <ResponsiveContainer width="100%" height="100%">
-                                <BarChart
-                                    data={player.viewsByCountry}
-                                    layout="vertical"
-                                    margin={{ top: 0, right: 8, left: 0, bottom: 0 }}
-                                >
+                                <BarChart data={player.viewsByCountry} layout="vertical" margin={{ top: 0, right: 8, left: 0, bottom: 0 }}>
                                     <XAxis type="number" hide />
                                     <YAxis
                                         type="category"
@@ -865,15 +716,13 @@ export default function PlayerDetail() {
                     </div>
 
                     {/* ▶ RECENT VIEWS */}
-                    <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
-                        <h3 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
-                            Recent Views
-                        </h3>
+                    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-5">
+                        <h3 className="mb-3 text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Recent Views</h3>
                         <div className="space-y-3">
                             {player.recentViews.map((view) => (
                                 <div key={view.id} className="flex items-center gap-3">
-                                    <Avatar className="w-9 h-9 shrink-0">
-                                        <AvatarFallback className="bg-[#F1F5F9] text-[#475569] font-bold text-[0.625rem]">
+                                    <Avatar className="h-9 w-9 shrink-0">
+                                        <AvatarFallback className="bg-[#F1F5F9] text-[0.625rem] font-bold text-[#475569]">
                                             {view.viewer
                                                 .split(' ')
                                                 .slice(0, 2)
@@ -881,14 +730,12 @@ export default function PlayerDetail() {
                                                 .join('')}
                                         </AvatarFallback>
                                     </Avatar>
-                                    <div className="flex-1 min-w-0">
-                                        <div className="text-sm font-medium text-[#0F172A] truncate">
-                                            {view.viewer}
-                                        </div>
-                                        <div className="flex items-center gap-1.5 mt-0.5">
+                                    <div className="min-w-0 flex-1">
+                                        <div className="truncate text-sm font-medium text-[#0F172A]">{view.viewer}</div>
+                                        <div className="mt-0.5 flex items-center gap-1.5">
                                             <Badge
                                                 variant="outline"
-                                                className="text-[0.5625rem] uppercase tracking-wide font-bold px-1.5 py-0 h-4 border-[#E2E8F0] text-[#475569] bg-[#F8FAFC]"
+                                                className="h-4 border-[#E2E8F0] bg-[#F8FAFC] px-1.5 py-0 text-[0.5625rem] font-bold tracking-wide text-[#475569] uppercase"
                                             >
                                                 {view.role}
                                             </Badge>
@@ -903,38 +750,33 @@ export default function PlayerDetail() {
                     </div>
 
                     {/* ▶ SUBSCRIPTION */}
-                    <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
-                        <h3 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
-                            Subscription
-                        </h3>
-                        <div className="flex items-center justify-between mb-3">
-                            <Badge className="bg-[#E53F01] text-white hover:bg-[#E53F01] text-xs uppercase tracking-wide font-bold px-2.5 py-1 rounded-md">
+                    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-5">
+                        <h3 className="mb-3 text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Subscription</h3>
+                        <div className="mb-3 flex items-center justify-between">
+                            <Badge className="rounded-md bg-[#E53F01] px-2.5 py-1 text-xs font-bold tracking-wide text-white uppercase hover:bg-[#E53F01]">
                                 Premium
                             </Badge>
                         </div>
                         <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
                                 <span className="text-[#94A3B8]">Renews</span>
-                                <span className="text-[#475569] font-mono">{player.subscriptionRenews}</span>
+                                <span className="font-mono text-[#475569]">{player.subscriptionRenews}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-[#94A3B8]">Joined</span>
-                                <span className="text-[#475569] font-mono">{player.registeredAt}</span>
+                                <span className="font-mono text-[#475569]">{player.registeredAt}</span>
                             </div>
                         </div>
 
                         <Separator className="my-4 bg-[#F1F5F9]" />
 
                         <div className="space-y-2">
-                            <Button
-                                variant="outline"
-                                className="w-full border-[#E2E8F0] text-[#475569] hover:bg-[#F8FAFC] text-sm justify-center"
-                            >
+                            <Button variant="outline" className="w-full justify-center border-[#E2E8F0] text-sm text-[#475569] hover:bg-[#F8FAFC]">
                                 Change Plan
                             </Button>
                             <Button
                                 variant="outline"
-                                className="w-full text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600 text-sm justify-center"
+                                className="w-full justify-center border-red-200 text-sm text-red-500 hover:bg-red-50 hover:text-red-600"
                             >
                                 Revoke Subscription
                             </Button>
@@ -942,63 +784,46 @@ export default function PlayerDetail() {
                     </div>
 
                     {/* ▶ ADMIN NOTES */}
-                    <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
-                        <h3 className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-bold mb-3">
-                            Admin Notes
-                        </h3>
+                    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-5">
+                        <h3 className="mb-3 text-[0.625rem] font-bold tracking-widest text-[#94A3B8] uppercase">Admin Notes</h3>
                         <textarea
                             value={adminNote}
                             onChange={(e) => setAdminNote(e.target.value)}
                             placeholder="Add internal notes about this player..."
-                            className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl w-full h-24 text-sm px-3 py-2 text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-orange-100 resize-none"
+                            className="h-24 w-full resize-none rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#E53F01] focus:ring-2 focus:ring-orange-100 focus:outline-none"
                         />
-                        <Button
-                            onClick={handleSaveNote}
-                            className="bg-[#E53F01] text-white hover:bg-[#E53F01] text-sm w-full mt-3 font-semibold"
-                        >
+                        <Button onClick={handleSaveNote} className="mt-3 w-full bg-[#E53F01] text-sm font-semibold text-white hover:bg-[#E53F01]">
                             Save Note
                         </Button>
                     </div>
 
                     {/* ▶ DANGER ZONE */}
-                    <div className="bg-white border border-red-100 rounded-2xl p-5">
-                        <h3 className="text-red-600 text-[0.625rem] uppercase tracking-widest font-bold mb-3">
-                            Danger Zone
-                        </h3>
+                    <div className="rounded-2xl border border-red-100 bg-white p-5">
+                        <h3 className="mb-3 text-[0.625rem] font-bold tracking-widest text-red-600 uppercase">Danger Zone</h3>
                         <Dialog open={suspendDialogOpen} onOpenChange={setSuspendDialogOpen}>
                             <DialogTrigger asChild>
                                 <Button
                                     variant="outline"
-                                    className="bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100 hover:text-amber-800 text-sm w-full rounded-xl py-2 justify-center font-semibold"
+                                    className="w-full justify-center rounded-xl border border-amber-200 bg-amber-50 py-2 text-sm font-semibold text-amber-700 hover:bg-amber-100 hover:text-amber-800"
                                 >
-                                    <Ban className="w-4 h-4 mr-2" />
-                                    Suspend Profile
+                                    <Ban className="mr-2 h-4 w-4" />
+                                    Suspend Football Identity
                                 </Button>
                             </DialogTrigger>
                             <DialogContent className="rounded-2xl">
                                 <DialogHeader>
-                                    <DialogTitle className="font-display text-xl text-[#0F172A]">
-                                        Suspend this profile?
-                                    </DialogTitle>
+                                    <DialogTitle className="font-display text-xl text-[#0F172A]">Suspend this football identity?</DialogTitle>
                                     <DialogDescription className="text-sm text-[#475569]">
-                                        {player.name}'s profile will be hidden from public discovery
-                                        and search results. Scouts and agents will not be able to
-                                        view or contact this player. You can reactivate at any time.
+                                        {player.name}'s football identity will be hidden from public discovery and search results. Scouts and agents
+                                        will not be able to view or contact this player. You can reactivate at any time.
                                     </DialogDescription>
                                 </DialogHeader>
-                                <DialogFooter className="flex flex-col sm:flex-row gap-2">
-                                    <Button
-                                        variant="outline"
-                                        onClick={() => setSuspendDialogOpen(false)}
-                                        className="border-[#E2E8F0] text-[#475569]"
-                                    >
+                                <DialogFooter className="flex flex-col gap-2 sm:flex-row">
+                                    <Button variant="outline" onClick={() => setSuspendDialogOpen(false)} className="border-[#E2E8F0] text-[#475569]">
                                         Cancel
                                     </Button>
-                                    <Button
-                                        onClick={handleSuspend}
-                                        className="bg-amber-600 text-white hover:bg-amber-700"
-                                    >
-                                        Suspend Profile
+                                    <Button onClick={handleSuspend} className="bg-amber-600 text-white hover:bg-amber-700">
+                                        Suspend football identity
                                     </Button>
                                 </DialogFooter>
                             </DialogContent>
@@ -1008,35 +833,25 @@ export default function PlayerDetail() {
                             <DialogTrigger asChild>
                                 <Button
                                     variant="outline"
-                                    className="bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 hover:text-red-700 text-sm w-full rounded-xl py-2 mt-2 justify-center font-semibold"
+                                    className="mt-2 w-full justify-center rounded-xl border border-red-200 bg-red-50 py-2 text-sm font-semibold text-red-600 hover:bg-red-100 hover:text-red-700"
                                 >
-                                    <Trash2 className="w-4 h-4 mr-2" />
+                                    <Trash2 className="mr-2 h-4 w-4" />
                                     Delete Player
                                 </Button>
                             </DialogTrigger>
                             <DialogContent className="rounded-2xl">
                                 <DialogHeader>
-                                    <DialogTitle className="font-display text-xl text-[#0F172A]">
-                                        Delete {player.name}?
-                                    </DialogTitle>
+                                    <DialogTitle className="font-display text-xl text-[#0F172A]">Delete {player.name}?</DialogTitle>
                                     <DialogDescription className="text-sm text-[#475569]">
-                                        This action is permanent. All profile data, scout ratings,
-                                        view history, and subscription records will be permanently
-                                        deleted. This cannot be undone.
+                                        This action is permanent. All football identity data, scout ratings, view history, and subscription records
+                                        will be permanently deleted. This cannot be undone.
                                     </DialogDescription>
                                 </DialogHeader>
-                                <DialogFooter className="flex flex-col sm:flex-row gap-2">
-                                    <Button
-                                        variant="outline"
-                                        onClick={() => setDeleteDialogOpen(false)}
-                                        className="border-[#E2E8F0] text-[#475569]"
-                                    >
+                                <DialogFooter className="flex flex-col gap-2 sm:flex-row">
+                                    <Button variant="outline" onClick={() => setDeleteDialogOpen(false)} className="border-[#E2E8F0] text-[#475569]">
                                         Cancel
                                     </Button>
-                                    <Button
-                                        onClick={handleDelete}
-                                        className="bg-red-600 text-white hover:bg-red-700"
-                                    >
+                                    <Button onClick={handleDelete} className="bg-red-600 text-white hover:bg-red-700">
                                         Delete Permanently
                                     </Button>
                                 </DialogFooter>

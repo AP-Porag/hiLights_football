@@ -1,25 +1,12 @@
-import { useState, FormEvent, useEffect } from 'react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Link, useForm } from '@inertiajs/react';
-import Select from 'react-select';
-import { z } from 'zod';
+import { format } from 'date-fns';
+import { ArrowLeft, Calendar, Check, ChevronLeft, ChevronRight, Eye, EyeOff, Zap } from 'lucide-react';
+import { FormEvent, useEffect, useState } from 'react';
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import {
-    Zap,
-    Search,
-    Briefcase,
-    Building2,
-    Eye,
-    EyeOff,
-    ArrowLeft,
-    Check,
-    Calendar,
-    ChevronLeft,
-    ChevronRight,
-} from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { format } from 'date-fns';
-import { FaWhatsapp } from 'react-icons/fa';
+import Select from 'react-select';
+import { z } from 'zod';
 
 type RoleId = 'player' | 'scout' | 'agent' | 'club';
 
@@ -34,7 +21,7 @@ const ROLES: RoleOption[] = [
     {
         id: 'player',
         title: 'Player',
-        description: 'Build your profile, upload highlights, and get discovered by scouts and clubs worldwide.',
+        description: 'Build your football identity, upload highlights, and get discovered by scouts and clubs worldwide.',
         Icon: Zap,
     },
 ];
@@ -48,57 +35,44 @@ type Props = {
     countries: Country[];
 };
 
-const registerSchema = z.object({
-    role: z.enum(['player', 'scout', 'agent', 'club']),
-    name: z.string().min(2, 'Name is required'),
-    email: z.string().email('Invalid email'),
-    password: z.string().min(8, 'Password must be at least 8 characters'),
-    password_confirmation: z.string(),
-    dob: z.string().optional(),
-    gender: z.string().optional(),
-    nationality: z.array(z.string()).optional(),
-    country: z.string().optional(),
-    organization_name: z.string().optional(),
-    whatsapp: z.string().min(1, 'WhatsApp number is required').refine(
-        (val) => isValidPhoneNumber(val),
-        { message: 'Enter a valid WhatsApp number for the selected country' }
-    ),
-    terms: z.boolean().refine((val) => val === true, {
-        message: 'You must accept terms',
-    }),
-})
+const registerSchema = z
+    .object({
+        role: z.enum(['player', 'scout', 'agent', 'club']),
+        name: z.string().min(2, 'Name is required'),
+        email: z.string().email('Invalid email'),
+        password: z.string().min(8, 'Password must be at least 8 characters'),
+        password_confirmation: z.string(),
+        dob: z.string().optional(),
+        gender: z.string().optional(),
+        nationality: z.array(z.string()).optional(),
+        country: z.string().optional(),
+        organization_name: z.string().optional(),
+        whatsapp: z
+            .string()
+            .min(1, 'WhatsApp number is required')
+            .refine((val) => isValidPhoneNumber(val), { message: 'Enter a valid WhatsApp number for the selected country' }),
+        terms: z.boolean().refine((val) => val === true, {
+            message: 'You must accept terms',
+        }),
+    })
     .refine((data) => data.password === data.password_confirmation, {
         message: "Passwords don't match",
         path: ['password_confirmation'],
     })
-    .refine(
-        (data) => data.role !== 'player' || (data.gender && data.gender.length > 0),
-        {
-            message: 'Gender is required',
-            path: ['gender'],
-        }
-    );
+    .refine((data) => data.role !== 'player' || (data.gender && data.gender.length > 0), {
+        message: 'Gender is required',
+        path: ['gender'],
+    });
 
-const MONTHS = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December',
-];
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 // ── Custom professional date-of-birth calendar ──────────────────────────
-function DobCalendar({
-    value,
-    onSelect,
-}: {
-    value?: Date;
-    onSelect: (d: Date) => void;
-}) {
+function DobCalendar({ value, onSelect }: { value?: Date; onSelect: (d: Date) => void }) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const minDate = new Date(1950, 0, 1);
-    const [viewDate, setViewDate] = useState<Date>(
-        value ?? new Date(2005, 0, 1)
-    );
+    const [viewDate, setViewDate] = useState<Date>(value ?? new Date(2005, 0, 1));
     const year = viewDate.getFullYear();
     const month = viewDate.getMonth();
     const years: number[] = [];
@@ -109,8 +83,7 @@ function DobCalendar({
     for (let i = 0; i < firstDayOffset; i++) cells.push(null);
     for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
     const isDisabled = (d: Date) => d > today || d < minDate;
-    const isSelected = (d: Date) =>
-        value ? d.toDateString() === value.toDateString() : false;
+    const isSelected = (d: Date) => (value ? d.toDateString() === value.toDateString() : false);
     const isToday = (d: Date) => d.toDateString() === today.toDateString();
     const goPrev = () => setViewDate(new Date(year, month - 1, 1));
     const goNext = () => setViewDate(new Date(year, month + 1, 1));
@@ -120,22 +93,20 @@ function DobCalendar({
     return (
         <div className="w-[320px] p-4">
             {/* Header — month/year dropdowns + arrows */}
-            <div className="flex items-center justify-between gap-2 mb-4">
+            <div className="mb-4 flex items-center justify-between gap-2">
                 <button
                     type="button"
                     onClick={goPrev}
                     disabled={!canGoPrev}
-                    className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#F5F5F5] hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01] disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#2A2A2A] text-[#F5F5F5] transition-colors hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01] disabled:pointer-events-none disabled:opacity-30"
                 >
                     <ChevronLeft className="h-4 w-4" />
                 </button>
                 <div className="flex items-center gap-2">
                     <select
                         value={month}
-                        onChange={(e) =>
-                            setViewDate(new Date(year, Number(e.target.value), 1))
-                        }
-                        className="h-8 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[13px] font-medium text-[#F5F5F5] cursor-pointer focus:outline-none focus:border-[#E53F01] hover:border-[#3A3A3A] transition-colors"
+                        onChange={(e) => setViewDate(new Date(year, Number(e.target.value), 1))}
+                        className="h-8 cursor-pointer rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[13px] font-medium text-[#F5F5F5] transition-colors hover:border-[#3A3A3A] focus:border-[#E53F01] focus:outline-none"
                     >
                         {MONTHS.map((m, i) => (
                             <option key={m} value={i} className="bg-[#1F1F1F]">
@@ -145,10 +116,8 @@ function DobCalendar({
                     </select>
                     <select
                         value={year}
-                        onChange={(e) =>
-                            setViewDate(new Date(Number(e.target.value), month, 1))
-                        }
-                        className="h-8 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[13px] font-medium text-[#F5F5F5] cursor-pointer focus:outline-none focus:border-[#E53F01] hover:border-[#3A3A3A] transition-colors"
+                        onChange={(e) => setViewDate(new Date(Number(e.target.value), month, 1))}
+                        className="h-8 cursor-pointer rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[13px] font-medium text-[#F5F5F5] transition-colors hover:border-[#3A3A3A] focus:border-[#E53F01] focus:outline-none"
                     >
                         {years.map((y) => (
                             <option key={y} value={y} className="bg-[#1F1F1F]">
@@ -161,18 +130,15 @@ function DobCalendar({
                     type="button"
                     onClick={goNext}
                     disabled={!canGoNext}
-                    className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#F5F5F5] hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01] disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#2A2A2A] text-[#F5F5F5] transition-colors hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01] disabled:pointer-events-none disabled:opacity-30"
                 >
                     <ChevronRight className="h-4 w-4" />
                 </button>
             </div>
             {/* Weekday header */}
-            <div className="grid grid-cols-7 mb-2">
+            <div className="mb-2 grid grid-cols-7">
                 {WEEKDAYS.map((w) => (
-                    <div
-                        key={w}
-                        className="h-8 flex items-center justify-center text-[11px] font-semibold uppercase text-[#9A9A9A]"
-                    >
+                    <div key={w} className="flex h-8 items-center justify-center text-[11px] font-semibold text-[#9A9A9A] uppercase">
                         {w}
                     </div>
                 ))}
@@ -191,14 +157,14 @@ function DobCalendar({
                             disabled={disabled}
                             onClick={() => onSelect(d)}
                             className={[
-                                'h-9 w-9 mx-auto flex items-center justify-center rounded-lg text-[13px] font-medium transition-colors',
+                                'mx-auto flex h-9 w-9 items-center justify-center rounded-lg text-[13px] font-medium transition-colors',
                                 selected
-                                    ? 'bg-[#E53F01] text-[#0D0D0D] font-semibold'
+                                    ? 'bg-[#E53F01] font-semibold text-[#0D0D0D]'
                                     : disabled
-                                        ? 'text-[#3A3A3A] pointer-events-none'
-                                        : todayCell
-                                            ? 'text-[#E53F01] font-semibold hover:bg-[rgba(255,107,0,0.12)]'
-                                            : 'text-[#F5F5F5] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]',
+                                      ? 'pointer-events-none text-[#3A3A3A]'
+                                      : todayCell
+                                        ? 'font-semibold text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]'
+                                        : 'text-[#F5F5F5] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]',
                             ].join(' ')}
                         >
                             {d.getDate()}
@@ -297,7 +263,7 @@ export default function Register({ countries = [] }: Props) {
         nationality: [] as string[],
         country: '',
         organization_name: '',
-        whatsapp: '',   // E.164 format e.g. +8801700000000 — Twilio OTP-er jonno ready
+        whatsapp: '', // E.164 format e.g. +8801700000000 — Twilio OTP-er jonno ready
         terms: false as boolean,
     });
 
@@ -344,9 +310,7 @@ export default function Register({ countries = [] }: Props) {
         setClientErrors({});
         post('/register');
     };
-    const sortedCountries = [...countries].sort((a, b) =>
-        a.name.localeCompare(b.name)
-    );
+    const sortedCountries = [...countries].sort((a, b) => a.name.localeCompare(b.name));
 
     const options = sortedCountries.map((c) => ({
         value: c.code,
@@ -373,11 +337,7 @@ export default function Register({ countries = [] }: Props) {
         }),
         option: (base: any, state: any) => ({
             ...base,
-            backgroundColor: state.isSelected
-                ? '#E53F01'
-                : state.isFocused
-                    ? '#2A2A2A'
-                    : '#1F1F1F',
+            backgroundColor: state.isSelected ? '#E53F01' : state.isFocused ? '#2A2A2A' : '#1F1F1F',
             color: state.isSelected ? '#0D0D0D' : '#F5F5F5',
             fontWeight: state.isSelected ? '600' : '400',
             padding: '10px 12px',
@@ -409,49 +369,28 @@ export default function Register({ countries = [] }: Props) {
         <div className="relative min-h-screen bg-[#0D0D0D] font-sans antialiased">
             <PhoneDarkStyles />
             {/* TOP — Logo + heading */}
-            <div className="py-10 text-center px-6">
+            <div className="px-6 py-10 text-center">
                 <Link href="/" className="inline-block">
-                    <img
-                        src="/images/logo/final_logo.png"
-                        className="h-14 w-auto mx-auto"
-                        alt="HiLights Football"
-                    />
+                    <img src="/images/logo/final_logo.png" className="mx-auto h-14 w-auto" alt="HiLights Football" />
                 </Link>
-                <h1 className="font-display font-black text-3xl sm:text-4xl text-[#F5F5F5] mt-6 tracking-tight">
-                    Join HiLights Football
-                </h1>
-                <p className="text-[#9A9A9A] text-sm sm:text-base mt-2 max-w-md mx-auto">
-                    Build your profile, get discovered, and unlock the world's leading football talent network.
+                <h1 className="font-display mt-6 text-3xl font-black tracking-tight text-[#F5F5F5] sm:text-4xl">Join HiLights Football</h1>
+                <p className="mx-auto mt-2 max-w-md text-sm text-[#9A9A9A] sm:text-base">
+                    Build your football identity, get discovered, and unlock the world's leading football talent network.
                 </p>
                 {/* Step dots */}
-                <div className="flex items-center justify-center gap-2 mt-6">
-                    <span
-                        className={
-                            'h-2.5 rounded-full transition-all duration-300 ' +
-                            (step === 0 ? 'w-8 bg-[#E53F01]' : 'w-2.5 bg-[#E53F01]')
-                        }
-                    />
-                    <span
-                        className={
-                            'h-2.5 rounded-full transition-all duration-300 ' +
-                            (step === 1 ? 'w-8 bg-[#E53F01]' : 'w-2.5 bg-[#2A2A2A]')
-                        }
-                    />
+                <div className="mt-6 flex items-center justify-center gap-2">
+                    <span className={'h-2.5 rounded-full transition-all duration-300 ' + (step === 0 ? 'w-8 bg-[#E53F01]' : 'w-2.5 bg-[#E53F01]')} />
+                    <span className={'h-2.5 rounded-full transition-all duration-300 ' + (step === 1 ? 'w-8 bg-[#E53F01]' : 'w-2.5 bg-[#2A2A2A]')} />
                 </div>
-                <p className="text-xs font-mono uppercase tracking-wider text-[#555555] mt-3">
-                    Step {step + 1} of 2 —{' '}
-                    {step === 0 ? 'Choose your role' : 'Your details'}
+                <p className="mt-3 font-mono text-xs tracking-wider text-[#555555] uppercase">
+                    Step {step + 1} of 2 — {step === 0 ? 'Choose your role' : 'Your details'}
                 </p>
             </div>
-            {clientErrors.role && (
-                <p className="text-xs text-[#E53F01] mt-2 text-center">
-                    {clientErrors.role}
-                </p>
-            )}
+            {clientErrors.role && <p className="mt-2 text-center text-xs text-[#E53F01]">{clientErrors.role}</p>}
             {/* STEP 1 — ROLE CARDS */}
             {step === 0 && (
-                <div className="max-w-[860px] mx-auto px-6 pb-16">
-                    <div className="flex flex-wrap justify-center gap-4 mt-2">
+                <div className="mx-auto max-w-[860px] px-6 pb-16">
+                    <div className="mt-2 flex flex-wrap justify-center gap-4">
                         {ROLES.map((role) => {
                             const isSelected = selectedRole === role.id;
                             const Icon = role.Icon;
@@ -461,35 +400,24 @@ export default function Register({ countries = [] }: Props) {
                                     type="button"
                                     onClick={() => handleSelectRole(role.id)}
                                     className={
-                                        'group w-full sm:w-[280px] text-center cursor-pointer rounded-2xl border-2 p-7 transition-all duration-200 '
-                                        +
+                                        'group w-full cursor-pointer rounded-2xl border-2 p-7 text-center transition-all duration-200 sm:w-[280px] ' +
                                         (isSelected
                                             ? 'border-[#E53F01] bg-[rgba(255,107,0,0.08)] shadow-[0_0_0_4px_rgba(255,107,0,0.15)]'
-                                            : 'border-[#2A2A2A] bg-[#161616] hover:border-[#E53F01] hover:shadow-[0_0_0_4px_rgba(255,107,0,0.08)] hover:-translate-y-1')
+                                            : 'border-[#2A2A2A] bg-[#161616] hover:-translate-y-1 hover:border-[#E53F01] hover:shadow-[0_0_0_4px_rgba(255,107,0,0.08)]')
                                     }
                                 >
-                                    <div className="mx-auto inline-flex items-center justify-center bg-[rgba(255,107,0,0.15)] rounded-full p-3">
-                                        <Icon
-                                            className="h-[44px] w-[44px] text-[#E53F01]"
-                                            strokeWidth={2}
-                                        />
+                                    <div className="mx-auto inline-flex items-center justify-center rounded-full bg-[rgba(255,107,0,0.15)] p-3">
+                                        <Icon className="h-[44px] w-[44px] text-[#E53F01]" strokeWidth={2} />
                                     </div>
-                                    <h3 className="font-bold text-lg text-[#F5F5F5] mt-4">
-                                        {role.title}
-                                    </h3>
-                                    <p className="text-xs text-[#9A9A9A] mt-2 leading-relaxed">
-                                        {role.description}
-                                    </p>
+                                    <h3 className="mt-4 text-lg font-bold text-[#F5F5F5]">{role.title}</h3>
+                                    <p className="mt-2 text-xs leading-relaxed text-[#9A9A9A]">{role.description}</p>
                                 </button>
                             );
                         })}
                     </div>
-                    <p className="text-center text-sm text-[#9A9A9A] mt-10">
+                    <p className="mt-10 text-center text-sm text-[#9A9A9A]">
                         Already have an account?{' '}
-                        <Link
-                            href="/login"
-                            className="text-[#E53F01] hover:underline font-semibold"
-                        >
+                        <Link href="/login" className="font-semibold text-[#E53F01] hover:underline">
                             Sign in
                         </Link>
                     </p>
@@ -497,16 +425,13 @@ export default function Register({ countries = [] }: Props) {
             )}
             {/* STEP 2 — FORM */}
             {step === 1 && selectedRoleObj && (
-                <div className="max-w-[440px] mx-auto px-6 pb-16">
-                    <form
-                        onSubmit={handleSubmit}
-                        className="bg-[#161616] rounded-2xl border border-[#2A2A2A] p-8"
-                    >
+                <div className="mx-auto max-w-[440px] px-6 pb-16">
+                    <form onSubmit={handleSubmit} className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-8">
                         {/* Selected role badge */}
-                        <div className="flex items-center justify-between gap-3 mb-6 pb-6 border-b border-[#2A2A2A]">
-                            <div className="inline-flex items-center gap-2.5 bg-[rgba(255,107,0,0.12)] border border-[#E53F01] rounded-full pl-2.5 pr-3.5 py-1.5">
+                        <div className="mb-6 flex items-center justify-between gap-3 border-b border-[#2A2A2A] pb-6">
+                            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#E53F01] bg-[rgba(255,107,0,0.12)] py-1.5 pr-3.5 pl-2.5">
                                 <selectedRoleObj.Icon className="h-4 w-4 text-[#E53F01]" />
-                                <span className="text-xs font-semibold text-[#E53F01] uppercase tracking-wider">
+                                <span className="text-xs font-semibold tracking-wider text-[#E53F01] uppercase">
                                     Registering as {selectedRoleObj.title}
                                 </span>
                             </div>
@@ -521,61 +446,44 @@ export default function Register({ countries = [] }: Props) {
                         </div>
                         {/* Full Name */}
                         <div className="mb-4">
-                            <label
-                                htmlFor="name"
-                                className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
-                            >
+                            <label htmlFor="name" className="mb-1.5 block text-xs font-semibold tracking-wider text-[#F5F5F5] uppercase">
                                 Full Name
                             </label>
                             <input
                                 id="name"
                                 type="text"
                                 value={data.name}
-                                onChange={(e) =>
-                                    setData('name', e.target.value)
-                                }
+                                onChange={(e) => setData('name', e.target.value)}
                                 placeholder="e.g. Lucas Martinez"
-                                className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                className="h-11 w-full rounded-xl border border-[#2A2A2A] bg-[#111111] px-3.5 text-sm text-[#F5F5F5] transition placeholder:text-[#555555] focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] focus:outline-none"
                             />
                             {(clientErrors.name || errors.name) && (
-                                <p className="text-xs text-[#E53F01] mt-1.5">
-                                    {clientErrors.name || errors.name}
-                                </p>
+                                <p className="mt-1.5 text-xs text-[#E53F01]">{clientErrors.name || errors.name}</p>
                             )}
                         </div>
                         {/* Email */}
                         <div className="mb-4">
-                            <label
-                                htmlFor="email"
-                                className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
-                            >
+                            <label htmlFor="email" className="mb-1.5 block text-xs font-semibold tracking-wider text-[#F5F5F5] uppercase">
                                 Email Address
                             </label>
                             <input
                                 id="email"
                                 type="email"
                                 value={data.email}
-                                onChange={(e) =>
-                                    setData('email', e.target.value)
-                                }
+                                onChange={(e) => setData('email', e.target.value)}
                                 placeholder="you@example.com"
-                                className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                className="h-11 w-full rounded-xl border border-[#2A2A2A] bg-[#111111] px-3.5 text-sm text-[#F5F5F5] transition placeholder:text-[#555555] focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] focus:outline-none"
                             />
-                            <p className="text-[11px] text-[#94A3B8] mt-1.5">
+                            <p className="mt-1.5 text-[11px] text-[#94A3B8]">
                                 We'll send a verification code to this email. You must verify it before accessing your account.
                             </p>
                             {(clientErrors.email || errors.email) && (
-                                <p className="text-xs text-[#E53F01] mt-1.5">
-                                    {clientErrors.email || errors.email}
-                                </p>
+                                <p className="mt-1.5 text-xs text-[#E53F01]">{clientErrors.email || errors.email}</p>
                             )}
                         </div>
                         {/* Password */}
                         <div className="mb-4">
-                            <label
-                                htmlFor="password"
-                                className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
-                            >
+                            <label htmlFor="password" className="mb-1.5 block text-xs font-semibold tracking-wider text-[#F5F5F5] uppercase">
                                 Password
                             </label>
                             <div className="relative">
@@ -583,42 +491,28 @@ export default function Register({ countries = [] }: Props) {
                                     id="password"
                                     type={showPassword ? 'text' : 'password'}
                                     value={data.password}
-                                    onChange={(e) =>
-                                        setData('password', e.target.value)
-                                    }
+                                    onChange={(e) => setData('password', e.target.value)}
                                     placeholder="Minimum 8 characters"
-                                    className="w-full h-11 pl-3.5 pr-11 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                    className="h-11 w-full rounded-xl border border-[#2A2A2A] bg-[#111111] pr-11 pl-3.5 text-sm text-[#F5F5F5] transition placeholder:text-[#555555] focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] focus:outline-none"
                                 />
                                 <button
                                     type="button"
-                                    onClick={() =>
-                                        setShowPassword(!showPassword)
-                                    }
-                                    aria-label={
-                                        showPassword
-                                            ? 'Hide password'
-                                            : 'Show password'
-                                    }
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9A9A9A] hover:text-[#F5F5F5]"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                    className="absolute top-1/2 right-3 -translate-y-1/2 text-[#9A9A9A] hover:text-[#F5F5F5]"
                                 >
-                                    {showPassword ? (
-                                        <EyeOff className="h-4 w-4" />
-                                    ) : (
-                                        <Eye className="h-4 w-4" />
-                                    )}
+                                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                 </button>
                             </div>
                             {(clientErrors.password || errors.password) && (
-                                <p className="text-xs text-[#DC2626] mt-1.5">
-                                    {clientErrors.password || errors.password}
-                                </p>
+                                <p className="mt-1.5 text-xs text-[#DC2626]">{clientErrors.password || errors.password}</p>
                             )}
                         </div>
                         {/* Confirm Password */}
                         <div className="mb-4">
                             <label
                                 htmlFor="password_confirmation"
-                                className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
+                                className="mb-1.5 block text-xs font-semibold tracking-wider text-[#F5F5F5] uppercase"
                             >
                                 Confirm Password
                             </label>
@@ -627,49 +521,27 @@ export default function Register({ countries = [] }: Props) {
                                     id="password_confirmation"
                                     type={showConfirm ? 'text' : 'password'}
                                     value={data.password_confirmation}
-                                    onChange={(e) =>
-                                        setData(
-                                            'password_confirmation',
-                                            e.target.value
-                                        )
-                                    }
+                                    onChange={(e) => setData('password_confirmation', e.target.value)}
                                     placeholder="Re-enter your password"
-                                    className="w-full h-11 pl-3.5 pr-11 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                    className="h-11 w-full rounded-xl border border-[#2A2A2A] bg-[#111111] pr-11 pl-3.5 text-sm text-[#F5F5F5] transition placeholder:text-[#555555] focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] focus:outline-none"
                                 />
                                 <button
                                     type="button"
-                                    onClick={() =>
-                                        setShowConfirm(!showConfirm)
-                                    }
-                                    aria-label={
-                                        showConfirm
-                                            ? 'Hide password'
-                                            : 'Show password'
-                                    }
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9A9A9A] hover:text-[#F5F5F5]"
+                                    onClick={() => setShowConfirm(!showConfirm)}
+                                    aria-label={showConfirm ? 'Hide password' : 'Show password'}
+                                    className="absolute top-1/2 right-3 -translate-y-1/2 text-[#9A9A9A] hover:text-[#F5F5F5]"
                                 >
-                                    {showConfirm ? (
-                                        <EyeOff className="h-4 w-4" />
-                                    ) : (
-                                        <Eye className="h-4 w-4" />
-                                    )}
+                                    {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                 </button>
                             </div>
-                            {(clientErrors.password_confirmation ||
-                                errors.password_confirmation) && (
-                                    <p className="text-xs text-[#E53F01] mt-1.5">
-                                        {clientErrors.password_confirmation ||
-                                            errors.password_confirmation}
-                                    </p>
-                                )}
+                            {(clientErrors.password_confirmation || errors.password_confirmation) && (
+                                <p className="mt-1.5 text-xs text-[#E53F01]">{clientErrors.password_confirmation || errors.password_confirmation}</p>
+                            )}
                         </div>
 
                         {/* ── WhatsApp Number (country code + number split, digit-restricted per country) ── */}
                         <div className="mb-4">
-                            <label
-                                htmlFor="whatsapp"
-                                className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
-                            >
+                            <label htmlFor="whatsapp" className="mb-1.5 block text-xs font-semibold tracking-wider text-[#F5F5F5] uppercase">
                                 WhatsApp Number
                             </label>
                             <PhoneInput
@@ -681,13 +553,11 @@ export default function Register({ countries = [] }: Props) {
                                 onChange={(value) => setData('whatsapp', value || '')}
                                 placeholder="Enter WhatsApp number"
                             />
-                            <p className="text-[11px] text-[#94A3B8] mt-1.5">
+                            <p className="mt-1.5 text-[11px] text-[#94A3B8]">
                                 We'll verify this via a WhatsApp OTP (or SMS if WhatsApp isn't available on this number).
                             </p>
                             {(clientErrors.whatsapp || errors.whatsapp) && (
-                                <p className="text-xs text-[#E53F01] mt-1.5">
-                                    {clientErrors.whatsapp || errors.whatsapp}
-                                </p>
+                                <p className="mt-1.5 text-xs text-[#E53F01]">{clientErrors.whatsapp || errors.whatsapp}</p>
                             )}
                         </div>
 
@@ -695,30 +565,26 @@ export default function Register({ countries = [] }: Props) {
                         {selectedRole === 'player' && (
                             <>
                                 <div className="mb-4">
-                                    <label className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5">
+                                    <label className="mb-1.5 block text-xs font-semibold tracking-wider text-[#F5F5F5] uppercase">
                                         Date of Birth
                                         {age !== null && (
-                                            <span className="ml-2 font-mono normal-case tracking-normal text-[#E53F01]">
-                                                · Age {age}
-                                            </span>
+                                            <span className="ml-2 font-mono tracking-normal text-[#E53F01] normal-case">· Age {age}</span>
                                         )}
                                     </label>
                                     <Popover open={openCalendar} onOpenChange={setOpenCalendar}>
                                         <PopoverTrigger asChild>
                                             <button
                                                 type="button"
-                                                className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] hover:border-[#3A3A3A] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition flex items-center justify-between group"
+                                                className="group flex h-11 w-full items-center justify-between rounded-xl border border-[#2A2A2A] bg-[#111111] px-3.5 text-sm text-[#F5F5F5] transition hover:border-[#3A3A3A] focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] focus:outline-none"
                                             >
                                                 <span className={data.dob ? 'text-[#F5F5F5]' : 'text-[#555555]'}>
-                                                    {data.dob
-                                                        ? format(new Date(data.dob), 'MMMM dd, yyyy')
-                                                        : 'Select your date of birth'}
+                                                    {data.dob ? format(new Date(data.dob), 'MMMM dd, yyyy') : 'Select your date of birth'}
                                                 </span>
-                                                <Calendar className="h-4 w-4 text-[#E53F01] group-hover:text-[#E53F01] transition" />
+                                                <Calendar className="h-4 w-4 text-[#E53F01] transition group-hover:text-[#E53F01]" />
                                             </button>
                                         </PopoverTrigger>
                                         <PopoverContent
-                                            className="w-auto p-0 bg-[#1F1F1F] border border-[#2A2A2A] shadow-2xl rounded-2xl"
+                                            className="w-auto rounded-2xl border border-[#2A2A2A] bg-[#1F1F1F] p-0 shadow-2xl"
                                             align="start"
                                         >
                                             <DobCalendar
@@ -731,15 +597,11 @@ export default function Register({ countries = [] }: Props) {
                                         </PopoverContent>
                                     </Popover>
                                     {(clientErrors.dob || errors.dob) && (
-                                        <p className="text-xs text-[#E53F01] mt-1.5">
-                                            {clientErrors.dob || errors.dob}
-                                        </p>
+                                        <p className="mt-1.5 text-xs text-[#E53F01]">{clientErrors.dob || errors.dob}</p>
                                     )}
                                 </div>
                                 <div className="mb-4">
-                                    <label className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5">
-                                        Gender
-                                    </label>
+                                    <label className="mb-1.5 block text-xs font-semibold tracking-wider text-[#F5F5F5] uppercase">Gender</label>
                                     <div className="flex gap-3">
                                         {[
                                             { v: 'M', l: 'Male' },
@@ -753,7 +615,7 @@ export default function Register({ countries = [] }: Props) {
                                                     type="button"
                                                     onClick={() => setData('gender', g.v)}
                                                     className={
-                                                        'flex-1 h-11 rounded-xl border text-sm font-semibold transition-colors ' +
+                                                        'h-11 flex-1 rounded-xl border text-sm font-semibold transition-colors ' +
                                                         (selected
                                                             ? 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01]'
                                                             : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A] hover:border-[#E53F01]')
@@ -765,27 +627,20 @@ export default function Register({ countries = [] }: Props) {
                                         })}
                                     </div>
                                     {(clientErrors.gender || errors.gender) && (
-                                        <p className="text-xs text-[#E53F01] mt-1.5">
-                                            {clientErrors.gender || errors.gender}
-                                        </p>
+                                        <p className="mt-1.5 text-xs text-[#E53F01]">{clientErrors.gender || errors.gender}</p>
                                     )}
                                 </div>
                                 <div className="mb-4">
                                     <label
                                         htmlFor="nationality"
-                                        className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
+                                        className="mb-1.5 block text-xs font-semibold tracking-wider text-[#F5F5F5] uppercase"
                                     >
                                         Nationality
                                     </label>
                                     <Select
                                         options={options}
                                         value={options.filter((o) => data.nationality.includes(o.value))}
-                                        onChange={(selected) =>
-                                            setData(
-                                                'nationality',
-                                                selected ? selected.map((o) => o.value) : []
-                                            )
-                                        }
+                                        onChange={(selected) => setData('nationality', selected ? selected.map((o) => o.value) : [])}
                                         isMulti
                                         placeholder="Select one or more nationalities"
                                         isSearchable
@@ -793,9 +648,7 @@ export default function Register({ countries = [] }: Props) {
                                         styles={selectStyles}
                                     />
                                     {(clientErrors.nationality || errors.nationality) && (
-                                        <p className="text-xs text-[#E53F01] mt-1.5">
-                                            {clientErrors.nationality || errors.nationality}
-                                        </p>
+                                        <p className="mt-1.5 text-xs text-[#E53F01]">{clientErrors.nationality || errors.nationality}</p>
                                     )}
                                 </div>
                             </>
@@ -806,31 +659,27 @@ export default function Register({ countries = [] }: Props) {
                                 <div className="mb-4">
                                     <label
                                         htmlFor="nationality"
-                                        className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
+                                        className="mb-1.5 block text-xs font-semibold tracking-wider text-[#F5F5F5] uppercase"
                                     >
                                         Country
                                     </label>
                                     <Select
                                         options={options}
                                         value={options.find((o) => o.value === data.country)}
-                                        onChange={(selected) =>
-                                            setData('country', selected?.value || '')
-                                        }
+                                        onChange={(selected) => setData('country', selected?.value || '')}
                                         placeholder="Select your country"
                                         isSearchable
                                         className="text-sm"
                                         styles={selectStyles}
                                     />
                                     {(clientErrors.nationality || errors.nationality) && (
-                                        <p className="text-xs text-[#E53F01] mt-1.5">
-                                            {clientErrors.country || errors.country}
-                                        </p>
+                                        <p className="mt-1.5 text-xs text-[#E53F01]">{clientErrors.country || errors.country}</p>
                                     )}
                                 </div>
                                 <div className="mb-4">
                                     <label
                                         htmlFor="organization_name"
-                                        className="block text-xs font-semibold text-[#F5F5F5] uppercase tracking-wider mb-1.5"
+                                        className="mb-1.5 block text-xs font-semibold tracking-wider text-[#F5F5F5] uppercase"
                                     >
                                         Organization Name
                                     </label>
@@ -838,16 +687,12 @@ export default function Register({ countries = [] }: Props) {
                                         id="organization_name"
                                         type="text"
                                         value={data.organization_name}
-                                        onChange={(e) =>
-                                            setData('organization_name', e.target.value)
-                                        }
+                                        onChange={(e) => setData('organization_name', e.target.value)}
                                         placeholder="e.g. FC Porto Scouting"
-                                        className="w-full h-11 px-3.5 rounded-xl bg-[#111111] border border-[#2A2A2A] text-sm text-[#F5F5F5] placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition"
+                                        className="h-11 w-full rounded-xl border border-[#2A2A2A] bg-[#111111] px-3.5 text-sm text-[#F5F5F5] transition placeholder:text-[#555555] focus:border-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] focus:outline-none"
                                     />
                                     {(clientErrors.organization_name || errors.organization_name) && (
-                                        <p className="text-xs text-[#E53F01] mt-1.5">
-                                            {clientErrors.organization_name || errors.organization_name}
-                                        </p>
+                                        <p className="mt-1.5 text-xs text-[#E53F01]">{clientErrors.organization_name || errors.organization_name}</p>
                                     )}
                                 </div>
                             </>
@@ -856,31 +701,23 @@ export default function Register({ countries = [] }: Props) {
                         {/* Agent / Club have no extra fields for now, only WhatsApp shown above */}
 
                         {/* Terms */}
-                        <label className="flex items-start gap-3 mt-5 mb-6 cursor-pointer group">
-                            <span className="relative flex-shrink-0 mt-0.5">
+                        <label className="group mt-5 mb-6 flex cursor-pointer items-start gap-3">
+                            <span className="relative mt-0.5 flex-shrink-0">
                                 <input
                                     type="checkbox"
                                     checked={data.terms}
-                                    onChange={(e) =>
-                                        setData('terms', e.target.checked)
-                                    }
-                                    className="peer appearance-none h-5 w-5 rounded-md border-2 border-[#2A2A2A] bg-[#111111] checked:bg-[#E53F01] checked:border-[#E53F01] focus:outline-none focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] transition cursor-pointer"
+                                    onChange={(e) => setData('terms', e.target.checked)}
+                                    className="peer h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-[#2A2A2A] bg-[#111111] transition checked:border-[#E53F01] checked:bg-[#E53F01] focus:ring-2 focus:ring-[rgba(255,107,0,0.15)] focus:outline-none"
                                 />
-                                <Check className="h-3.5 w-3.5 text-[#0D0D0D] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 peer-checked:opacity-100 pointer-events-none" />
+                                <Check className="pointer-events-none absolute top-1/2 left-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 text-[#0D0D0D] opacity-0 peer-checked:opacity-100" />
                             </span>
-                            <span className="text-xs text-[#9A9A9A] leading-relaxed">
+                            <span className="text-xs leading-relaxed text-[#9A9A9A]">
                                 I agree to the{' '}
-                                <Link
-                                    href="/terms"
-                                    className="text-[#E53F01] hover:underline font-semibold"
-                                >
+                                <Link href="/terms" className="font-semibold text-[#E53F01] hover:underline">
                                     Terms of Service
                                 </Link>{' '}
                                 and{' '}
-                                <Link
-                                    href="/privacy"
-                                    className="text-[#E53F01] hover:underline font-semibold"
-                                >
+                                <Link href="/privacy" className="font-semibold text-[#E53F01] hover:underline">
                                     Privacy Policy
                                 </Link>
                                 .
@@ -888,26 +725,21 @@ export default function Register({ countries = [] }: Props) {
                         </label>
                         <div>
                             {(clientErrors.terms || errors.terms) && (
-                                <p className="text-xs text-[#E53F01] mt-1.5">
-                                    {clientErrors.terms || errors.terms}
-                                </p>
+                                <p className="mt-1.5 text-xs text-[#E53F01]">{clientErrors.terms || errors.terms}</p>
                             )}
                         </div>
                         {/* Submit */}
                         <button
                             type="submit"
                             disabled={processing}
-                            className="w-full h-12 cursor-pointer rounded-xl bg-[#E53F01] hover:bg-[#E53F01] text-white font-bold text-sm uppercase tracking-wider transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                            className="h-12 w-full cursor-pointer rounded-xl bg-[#E53F01] text-sm font-bold tracking-wider text-white uppercase transition-colors hover:bg-[#E53F01] disabled:cursor-not-allowed disabled:opacity-60"
                         >
                             {processing ? 'Creating account…' : 'Create my account'}
                         </button>
                     </form>
-                    <p className="text-center text-sm text-[#9A9A9A] mt-4">
+                    <p className="mt-4 text-center text-sm text-[#9A9A9A]">
                         Already have an account?{' '}
-                        <Link
-                            href="/login"
-                            className="text-[#E53F01] hover:underline font-semibold"
-                        >
+                        <Link href="/login" className="font-semibold text-[#E53F01] hover:underline">
                             Sign in
                         </Link>
                     </p>

@@ -1,12 +1,10 @@
-
-import ThemeToggle from '@/components/shared/ThemeToggle';
+import PlayerSearchModal from '@/components/public/PlayerSearchModal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Link, usePage } from '@inertiajs/react';
-import { Menu, Search, Shield, User } from 'lucide-react';
+import { Menu, Search, User } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import PlayerSearchModal from '@/components/public/PlayerSearchModal';
 interface NavLink {
     label: string;
     href: string;
@@ -45,7 +43,7 @@ export default function PublicNavbar() {
             id: number;
             name: string;
             email: string;
-            role: string
+            role: string;
         } | null;
     };
     const isLoggedIn = !!auth?.user;
@@ -53,12 +51,12 @@ export default function PublicNavbar() {
         auth?.user?.role === 'player'
             ? '/player'
             : auth?.user?.role === 'agent'
-                ? '/agent'
-                : auth?.user?.role === 'club'
-                    ? '/club'
-                    : auth?.user?.role === 'admin'
-                        ? '/admin'
-                        : '/scouting';
+              ? '/agent'
+              : auth?.user?.role === 'club'
+                ? '/club'
+                : auth?.user?.role === 'admin'
+                  ? '/admin'
+                  : '/scouting';
     return (
         <header
             className={[
@@ -68,12 +66,12 @@ export default function PublicNavbar() {
                 'transition-shadow duration-200',
             ].join(' ')}
         >
-            <div className="mx-auto flex h-full max-w-7xl 2xl:max-w-[90rem] items-center justify-between gap-2 sm:gap-4 px-2 sm:px-4 md:px-6 xl:px-8">
+            <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-2 px-2 sm:gap-4 sm:px-4 md:px-6 xl:px-8 2xl:max-w-[90rem]">
                 {/* LEFT - Logo */}
                 <Link href="/" className="flex min-w-0 shrink items-center gap-2 lg:shrink-0" aria-label="HiLights Football home">
                     <img
                         src="/images/logo/final_logo.png"
-                        className="h-8 w-auto min-w-0 max-w-full max-lg:object-contain max-lg:object-left sm:h-10 lg:h-10 xl:h-12 2xl:h-14 md:mt-2 lg:mt-3"
+                        className="h-8 w-auto max-w-full min-w-0 max-lg:object-contain max-lg:object-left sm:h-10 md:mt-2 lg:mt-3 lg:h-10 xl:h-12 2xl:h-14"
                         alt="HiLights Football"
                     />
                     {/* <img src="/images/logo/final_logo.png" className="hidden h-12 w-auto md:h-20 dark:block" alt="HiLights Football" /> */}
@@ -122,12 +120,12 @@ export default function PublicNavbar() {
                             </Button>
                         </Link>
                     )}
-                    <Link href={isLoggedIn ? dashboardHref : "/register"}>
+                    <Link href={isLoggedIn ? dashboardHref : '/register'}>
                         <Button
                             size="sm"
                             className="cursor-pointer bg-[#E53F01] px-4 text-sm font-semibold text-white hover:bg-[#E53F01] xl:h-10 xl:text-base 2xl:h-12 2xl:px-6 2xl:text-lg"
                         >
-                            {isLoggedIn ? "Dashboard" : "Create A Free Profile Now"}
+                            {isLoggedIn ? 'Dashboard' : 'Create A Free Football Identity Now'}
                         </Button>
                     </Link>
                 </div>
@@ -145,13 +143,19 @@ export default function PublicNavbar() {
                                         })}
                                     </div>
                                     <span
-                                        className={['text-[0.5rem] font-medium whitespace-nowrap sm:text-[0.75rem]', active ? 'text-[#E53F01]' : 'text-white'].join(' ')}
+                                        className={[
+                                            'text-[0.5rem] font-medium whitespace-nowrap sm:text-[0.75rem]',
+                                            active ? 'text-[#E53F01]' : 'text-white',
+                                        ].join(' ')}
                                     >
                                         {link.label}
                                     </span>
                                 </>
                             );
-                            const cls = ['flex w-7 flex-col items-center justify-center sm:w-12', link.label === 'Search' || link.label === 'Plans' ? 'max-[359px]:hidden' : ''].join(' ');
+                            const cls = [
+                                'flex w-7 flex-col items-center justify-center sm:w-12',
+                                link.label === 'Search' || link.label === 'Plans' ? 'max-[359px]:hidden' : '',
+                            ].join(' ');
                             if (link.label === 'Search') {
                                 return (
                                     <button key={link.label} type="button" onClick={() => setSearchOpen(true)} className={cls}>
@@ -166,15 +170,15 @@ export default function PublicNavbar() {
                             );
                         })}
                     </div>
-                    <Link href={isLoggedIn ? dashboardHref : "/register"}>
+                    <Link href={isLoggedIn ? dashboardHref : '/register'}>
                         <Button className="h-9 rounded-md bg-[#E53F01] px-2 text-[0.5rem] leading-tight font-bold text-white uppercase hover:bg-[#e65c00] sm:h-11 sm:px-4 sm:text-[0.6875rem]">
                             {isLoggedIn ? (
-                                "Dashboard"
+                                'Dashboard'
                             ) : (
                                 <>
                                     Create A Free
                                     <br />
-                                    Profile Now
+                                    Football Identity Now
                                 </>
                             )}
                         </Button>
@@ -208,7 +212,10 @@ export default function PublicNavbar() {
                                     <Input
                                         type="search"
                                         readOnly
-                                        onClick={() => { setMobileOpen(false); setSearchOpen(true); }}
+                                        onClick={() => {
+                                            setMobileOpen(false);
+                                            setSearchOpen(true);
+                                        }}
                                         placeholder="Search players..."
                                         className="h-10 cursor-pointer rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] pr-3 pl-8 text-sm text-[#0F172A] outline-none placeholder:text-[#94A3B8] focus:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-100 focus-visible:ring-offset-0 dark:border-[#2A2A2A] dark:bg-[#111111] dark:text-[#F5F5F5] dark:focus-visible:ring-[rgba(255,107,0,0.15)]"
                                     />
@@ -243,12 +250,9 @@ export default function PublicNavbar() {
                                         </Button>
                                     </Link>
                                 )}
-                                <Link
-                                    href={isLoggedIn ? dashboardHref : "/register"}
-                                    onClick={() => setMobileOpen(false)}
-                                >
+                                <Link href={isLoggedIn ? dashboardHref : '/register'} onClick={() => setMobileOpen(false)}>
                                     <Button className="w-full bg-[#E53F01] text-sm font-semibold text-white hover:bg-[#E53F01]">
-                                        {isLoggedIn ? "Dashboard" : "Create A Free Profile Now"}
+                                        {isLoggedIn ? 'Dashboard' : 'Create A Free Football Identity Now'}
                                     </Button>
                                 </Link>
                             </div>

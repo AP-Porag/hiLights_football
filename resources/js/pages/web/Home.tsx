@@ -1,23 +1,10 @@
-import React from 'react'
-import PublicNavbar from '@/components/public/PublicNavbar';
 import { PublicFooter } from '@/components/public/PublicFooter';
-import ReactCountryFlag from "react-country-flag";
-import { usePage } from '@inertiajs/react';
+import PublicNavbar from '@/components/public/PublicNavbar';
 import { getPositionName } from '@/utils/helper';
-import {
-    CirclePlay,
-    UserRoundPlus,
-    User,
-    Play,
-    Megaphone,
-    Users,
-    UserPlus,
-    Star,
-    Ruler,
-    Clock3,
-    ArrowRight
-} from "lucide-react";
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
+import { ArrowRight, CirclePlay, Clock3, Megaphone, Play, Ruler, Star, User, UserPlus, UserRoundPlus, Users } from 'lucide-react';
+import React from 'react';
+import ReactCountryFlag from 'react-country-flag';
 
 const getCountryName = (code?: string | string[] | null): string => {
     if (!code) return '';
@@ -27,7 +14,7 @@ const getCountryName = (code?: string | string[] | null): string => {
     const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
     return codes
-        .map(c => {
+        .map((c) => {
             try {
                 return regionNames.of(c) || c;
             } catch {
@@ -40,7 +27,7 @@ const getCountryName = (code?: string | string[] | null): string => {
 interface PlayerItem {
     id: number;
     name: string | null;
-    nationality: string[] | null;  // ✅ array of ISO country codes
+    nationality: string[] | null; // ✅ array of ISO country codes
     positions: string[] | null;
     current_club: string | null;
     photo_url: string | null;
@@ -66,7 +53,7 @@ const HomeTwo = () => {
             id: number;
             name: string;
             email: string;
-            role: string
+            role: string;
         } | null;
     };
     const isLoggedIn = !!auth?.user;
@@ -74,56 +61,46 @@ const HomeTwo = () => {
         auth?.user?.role === 'player'
             ? '/player'
             : auth?.user?.role === 'agent'
-                ? '/agent'
-                : auth?.user?.role === 'club'
-                    ? '/club'
-                    : auth?.user?.role === 'admin'
-                        ? '/admin'
-                        : '/scouting';
+              ? '/agent'
+              : auth?.user?.role === 'club'
+                ? '/club'
+                : auth?.user?.role === 'admin'
+                  ? '/admin'
+                  : '/scouting';
 
     const steps = [
         {
             icon: User,
-            step: "01",
-            title: "Create Your Profile.",
+            step: '01',
+            title: 'Create Your Football Identity.',
             desc: (
                 <>
-                    Build an organized, professional profile with your{" "}
-                    <span className="text-[#E53F01]">data</span>,{" "}
-                    <span className="text-[#E53F01]">club history</span>,{" "}
-                    <span className="text-[#E53F01]">
-                        physical and technical characteristics
-                    </span>
-                    , and your{" "}
+                    Build an organized, professional football identity with your <span className="text-[#E53F01]">data</span>,{' '}
+                    <span className="text-[#E53F01]">club history</span>,{' '}
+                    <span className="text-[#E53F01]">physical and technical characteristics</span>, and your{' '}
                     <span className="text-[#E53F01]">achievements</span>.
                 </>
             ),
         },
         {
             icon: Play,
-            step: "02",
-            title: "Upload Your Best Videos.",
+            step: '02',
+            title: 'Upload Your Best Videos.',
             desc: (
                 <>
-                    Show the world your{" "}
-                    <span className="text-[#E53F01]">best moments</span>. Get{" "}
-                    <span className="text-[#E53F01]">improvement tips</span> to make
-                    your videos more attractive to scouts, agents and clubs.
+                    Show the world your <span className="text-[#E53F01]">best moments</span>. Get{' '}
+                    <span className="text-[#E53F01]">improvement tips</span> to make your videos more attractive to scouts, agents and clubs.
                 </>
             ),
         },
         {
             icon: Megaphone,
-            step: "03",
-            title: "Be Seen. Be Discovered.",
+            step: '03',
+            title: 'Be Seen. Be Discovered.',
             desc: (
                 <>
-                    A platform developed by professionals from various areas of football
-                    with{" "}
-                    <span className="text-[#E53F01]">
-                        over 20 years of experience worldwide
-                    </span>
-                    .
+                    A platform developed by professionals from various areas of football with{' '}
+                    <span className="text-[#E53F01]">over 20 years of experience worldwide</span>.
                 </>
             ),
         },
@@ -136,14 +113,13 @@ const HomeTwo = () => {
         <div className="bg-black text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]">
             <PublicNavbar />
             <main className="w-full pt-16 xl:pt-20 2xl:pt-24">
-
                 {/* SECTION 1: HERO */}
                 <section className="relative w-full overflow-hidden bg-black text-white">
                     {/* Text sits in the same wrapper every other section uses, so all headings share one left edge */}
                     <div className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
                         <div className="py-14 md:py-20 lg:flex lg:min-h-[calc(100vh-4rem)] lg:w-1/2 lg:flex-col lg:justify-center xl:min-h-[calc(100vh-5rem)] 2xl:min-h-[calc(100vh-6rem)]">
                             <div className="max-w-xl 2xl:max-w-2xl">
-                                <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl md:text-[2.625rem] lg:text-5xl xl:text-6xl 2xl:text-7xl">
+                                <h1 className="text-3xl leading-tight font-extrabold sm:text-4xl md:text-[2.625rem] lg:text-5xl xl:text-6xl 2xl:text-7xl">
                                     <span className="block text-white">Be Seen.</span>
                                     <span className="block text-[#E53F01]">
                                         Be Discovered <span className="text-white">!</span>
@@ -151,30 +127,27 @@ const HomeTwo = () => {
                                 </h1>
 
                                 <p className="mt-6 max-w-lg text-sm leading-relaxed text-[#f4f4f4] sm:text-base xl:text-lg 2xl:mt-8 2xl:max-w-xl 2xl:text-xl">
-                                    The platform that connects players, clubs, agents and
-                                    scouts through videos, statistics and professional
-                                    profiles.
+                                    The platform that connects players, clubs, agents and scouts through videos, statistics and professional football
+                                    identities.
                                 </p>
 
                                 <p className="mt-4 max-w-lg border-l-2 border-[#b2300e] pl-3 text-sm leading-relaxed text-[#f4f4f4] sm:text-base xl:text-lg 2xl:max-w-xl 2xl:text-xl">
-                                    Show your talent to the world and increase your
-                                    opportunities in football.
+                                    Show your talent to the world and increase your opportunities in football.
                                 </p>
 
                                 {/* Buttons */}
                                 <div className="mt-8 flex flex-wrap items-center gap-4 2xl:mt-10">
-                                    <Link href={isLoggedIn ? dashboardHref : "/register"}>
-                                        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#E53F01] px-4 py-3 text-xs font-semibold  transition-all duration-300 hover:bg-[#E53F01] sm:text-sm lg:px-6 lg:py-3 lg:text-base 2xl:px-8 2xl:py-4 2xl:text-lg">
+                                    <Link href={isLoggedIn ? dashboardHref : '/register'}>
+                                        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#E53F01] px-4 py-3 text-xs font-semibold transition-all duration-300 hover:bg-[#E53F01] sm:text-sm lg:px-6 lg:py-3 lg:text-base 2xl:px-8 2xl:py-4 2xl:text-lg">
                                             <UserRoundPlus className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
                                             <span className="text-left leading-tight">
-
                                                 {isLoggedIn ? (
-                                                    "Dashboard"
+                                                    'Dashboard'
                                                 ) : (
                                                     <>
                                                         Create A Free
                                                         <br />
-                                                        Profile Now
+                                                        Football Identity Now
                                                     </>
                                                 )}
                                             </span>
@@ -189,16 +162,15 @@ const HomeTwo = () => {
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     {/* Right side visual — bleeds to the screen edge on lg+, stacks below the text on tablet and mobile */}
-                    <div className="w-full lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full bg-black">
+                    <div className="w-full bg-black lg:absolute lg:inset-y-0 lg:right-0 lg:h-full lg:w-1/2">
                         <img
                             src="/images/img/hero.jpeg"
                             alt=""
                             aria-hidden="true"
-                            className="w-full h-auto object-cover lg:h-full lg:w-full lg:object-contain"
+                            className="h-auto w-full object-cover lg:h-full lg:w-full lg:object-contain"
                         />
                     </div>
                 </section>
@@ -216,7 +188,7 @@ const HomeTwo = () => {
                 <section className="mx-auto w-full max-w-7xl bg-black px-6 pt-10 text-white sm:px-10 lg:px-16 2xl:pt-14">
                     <div>
                         {/* Heading */}
-                        <h2 className="mb-6 text-2xl font-extrabold leading-tight sm:text-3xl lg:text-4xl 2xl:mb-8 2xl:text-5xl">
+                        <h2 className="mb-6 text-2xl leading-tight font-extrabold sm:text-3xl lg:text-4xl 2xl:mb-8 2xl:text-5xl">
                             A Simple. Professional. <span className="text-[#E53F01]">Effective Platform.</span>
                         </h2>
 
@@ -236,7 +208,9 @@ const HomeTwo = () => {
                                             {/* Step */}
                                             <div>
                                                 <p className="text-[0.625rem] font-bold text-[#E53F01] md:text-sm 2xl:text-base">STEP</p>
-                                                <h3 className="text-3xl leading-none font-extrabold text-[#E53F01] md:text-5xl 2xl:text-6xl">{item.step}</h3>
+                                                <h3 className="text-3xl leading-none font-extrabold text-[#E53F01] md:text-5xl 2xl:text-6xl">
+                                                    {item.step}
+                                                </h3>
                                             </div>
                                             {/* Content */}
                                             <div className="border-l-4 border-[#1f1f1f] pl-3 md:pl-5">
@@ -269,22 +243,23 @@ const HomeTwo = () => {
                                     community yet?
                                 </h3>
                                 <p className="mt-3 max-w-xl text-xs leading-relaxed text-[#efefef] sm:text-sm md:text-base 2xl:text-lg">
-                                    Create your free profile, share your best moments and become visible to coaches, clubs and recruiters worldwide.
+                                    Create your free football identity, share your best moments and become visible to coaches, clubs and recruiters
+                                    worldwide.
                                 </p>
                             </div>
                             {/* Button */}
                             <div className="flex w-full items-end justify-end sm:w-auto lg:pr-4">
-                                <Link href={isLoggedIn ? dashboardHref : "/register"}>
+                                <Link href={isLoggedIn ? dashboardHref : '/register'}>
                                     <button className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#E53F01] px-4 py-2 transition hover:bg-[#E53F01]/10 md:gap-4 lg:px-8 lg:py-4 2xl:px-10">
                                         <UserPlus className="h-6 w-6 shrink-0 text-white md:h-8 md:w-8 2xl:h-9 2xl:w-9" />
-                                        <span className="text-left text-xs font-bold  sm:text-sm lg:text-base 2xl:text-lg">
+                                        <span className="text-left text-xs font-bold sm:text-sm lg:text-base 2xl:text-lg">
                                             {isLoggedIn ? (
-                                                "Dashboard"
+                                                'Dashboard'
                                             ) : (
                                                 <>
                                                     Create A Free
                                                     <br />
-                                                    Profile Now
+                                                    Football Identity Now
                                                 </>
                                             )}
                                         </span>
@@ -315,7 +290,13 @@ const HomeTwo = () => {
                                     Community Highlights
                                 </h2>
                             </div>
-                            <Link href="/request-access" > <button className="flex shrink-0 items-center gap-1 rounded-[0.625rem] bg-white px-3 py-2 text-[0.625rem] font-bold whitespace-nowrap text-gray-700 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:gap-2 sm:px-4 md:text-xs"> View All <ArrowRight className="size-[1.125rem] text-[#E53F01] font-bold" /> </button> </Link>
+                            <Link href="/request-access">
+                                {' '}
+                                <button className="flex shrink-0 items-center gap-1 rounded-[0.625rem] bg-white px-3 py-2 text-[0.625rem] font-bold whitespace-nowrap text-gray-700 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:gap-2 sm:px-4 md:text-xs">
+                                    {' '}
+                                    View All <ArrowRight className="size-[1.125rem] font-bold text-[#E53F01]" />{' '}
+                                </button>{' '}
+                            </Link>
                         </div>
 
                         {/* Rows */}
@@ -340,7 +321,7 @@ const HomeTwo = () => {
                                                     e.stopPropagation();
                                                     setActiveVideo(player.video_url);
                                                 }}
-                                                className="absolute right-3 bottom-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff5a00] cursor-pointer"
+                                                className="absolute right-3 bottom-3 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ff5a00]"
                                             >
                                                 <Play fill="white" className="size-[0.75rem] text-white" />
                                             </button>
@@ -348,19 +329,20 @@ const HomeTwo = () => {
                                     </div>
                                     {/* Info */}
                                     <div className="row-span-2 mr-2 min-w-0 px-2 sm:row-span-1 md:px-6">
-                                        <h3 className="truncate text-sm font-bold whitespace-nowrap text-[#222] md:text-[0.9375rem] lg:text-base 2xl:text-lg">{player.name}</h3>
+                                        <h3 className="truncate text-sm font-bold whitespace-nowrap text-[#222] md:text-[0.9375rem] lg:text-base 2xl:text-lg">
+                                            {player.name}
+                                        </h3>
                                         <p className="truncate text-xs whitespace-nowrap text-gray-600 md:text-sm 2xl:text-base">
                                             {getPositionName(player.positions ?? [])}
                                         </p>
                                         <div className="mt-1 flex flex-wrap items-center gap-1.5">
                                             {player?.nationality && player.nationality.length > 0 ? (
                                                 player.nationality.map((code, idx) => (
-                                                    <span key={`${code}-${idx}`} className="inline-flex items-center gap-1 text-xs whitespace-nowrap text-gray-700 md:text-sm 2xl:text-base">
-                                                        <ReactCountryFlag
-                                                            countryCode={code}
-                                                            svg
-                                                            style={{ width: '1.2em', height: '1.2em' }}
-                                                        />
+                                                    <span
+                                                        key={`${code}-${idx}`}
+                                                        className="inline-flex items-center gap-1 text-xs whitespace-nowrap text-gray-700 md:text-sm 2xl:text-base"
+                                                    >
+                                                        <ReactCountryFlag countryCode={code} svg style={{ width: '1.2em', height: '1.2em' }} />
                                                         <span>{getCountryName(code)}</span>
                                                         {idx < player.nationality.length - 1 && <span>,</span>}
                                                     </span>
@@ -378,42 +360,34 @@ const HomeTwo = () => {
                                     {/* Age */}
                                     <div className="col-start-3 flex items-center justify-end gap-2 text-xs whitespace-nowrap text-[#222] sm:col-start-auto md:ml-4 md:text-sm lg:text-base 2xl:text-lg">
                                         <Clock3 className="size-[0.875rem]" />
-                                        {player?.dob && (() => {
-                                            const dob = new Date(player.dob);
-                                            const today = new Date();
+                                        {player?.dob &&
+                                            (() => {
+                                                const dob = new Date(player.dob);
+                                                const today = new Date();
 
-                                            let age = today.getFullYear() - dob.getFullYear();
+                                                let age = today.getFullYear() - dob.getFullYear();
 
-                                            const hasBirthdayPassed =
-                                                today.getMonth() > dob.getMonth() ||
-                                                (today.getMonth() === dob.getMonth() &&
-                                                    today.getDate() >= dob.getDate());
+                                                const hasBirthdayPassed =
+                                                    today.getMonth() > dob.getMonth() ||
+                                                    (today.getMonth() === dob.getMonth() && today.getDate() >= dob.getDate());
 
-                                            if (!hasBirthdayPassed) {
-                                                age--;
-                                            }
+                                                if (!hasBirthdayPassed) {
+                                                    age--;
+                                                }
 
-                                            return age < 18
-                                                ? dob.getFullYear()
-                                                : `${age} years`;
-                                        })()}
+                                                return age < 18 ? dob.getFullYear() : `${age} years`;
+                                            })()}
                                     </div>
                                 </div>
                             </Link>
                         ))}
                     </div>
                     {activeVideo && (
-                        <div
-                            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-                            onClick={() => setActiveVideo(null)}
-                        >
-                            <div
-                                className="relative w-full max-w-3xl aspect-video"
-                                onClick={(e) => e.stopPropagation()}
-                            >
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" onClick={() => setActiveVideo(null)}>
+                            <div className="relative aspect-video w-full max-w-3xl" onClick={(e) => e.stopPropagation()}>
                                 <button
                                     onClick={() => setActiveVideo(null)}
-                                    className="absolute -top-10 right-0 text-white text-3xl leading-none hover:text-[#E53F01]"
+                                    className="absolute -top-10 right-0 text-3xl leading-none text-white hover:text-[#E53F01]"
                                     aria-label="Close"
                                 >
                                     ×
@@ -422,7 +396,7 @@ const HomeTwo = () => {
                                     <iframe
                                         src={getEmbedUrl(activeVideo)!}
                                         title="Player video"
-                                        className="w-full h-full rounded-xl"
+                                        className="h-full w-full rounded-xl"
                                         allow="autoplay; fullscreen"
                                         allowFullScreen
                                     />
@@ -439,6 +413,6 @@ const HomeTwo = () => {
             <PublicFooter />
         </div>
     );
-}
+};
 
 export default HomeTwo;

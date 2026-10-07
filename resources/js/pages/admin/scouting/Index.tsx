@@ -1,48 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, router, usePage } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Breadcrumbs } from '@/components/breadcrumbs';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
-import {
-    Star,
-    Search,
-    Eye,
-    Trash2,
-    TrendingUp,
-    Users,
-    Award,
-    Calendar,
-    ChevronLeft,
-    ChevronRight,
-    Filter,
-    Download,
-    User,
-} from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import AppLayout from '@/layouts/app-layout';
+import { Link, router, usePage } from '@inertiajs/react';
+import { Award, Calendar, ChevronLeft, ChevronRight, Eye, Filter, Search, Star, Trash2, TrendingUp, User, Users } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 const PLACEHOLDER = '/images/img/placeholder.webp';
 
@@ -137,15 +102,10 @@ function StarsInline({ value, max = 5 }: { value: number; max?: number }) {
             {Array.from({ length: max }).map((_, i) => (
                 <Star
                     key={i}
-                    className={`w-3 h-3 ${i < filled
-                        ? 'fill-[#E53F01] text-[#E53F01]'
-                        : 'fill-transparent text-[#CBD5E1] dark:text-[#2A2A2A]'
-                        }`}
+                    className={`h-3 w-3 ${i < filled ? 'fill-[#E53F01] text-[#E53F01]' : 'fill-transparent text-[#CBD5E1] dark:text-[#2A2A2A]'}`}
                 />
             ))}
-            <span className="ml-1.5 font-mono text-xs text-white">
-                {value.toFixed(1)}
-            </span>
+            <span className="ml-1.5 font-mono text-xs text-white">{value.toFixed(1)}</span>
         </div>
     );
 }
@@ -153,21 +113,13 @@ function StarsLarge({ value, label, max = 5 }: { value: number; label: string; m
     const filled = Math.round(value);
     return (
         <div className="rounded-lg border border-[#E2E8F0] bg-[#1A1A1A] p-4">
-            <div className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">{label}</div>
+            <div className="text-xs font-medium tracking-wider text-[#94A3B8] uppercase">{label}</div>
             <div className="mt-2 flex items-center gap-1">
                 {Array.from({ length: max }).map((_, i) => (
-                    <Star
-                        key={i}
-                        className={`w-5 h-5 ${i < filled
-                            ? 'fill-[#E53F01] text-[#E53F01]'
-                            : 'fill-transparent text-[#CBD5E1]'
-                            }`}
-                    />
+                    <Star key={i} className={`h-5 w-5 ${i < filled ? 'fill-[#E53F01] text-[#E53F01]' : 'fill-transparent text-[#CBD5E1]'}`} />
                 ))}
             </div>
-            <div className="mt-2 font-mono text-2xl font-semibold text-white">
-                {value.toFixed(1)}
-            </div>
+            <div className="mt-2 font-mono text-2xl font-semibold text-white">{value.toFixed(1)}</div>
         </div>
     );
 }
@@ -211,7 +163,7 @@ export default function RatingsIndex() {
                     scout: scoutFilter !== 'all' ? scoutFilter : undefined,
                     scout_search: scoutSearch || undefined,
                 },
-                { preserveState: true, preserveScroll: true, replace: true }
+                { preserveState: true, preserveScroll: true, replace: true },
             );
         }, 350);
         return () => clearTimeout(t);
@@ -226,7 +178,7 @@ export default function RatingsIndex() {
                 scout: scoutFilter !== 'all' ? scoutFilter : undefined,
                 scout_search: scoutSearch || undefined,
             },
-            { preserveState: true, preserveScroll: true }
+            { preserveState: true, preserveScroll: true },
         );
     };
 
@@ -239,7 +191,7 @@ export default function RatingsIndex() {
                 scout: scoutFilter !== 'all' ? scoutFilter : undefined,
                 scout_search: scoutSearch || undefined,
             },
-            { preserveState: true, preserveScroll: true }
+            { preserveState: true, preserveScroll: true },
         );
     };
 
@@ -272,16 +224,14 @@ export default function RatingsIndex() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6 bg-black text-white min-h-screen p-6">
+            <div className="min-h-screen space-y-6 bg-black p-6 text-white">
                 {/* ──── SCOUT LIST TABLE ──── */}
                 <Card className="border-[#2A2A2A] bg-[#0F0F0F]">
                     <CardHeader className="border-b border-[#2A2A2A] p-6">
                         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                            <CardTitle className="font-display text-lg font-semibold uppercase tracking-wide text-white">
-                                All Scouts
-                            </CardTitle>
+                            <CardTitle className="font-display text-lg font-semibold tracking-wide text-white uppercase">All Scouts</CardTitle>
                             <div className="relative">
-                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" />
+                                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" />
                                 <Input
                                     placeholder="Search scouts..."
                                     value={scoutSearch}
@@ -296,10 +246,16 @@ export default function RatingsIndex() {
                             <Table>
                                 <TableHeader>
                                     <TableRow className="border-[#2A2A2A] hover:bg-transparent">
-                                        <TableHead className="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Name</TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Email</TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Total Ratings</TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Avg Rating</TableHead>
+                                        <TableHead className="px-6 py-3 text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">
+                                            Name
+                                        </TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">Email</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">
+                                            Total Ratings
+                                        </TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">
+                                            Avg Rating
+                                        </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -314,7 +270,7 @@ export default function RatingsIndex() {
                                         <TableRow key={scout.id} className="border-[#2A2A2A] hover:bg-[#1A1A1A]">
                                             <TableCell className="px-6 py-4">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="h-9 w-9 rounded-full bg-[#2A2A2A] flex items-center justify-center">
+                                                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2A2A2A]">
                                                         <User className="h-5 w-5 text-[#94A3B8]" />
                                                     </div>
                                                     <span className="text-sm font-semibold text-white">{scout.name}</span>
@@ -344,11 +300,7 @@ export default function RatingsIndex() {
                                 <span className="font-mono font-semibold text-white">
                                     {allScouts.from ?? 0}-{allScouts.to ?? 0}
                                 </span>{' '}
-                                of{' '}
-                                <span className="font-mono font-semibold text-white">
-                                    {allScouts.total.toLocaleString()}
-                                </span>{' '}
-                                scouts
+                                of <span className="font-mono font-semibold text-white">{allScouts.total.toLocaleString()}</span> scouts
                             </div>
                             <div className="flex flex-wrap items-center gap-2">
                                 <Button
@@ -364,11 +316,7 @@ export default function RatingsIndex() {
                                 <div className="flex items-center gap-1">
                                     {scoutPageWindow.map((p) =>
                                         p === allScouts.current_page ? (
-                                            <Button
-                                                key={p}
-                                                size="sm"
-                                                className="h-8 w-8 bg-[#E53F01] p-0 font-mono text-white hover:bg-[#E53F01]"
-                                            >
+                                            <Button key={p} size="sm" className="h-8 w-8 bg-[#E53F01] p-0 font-mono text-white hover:bg-[#E53F01]">
                                                 {p}
                                             </Button>
                                         ) : (
@@ -381,7 +329,7 @@ export default function RatingsIndex() {
                                             >
                                                 {p}
                                             </Button>
-                                        )
+                                        ),
                                     )}
                                 </div>
                                 <Button
@@ -442,12 +390,8 @@ export default function RatingsIndex() {
                         <CardContent className="p-6">
                             <div className="flex items-start justify-between">
                                 <div className="flex-1">
-                                    <div className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">
-                                        Total Ratings
-                                    </div>
-                                    <div className="mt-3 font-mono text-4xl font-bold text-white">
-                                        {summary.totalRatings.toLocaleString()}
-                                    </div>
+                                    <div className="text-xs font-medium tracking-wider text-[#94A3B8] uppercase">Total Ratings</div>
+                                    <div className="mt-3 font-mono text-4xl font-bold text-white">{summary.totalRatings.toLocaleString()}</div>
                                     <div className="mt-2 text-xs text-[#94A3B8]">
                                         Across <span className="font-mono text-white">{summary.totalPlayers}</span> players
                                     </div>
@@ -468,29 +412,23 @@ export default function RatingsIndex() {
                         <CardContent className="p-6">
                             <div className="flex items-start justify-between">
                                 <div className="flex-1">
-                                    <div className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">
-                                        Top Scout
-                                    </div>
+                                    <div className="text-xs font-medium tracking-wider text-[#94A3B8] uppercase">Top Scout</div>
                                     {summary.topScout ? (
                                         <>
                                             <div className="mt-3 flex items-center gap-3">
-                                                <div className="h-10 w-10 rounded-full bg-[#2A2A2A] flex items-center justify-center">
+                                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2A2A2A]">
                                                     <User className="h-5 w-5 text-[#94A3B8]" />
                                                 </div>
                                                 <div className="min-w-0 flex-1">
-                                                    <div className="truncate font-display text-lg font-semibold text-white">
+                                                    <div className="font-display truncate text-lg font-semibold text-white">
                                                         {summary.topScout.name}
                                                     </div>
-                                                    <div className="truncate text-xs text-[#94A3B8]">
-                                                        {summary.topScout.organization ?? '—'}
-                                                    </div>
+                                                    <div className="truncate text-xs text-[#94A3B8]">{summary.topScout.organization ?? '—'}</div>
                                                 </div>
                                             </div>
                                             <div className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-[#FFF3EB] px-2 py-1">
                                                 <Award className="h-3 w-3 text-[#E53F01]" />
-                                                <span className="font-mono text-xs font-semibold text-[#E53F01]">
-                                                    {summary.topScout.count}
-                                                </span>
+                                                <span className="font-mono text-xs font-semibold text-[#E53F01]">{summary.topScout.count}</span>
                                                 <span className="text-xs text-[#E53F01]">ratings submitted</span>
                                             </div>
                                         </>
@@ -507,12 +445,10 @@ export default function RatingsIndex() {
                 <Card className="border-[#2A2A2A] bg-[#0F0F0F]">
                     <CardHeader className="border-b border-[#2A2A2A] p-6">
                         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                            <CardTitle className="font-display text-lg font-semibold uppercase tracking-wide text-white">
-                                All Ratings
-                            </CardTitle>
+                            <CardTitle className="font-display text-lg font-semibold tracking-wide text-white uppercase">All Ratings</CardTitle>
                             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                                 <div className="relative">
-                                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" />
+                                    <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" />
                                     <Input
                                         placeholder="Search scout or player..."
                                         value={search}
@@ -543,14 +479,20 @@ export default function RatingsIndex() {
                             <Table>
                                 <TableHeader>
                                     <TableRow className="border-[#2A2A2A] hover:bg-transparent">
-                                        <TableHead className="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Scout</TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Player</TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Technical</TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Physical</TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Mental</TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Overall</TableHead>
-                                        <TableHead className="py-3 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Date</TableHead>
-                                        <TableHead className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Actions</TableHead>
+                                        <TableHead className="px-6 py-3 text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">
+                                            Scout
+                                        </TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">Player</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">
+                                            Technical
+                                        </TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">Physical</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">Mental</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">Overall</TableHead>
+                                        <TableHead className="py-3 text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">Date</TableHead>
+                                        <TableHead className="px-6 py-3 text-right text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">
+                                            Actions
+                                        </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -567,7 +509,7 @@ export default function RatingsIndex() {
                                             <TableRow key={rating.id} className="border-[#2A2A2A] hover:bg-[#1A1A1A]">
                                                 <TableCell className="px-6 py-4">
                                                     <div className="flex items-center gap-3">
-                                                        <div className="h-9 w-9 rounded-full bg-[#2A2A2A] flex items-center justify-center">
+                                                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2A2A2A]">
                                                             <User className="h-4 w-4 text-[#94A3B8]" />
                                                         </div>
                                                         <div>
@@ -596,9 +538,15 @@ export default function RatingsIndex() {
                                                         </div>
                                                     </div>
                                                 </TableCell>
-                                                <TableCell className="py-4"><StarsInline value={rating.technical} /></TableCell>
-                                                <TableCell className="py-4"><StarsInline value={rating.physical} /></TableCell>
-                                                <TableCell className="py-4"><StarsInline value={rating.mental} /></TableCell>
+                                                <TableCell className="py-4">
+                                                    <StarsInline value={rating.technical} />
+                                                </TableCell>
+                                                <TableCell className="py-4">
+                                                    <StarsInline value={rating.physical} />
+                                                </TableCell>
+                                                <TableCell className="py-4">
+                                                    <StarsInline value={rating.mental} />
+                                                </TableCell>
                                                 <TableCell className="py-4">
                                                     <div className="inline-flex items-center gap-1.5 rounded-md bg-[#FFF3EB] px-2 py-1">
                                                         <Star className="h-3 w-3 fill-[#E53F01] text-[#E53F01]" />
@@ -611,10 +559,10 @@ export default function RatingsIndex() {
                                                     <div className="font-mono text-xs text-[#94A3B8]">
                                                         {rating.date
                                                             ? new Date(rating.date).toLocaleDateString('en-GB', {
-                                                                day: '2-digit',
-                                                                month: 'short',
-                                                                year: 'numeric',
-                                                            })
+                                                                  day: '2-digit',
+                                                                  month: 'short',
+                                                                  year: 'numeric',
+                                                              })
                                                             : '—'}
                                                     </div>
                                                 </TableCell>
@@ -651,11 +599,7 @@ export default function RatingsIndex() {
                                 <span className="font-mono font-semibold text-white">
                                     {ratings.from ?? 0}-{ratings.to ?? 0}
                                 </span>{' '}
-                                of{' '}
-                                <span className="font-mono font-semibold text-white">
-                                    {ratings.total.toLocaleString()}
-                                </span>{' '}
-                                ratings
+                                of <span className="font-mono font-semibold text-white">{ratings.total.toLocaleString()}</span> ratings
                             </div>
                             <div className="flex flex-wrap items-center gap-2">
                                 <Button
@@ -671,11 +615,7 @@ export default function RatingsIndex() {
                                 <div className="flex items-center gap-1">
                                     {pageWindow.map((p) =>
                                         p === ratings.current_page ? (
-                                            <Button
-                                                key={p}
-                                                size="sm"
-                                                className="h-8 w-8 bg-[#E53F01] p-0 font-mono text-white hover:bg-[#E53F01]"
-                                            >
+                                            <Button key={p} size="sm" className="h-8 w-8 bg-[#E53F01] p-0 font-mono text-white hover:bg-[#E53F01]">
                                                 {p}
                                             </Button>
                                         ) : (
@@ -688,7 +628,7 @@ export default function RatingsIndex() {
                                             >
                                                 {p}
                                             </Button>
-                                        )
+                                        ),
                                     )}
                                 </div>
                                 <Button
@@ -710,12 +650,10 @@ export default function RatingsIndex() {
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">
                     <Card className="border-[#2A2A2A] bg-[#0F0F0F]">
                         <CardHeader className="border-b border-[#2A2A2A] p-6">
-                            <CardTitle className="font-display text-lg font-semibold uppercase tracking-wide text-white">
+                            <CardTitle className="font-display text-lg font-semibold tracking-wide text-white uppercase">
                                 Most Rated Players
                             </CardTitle>
-                            <p className="mt-1 text-xs text-[#94A3B8]">
-                                Players with the highest number of submitted ratings
-                            </p>
+                            <p className="mt-1 text-xs text-[#94A3B8]">Players with the highest number of submitted ratings</p>
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="divide-y divide-[#2A2A2A]">
@@ -753,9 +691,7 @@ export default function RatingsIndex() {
                                         </div>
                                     </Link>
                                 ))}
-                                {mostRatedPlayers.length === 0 && (
-                                    <div className="p-6 text-center text-sm text-[#94A3B8]">No data yet.</div>
-                                )}
+                                {mostRatedPlayers.length === 0 && <div className="p-6 text-center text-sm text-[#94A3B8]">No data yet.</div>}
                             </div>
                         </CardContent>
                     </Card>
@@ -768,30 +704,30 @@ export default function RatingsIndex() {
                     {viewRating && (
                         <>
                             <DialogHeader>
-                                <DialogTitle className="font-display text-2xl font-bold uppercase tracking-tight text-white">
+                                <DialogTitle className="font-display text-2xl font-bold tracking-tight text-white uppercase">
                                     Rating Details
                                 </DialogTitle>
                                 <DialogDescription className="text-sm text-[#94A3B8]">
                                     Submitted on{' '}
                                     {viewRating.date
                                         ? new Date(viewRating.date).toLocaleDateString('en-GB', {
-                                            day: '2-digit',
-                                            month: 'long',
-                                            year: 'numeric',
-                                        })
+                                              day: '2-digit',
+                                              month: 'long',
+                                              year: 'numeric',
+                                          })
                                         : '—'}
                                 </DialogDescription>
                             </DialogHeader>
                             <div className="space-y-5">
                                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                     <div className="rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] p-4">
-                                        <div className="mb-3 text-xs font-medium uppercase tracking-wider text-[#94A3B8]">Scout</div>
+                                        <div className="mb-3 text-xs font-medium tracking-wider text-[#94A3B8] uppercase">Scout</div>
                                         <div className="flex items-center gap-3">
-                                            <div className="h-12 w-12 rounded-full bg-[#2A2A2A] flex items-center justify-center">
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#2A2A2A]">
                                                 <User className="h-6 w-6 text-[#94A3B8]" />
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <div className="truncate font-display text-base font-semibold text-white">
+                                                <div className="font-display truncate text-base font-semibold text-white">
                                                     {viewRating.scout.name}
                                                 </div>
                                                 <div className="truncate text-xs text-[#94A3B8]">{viewRating.scout.organization ?? '—'}</div>
@@ -800,12 +736,18 @@ export default function RatingsIndex() {
                                         </div>
                                     </div>
                                     <div className="rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] p-4">
-                                        <div className="mb-3 text-xs font-medium uppercase tracking-wider text-[#94A3B8]">Player</div>
+                                        <div className="mb-3 text-xs font-medium tracking-wider text-[#94A3B8] uppercase">Player</div>
                                         <div className="flex items-center gap-3">
-                                            <img src={viewRating.player.avatar || PLACEHOLDER} alt={viewRating.player.name} className="h-12 w-12 rounded-full border border-[#2A2A2A] object-cover" />
+                                            <img
+                                                src={viewRating.player.avatar || PLACEHOLDER}
+                                                alt={viewRating.player.name}
+                                                className="h-12 w-12 rounded-full border border-[#2A2A2A] object-cover"
+                                            />
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="truncate font-display text-base font-semibold text-white">{viewRating.player.name}</span>
+                                                    <span className="font-display truncate text-base font-semibold text-white">
+                                                        {viewRating.player.name}
+                                                    </span>
                                                     {viewRating.player.position && (
                                                         <span className="rounded border border-[#E53F01] bg-[#FFF3EB] px-1.5 py-0.5 font-mono text-[0.625rem] font-semibold text-[#E53F01]">
                                                             {viewRating.player.position}
@@ -814,23 +756,28 @@ export default function RatingsIndex() {
                                                 </div>
                                                 <div className="truncate text-xs text-[#94A3B8]">{viewRating.player.club ?? '—'}</div>
                                                 {viewRating.player.age !== null && (
-                                                    <div className="text-xs text-[#94A3B8]">Age <span className="font-mono">{viewRating.player.age}</span></div>
+                                                    <div className="text-xs text-[#94A3B8]">
+                                                        Age <span className="font-mono">{viewRating.player.age}</span>
+                                                    </div>
                                                 )}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div className="mb-3 text-xs font-medium uppercase tracking-wider text-[#94A3B8]">Ratings Breakdown</div>
+                                    <div className="mb-3 text-xs font-medium tracking-wider text-[#94A3B8] uppercase">Ratings Breakdown</div>
                                     <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
                                         <StarsLarge value={viewRating.technical} label="Technical" />
                                         <StarsLarge value={viewRating.physical} label="Physical" />
                                         <StarsLarge value={viewRating.mental} label="Mental" />
                                         <div className="rounded-lg border border-[#E53F01] bg-[#FFF3EB] p-4">
-                                            <div className="text-xs font-medium uppercase tracking-wider text-[#E53F01]">Overall</div>
+                                            <div className="text-xs font-medium tracking-wider text-[#E53F01] uppercase">Overall</div>
                                             <div className="mt-2 flex items-center gap-1">
                                                 {Array.from({ length: 5 }).map((_, i) => (
-                                                    <Star key={i} className={`w-5 h-5 ${i < Math.round(viewRating.overall) ? 'fill-[#E53F01] text-[#E53F01]' : 'fill-transparent text-[#E53F01]/30'}`} />
+                                                    <Star
+                                                        key={i}
+                                                        className={`h-5 w-5 ${i < Math.round(viewRating.overall) ? 'fill-[#E53F01] text-[#E53F01]' : 'fill-transparent text-[#E53F01]/30'}`}
+                                                    />
                                                 ))}
                                             </div>
                                             <div className="mt-2 font-mono text-2xl font-bold text-[#E53F01]">{viewRating.overall.toFixed(1)}</div>
@@ -841,14 +788,14 @@ export default function RatingsIndex() {
                                     <div className="rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] p-4">
                                         <div className="flex items-center gap-2">
                                             <Calendar className="h-4 w-4 text-[#E53F01]" />
-                                            <div className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">Match Context</div>
+                                            <div className="text-xs font-medium tracking-wider text-[#94A3B8] uppercase">Match Context</div>
                                         </div>
                                         <div className="mt-2 text-sm text-white">{viewRating.matchContext}</div>
                                     </div>
                                 )}
                                 {viewRating.notes && (
                                     <div>
-                                        <div className="mb-2 text-xs font-medium uppercase tracking-wider text-[#94A3B8]">Scout Notes</div>
+                                        <div className="mb-2 text-xs font-medium tracking-wider text-[#94A3B8] uppercase">Scout Notes</div>
                                         <div className="rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] p-4 text-sm leading-relaxed text-white">
                                             {viewRating.notes}
                                         </div>
@@ -856,11 +803,18 @@ export default function RatingsIndex() {
                                 )}
                             </div>
                             <DialogFooter className="gap-2">
-                                <Button variant="outline" onClick={() => setViewRating(null)} className="border-[#2A2A2A] bg-[#1A1A1A] text-white hover:bg-[#2A2A2A]">
+                                <Button
+                                    variant="outline"
+                                    onClick={() => setViewRating(null)}
+                                    className="border-[#2A2A2A] bg-[#1A1A1A] text-white hover:bg-[#2A2A2A]"
+                                >
                                     Close
                                 </Button>
-                                <Link href={`/admin/players/${viewRating.player.id}`} className="inline-flex items-center justify-center rounded-md bg-[#E53F01] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#E53F01]">
-                                    View Player Profile
+                                <Link
+                                    href={`/admin/players/${viewRating.player.id}`}
+                                    className="inline-flex items-center justify-center rounded-md bg-[#E53F01] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#E53F01]"
+                                >
+                                    View Player Football Identity
                                 </Link>
                             </DialogFooter>
                         </>
@@ -874,7 +828,7 @@ export default function RatingsIndex() {
                     {deleteRating && (
                         <>
                             <DialogHeader>
-                                <DialogTitle className="font-display text-xl font-bold uppercase tracking-tight text-white">
+                                <DialogTitle className="font-display text-xl font-bold tracking-tight text-white uppercase">
                                     Delete Rating
                                 </DialogTitle>
                                 <DialogDescription className="text-sm text-[#94A3B8]">
@@ -883,7 +837,7 @@ export default function RatingsIndex() {
                             </DialogHeader>
                             <div className="rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] p-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="h-10 w-10 rounded-full bg-[#2A2A2A] flex items-center justify-center">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2A2A2A]">
                                         <User className="h-5 w-5 text-[#94A3B8]" />
                                     </div>
                                     <div className="min-w-0 flex-1">
@@ -899,7 +853,12 @@ export default function RatingsIndex() {
                                 </div>
                             </div>
                             <DialogFooter className="gap-2">
-                                <Button variant="outline" onClick={() => setDeleteRating(null)} disabled={deleting} className="border-[#2A2A2A] bg-[#1A1A1A] text-white hover:bg-[#2A2A2A]">
+                                <Button
+                                    variant="outline"
+                                    onClick={() => setDeleteRating(null)}
+                                    disabled={deleting}
+                                    className="border-[#2A2A2A] bg-[#1A1A1A] text-white hover:bg-[#2A2A2A]"
+                                >
                                     Cancel
                                 </Button>
                                 <Button onClick={handleDelete} disabled={deleting} className="bg-[#DC2626] text-white hover:bg-[#B91C1C]">

@@ -1173,7 +1173,7 @@ export default function PlayerDashboard() {
     const shareProfile = async () => {
         const shareData = {
             title: `${auth?.user?.name || 'Player'} — HiLights Football`,
-            text: `Check out ${auth?.user?.name || 'this player'}'s profile on HiLights Football`,
+            text: `Check out ${auth?.user?.name || 'this player'}'s football identity on HiLights Football`,
             url: profileUrl,
         };
         if (navigator.share) {
@@ -1189,7 +1189,7 @@ export default function PlayerDashboard() {
         if (navigator.clipboard && window.isSecureContext) {
             try {
                 await navigator.clipboard.writeText(profileUrl);
-                alert('Profile link copied!');
+                alert('Football identity link copied!');
                 return;
             } catch (error) {
                 console.log(error);
@@ -1204,9 +1204,9 @@ export default function PlayerDashboard() {
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
-            alert('Profile link copied!');
+            alert('Football identity link copied!');
         } catch {
-            prompt('Copy this profile link:', profileUrl);
+            prompt('Copy this football identity link:', profileUrl);
         }
     };
 
@@ -1268,7 +1268,7 @@ export default function PlayerDashboard() {
                                     <span className="font-display text-3xl font-black text-[#F5F5F5]">{profileComplete}%</span>
                                 </div>
                             </div>
-                            <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Profile Complete</p>
+                            <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Football Identity Complete</p>
                             <p className="mt-2 text-[0.625rem] font-medium text-[#E53F01]">
                                 {profileComplete < 100 ? `${100 - profileComplete}% left to complete your football identity` : 'Your football identity is complete'}
                             </p>
@@ -1278,7 +1278,7 @@ export default function PlayerDashboard() {
                             <div className="flex items-start justify-between">
                                 <div>
                                     <p className="font-mono text-3xl font-black text-[#F5F5F5]"> {totalViews}</p>
-                                    <p className="mt-1 text-sm text-[#9A9A9A]">Profile Views</p>
+                                    <p className="mt-1 text-sm text-[#9A9A9A]">Football Identity Views</p>
                                 </div>
                                 <Eye className="h-5 w-5 text-[#E53F01]" />
                             </div>
@@ -1426,7 +1426,7 @@ export default function PlayerDashboard() {
                                 <p className="text-[0.375rem] sm:text-[0.5rem] text-white font-bold translate-x-[0.3125rem] sm:translate-x-[10%]">[WWW.HILIGHTSFOOTBALL.COM](https://WWW.HILIGHTSFOOTBALL.COM)</p>
                                 <div className="absolute -bottom-16 left-0 flex justify-between w-full">
                                     <button className="capitalize flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[1rem] cursor-pointer text-[0.625rem] transition-all hover:bg-[#E53F01]" onClick={() => setShareOpen(true)}>
-                                        <Share2 className="mr-2 w-[0.625rem] h-[0.625rem] sm:h-[0.75rem]" /> Share full profile
+                                        <Share2 className="mr-2 w-[0.625rem] h-[0.625rem] sm:h-[0.75rem]" /> Share full football identity
                                     </button>
                                     <button onClick={downloadCard} className="capitalize cursor-pointer flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[0.625rem] transition-all">
                                         <Download className="mr-2 w-[0.625rem] h-[0.625rem] sm:w-[0.75rem] sm:h-[0.75rem]" /> download member card
@@ -1493,7 +1493,7 @@ export default function PlayerDashboard() {
                     <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div>
                             <h2 className="text-lg font-bold text-[#F5F5F5]">Country Analytics</h2>
-                            <p className="mt-1 text-xs text-[#94A3B8]">Where your profile views come from</p>
+                            <p className="mt-1 text-xs text-[#94A3B8]">Where your football identity views come from</p>
                         </div>
 
                         <div className="flex items-center gap-3">
