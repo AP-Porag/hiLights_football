@@ -1,57 +1,19 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Link, usePage, router, useForm } from '@inertiajs/react';
-import Select from 'react-select';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import AppLayout from '@/layouts/app-layout';
-import { GlobalConstant } from '@/utils/GlobalConstant';
-import type { BreadcrumbItem } from '@/types';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
-import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from '@/components/ui/pagination';
-import {
-    Download,
-    UserPlus,
-    Search,
-    MoreHorizontal,
-    Eye,
-    Edit,
-    Ban,
-    Trash2,
-    AlertTriangle,
-} from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import AppLayout from '@/layouts/app-layout';
+import type { BreadcrumbItem } from '@/types';
+import { GlobalConstant } from '@/utils/GlobalConstant';
+import { Link, router, useForm, usePage } from '@inertiajs/react';
+import { AlertTriangle, Ban, Edit, Eye, MoreHorizontal, Search, Trash2, UserPlus } from 'lucide-react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import Select from 'react-select';
 
 // ডাটাবেজ থেকে আসা ইউজারের টাইপ
 interface User {
@@ -101,7 +63,12 @@ const statusClasses: Record<string, string> = {
 };
 
 export default function UsersIndex() {
-    const { users, filters, total, countries = [] } = usePage<{
+    const {
+        users,
+        filters,
+        total,
+        countries = [],
+    } = usePage<{
         users: { data: User[]; current_page: number; last_page: number };
         filters: { search?: string; role?: string };
         total: number;
@@ -114,13 +81,20 @@ export default function UsersIndex() {
 
     // -------- Create User Modal ----------
     const [showCreateModal, setShowCreateModal] = useState(false);
-    const { data: newUser, setData: setNewUser, post, processing: creating, errors, reset, clearErrors } = useForm({
+    const {
+        data: newUser,
+        setData: setNewUser,
+        post,
+        processing: creating,
+        errors,
+        reset,
+        clearErrors,
+    } = useForm({
         name: '',
         email: '',
         role: GlobalConstant.ROLE_PLAYER,
         nationality: '',
     });
-
 
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -131,7 +105,7 @@ export default function UsersIndex() {
                 value: c.code,
                 label: `${c.name} (${c.code})`,
             })),
-        [countries]
+        [countries],
     );
 
     const roleMapping: Record<string, string> = {
@@ -144,11 +118,7 @@ export default function UsersIndex() {
 
     const applyFilters = (search: string, role: string) => {
         const mappedRole = roleMapping[role] || 'all';
-        router.get(
-            route('users.index'),
-            { search, role: mappedRole },
-            { preserveState: true, replace: true }
-        );
+        router.get(route('users.index'), { search, role: mappedRole }, { preserveState: true, replace: true });
     };
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -219,11 +189,7 @@ export default function UsersIndex() {
         }),
         option: (base: any, state: any) => ({
             ...base,
-            backgroundColor: state.isSelected
-                ? '#E53F01'
-                : state.isFocused
-                    ? '#2A2A2A'
-                    : '#1F1F1F',
+            backgroundColor: state.isSelected ? '#E53F01' : state.isFocused ? '#2A2A2A' : '#1F1F1F',
             color: state.isSelected ? '#0D0D0D' : '#F5F5F5',
             fontWeight: state.isSelected ? 600 : 400,
         }),
@@ -247,16 +213,16 @@ export default function UsersIndex() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <div className="overflow-x-hidden">
                 {/* TOP ACTIONS BAR */}
-                <div className="bg-[#0f0f0f] border-b border-[#2A2A2A] -mx-8 px-8 py-4 mb-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-                    <div className="flex flex-col sm:flex-row gap-3 sm:items-center flex-1">
+                <div className="-mx-8 mb-6 flex flex-col gap-3 border-b border-[#2A2A2A] bg-[#0f0f0f] px-8 py-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
                         <form onSubmit={handleSearchSubmit} className="relative w-full sm:w-64">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#94A3B8]" />
+                            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" />
                             <Input
                                 type="text"
                                 placeholder="Search users..."
                                 value={searchQuery}
                                 onChange={handleSearchChange}
-                                className="pl-9 h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] placeholder:text-[#64748B] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-[#E53F01]"
+                                className="h-9 border-[#2A2A2A] bg-[#1A1A1A] pl-9 text-[#F5F5F5] placeholder:text-[#64748B] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-[#E53F01]"
                             />
                         </form>
                         {/* <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full sm:w-auto">
@@ -279,58 +245,66 @@ export default function UsersIndex() {
                                 clearErrors();
                                 setShowCreateModal(true);
                             }}
-                            className="h-9 bg-[#E53F01] text-white hover:bg-[#E53F01] font-medium text-sm"
+                            className="h-9 bg-[#E53F01] text-sm font-medium text-white hover:bg-[#E53F01]"
                         >
-                            <UserPlus className="h-4 w-4 mr-2" /> Add User
+                            <UserPlus className="mr-2 h-4 w-4" /> Add User
                         </Button>
                     </div>
                 </div>
 
                 {/* RESULTS COUNT */}
-                <p className="text-sm text-[#94A3B8] mb-4 font-sans">
+                <p className="mb-4 font-sans text-sm text-[#94A3B8]">
                     Showing <span className="font-semibold text-[#F5F5F5]">{users.data.length}</span> of{' '}
                     <span className="font-semibold text-[#F5F5F5]">{total}</span> users
                 </p>
 
                 {/* USERS TABLE CARD */}
-                <Card className="bg-[#0f0f0f] border border-[#2A2A2A] rounded-2xl overflow-hidden shadow-sm">
+                <Card className="overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#0f0f0f] shadow-sm">
                     <div className="overflow-x-auto">
                         <Table>
                             <TableHeader className="sticky top-0 bg-[#1A1A1A]">
                                 <TableRow className="border-b border-[#2A2A2A] hover:bg-[#1A1A1A]">
-                                    <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold w-12 py-4 px-6">#</TableHead>
-                                    <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4">User</TableHead>
-                                    <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4 hidden md:table-cell">Email</TableHead>
+                                    <TableHead className="w-12 px-6 py-4 text-xs font-semibold tracking-wide text-[#94A3B8] uppercase">#</TableHead>
+                                    <TableHead className="py-4 text-xs font-semibold tracking-wide text-[#94A3B8] uppercase">User</TableHead>
+                                    <TableHead className="hidden py-4 text-xs font-semibold tracking-wide text-[#94A3B8] uppercase md:table-cell">
+                                        Email
+                                    </TableHead>
                                     {/* <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4">Role</TableHead> */}
                                     {/* <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4 hidden lg:table-cell">Subscription</TableHead> */}
-                                    <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4 hidden sm:table-cell">Status</TableHead>
-                                    <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4 hidden xl:table-cell">Joined</TableHead>
-                                    <TableHead className="text-xs uppercase text-[#94A3B8] tracking-wide font-semibold py-4 text-right pr-6">Actions</TableHead>
+                                    <TableHead className="hidden py-4 text-xs font-semibold tracking-wide text-[#94A3B8] uppercase sm:table-cell">
+                                        Status
+                                    </TableHead>
+                                    <TableHead className="hidden py-4 text-xs font-semibold tracking-wide text-[#94A3B8] uppercase xl:table-cell">
+                                        Joined
+                                    </TableHead>
+                                    <TableHead className="py-4 pr-6 text-right text-xs font-semibold tracking-wide text-[#94A3B8] uppercase">
+                                        Actions
+                                    </TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {users.data.map((user, idx) => (
-                                    <TableRow key={user.id} className="border-b border-[#2A2A2A] hover:bg-[#1A1A1A] transition-colors">
-                                        <TableCell className="text-sm text-[#94A3B8] font-mono px-6 py-4">
+                                    <TableRow key={user.id} className="border-b border-[#2A2A2A] transition-colors hover:bg-[#1A1A1A]">
+                                        <TableCell className="px-6 py-4 font-mono text-sm text-[#94A3B8]">
                                             {String((users.current_page - 1) * 15 + idx + 1).padStart(2, '0')}
                                         </TableCell>
                                         <TableCell className="py-4">
                                             <div className="flex items-center gap-3">
                                                 <Avatar className="h-9 w-9">
-                                                    <AvatarFallback className="bg-orange-900/30 text-[#E53F01] text-xs font-semibold">
+                                                    <AvatarFallback className="bg-orange-900/30 text-xs font-semibold text-[#E53F01]">
                                                         {getInitials(user.name)}
                                                     </AvatarFallback>
                                                 </Avatar>
                                                 <div className="min-w-0">
-                                                    <div className="font-semibold text-[#F5F5F5] text-sm truncate">{user.name}</div>
-                                                    <div className="text-xs text-[#94A3B8] flex items-center gap-1 mt-0.5">
+                                                    <div className="truncate text-sm font-semibold text-[#F5F5F5]">{user.name}</div>
+                                                    <div className="mt-0.5 flex items-center gap-1 text-xs text-[#94A3B8]">
                                                         <span>{user.country_flag}</span>
                                                         <span>{user.country}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </TableCell>
-                                        <TableCell className="text-sm text-[#94A3B8] py-4 hidden md:table-cell">{user.email}</TableCell>
+                                        <TableCell className="hidden py-4 text-sm text-[#94A3B8] md:table-cell">{user.email}</TableCell>
                                         {/* <TableCell className="py-4">
                                             <Badge variant="outline" className={`${roleBadgeClasses[user.role] || 'border-gray-500 text-gray-300 bg-gray-800'} text-xs font-medium px-2.5 py-0.5 rounded-md`}>
                                                 {user.role}
@@ -341,45 +315,50 @@ export default function UsersIndex() {
                                                 {user.subscription}
                                             </Badge>
                                         </TableCell> */}
-                                        <TableCell className="py-4 hidden sm:table-cell">
-                                            <Badge className={`${statusClasses[user.status] || 'bg-gray-600 text-white'} text-xs font-medium px-2.5 py-0.5 rounded-md`}>
+                                        <TableCell className="hidden py-4 sm:table-cell">
+                                            <Badge
+                                                className={`${statusClasses[user.status] || 'bg-gray-600 text-white'} rounded-md px-2.5 py-0.5 text-xs font-medium`}
+                                            >
                                                 {user.status}
                                             </Badge>
                                         </TableCell>
-                                        <TableCell className="py-4 hidden xl:table-cell">
-                                            <span className="text-sm text-[#94A3B8] font-mono">{user.joined}</span>
+                                        <TableCell className="hidden py-4 xl:table-cell">
+                                            <span className="font-mono text-sm text-[#94A3B8]">{user.joined}</span>
                                         </TableCell>
                                         <TableCell className="py-4 pr-6 text-right">
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-[#2A2A2A] text-[#94A3B8]">
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-[#94A3B8] hover:bg-[#2A2A2A]">
                                                         <MoreHorizontal className="h-4 w-4" />
                                                     </Button>
                                                 </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end" className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl shadow-lg w-48">
+                                                <DropdownMenuContent
+                                                    align="end"
+                                                    className="w-48 rounded-xl border border-[#2A2A2A] bg-[#1A1A1A] shadow-lg"
+                                                >
                                                     <Link href={route('users.show', user.id)}>
-                                                        <DropdownMenuItem className="text-sm text-[#F5F5F5] cursor-pointer hover:bg-[#2A2A2A] focus:bg-[#2A2A2A] py-2">
-                                                            <Eye className="h-4 w-4 mr-2 text-[#94A3B8]" /> View Profile
+                                                        <DropdownMenuItem className="cursor-pointer py-2 text-sm text-[#F5F5F5] hover:bg-[#2A2A2A] focus:bg-[#2A2A2A]">
+                                                            <Eye className="mr-2 h-4 w-4 text-[#94A3B8]" /> View Football Identity
                                                         </DropdownMenuItem>
                                                     </Link>
                                                     <Link href={route('users.edit', user.id)}>
-                                                        <DropdownMenuItem className="text-sm text-[#F5F5F5] cursor-pointer hover:bg-[#2A2A2A] focus:bg-[#2A2A2A] py-2">
-                                                            <Edit className="h-4 w-4 mr-2 text-[#94A3B8]" /> Edit User
+                                                        <DropdownMenuItem className="cursor-pointer py-2 text-sm text-[#F5F5F5] hover:bg-[#2A2A2A] focus:bg-[#2A2A2A]">
+                                                            <Edit className="mr-2 h-4 w-4 text-[#94A3B8]" /> Edit User
                                                         </DropdownMenuItem>
                                                     </Link>
                                                     <DropdownMenuSeparator className="bg-[#2A2A2A]" />
                                                     <DropdownMenuItem
                                                         onClick={() => router.post(route('users.suspend', user.id))}
-                                                        className="text-sm text-amber-400 cursor-pointer hover:bg-amber-900/20 focus:bg-amber-900/20 py-2"
+                                                        className="cursor-pointer py-2 text-sm text-amber-400 hover:bg-amber-900/20 focus:bg-amber-900/20"
                                                     >
-                                                        <Ban className="h-4 w-4 mr-2" />
+                                                        <Ban className="mr-2 h-4 w-4" />
                                                         {user.status === 'Suspended' ? 'Reactivate Account' : 'Suspend Account'}
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
                                                         onClick={() => setDeleteTarget(user)}
-                                                        className="text-sm text-red-400 cursor-pointer hover:bg-red-900/20 focus:bg-red-900/20 py-2"
+                                                        className="cursor-pointer py-2 text-sm text-red-400 hover:bg-red-900/20 focus:bg-red-900/20"
                                                     >
-                                                        <Trash2 className="h-4 w-4 mr-2" /> Delete User
+                                                        <Trash2 className="mr-2 h-4 w-4" /> Delete User
                                                     </DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
@@ -392,7 +371,7 @@ export default function UsersIndex() {
                 </Card>
 
                 {/* PAGINATION */}
-                <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-sm text-[#94A3B8]">
                         Page <span className="font-semibold text-[#F5F5F5]">{users.current_page}</span> of{' '}
                         <span className="font-semibold text-[#F5F5F5]">{users.last_page}</span>
@@ -401,8 +380,12 @@ export default function UsersIndex() {
                         <PaginationContent>
                             <PaginationItem>
                                 <PaginationPrevious
-                                    href={users.current_page > 1 ? route('users.index', { page: users.current_page - 1, search: searchQuery, role: activeTab }) : '#'}
-                                    className="border border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1A1A1A] hover:text-[#E53F01] text-sm h-9"
+                                    href={
+                                        users.current_page > 1
+                                            ? route('users.index', { page: users.current_page - 1, search: searchQuery, role: activeTab })
+                                            : '#'
+                                    }
+                                    className="h-9 border border-[#2A2A2A] text-sm text-[#F5F5F5] hover:bg-[#1A1A1A] hover:text-[#E53F01]"
                                 />
                             </PaginationItem>
                             {Array.from({ length: users.last_page }, (_, i) => i + 1).map((page) => (
@@ -412,8 +395,8 @@ export default function UsersIndex() {
                                         isActive={page === users.current_page}
                                         className={
                                             page === users.current_page
-                                                ? 'bg-[#E53F01] text-white border-[#E53F01] hover:bg-[#E53F01] hover:text-white text-sm h-9 w-9'
-                                                : 'border border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1A1A1A] hover:text-[#E53F01] text-sm h-9 w-9'
+                                                ? 'h-9 w-9 border-[#E53F01] bg-[#E53F01] text-sm text-white hover:bg-[#E53F01] hover:text-white'
+                                                : 'h-9 w-9 border border-[#2A2A2A] text-sm text-[#F5F5F5] hover:bg-[#1A1A1A] hover:text-[#E53F01]'
                                         }
                                     >
                                         {page}
@@ -422,8 +405,12 @@ export default function UsersIndex() {
                             ))}
                             <PaginationItem>
                                 <PaginationNext
-                                    href={users.current_page < users.last_page ? route('users.index', { page: users.current_page + 1, search: searchQuery, role: activeTab }) : '#'}
-                                    className="border border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1A1A1A] hover:text-[#E53F01] text-sm h-9"
+                                    href={
+                                        users.current_page < users.last_page
+                                            ? route('users.index', { page: users.current_page + 1, search: searchQuery, role: activeTab })
+                                            : '#'
+                                    }
+                                    className="h-9 border border-[#2A2A2A] text-sm text-[#F5F5F5] hover:bg-[#1A1A1A] hover:text-[#E53F01]"
                                 />
                             </PaginationItem>
                         </PaginationContent>
@@ -432,26 +419,31 @@ export default function UsersIndex() {
 
                 {/* DELETE CONFIRMATION DIALOG */}
                 <Dialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
-                    <DialogContent className="bg-[#0f0f0f] rounded-2xl p-6 border border-[#2A2A2A] max-w-md">
+                    <DialogContent className="max-w-md rounded-2xl border border-[#2A2A2A] bg-[#0f0f0f] p-6">
                         <DialogHeader>
                             <div className="flex items-start gap-4">
-                                <div className="h-10 w-10 rounded-full bg-red-900/30 flex items-center justify-center shrink-0">
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-900/30">
                                     <AlertTriangle className="h-5 w-5 text-[#DC2626]" />
                                 </div>
                                 <div className="flex-1">
                                     <DialogTitle className="text-lg font-semibold text-[#F5F5F5]">Delete User</DialogTitle>
-                                    <DialogDescription className="text-sm text-[#94A3B8] mt-2 leading-relaxed">
+                                    <DialogDescription className="mt-2 text-sm leading-relaxed text-[#94A3B8]">
                                         Are you sure you want to permanently delete{' '}
-                                        <span className="font-semibold text-[#F5F5F5]">{deleteTarget?.name}</span>?
-                                        This action cannot be undone.
+                                        <span className="font-semibold text-[#F5F5F5]">{deleteTarget?.name}</span>? This action cannot be undone.
                                     </DialogDescription>
                                 </div>
                             </div>
                         </DialogHeader>
-                        <DialogFooter className="mt-6 flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
-                            <Button variant="outline" onClick={() => setDeleteTarget(null)} className="h-9 border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1A1A1A] font-medium text-sm">Cancel</Button>
-                            <Button onClick={handleDelete} className="h-9 bg-[#DC2626] text-white hover:bg-red-700 font-medium text-sm">
-                                <Trash2 className="h-4 w-4 mr-2" /> Delete Permanently
+                        <DialogFooter className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                            <Button
+                                variant="outline"
+                                onClick={() => setDeleteTarget(null)}
+                                className="h-9 border-[#2A2A2A] text-sm font-medium text-[#F5F5F5] hover:bg-[#1A1A1A]"
+                            >
+                                Cancel
+                            </Button>
+                            <Button onClick={handleDelete} className="h-9 bg-[#DC2626] text-sm font-medium text-white hover:bg-red-700">
+                                <Trash2 className="mr-2 h-4 w-4" /> Delete Permanently
                             </Button>
                         </DialogFooter>
                     </DialogContent>
@@ -459,41 +451,34 @@ export default function UsersIndex() {
 
                 {/* ====== CREATE USER MODAL ====== */}
                 <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
-                    <DialogContent className="bg-[#0f0f0f] rounded-2xl p-6 border border-[#2A2A2A] max-w-md">
+                    <DialogContent className="max-w-md rounded-2xl border border-[#2A2A2A] bg-[#0f0f0f] p-6">
                         <DialogHeader>
-                            <DialogTitle className="text-lg font-semibold text-[#F5F5F5]">
-                                Create New User
-                            </DialogTitle>
-                            <DialogDescription className="text-sm text-[#94A3B8] mt-2">
+                            <DialogTitle className="text-lg font-semibold text-[#F5F5F5]">Create New User</DialogTitle>
+                            <DialogDescription className="mt-2 text-sm text-[#94A3B8]">
                                 Fill in the user details below. The new user will appear immediately.
                             </DialogDescription>
                         </DialogHeader>
                         <form onSubmit={handleCreateUser}>
                             <div className="grid gap-4 py-4">
                                 <div>
-                                    <label className="text-xs uppercase tracking-wide text-[#94A3B8] block mb-1">Full Name</label>
+                                    <label className="mb-1 block text-xs tracking-wide text-[#94A3B8] uppercase">Full Name</label>
                                     <Input
                                         type="text"
                                         value={newUser.name}
                                         onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-
-                                        className="h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-[#E53F01]"
+                                        className="h-9 border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-[#E53F01]"
                                     />
-                                    {errors.name && (
-                                        <p className="text-xs text-red-400 mt-1">{errors.name}</p>
-                                    )}
+                                    {errors.name && <p className="mt-1 text-xs text-red-400">{errors.name}</p>}
                                 </div>
                                 <div>
-                                    <label className="text-xs uppercase tracking-wide text-[#94A3B8] block mb-1">Email</label>
+                                    <label className="mb-1 block text-xs tracking-wide text-[#94A3B8] uppercase">Email</label>
                                     <Input
                                         type="email"
                                         value={newUser.email}
                                         onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                                        className="h-9 bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-[#E53F01]"
+                                        className="h-9 border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-1 focus-visible:ring-[#E53F01]"
                                     />
-                                    {errors.name && (
-                                        <p className="text-xs text-red-400 mt-1">{errors.email}</p>
-                                    )}
+                                    {errors.name && <p className="mt-1 text-xs text-red-400">{errors.email}</p>}
                                 </div>
                                 {/* <div>
                                     <label className="text-xs uppercase tracking-wide text-[#94A3B8] block mb-1">Password</label>
@@ -506,13 +491,12 @@ export default function UsersIndex() {
                                     />
                                 </div> */}
                                 <div>
-                                    <label className="text-xs uppercase tracking-wide text-[#94A3B8] block mb-1">Role</label>
+                                    <label className="mb-1 block text-xs tracking-wide text-[#94A3B8] uppercase">Role</label>
                                     <select
                                         value={newUser.role}
                                         onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
                                         className="h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none"
                                     >
-
                                         {/* <option value={GlobalConstant.ROLE_PLAYER}>Player</option>
                                         <option value={GlobalConstant.ROLE_SCOUT}>Scout</option>
                                         <option value={GlobalConstant.ROLE_AGENT}>Agent</option>
@@ -520,36 +504,37 @@ export default function UsersIndex() {
                                         <option value={GlobalConstant.ROLE_ADMIN}>Admin</option>
                                         <option value={GlobalConstant.ROLE_USER}>User</option>
                                     </select>
-                                    {errors.name && (
-                                        <p className="text-xs text-red-400 mt-1">{errors.role}</p>
-                                    )}
+                                    {errors.name && <p className="mt-1 text-xs text-red-400">{errors.role}</p>}
                                 </div>
                                 {/* ── Nationality Dropdown (react‑select) ── */}
                                 <div>
-                                    <label className="text-xs uppercase tracking-wide text-[#94A3B8] block mb-1">
-                                        Nationality
-                                    </label>
+                                    <label className="mb-1 block text-xs tracking-wide text-[#94A3B8] uppercase">Nationality</label>
                                     <Select
                                         options={countryOptions}
                                         value={countryOptions.find((o) => o.value === newUser.nationality) || null}
-                                        onChange={(selected) =>
-                                            setNewUser({ ...newUser, nationality: selected?.value || '' })
-                                        }
+                                        onChange={(selected) => setNewUser({ ...newUser, nationality: selected?.value || '' })}
                                         placeholder="Select country..."
                                         isSearchable
                                         className="text-sm"
                                         styles={selectStyles}
                                     />
-                                    {errors.name && (
-                                        <p className="text-xs text-red-400 mt-1">{errors.nationality}</p>
-                                    )}
+                                    {errors.name && <p className="mt-1 text-xs text-red-400">{errors.nationality}</p>}
                                 </div>
                             </div>
-                            <DialogFooter className="mt-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
-                                <Button type="button" variant="outline" onClick={() => setShowCreateModal(false)} className="h-9 border-[#2A2A2A] text-[#F5F5F5] hover:bg-[#1A1A1A] font-medium text-sm">
+                            <DialogFooter className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setShowCreateModal(false)}
+                                    className="h-9 border-[#2A2A2A] text-sm font-medium text-[#F5F5F5] hover:bg-[#1A1A1A]"
+                                >
                                     Cancel
                                 </Button>
-                                <Button type="submit" disabled={creating} className="h-9 bg-[#E53F01] text-white hover:bg-[#E53F01] font-medium text-sm">
+                                <Button
+                                    type="submit"
+                                    disabled={creating}
+                                    className="h-9 bg-[#E53F01] text-sm font-medium text-white hover:bg-[#E53F01]"
+                                >
                                     {creating ? 'Creating...' : 'Create User'}
                                 </Button>
                             </DialogFooter>

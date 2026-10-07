@@ -1,57 +1,39 @@
-import React, { useState } from 'react';
-import { Link, usePage, router } from '@inertiajs/react';
-import { toast } from 'sonner';
+import PlayerNavbar from '@/components/player/PlayerNavbar';
+import { Link, router, useForm, usePage } from '@inertiajs/react';
 import {
-    Check,
-    X,
-    Lock,
-    Shield,
-    CreditCard,
-    Sparkles,
-    Crown,
-    Zap,
-    Star,
-    Award,
-    Users,
-    BarChart3,
-    Video,
-    Eye,
-    MessageSquare,
-    Globe,
-    Headphones,
-    TrendingUp,
     AlertTriangle,
-    RotateCcw,
-    User,
-    CheckCircle,
     Binoculars,
-    ShieldCheck,
+    Check,
+    CheckCircle,
+    CreditCard,
     Download,
     FileText,
+    Globe,
+    RotateCcw,
+    Shield,
+    ShieldCheck,
+    Sparkles,
+    User,
+    Users,
+    X,
 } from 'lucide-react';
-import PlayerNavbar from '@/components/player/PlayerNavbar';
-import { useForm } from '@inertiajs/react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 // ── Stripe price IDs (backend current_plan = stripe_price ID) ──
 const PLAN_ONE_PRICE = 'price_1TsfD5HKtXG9R7bGyzR4H6C9'; // Premium (12 months fidelity) — plan_one
 const PLAN_TWO_PRICE = 'price_1TsfDtHKtXG9R7bGVsNxRTT6'; // Premium (no fidelity) — plan_two
 // TODO: name — auth theke ana jabe
-const freePlan = [
-    'Public Profile',
-    'Upload 1 Video',
-    'Club History',
-    'Competitions History',
-    'Achievements',
-];
+const freePlan = ['Public Football Identity', 'Upload 1 Video', 'Club History', 'Competitions History', 'Achievements'];
 const premiumPlan = [
-    'Public Profile',
+    'Public Football Identity',
     'Upload 3 Videos',
     'Club History',
     'Competitions History',
     'Achievements',
     'HiLights Member Card with exclusive QR code',
-    'Badge of Verified Profile',
+    'Badge of Verified Football Identity',
     'Priority in Searches',
-    'Consultancy for profile and video improvements',
+    'Consultancy for football identity and video improvements',
 ];
 const items = [
     {
@@ -104,30 +86,20 @@ export default function SubscriptionIndex() {
     const [resuming, setResuming] = useState(false);
     const [checkoutPlan, setCheckoutPlan] = useState<string | null>(null);
     // premium = plan_one, elite = plan_two
-    const disablePremium =
-        current_plan === PLAN_ONE_PRICE || current_plan === PLAN_TWO_PRICE;
+    const disablePremium = current_plan === PLAN_ONE_PRICE || current_plan === PLAN_TWO_PRICE;
     const disableElite = current_plan === PLAN_TWO_PRICE;
     // Stripe price ID theke ekhon-er plan id (badge/"Current" thik korar jonno)
     const currentPlanId: 'free' | 'premium' | 'elite' =
-        current_plan === PLAN_TWO_PRICE
-            ? 'elite'
-            : current_plan === PLAN_ONE_PRICE
-                ? 'premium'
-                : 'free';
-    const currentPlanName =
-        currentPlanId === 'elite'
-            ? 'Elite plan'
-            : currentPlanId === 'premium'
-                ? 'Premium plan'
-                : 'Free plan';
+        current_plan === PLAN_TWO_PRICE ? 'elite' : current_plan === PLAN_ONE_PRICE ? 'premium' : 'free';
+    const currentPlanName = currentPlanId === 'elite' ? 'Elite plan' : currentPlanId === 'premium' ? 'Premium plan' : 'Free plan';
     const hasPlan = current_plan !== null;
     const invoiceList: Invoice[] = invoices ?? [];
     const endsAtText = subscription_ends_at
         ? new Date(subscription_ends_at).toLocaleDateString('en-US', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-        })
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+          })
         : null;
     // Stripe checkout / swap — swap hole flash message + reload, notun hole Stripe redirect
     const handleCheckout = (planName: string) => {
@@ -163,7 +135,7 @@ export default function SubscriptionIndex() {
                     setCancelling(false);
                     setCancelOpen(false);
                 },
-            }
+            },
         );
     };
     // grace period theke abar resume (modal theke confirm hoy)
@@ -178,7 +150,7 @@ export default function SubscriptionIndex() {
                     setResuming(false);
                     setResumeOpen(false);
                 },
-            }
+            },
         );
     };
     // invoice download — new tab-e Stripe hosted PDF khule
@@ -194,27 +166,25 @@ export default function SubscriptionIndex() {
                     <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
                         <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 backdrop-blur-sm">
                             <Sparkles className="h-3.5 w-3.5 text-white" />
-                            <span className="font-sans text-xs font-semibold uppercase tracking-widest text-white">
+                            <span className="font-sans text-xs font-semibold tracking-widest text-white uppercase">
                                 Welcome back, {auth?.user?.name}
                             </span>
                         </div>
-                        <h1 className="font-display text-4xl font-bold leading-none tracking-tight text-white sm:text-5xl lg:text-6xl">
+                        <h1 className="font-display text-4xl leading-none font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
                             Your Subscription
                         </h1>
                         <p className="mx-auto mt-5 max-w-2xl font-sans text-base text-white/95 sm:text-lg lg:text-xl">
                             You're currently on the{' '}
-                            <span className="font-bold underline decoration-white/40 underline-offset-4">
-                                {currentPlanName}
-                            </span>
-                            . Upgrade to unlock your full potential.
+                            <span className="font-bold underline decoration-white/40 underline-offset-4">{currentPlanName}</span>. Upgrade to unlock
+                            your full potential.
                         </p>
                         {/* ── Cancel / Resume action (plan state onujayi) ── */}
                         {on_grace_period ? (
                             <div className="mx-auto mt-6 flex max-w-2xl flex-col items-center justify-center gap-3 rounded-xl bg-white/15 px-5 py-4 backdrop-blur-sm sm:flex-row">
                                 <span className="font-sans text-sm text-white">
                                     Your subscription has been cancelled. You'll keep full access
-                                    {endsAtText ? ` until ${endsAtText}` : ' until the end of your billing period'}
-                                    . You can resume anytime before then.
+                                    {endsAtText ? ` until ${endsAtText}` : ' until the end of your billing period'}. You can resume anytime before
+                                    then.
                                 </span>
                                 <button
                                     onClick={() => setResumeOpen(true)}
@@ -256,10 +226,8 @@ export default function SubscriptionIndex() {
                 <section className="bg-black px-4 py-12 sm:py-16">
                     <div className="mx-auto max-w-7xl">
                         <div className="mb-10 text-center sm:mb-12">
-                            <span className="font-mono text-xs font-medium uppercase tracking-widest text-[#E53F01]">
-                                Choose your plan
-                            </span>
-                            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#F5F5F5] sm:text-4xl">
+                            <span className="font-mono text-xs font-medium tracking-widest text-[#E53F01] uppercase">Choose your plan</span>
+                            <h2 className="font-display mt-2 text-3xl font-bold tracking-tight text-[#F5F5F5] sm:text-4xl">
                                 Built for serious athletes
                             </h2>
                             <p className="mx-auto mt-3 max-w-2xl font-sans text-sm text-[#9A9A9A] sm:text-base">
@@ -271,7 +239,7 @@ export default function SubscriptionIndex() {
                             <div className="relative rounded-[1.25rem] border border-gray-700 bg-black p-6 md:relative">
                                 {currentPlanId === 'free' && (
                                     <div className="absolute -top-3 left-1/2 z-10 -translate-x-1/2">
-                                        <span className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-1 text-xs font-bold uppercase text-white">
+                                        <span className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-1 text-xs font-bold text-white uppercase">
                                             <Check className="h-3 w-3" strokeWidth={3} /> Active Plan
                                         </span>
                                     </div>
@@ -281,7 +249,7 @@ export default function SubscriptionIndex() {
                                         <User className="size-[2rem] text-white" />
                                     </div>
                                 </div>
-                                <h3 className="mb-6 text-center text-2xl font-bold text-white uppercase italic">Free Profile</h3>
+                                <h3 className="mb-6 text-center text-2xl font-bold text-white uppercase italic">Free Football Identity</h3>
                                 <div className="mb-8 space-y-3">
                                     {freePlan.map((item, index) => (
                                         <div key={index} className="flex items-center gap-3">
@@ -301,7 +269,7 @@ export default function SubscriptionIndex() {
                             <div className="relative rounded-[1.25rem] border border-orange-500 bg-black p-6">
                                 {currentPlanId === 'premium' ? (
                                     <div className="absolute -top-3 left-1/2 z-10 -translate-x-1/2">
-                                        <span className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-1 text-xs font-bold uppercase text-white">
+                                        <span className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-1 text-xs font-bold text-white uppercase">
                                             <Check className="h-3 w-3" strokeWidth={3} /> Active Plan
                                         </span>
                                     </div>
@@ -315,14 +283,16 @@ export default function SubscriptionIndex() {
                                 </div>
                                 <h3 className="text-center text-2xl font-bold text-white uppercase italic">HiLights Premium</h3>
                                 <p className="mb-6 text-center">
-                                    <span className="text-[1.25rem] font-semibold text-white">R$ <span className="pl-1 text-[1.875rem] font-bold text-[#E53F01]">47</span></span>
+                                    <span className="text-[1.25rem] font-semibold text-white">
+                                        R$ <span className="pl-1 text-[1.875rem] font-bold text-[#E53F01]">47</span>
+                                    </span>
                                     <span className="ml-2 text-sm text-white">/month</span>
                                     <span className="ml-4 text-xs text-orange-500">(12 months fidelity)</span>
                                 </p>
                                 <div className="mb-8 space-y-3">
                                     {premiumPlan.map((item, index) => (
                                         <div key={index} className="flex items-start gap-3">
-                                            <CheckCircle className="size-[1.125rem] mt-1 shrink-0 text-green-500" />
+                                            <CheckCircle className="mt-1 size-[1.125rem] shrink-0 text-green-500" />
                                             <span className="text-[#ececec]">{item}</span>
                                         </div>
                                     ))}
@@ -330,23 +300,22 @@ export default function SubscriptionIndex() {
                                 <button
                                     onClick={disablePremium ? undefined : () => handleCheckout('plan_one')}
                                     disabled={disablePremium}
-                                    className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disablePremium
-                                        ? 'cursor-not-allowed bg-gray-600 opacity-50'
-                                        : 'bg-[#E53F01] hover:bg-[#E53F01]'
-                                        }`}
+                                    className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${
+                                        disablePremium ? 'cursor-not-allowed bg-gray-600 opacity-50' : 'bg-[#E53F01] hover:bg-[#E53F01]'
+                                    }`}
                                 >
                                     {currentPlanId === 'elite'
                                         ? 'Already subscribed to Elite plan'
                                         : disablePremium
-                                            ? 'Already Subscribed'
-                                            : 'Choose Premium'}
+                                          ? 'Already Subscribed'
+                                          : 'Choose Premium'}
                                 </button>
                             </div>
                             {/* Premium — no fidelity (plan_two) */}
                             <div className="relative rounded-[1.25rem] border border-orange-500 bg-black p-6">
                                 {currentPlanId === 'elite' && (
                                     <div className="absolute -top-3 left-1/2 z-10 -translate-x-1/2">
-                                        <span className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-1 text-xs font-bold uppercase text-white">
+                                        <span className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-1 text-xs font-bold text-white uppercase">
                                             <Check className="h-3 w-3" strokeWidth={3} /> Active Plan
                                         </span>
                                     </div>
@@ -356,14 +325,16 @@ export default function SubscriptionIndex() {
                                 </div>
                                 <h3 className="text-center text-2xl font-bold text-white uppercase italic">HiLights Premium</h3>
                                 <p className="mb-6 text-center">
-                                    <span className="text-[1.25rem] font-semibold text-white">R$ <span className="pl-1 text-[1.875rem] font-bold text-[#E53F01]">94</span></span>
+                                    <span className="text-[1.25rem] font-semibold text-white">
+                                        R$ <span className="pl-1 text-[1.875rem] font-bold text-[#E53F01]">94</span>
+                                    </span>
                                     <span className="ml-2 text-sm text-white">/month</span>
                                     <span className="ml-6 text-xs text-orange-500">(no fidelity)</span>
                                 </p>
                                 <div className="mb-8 space-y-3">
                                     {premiumPlan.map((item, index) => (
                                         <div key={index} className="flex items-start gap-3">
-                                            <CheckCircle className="size-[1.125rem] mt-1 shrink-0 text-green-500" />
+                                            <CheckCircle className="mt-1 size-[1.125rem] shrink-0 text-green-500" />
                                             <span className="text-[#ececec]">{item}</span>
                                         </div>
                                     ))}
@@ -371,16 +342,13 @@ export default function SubscriptionIndex() {
                                 <button
                                     onClick={disableElite || checkoutPlan === 'plan_two' ? undefined : () => handleCheckout('plan_two')}
                                     disabled={disableElite || checkoutPlan === 'plan_two'}
-                                    className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${disableElite || checkoutPlan === 'plan_two'
-                                        ? 'cursor-not-allowed bg-gray-600 opacity-50'
-                                        : 'bg-[#E53F01] hover:bg-[#E53F01]'
-                                        }`}
+                                    className={`w-full rounded-xl py-3 font-bold text-white uppercase transition ${
+                                        disableElite || checkoutPlan === 'plan_two'
+                                            ? 'cursor-not-allowed bg-gray-600 opacity-50'
+                                            : 'bg-[#E53F01] hover:bg-[#E53F01]'
+                                    }`}
                                 >
-                                    {checkoutPlan === 'plan_two'
-                                        ? 'Processing...'
-                                        : disableElite
-                                            ? 'Already Subscribed'
-                                            : 'Choose Premium'}
+                                    {checkoutPlan === 'plan_two' ? 'Processing...' : disableElite ? 'Already Subscribed' : 'Choose Premium'}
                                 </button>
                             </div>
                         </div>
@@ -396,12 +364,8 @@ export default function SubscriptionIndex() {
                                         <FileText className="h-5 w-5 text-[#E53F01]" />
                                     </div>
                                     <div>
-                                        <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5]">
-                                            Billing History
-                                        </h3>
-                                        <p className="mt-0.5 font-sans text-sm text-[#9A9A9A]">
-                                            Download your invoices and payment receipts.
-                                        </p>
+                                        <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5]">Billing History</h3>
+                                        <p className="mt-0.5 font-sans text-sm text-[#9A9A9A]">Download your invoices and payment receipts.</p>
                                     </div>
                                 </div>
 
@@ -410,27 +374,37 @@ export default function SubscriptionIndex() {
                                         <table className="min-w-full">
                                             <thead>
                                                 <tr className="border-b border-[#2A2A2A] text-left">
-                                                    <th className="pb-3 pr-4 font-sans text-xs font-semibold uppercase tracking-wider text-[#9A9A9A]">Invoice</th>
-                                                    <th className="pb-3 pr-4 font-sans text-xs font-semibold uppercase tracking-wider text-[#9A9A9A]">Date</th>
-                                                    <th className="pb-3 pr-4 font-sans text-xs font-semibold uppercase tracking-wider text-[#9A9A9A]">Amount</th>
-                                                    <th className="pb-3 pr-4 font-sans text-xs font-semibold uppercase tracking-wider text-[#9A9A9A]">Status</th>
-                                                    <th className="pb-3 text-right font-sans text-xs font-semibold uppercase tracking-wider text-[#9A9A9A]">Download</th>
+                                                    <th className="pr-4 pb-3 font-sans text-xs font-semibold tracking-wider text-[#9A9A9A] uppercase">
+                                                        Invoice
+                                                    </th>
+                                                    <th className="pr-4 pb-3 font-sans text-xs font-semibold tracking-wider text-[#9A9A9A] uppercase">
+                                                        Date
+                                                    </th>
+                                                    <th className="pr-4 pb-3 font-sans text-xs font-semibold tracking-wider text-[#9A9A9A] uppercase">
+                                                        Amount
+                                                    </th>
+                                                    <th className="pr-4 pb-3 font-sans text-xs font-semibold tracking-wider text-[#9A9A9A] uppercase">
+                                                        Status
+                                                    </th>
+                                                    <th className="pb-3 text-right font-sans text-xs font-semibold tracking-wider text-[#9A9A9A] uppercase">
+                                                        Download
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {invoiceList.map((inv) => (
                                                     <tr key={inv.id} className="border-b border-[#2A2A2A] last:border-b-0">
-                                                        <td className="py-4 pr-4 font-mono text-sm text-[#F5F5F5]">
-                                                            {inv.number || inv.id}
+                                                        <td className="py-4 pr-4 font-mono text-sm text-[#F5F5F5]">{inv.number || inv.id}</td>
+                                                        <td className="py-4 pr-4 font-sans text-sm whitespace-nowrap text-[#9A9A9A]">
+                                                            {new Date(inv.date).toLocaleDateString('en-US', {
+                                                                day: 'numeric',
+                                                                month: 'short',
+                                                                year: 'numeric',
+                                                            })}
                                                         </td>
-                                                        <td className="py-4 pr-4 font-sans text-sm text-[#9A9A9A] whitespace-nowrap">
-                                                            {new Date(inv.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
-                                                        </td>
-                                                        <td className="py-4 pr-4 font-mono text-sm text-[#F5F5F5] whitespace-nowrap">
-                                                            {inv.total}
-                                                        </td>
+                                                        <td className="py-4 pr-4 font-mono text-sm whitespace-nowrap text-[#F5F5F5]">{inv.total}</td>
                                                         <td className="py-4 pr-4">
-                                                            <span className="inline-flex items-center gap-1 rounded-full bg-green-500/15 px-2.5 py-0.5 font-sans text-xs font-medium capitalize text-green-400">
+                                                            <span className="inline-flex items-center gap-1 rounded-full bg-green-500/15 px-2.5 py-0.5 font-sans text-xs font-medium text-green-400 capitalize">
                                                                 <Check className="h-3 w-3" strokeWidth={3} />
                                                                 {inv.status || 'Paid'}
                                                             </span>
@@ -454,7 +428,9 @@ export default function SubscriptionIndex() {
                                     <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#2A2A2A] py-10 text-center">
                                         <FileText className="mb-3 h-8 w-8 text-[#555555]" />
                                         <p className="font-sans text-sm text-[#9A9A9A]">No invoices yet.</p>
-                                        <p className="mt-1 font-sans text-xs text-[#555555]">Your invoices will appear here after your first payment.</p>
+                                        <p className="mt-1 font-sans text-xs text-[#555555]">
+                                            Your invoices will appear here after your first payment.
+                                        </p>
                                     </div>
                                 )}
                             </div>
@@ -495,9 +471,7 @@ export default function SubscriptionIndex() {
                                         <Shield className="h-5 w-5 text-[#E53F01]" />
                                     </div>
                                     <div>
-                                        <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5]">
-                                            Bank-level security
-                                        </h3>
+                                        <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5]">Bank-level security</h3>
                                         <p className="mt-1.5 font-sans text-sm leading-relaxed text-[#9A9A9A]">
                                             256-bit SSL encryption. PCI-DSS Level 1 compliant. Your payment details are never stored on our servers.
                                         </p>
@@ -508,34 +482,29 @@ export default function SubscriptionIndex() {
                                         <CreditCard className="h-5 w-5 text-[#E53F01]" />
                                     </div>
                                     <div>
-                                        <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5]">
-                                            Cancel anytime
-                                        </h3>
+                                        <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5]">Cancel anytime</h3>
                                         <p className="mt-1.5 font-sans text-sm leading-relaxed text-[#9A9A9A]">
-                                            No contracts, no commitments. Cancel from your dashboard in one click — keep access until your billing period ends.
+                                            No contracts, no commitments. Cancel from your dashboard in one click — keep access until your billing
+                                            period ends.
                                         </p>
                                     </div>
                                 </div>
                             </div>
                             <div className="mt-10 border-t border-[#2A2A2A] pt-8">
-                                <p className="text-center font-mono text-[0.6875rem] font-medium uppercase tracking-widest text-[#555555]">
+                                <p className="text-center font-mono text-[0.6875rem] font-medium tracking-widest text-[#555555] uppercase">
                                     Secure payments powered by
                                 </p>
                                 <div className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 sm:gap-x-12">
                                     <div className="flex items-center gap-2 rounded-md border border-[#2A2A2A] bg-[#1F1F1F] px-4 py-2.5">
-                                        <span className="font-display text-lg font-bold italic tracking-tight text-[#635BFF]">
-                                            stripe
-                                        </span>
+                                        <span className="font-display text-lg font-bold tracking-tight text-[#635BFF] italic">stripe</span>
                                     </div>
                                     <div className="flex items-center justify-center rounded-md border border-[#2A2A2A] bg-[#1F1F1F] px-4 py-2.5">
-                                        <span className="font-display text-base font-bold italic tracking-wider text-[#C7CBF5]">
-                                            VISA
-                                        </span>
+                                        <span className="font-display text-base font-bold tracking-wider text-[#C7CBF5] italic">VISA</span>
                                     </div>
                                     <div className="flex items-center gap-0 rounded-md border border-[#2A2A2A] bg-[#1F1F1F] px-3 py-2.5">
                                         <div className="h-5 w-5 rounded-full bg-[#EB001B]" />
                                         <div className="-ml-2 h-5 w-5 rounded-full bg-[#F79E1B] opacity-90" />
-                                        <span className="ml-2 font-sans text-[0.625rem] font-bold uppercase tracking-wider text-[#F5F5F5]">
+                                        <span className="ml-2 font-sans text-[0.625rem] font-bold tracking-wider text-[#F5F5F5] uppercase">
                                             Mastercard
                                         </span>
                                     </div>
@@ -543,10 +512,7 @@ export default function SubscriptionIndex() {
                             </div>
                             <p className="mt-8 text-center font-sans text-xs text-[#555555]">
                                 Questions about billing?{' '}
-                                <Link
-                                    href="/support"
-                                    className="font-semibold text-[#E53F01] hover:text-[#E53F01] hover:underline"
-                                >
+                                <Link href="/support" className="font-semibold text-[#E53F01] hover:text-[#E53F01] hover:underline">
                                     Contact our support team
                                 </Link>{' '}
                                 — we typically respond within 2 hours.
@@ -570,9 +536,7 @@ export default function SubscriptionIndex() {
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(255,107,0,0.12)]">
                                     <AlertTriangle className="h-5 w-5 text-[#E53F01]" />
                                 </div>
-                                <h3 className="font-display text-lg font-bold uppercase tracking-tight text-[#F5F5F5]">
-                                    Cancel Subscription
-                                </h3>
+                                <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5] uppercase">Cancel Subscription</h3>
                             </div>
                             <button
                                 type="button"
@@ -584,10 +548,9 @@ export default function SubscriptionIndex() {
                             </button>
                         </div>
                         <p className="mt-4 font-sans text-sm leading-relaxed text-[#9A9A9A]">
-                            Are you sure you want to cancel your subscription? You will keep full
-                            access to all your plan features
-                            {endsAtText ? ` until ${endsAtText}` : ' until the end of your current billing period'}
-                            . After that, your account will move back to the Free plan.
+                            Are you sure you want to cancel your subscription? You will keep full access to all your plan features
+                            {endsAtText ? ` until ${endsAtText}` : ' until the end of your current billing period'}. After that, your account will
+                            move back to the Free plan.
                         </p>
                         <p className="mt-3 font-sans text-sm leading-relaxed text-[#9A9A9A]">
                             You can resume your subscription anytime before it ends.
@@ -628,9 +591,7 @@ export default function SubscriptionIndex() {
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(255,107,0,0.12)]">
                                     <RotateCcw className="h-5 w-5 text-[#E53F01]" />
                                 </div>
-                                <h3 className="font-display text-lg font-bold uppercase tracking-tight text-[#F5F5F5]">
-                                    Resume Subscription
-                                </h3>
+                                <h3 className="font-display text-lg font-bold tracking-tight text-[#F5F5F5] uppercase">Resume Subscription</h3>
                             </div>
                             <button
                                 type="button"
@@ -642,10 +603,8 @@ export default function SubscriptionIndex() {
                             </button>
                         </div>
                         <p className="mt-4 font-sans text-sm leading-relaxed text-[#9A9A9A]">
-                            Do you want to resume your subscription? Your plan will stay active and
-                            billing will continue as normal
-                            {endsAtText ? ` from ${endsAtText}` : ' from your next billing date'}
-                            . You won't be charged anything extra right now.
+                            Do you want to resume your subscription? Your plan will stay active and billing will continue as normal
+                            {endsAtText ? ` from ${endsAtText}` : ' from your next billing date'}. You won't be charged anything extra right now.
                         </p>
                         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
                             <button

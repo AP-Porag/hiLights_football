@@ -1,10 +1,9 @@
-import ThemeToggle from '@/components/shared/ThemeToggle';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Link, router, usePage } from '@inertiajs/react';
-import { Bell, ChevronDown, LogOut, Menu, Settings, User } from 'lucide-react';
+import { Bell, ChevronDown, LogOut, Menu, User } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 interface PlayerUser {
     id: number;
@@ -36,7 +35,7 @@ interface NotifItem {
 // TODO: Replace with route() helper from Ziggy
 const NAV_LINKS: NavLink[] = [
     { label: 'Dashboard', href: '/player/' },
-    { label: 'My Profile', href: '/player/profile/data/edit' },
+    { label: 'My Football Identity', href: '/player/profile/data/edit' },
     // { label: 'Analytics', href: '/player/analytics' },
     // { label: 'Subscription', href: '/player/subscription' },
 ];
@@ -51,13 +50,13 @@ export default function PlayerNavbar() {
     const auth = props.auth?.user
         ? props.auth
         : {
-            user: {
-                id: 1,
-                name: 'Lucas Pereira',
-                email: 'lucas@hilights.fc',
-                avatar_url: null,
-            },
-        };
+              user: {
+                  id: 1,
+                  name: 'Lucas Pereira',
+                  email: 'lucas@hilights.fc',
+                  avatar_url: null,
+              },
+          };
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [notifOpen, setNotifOpen] = useState(false);
@@ -131,11 +130,7 @@ export default function PlayerNavbar() {
             <div className="mx-auto flex h-full max-w-[87.5rem] items-center justify-between gap-4 px-2 sm:px-6">
                 {/* LEFT — Logo */}
                 <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football dashboard">
-                    <img
-                        src="/images/logo/final_logo.png"
-                        className="h-6 w-auto sm:h-8 lg:h-10 xl:h-12 2xl:h-14"
-                        alt="HiLights Football"
-                    />
+                    <img src="/images/logo/final_logo.png" className="h-6 w-auto sm:h-8 lg:h-10 xl:h-12 2xl:h-14" alt="HiLights Football" />
                 </Link>
                 {/* CENTER — Nav links (desktop) */}
                 <nav className="hidden items-center gap-8 md:flex">
@@ -191,7 +186,7 @@ export default function PlayerNavbar() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                             align="end"
-                            className="w-56 rounded-xl border border-[#E2E8F0] bg-white p-1 shadow-lg dark:border-[#2A2A2A] bg-[#161616]"
+                            className="w-56 rounded-xl border border-[#E2E8F0] bg-[#161616] bg-white p-1 shadow-lg dark:border-[#2A2A2A]"
                         >
                             <div className="mb-1 border-b border-[#F1F5F9] px-3 py-2 dark:border-[#1F1F1F]">
                                 <div className="flex items-center justify-between gap-2">
@@ -213,17 +208,11 @@ export default function PlayerNavbar() {
                                 </Link> */}
                                 <button
                                     type="button"
-                                    onClick={() =>
-                                        window.open(
-                                            `/player/profile/${auth?.user?.player_profile?.id}`,
-                                            '_blank',
-                                            'noopener,noreferrer'
-                                        )
-                                    }
-                                    className="flex items-center gap-2 px-3 py-2 text-sm text-[#94A3B8] w-full"
+                                    onClick={() => window.open(`/player/profile/${auth?.user?.player_profile?.id}`, '_blank', 'noopener,noreferrer')}
+                                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-[#94A3B8]"
                                 >
                                     <User className="h-4 w-4 text-[#94A3B8]" />
-                                    View Public Profile
+                                    View Public Football Identity
                                 </button>
                             </DropdownMenuItem>
                             {/* <DropdownMenuItem asChild className="cursor-pointer rounded-md focus:bg-[#F8FAFC] dark:focus:bg-[#1F1F1F]">
@@ -276,7 +265,7 @@ export default function PlayerNavbar() {
                             side="left"
                             className="flex w-[18.75rem] flex-col border-r border-[#E2E8F0] bg-white p-0 dark:border-[#2A2A2A] dark:bg-[#0D0D0D]"
                         >
-                            <SheetHeader className="border-b px-6 py-4 border-[#2A2A2A]">
+                            <SheetHeader className="border-b border-[#2A2A2A] px-6 py-4">
                                 <SheetTitle className="flex items-center gap-2">
                                     <img
                                         src="/images/logo/hilights_logo_transparent_200.png"
@@ -291,7 +280,9 @@ export default function PlayerNavbar() {
                                     <div className="flex items-end gap-0.5 leading-none">
                                         <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>
                                         <span className="text-xl font-black tracking-tight text-[#E53F01] italic">Lights</span>
-                                        <span className="mb-0.5 ml-1 self-end text-[0.625rem] font-bold tracking-[0.12em] text-[#94A3B8]">FOOTBALL</span>
+                                        <span className="mb-0.5 ml-1 self-end text-[0.625rem] font-bold tracking-[0.12em] text-[#94A3B8]">
+                                            FOOTBALL
+                                        </span>
                                     </div>
                                 </SheetTitle>
                             </SheetHeader>
@@ -364,24 +355,17 @@ export default function PlayerNavbar() {
             </div>
             {/* ============ NOTIFICATION PANEL (right drawer) ============ */}
             <Sheet open={notifOpen} onOpenChange={setNotifOpen}>
-                <SheetContent
-                    side="right"
-                    className="flex w-[21.25rem] flex-col border-l border-[#2A2A2A] bg-[#0D0D0D] p-0 sm:w-[23.75rem]"
-                >
+                <SheetContent side="right" className="flex w-[21.25rem] flex-col border-l border-[#2A2A2A] bg-[#0D0D0D] p-0 sm:w-[23.75rem]">
                     <SheetHeader className="border-b border-[#2A2A2A] px-5 py-4">
                         <SheetTitle className="text-left text-[#F5F5F5]">Notifications</SheetTitle>
                     </SheetHeader>
                     <div className="flex-1 overflow-y-auto">
-                        {notifLoading && (
-                            <p className="px-5 py-10 text-center text-sm text-[#555555]">Loading…</p>
-                        )}
+                        {notifLoading && <p className="px-5 py-10 text-center text-sm text-[#555555]">Loading…</p>}
                         {!notifLoading && notifications.length === 0 && (
-                            <p className="px-5 py-12 text-center text-sm text-[#9A9A9A]">No profile views yet.</p>
+                            <p className="px-5 py-12 text-center text-sm text-[#9A9A9A]">No views yet.</p>
                         )}
                         {notifications.map((n) => {
-                            const href = n.player_profile_id
-                                ? `/player/profile/${n.player_profile_id}`
-                                : '/player/views';
+                            const href = n.player_profile_id ? `/player/profile/${n.player_profile_id}` : '/player/views';
                             return (
                                 <Link
                                     key={n.id}
@@ -404,7 +388,8 @@ export default function PlayerNavbar() {
                                             <span className="text-[#9A9A9A]">viewed your profile</span>
                                         </p>
                                         <p className="mt-0.5 text-xs text-[#555555]">
-                                            {n.viewed_at}{n.role ? ` · ${n.role}` : ''}
+                                            {n.viewed_at}
+                                            {n.role ? ` · ${n.role}` : ''}
                                         </p>
                                     </div>
                                     {n.unread && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#E53F01]" />}
@@ -423,6 +408,6 @@ export default function PlayerNavbar() {
                     </div>
                 </SheetContent>
             </Sheet>
-        </header >
+        </header>
     );
 }

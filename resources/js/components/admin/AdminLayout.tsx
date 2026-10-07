@@ -64,7 +64,7 @@ const NAV_GROUPS: NavGroup[] = [
     {
         label: 'Content',
         items: [
-            { label: 'Player Profiles', href: '/admin/players', icon: ClipboardList },
+            { label: 'Football Identity', href: '/admin/players', icon: ClipboardList },
             { label: 'Featured', href: '/admin/featured', icon: Star },
         ],
     },
@@ -246,13 +246,13 @@ export default function AdminLayout({ children, pageTitle, breadcrumb }: AdminLa
     const auth = props.auth?.user
         ? props.auth
         : {
-            user: {
-                id: 1,
-                name: 'Lucas Pereira',
-                email: 'lucas@hilights.fc',
-                avatar_url: null,
-            },
-        };
+              user: {
+                  id: 1,
+                  name: 'Lucas Pereira',
+                  email: 'lucas@hilights.fc',
+                  avatar_url: null,
+              },
+          };
 
     const [mobileOpen, setMobileOpen] = useState(false);
 
