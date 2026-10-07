@@ -186,7 +186,7 @@ export default function PlayerNavbar() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                             align="end"
-                            className="w-56 rounded-xl border border-[#E2E8F0] bg-[#161616] bg-white p-1 shadow-lg dark:border-[#2A2A2A]"
+                            className="w-56 rounded-xl border border-[#E2E8F0] bg-[#161616] p-1 shadow-lg dark:border-[#2A2A2A]"
                         >
                             <div className="mb-1 border-b border-[#F1F5F9] px-3 py-2 dark:border-[#1F1F1F]">
                                 <div className="flex items-center justify-between gap-2">

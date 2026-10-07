@@ -1295,7 +1295,7 @@ export default function Edit() {
                         {/* Player Questionnaire — private, not shown on public profile */}
                         <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8 mt-6">
                             <h3 className="text-sm font-bold text-[#F5F5F5] mb-1 font-sans">Player Questionnaire</h3>
-                            <p className="text-xs text-[#94A3B8] mb-6 font-sans">The answers to these questions will not appear on your public profile.</p>
+                            <p className="text-xs text-[#94A3B8] mb-6 font-sans">The answers to these questions will not appear on your public football identity.</p>
 
                             <div className="space-y-6">
                                 <div>

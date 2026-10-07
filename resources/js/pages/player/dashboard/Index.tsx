@@ -1268,7 +1268,7 @@ export default function PlayerDashboard() {
                                     <span className="font-display text-3xl font-black text-[#F5F5F5]">{profileComplete}%</span>
                                 </div>
                             </div>
-                            <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Profile Complete</p>
+                            <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Football Identity Complete</p>
                             <p className="mt-2 text-[0.625rem] font-medium text-[#E53F01]">
                                 {profileComplete < 100 ? `${100 - profileComplete}% left to complete your football identity` : 'Your football identity is complete'}
                             </p>
@@ -1278,7 +1278,7 @@ export default function PlayerDashboard() {
                             <div className="flex items-start justify-between">
                                 <div>
                                     <p className="font-mono text-3xl font-black text-[#F5F5F5]"> {totalViews}</p>
-                                    <p className="mt-1 text-sm text-[#9A9A9A]">Profile Views</p>
+                                    <p className="mt-1 text-sm text-[#9A9A9A]">Football Identity Views</p>
                                 </div>
                                 <Eye className="h-5 w-5 text-[#E53F01]" />
                             </div>
