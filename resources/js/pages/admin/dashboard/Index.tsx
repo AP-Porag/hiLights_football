@@ -8,8 +8,9 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Link } from '@inertiajs/react';
-import { ArrowUpRight, Ban, Crown, Eye, MoreHorizontal, Pencil, Search, TrendingUp, UserPlus, Users } from 'lucide-react';
+import { ArrowUpRight, Ban, CheckCircle2, Crown, Eye, MoreHorizontal, Pencil, Search, TrendingUp, UserPlus, Users } from 'lucide-react';
 import React from 'react';
+import { toast } from 'sonner';
 import { CartesianGrid, Cell, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 
@@ -133,6 +134,26 @@ export default function Index() {
 
     } = usePage<PageProps>().props;
     console.log(recentUsers)
+
+    // Suspend ↔ Publish toggle (per row loading state)
+    const [togglingId, setTogglingId] = React.useState<number | null>(null);
+
+    const handleToggleStatus = (user: RecentUser) => {
+        const isSuspended = user.status === 'Suspended';
+        setTogglingId(user.id);
+
+        router.post(route('users.suspend', user.id), {}, {
+            preserveScroll: true,   // Recent Registrations section ei thakbe
+            preserveState: true,
+            onSuccess: () => {
+                toast.success(isSuspended ? `${user.name} has been published.` : `${user.name} has been suspended.`);
+            },
+            onError: () => {
+                toast.error('Something went wrong. Please try again.');
+            },
+            onFinish: () => setTogglingId(null),
+        });
+    };
 
     const chartData = registrations;
     const nf = (n: number) => n.toLocaleString();
@@ -289,7 +310,7 @@ export default function Index() {
                     </Card>
                 </div>
                 {/* Recent Registrations Table */}
-                <Card className="rounded-2xl border-[#2A2A2A] bg-[#161616] shadow-sm">
+                <Card id="recent-registrations" className="rounded-2xl border-[#2A2A2A] bg-[#161616] shadow-sm">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 p-6 pb-4">
                         <div>
                             <CardTitle className="font-display text-lg font-bold text-[#F5F5F5]">Recent Registrations</CardTitle>
@@ -321,153 +342,188 @@ export default function Index() {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {recentUsers.map((user) => (
-                                        <TableRow key={user.id} className="border-[#2A2A2A] transition-colors hover:bg-[#1F1F1F]">
-                                            <TableCell className="px-6 py-4">
-                                                <div className="flex items-center gap-3">
-                                                    <Avatar className="h-9 w-9 border border-[#2A2A2A]">
-                                                        {user?.avatar && <AvatarImage src={user?.avatar} alt={user.name} />}
-                                                        <AvatarFallback className="bg-[rgba(255,107,0,0.12)] text-xs font-semibold text-[#E53F01]">
-                                                            {user.initials}
-                                                        </AvatarFallback>
-                                                    </Avatar>
-                                                    <span className="text-sm font-medium text-[#F5F5F5]">{user.name}</span>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell>
-                                                <span className="font-mono text-xs text-[#9A9A9A]">{user.email}</span>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Badge variant="outline" className={`${roleStyles[user.role] ?? roleStyles.Admin} text-xs font-medium`}>
-                                                    {user.role}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Badge variant="outline" className={`${subscriptionStyles[user.subscription] ?? subscriptionStyles.Free} text-xs font-medium`}>
-                                                    {user.subscription}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Badge variant="outline" className={`${statusClasses[user.status] ?? statusClasses.Active} text-xs font-medium`}>
-                                                    <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${user.status === 'Active' ? 'bg-green-500' :
-                                                        user.status === 'Pending' ? 'bg-yellow-500' : 'bg-red-500'
-                                                        }`} />
-                                                    {user.status}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell>
-                                                <span className="font-mono text-xs text-[#555555]">{user.registered}</span>
-                                            </TableCell>
-                                            <TableCell className="pr-6 text-right">
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            className="h-8 w-8 p-0 text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]"
-                                                        >
-                                                            <MoreHorizontal className="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end" className="w-40 border-[#2A2A2A] bg-[#161616] text-[#F5F5F5]">
-                                                        <DropdownMenuItem asChild className="cursor-pointer focus:bg-[#1F1F1F]">
-                                                            <Link href={route('users.show', user.id)} className="flex items-center gap-2">
-                                                                <Eye className="h-3.5 w-3.5" />
-                                                                <span className="text-sm">View</span>
-                                                            </Link>
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem asChild className="cursor-pointer focus:bg-[#1F1F1F]">
-                                                            <Link href={route('users.edit', user.id)} className="flex items-center gap-2">
-                                                                <Pencil className="h-3.5 w-3.5" />
-                                                                <span className="text-sm">Edit</span>
-                                                            </Link>
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuSeparator className="bg-[#2A2A2A]" />
-                                                        <DropdownMenuItem
-                                                            onClick={() => router.post(route('users.suspend', user.id))}
-                                                            className="cursor-pointer text-red-400 focus:bg-red-500/10 focus:text-red-300"
-                                                        >
-                                                            <Ban className="mr-2 h-3.5 w-3.5" />
-                                                            <span className="text-sm">Suspend</span>
-                                                        </DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                    {recentUsers.map((user) => {
+                                        const isSuspended = user.status === 'Suspended';
+                                        const isToggling = togglingId === user.id;
+                                        return (
+                                            <TableRow key={user.id} className="border-[#2A2A2A] transition-colors hover:bg-[#1F1F1F]">
+                                                <TableCell className="px-6 py-4">
+                                                    <div className="flex items-center gap-3">
+                                                        <Avatar className="h-9 w-9 border border-[#2A2A2A]">
+                                                            {user?.avatar && <AvatarImage src={user?.avatar} alt={user.name} />}
+                                                            <AvatarFallback className="bg-[rgba(255,107,0,0.12)] text-xs font-semibold text-[#E53F01]">
+                                                                {user.initials}
+                                                            </AvatarFallback>
+                                                        </Avatar>
+                                                        <span className="text-sm font-medium text-[#F5F5F5]">{user.name}</span>
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <span className="font-mono text-xs text-[#9A9A9A]">{user.email}</span>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge variant="outline" className={`${roleStyles[user.role] ?? roleStyles.Admin} text-xs font-medium`}>
+                                                        {user.role}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge variant="outline" className={`${subscriptionStyles[user.subscription] ?? subscriptionStyles.Free} text-xs font-medium`}>
+                                                        {user.subscription}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge variant="outline" className={`${statusClasses[user.status] ?? statusClasses.Active} text-xs font-medium`}>
+                                                        <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${user.status === 'Active' ? 'bg-green-500' :
+                                                            user.status === 'Pending' ? 'bg-yellow-500' : 'bg-red-500'
+                                                            }`} />
+                                                        {user.status}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <span className="font-mono text-xs text-[#555555]">{user.registered}</span>
+                                                </TableCell>
+                                                <TableCell className="pr-6 text-right">
+                                                    <DropdownMenu>
+                                                        <DropdownMenuTrigger asChild>
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="sm"
+                                                                className="h-8 w-8 p-0 text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]"
+                                                            >
+                                                                <MoreHorizontal className="h-4 w-4" />
+                                                            </Button>
+                                                        </DropdownMenuTrigger>
+                                                        <DropdownMenuContent align="end" className="w-40 border-[#2A2A2A] bg-[#161616] text-[#F5F5F5]">
+                                                            <DropdownMenuItem asChild className="cursor-pointer focus:bg-[#1F1F1F]">
+                                                                <Link href={route('users.show', user.id)} className="flex items-center gap-2">
+                                                                    <Eye className="h-3.5 w-3.5" />
+                                                                    <span className="text-sm">View</span>
+                                                                </Link>
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuItem asChild className="cursor-pointer focus:bg-[#1F1F1F]">
+                                                                <Link href={route('users.edit', user.id)} className="flex items-center gap-2">
+                                                                    <Pencil className="h-3.5 w-3.5" />
+                                                                    <span className="text-sm">Edit</span>
+                                                                </Link>
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuSeparator className="bg-[#2A2A2A]" />
+                                                            {isSuspended ? (
+                                                                <DropdownMenuItem
+                                                                    disabled={isToggling}
+                                                                    onClick={() => handleToggleStatus(user)}
+                                                                    className="cursor-pointer text-green-400 focus:bg-green-500/10 focus:text-green-300"
+                                                                >
+                                                                    <CheckCircle2 className="mr-2 h-3.5 w-3.5" />
+                                                                    <span className="text-sm">{isToggling ? 'Publishing...' : 'Publish'}</span>
+                                                                </DropdownMenuItem>
+                                                            ) : (
+                                                                <DropdownMenuItem
+                                                                    disabled={isToggling}
+                                                                    onClick={() => handleToggleStatus(user)}
+                                                                    className="cursor-pointer text-red-400 focus:bg-red-500/10 focus:text-red-300"
+                                                                >
+                                                                    <Ban className="mr-2 h-3.5 w-3.5" />
+                                                                    <span className="text-sm">{isToggling ? 'Suspending...' : 'Suspend'}</span>
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                        </DropdownMenuContent>
+                                                    </DropdownMenu>
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
                                 </TableBody>
                             </Table>
                         </div>
                         {/* Mobile stacked cards */}
                         <div className="divide-y divide-[#2A2A2A] md:hidden">
-                            {recentUsers.map((user) => (
-                                <div key={user.id} className="p-4 transition-colors hover:bg-[#1F1F1F]">
-                                    <div className="flex items-start justify-between gap-3">
-                                        <div className="flex min-w-0 flex-1 items-center gap-3">
-                                            <Avatar className="h-10 w-10 shrink-0 border border-[#2A2A2A]">
-                                                {user?.avatar && <AvatarImage src={user?.avatar} alt={user.name} />}
-                                                <AvatarFallback className="bg-[rgba(255,107,0,0.12)] text-xs font-semibold text-[#E53F01]">
-                                                    {user.initials}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                            <div className="min-w-0 flex-1">
-                                                <div className="truncate text-sm font-medium text-[#F5F5F5]">{user.name}</div>
-                                                <div className="truncate font-mono text-xs text-[#9A9A9A]">{user.email}</div>
+                            {recentUsers.map((user) => {
+                                const isSuspended = user.status === 'Suspended';
+                                const isToggling = togglingId === user.id;
+                                return (
+                                    <div key={user.id} className="p-4 transition-colors hover:bg-[#1F1F1F]">
+                                        <div className="flex items-start justify-between gap-3">
+                                            <div className="flex min-w-0 flex-1 items-center gap-3">
+                                                <Avatar className="h-10 w-10 shrink-0 border border-[#2A2A2A]">
+                                                    {user?.avatar && <AvatarImage src={user?.avatar} alt={user.name} />}
+                                                    <AvatarFallback className="bg-[rgba(255,107,0,0.12)] text-xs font-semibold text-[#E53F01]">
+                                                        {user.initials}
+                                                    </AvatarFallback>
+                                                </Avatar>
+                                                <div className="min-w-0 flex-1">
+                                                    <div className="truncate text-sm font-medium text-[#F5F5F5]">{user.name}</div>
+                                                    <div className="truncate font-mono text-xs text-[#9A9A9A]">{user.email}</div>
+                                                </div>
                                             </div>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        className="h-8 w-8 shrink-0 p-0 text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]"
+                                                    >
+                                                        <MoreHorizontal className="h-4 w-4" />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end" className="w-40 border-[#2A2A2A] bg-[#161616] text-[#F5F5F5]">
+                                                    <DropdownMenuItem asChild className="cursor-pointer focus:bg-[#1F1F1F]">
+                                                        <Link href={`/admin/users/${user.id}`} className="flex items-center gap-2">
+                                                            <Eye className="h-3.5 w-3.5" />
+                                                            <span className="text-sm">View</span>
+                                                        </Link>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem asChild className="cursor-pointer focus:bg-[#1F1F1F]">
+                                                        <Link href={`/admin/users/${user.id}/edit`} className="flex items-center gap-2">
+                                                            <Pencil className="h-3.5 w-3.5" />
+                                                            <span className="text-sm">Edit</span>
+                                                        </Link>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuSeparator className="bg-[#2A2A2A]" />
+                                                    {isSuspended ? (
+                                                        <DropdownMenuItem
+                                                            disabled={isToggling}
+                                                            onClick={() => handleToggleStatus(user)}
+                                                            className="cursor-pointer text-green-400 focus:bg-green-500/10 focus:text-green-300"
+                                                        >
+                                                            <CheckCircle2 className="mr-2 h-3.5 w-3.5" />
+                                                            <span className="text-sm">{isToggling ? 'Publishing...' : 'Publish'}</span>
+                                                        </DropdownMenuItem>
+                                                    ) : (
+                                                        <DropdownMenuItem
+                                                            disabled={isToggling}
+                                                            onClick={() => handleToggleStatus(user)}
+                                                            className="cursor-pointer text-red-400 focus:bg-red-500/10 focus:text-red-300"
+                                                        >
+                                                            <Ban className="mr-2 h-3.5 w-3.5" />
+                                                            <span className="text-sm">{isToggling ? 'Suspending...' : 'Suspend'}</span>
+                                                        </DropdownMenuItem>
+                                                    )}
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
                                         </div>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    className="h-8 w-8 shrink-0 p-0 text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]"
-                                                >
-                                                    <MoreHorizontal className="h-4 w-4" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end" className="w-40 border-[#2A2A2A] bg-[#161616] text-[#F5F5F5]">
-                                                <DropdownMenuItem asChild className="cursor-pointer focus:bg-[#1F1F1F]">
-                                                    <Link href={`/admin/users/${user.id}`} className="flex items-center gap-2">
-                                                        <Eye className="h-3.5 w-3.5" />
-                                                        <span className="text-sm">View</span>
-                                                    </Link>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem asChild className="cursor-pointer focus:bg-[#1F1F1F]">
-                                                    <Link href={`/admin/users/${user.id}/edit`} className="flex items-center gap-2">
-                                                        <Pencil className="h-3.5 w-3.5" />
-                                                        <span className="text-sm">Edit</span>
-                                                    </Link>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuSeparator className="bg-[#2A2A2A]" />
-                                                <DropdownMenuItem className="cursor-pointer text-red-400 focus:bg-red-500/10 focus:text-red-300">
-                                                    <Ban className="mr-2 h-3.5 w-3.5" />
-                                                    <span className="text-sm">Suspend</span>
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                        <div className="mt-3 flex flex-wrap items-center gap-2">
+                                            <Badge variant="outline" className={`${roleStyles[user.role] ?? roleStyles.Admin} text-xs font-medium`}>
+                                                {user.role}
+                                            </Badge>
+                                            <Badge variant="outline" className={`${subscriptionStyles[user.subscription] ?? subscriptionStyles.Free} text-xs font-medium`}>
+                                                {user.subscription}
+                                            </Badge>
+                                            <Badge variant="outline" className={`${statusStyles[user.status] ?? statusStyles.Pending} text-xs font-medium`}>
+                                                <span
+                                                    className={`mr-1.5 h-1.5 w-1.5 rounded-full ${user.status === 'Active'
+                                                        ? 'bg-green-500'
+                                                        : user.status === 'Pending'
+                                                            ? 'bg-yellow-500'
+                                                            : 'bg-red-500'
+                                                        }`}
+                                                />
+                                                {user.status}
+                                            </Badge>
+                                            <span className="ml-auto font-mono text-xs text-[#555555]">{user.registered}</span>
+                                        </div>
                                     </div>
-                                    <div className="mt-3 flex flex-wrap items-center gap-2">
-                                        <Badge variant="outline" className={`${roleStyles[user.role] ?? roleStyles.Admin} text-xs font-medium`}>
-                                            {user.role}
-                                        </Badge>
-                                        <Badge variant="outline" className={`${subscriptionStyles[user.subscription] ?? subscriptionStyles.Free} text-xs font-medium`}>
-                                            {user.subscription}
-                                        </Badge>
-                                        <Badge variant="outline" className={`${statusStyles[user.status] ?? statusStyles.Pending} text-xs font-medium`}>
-                                            <span
-                                                className={`mr-1.5 h-1.5 w-1.5 rounded-full ${user.status === 'Active'
-                                                    ? 'bg-green-500'
-                                                    : user.status === 'Pending'
-                                                        ? 'bg-yellow-500'
-                                                        : 'bg-red-500'
-                                                    }`}
-                                            />
-                                            {user.status}
-                                        </Badge>
-                                        <span className="ml-auto font-mono text-xs text-[#555555]">{user.registered}</span>
-                                    </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </CardContent>
                 </Card>

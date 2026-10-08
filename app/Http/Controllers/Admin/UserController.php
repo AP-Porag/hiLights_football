@@ -199,12 +199,12 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         // Toggle status
-        $user->status = ($user->status === 'Suspended') ? 'Active' : 'Suspended';
+        $user->status = ($user->status === 'Suspended') ? 'Published' : 'Suspended';
         $user->save();
 
-        return redirect()->route('users.index')
-            ->with('success', $user->status === 'Suspended'
-                ? 'User suspended.'
-                : 'User reactivated.');
+        // Je page theke click kora hoyeche (dashboard ba users list) sekhanei ferot jabe
+        return back()->with('success', $user->status === 'Suspended'
+            ? 'User suspended.'
+            : 'User published.');
     }
 }
