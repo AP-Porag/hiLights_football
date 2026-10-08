@@ -275,9 +275,9 @@ export default function Detail() {
     }, [matches]);
     const memberSince = player?.in_team_since
         ? new Date(`${player.in_team_since}-01`).toLocaleDateString('en-US', {
-              month: 'short',
-              year: 'numeric',
-          })
+            month: 'short',
+            year: 'numeric',
+        })
         : null;
     return (
         <div className="min-h-screen bg-[#0D0D0D] font-sans text-[#F5F5F5]">
@@ -365,21 +365,21 @@ export default function Detail() {
                                         <Calendar className="h-4 w-4" />
                                         {player?.user?.dob
                                             ? (() => {
-                                                  const birthDate = new Date(player.user.dob);
-                                                  const today = new Date();
+                                                const birthDate = new Date(player.user.dob);
+                                                const today = new Date();
 
-                                                  let age = today.getFullYear() - birthDate.getFullYear();
+                                                let age = today.getFullYear() - birthDate.getFullYear();
 
-                                                  const hasBirthdayPassed =
-                                                      today.getMonth() > birthDate.getMonth() ||
-                                                      (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
+                                                const hasBirthdayPassed =
+                                                    today.getMonth() > birthDate.getMonth() ||
+                                                    (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
 
-                                                  if (!hasBirthdayPassed) {
-                                                      age--;
-                                                  }
+                                                if (!hasBirthdayPassed) {
+                                                    age--;
+                                                }
 
-                                                  return age < 18 ? `Birth Year: ${birthDate.getFullYear()}` : `${age} years`;
-                                              })()
+                                                return age < 18 ? `Birth Year: ${birthDate.getFullYear()}` : `${age} years`;
+                                            })()
                                             : '—'}
                                     </span>
                                 )}
@@ -542,11 +542,10 @@ export default function Detail() {
                                                                     onClick={() =>
                                                                         handleRatingChange(cat.key as keyof Omit<ScoutRating, 'notes'>, score)
                                                                     }
-                                                                    className={`h-8 flex-1 rounded-md text-xs font-bold transition-colors ${
-                                                                        value >= score
-                                                                            ? 'bg-[#E53F01] text-white'
-                                                                            : 'bg-[#1F1F1F] text-[#555555] hover:bg-[rgba(255,107,0,0.12)]'
-                                                                    }`}
+                                                                    className={`h-8 flex-1 rounded-md text-xs font-bold transition-colors ${value >= score
+                                                                        ? 'bg-[#E53F01] text-white'
+                                                                        : 'bg-[#1F1F1F] text-[#555555] hover:bg-[rgba(255,107,0,0.12)]'
+                                                                        }`}
                                                                 >
                                                                     {score}
                                                                 </button>
@@ -590,7 +589,7 @@ export default function Detail() {
                             {/* BIO */}
                             <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                                 <div className="mb-2 text-[0.625rem] font-bold tracking-wider text-[#9A9A9A] uppercase">About</div>
-                                <h2 className="font-display mb-3 text-2xl font-bold uppercase italic">Player Profile</h2>
+                                <h2 className="font-display mb-3 text-2xl font-bold uppercase italic">Player Football Identity</h2>
                                 <p className="mb-6 text-sm leading-relaxed text-[#9A9A9A]">{player?.description || 'No description added yet.'}</p>
                                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                                     <div>

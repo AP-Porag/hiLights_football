@@ -49,7 +49,7 @@ export default function Index({ views, pagination }: Props) {
             <div className="mx-auto max-w-4xl px-4 py-8 sm:px-8">
                 <div className="flex items-center gap-3 border-b border-[#2A2A2A] pb-4">
                     <Eye className="h-6 w-6 text-[#E53F01]" />
-                    <h1 className="text-2xl font-bold text-[#F5F5F5]">Profile Views</h1>
+                    <h1 className="text-2xl font-bold text-[#F5F5F5]">Football Identity Views</h1>
                     <span className="ml-auto text-sm text-[#94A3B8]">
                         {pagination.total} views total
                     </span>
@@ -57,7 +57,7 @@ export default function Index({ views, pagination }: Props) {
 
                 {viewsData.length === 0 ? (
                     <div className="mt-10 rounded-xl border border-[#2A2A2A] p-12 text-center text-sm text-[#9A9A9A]">
-                        No one has viewed your profile yet.
+                        No one has viewed your football identity yet.
                     </div>
                 ) : (
                     <>
@@ -98,7 +98,7 @@ export default function Index({ views, pagination }: Props) {
                                                 href={`/player/profile/${view.player_slug}`}
                                                 className="flex-shrink-0 rounded-lg bg-[#E53F01] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#E53F01]"
                                             >
-                                                View Profile
+                                                View Football Identity
                                             </Link>
                                         ) : (
                                             <span className="text-xs text-[#94A3B8]">Not a player</span>

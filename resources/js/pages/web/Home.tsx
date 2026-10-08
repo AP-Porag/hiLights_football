@@ -85,10 +85,10 @@ const HomeTwo = () => {
         {
             icon: User,
             step: "01",
-            title: "Create Your Profile.",
+            title: "Create Your Football Identity.",
             desc: (
                 <>
-                    Build an organized, professional profile with your{" "}
+                    Build an organized, professional football identity with your{" "}
                     <span className="text-[#E53F01]">data</span>,{" "}
                     <span className="text-[#E53F01]">club history</span>,{" "}
                     <span className="text-[#E53F01]">
@@ -153,7 +153,7 @@ const HomeTwo = () => {
                                 <p className="mt-6 max-w-lg text-sm leading-relaxed text-[#f4f4f4] sm:text-base xl:text-lg 2xl:mt-8 2xl:max-w-xl 2xl:text-xl">
                                     The platform that connects players, clubs, agents and
                                     scouts through videos, statistics and professional
-                                    profiles.
+                                    football identities.
                                 </p>
 
                                 <p className="mt-4 max-w-lg border-l-2 border-[#b2300e] pl-3 text-sm leading-relaxed text-[#f4f4f4] sm:text-base xl:text-lg 2xl:max-w-xl 2xl:text-xl">
@@ -174,7 +174,7 @@ const HomeTwo = () => {
                                                     <>
                                                         Create A Free
                                                         <br />
-                                                        Profile Now
+                                                        Football Identity Now
                                                     </>
                                                 )}
                                             </span>
@@ -269,7 +269,7 @@ const HomeTwo = () => {
                                     community yet?
                                 </h3>
                                 <p className="mt-3 max-w-xl text-xs leading-relaxed text-[#efefef] sm:text-sm md:text-base 2xl:text-lg">
-                                    Create your free profile, share your best moments and become visible to coaches, clubs and recruiters worldwide.
+                                    Create your free football identity, share your best moments and become visible to coaches, clubs and recruiters worldwide.
                                 </p>
                             </div>
                             {/* Button */}
@@ -284,7 +284,7 @@ const HomeTwo = () => {
                                                 <>
                                                     Create A Free
                                                     <br />
-                                                    Profile Now
+                                                    Football Identity Now
                                                 </>
                                             )}
                                         </span>

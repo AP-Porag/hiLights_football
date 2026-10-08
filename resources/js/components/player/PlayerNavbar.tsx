@@ -393,7 +393,7 @@ export default function PlayerNavbar() {
                                     <div className="min-w-0 flex-1">
                                         <p className="text-sm leading-snug text-[#F5F5F5]">
                                             <span className="font-semibold">{n.name}</span>{' '}
-                                            <span className="text-[#9A9A9A]">viewed your profile</span>
+                                            <span className="text-[#9A9A9A]">viewed your football identity</span>
                                         </p>
                                         <p className="mt-0.5 text-xs text-[#555555]">
                                             {n.viewed_at}{n.role ? ` · ${n.role}` : ''}

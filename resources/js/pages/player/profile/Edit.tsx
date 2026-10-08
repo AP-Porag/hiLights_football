@@ -1022,7 +1022,7 @@ export default function Edit() {
                                     <label className="block cursor-pointer">
                                         <div className="border-2 border-dashed border-[#2A2A2A] hover:border-[#E53F01] rounded-2xl p-12 text-center transition-colors">
                                             <Upload className="w-8 h-8 text-[#94A3B8] mx-auto mb-3" />
-                                            <div className="font-semibold text-[#F5F5F5] font-sans mb-1">Upload Profile Photo</div>
+                                            <div className="font-semibold text-[#F5F5F5] font-sans mb-1">Upload Football Identity Photo</div>
                                             <div className="text-xs text-[#94A3B8] font-sans">JPG, PNG up to 5MB</div>
                                             <span className='text-white'>Recommended Image Size: 200 × 300 px </span>
                                         </div>

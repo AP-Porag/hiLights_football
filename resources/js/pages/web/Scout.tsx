@@ -66,7 +66,7 @@ const Scout = () => {
         {
             icon: ChartColumn,
             step: "03",
-            title: "Detailed Player Profiles",
+            title: "Detailed Player Football Identities",
             desc: (
                 <>
                     Watch highlights, check stats, performance and player information all in one place.
@@ -168,7 +168,7 @@ const Scout = () => {
                                                                 <span>
                                                                     Create A Free
                                                                     <br />
-                                                                    Profile Now
+                                                                    Football Identity Now
                                                                 </span>
                                                             </>
                                                         )}
@@ -279,7 +279,7 @@ const Scout = () => {
                                                     <span>
                                                         Create A Free
                                                         <br />
-                                                        Profile Now
+                                                        Football Identity Now
                                                     </span>
                                                 </>
                                             )}

@@ -334,7 +334,7 @@ export default function PlayersIndex() {
                                                         </DropdownMenuTrigger>
                                                         <DropdownMenuContent align="end" className="w-44 border-[#2A2A2A] bg-[#0D0D0D]">
                                                             <DropdownMenuItem onClick={() => window.open(`/player/profile/${player.slug}`, '_blank')} className="text-sm text-[#F5F5F5] hover:bg-[#1A1A1A] focus:bg-[#1A1A1A]">
-                                                                <Eye className="mr-2 h-4 w-4" /> View Profile
+                                                                <Eye className="mr-2 h-4 w-4" /> View Football Identity
                                                             </DropdownMenuItem>
                                                             <DropdownMenuSeparator className="bg-[#2A2A2A]" />
                                                             {isSuspended ? (

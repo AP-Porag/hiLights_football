@@ -258,7 +258,7 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
         ],
     },
     photo: {
-        title: 'Profile Photo',
+        title: 'Football Identity Photo',
         fields: [{ name: 'photo', label: '', type: 'file' }],
     },
     position_modality: {
@@ -1045,7 +1045,7 @@ export default function PlayerDashboard() {
                 alwaysShow: true,
             },
             {
-                label: 'Profile photo uploaded',
+                label: 'Football identity photo uploaded',
                 done: nonEmpty(pp.photo_path),
                 modal: 'photo',
                 cta: 'Edit',
@@ -1173,7 +1173,7 @@ export default function PlayerDashboard() {
     const shareProfile = async () => {
         const shareData = {
             title: `${auth?.user?.name || 'Player'} — HiLights Football`,
-            text: `Check out ${auth?.user?.name || 'this player'}'s profile on HiLights Football`,
+            text: `Check out ${auth?.user?.name || 'this player'}'s Football Identity on HiLights Football`,
             url: profileUrl,
         };
         if (navigator.share) {
@@ -1189,7 +1189,7 @@ export default function PlayerDashboard() {
         if (navigator.clipboard && window.isSecureContext) {
             try {
                 await navigator.clipboard.writeText(profileUrl);
-                alert('Profile link copied!');
+                alert('Football Identity link copied!');
                 return;
             } catch (error) {
                 console.log(error);
@@ -1204,9 +1204,9 @@ export default function PlayerDashboard() {
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
-            alert('Profile link copied!');
+            alert('Football Identity link copied!');
         } catch {
-            prompt('Copy this profile link:', profileUrl);
+            prompt('Copy this football identity link:', profileUrl);
         }
     };
 
@@ -1268,9 +1268,9 @@ export default function PlayerDashboard() {
                                     <span className="font-display text-3xl font-black text-[#F5F5F5]">{profileComplete}%</span>
                                 </div>
                             </div>
-                            <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Profile Complete</p>
+                            <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Fooball Identity Complete</p>
                             <p className="mt-2 text-[0.625rem] font-medium text-[#E53F01]">
-                                {profileComplete < 100 ? `${100 - profileComplete}% left to complete your profile` : 'Your profile is complete'}
+                                {profileComplete < 100 ? `${100 - profileComplete}% left to complete your football identity` : 'Your football identity is complete'}
                             </p>
                         </div>
                         {/* [2] Profile Views */}
@@ -1278,7 +1278,7 @@ export default function PlayerDashboard() {
                             <div className="flex items-start justify-between">
                                 <div>
                                     <p className="font-mono text-3xl font-black text-[#F5F5F5]"> {totalViews}</p>
-                                    <p className="mt-1 text-sm text-[#9A9A9A]">Profile Views</p>
+                                    <p className="mt-1 text-sm text-[#9A9A9A]">Fooball Identity Views</p>
                                 </div>
                                 <Eye className="h-5 w-5 text-[#E53F01]" />
                             </div>
@@ -1413,7 +1413,7 @@ export default function PlayerDashboard() {
                                         </div>
                                         <button className="mt-2 flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#E53F01]">
                                             <span className=" text-black pr-1"><Smartphone className="h-6 w-4" /></span>
-                                            <span className="text-left text-[0.375rem] sm:text-[0.5rem] leading-tight">VIEW FULL PROFILE, VIDEOS,<br />STATS AND ACHIEVEMENTS</span>
+                                            <span className="text-left text-[0.375rem] sm:text-[0.5rem] leading-tight">VIEW FULL IDENTITY, VIDEOS,<br />STATS AND ACHIEVEMENTS</span>
                                         </button>
                                     </div>
                                 </div>

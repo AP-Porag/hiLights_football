@@ -1026,7 +1026,7 @@ export default function Detail() {
                     <div className="flex flex-col items-center justify-between gap-6 text-white sm:flex-row">
                         <div className="text-center sm:text-left">
                             <h3 className="font-display text-2xl leading-tight font-bold uppercase sm:text-3xl">Build Your Watchlist</h3>
-                            <p className="mt-1 text-sm text-white/90">Track players, compare profiles, and export scouting reports.</p>
+                            <p className="mt-1 text-sm text-white/90">Track players, compare football identities, and export scouting reports.</p>
                         </div>
                         <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
                             {/* <Link href="/scout/shortlist" className="bg-white hover:bg-white/90 text-[#E53F01] px-6 py-3 rounded-xl font-bold text-sm text-center transition-colors">Open My Shortlist</Link> */}

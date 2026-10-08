@@ -1074,7 +1074,7 @@ export default function Index({
                                                 </div>
 
                                                 <p className="mt-3 text-[#E53F01] text-xs font-bold tracking-wider group-hover:underline flex items-center gap-1">
-                                                    VIEW PROFILE
+                                                    VIEW FOOTBALL IDENTITY
                                                     <ChevronRight className="w-3 h-3" />
                                                 </p>
                                             </div>
