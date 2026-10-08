@@ -1257,7 +1257,7 @@ export default function PlayerDashboard() {
                 {/* WIDGETS ROW */}
                 <section className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_28.125rem] lg:gap-4">
                     {/* [1] Profile Complete */}
-                    <div className="grid grid-cols-2 gap-4 h-[31.25rem]">
+                    <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col items-center rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                             <div className="relative h-[7rem] w-[7rem]">
                                 <svg width="112" height="112" viewBox="0 0 112 112" className="-rotate-90">

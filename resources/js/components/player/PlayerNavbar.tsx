@@ -281,20 +281,10 @@ export default function PlayerNavbar() {
                             <SheetHeader className="border-b px-6 py-4 border-[#2A2A2A]">
                                 <SheetTitle className="flex items-center gap-2">
                                     <img
-                                        src="/images/logo/hilights_logo_transparent_200.png"
-                                        className="h-9 w-auto dark:hidden"
-                                        alt="HiLights Football"
-                                    />
-                                    <img
-                                        src="/images/logo/hilights_logo_dark_200.png"
+                                        src="/images/logo/final_logo.png"
                                         className="hidden h-9 w-auto dark:block"
                                         alt="HiLights Football"
                                     />
-                                    <div className="flex items-end gap-0.5 leading-none">
-                                        <span className="text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F5F5F5]">Hi</span>
-                                        <span className="text-xl font-black tracking-tight text-[#E53F01] italic">Lights</span>
-                                        <span className="mb-0.5 ml-1 self-end text-[0.625rem] font-bold tracking-[0.12em] text-[#94A3B8]">FOOTBALL</span>
-                                    </div>
                                 </SheetTitle>
                             </SheetHeader>
                             {/* User card */}
