@@ -122,6 +122,42 @@ const nonEmpty = (v: any): boolean => {
     return String(v).trim() !== '';
 };
 
+const MONTHS = [
+    { v: '01', l: 'January' }, { v: '02', l: 'February' }, { v: '03', l: 'March' },
+    { v: '04', l: 'April' }, { v: '05', l: 'May' }, { v: '06', l: 'June' },
+    { v: '07', l: 'July' }, { v: '08', l: 'August' }, { v: '09', l: 'September' },
+    { v: '10', l: 'October' }, { v: '11', l: 'November' }, { v: '12', l: 'December' },
+];
+
+// in_team_since — "YYYY-MM" (new) ba "MM-YYYY" (old data) duitai pore
+const parseInTeamSince = (v?: string | null): { year: string; month: string } => {
+    if (!v) return { year: '', month: '' };
+    const parts = String(v).trim().split(/[-/]/);
+    if (parts.length < 2) return { year: '', month: '' };
+    const [a, b] = parts;
+    if (a.length === 4) return { year: a, month: b.padStart(2, '0') }; // 2025-02
+    if (b.length === 4) return { year: b, month: a.padStart(2, '0') }; // 02-2025
+    return { year: '', month: '' };
+};
+
+// Member card er jonno: "Feb 2025"
+const formatInTeamSince = (v?: string | null): string => {
+    const p = parseInTeamSince(v);
+    if (!p.year || !p.month) return 'Not specified';
+    return new Date(Number(p.year), Number(p.month) - 1, 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+};
+
+// Instant validation — month/year duitai lagbe, future hobe na
+const validateInTeamSince = (year: string, month: string): string => {
+    if (!year && !month) return '';
+    if (!year || !month) return 'Please select both month and year.';
+    const now = new Date();
+    const selected = Number(year) * 12 + (Number(month) - 1);
+    const current = now.getFullYear() * 12 + now.getMonth();
+    if (selected > current) return 'In Team Since cannot be a future date.';
+    return '';
+};
+
 const ALL_POSITIONS = ['GK', 'LB', 'CB-L', 'CB-R', 'RB', 'LM', 'CM-L', 'CM-R', 'RM', 'CAM', 'LW', 'ST', 'RW', 'CF'];
 
 // Position code → full form name
@@ -234,7 +270,7 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
 };
 
 // ════════ FORM MODAL CONFIG (single record) ════════
-type FormFieldType = 'text' | 'number' | 'date' | 'select' | 'country' | 'positions' | 'multi_country' | 'file' | 'textarea';
+type FormFieldType = 'text' | 'number' | 'date' | 'select' | 'country' | 'positions' | 'multi_country' | 'file' | 'textarea' | 'month_year';
 type FormField = { name: string; label: string; type: FormFieldType; options?: string[] };
 type FormConfig = { title: string; fields: FormField[] };
 
@@ -251,7 +287,7 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
             { name: 'birth_country', label: 'Birth Country', type: 'country' },
             { name: 'current_club', label: 'Current Club', type: 'text' },
             { name: 'current_club_country', label: 'Club Country', type: 'country' },
-            { name: 'in_team_since', label: 'In Team Since (MM-YYYY)', type: 'text' },
+            { name: 'in_team_since', label: 'In Team Since (MM/YYYY)', type: 'month_year' },
             { name: 'agent', label: 'Agent', type: 'text' },
             { name: 'whatsapp', label: 'WhatsApp Number', type: 'text' },
             { name: 'description', label: 'About / Bio', type: 'textarea' },
@@ -594,6 +630,7 @@ function ListModal({
 }
 
 // ── Generic form modal (single record) ──
+// ── Generic form modal (single record) ──
 function FormModal({
     configKey,
     user,
@@ -630,6 +667,11 @@ function FormModal({
                     init[f.name] = [];
                 }
             }
+            else if (f.name === 'in_team_since') {
+                // Old "MM-YYYY" ba new "YYYY-MM" → always "YYYY-MM"
+                const p = parseInTeamSince(pp?.in_team_since);
+                init[f.name] = p.year && p.month ? `${p.year}-${p.month}` : '';
+            }
             else if (f.name === 'positions') init[f.name] = Array.isArray(pp?.positions) ? pp.positions : [];
             else if (f.name === 'photo') init[f.name] = null;
             else init[f.name] = pp?.[f.name] ?? '';
@@ -639,7 +681,29 @@ function FormModal({
     const [preview, setPreview] = useState<string>(pp?.photo_url ?? '');
     const [photoError, setPhotoError] = useState<string>('');
     const [saving, setSaving] = useState(false);
+    const [serverErrors, setServerErrors] = useState<Record<string, string>>({});
     const setField = (name: string, val: any) => setValues((prev) => ({ ...prev, [name]: val }));
+
+    // ── In Team Since (Month + Year) ──
+    const itsInit = parseInTeamSince(pp?.in_team_since);
+    const [itsMonth, setItsMonth] = useState<string>(itsInit.month);
+    const [itsYear, setItsYear] = useState<string>(itsInit.year);
+    const currentYear = new Date().getFullYear();
+    const yearOptions = Array.from({ length: currentYear - 1990 + 1 }, (_, i) => String(currentYear - i));
+    const hasMonthYear = cfg.fields.some((f) => f.type === 'month_year');
+    const itsError = hasMonthYear ? validateInTeamSince(itsYear, itsMonth) : '';
+
+    const setInTeamSince = (year: string, month: string) => {
+        setItsYear(year);
+        setItsMonth(month);
+        setField('in_team_since', year && month ? `${year}-${month}` : '');
+        setServerErrors((prev) => ({ ...prev, in_team_since: '' }));
+    };
+
+    // Error hole border lal
+    const fieldClass = (hasError: boolean) =>
+        hasError ? inputClass.replace('border-[#2A2A2A]', 'border-red-500') : inputClass;
+
     const togglePos = (id: string) => {
         const cur: string[] = values.positions || [];
         if (cur.includes(id)) setField('positions', cur.filter((p) => p !== id));
@@ -686,6 +750,9 @@ function FormModal({
     };
     const fileInputRef = useRef<HTMLInputElement>(null);
     const save = () => {
+        // In Team Since bhul thakle save hobe na
+        if (itsError) return;
+
         const payload: Record<string, any> = { ...values };
         if (!payload.photo) delete payload.photo;
 
@@ -697,10 +764,12 @@ function FormModal({
         const hasFile = Object.values(payload).some((v) => v instanceof File);
 
         setSaving(true);
+        setServerErrors({});
         router.post(endpoint, payload, {
             ...(hasFile ? { forceFormData: true } : {}),
             preserveScroll: true,
             onSuccess: () => onClose(),
+            onError: (errs) => setServerErrors(errs as Record<string, string>),
             onFinish: () => setSaving(false),
         });
     };
@@ -717,36 +786,107 @@ function FormModal({
                     </button>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {cfg.fields.map((f) => (
-                        <div key={f.name} className={f.type === 'positions' || f.type === 'file' || f.type === 'textarea' || f.type === 'multi_country' ? 'sm:col-span-2' : ''}>
-                            <label className="mb-1.5 block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#94A3B8]">
-                                {f.label}
-                            </label>
-                            {f.type === 'text' && (
-                                <input type="text" value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass} />
-                            )}
-                            {f.type === 'textarea' && (
-                                <textarea value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} rows={4} className="w-full rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] px-2 py-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none resize-none" />
-                            )}
-                            {f.type === 'number' && (
-                                <input type="number" value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass} />
-                            )}
-                            {f.type === 'date' && (
-                                <input type="date" value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass} />
-                            )}
-                            {f.type === 'select' && (
-                                <select value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass}>
-                                    <option value="">Select...</option>
-                                    {f.options!.map((o) => (
-                                        <option key={o} value={o}>{o}</option>
-                                    ))}
-                                </select>
-                            )}
-                            {f.type === 'country' && (
-                                <div className="flex items-center gap-2">
-                                    <div className="min-w-0 flex-1">
-                                        <select value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass}>
-                                            <option value="">Select country...</option>
+                    {cfg.fields.map((f) => {
+                        const fieldError = f.type === 'month_year'
+                            ? (itsError || serverErrors[f.name])
+                            : serverErrors[f.name];
+                        return (
+                            <div key={f.name} className={f.type === 'positions' || f.type === 'file' || f.type === 'textarea' || f.type === 'multi_country' ? 'sm:col-span-2' : ''}>
+                                <label className="mb-1.5 block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#94A3B8]">
+                                    {f.label}
+                                </label>
+                                {f.type === 'text' && (
+                                    <input type="text" value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass} />
+                                )}
+                                {f.type === 'textarea' && (
+                                    <textarea value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} rows={4} className="w-full rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] px-2 py-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none resize-none" />
+                                )}
+                                {f.type === 'number' && (
+                                    <input type="number" value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass} />
+                                )}
+                                {f.type === 'date' && (
+                                    <input type="date" value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass} />
+                                )}
+                                {f.type === 'month_year' && (
+                                    <div className="flex gap-2">
+                                        <div className="min-w-0 flex-1">
+                                            <select
+                                                value={itsMonth}
+                                                onChange={(e) => setInTeamSince(itsYear, e.target.value)}
+                                                className={fieldClass(!!fieldError)}
+                                            >
+                                                <option value="">Month</option>
+                                                {MONTHS.map((m) => (
+                                                    <option key={m.v} value={m.v}>{m.l}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="w-28 shrink-0">
+                                            <select
+                                                value={itsYear}
+                                                onChange={(e) => setInTeamSince(e.target.value, itsMonth)}
+                                                className={`${fieldClass(!!fieldError)} font-mono`}
+                                            >
+                                                <option value="">Year</option>
+                                                {yearOptions.map((y) => (
+                                                    <option key={y} value={y}>{y}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
+                                )}
+                                {f.type === 'select' && (
+                                    <select value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass}>
+                                        <option value="">Select...</option>
+                                        {f.options!.map((o) => (
+                                            <option key={o} value={o}>{o}</option>
+                                        ))}
+                                    </select>
+                                )}
+                                {f.type === 'country' && (
+                                    <div className="flex items-center gap-2">
+                                        <div className="min-w-0 flex-1">
+                                            <select value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass}>
+                                                <option value="">Select country...</option>
+                                                {countries.map((c) => (
+                                                    <option key={c.code} value={c.code}>
+                                                        {c.flag ?? ''} {c.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        {nonEmpty(values[f.name]) && (
+                                            <span className="shrink-0 text-2xl leading-none">{codeToFlag(values[f.name])}</span>
+                                        )}
+                                    </div>
+                                )}
+                                {f.type === 'multi_country' && (
+                                    <div className="space-y-2">
+                                        <div className="flex flex-wrap gap-2">
+                                            {Array.isArray(values[f.name]) && values[f.name].map((code: string) => (
+                                                <span key={code} className="inline-flex items-center gap-1 rounded-full bg-[#1F1F1F] border border-[#2A2A2A] px-2 py-1 text-xs text-[#F5F5F5]">
+                                                    {codeToFlag(code)} {getCountryName(code)}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setField(f.name, values[f.name].filter((c: string) => c !== code))}
+                                                        className="ml-1 text-[#9A9A9A] hover:text-[#E53F01]"
+                                                    >
+                                                        ×
+                                                    </button>
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <select
+                                            value=""
+                                            onChange={(e) => {
+                                                const code = e.target.value;
+                                                if (code && !values[f.name].includes(code)) {
+                                                    setField(f.name, [...(values[f.name] || []), code]);
+                                                }
+                                            }}
+                                            className={inputClass}
+                                        >
+                                            <option value="">Add country...</option>
                                             {countries.map((c) => (
                                                 <option key={c.code} value={c.code}>
                                                     {c.flag ?? ''} {c.name}
@@ -754,151 +894,116 @@ function FormModal({
                                             ))}
                                         </select>
                                     </div>
-                                    {nonEmpty(values[f.name]) && (
-                                        <span className="shrink-0 text-2xl leading-none">{codeToFlag(values[f.name])}</span>
-                                    )}
-                                </div>
-                            )}
-                            {f.type === 'multi_country' && (
-                                <div className="space-y-2">
-                                    <div className="flex flex-wrap gap-2">
-                                        {Array.isArray(values[f.name]) && values[f.name].map((code: string) => (
-                                            <span key={code} className="inline-flex items-center gap-1 rounded-full bg-[#1F1F1F] border border-[#2A2A2A] px-2 py-1 text-xs text-[#F5F5F5]">
-                                                {codeToFlag(code)} {getCountryName(code)}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setField(f.name, values[f.name].filter((c: string) => c !== code))}
-                                                    className="ml-1 text-[#9A9A9A] hover:text-[#E53F01]"
-                                                >
-                                                    ×
-                                                </button>
-                                            </span>
-                                        ))}
-                                    </div>
-                                    <select
-                                        value=""
-                                        onChange={(e) => {
-                                            const code = e.target.value;
-                                            if (code && !values[f.name].includes(code)) {
-                                                setField(f.name, [...(values[f.name] || []), code]);
-                                            }
-                                        }}
-                                        className={inputClass}
-                                    >
-                                        <option value="">Add country...</option>
-                                        {countries.map((c) => (
-                                            <option key={c.code} value={c.code}>
-                                                {c.flag ?? ''} {c.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            )}
+                                )}
 
-                            {f.type === 'positions' && (
-                                <div>
-                                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                                        {ALL_POSITIONS.map((id) => {
-                                            const on = (values.positions || []).includes(id);
-                                            return (
-                                                <button
-                                                    key={id}
-                                                    type="button"
-                                                    onClick={() => togglePos(id)}
-                                                    className={`flex flex-col items-start rounded-lg border px-2.5 py-2 text-left ${on ? 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01]' : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A]'}`}
-                                                >
-                                                    <span className="text-xs font-bold">{id}</span>
-                                                    <span className="text-[0.625rem] leading-tight opacity-80">{POSITION_FULL_NAMES[id]}</span>
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-
-                                    {/* Selected positions — priority order (Main / Secondary / Third) */}
-                                    {(values.positions || []).length > 1 && (
-                                        <div className="mt-3 space-y-2">
-                                            <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold">
-                                                Reorder to set priority
-                                            </span>
-                                            {(values.positions || []).map((id: string, idx: number) => (
-                                                <div key={id} className="flex items-center gap-3 rounded-lg border border-[#E53F01] bg-[rgba(255,107,0,0.08)] px-3 py-2">
-                                                    <span className="flex-shrink-0 rounded-md bg-[#E53F01] px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-white">
-                                                        {PRIORITY_LABELS[idx] ?? `#${idx + 1}`}
-                                                    </span>
-                                                    <span className="flex-1 text-sm font-semibold text-[#F5F5F5]">
-                                                        {POSITION_FULL_NAMES[id]}
-                                                        <span className="ml-2 text-xs text-[#94A3B8] font-mono">({id})</span>
-                                                    </span>
-                                                    <div className="flex items-center gap-1">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => movePosition(idx, -1)}
-                                                            disabled={idx === 0}
-                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01] disabled:opacity-30 disabled:cursor-not-allowed"
-                                                            aria-label="Move up"
-                                                        >
-                                                            <ArrowUp className="h-3.5 w-3.5" />
-                                                        </button>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => movePosition(idx, 1)}
-                                                            disabled={idx === (values.positions || []).length - 1}
-                                                            className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01] disabled:opacity-30 disabled:cursor-not-allowed"
-                                                            aria-label="Move down"
-                                                        >
-                                                            <ArrowDown className="h-3.5 w-3.5" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                            {f.type === 'file' && (
-                                <div className="flex items-center gap-4">
-                                    <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-[#E53F01] bg-[#111111]">
-                                        <img
-                                            src={preview || "/images/img/placeholder.webp"}
-                                            alt="Preview"
-                                            className="h-full w-full object-cover"
-                                        />
-                                    </div>
-                                    <input
-                                        ref={fileInputRef}
-                                        type="file"
-                                        accept="image/jpeg,image/png,image/webp"
-                                        onChange={onFile}
-                                        className="hidden"
-                                    />
+                                {f.type === 'positions' && (
                                     <div>
-                                        <button
-                                            type="button"
-                                            onClick={() => fileInputRef.current?.click()}
-                                            className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-[#E53F01] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#E53F01]"
-                                        >
-                                            <Upload className="h-4 w-4" />
-                                            {preview ? "Change Photo" : "Upload Photo"}
-                                        </button>
-                                        <p className="mt-2 text-xs text-[#9A9A9A]">
-                                            Recommended size: <span className="text-white">200 × 300 px</span>
-                                            <br />
-                                            JPG, PNG or WEBP
-                                        </p>
-                                        {photoError && (
-                                            <p className="mt-2 text-xs text-[#E53F01]">{photoError}</p>
+                                        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                                            {ALL_POSITIONS.map((id) => {
+                                                const on = (values.positions || []).includes(id);
+                                                return (
+                                                    <button
+                                                        key={id}
+                                                        type="button"
+                                                        onClick={() => togglePos(id)}
+                                                        className={`flex flex-col items-start rounded-lg border px-2.5 py-2 text-left ${on ? 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01]' : 'border-[#2A2A2A] bg-[#111111] text-[#9A9A9A]'}`}
+                                                    >
+                                                        <span className="text-xs font-bold">{id}</span>
+                                                        <span className="text-[0.625rem] leading-tight opacity-80">{POSITION_FULL_NAMES[id]}</span>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+
+                                        {/* Selected positions — priority order (Main / Secondary / Third) */}
+                                        {(values.positions || []).length > 1 && (
+                                            <div className="mt-3 space-y-2">
+                                                <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold">
+                                                    Reorder to set priority
+                                                </span>
+                                                {(values.positions || []).map((id: string, idx: number) => (
+                                                    <div key={id} className="flex items-center gap-3 rounded-lg border border-[#E53F01] bg-[rgba(255,107,0,0.08)] px-3 py-2">
+                                                        <span className="flex-shrink-0 rounded-md bg-[#E53F01] px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-white">
+                                                            {PRIORITY_LABELS[idx] ?? `#${idx + 1}`}
+                                                        </span>
+                                                        <span className="flex-1 text-sm font-semibold text-[#F5F5F5]">
+                                                            {POSITION_FULL_NAMES[id]}
+                                                            <span className="ml-2 text-xs text-[#94A3B8] font-mono">({id})</span>
+                                                        </span>
+                                                        <div className="flex items-center gap-1">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => movePosition(idx, -1)}
+                                                                disabled={idx === 0}
+                                                                className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01] disabled:opacity-30 disabled:cursor-not-allowed"
+                                                                aria-label="Move up"
+                                                            >
+                                                                <ArrowUp className="h-3.5 w-3.5" />
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => movePosition(idx, 1)}
+                                                                disabled={idx === (values.positions || []).length - 1}
+                                                                className="h-7 w-7 flex items-center justify-center rounded-md border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01] disabled:opacity-30 disabled:cursor-not-allowed"
+                                                                aria-label="Move down"
+                                                            >
+                                                                <ArrowDown className="h-3.5 w-3.5" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
                                         )}
                                     </div>
-                                </div>
-                            )}
-                        </div>
-                    ))}
+                                )}
+                                {f.type === 'file' && (
+                                    <div className="flex items-center gap-4">
+                                        <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-[#E53F01] bg-[#111111]">
+                                            <img
+                                                src={preview || "/images/img/placeholder.webp"}
+                                                alt="Preview"
+                                                className="h-full w-full object-cover"
+                                            />
+                                        </div>
+                                        <input
+                                            ref={fileInputRef}
+                                            type="file"
+                                            accept="image/jpeg,image/png,image/webp"
+                                            onChange={onFile}
+                                            className="hidden"
+                                        />
+                                        <div>
+                                            <button
+                                                type="button"
+                                                onClick={() => fileInputRef.current?.click()}
+                                                className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-[#E53F01] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#E53F01]"
+                                            >
+                                                <Upload className="h-4 w-4" />
+                                                {preview ? "Change Photo" : "Upload Photo"}
+                                            </button>
+                                            <p className="mt-2 text-xs text-[#9A9A9A]">
+                                                Recommended size: <span className="text-white">200 × 300 px</span>
+                                                <br />
+                                                JPG, PNG or WEBP
+                                            </p>
+                                            {photoError && (
+                                                <p className="mt-2 text-xs text-[#E53F01]">{photoError}</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                                {fieldError && (
+                                    <p className="mt-1 text-xs text-red-400">{fieldError}</p>
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
                 <div className="mt-6 flex justify-end gap-3">
                     <Button type="button" variant="ghost" onClick={onClose} className="text-[#9A9A9A] hover:bg-[#1F1F1F] hover:text-[#F5F5F5]">
                         Cancel
                     </Button>
-                    <Button type="button" onClick={save} disabled={saving} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">
+                    <Button type="button" onClick={save} disabled={saving || !!itsError} className="bg-[#E53F01] text-white hover:bg-[#E53F01] disabled:opacity-50">
                         {saving ? 'Saving...' : 'Save'}
                     </Button>
                 </div>
@@ -1100,13 +1205,13 @@ export default function PlayerDashboard() {
                 icon: ClipboardList,
                 alwaysShow: true,
             },
-            {
-                label: 'Upgrade to Premium',
-                done: hasSubscription,
-                href: '/player/subscription',
-                cta: 'Upgrade →',
-                icon: Crown,
-            },
+            // {
+            //     label: 'Upgrade to Premium',
+            //     done: hasSubscription,
+            //     href: '/player/subscription',
+            //     cta: 'Upgrade →',
+            //     icon: Crown,
+            // },
         ];
 
     const circumference = 276.46;
@@ -1164,9 +1269,7 @@ export default function PlayerDashboard() {
         {
             icon: <CalendarDays className="w-4 h-4 text-gray-300" />,
             label: 'MEMBER SINCE',
-            value: pp?.in_team_since
-                ? new Date(pp.in_team_since).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
-                : 'Not specified',
+            value: formatInTeamSince(pp?.in_team_since),
         },
     ];
 
@@ -1452,8 +1555,8 @@ export default function PlayerDashboard() {
                     </div>
                 </section>
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">
-                    {/* COMPLETION CHECKLIST */}
-                    <section className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
+                    {/* COMPLETION CHECKLIST — no outer card, each row is its own card */}
+                    <section>
                         <div className="mb-1 flex items-center justify-between">
                             <h2 className="text-lg font-bold text-[#F5F5F5]">Complete Your Football Identity</h2>
                             <span className="font-mono text-sm font-bold text-[#E53F01]">{profileComplete}%</span>
@@ -1463,20 +1566,24 @@ export default function PlayerDashboard() {
                             {checklist.map((item, i) => {
                                 const Icon = item.icon;
                                 return (
-                                    <li id="basic-info-item" key={i} className="flex items-center gap-3 py-2">
+                                    <li
+                                        id={i === 0 ? 'basic-info-item' : undefined}
+                                        key={i}
+                                        className={`flex items-center gap-3 rounded-xl border bg-[#161616] px-4 py-3 transition-colors hover:border-[#E53F01]/60 sm:px-5 sm:py-4 ${item.done ? 'border-[#2A2A2A]' : 'border-[#2A2A2A]'}`}
+                                    >
                                         {item.done ? (
                                             <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-400" />
                                         ) : (
                                             <Circle className="h-5 w-5 flex-shrink-0 text-[#555555]" />
                                         )}
-                                        <span className={`flex-1 text-sm ${item.done ? 'text-[#F5F5F5]' : 'text-[#9A9A9A]'}`}>{item.label}</span>
+                                        <span className={`min-w-0 flex-1 text-sm ${item.done ? 'text-[#F5F5F5]' : 'text-[#9A9A9A]'}`}>{item.label}</span>
                                         {(item.alwaysShow || !item.done) && item.modal && (
-                                            <Button size="sm" onClick={() => setActiveModal(item.modal!)} className="h-8 bg-[#E53F01] text-xs text-white hover:bg-[#E53F01]">
+                                            <Button size="sm" onClick={() => setActiveModal(item.modal!)} className="h-8 shrink-0 bg-[#E53F01] text-xs text-white hover:bg-[#E53F01]">
                                                 {Icon && <Icon className="mr-1 h-3 w-3" />}{item.cta}
                                             </Button>
                                         )}
                                         {!item.done && !item.modal && item.href && (
-                                            <Link href={item.href}>
+                                            <Link href={item.href} className="shrink-0">
                                                 <Button size="sm" className="h-8 bg-[#E53F01] text-xs text-white hover:bg-[#E53F01]">
                                                     {Icon && <Icon className="mr-1 h-3 w-3" />}{item.cta}
                                                 </Button>

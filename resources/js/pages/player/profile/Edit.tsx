@@ -136,6 +136,16 @@ const calculateAge = (dob: string): number | null => {
     if (mo < 0 || (mo === 0 && today.getDate() < birth.getDate())) age--;
     return age;
 };
+// in_team_since — "YYYY-MM" (Edit page) ba "MM-YYYY" (dashboard modal) duitai pore
+const parseInTeamSince = (v?: string | null): { year: string; month: string } => {
+    if (!v) return { year: '', month: '' };
+    const parts = String(v).trim().split(/[-/]/);
+    if (parts.length < 2) return { year: '', month: '' };
+    const [a, b] = parts;
+    if (a.length === 4) return { year: a, month: b.padStart(2, '0') }; // 2025-02
+    if (b.length === 4) return { year: b, month: a.padStart(2, '0') }; // 02-2025
+    return { year: '', month: '' };
+};
 const isValidVideoUrl = (url: string): boolean => /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be|vimeo\.com)\/.+/i.test(url);
 const getEmbedUrl = (url: string): string | null => {
     if (!url) return null;
@@ -538,7 +548,10 @@ export default function Edit() {
         birth_country: profile?.birth_country ?? '',
         current_club: profile?.current_club ?? '',
         current_club_country: profile?.current_club_country ?? '',
-        in_team_since: profile?.in_team_since ?? '',
+        in_team_since: (() => {
+            const p = parseInTeamSince(profile?.in_team_since);
+            return p.year && p.month ? `${p.year}-${p.month}` : '';
+        })(),
         agent: profile?.agent ?? '',
         guardian_name: profile?.guardian_name ?? '',
         whatsapp: user?.whatsapp ?? profile?.whatsapp ?? '',
@@ -587,9 +600,9 @@ export default function Edit() {
     const videoValid = isValidVideoUrl(data.video_url);
     const embedUrl = useMemo(() => getEmbedUrl(data.video_url), [data.video_url]);
 
-    const itsInit = (profile?.in_team_since ?? '').split('-');
-    const [itsYear, setItsYear] = useState<string>(itsInit[0] || '');
-    const [itsMonth, setItsMonth] = useState<string>(itsInit[1] || '');
+    const itsInit = parseInTeamSince(profile?.in_team_since);
+    const [itsYear, setItsYear] = useState<string>(itsInit.year);
+    const [itsMonth, setItsMonth] = useState<string>(itsInit.month);
     const yearOptions = useMemo(() => Array.from({ length: currentYear - 1990 + 1 }, (_, i) => String(currentYear - i)), [currentYear]);
     const setInTeamSince = (year: string, month: string) => { setItsYear(year); setItsMonth(month); setData('in_team_since', year && month ? `${year}-${month}` : ''); };
 
