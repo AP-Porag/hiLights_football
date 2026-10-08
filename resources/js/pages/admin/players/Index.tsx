@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import {
-    Search, Filter, Download, MoreHorizontal, Eye, Pencil, Ban, Trash2, X, Star,
+    Search, Filter, Download, MoreHorizontal, Eye, Pencil, Ban, Trash2, X, Star, CheckCircle2, AlertTriangle,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
@@ -94,6 +96,13 @@ export default function PlayersIndex() {
     const [activeFilter, setActiveFilter] = useState<FilterTab>((filters.filter as FilterTab) || 'All');
     const [editPlayer, setEditPlayer] = useState<Player | null>(null);
 
+    // Delete confirmation modal
+    const [deleteTarget, setDeleteTarget] = useState<Player | null>(null);
+    const [deleting, setDeleting] = useState(false);
+
+    // Suspend / Activate in-progress (per row)
+    const [suspendingId, setSuspendingId] = useState<number | null>(null);
+
     const isInitialMount = useRef(true);
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -132,15 +141,51 @@ export default function PlayersIndex() {
         router.put(route('players.toggle-featured', id));
     };
 
-    const handleSuspend = (id: number) => {
-        router.put(route('players.suspend', id));
+    // Suspend ↔ Activate toggle with toast
+    const handleSuspend = (player: Player) => {
+        const isSuspended = player.status === 'Suspended';
+        setSuspendingId(player.id);
+
+        router.put(route('players.suspend', player.id), {}, {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => {
+                if (isSuspended) {
+                    toast.success(`${player.name} has been activated.`);
+                } else {
+                    toast.success(`${player.name} has been suspended.`);
+                }
+            },
+            onError: () => {
+                toast.error('Something went wrong. Please try again.');
+            },
+            onFinish: () => setSuspendingId(null),
+        });
     };
 
-    const handleDelete = (id: number) => {
-        if (confirm('Delete this player permanently?')) {
-            router.delete(route('players.destroy', id));
-        }
+    // Delete — open confirmation modal
+    const handleDelete = (player: Player) => {
+        setDeleteTarget(player);
     };
+
+    const confirmDelete = () => {
+        if (!deleteTarget) return;
+        const name = deleteTarget.name;
+        setDeleting(true);
+
+        router.delete(route('players.destroy', deleteTarget.id), {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success(`${name} has been deleted.`);
+                setDeleteTarget(null);
+            },
+            onError: () => {
+                toast.error('Could not delete the player. Please try again.');
+            },
+            onFinish: () => setDeleting(false),
+        });
+    };
+
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Players',
@@ -148,7 +193,7 @@ export default function PlayersIndex() {
         },
     ];
     return (
-        <AppLayout pageTitle="Player Profiles" breadcrumbs={breadcrumbs}>
+        <AppLayout pageTitle="Player Football Identities" breadcrumbs={breadcrumbs}>
             <div className="space-y-6">
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -223,79 +268,101 @@ export default function PlayersIndex() {
                                         <TableCell colSpan={9} className="h-32 text-center text-sm text-[#94A3B8]">No players found.</TableCell>
                                     </TableRow>
                                 ) : (
-                                    players.data.map((player) => (
-                                        <TableRow key={player.id} className="border-[#2A2A2A] hover:bg-[#1A1A1A]">
-                                            <TableCell className="py-4">
-                                                {player.avatar ? (
-                                                    <div className="h-10 w-10 overflow-hidden rounded-full border border-[#2A2A2A]">
-                                                        <img
-                                                            src={player.avatar}
-                                                            alt={player.name}
-                                                            className="h-full w-full object-cover"
-                                                        />
+                                    players.data.map((player) => {
+                                        const isSuspended = player.status === 'Suspended';
+                                        return (
+                                            <TableRow key={player.id} className="border-[#2A2A2A] hover:bg-[#1A1A1A]">
+                                                <TableCell className="py-4">
+                                                    {player.avatar ? (
+                                                        <div className="h-10 w-10 overflow-hidden rounded-full border border-[#2A2A2A]">
+                                                            <img
+                                                                src={player.avatar}
+                                                                alt={player.name}
+                                                                className="h-full w-full object-cover"
+                                                            />
+                                                        </div>
+                                                    ) : (
+                                                        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#2A2A2A] bg-[#2A1A0F] text-sm font-semibold text-orange-500">
+                                                            {(player.name || '')
+                                                                .split(' ')
+                                                                .filter(Boolean)
+                                                                .slice(0, 2)
+                                                                .map(word => word.charAt(0).toUpperCase())
+                                                                .join('')}
+                                                        </div>
+                                                    )}
+                                                </TableCell>
+                                                <TableCell className="py-4">
+                                                    <div className="flex flex-col">
+                                                        <Link href={`/player/profile/${player.slug}`} className="font-display text-sm font-semibold text-[#F5F5F5] hover:text-[#E53F01]">{player.name}</Link>
+                                                        {isSuspended && (
+                                                            <div className="mt-1">
+                                                                <StatusBadge status={player.status} />
+                                                            </div>
+                                                        )}
+                                                        {/* <div className="mt-0.5 flex items-center gap-2 text-xs text-[#94A3B8]">
+                                                            {player.age && <span className="font-mono">Age {player.age}</span>}
+                                                            <span className="text-[#2A2A2A]">•</span>
+                                                            <StatusBadge status={player.status} />
+                                                        </div> */}
                                                     </div>
-                                                ) : (
-                                                    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#2A2A2A] bg-[#2A1A0F] text-sm font-semibold text-orange-500">
-                                                        {(player.name || '')
-                                                            .split(' ')
-                                                            .filter(Boolean)
-                                                            .slice(0, 2)
-                                                            .map(word => word.charAt(0).toUpperCase())
-                                                            .join('')}
+                                                </TableCell>
+                                                <TableCell className="py-4">
+                                                    <span className="inline-flex items-center rounded-md border border-[#E53F01] bg-[rgba(255,107,0,0.12)] px-2 py-1 font-mono text-xs font-semibold text-[#E53F01]">{player.positionShort}</span>
+                                                </TableCell>
+                                                <TableCell className="py-4">
+                                                    <div className="flex items-center gap-2 text-sm text-[#F5F5F5]">
+                                                        <span>{player.country}</span>
                                                     </div>
-                                                )}
-                                            </TableCell>
-                                            <TableCell className="py-4">
-                                                <div className="flex flex-col">
-                                                    <Link href={`/player/profile/${player.slug}`} className="font-display text-sm font-semibold text-[#F5F5F5] hover:text-[#E53F01]">{player.name}</Link>
-                                                    {/* <div className="mt-0.5 flex items-center gap-2 text-xs text-[#94A3B8]">
-                                                        {player.age && <span className="font-mono">Age {player.age}</span>}
-                                                        <span className="text-[#2A2A2A]">•</span>
-                                                        <StatusBadge status={player.status} />
-                                                    </div> */}
-                                                </div>
-                                            </TableCell>
-                                            <TableCell className="py-4">
-                                                <span className="inline-flex items-center rounded-md border border-[#E53F01] bg-[rgba(255,107,0,0.12)] px-2 py-1 font-mono text-xs font-semibold text-[#E53F01]">{player.positionShort}</span>
-                                            </TableCell>
-                                            <TableCell className="py-4">
-                                                <div className="flex items-center gap-2 text-sm text-[#F5F5F5]">
-                                                    <span>{player.country}</span>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell className="py-4 text-sm text-[#94A3B8]">{player.club}</TableCell>
-                                            <TableCell className="py-4"><SubscriptionBadge sub={player.subscription} /></TableCell>
-                                            <TableCell className="py-4 text-right font-mono text-sm font-semibold text-[#E53F01]">{formatViews(player.views)}</TableCell>
-                                            <TableCell className="py-4 text-center">
-                                                <Switch
-                                                    checked={player.featured}
-                                                    onCheckedChange={() => handleToggleFeatured(player.id)}
-                                                    className="data-[state=checked]:bg-[#E53F01] data-[state=unchecked]:bg-[#2A2A2A]"
-                                                />
-                                            </TableCell>
-                                            <TableCell className="py-4 text-right">
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-[#94A3B8] hover:bg-[#1A1A1A] hover:text-[#F5F5F5]">
-                                                            <MoreHorizontal className="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end" className="w-44 border-[#2A2A2A] bg-[#0D0D0D]">
-                                                        <DropdownMenuItem onClick={() => window.open(`/player/profile/${player.slug}`, '_blank')} className="text-sm text-[#F5F5F5] hover:bg-[#1A1A1A] focus:bg-[#1A1A1A]">
-                                                            <Eye className="mr-2 h-4 w-4" /> View Profile
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuSeparator className="bg-[#2A2A2A]" />
-                                                        <DropdownMenuItem onClick={() => handleSuspend(player.id)} className="text-sm text-amber-400 hover:bg-[#1A1A1A] focus:bg-[#1A1A1A] focus:text-amber-400">
-                                                            <Ban className="mr-2 h-4 w-4" /> Suspend
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem onClick={() => handleDelete(player.id)} className="text-sm text-red-400 hover:bg-[#1A1A1A] focus:bg-[#1A1A1A] focus:text-red-400">
-                                                            <Trash2 className="mr-2 h-4 w-4" /> Delete
-                                                        </DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))
+                                                </TableCell>
+                                                <TableCell className="py-4 text-sm text-[#94A3B8]">{player.club}</TableCell>
+                                                <TableCell className="py-4"><SubscriptionBadge sub={player.subscription} /></TableCell>
+                                                <TableCell className="py-4 text-right font-mono text-sm font-semibold text-[#E53F01]">{formatViews(player.views)}</TableCell>
+                                                <TableCell className="py-4 text-center">
+                                                    <Switch
+                                                        checked={player.featured}
+                                                        onCheckedChange={() => handleToggleFeatured(player.id)}
+                                                        className="data-[state=checked]:bg-[#E53F01] data-[state=unchecked]:bg-[#2A2A2A]"
+                                                    />
+                                                </TableCell>
+                                                <TableCell className="py-4 text-right">
+                                                    <DropdownMenu>
+                                                        <DropdownMenuTrigger asChild>
+                                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-[#94A3B8] hover:bg-[#1A1A1A] hover:text-[#F5F5F5]">
+                                                                <MoreHorizontal className="h-4 w-4" />
+                                                            </Button>
+                                                        </DropdownMenuTrigger>
+                                                        <DropdownMenuContent align="end" className="w-44 border-[#2A2A2A] bg-[#0D0D0D]">
+                                                            <DropdownMenuItem onClick={() => window.open(`/player/profile/${player.slug}`, '_blank')} className="text-sm text-[#F5F5F5] hover:bg-[#1A1A1A] focus:bg-[#1A1A1A]">
+                                                                <Eye className="mr-2 h-4 w-4" /> View Profile
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuSeparator className="bg-[#2A2A2A]" />
+                                                            {isSuspended ? (
+                                                                <DropdownMenuItem
+                                                                    disabled={suspendingId === player.id}
+                                                                    onClick={() => handleSuspend(player)}
+                                                                    className="text-sm text-green-400 hover:bg-[#1A1A1A] focus:bg-[#1A1A1A] focus:text-green-400"
+                                                                >
+                                                                    <CheckCircle2 className="mr-2 h-4 w-4" /> {suspendingId === player.id ? 'Activating...' : 'Activate'}
+                                                                </DropdownMenuItem>
+                                                            ) : (
+                                                                <DropdownMenuItem
+                                                                    disabled={suspendingId === player.id}
+                                                                    onClick={() => handleSuspend(player)}
+                                                                    className="text-sm text-amber-400 hover:bg-[#1A1A1A] focus:bg-[#1A1A1A] focus:text-amber-400"
+                                                                >
+                                                                    <Ban className="mr-2 h-4 w-4" /> {suspendingId === player.id ? 'Suspending...' : 'Suspend'}
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                            <DropdownMenuItem onClick={() => handleDelete(player)} className="text-sm text-red-400 hover:bg-[#1A1A1A] focus:bg-[#1A1A1A] focus:text-red-400">
+                                                                <Trash2 className="mr-2 h-4 w-4" /> Delete
+                                                            </DropdownMenuItem>
+                                                        </DropdownMenuContent>
+                                                    </DropdownMenu>
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })
                                 )}
                             </TableBody>
                         </Table>
@@ -321,6 +388,41 @@ export default function PlayersIndex() {
                     </div>
                 </div>
             </div>
+
+            {/* Delete Confirmation Modal */}
+            <Dialog open={!!deleteTarget} onOpenChange={(open) => !open && !deleting && setDeleteTarget(null)}>
+                <DialogContent className="border border-[#2A2A2A] bg-[#0D0D0D] p-6 text-[#F5F5F5] sm:max-w-md">
+                    <DialogHeader>
+                        <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-red-900/30">
+                            <AlertTriangle className="h-6 w-6 text-red-400" />
+                        </div>
+                        <DialogTitle className="text-lg font-bold text-[#F5F5F5]">Delete player?</DialogTitle>
+                        <DialogDescription className="text-sm text-[#94A3B8]">
+                            Are you sure you want to delete <span className="font-semibold text-[#F5F5F5]">{deleteTarget?.name}</span>? This football identity will be permanently removed and cannot be recovered.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="mt-4 gap-2 sm:gap-2">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            disabled={deleting}
+                            onClick={() => setDeleteTarget(null)}
+                            className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] hover:bg-[#2A2A2A] hover:text-[#F5F5F5]"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            type="button"
+                            disabled={deleting}
+                            onClick={confirmDelete}
+                            className="bg-red-600 text-white hover:bg-red-700"
+                        >
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            {deleting ? 'Deleting...' : 'Yes, Delete'}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
 
             {/* Edit Sheet (dark themed) */}
             <Sheet open={!!editPlayer} onOpenChange={(open) => !open && setEditPlayer(null)}>
@@ -366,7 +468,7 @@ function EditPlayerForm({ player, onClose }: { player: Player; onClose: () => vo
                         </div>
                         <div>
                             <SheetTitle className="font-display text-xl font-bold uppercase tracking-tight text-[#F5F5F5]">Edit Player</SheetTitle>
-                            <SheetDescription className="text-xs text-[#94A3B8]">Profile ID #{player.id}</SheetDescription>
+                            <SheetDescription className="text-xs text-[#94A3B8]">Football Identity ID #{player.id}</SheetDescription>
                         </div>
                     </div>
                     <button type="button" onClick={onClose} className="shrink-0 rounded-md p-1 text-[#94A3B8] hover:bg-[#1A1A1A]"><X className="h-4 w-4" /></button>

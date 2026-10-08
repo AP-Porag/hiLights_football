@@ -1255,7 +1255,7 @@ export default function PlayerDashboard() {
             </header>
             <main className="mx-auto max-w-[81.25rem] space-y-6 px-4 py-6 sm:px-8 sm:py-8">
                 {/* WIDGETS ROW */}
-                <section className="grid grid-cols-1 gap-2 md:grid-cols-[1fr_28.125rem]">
+                <section className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_28.125rem] lg:gap-4">
                     {/* [1] Profile Complete */}
                     <div className="grid grid-cols-2 gap-4 h-[31.25rem]">
                         <div className="flex flex-col items-center rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
@@ -1270,7 +1270,7 @@ export default function PlayerDashboard() {
                             </div>
                             <p className="mt-3 text-xs tracking-wider text-[#94A3B8] uppercase">Profile Complete</p>
                             <p className="mt-2 text-[0.625rem] font-medium text-[#E53F01]">
-                                {profileComplete < 100 ? `${100 - profileComplete}% left to complete your football identity` : 'Your football identity is complete'}
+                                {profileComplete < 100 ? `${100 - profileComplete}% left to complete your profile` : 'Your profile is complete'}
                             </p>
                         </div>
                         {/* [2] Profile Views */}
@@ -1297,7 +1297,7 @@ export default function PlayerDashboard() {
                             </svg>
                         </div>
                         {/* [4] Subscription */}
-                        {/* <div className="flex flex-col rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
+                        {/* <div className="flex flex-col rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 ">
                             {!hasSubscription ? (
                                 <>
                                     <Badge className="w-fit border border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[0.625rem] font-bold tracking-wider text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]">FREE PLAN</Badge>
@@ -1318,8 +1318,8 @@ export default function PlayerDashboard() {
                         </div> */}
                     </div>
                     {/* right side */}
-                    <div className="mx-auto mb-16 max-[331px]:[zoom:0.95] max-[316px]:[zoom:0.82]">
-                        <div ref={cardRef} className="w-[18.75rem] sm:w-[26.25rem] border-1 border-gray-600 rounded-[1rem] bg-black">
+                    <div className="mx-auto w-full max-w-[26.25rem] mb-20 lg:mb-16">
+                        <div ref={cardRef} className="w-full border border-gray-600 rounded-[1rem] bg-black">
                             <div className="overflow-hidden text-white">
                                 <div className="flex items-center justify-between">
                                     <div className="pl-3 sm:pl-4">
@@ -1399,7 +1399,7 @@ export default function PlayerDashboard() {
                                         </div>
                                     </div>
                                     <div className="pl-4 sm:pl-3">
-                                        <h2 className="text-[0.625rem] font-bold text-[#E53F01] uppercase">Scan To View Profile</h2>
+                                        <h2 className="text-[0.625rem] font-bold text-[#E53F01] uppercase">Scan To View Football Identity</h2>
                                         <p className="mt-1 mb-6 text-[0.5rem] text-[#f1f1f1] uppercase">Open Your Camera And Scan</p>
                                         <div className="w-fit rounded-[0.5rem] sm:rounded-xl border-2 sm:border-[3px] border-[#E53F01] bg-white sm:p-3 p-2">
                                             <QRCodeSVG
@@ -1426,7 +1426,7 @@ export default function PlayerDashboard() {
                                 <p className="text-[0.375rem] sm:text-[0.5rem] text-white font-bold translate-x-[0.3125rem] sm:translate-x-[10%]">[WWW.HILIGHTSFOOTBALL.COM](https://WWW.HILIGHTSFOOTBALL.COM)</p>
                                 <div className="absolute -bottom-16 left-0 flex justify-between w-full">
                                     <button className="capitalize flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[1rem] cursor-pointer text-[0.625rem] transition-all hover:bg-[#E53F01]" onClick={() => setShareOpen(true)}>
-                                        <Share2 className="mr-2 w-[0.625rem] h-[0.625rem] sm:h-[0.75rem]" /> Share full profile
+                                        <Share2 className="mr-2 w-[0.625rem] h-[0.625rem] sm:h-[0.75rem]" /> Share full football identity
                                     </button>
                                     <button onClick={downloadCard} className="capitalize cursor-pointer flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[0.625rem] transition-all">
                                         <Download className="mr-2 w-[0.625rem] h-[0.625rem] sm:w-[0.75rem] sm:h-[0.75rem]" /> download member card

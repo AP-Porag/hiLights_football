@@ -251,11 +251,10 @@ export default function PlayerDetail() {
                             <DropdownMenuTrigger asChild>
                                 <Button
                                     variant="outline"
-                                    className={`gap-2 ${
-                                        player.status === 'active'
-                                            ? 'border-green-200 bg-green-50 text-green-700 hover:bg-green-100 hover:text-green-800'
-                                            : 'border-red-200 bg-red-50 text-red-700 hover:bg-red-100 hover:text-red-800'
-                                    }`}
+                                    className={`gap-2 ${player.status === 'active'
+                                        ? 'border-green-200 bg-green-50 text-green-700 hover:bg-green-100 hover:text-green-800'
+                                        : 'border-red-200 bg-red-50 text-red-700 hover:bg-red-100 hover:text-red-800'
+                                        }`}
                                 >
                                     <span className="h-1.5 w-1.5 rounded-full bg-current" />
                                     <span className="text-sm font-semibold tracking-wide uppercase">{player.status}</span>
@@ -492,9 +491,8 @@ export default function PlayerDetail() {
                                 {player.clubHistory.map((entry, idx) => (
                                     <TableRow
                                         key={entry.year}
-                                        className={`border-b border-[#F1F5F9] hover:bg-[#F8FAFC] ${
-                                            idx === player.clubHistory.length - 1 ? 'border-b-0' : ''
-                                        }`}
+                                        className={`border-b border-[#F1F5F9] hover:bg-[#F8FAFC] ${idx === player.clubHistory.length - 1 ? 'border-b-0' : ''
+                                            }`}
                                     >
                                         <TableCell className="px-6 py-3 font-mono text-sm font-semibold text-[#0F172A]">{entry.year}</TableCell>
                                         <TableCell className={`px-6 py-3 text-sm ${entry.club ? 'text-[#0F172A]' : 'text-[#94A3B8]'}`}>

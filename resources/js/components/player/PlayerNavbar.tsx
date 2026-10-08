@@ -37,7 +37,7 @@ interface NotifItem {
 // TODO: Replace with route() helper from Ziggy
 const NAV_LINKS: NavLink[] = [
     { label: 'Dashboard', href: '/player/' },
-    { label: 'My Profile', href: '/player/profile/data/edit' },
+    { label: 'My Football Identity', href: '/player/profile/data/edit' },
     // { label: 'Analytics', href: '/player/analytics' },
     // { label: 'Subscription', href: '/player/subscription' },
 ];
@@ -225,7 +225,7 @@ export default function PlayerNavbar() {
                                     className="flex items-center gap-2 px-3 py-2 text-sm text-[#94A3B8] w-full"
                                 >
                                     <User className="h-4 w-4 text-[#94A3B8]" />
-                                    View Public Profile
+                                    View Public Football Identity
                                 </button>
                             </DropdownMenuItem>
                             {/* <DropdownMenuItem asChild className="cursor-pointer rounded-md focus:bg-[#F8FAFC] dark:focus:bg-[#1F1F1F]">
@@ -337,7 +337,7 @@ export default function PlayerNavbar() {
                                     onClick={() => setMobileOpen(false)}
                                     className="block border-b border-[#F1F5F9] py-3 text-base font-medium text-[#0F172A] transition-colors hover:text-[#E53F01] dark:border-[#1F1F1F] dark:text-[#F5F5F5]"
                                 >
-                                    View Public Profile
+                                    View Public Football Identity
                                 </Link>
                                 <Link
                                     href="/player/settings"
@@ -378,7 +378,7 @@ export default function PlayerNavbar() {
                             <p className="px-5 py-10 text-center text-sm text-[#555555]">Loading…</p>
                         )}
                         {!notifLoading && notifications.length === 0 && (
-                            <p className="px-5 py-12 text-center text-sm text-[#9A9A9A]">No profile views yet.</p>
+                            <p className="px-5 py-12 text-center text-sm text-[#9A9A9A]">No football identity views yet.</p>
                         )}
                         {notifications.map((n) => {
                             const href = n.player_slug

@@ -171,9 +171,15 @@ class PlayerController extends Controller
     public function suspend($id)
     {
         $profile = PlayerProfile::findOrFail($id);
-        $profile->status = 'Suspended';
+
+        // Toggle: Suspended ↔ Published
+        $profile->status = $profile->status === 'Suspended' ? 'Published' : 'Suspended';
         $profile->save();
-        return back()->with('success', 'Player suspended.');
+
+        return back()->with(
+            'success',
+            $profile->status === 'Suspended' ? 'Player suspended.' : 'Player activated.'
+        );
     }
 
     public function destroy($id)
