@@ -12,7 +12,7 @@ class PlayerController extends Controller
 {
     public function index(Request $request)
     {
-        $query = PlayerProfile::with('user:id,name,nationality');
+        $query = PlayerProfile::with('user:id,name,nationality,slug');
 
         // Search filter (name, club, country)
         if ($search = $request->input('search')) {
@@ -87,6 +87,7 @@ class PlayerController extends Controller
 
                 return [
                     'id'             => $profile->id,
+                    'slug'           => $user?->slug,
                     'name'           => $user?->name ?? 'Unknown',
                     'age'            => $profile->dob ? \Carbon\Carbon::parse($profile->dob)->age : null,
                     'position'       => $this->getPositionGroup($profile->positions),

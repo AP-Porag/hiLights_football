@@ -10,6 +10,7 @@ use Laravel\Cashier\Billable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\OtpVerificationNotification;
 use App\Notifications\HiLightsResetPasswordNotification;
+use Illuminate\Support\Str;
 
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -59,6 +60,46 @@ class User extends Authenticatable implements MustVerifyEmail
             'nationality' => 'array',
         ];
     }
+    /**
+     * Slug is generated AFTER insert, so the real created_at value from the database is used.
+     */
+    protected static function booted(): void
+    {
+        static::created(function (User $user) {
+            if (empty($user->slug)) {
+                $user->slug = static::generateUniqueSlug($user);
+                $user->saveQuietly();
+            }
+        });
+    }
+
+    /**
+     * "Razaul Karim" + created_at → "razaul-karim-7f3a9c21be"
+     *
+     * Hash = HMAC-SHA256(created_at | id, APP_KEY) — one-way (like a password hash),
+     * cannot be decoded back to the date or ID, and is URL-safe (a-f, 0-9 only).
+     */
+    public static function generateUniqueSlug(User $user): string
+    {
+        $base = Str::limit(Str::slug((string) $user->name), 60, '') ?: 'player';
+        $createdAt = optional($user->created_at)->format('Y-m-d H:i:s') ?? now()->format('Y-m-d H:i:s');
+
+        $attempt = 0;
+
+        do {
+            $hash = substr(
+                hash_hmac('sha256', $createdAt . '|' . $user->id . '|' . $attempt, config('app.key')),
+                0,
+                10
+            );
+
+            $slug = $base . '-' . $hash;
+            $attempt++;
+        } while (static::where('slug', $slug)->where('id', '!=', $user->id)->exists());
+
+        return $slug;
+    }
+
     public function playerProfile(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(PlayerProfile::class);

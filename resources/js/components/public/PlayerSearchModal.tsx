@@ -3,7 +3,7 @@ import { Search, X, Loader2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 interface PlayerResult {
-    id: number;
+    slug: string;
     name: string | null;
     club: string | null;
     photo_url: string | null;
@@ -140,8 +140,8 @@ export default function PlayerSearchModal({
                     )}
                     {players.map((p) => (
                         <Link
-                            key={p.id}
-                            href={`/player/profile/${p.id}`}
+                            key={p.slug}
+                            href={`/player/profile/${p.slug}`}
                             onClick={onClose}
                             className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[#1F1F1F]"
                         >

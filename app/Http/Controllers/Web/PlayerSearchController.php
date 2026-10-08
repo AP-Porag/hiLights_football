@@ -139,7 +139,7 @@ class PlayerSearchController extends Controller
         // 4. Build the query
         // --------------------------------------------------------------
         $players = PlayerProfile::query()
-            ->with('user:id,name,nationality,dob') // 👈 load dob from user
+            ->with('user:id,name,nationality,dob,slug') // 👈 load dob from user
             ->where(function ($query) use ($q, $countryCodes, $positionCodes, $yearCondition) {
 
                 // ----- Search in the related user -----
@@ -190,7 +190,7 @@ class PlayerSearchController extends Controller
                 $firstPosition = $positions[0] ?? null;
 
                 return [
-                    'id'        => $player->id,
+                    'slug'      => $player->user?->slug,
                     'name'      => $player->user?->name,
                     'club'      => $player->current_club,
                     'photo_url' => $player->photo_url,

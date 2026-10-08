@@ -17,7 +17,7 @@ class HomeController extends Controller
             ->get()
             ->map(function ($profile) {
                 return [
-                    'id'          => $profile->id,
+                    'slug'        => $profile->user?->slug,
                     'name'        => $profile->user?->name,
                     'nationality' => $profile->user?->nationality,
                     'dob' => $profile->user?->dob,
@@ -41,7 +41,7 @@ class HomeController extends Controller
             ->get()
             ->map(function ($profile) {
                 return [
-                    'id'            => $profile->id,
+                    'slug'          => $profile->user?->slug,
                     'name'          => $profile->user?->name,
                     'nationality'   => $profile->user?->nationality,
                     'dob'           => $profile->user?->dob,

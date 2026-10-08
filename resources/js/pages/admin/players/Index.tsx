@@ -1,21 +1,25 @@
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { Switch } from '@/components/ui/switch';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
-import AppLayout from '@/layouts/app-layout';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
-import { Ban, Eye, MoreHorizontal, Search, Star, Trash2, X } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import AppLayout from '@/layouts/app-layout';
+import {
+    Search, Filter, Download, MoreHorizontal, Eye, Pencil, Ban, Trash2, X, Star,
+} from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 
 // ── Types ──
 interface Player {
     id: number;
+    slug: string | null;
     name: string;
     age: number | null;
     position: string;
@@ -58,9 +62,7 @@ function SubscriptionBadge({ sub }: { sub: Player['subscription'] }) {
         Elite: 'bg-[rgba(255,107,0,0.12)] text-[#E53F01] border-[#E53F01]',
     } as const;
     return (
-        <span
-            className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 font-mono text-[0.6875rem] font-medium tracking-wider uppercase ${styles[sub]}`}
-        >
+        <span className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 font-mono text-[0.6875rem] font-medium uppercase tracking-wider ${styles[sub]}`}>
             {sub === 'Elite' && <Star className="h-2.5 w-2.5 fill-current" />}
             {sub}
         </span>
@@ -73,16 +75,16 @@ function StatusBadge({ status }: { status: Player['status'] }) {
         Draft: 'bg-amber-900/30 text-amber-400 border-amber-700',
         Suspended: 'bg-red-900/30 text-red-400 border-red-700',
     } as const;
-    return <span className={`inline-flex items-center rounded-md border px-2 py-0.5 text-[0.6875rem] font-medium ${styles[status]}`}>{status}</span>;
+    return (
+        <span className={`inline-flex items-center rounded-md border px-2 py-0.5 text-[0.6875rem] font-medium ${styles[status]}`}>
+            {status}
+        </span>
+    );
 }
 
 // ── Main Component ──
 export default function PlayersIndex() {
-    const {
-        players,
-        filters = {},
-        stats,
-    } = usePage<{
+    const { players, filters = {}, stats } = usePage<{
         players: { data: Player[]; current_page: number; last_page: number; total: number };
         filters: Filters;
         stats: Stats;
@@ -95,7 +97,7 @@ export default function PlayersIndex() {
     const isInitialMount = useRef(true);
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const formatViews = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n.toString());
+    const formatViews = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n.toString();
 
     const applyFilters = (searchVal: string, filterVal: string) => {
         router.get(route('players.index'), { search: searchVal, filter: filterVal }, { preserveState: true, replace: true });
@@ -146,7 +148,7 @@ export default function PlayersIndex() {
         },
     ];
     return (
-        <AppLayout pageTitle="Player Football Identity" breadcrumbs={breadcrumbs}>
+        <AppLayout pageTitle="Player Profiles" breadcrumbs={breadcrumbs}>
             <div className="space-y-6">
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -156,10 +158,8 @@ export default function PlayersIndex() {
                         { label: 'Total Views', value: formatViews(stats.totalViews) },
                     ].map((stat) => (
                         <div key={stat.label} className="rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] p-6">
-                            <div className="text-xs font-medium tracking-wider text-[#94A3B8] uppercase">{stat.label}</div>
-                            <div className={`mt-2 font-mono text-2xl font-semibold ${stat.accent ? 'text-[#E53F01]' : 'text-[#F5F5F5]'}`}>
-                                {stat.value}
-                            </div>
+                            <div className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">{stat.label}</div>
+                            <div className={`mt-2 font-mono text-2xl font-semibold ${stat.accent ? 'text-[#E53F01]' : 'text-[#F5F5F5]'}`}>{stat.value}</div>
                         </div>
                     ))}
                 </div>
@@ -168,7 +168,7 @@ export default function PlayersIndex() {
                 <div className="rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] p-4">
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                         <form onSubmit={handleSearch} className="relative w-full lg:max-w-md">
-                            <Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" />
+                            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" />
                             <Input
                                 type="text"
                                 placeholder="Search by name, club, or country..."
@@ -185,7 +185,7 @@ export default function PlayersIndex() {
                                         type="button"
                                         onClick={() => handleTabChange(tab)}
                                         className={`rounded px-3 py-1.5 text-xs font-medium transition-colors ${activeFilter === tab
-                                            ? 'border border-[#3A3A3A] bg-[#0D0D0D] text-[#F5F5F5] shadow-sm'
+                                            ? 'bg-[#0D0D0D] text-[#F5F5F5] shadow-sm border border-[#3A3A3A]'
                                             : 'text-[#94A3B8] hover:text-[#F5F5F5]'
                                             }`}
                                     >
@@ -207,26 +207,20 @@ export default function PlayersIndex() {
                             <TableHeader>
                                 <TableRow className="border-[#2A2A2A] bg-[#1A1A1A] hover:bg-[#1A1A1A]">
                                     <TableHead className="w-[3.75rem]"></TableHead>
-                                    <TableHead className="text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">Player</TableHead>
-                                    <TableHead className="text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">Position</TableHead>
-                                    <TableHead className="text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">Country</TableHead>
-                                    <TableHead className="text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">Club</TableHead>
-                                    <TableHead className="text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">Subscription</TableHead>
-                                    <TableHead className="text-right text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">Views</TableHead>
-                                    <TableHead className="text-center text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">
-                                        Featured
-                                    </TableHead>
-                                    <TableHead className="w-[5rem] text-right text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">
-                                        Actions
-                                    </TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Player</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Position</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Country</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Club</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Subscription</TableHead>
+                                    <TableHead className="text-right text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Views</TableHead>
+                                    <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Featured</TableHead>
+                                    <TableHead className="w-[5rem] text-right text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {players.data.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={9} className="h-32 text-center text-sm text-[#94A3B8]">
-                                            No players found.
-                                        </TableCell>
+                                        <TableCell colSpan={9} className="h-32 text-center text-sm text-[#94A3B8]">No players found.</TableCell>
                                     </TableRow>
                                 ) : (
                                     players.data.map((player) => (
@@ -234,7 +228,11 @@ export default function PlayersIndex() {
                                             <TableCell className="py-4">
                                                 {player.avatar ? (
                                                     <div className="h-10 w-10 overflow-hidden rounded-full border border-[#2A2A2A]">
-                                                        <img src={player.avatar} alt={player.name} className="h-full w-full object-cover" />
+                                                        <img
+                                                            src={player.avatar}
+                                                            alt={player.name}
+                                                            className="h-full w-full object-cover"
+                                                        />
                                                     </div>
                                                 ) : (
                                                     <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#2A2A2A] bg-[#2A1A0F] text-sm font-semibold text-orange-500">
@@ -242,19 +240,14 @@ export default function PlayersIndex() {
                                                             .split(' ')
                                                             .filter(Boolean)
                                                             .slice(0, 2)
-                                                            .map((word) => word.charAt(0).toUpperCase())
+                                                            .map(word => word.charAt(0).toUpperCase())
                                                             .join('')}
                                                     </div>
                                                 )}
                                             </TableCell>
                                             <TableCell className="py-4">
                                                 <div className="flex flex-col">
-                                                    <Link
-                                                        href={`/player/profile/${player.id}`}
-                                                        className="font-display text-sm font-semibold text-[#F5F5F5] hover:text-[#E53F01]"
-                                                    >
-                                                        {player.name}
-                                                    </Link>
+                                                    <Link href={`/player/profile/${player.slug}`} className="font-display text-sm font-semibold text-[#F5F5F5] hover:text-[#E53F01]">{player.name}</Link>
                                                     {/* <div className="mt-0.5 flex items-center gap-2 text-xs text-[#94A3B8]">
                                                         {player.age && <span className="font-mono">Age {player.age}</span>}
                                                         <span className="text-[#2A2A2A]">•</span>
@@ -263,9 +256,7 @@ export default function PlayersIndex() {
                                                 </div>
                                             </TableCell>
                                             <TableCell className="py-4">
-                                                <span className="inline-flex items-center rounded-md border border-[#E53F01] bg-[rgba(255,107,0,0.12)] px-2 py-1 font-mono text-xs font-semibold text-[#E53F01]">
-                                                    {player.positionShort}
-                                                </span>
+                                                <span className="inline-flex items-center rounded-md border border-[#E53F01] bg-[rgba(255,107,0,0.12)] px-2 py-1 font-mono text-xs font-semibold text-[#E53F01]">{player.positionShort}</span>
                                             </TableCell>
                                             <TableCell className="py-4">
                                                 <div className="flex items-center gap-2 text-sm text-[#F5F5F5]">
@@ -273,12 +264,8 @@ export default function PlayersIndex() {
                                                 </div>
                                             </TableCell>
                                             <TableCell className="py-4 text-sm text-[#94A3B8]">{player.club}</TableCell>
-                                            <TableCell className="py-4">
-                                                <SubscriptionBadge sub={player.subscription} />
-                                            </TableCell>
-                                            <TableCell className="py-4 text-right font-mono text-sm font-semibold text-[#E53F01]">
-                                                {formatViews(player.views)}
-                                            </TableCell>
+                                            <TableCell className="py-4"><SubscriptionBadge sub={player.subscription} /></TableCell>
+                                            <TableCell className="py-4 text-right font-mono text-sm font-semibold text-[#E53F01]">{formatViews(player.views)}</TableCell>
                                             <TableCell className="py-4 text-center">
                                                 <Switch
                                                     checked={player.featured}
@@ -289,32 +276,19 @@ export default function PlayersIndex() {
                                             <TableCell className="py-4 text-right">
                                                 <DropdownMenu>
                                                     <DropdownMenuTrigger asChild>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="icon"
-                                                            className="h-8 w-8 text-[#94A3B8] hover:bg-[#1A1A1A] hover:text-[#F5F5F5]"
-                                                        >
+                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-[#94A3B8] hover:bg-[#1A1A1A] hover:text-[#F5F5F5]">
                                                             <MoreHorizontal className="h-4 w-4" />
                                                         </Button>
                                                     </DropdownMenuTrigger>
                                                     <DropdownMenuContent align="end" className="w-44 border-[#2A2A2A] bg-[#0D0D0D]">
-                                                        <DropdownMenuItem
-                                                            onClick={() => window.open(`/player/profile/${player.id}`, '_blank')}
-                                                            className="text-sm text-[#F5F5F5] hover:bg-[#1A1A1A] focus:bg-[#1A1A1A]"
-                                                        >
-                                                            <Eye className="mr-2 h-4 w-4" /> View Football Identity
+                                                        <DropdownMenuItem onClick={() => window.open(`/player/profile/${player.slug}`, '_blank')} className="text-sm text-[#F5F5F5] hover:bg-[#1A1A1A] focus:bg-[#1A1A1A]">
+                                                            <Eye className="mr-2 h-4 w-4" /> View Profile
                                                         </DropdownMenuItem>
                                                         <DropdownMenuSeparator className="bg-[#2A2A2A]" />
-                                                        <DropdownMenuItem
-                                                            onClick={() => handleSuspend(player.id)}
-                                                            className="text-sm text-amber-400 hover:bg-[#1A1A1A] focus:bg-[#1A1A1A] focus:text-amber-400"
-                                                        >
+                                                        <DropdownMenuItem onClick={() => handleSuspend(player.id)} className="text-sm text-amber-400 hover:bg-[#1A1A1A] focus:bg-[#1A1A1A] focus:text-amber-400">
                                                             <Ban className="mr-2 h-4 w-4" /> Suspend
                                                         </DropdownMenuItem>
-                                                        <DropdownMenuItem
-                                                            onClick={() => handleDelete(player.id)}
-                                                            className="text-sm text-red-400 hover:bg-[#1A1A1A] focus:bg-[#1A1A1A] focus:text-red-400"
-                                                        >
+                                                        <DropdownMenuItem onClick={() => handleDelete(player.id)} className="text-sm text-red-400 hover:bg-[#1A1A1A] focus:bg-[#1A1A1A] focus:text-red-400">
                                                             <Trash2 className="mr-2 h-4 w-4" /> Delete
                                                         </DropdownMenuItem>
                                                     </DropdownMenuContent>
@@ -330,31 +304,16 @@ export default function PlayersIndex() {
                     {/* Pagination */}
                     <div className="flex flex-col gap-3 border-t border-[#2A2A2A] bg-[#0D0D0D] px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="text-xs text-[#94A3B8]">
-                            Showing <span className="font-mono font-semibold text-[#F5F5F5]">{players.data.length}</span> of{' '}
-                            <span className="font-mono font-semibold text-[#F5F5F5]">{players.total}</span> players
+                            Showing <span className="font-mono font-semibold text-[#F5F5F5]">{players.data.length}</span> of <span className="font-mono font-semibold text-[#F5F5F5]">{players.total}</span> players
                         </div>
                         <div className="flex items-center gap-2">
                             {players.current_page > 1 && (
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() =>
-                                        router.get(route('players.index', { page: players.current_page - 1, search, filter: activeFilter }))
-                                    }
-                                    className="h-8 border-[#2A2A2A] bg-[#1A1A1A] text-xs text-[#F5F5F5] hover:bg-[#2A2A2A]"
-                                >
+                                <Button variant="outline" size="sm" onClick={() => router.get(route('players.index', { page: players.current_page - 1, search, filter: activeFilter }))} className="h-8 border-[#2A2A2A] bg-[#1A1A1A] text-xs text-[#F5F5F5] hover:bg-[#2A2A2A]">
                                     Previous
                                 </Button>
                             )}
                             {players.current_page < players.last_page && (
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() =>
-                                        router.get(route('players.index', { page: players.current_page + 1, search, filter: activeFilter }))
-                                    }
-                                    className="h-8 border-[#2A2A2A] bg-[#1A1A1A] text-xs text-[#F5F5F5] hover:bg-[#2A2A2A]"
-                                >
+                                <Button variant="outline" size="sm" onClick={() => router.get(route('players.index', { page: players.current_page + 1, search, filter: activeFilter }))} className="h-8 border-[#2A2A2A] bg-[#1A1A1A] text-xs text-[#F5F5F5] hover:bg-[#2A2A2A]">
                                     Next
                                 </Button>
                             )}
@@ -406,188 +365,80 @@ function EditPlayerForm({ player, onClose }: { player: Player; onClose: () => vo
                             <img src={player.avatar} alt={player.name} className="h-full w-full object-cover" />
                         </div>
                         <div>
-                            <SheetTitle className="font-display text-xl font-bold tracking-tight text-[#F5F5F5] uppercase">Edit Player</SheetTitle>
+                            <SheetTitle className="font-display text-xl font-bold uppercase tracking-tight text-[#F5F5F5]">Edit Player</SheetTitle>
                             <SheetDescription className="text-xs text-[#94A3B8]">Profile ID #{player.id}</SheetDescription>
                         </div>
                     </div>
-                    <button type="button" onClick={onClose} className="shrink-0 rounded-md p-1 text-[#94A3B8] hover:bg-[#1A1A1A]">
-                        <X className="h-4 w-4" />
-                    </button>
+                    <button type="button" onClick={onClose} className="shrink-0 rounded-md p-1 text-[#94A3B8] hover:bg-[#1A1A1A]"><X className="h-4 w-4" /></button>
                 </div>
             </SheetHeader>
 
             <div className="flex-1 overflow-y-auto px-6 py-6">
                 <Tabs defaultValue="basic" className="w-full">
                     <TabsList className="grid w-full grid-cols-3 border border-[#2A2A2A] bg-[#1A1A1A]">
-                        <TabsTrigger
-                            value="basic"
-                            className="text-xs text-[#94A3B8] data-[state=active]:bg-[#0D0D0D] data-[state=active]:text-[#E53F01]"
-                        >
-                            Basic Info
-                        </TabsTrigger>
-                        <TabsTrigger
-                            value="physical"
-                            className="text-xs text-[#94A3B8] data-[state=active]:bg-[#0D0D0D] data-[state=active]:text-[#E53F01]"
-                        >
-                            Physical
-                        </TabsTrigger>
-                        <TabsTrigger
-                            value="status"
-                            className="text-xs text-[#94A3B8] data-[state=active]:bg-[#0D0D0D] data-[state=active]:text-[#E53F01]"
-                        >
-                            Status
-                        </TabsTrigger>
+                        <TabsTrigger value="basic" className="text-xs data-[state=active]:bg-[#0D0D0D] data-[state=active]:text-[#E53F01] text-[#94A3B8]">Basic Info</TabsTrigger>
+                        <TabsTrigger value="physical" className="text-xs data-[state=active]:bg-[#0D0D0D] data-[state=active]:text-[#E53F01] text-[#94A3B8]">Physical</TabsTrigger>
+                        <TabsTrigger value="status" className="text-xs data-[state=active]:bg-[#0D0D0D] data-[state=active]:text-[#E53F01] text-[#94A3B8]">Status</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="basic" className="mt-6 space-y-5">
-                        <div className="space-y-2">
-                            <Label className="text-[#F5F5F5]">Full Name</Label>
-                            <Input
-                                value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
-                                className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]"
-                            />
-                        </div>
+                        <div className="space-y-2"><Label className="text-[#F5F5F5]">Full Name</Label><Input value={data.name} onChange={(e) => setData('name', e.target.value)} className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]" /></div>
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <Label className="text-[#F5F5F5]">Age</Label>
-                                <Input
-                                    type="number"
-                                    value={data.age}
-                                    onChange={(e) => setData('age', Number(e.target.value))}
-                                    className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]"
-                                />
-                            </div>
+                            <div className="space-y-2"><Label className="text-[#F5F5F5]">Age</Label><Input type="number" value={data.age} onChange={(e) => setData('age', Number(e.target.value))} className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]" /></div>
                             <div className="space-y-2">
                                 <Label className="text-[#F5F5F5]">Position</Label>
                                 <Select value={data.position} onValueChange={(v) => setData('position', v)}>
-                                    <SelectTrigger className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5]">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent className="border-[#2A2A2A] bg-[#0D0D0D]">
-                                        {['GK', 'CB', 'LB', 'RB', 'CM', 'CDM', 'CAM', 'LW', 'RW', 'ST'].map((p) => (
-                                            <SelectItem key={p} value={p} className="text-[#F5F5F5] hover:bg-[#1A1A1A]">
-                                                {p}
-                                            </SelectItem>
-                                        ))}
+                                    <SelectTrigger className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5]"><SelectValue /></SelectTrigger>
+                                    <SelectContent className="bg-[#0D0D0D] border-[#2A2A2A]">
+                                        {['GK', 'CB', 'LB', 'RB', 'CM', 'CDM', 'CAM', 'LW', 'RW', 'ST'].map(p => <SelectItem key={p} value={p} className="text-[#F5F5F5] hover:bg-[#1A1A1A]">{p}</SelectItem>)}
                                     </SelectContent>
                                 </Select>
                             </div>
                         </div>
-                        <div className="space-y-2">
-                            <Label className="text-[#F5F5F5]">Country</Label>
-                            <Input
-                                value={data.country}
-                                onChange={(e) => setData('country', e.target.value)}
-                                className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]"
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label className="text-[#F5F5F5]">Current Club</Label>
-                            <Input
-                                value={data.club}
-                                onChange={(e) => setData('club', e.target.value)}
-                                className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]"
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label className="text-[#F5F5F5]">Player Bio</Label>
-                            <Textarea
-                                value={data.bio}
-                                onChange={(e) => setData('bio', e.target.value)}
-                                rows={4}
-                                className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]"
-                            />
-                        </div>
+                        <div className="space-y-2"><Label className="text-[#F5F5F5]">Country</Label><Input value={data.country} onChange={(e) => setData('country', e.target.value)} className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]" /></div>
+                        <div className="space-y-2"><Label className="text-[#F5F5F5]">Current Club</Label><Input value={data.club} onChange={(e) => setData('club', e.target.value)} className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]" /></div>
+                        <div className="space-y-2"><Label className="text-[#F5F5F5]">Player Bio</Label><Textarea value={data.bio} onChange={(e) => setData('bio', e.target.value)} rows={4} className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]" /></div>
                     </TabsContent>
 
                     <TabsContent value="physical" className="mt-6 space-y-5">
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <Label className="text-[#F5F5F5]">Height</Label>
-                                <Input
-                                    value={data.height}
-                                    onChange={(e) => setData('height', e.target.value)}
-                                    placeholder="1.82m"
-                                    className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label className="text-[#F5F5F5]">Weight</Label>
-                                <Input
-                                    value={data.weight}
-                                    onChange={(e) => setData('weight', e.target.value)}
-                                    placeholder="74kg"
-                                    className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]"
-                                />
-                            </div>
+                            <div className="space-y-2"><Label className="text-[#F5F5F5]">Height</Label><Input value={data.height} onChange={(e) => setData('height', e.target.value)} placeholder="1.82m" className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]" /></div>
+                            <div className="space-y-2"><Label className="text-[#F5F5F5]">Weight</Label><Input value={data.weight} onChange={(e) => setData('weight', e.target.value)} placeholder="74kg" className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]" /></div>
                         </div>
                         <div className="space-y-2">
                             <Label className="text-[#F5F5F5]">Preferred Foot</Label>
                             <Select value={data.foot} onValueChange={(v) => setData('foot', v as 'Left' | 'Right' | 'Both')}>
-                                <SelectTrigger className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5]">
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent className="border-[#2A2A2A] bg-[#0D0D0D]">
-                                    <SelectItem value="Right" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">
-                                        Right
-                                    </SelectItem>
-                                    <SelectItem value="Left" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">
-                                        Left
-                                    </SelectItem>
-                                    <SelectItem value="Both" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">
-                                        Both
-                                    </SelectItem>
+                                <SelectTrigger className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5]"><SelectValue /></SelectTrigger>
+                                <SelectContent className="bg-[#0D0D0D] border-[#2A2A2A]">
+                                    <SelectItem value="Right" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">Right</SelectItem>
+                                    <SelectItem value="Left" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">Left</SelectItem>
+                                    <SelectItem value="Both" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">Both</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
-                        <div className="space-y-2">
-                            <Label className="text-[#F5F5F5]">Market Value</Label>
-                            <Input
-                                value={data.marketValue}
-                                onChange={(e) => setData('marketValue', e.target.value)}
-                                placeholder="€2.5M"
-                                className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]"
-                            />
-                        </div>
+                        <div className="space-y-2"><Label className="text-[#F5F5F5]">Market Value</Label><Input value={data.marketValue} onChange={(e) => setData('marketValue', e.target.value)} placeholder="€2.5M" className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] placeholder:text-[#555555]" /></div>
                     </TabsContent>
 
                     <TabsContent value="status" className="mt-6 space-y-5">
                         <div className="space-y-2">
                             <Label className="text-[#F5F5F5]">Subscription Tier</Label>
                             <Select value={data.subscription} onValueChange={(v) => setData('subscription', v as Player['subscription'])}>
-                                <SelectTrigger className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5]">
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent className="border-[#2A2A2A] bg-[#0D0D0D]">
-                                    <SelectItem value="Free" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">
-                                        Free
-                                    </SelectItem>
-                                    <SelectItem value="Pro" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">
-                                        Pro
-                                    </SelectItem>
-                                    <SelectItem value="Elite" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">
-                                        Elite
-                                    </SelectItem>
+                                <SelectTrigger className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5]"><SelectValue /></SelectTrigger>
+                                <SelectContent className="bg-[#0D0D0D] border-[#2A2A2A]">
+                                    <SelectItem value="Free" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">Free</SelectItem>
+                                    <SelectItem value="Pro" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">Pro</SelectItem>
+                                    <SelectItem value="Elite" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">Elite</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
                         <div className="space-y-2">
                             <Label className="text-[#F5F5F5]">Publish Status</Label>
                             <Select value={data.status} onValueChange={(v) => setData('status', v as Player['status'])}>
-                                <SelectTrigger className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5]">
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent className="border-[#2A2A2A] bg-[#0D0D0D]">
-                                    <SelectItem value="Published" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">
-                                        Published
-                                    </SelectItem>
-                                    <SelectItem value="Draft" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">
-                                        Draft
-                                    </SelectItem>
-                                    <SelectItem value="Suspended" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">
-                                        Suspended
-                                    </SelectItem>
+                                <SelectTrigger className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5]"><SelectValue /></SelectTrigger>
+                                <SelectContent className="bg-[#0D0D0D] border-[#2A2A2A]">
+                                    <SelectItem value="Published" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">Published</SelectItem>
+                                    <SelectItem value="Draft" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">Draft</SelectItem>
+                                    <SelectItem value="Suspended" className="text-[#F5F5F5] hover:bg-[#1A1A1A]">Suspended</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -597,14 +448,7 @@ function EditPlayerForm({ player, onClose }: { player: Player; onClose: () => vo
 
             <div className="shrink-0 border-t border-[#2A2A2A] bg-[#0D0D0D] px-6 py-4">
                 <div className="flex justify-end gap-3">
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={onClose}
-                        className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] hover:bg-[#2A2A2A]"
-                    >
-                        Cancel
-                    </Button>
+                    <Button type="button" variant="outline" onClick={onClose} className="border-[#2A2A2A] bg-[#1A1A1A] text-[#F5F5F5] hover:bg-[#2A2A2A]">Cancel</Button>
                     <Button type="submit" disabled={processing} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">
                         {processing ? 'Saving...' : 'Save Changes'}
                     </Button>

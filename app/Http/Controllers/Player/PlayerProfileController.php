@@ -35,7 +35,7 @@ class PlayerProfileController extends Controller
 
 
         // Recent Views (unchanged)
-        $recentViews = ProfileView::with('viewer:id,name,role', 'viewer.playerProfile:id,user_id')
+        $recentViews = ProfileView::with('viewer:id,name,role,slug', 'viewer.playerProfile:id,user_id')
             ->where('player_profile_id', $profile->id)
             ->latest()
             ->get()
@@ -46,7 +46,7 @@ class PlayerProfileController extends Controller
                 'name'              => $v->viewer?->name ?? 'Unknown',
                 'role'              => $v->viewer?->role,
                 'viewed_at'         => $v->created_at->diffForHumans(),
-                'player_profile_id' => $v->viewer?->playerProfile?->id ?? null,
+                'player_slug'       => $v->viewer?->playerProfile ? $v->viewer?->slug : null,
             ])
             ->values();
 
@@ -101,9 +101,10 @@ class PlayerProfileController extends Controller
                     'id'              => $user->id,
                     'name'            => $user->name,
                     'email'           => $user->email,
+                    'slug'            => $user->slug,
                     'dob'             => $user->dob?->format('Y-m-d'),
                     'nationality'     => $user->nationality,
-                    'whatsapp'     => $user->whatsapp,
+                    'whatsapp'        => $user->whatsapp,
                     'created_at'      => $user->created_at?->format('Y-m-d H:i:s'),
                     'player_profile'  => $user->playerProfile,
                 ]
@@ -435,7 +436,7 @@ class PlayerProfileController extends Controller
         $user = $request->user();
         $profile = $user->playerProfile;
 
-        $views = ProfileView::with('viewer:id,name,role', 'viewer.playerProfile:id,user_id')
+        $views = ProfileView::with('viewer:id,name,role,slug', 'viewer.playerProfile:id,user_id')
             ->where('player_profile_id', $profile->id)
             ->latest()
             ->paginate(15);
@@ -445,7 +446,7 @@ class PlayerProfileController extends Controller
             'name'              => $v->viewer?->name ?? 'Unknown',
             'role'              => $v->viewer?->role,
             'viewed_at'         => $v->created_at->diffForHumans(),
-            'player_profile_id' => $v->viewer?->playerProfile?->id ?? null,
+            'player_slug'       => $v->viewer?->playerProfile ? $v->viewer?->slug : null,
         ]);
 
         return Inertia::render('player/views/Index', [
@@ -460,9 +461,10 @@ class PlayerProfileController extends Controller
     }
 
 
-    public function publicPlayerDetails(Request $request, $id)
+    public function publicPlayerDetails(Request $request, string $slug)
     {
-        $player = PlayerProfile::with('user')->findOrFail($id);
+        $user = User::where('slug', $slug)->firstOrFail();
+        $player = PlayerProfile::with('user')->where('user_id', $user->id)->firstOrFail();
 
         $viewer = auth()->user();
 
@@ -498,8 +500,29 @@ class PlayerProfileController extends Controller
             ]);
         }
 
+        // Public page e shudhu dorkari field pathano hocche — kono ID, email, phone, OTP, Stripe data na
         return Inertia::render('player/profile/public/Detail', [
-            'player' => $player,
+            'player' => [
+                'slug'                 => $user->slug,
+                'photo_url'            => $player->photo_url,
+                'positions'            => $player->positions,
+                'height'               => $player->height,
+                'foot'                 => $player->foot,
+                'current_club'         => $player->current_club,
+                'current_club_country' => $player->current_club_country,
+                'video_url'            => $player->video_url,
+                'video_label'          => $player->video_label,
+                'videos'               => $player->videos,
+                'achievements'         => $player->achievements,
+                'competitions'         => $player->competitions,
+                'matches'              => $player->matches,
+                'description'          => $player->description,
+                'user'                 => [
+                    'name'        => $user->name,
+                    'dob'         => $user->dob?->format('Y-m-d'),
+                    'nationality' => $user->nationality,
+                ],
+            ],
         ]);
     }
 }

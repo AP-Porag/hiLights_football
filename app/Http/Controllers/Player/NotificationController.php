@@ -29,7 +29,7 @@ class NotificationController extends Controller
             ->count();
 
         // panel list — viewer wise latest (dedup), max 15
-        $views = ProfileView::with('viewer:id,name,role', 'viewer.playerProfile:id,user_id,photo_path')
+        $views = ProfileView::with('viewer:id,name,role,slug', 'viewer.playerProfile:id,user_id,photo_path')
             ->where('player_profile_id', $profile->id)
             ->latest()
             ->get()
@@ -42,7 +42,7 @@ class NotificationController extends Controller
             'name'              => $v->viewer?->name ?? 'Someone',
             'role'              => $v->viewer?->role ? ucfirst($v->viewer->role) : null,
             'viewed_at'         => $v->created_at->diffForHumans(),
-            'player_profile_id' => $v->viewer?->playerProfile?->id,
+            'player_slug'       => $v->viewer?->playerProfile ? $v->viewer?->slug : null,
             'avatar'            => $v->viewer?->playerProfile?->photo_url,
             'unread'            => $lastRead ? $v->created_at->gt($lastRead) : true,
         ]);

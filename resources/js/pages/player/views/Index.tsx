@@ -1,9 +1,11 @@
 import PlayerNavbar from '@/components/player/PlayerNavbar';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Link, router, usePage } from '@inertiajs/react';
-import { ChevronLeft, ChevronRight, Eye } from 'lucide-react';
+import { Link } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
+import { Eye, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
+import { router } from '@inertiajs/react';
 
 // টাইপ ডিফাইনেশন (views এখন অ্যারে অথবা অবজেক্ট হতে পারে)
 interface View {
@@ -11,7 +13,7 @@ interface View {
     name: string;
     role?: string;
     viewed_at: string;
-    player_profile_id?: number | null;
+    player_slug?: string | null;
 }
 
 interface Props {
@@ -34,14 +36,10 @@ export default function Index({ views, pagination }: Props) {
     const goToPage = (page: number) => {
         if (page < 1 || page > pagination.last_page) return;
         setLoading(true);
-        router.get(
-            `/player/views?page=${page}`,
-            {},
-            {
-                preserveState: true,
-                onFinish: () => setLoading(false),
-            },
-        );
+        router.get(`/player/views?page=${page}`, {}, {
+            preserveState: true,
+            onFinish: () => setLoading(false),
+        });
     };
 
     return (
@@ -52,7 +50,9 @@ export default function Index({ views, pagination }: Props) {
                 <div className="flex items-center gap-3 border-b border-[#2A2A2A] pb-4">
                     <Eye className="h-6 w-6 text-[#E53F01]" />
                     <h1 className="text-2xl font-bold text-[#F5F5F5]">Profile Views</h1>
-                    <span className="ml-auto text-sm text-[#94A3B8]">{pagination.total} views total</span>
+                    <span className="ml-auto text-sm text-[#94A3B8]">
+                        {pagination.total} views total
+                    </span>
                 </div>
 
                 {viewsData.length === 0 ? (
@@ -82,19 +82,23 @@ export default function Index({ views, pagination }: Props) {
                                         </Avatar>
 
                                         <div className="min-w-0 flex-1">
-                                            <p className="truncate text-sm font-semibold text-[#F5F5F5]">{view.name}</p>
-                                            <p className="text-xs text-[#94A3B8]">{view.role ? `(${view.role})` : ''}</p>
+                                            <p className="truncate text-sm font-semibold text-[#F5F5F5]">
+                                                {view.name}
+                                            </p>
+                                            <p className="text-xs text-[#94A3B8]">
+                                                {view.role ? `(${view.role})` : ''}
+                                            </p>
                                         </div>
 
                                         <p className="text-xs text-[#9A9A9A]">{view.viewed_at}</p>
 
                                         {/* View Profile Button - New */}
-                                        {view.player_profile_id ? (
+                                        {view.player_slug ? (
                                             <Link
-                                                href={`/player/profile/${view.player_profile_id}`}
+                                                href={`/player/profile/${view.player_slug}`}
                                                 className="flex-shrink-0 rounded-lg bg-[#E53F01] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#E53F01]"
                                             >
-                                                View football identity
+                                                View Profile
                                             </Link>
                                         ) : (
                                             <span className="text-xs text-[#94A3B8]">Not a player</span>

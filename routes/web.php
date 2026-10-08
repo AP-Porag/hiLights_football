@@ -90,7 +90,9 @@ Route::post('/request-access', [AccessRequestController::class, 'store'])->name(
 // })->name('profile.public.detail');
 
 
-Route::get('/player/profile/{id}', [PlayerProfileController::class, 'publicPlayerDetails'])
+// Public profile — slug only (numeric ID URLs are NOT accepted, prevents ID enumeration)
+Route::get('/player/profile/{slug}', [PlayerProfileController::class, 'publicPlayerDetails'])
+    ->where('slug', '[a-z0-9\-]+')
     ->name('player.public.profile');
 
 Route::get('/scout', [HomeController::class, 'scout'])->name('scout');
