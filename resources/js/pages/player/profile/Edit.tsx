@@ -789,7 +789,7 @@ export default function Edit() {
                                 <div>
                                     <Label className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Gender</Label>
                                     <RadioGroup value={data.gender} onValueChange={(v) => setData('gender', v)} className="flex gap-4 h-10 items-center">
-                                        {['M', 'F', 'Other'].map((g) => (
+                                        {['M', 'F'].map((g) => (
                                             <div key={g} className="flex items-center gap-2">
                                                 <RadioGroupItem value={g} id={`gender-${g}`} className="border-[#2A2A2A] text-[#E53F01]" />
                                                 <Label htmlFor={`gender-${g}`} className="text-sm text-[#F5F5F5] font-sans cursor-pointer">{g}</Label>
