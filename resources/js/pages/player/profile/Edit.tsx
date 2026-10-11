@@ -582,6 +582,16 @@ export default function Edit() {
     const user = page.user ?? { name: '', dob: null, nationality: null };
     const profile = page.profile ?? null;
     const countries = page.countries ?? [];
+    // Birthplace country — name ba code jai thakuk, save hobe 2 letter code (SN, BR...)
+    const toCountryCode = (v?: string | null): string => {
+        const val = String(v ?? '').trim();
+        if (!val) return '';
+        const match = countries.find(
+            (c) => c.code.toLowerCase() === val.toLowerCase() || c.name.toLowerCase() === val.toLowerCase(),
+        );
+        if (match) return match.code.toUpperCase();
+        return val.length === 2 ? val.toUpperCase() : '';
+    };
     const [dobOpen, setDobOpen] = useState(false);
     // Club history year validation error state
     const [yearErrors, setYearErrors] = useState<{ [key: number]: string }>({});
@@ -633,7 +643,7 @@ export default function Edit() {
         gender: profile?.gender ?? 'M',
         height: profile?.height != null ? String(profile.height) : '',
         birth_city: profile?.birth_city ?? '',
-        birth_country: profile?.birth_country ?? '',
+        birth_country: toCountryCode(profile?.birth_country),
         current_club: profile?.current_club ?? '',
         current_club_country: profile?.current_club_country ?? '',
         in_team_since: (() => {
@@ -675,6 +685,7 @@ export default function Edit() {
         const filled = (v: any) => String(v ?? '').trim() !== '';
         return {
             ...rest,
+            birth_country: toCountryCode(rest.birth_country), // shudhu 2 letter code save hobe
             club_history: rest.club_history.filter((r: any) => filled(r.club)),
             transfer_history: rest.transfer_history.filter((r: any) => filled(r.club)),
             achievements: rest.achievements.filter((r: any) => filled(r.title)),

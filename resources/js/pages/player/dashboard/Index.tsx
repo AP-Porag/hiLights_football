@@ -505,7 +505,7 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
             { name: 'full_name', label: 'Full Name', type: 'text' },
             { name: 'dob', label: 'Date of Birth', type: 'date' },
             { name: 'guardian_name', label: 'Parent / Guardian Name', type: 'text' }, // ← shudhu 18 er niche hole dekhabe
-            { name: 'gender', label: 'Gender', type: 'select', options: ['M', 'F', 'Other'] },
+            { name: 'gender', label: 'Gender', type: 'select', options: ['M', 'F'] },
             { name: 'nationality', label: 'Nationality', type: 'multi_country' }, // ← multi-select nationality
             { name: 'height', label: 'Height (cm)', type: 'number' },
             { name: 'birth_city', label: 'Birth City', type: 'text' },
