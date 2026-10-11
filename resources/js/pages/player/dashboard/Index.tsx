@@ -13,6 +13,10 @@ import { toPng } from 'html-to-image';
 import { Upload } from "lucide-react";
 import { useEffect } from 'react';
 import ReactCountryFlag from "react-country-flag";
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { format } from 'date-fns';
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 import {
     Share2,
     Download,
@@ -51,7 +55,10 @@ import {
     Copy,
     MessageCircle,
     ArrowUp,
-    ArrowDown
+    ArrowDown,
+    Calendar,
+    ChevronLeft,
+    ChevronRight
 } from 'lucide-react';
 import {
     Bar,
@@ -122,6 +129,94 @@ const nonEmpty = (v: any): boolean => {
     return String(v).trim() !== '';
 };
 
+// ── Input sanitizers (Edit page er moto) — typing er somoy-i number chara baki sob baad ──
+const onlyDigits = (v: string, max?: number): string => {
+    const d = String(v ?? '').replace(/\D/g, '');
+    return max ? d.slice(0, max) : d;
+};
+// European season: "2627" → "26/27" (auto slash)
+const formatSeason = (v: string): string => {
+    const d = onlyDigits(v, 4);
+    return d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : d;
+};
+// Score: shudhu "0-0" format (dui pashe max 2 digit, ekta dash)
+const formatScore = (v: string): string => {
+    const clean = String(v ?? '').replace(/[^\d-]/g, '');
+    const [home = '', ...rest] = clean.split('-');
+    const h = home.slice(0, 2);
+    if (!clean.includes('-')) return h;
+    return `${h}-${rest.join('').slice(0, 2)}`;
+};
+const isValidScore = (v: string): boolean => !v || /^\d{1,2}-\d{1,2}$/.test(v);
+
+// ── Dark-theme styling for react-phone-number-input (modal input er sathe match) ──
+function PhoneDarkStyles() {
+    return (
+        <style>{`
+            .PhoneInput {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                height: 36px;
+                background-color: #0D0D0D;
+                border: 1px solid #2A2A2A;
+                border-radius: 8px;
+                padding: 0 8px;
+                transition: border-color 0.15s;
+            }
+            .PhoneInput--focus {
+                border-color: #E53F01;
+            }
+            .phone-error .PhoneInput {
+                border-color: #ef4444;
+            }
+            .PhoneInputCountry {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding-right: 8px;
+                border-right: 1px solid #2A2A2A;
+                flex-shrink: 0;
+            }
+            .PhoneInputCountryIcon {
+                width: 22px;
+                height: 16px;
+                border-radius: 2px;
+                overflow: hidden;
+            }
+            .PhoneInputCountrySelect {
+                background: transparent;
+                color: #F5F5F5;
+                border: none;
+                outline: none;
+                font-size: 13px;
+                cursor: pointer;
+            }
+            .PhoneInputCountrySelect option {
+                background-color: #1F1F1F;
+                color: #F5F5F5;
+            }
+            .PhoneInputCountrySelectArrow {
+                border-color: #9A9A9A transparent transparent;
+                opacity: 0.8;
+            }
+            .PhoneInputInput {
+                flex: 1;
+                min-width: 0;
+                background: transparent;
+                border: none;
+                outline: none;
+                color: #F5F5F5;
+                font-size: 14px;
+                height: 100%;
+            }
+            .PhoneInputInput::placeholder {
+                color: #555555;
+            }
+        `}</style>
+    );
+}
+
 const MONTHS = [
     { v: '01', l: 'January' }, { v: '02', l: 'February' }, { v: '03', l: 'March' },
     { v: '04', l: 'April' }, { v: '05', l: 'May' }, { v: '06', l: 'June' },
@@ -179,8 +274,137 @@ const POSITION_FULL_NAMES: Record<string, string> = {
 };
 const PRIORITY_LABELS = ['Main Position', 'Secondary Position', 'Third Position'];
 
+// ════════ DATE OF BIRTH (Register page er moto — 18 er niche-o allowed) ════════
+const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+// "YYYY-MM-DD" ba ISO string ("2010-05-12T00:00:00Z") → local Date (timezone shift chara)
+const parseYmd = (v?: string | null): Date | undefined => {
+    if (!v) return undefined;
+    const m = String(v).match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (!m) return undefined;
+    return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+};
+
+// Exact age (birthday ashe nai hole 1 kom)
+const calcAge = (v?: string | null): number | null => {
+    const d = parseYmd(v);
+    if (!d) return null;
+    const now = new Date();
+    let age = now.getFullYear() - d.getFullYear();
+    const m = now.getMonth() - d.getMonth();
+    if (m < 0 || (m === 0 && now.getDate() < d.getDate())) age--;
+    return age >= 0 ? age : null;
+};
+
+function DobCalendar({ value, onSelect }: { value?: Date; onSelect: (d: Date) => void }) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const minDate = new Date(1950, 0, 1);
+    const [viewDate, setViewDate] = useState<Date>(value ?? new Date(2005, 0, 1));
+    const year = viewDate.getFullYear();
+    const month = viewDate.getMonth();
+    const years: number[] = [];
+    for (let y = today.getFullYear(); y >= 1950; y--) years.push(y);
+    const firstDayOffset = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const cells: (Date | null)[] = [];
+    for (let i = 0; i < firstDayOffset; i++) cells.push(null);
+    for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
+    const isDisabled = (d: Date) => d > today || d < minDate;
+    const isSelected = (d: Date) => (value ? d.toDateString() === value.toDateString() : false);
+    const isToday = (d: Date) => d.toDateString() === today.toDateString();
+    const goPrev = () => setViewDate(new Date(year, month - 1, 1));
+    const goNext = () => setViewDate(new Date(year, month + 1, 1));
+    const canGoNext = new Date(year, month + 1, 1) <= today;
+    const canGoPrev = new Date(year, month, 1) > minDate;
+    return (
+        <div className="w-[20rem] p-4">
+            <div className="mb-4 flex items-center justify-between gap-2">
+                <button
+                    type="button"
+                    onClick={goPrev}
+                    disabled={!canGoPrev}
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#2A2A2A] text-[#F5F5F5] transition-colors hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01] disabled:pointer-events-none disabled:opacity-30"
+                >
+                    <ChevronLeft className="h-4 w-4" />
+                </button>
+                <div className="flex items-center gap-2">
+                    <select
+                        value={month}
+                        onChange={(e) => setViewDate(new Date(year, Number(e.target.value), 1))}
+                        className="h-8 cursor-pointer rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[0.8125rem] font-medium text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none"
+                    >
+                        {MONTHS.map((m, i) => (
+                            <option key={m.v} value={i} className="bg-[#1F1F1F]">{m.l}</option>
+                        ))}
+                    </select>
+                    <select
+                        value={year}
+                        onChange={(e) => setViewDate(new Date(Number(e.target.value), month, 1))}
+                        className="h-8 cursor-pointer rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-[0.8125rem] font-medium text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none"
+                    >
+                        {years.map((y) => (
+                            <option key={y} value={y} className="bg-[#1F1F1F]">{y}</option>
+                        ))}
+                    </select>
+                </div>
+                <button
+                    type="button"
+                    onClick={goNext}
+                    disabled={!canGoNext}
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#2A2A2A] text-[#F5F5F5] transition-colors hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01] disabled:pointer-events-none disabled:opacity-30"
+                >
+                    <ChevronRight className="h-4 w-4" />
+                </button>
+            </div>
+            <div className="mb-2 grid grid-cols-7">
+                {WEEKDAYS.map((w) => (
+                    <div key={w} className="flex h-8 items-center justify-center text-[0.6875rem] font-semibold uppercase text-[#9A9A9A]">
+                        {w}
+                    </div>
+                ))}
+            </div>
+            <div className="grid grid-cols-7 gap-1">
+                {cells.map((d, i) => {
+                    if (!d) return <div key={`empty-${i}`} className="h-9" />;
+                    const disabled = isDisabled(d);
+                    const selected = isSelected(d);
+                    const todayCell = isToday(d);
+                    return (
+                        <button
+                            key={d.toISOString()}
+                            type="button"
+                            disabled={disabled}
+                            onClick={() => onSelect(d)}
+                            className={[
+                                'mx-auto flex h-9 w-9 items-center justify-center rounded-lg text-[0.8125rem] font-medium transition-colors',
+                                selected
+                                    ? 'bg-[#E53F01] font-semibold text-[#0D0D0D]'
+                                    : disabled
+                                        ? 'pointer-events-none text-[#3A3A3A]'
+                                        : todayCell
+                                            ? 'font-semibold text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]'
+                                            : 'text-[#F5F5F5] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]',
+                            ].join(' ')}
+                        >
+                            {d.getDate()}
+                        </button>
+                    );
+                })}
+            </div>
+        </div>
+    );
+}
+
 // ════════ LIST MODAL CONFIG (repeatable rows) ════════
-type FieldDef = { name: string; label: string; type: 'text' | 'number' | 'file' | 'country', placeholder?: string; };
+type FieldDef = {
+    name: string;
+    label: string;
+    type: 'text' | 'number' | 'file' | 'country',
+    placeholder?: string;
+    numeric?: boolean;                    // mobile-e number keyboard
+    sanitize?: (v: string) => string;     // typing er somoy value filter
+};
 type ListConfig = {
     title: string;
     storageKey: string;
@@ -237,7 +461,7 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
         storageKey: 'achievements',
         primary: 'title',
         fields: [
-            { name: 'year', label: 'Year', type: 'text' },
+            { name: 'year', label: 'Year', type: 'text', placeholder: 'YYYY', numeric: true, sanitize: (v) => onlyDigits(v, 4) },
             { name: 'title', label: 'Title', type: 'text' },
         ],
         empty: { year: '', title: '' },
@@ -248,7 +472,7 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
         primary: 'name',
         fields: [
             { name: 'name', label: 'Competition', type: 'text' },
-            { name: 'year', label: 'Year', type: 'text' },
+            { name: 'year', label: 'Year', type: 'text', placeholder: 'YYYY', numeric: true, sanitize: (v) => onlyDigits(v, 4) },
             { name: 'country', label: 'Country', type: 'country' },
         ],
         empty: { name: '', year: '', country: '' },
@@ -259,18 +483,18 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
         primary: 'home',
         fields: [
             { name: 'home', label: 'Home', type: 'text' },
-            { name: 'score', label: 'Score', type: 'text' },
+            { name: 'score', label: 'Score', type: 'text', placeholder: '0-0', sanitize: formatScore },
             { name: 'away', label: 'Away', type: 'text' },
-            { name: 'goals', label: 'Goals', type: 'number' },
-            { name: 'assists', label: 'Assists', type: 'number' },
-            { name: 'minutes', label: 'Minutes', type: 'text' },
+            { name: 'goals', label: 'Goals', type: 'text', placeholder: '0', numeric: true, sanitize: (v) => onlyDigits(v, 2) },
+            { name: 'assists', label: 'Assists', type: 'text', placeholder: '0', numeric: true, sanitize: (v) => onlyDigits(v, 2) },
+            { name: 'minutes', label: 'Minutes', type: 'text', placeholder: '90', numeric: true, sanitize: (v) => onlyDigits(v, 3) },
         ],
         empty: { home: '', score: '', away: '', goals: '', assists: '', minutes: '' },
     },
 };
 
 // ════════ FORM MODAL CONFIG (single record) ════════
-type FormFieldType = 'text' | 'number' | 'date' | 'select' | 'country' | 'positions' | 'multi_country' | 'file' | 'textarea' | 'month_year';
+type FormFieldType = 'text' | 'number' | 'date' | 'select' | 'country' | 'positions' | 'multi_country' | 'file' | 'textarea' | 'month_year' | 'phone';
 type FormField = { name: string; label: string; type: FormFieldType; options?: string[] };
 type FormConfig = { title: string; fields: FormField[] };
 
@@ -280,6 +504,7 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
         fields: [
             { name: 'full_name', label: 'Full Name', type: 'text' },
             { name: 'dob', label: 'Date of Birth', type: 'date' },
+            { name: 'guardian_name', label: 'Parent / Guardian Name', type: 'text' }, // ← shudhu 18 er niche hole dekhabe
             { name: 'gender', label: 'Gender', type: 'select', options: ['M', 'F', 'Other'] },
             { name: 'nationality', label: 'Nationality', type: 'multi_country' }, // ← multi-select nationality
             { name: 'height', label: 'Height (cm)', type: 'number' },
@@ -289,7 +514,7 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
             { name: 'current_club_country', label: 'Club Country', type: 'country' },
             { name: 'in_team_since', label: 'In Team Since (MM/YYYY)', type: 'month_year' },
             { name: 'agent', label: 'Agent', type: 'text' },
-            { name: 'whatsapp', label: 'WhatsApp Number', type: 'text' },
+            { name: 'whatsapp', label: 'WhatsApp Number', type: 'phone' }, // ← Register er moto flag + country code
             { name: 'description', label: 'About / Bio', type: 'textarea' },
         ],
     },
@@ -344,6 +569,10 @@ function ListModal({
     const [saving, setSaving] = useState(false);
     const [uploadingKey, setUploadingKey] = useState<string | null>(null);
     const [yearErrors, setYearErrors] = useState<{ [key: number]: string }>({});
+
+    // Bhul format thakle save hobe na (Edit page er moto)
+    const hasYearError = Object.values(yearErrors).some(Boolean);
+    const hasInvalidScore = configKey === 'matches' && rows.some((r) => !isValidScore(String(r.score ?? '')));
 
     const update = (i: number, name: string, val: string) => {
         setRows((prev) => {
@@ -410,6 +639,7 @@ function ListModal({
     };
 
     const save = () => {
+        if (hasYearError || hasInvalidScore) return;
         const cleaned = rows.filter((r) => nonEmpty(r[cfg.primary]));
         setSaving(true);
         router.post(
@@ -426,7 +656,7 @@ function ListModal({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
             <div
-                className="w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6"
+                className={`w-full ${configKey === 'club_history' ? 'max-w-2xl' : 'max-w-lg'} max-h-[85vh] overflow-y-auto rounded-2xl border border-[#2A2A2A] bg-[#161616] p-4 sm:p-6`}
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="mb-5 flex items-center justify-between">
@@ -438,13 +668,21 @@ function ListModal({
 
                 <div className="space-y-3">
                     {configKey === 'club_history' ? (
-                        // Custom club history layout
+                        // Custom club history layout — mobile/tablet: stacked card, md+: single-row grid
                         rows.map((row, i) => {
                             const yearType = row.year_type || 'european';
                             const yearError = yearErrors[i] || '';
                             return (
-                                <div key={i} className="mb-3">
-                                    <div className="grid grid-cols-[6.875rem_5rem_minmax(0,1fr)_8.125rem_2.5rem] gap-3 items-start">
+                                <div
+                                    key={i}
+                                    className="mb-3 rounded-xl border border-[#2A2A2A] bg-[#0D0D0D] p-3 md:rounded-none md:border-0 md:bg-transparent md:p-0"
+                                >
+                                    {/* Mobile/tablet row label */}
+                                    <span className="mb-2 block text-[0.625rem] font-semibold uppercase tracking-wider text-[#94A3B8] md:hidden">
+                                        Club #{i + 1}
+                                    </span>
+
+                                    <div className="grid grid-cols-2 gap-2 md:grid-cols-[6.875rem_5rem_minmax(0,1fr)_8.125rem_2.5rem] md:items-start md:gap-3">
                                         {/* Year Format Dropdown */}
                                         <select
                                             value={yearType}
@@ -452,7 +690,7 @@ function ListModal({
                                                 update(i, 'year_type', e.target.value);
                                                 setYearErrors((prev) => ({ ...prev, [i]: '' }));
                                             }}
-                                            className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-xs text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
+                                            className="h-10 w-full min-w-0 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-xs text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
                                         >
                                             <option value="european">European (26/27)</option>
                                             <option value="brazilian">Brazilian (2026)</option>
@@ -461,60 +699,69 @@ function ListModal({
                                         {/* Year Input */}
                                         <input
                                             type="text"
+                                            inputMode="numeric"
                                             value={row.year ?? ''}
                                             onChange={(e) => {
-                                                update(i, 'year', e.target.value);
-                                                validateYearFormat(i, e.target.value, yearType);
+                                                // European: auto "26/27" | Brazilian: shudhu 4 digit
+                                                const v = yearType === 'brazilian'
+                                                    ? onlyDigits(e.target.value, 4)
+                                                    : formatSeason(e.target.value);
+                                                update(i, 'year', v);
+                                                validateYearFormat(i, v, yearType);
                                             }}
                                             placeholder={yearType === 'brazilian' ? '2026' : '26/27'}
-                                            className="h-10 w-full bg-[#111111] border border-[#2A2A2A] rounded-lg px-2 text-sm text-[#F5F5F5] font-mono focus:border-[#E53F01] focus:outline-none"
+                                            className="h-10 w-full min-w-0 bg-[#111111] border border-[#2A2A2A] rounded-lg px-2 text-sm text-[#F5F5F5] font-mono focus:border-[#E53F01] focus:outline-none"
                                         />
 
-                                        {/* Club Name */}
+                                        {/* Club Name — mobile-e full width */}
                                         <input
                                             value={row.club}
                                             onChange={(e) => update(i, 'club', e.target.value)}
                                             placeholder="Club"
-                                            className="h-10 w-full bg-[#111111] border border-[#2A2A2A] rounded-lg px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none"
+                                            className="col-span-2 h-10 w-full min-w-0 bg-[#111111] border border-[#2A2A2A] rounded-lg px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none md:col-span-1"
                                         />
 
-                                        {/* Country */}
-                                        <select
-                                            value={row.country ?? ''}
-                                            onChange={(e) => update(i, 'country', e.target.value)}
-                                            className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
-                                        >
-                                            <option value="">Country...</option>
-                                            {countries.map((c: any) => (
-                                                <option key={c.code} value={c.code}>
-                                                    {c.flag ?? ''} {c.name}
-                                                </option>
-                                            ))}
-                                        </select>
+                                        {/* Country + Button — mobile-e ek line, md+ e grid cell (contents) */}
+                                        <div className="col-span-2 flex items-center gap-2 md:contents">
+                                            <select
+                                                value={row.country ?? ''}
+                                                onChange={(e) => update(i, 'country', e.target.value)}
+                                                className="h-10 min-w-0 flex-1 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans md:w-full"
+                                            >
+                                                <option value="">Country...</option>
+                                                {countries.map((c: any) => (
+                                                    <option key={c.code} value={c.code}>
+                                                        {c.flag ?? ''} {c.name}
+                                                    </option>
+                                                ))}
+                                            </select>
 
-                                        {/* Add / Remove Button */}
-                                        {i === 0 ? (
-                                            <button
-                                                type="button"
-                                                onClick={addRow}
-                                                className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#E53F01] hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]"
-                                            >
-                                                <Plus className="w-4 h-4" />
-                                            </button>
-                                        ) : (
-                                            <button
-                                                type="button"
-                                                onClick={() => removeRow(i)}
-                                                className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01]"
-                                            >
-                                                <X className="w-4 h-4" />
-                                            </button>
-                                        )}
+                                            {/* Add / Remove Button */}
+                                            {i === 0 ? (
+                                                <button
+                                                    type="button"
+                                                    onClick={addRow}
+                                                    className="h-10 w-10 shrink-0 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#E53F01] hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]"
+                                                    aria-label="Add row"
+                                                >
+                                                    <Plus className="w-4 h-4" />
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeRow(i)}
+                                                    className="h-10 w-10 shrink-0 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01]"
+                                                    aria-label="Remove row"
+                                                >
+                                                    <X className="w-4 h-4" />
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
 
                                     {/* Year format error message */}
                                     {yearError && (
-                                        <p className="mt-1 ml-[12.375rem] text-xs text-red-400">
+                                        <p className="mt-1 text-xs text-red-400 md:ml-[13.375rem]">
                                             ⚠️ {yearError}
                                         </p>
                                     )}
@@ -580,9 +827,15 @@ function ListModal({
                                         ) : (
                                             <input
                                                 type={f.type}
+                                                inputMode={f.numeric ? 'numeric' : undefined}
+                                                placeholder={f.placeholder}
                                                 value={row[f.name] ?? ''}
-                                                onChange={(e) => update(i, f.name, e.target.value)}
-                                                className={inputClass}
+                                                onChange={(e) => update(i, f.name, f.sanitize ? f.sanitize(e.target.value) : e.target.value)}
+                                                className={
+                                                    configKey === 'matches' && f.name === 'score' && !isValidScore(String(row[f.name] ?? ''))
+                                                        ? inputClass.replace('border-[#2A2A2A]', 'border-red-500')
+                                                        : inputClass
+                                                }
                                             />
                                         )}
                                     </div>
@@ -600,6 +853,11 @@ function ListModal({
                                     >
                                         <X className="h-4 w-4" />
                                     </button>
+                                )}
+
+                                {/* Score format error (Recent Matches) */}
+                                {configKey === 'matches' && !isValidScore(String(row.score ?? '')) && (
+                                    <p className="basis-full text-xs text-red-400">⚠️ Score format must be: 0-0</p>
                                 )}
                             </div>
                         ))
@@ -620,7 +878,7 @@ function ListModal({
                     <Button type="button" variant="ghost" onClick={onClose} className="text-[#9A9A9A] hover:bg-[#1F1F1F] hover:text-[#F5F5F5]">
                         Cancel
                     </Button>
-                    <Button type="button" onClick={save} disabled={saving} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">
+                    <Button type="button" onClick={save} disabled={saving || hasYearError || hasInvalidScore} className="bg-[#E53F01] text-white hover:bg-[#E53F01] disabled:opacity-50">
                         {saving ? 'Saving...' : 'Save'}
                     </Button>
                 </div>
@@ -649,8 +907,9 @@ function FormModal({
         const init: Record<string, any> = {};
         cfg.fields.forEach((f) => {
             if (f.name === 'full_name') init[f.name] = user?.name ?? '';
-            else if (f.name === 'whatsapp') init[f.name] = user?.whatsapp ?? '';
-            else if (f.name === 'dob') init[f.name] = user?.dob ?? '';
+            else if (f.name === 'whatsapp') init[f.name] = String(user?.whatsapp ?? '').replace(/[^\d+]/g, ''); // PhoneInput E.164 chay
+            else if (f.name === 'dob') init[f.name] = user?.dob ? String(user.dob).slice(0, 10) : ''; // ISO hole "YYYY-MM-DD" e kete nao
+            else if (f.name === 'guardian_name') init[f.name] = pp?.guardian_name ?? user?.guardian_name ?? '';
             else if (f.name === 'nationality') {
                 // ✅ Robust nationality parsing: array / JSON string / comma-separated
                 const nat = user?.nationality;
@@ -682,6 +941,7 @@ function FormModal({
     const [photoError, setPhotoError] = useState<string>('');
     const [saving, setSaving] = useState(false);
     const [serverErrors, setServerErrors] = useState<Record<string, string>>({});
+    const [openDob, setOpenDob] = useState(false);
     const setField = (name: string, val: any) => setValues((prev) => ({ ...prev, [name]: val }));
 
     // ── In Team Since (Month + Year) ──
@@ -692,6 +952,16 @@ function FormModal({
     const yearOptions = Array.from({ length: currentYear - 1990 + 1 }, (_, i) => String(currentYear - i));
     const hasMonthYear = cfg.fields.some((f) => f.type === 'month_year');
     const itsError = hasMonthYear ? validateInTeamSince(itsYear, itsMonth) : '';
+
+    // ── Minor check (backend-er withValidator er sathe mil rekhe) ──
+    const dobAge = calcAge(values.dob);
+    const isMinor = dobAge !== null && dobAge < 18;
+
+    // ── WhatsApp number valid kina (selected country onujayi) ──
+    const whatsappInvalid =
+        cfg.fields.some((f) => f.name === 'whatsapp') &&
+        nonEmpty(values.whatsapp) &&
+        !isValidPhoneNumber(values.whatsapp);
 
     const setInTeamSince = (year: string, month: string) => {
         setItsYear(year);
@@ -753,6 +1023,15 @@ function FormModal({
         // In Team Since bhul thakle save hobe na
         if (itsError) return;
 
+        // 18 er niche hole guardian name lagbe (backend-o eta check kore)
+        if (cfg.fields.some((f) => f.name === 'guardian_name') && isMinor && !nonEmpty(values.guardian_name)) {
+            setServerErrors({ guardian_name: 'Guardian name is required for players under 18.' });
+            return;
+        }
+
+        // WhatsApp number bhul thakle save hobe na
+        if (whatsappInvalid) return;
+
         const payload: Record<string, any> = { ...values };
         if (!payload.photo) delete payload.photo;
 
@@ -776,9 +1055,10 @@ function FormModal({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
             <div
-                className="w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6"
+                className="w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl border border-[#2A2A2A] bg-[#161616] p-4 sm:p-6"
                 onClick={(e) => e.stopPropagation()}
             >
+                <PhoneDarkStyles />
                 <div className="mb-5 flex items-center justify-between">
                     <h3 className="text-lg font-bold text-[#F5F5F5]">{cfg.title}</h3>
                     <button type="button" onClick={onClose} className="text-[#94A3B8] hover:text-[#F5F5F5]" aria-label="Close">
@@ -787,16 +1067,49 @@ function FormModal({
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {cfg.fields.map((f) => {
+                        // Guardian field shudhu minor-der jonno
+                        if (f.name === 'guardian_name' && !isMinor) return null;
                         const fieldError = f.type === 'month_year'
                             ? (itsError || serverErrors[f.name])
-                            : serverErrors[f.name];
+                            : f.type === 'phone'
+                                ? (whatsappInvalid ? 'Enter a valid WhatsApp number for the selected country' : serverErrors[f.name])
+                                : serverErrors[f.name];
                         return (
                             <div key={f.name} className={f.type === 'positions' || f.type === 'file' || f.type === 'textarea' || f.type === 'multi_country' ? 'sm:col-span-2' : ''}>
                                 <label className="mb-1.5 block text-[0.6875rem] font-semibold uppercase tracking-wider text-[#94A3B8]">
                                     {f.label}
+                                    {f.type === 'date' && calcAge(values[f.name]) !== null && (
+                                        <span className="ml-2 font-mono normal-case tracking-normal text-[#E53F01]">· Age {calcAge(values[f.name])}</span>
+                                    )}
                                 </label>
                                 {f.type === 'text' && (
-                                    <input type="text" value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass} />
+                                    <input
+                                        type="text"
+                                        value={values[f.name] ?? ''}
+                                        onChange={(e) => {
+                                            setField(f.name, e.target.value);
+                                            if (serverErrors[f.name]) setServerErrors((prev) => ({ ...prev, [f.name]: '' }));
+                                        }}
+                                        className={fieldClass(!!fieldError)}
+                                    />
+                                )}
+                                {f.name === 'guardian_name' && !fieldError && (
+                                    <p className="mt-1 text-xs text-[#9A9A9A]">Required because the player is under 18.</p>
+                                )}
+                                {f.type === 'phone' && (
+                                    <div className={fieldError ? 'phone-error' : ''}>
+                                        <PhoneInput
+                                            international
+                                            defaultCountry="BD"
+                                            limitMaxLength
+                                            value={values[f.name] || undefined}
+                                            onChange={(v) => {
+                                                setField(f.name, v || '');
+                                                if (serverErrors[f.name]) setServerErrors((prev) => ({ ...prev, [f.name]: '' }));
+                                            }}
+                                            placeholder="Enter WhatsApp number"
+                                        />
+                                    </div>
                                 )}
                                 {f.type === 'textarea' && (
                                     <textarea value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} rows={4} className="w-full rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] px-2 py-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none resize-none" />
@@ -805,7 +1118,34 @@ function FormModal({
                                     <input type="number" value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass} />
                                 )}
                                 {f.type === 'date' && (
-                                    <input type="date" value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass} />
+                                    <Popover open={openDob} onOpenChange={setOpenDob}>
+                                        <PopoverTrigger asChild>
+                                            <button
+                                                type="button"
+                                                className={`${fieldClass(!!fieldError)} flex items-center justify-between text-left`}
+                                            >
+                                                <span className={values[f.name] ? 'text-[#F5F5F5]' : 'text-[#555555]'}>
+                                                    {parseYmd(values[f.name])
+                                                        ? format(parseYmd(values[f.name])!, 'MMMM dd, yyyy')
+                                                        : 'Select date of birth'}
+                                                </span>
+                                                <Calendar className="h-4 w-4 shrink-0 text-[#E53F01]" />
+                                            </button>
+                                        </PopoverTrigger>
+                                        <PopoverContent
+                                            className="w-auto rounded-2xl border border-[#2A2A2A] bg-[#1F1F1F] p-0 shadow-2xl"
+                                            align="start"
+                                        >
+                                            <DobCalendar
+                                                value={parseYmd(values[f.name])}
+                                                onSelect={(date) => {
+                                                    setField(f.name, format(date, 'yyyy-MM-dd'));
+                                                    setServerErrors((prev) => ({ ...prev, [f.name]: '' }));
+                                                    setOpenDob(false);
+                                                }}
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
                                 )}
                                 {f.type === 'month_year' && (
                                     <div className="flex gap-2">
@@ -922,11 +1262,11 @@ function FormModal({
                                                     Reorder to set priority
                                                 </span>
                                                 {(values.positions || []).map((id: string, idx: number) => (
-                                                    <div key={id} className="flex items-center gap-3 rounded-lg border border-[#E53F01] bg-[rgba(255,107,0,0.08)] px-3 py-2">
+                                                    <div key={id} className="flex flex-wrap items-center gap-2 rounded-lg border border-[#E53F01] bg-[rgba(255,107,0,0.08)] px-3 py-2 sm:flex-nowrap sm:gap-3">
                                                         <span className="flex-shrink-0 rounded-md bg-[#E53F01] px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider text-white">
                                                             {PRIORITY_LABELS[idx] ?? `#${idx + 1}`}
                                                         </span>
-                                                        <span className="flex-1 text-sm font-semibold text-[#F5F5F5]">
+                                                        <span className="min-w-0 flex-1 text-sm font-semibold text-[#F5F5F5]">
                                                             {POSITION_FULL_NAMES[id]}
                                                             <span className="ml-2 text-xs text-[#94A3B8] font-mono">({id})</span>
                                                         </span>
@@ -957,8 +1297,8 @@ function FormModal({
                                     </div>
                                 )}
                                 {f.type === 'file' && (
-                                    <div className="flex items-center gap-4">
-                                        <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-[#E53F01] bg-[#111111]">
+                                    <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+                                        <div className="h-20 w-20 shrink-0 overflow-hidden rounded-full border-2 border-[#E53F01] bg-[#111111]">
                                             <img
                                                 src={preview || "/images/img/placeholder.webp"}
                                                 alt="Preview"
@@ -999,11 +1339,21 @@ function FormModal({
                         );
                     })}
                 </div>
+                {/* Je error-er kono field modal-e nei, segulo ekhane dekhao (silent fail bondho) */}
+                {Object.entries(serverErrors).some(([k, v]) => v && !cfg.fields.some((f) => f.name === k)) && (
+                    <div className="mt-4 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2">
+                        {Object.entries(serverErrors)
+                            .filter(([k, v]) => v && !cfg.fields.some((f) => f.name === k))
+                            .map(([k, v]) => (
+                                <p key={k} className="text-xs text-red-400">{v}</p>
+                            ))}
+                    </div>
+                )}
                 <div className="mt-6 flex justify-end gap-3">
                     <Button type="button" variant="ghost" onClick={onClose} className="text-[#9A9A9A] hover:bg-[#1F1F1F] hover:text-[#F5F5F5]">
                         Cancel
                     </Button>
-                    <Button type="button" onClick={save} disabled={saving || !!itsError} className="bg-[#E53F01] text-white hover:bg-[#E53F01] disabled:opacity-50">
+                    <Button type="button" onClick={save} disabled={saving || !!itsError || whatsappInvalid} className="bg-[#E53F01] text-white hover:bg-[#E53F01] disabled:opacity-50">
                         {saving ? 'Saving...' : 'Save'}
                     </Button>
                 </div>
@@ -1526,7 +1876,7 @@ export default function PlayerDashboard() {
                                     <Shield className="w-6 h-6 " />
                                     <span className="pl-2">THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br className="hidden sm:block" />MEMBER OF HILIGHTS FOOTBALL PLATFORM.</span>
                                 </p>
-                                <p className="text-[0.375rem] sm:text-[0.5rem] text-white font-bold translate-x-[0.3125rem] sm:translate-x-[10%]">[WWW.HILIGHTSFOOTBALL.COM](https://WWW.HILIGHTSFOOTBALL.COM)</p>
+                                <p className="text-[0.375rem] sm:text-[0.5rem] text-white font-bold translate-x-[0.3125rem] sm:translate-x-[10%]">WWW.HILIGHTSFOOTBALL.COM</p>
                                 <div className="absolute -bottom-16 left-0 flex justify-between w-full">
                                     <button className="capitalize flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[1rem] cursor-pointer text-[0.625rem] transition-all hover:bg-[#E53F01]" onClick={() => setShareOpen(true)}>
                                         <Share2 className="mr-2 w-[0.625rem] h-[0.625rem] sm:h-[0.75rem]" /> Share full football identity
@@ -1721,42 +2071,42 @@ export default function PlayerDashboard() {
             {/* MODAL - SHARE */}
             {shareOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-                    <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+                    <div className="w-full max-w-md rounded-2xl bg-white p-4 sm:p-6 shadow-xl">
                         <div className="flex items-center justify-between">
                             <h2 className="text-xl font-semibold text-gray-900">Share Profile</h2>
                             <button onClick={() => setShareOpen(false)} className="rounded-full p-1 hover:bg-gray-100">
                                 <X className="h-6 w-6 text-black" />
                             </button>
                         </div>
-                        <div className="mt-6 grid grid-cols-4 gap-5">
+                        <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-4 sm:gap-5">
                             <a href={`https://wa.me/?text=${encodeURIComponent(profileUrl)}`} target="_blank" rel="noreferrer" className="text-center">
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white"><MessageCircle /></div>
+                                <div className="mx-auto flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-green-500 text-white"><MessageCircle /></div>
                                 <span className="mt-2 block text-xs">WhatsApp</span>
                             </a>
                             <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}`} target="_blank" rel="noreferrer" className="text-center">
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white"><Facebook /></div>
+                                <div className="mx-auto flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-blue-600 text-white"><Facebook /></div>
                                 <span className="mt-2 block text-xs">Facebook</span>
                             </a>
                             <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(profileUrl)}`} target="_blank" rel="noreferrer" className="text-center">
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-black text-white"><span className="font-bold">X</span></div>
+                                <div className="mx-auto flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-black text-white"><span className="font-bold">X</span></div>
                                 <span className="mt-2 block text-xs">Twitter</span>
                             </a>
                             <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(profileUrl)}`} target="_blank" rel="noreferrer" className="text-center">
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-700 text-white"><Linkedin /></div>
+                                <div className="mx-auto flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-blue-700 text-white"><Linkedin /></div>
                                 <span className="mt-2 block text-xs">LinkedIn</span>
                             </a>
                             <a href={`https://t.me/share/url?url=${encodeURIComponent(profileUrl)}`} target="_blank" rel="noreferrer" className="text-center">
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-sky-500 text-white"><Send /></div>
+                                <div className="mx-auto flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-sky-500 text-white"><Send /></div>
                                 <span className="mt-2 block text-xs">Telegram</span>
                             </a>
                             <a href={`mailto:?body=${encodeURIComponent(profileUrl)}`} className="text-center">
-                                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gray-700 text-white"><Mail /></div>
+                                <div className="mx-auto flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gray-700 text-white"><Mail /></div>
                                 <span className="mt-2 block text-xs">Email</span>
                             </a>
                         </div>
                         <div className="mt-7 flex items-center gap-2 rounded-xl border bg-gray-50 p-3">
-                            <input readOnly value={profileUrl} className="flex-1 bg-transparent text-sm outline-none text-black" />
-                            <button onClick={copyProfileLink} className="rounded-lg cursor-pointer bg-black px-4 py-2 text-sm text-white hover:bg-gray-800 transition-colors">
+                            <input readOnly value={profileUrl} className="min-w-0 flex-1 bg-transparent text-sm outline-none text-black" />
+                            <button onClick={copyProfileLink} className="shrink-0 rounded-lg cursor-pointer bg-black px-4 py-2 text-sm text-white hover:bg-gray-800 transition-colors">
                                 {copied ? 'Copied!' : 'Copy'}
                             </button>
                         </div>

@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { useForm, usePage } from '@inertiajs/react';
 import { format } from 'date-fns';
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 import PlayerNavbar from '@/components/player/PlayerNavbar';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Input } from '@/components/ui/input';
@@ -155,6 +157,92 @@ const getEmbedUrl = (url: string): string | null => {
     if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
     return null;
 };
+
+// ── Input sanitizers — typing er somoy-i number chara baki sob baad ──
+const onlyDigits = (v: string, max?: number): string => {
+    const d = String(v ?? '').replace(/\D/g, '');
+    return max ? d.slice(0, max) : d;
+};
+// European season: "2627" → "26/27" (auto slash)
+const formatSeason = (v: string): string => {
+    const d = onlyDigits(v, 4);
+    return d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : d;
+};
+// Score: shudhu "0-0" format (dui pashe max 2 digit, ekta dash)
+const formatScore = (v: string): string => {
+    const clean = String(v ?? '').replace(/[^\d-]/g, '');
+    const [home = '', ...rest] = clean.split('-');
+    const h = home.slice(0, 2);
+    if (!clean.includes('-')) return h;
+    return `${h}-${rest.join('').slice(0, 2)}`;
+};
+const isValidScore = (v: string): boolean => !v || /^\d{1,2}-\d{1,2}$/.test(v);
+
+// ── Dark-theme styling for react-phone-number-input (Register page er moto) ──
+function PhoneDarkStyles() {
+    return (
+        <style>{`
+            .PhoneInput {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                height: 44px;
+                background-color: #111111;
+                border: 1px solid #2A2A2A;
+                border-radius: 12px;
+                padding: 0 12px;
+                transition: border-color 0.15s, box-shadow 0.15s;
+            }
+            .PhoneInput--focus {
+                border-color: #E53F01;
+                box-shadow: 0 0 0 2px rgba(255,107,0,0.15);
+            }
+            .PhoneInputCountry {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding-right: 8px;
+                border-right: 1px solid #2A2A2A;
+                flex-shrink: 0;
+            }
+            .PhoneInputCountryIcon {
+                width: 22px;
+                height: 16px;
+                border-radius: 2px;
+                overflow: hidden;
+            }
+            .PhoneInputCountrySelect {
+                background: transparent;
+                color: #F5F5F5;
+                border: none;
+                outline: none;
+                font-size: 13px;
+                cursor: pointer;
+            }
+            .PhoneInputCountrySelect option {
+                background-color: #1F1F1F;
+                color: #F5F5F5;
+            }
+            .PhoneInputCountrySelectArrow {
+                border-color: #9A9A9A transparent transparent;
+                opacity: 0.8;
+            }
+            .PhoneInputInput {
+                flex: 1;
+                min-width: 0;
+                background: transparent;
+                border: none;
+                outline: none;
+                color: #F5F5F5;
+                font-size: 14px;
+                height: 100%;
+            }
+            .PhoneInputInput::placeholder {
+                color: #555555;
+            }
+        `}</style>
+    );
+}
 
 interface PageProps {
     user: { name: string; dob: string | null; nationality: string | null; whatsapp: string | null };
@@ -554,7 +642,8 @@ export default function Edit() {
         })(),
         agent: profile?.agent ?? '',
         guardian_name: profile?.guardian_name ?? '',
-        whatsapp: user?.whatsapp ?? profile?.whatsapp ?? '',
+        // PhoneInput E.164 (+8801...) format chay — space/dash thakle baad
+        whatsapp: String(user?.whatsapp ?? profile?.whatsapp ?? '').replace(/[^\d+]/g, ''),
         modality: profile?.modality ?? 'Football',
         positions: (profile?.positions ?? []) as string[],
         foot: profile?.foot ?? 'Right',
@@ -599,6 +688,8 @@ export default function Edit() {
     const descCount = data.description.length;
     const videoValid = isValidVideoUrl(data.video_url);
     const embedUrl = useMemo(() => getEmbedUrl(data.video_url), [data.video_url]);
+    const whatsappInvalid = !!data.whatsapp && !isValidPhoneNumber(data.whatsapp);
+    const hasInvalidScore = data.matches.some((m: any) => !isValidScore(String(m.score ?? '')));
 
     const itsInit = parseInTeamSince(profile?.in_team_since);
     const [itsYear, setItsYear] = useState<string>(itsInit.year);
@@ -691,6 +782,20 @@ export default function Edit() {
     const goBack = () => setStep(s => Math.max(s - 1, 0));
 
     const submit = () => {
+        // WhatsApp number bhul thakle submit hobe na
+        if (whatsappInvalid) {
+            setStep(0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        // Recent matches score "0-0" format na hole submit hobe na
+        if (hasInvalidScore) {
+            setStep(3);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
         // Club history year format bhul thakle submit hobe na
         if (Object.values(yearErrors).some(Boolean)) {
             setStep(3);
@@ -712,6 +817,7 @@ export default function Edit() {
 
     return (
         <div className="min-h-screen bg-[#0D0D0D] pt-16 pb-32">
+            <PhoneDarkStyles />
             <PlayerNavbar />
             <div className="bg-[#0D0D0D] border-b border-[#2A2A2A] sticky top-16 z-20 px-4 sm:px-8 py-4">
                 <div className="max-w-[68.75rem] mx-auto">
@@ -849,7 +955,16 @@ export default function Edit() {
                                 </div>
                                 <div>
                                     <Label htmlFor="whatsapp" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">WhatsApp Number</Label>
-                                    <Input id="whatsapp" value={data.whatsapp} onChange={(e) => setData('whatsapp', e.target.value)} placeholder="+8801700000000" className="bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]" />
+                                    <PhoneInput
+                                        id="whatsapp"
+                                        international
+                                        defaultCountry="BD"
+                                        limitMaxLength
+                                        value={data.whatsapp}
+                                        onChange={(value) => setData('whatsapp', value || '')}
+                                        placeholder="Enter WhatsApp number"
+                                    />
+                                    <FieldError msg={whatsappInvalid ? 'Enter a valid WhatsApp number for the selected country' : errors.whatsapp} />
                                 </div>
                                 <div className="lg:col-span-2">
                                     <Label htmlFor="agent" className="text-xs font-semibold text-[#F5F5F5] mb-2 block font-sans">Agent / Representative <span className="text-[#94A3B8] font-normal">(optional)</span></Label>
@@ -1076,8 +1191,8 @@ export default function Edit() {
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Club History</h3>
 
-                                {/* Header Row */}
-                                <div className="grid grid-cols-[6.875rem_5rem_minmax(0,1fr)_8.125rem_2.5rem] gap-3 items-center mb-2">
+                                {/* Header Row — shudhu md+ e (mobile/tablet-e card layout) */}
+                                <div className="hidden md:grid grid-cols-[6.875rem_5rem_minmax(0,1fr)_8.125rem_2.5rem] gap-3 items-center mb-2">
                                     <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
                                         Format
                                     </span>
@@ -1098,8 +1213,16 @@ export default function Edit() {
                                     const yearError = yearErrors[idx] || '';
 
                                     return (
-                                        <div key={idx} className="mb-3">
-                                            <div className="grid grid-cols-[6.875rem_5rem_minmax(0,1fr)_8.125rem_2.5rem] gap-3 items-start">
+                                        <div
+                                            key={idx}
+                                            className="mb-3 rounded-xl border border-[#2A2A2A] bg-[#0D0D0D] p-3 md:rounded-none md:border-0 md:bg-transparent md:p-0"
+                                        >
+                                            {/* Mobile/tablet row label */}
+                                            <span className="mb-2 block text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans md:hidden">
+                                                Club #{idx + 1}
+                                            </span>
+
+                                            <div className="grid grid-cols-2 gap-2 md:grid-cols-[6.875rem_5rem_minmax(0,1fr)_8.125rem_2.5rem] md:gap-3 md:items-start">
                                                 {/* Year Format Dropdown */}
                                                 <select
                                                     value={yearType}
@@ -1108,7 +1231,7 @@ export default function Edit() {
                                                         updateClubHistory(idx, 'year_type', newType);
                                                         setYearErrors((prev) => ({ ...prev, [idx]: '' }));
                                                     }}
-                                                    className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-xs text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
+                                                    className="h-10 w-full min-w-0 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-xs text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
                                                 >
                                                     <option value="european">European (26/27)</option>
                                                     <option value="brazilian">Brazilian (2026)</option>
@@ -1119,71 +1242,79 @@ export default function Edit() {
                                                     <Input
                                                         type="text"
                                                         value={row.year ?? ''}
+                                                        inputMode="numeric"
                                                         onChange={(e) => {
-                                                            updateClubHistory(idx, 'year', e.target.value);
-                                                            validateYearFormat(idx, e.target.value, 'european');
+                                                            const v = formatSeason(e.target.value);
+                                                            updateClubHistory(idx, 'year', v);
+                                                            validateYearFormat(idx, v, 'european');
                                                         }}
                                                         placeholder="26/27"
-                                                        className="h-10 w-full bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]"
+                                                        className="h-10 w-full min-w-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]"
                                                     />
                                                 ) : (
                                                     <Input
-                                                        type="number"
+                                                        type="text"
+                                                        inputMode="numeric"
                                                         value={row.year ?? ''}
                                                         onChange={(e) => {
-                                                            updateClubHistory(idx, 'year', e.target.value);
-                                                            validateYearFormat(idx, e.target.value, 'brazilian');
+                                                            const v = onlyDigits(e.target.value, 4);
+                                                            updateClubHistory(idx, 'year', v);
+                                                            validateYearFormat(idx, v, 'brazilian');
                                                         }}
                                                         placeholder="YYYY"
-                                                        className="h-10 w-full bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]"
+                                                        className="h-10 w-full min-w-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] font-mono focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]"
                                                     />
                                                 )}
 
-                                                {/* Club Name */}
+                                                {/* Club Name — mobile-e full width */}
                                                 <Input
                                                     value={row.club}
                                                     onChange={(e) => updateClubHistory(idx, 'club', e.target.value)}
                                                     placeholder="Club name"
-                                                    className="h-10 w-full bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]"
+                                                    className="col-span-2 md:col-span-1 h-10 w-full min-w-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800 focus-visible:border-[#E53F01]"
                                                 />
 
-                                                {/* Country */}
-                                                <select
-                                                    value={row.country ?? ''}
-                                                    onChange={(e) => updateClubHistory(idx, 'country', e.target.value)}
-                                                    className="h-10 w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
-                                                >
-                                                    <option value="">Country...</option>
-                                                    {countries.map((c) => (
-                                                        <option key={c.code} value={c.code}>
-                                                            {c.flag ?? ''} {c.name}
-                                                        </option>
-                                                    ))}
-                                                </select>
+                                                {/* Country + Button — mobile-e ek line, md+ e alada grid cell */}
+                                                <div className="col-span-2 flex items-center gap-2 md:contents">
+                                                    <select
+                                                        value={row.country ?? ''}
+                                                        onChange={(e) => updateClubHistory(idx, 'country', e.target.value)}
+                                                        className="h-10 min-w-0 flex-1 md:w-full rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
+                                                    >
+                                                        <option value="">Country...</option>
+                                                        {countries.map((c) => (
+                                                            <option key={c.code} value={c.code}>
+                                                                {c.flag ?? ''} {c.name}
+                                                            </option>
+                                                        ))}
+                                                    </select>
 
-                                                {/* Add / Remove Button */}
-                                                {idx === 0 ? (
-                                                    <button
-                                                        type="button"
-                                                        onClick={addClubRow}
-                                                        className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#E53F01] hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]"
-                                                    >
-                                                        <Plus className="w-4 h-4" />
-                                                    </button>
-                                                ) : (
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => removeClubRow(idx)}
-                                                        className="h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"
-                                                    >
-                                                        <X className="w-4 h-4" />
-                                                    </button>
-                                                )}
+                                                    {/* Add / Remove Button */}
+                                                    {idx === 0 ? (
+                                                        <button
+                                                            type="button"
+                                                            onClick={addClubRow}
+                                                            className="h-10 w-10 shrink-0 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#E53F01] hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]"
+                                                            aria-label="Add club"
+                                                        >
+                                                            <Plus className="w-4 h-4" />
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => removeClubRow(idx)}
+                                                            className="h-10 w-10 shrink-0 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"
+                                                            aria-label="Remove club"
+                                                        >
+                                                            <X className="w-4 h-4" />
+                                                        </button>
+                                                    )}
+                                                </div>
                                             </div>
 
                                             {/* Year format error message */}
                                             {yearError && (
-                                                <p className="mt-1 ml-[12.375rem] text-xs text-red-400">
+                                                <p className="mt-1 md:ml-[12.375rem] text-xs text-red-400">
                                                     ⚠️ {yearError}
                                                 </p>
                                             )}
@@ -1218,15 +1349,16 @@ export default function Edit() {
                             {/* Achievements */}
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Achievements</h3>
-                                <div className="flex items-center gap-3 mb-2">
+                                <div className="hidden sm:flex items-center gap-3 mb-2">
                                     <span className="w-24 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
                                     <span className="flex-1 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Title</span>
                                     <span className="w-10 flex-shrink-0" />
                                 </div>
                                 {data.achievements.map((row: any, idx: number) => (
-                                    <div key={idx} className="flex items-center gap-3 mb-2">
-                                        <Input value={row.year ?? ''} onChange={(e) => updateAchievement(idx, 'year', e.target.value)} placeholder="Year" className="w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <Input value={row.title ?? ''} onChange={(e) => updateAchievement(idx, 'title', e.target.value)} placeholder="Title" className="flex-1 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                    // Mobile: Year + × upore, Title niche full width | sm+: ek line
+                                    <div key={idx} className="grid grid-cols-[minmax(0,1fr)_2.5rem] gap-2 mb-3 sm:flex sm:items-center sm:gap-3 sm:mb-2">
+                                        <Input inputMode="numeric" value={row.year ?? ''} onChange={(e) => updateAchievement(idx, 'year', onlyDigits(e.target.value, 4))} placeholder="Year" className="w-full min-w-0 sm:w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.title ?? ''} onChange={(e) => updateAchievement(idx, 'title', e.target.value)} placeholder="Title" className="order-last col-span-2 min-w-0 sm:order-none sm:flex-1 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
                                         <button type="button" onClick={() => removeAchievementRow(idx)} className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"><X className="w-4 h-4" /></button>
                                     </div>
                                 ))}
@@ -1236,20 +1368,21 @@ export default function Edit() {
                             {/* Competition History */}
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Competition History</h3>
-                                <div className="flex items-center gap-3 mb-2">
+                                <div className="hidden sm:flex items-center gap-3 mb-2">
                                     <span className="w-24 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Year</span>
                                     <span className="flex-1 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Competition</span>
-                                    <span className="w-40 sm:w-48 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Country</span>
+                                    <span className="w-48 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Country</span>
                                     <span className="w-10 flex-shrink-0" />
                                 </div>
                                 {data.competitions.map((row: any, idx: number) => (
-                                    <div key={idx} className="flex items-center gap-3 mb-2">
-                                        <Input value={row.year ?? ''} onChange={(e) => updateCompetition(idx, 'year', e.target.value)} placeholder="Year" className="w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <Input value={row.name ?? ''} onChange={(e) => updateCompetition(idx, 'name', e.target.value)} placeholder="Competition" className="flex-1 min-w-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                    // Mobile: Year + × upore, Competition o Country niche full width | sm+: ek line
+                                    <div key={idx} className="grid grid-cols-[minmax(0,1fr)_2.5rem] gap-2 mb-3 sm:flex sm:items-center sm:gap-3 sm:mb-2">
+                                        <Input inputMode="numeric" value={row.year ?? ''} onChange={(e) => updateCompetition(idx, 'year', onlyDigits(e.target.value, 4))} placeholder="Year" className="w-full min-w-0 sm:w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                        <Input value={row.name ?? ''} onChange={(e) => updateCompetition(idx, 'name', e.target.value)} placeholder="Competition" className="order-1 col-span-2 sm:order-none sm:flex-1 min-w-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
                                         <select
                                             value={row.country ?? ''}
                                             onChange={(e) => updateCompetition(idx, 'country', e.target.value)}
-                                            className="w-40 sm:w-48 flex-shrink-0 h-10 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
+                                            className="order-2 col-span-2 w-full min-w-0 sm:order-none sm:w-48 flex-shrink-0 h-10 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
                                         >
                                             <option value="">Country...</option>
                                             {countries.map((c) => (
@@ -1267,24 +1400,68 @@ export default function Edit() {
                             {/* Recent Matches */}
                             <div className="bg-[#161616] border border-[#2A2A2A] rounded-2xl p-6 sm:p-8">
                                 <h3 className="text-sm font-bold text-[#F5F5F5] mb-4 font-sans">Recent Matches</h3>
-                                <div className="flex items-center gap-3 mb-2">
-                                    <span className="w-24 flex-shrink-0 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Home</span>
-                                    <span className="w-20 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Score</span>
-                                    <span className="w-24 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Away</span>
-                                    <span className="w-14 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Goal</span>
-                                    <span className="w-14 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Assist</span>
-                                    <span className="w-20 text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Min</span>
-                                    <span className="w-6" />
+
+                                {/* Header Row — shudhu md+ e (mobile/tablet-e card layout) */}
+                                <div className="hidden md:grid grid-cols-[minmax(0,1fr)_5rem_minmax(0,1fr)_4.5rem_4.5rem_5rem_2.5rem] gap-3 items-center mb-2">
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Home</span>
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Score</span>
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Away</span>
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Goal</span>
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Assist</span>
+                                    <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">Min</span>
+                                    <span />
                                 </div>
+
                                 {data.matches.map((row: any, idx: number) => (
-                                    <div key={idx} className="flex items-center gap-2 mb-2">
-                                        <Input value={row.home ?? ''} onChange={(e) => updateMatch(idx, 'home', e.target.value)} placeholder="Home" className="w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <Input value={row.score ?? ''} onChange={(e) => updateMatch(idx, 'score', e.target.value)} placeholder="0-0" className="w-20 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <Input value={row.away ?? ''} onChange={(e) => updateMatch(idx, 'away', e.target.value)} placeholder="Away" className="w-24 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <Input value={row.goals ?? ''} onChange={(e) => updateMatch(idx, 'goals', e.target.value)} placeholder="0" type="number" className="w-14 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <Input value={row.assists ?? ''} onChange={(e) => updateMatch(idx, 'assists', e.target.value)} placeholder="0" type="number" className="w-14 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <Input value={row.minutes ?? ''} onChange={(e) => updateMatch(idx, 'minutes', e.target.value)} placeholder="90'" className="w-16 flex-shrink-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
-                                        <button type="button" onClick={() => removeMatchRow(idx)} className="flex-shrink-0 h-10 w-6 flex items-center justify-center text-[#94A3B8] hover:text-red-500"><X className="w-3 h-3" /></button>
+                                    <div
+                                        key={idx}
+                                        className="mb-3 rounded-xl border border-[#2A2A2A] bg-[#0D0D0D] p-3 md:mb-2 md:rounded-none md:border-0 md:bg-transparent md:p-0"
+                                    >
+                                        {/* Mobile/tablet card header — label + remove */}
+                                        <div className="mb-2 flex items-center justify-between md:hidden">
+                                            <span className="text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans">
+                                                Match #{idx + 1}
+                                            </span>
+                                            <button
+                                                type="button"
+                                                onClick={() => removeMatchRow(idx)}
+                                                className="h-8 w-8 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-red-400 hover:text-red-500"
+                                                aria-label="Remove match"
+                                            >
+                                                <X className="w-3.5 h-3.5" />
+                                            </button>
+                                        </div>
+
+                                        {/* <sm: Home | Away, niche Score full width | sm: Home | Score | Away | md+: ek line */}
+                                        <div className="grid grid-cols-2 gap-2 sm:grid-cols-[minmax(0,1fr)_4.5rem_minmax(0,1fr)] md:grid-cols-[minmax(0,1fr)_5rem_minmax(0,1fr)_4.5rem_4.5rem_5rem_2.5rem] md:gap-3 md:items-center">
+                                            <Input value={row.home ?? ''} onChange={(e) => updateMatch(idx, 'home', e.target.value)} placeholder="Home" className="w-full min-w-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                            <Input value={row.score ?? ''} onChange={(e) => updateMatch(idx, 'score', formatScore(e.target.value))} placeholder="0-0" className={`order-1 col-span-2 sm:order-none sm:col-span-1 w-full min-w-0 bg-[#111111] text-[#F5F5F5] ${isValidScore(String(row.score ?? '')) ? 'border-[#2A2A2A]' : 'border-red-500'}`} />
+                                            <Input value={row.away ?? ''} onChange={(e) => updateMatch(idx, 'away', e.target.value)} placeholder="Away" className="w-full min-w-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+
+                                            {/* Goal / Assist / Min — mobile-e alada row (label soho), md+ e grid cell */}
+                                            <div className="order-2 col-span-2 sm:order-none sm:col-span-3 grid grid-cols-3 gap-2 md:contents">
+                                                <div className="min-w-0">
+                                                    <span className="mb-1 block text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans md:hidden">Goal</span>
+                                                    <Input value={row.goals ?? ''} onChange={(e) => updateMatch(idx, 'goals', onlyDigits(e.target.value, 2))} placeholder="0" inputMode="numeric" className="w-full min-w-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <span className="mb-1 block text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans md:hidden">Assist</span>
+                                                    <Input value={row.assists ?? ''} onChange={(e) => updateMatch(idx, 'assists', onlyDigits(e.target.value, 2))} placeholder="0" inputMode="numeric" className="w-full min-w-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <span className="mb-1 block text-[0.625rem] uppercase tracking-widest text-[#94A3B8] font-semibold font-sans md:hidden">Min</span>
+                                                    <Input value={row.minutes ?? ''} onChange={(e) => updateMatch(idx, 'minutes', onlyDigits(e.target.value, 3))} placeholder="90" inputMode="numeric" className="w-full min-w-0 bg-[#111111] border-[#2A2A2A] text-[#F5F5F5]" />
+                                                </div>
+                                            </div>
+
+                                            {/* Desktop remove button */}
+                                            <button type="button" onClick={() => removeMatchRow(idx)} className="hidden md:flex h-10 w-6 items-center justify-center text-[#94A3B8] hover:text-red-500" aria-label="Remove match"><X className="w-3 h-3" /></button>
+                                        </div>
+
+                                        {/* Score format error */}
+                                        {!isValidScore(String(row.score ?? '')) && (
+                                            <p className="mt-1 text-xs text-red-400">⚠️ Score format must be: 0-0</p>
+                                        )}
                                     </div>
                                 ))}
                                 <button type="button" onClick={addMatchRow} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-[#E53F01] hover:text-[#E53F01]"><Plus className="w-4 h-4" /> Add match</button>
@@ -1390,13 +1567,14 @@ export default function Edit() {
                         {/* <CheckCircle2 className="text-green-500 w-4 h-4" />
                         <span className="text-xs text-[#94A3B8] font-sans">Draft saved 2 min ago</span> */}
                     </div>
-                    <div className="flex items-center gap-2 sm:gap-3 ml-auto">
-                        <Button type="button" variant="ghost" onClick={goBack} disabled={step === 0} className="text-[#9A9A9A] hover:text-[#F5F5F5] hover:bg-[#1F1F1F] disabled:opacity-30"><ArrowLeft className="w-4 h-4 mr-1" /> Back</Button>
-                        <Button type="button" variant="outline" className="border-[#2A2A2A] text-[#F5F5F5] hover:border-[#E53F01] hover:text-[#E53F01] bg-[#1F1F1F]">Save Draft</Button>
+                    {/* Mobile: Back icon-only + main button full width, Save Draft hidden | sm+: ager moto */}
+                    <div className="flex w-full sm:w-auto items-center gap-2 sm:gap-3 sm:ml-auto">
+                        <Button type="button" variant="ghost" onClick={goBack} disabled={step === 0} aria-label="Back" className="shrink-0 px-2.5 sm:px-4 text-[#9A9A9A] hover:text-[#F5F5F5] hover:bg-[#1F1F1F] disabled:opacity-30"><ArrowLeft className="w-4 h-4 sm:mr-1" /><span className="hidden sm:inline">Back</span></Button>
+                        <Button type="button" variant="outline" className="hidden sm:inline-flex border-[#2A2A2A] text-[#F5F5F5] hover:border-[#E53F01] hover:text-[#E53F01] bg-[#1F1F1F]">Save Draft</Button>
                         {step < STEPS.length - 1 ? (
-                            <Button type="button" onClick={goNext} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">Next <ArrowRight className="w-4 h-4 ml-1" /></Button>
+                            <Button type="button" onClick={goNext} className="flex-1 sm:flex-none min-w-0 bg-[#E53F01] text-white hover:bg-[#E53F01]">Next <ArrowRight className="w-4 h-4 ml-1" /></Button>
                         ) : (
-                            <Button type="button" disabled={processing} onClick={submit} className="bg-[#E53F01] text-white hover:bg-[#E53F01]">Save & Publish <ArrowRight className="w-4 h-4 ml-1" /></Button>
+                            <Button type="button" disabled={processing} onClick={submit} className="flex-1 sm:flex-none min-w-0 px-3 sm:px-4 bg-[#E53F01] text-white hover:bg-[#E53F01]">Save & Publish <ArrowRight className="w-4 h-4 ml-1 shrink-0" /></Button>
                         )}
                     </div>
                 </div>
