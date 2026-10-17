@@ -55,9 +55,9 @@ class PlayerProfileUpdateRequest extends FormRequest
             'competitions' => ['sometimes', 'array'],
             'competitions.*.name' => ['nullable', 'string', 'max:255'],
             'competitions.*.year' => ['nullable', 'string'],
-            'competitions.*.country' => ['nullable', 'string', 'size:2'],
 
             'matches' => ['sometimes', 'array'],
+            'matches.*.date' => ['nullable', 'date'],
             'matches.*.home' => ['nullable', 'string', 'max:255'],
             'matches.*.score' => ['nullable', 'string', 'max:20'],
             'matches.*.away' => ['nullable', 'string', 'max:255'],

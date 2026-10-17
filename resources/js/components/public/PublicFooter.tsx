@@ -83,15 +83,16 @@ export const PublicFooter = () => {
 
                                 <div className="flex flex-wrap gap-3">
                                     <a
-                                        href="#"
+                                        href="https://www.instagram.com/hilights.football?rpxt=MTBwb3hiZXo3aG1pNA%3D%3D&utm_source=qr"
                                         className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-md transition-transform duration-200 hover:scale-110 hover:shadow-lg md:h-12 md:w-12"
-                                        aria-label="Instagram"
+                                        target='_blank'
                                     >
                                         <Instagram className="h-5 w-5 md:h-6 md:w-6" />
                                     </a>
 
                                     <a
-                                        href="#"
+                                        href="https://www.facebook.com/share/1C7zZCAjeq/?mibextid=wwXIfr"
+                                        target='_blank'
                                         className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#1877F2] text-white shadow-md transition-transform duration-200 hover:scale-110 hover:shadow-lg md:h-12 md:w-12"
                                         aria-label="Facebook"
                                     >

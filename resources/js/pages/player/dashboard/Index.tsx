@@ -400,7 +400,7 @@ function DobCalendar({ value, onSelect }: { value?: Date; onSelect: (d: Date) =>
 type FieldDef = {
     name: string;
     label: string;
-    type: 'text' | 'number' | 'file' | 'country',
+    type: 'text' | 'number' | 'date' | 'file' | 'country',
     placeholder?: string;
     numeric?: boolean;                    // mobile-e number keyboard
     sanitize?: (v: string) => string;     // typing er somoy value filter
@@ -482,6 +482,7 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
         storageKey: 'matches',
         primary: 'home',
         fields: [
+            { name: 'date', label: 'Date', type: 'date' },
             { name: 'home', label: 'Home', type: 'text' },
             { name: 'score', label: 'Score', type: 'text', placeholder: '0-0', sanitize: formatScore },
             { name: 'away', label: 'Away', type: 'text' },
@@ -489,7 +490,7 @@ const LIST_CONFIGS: Record<string, ListConfig> = {
             { name: 'assists', label: 'Assists', type: 'text', placeholder: '0', numeric: true, sanitize: (v) => onlyDigits(v, 2) },
             { name: 'minutes', label: 'Minutes', type: 'text', placeholder: '90', numeric: true, sanitize: (v) => onlyDigits(v, 3) },
         ],
-        empty: { home: '', score: '', away: '', goals: '', assists: '', minutes: '' },
+        empty: { date: '', home: '', score: '', away: '', goals: '', assists: '', minutes: '' },
     },
 };
 
@@ -773,7 +774,7 @@ function ListModal({
                         rows.map((row, i) => (
                             <div key={i} className="flex flex-wrap items-end gap-2 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
                                 {cfg.fields.map((f) => (
-                                    <div key={f.name} className="flex-1 min-w-[5.625rem]">
+                                    <div key={f.name} className={f.type === 'date' ? 'basis-full min-w-0' : 'flex-1 min-w-[5.625rem]'}>
                                         <label className="mb-1 block text-[0.625rem] font-semibold uppercase tracking-wider text-[#94A3B8]">
                                             {f.label}
                                         </label>

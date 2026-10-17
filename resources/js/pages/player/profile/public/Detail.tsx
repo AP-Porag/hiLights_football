@@ -2,7 +2,7 @@ import { PublicFooter } from '@/components/public/PublicFooter';
 import PublicNavbar from '@/components/public/PublicNavbar';
 import { PitchPriority } from '@/components/ui/pitch-priority';
 import { Link, usePage } from '@inertiajs/react';
-import { CalendarDays, ChevronRight, Crosshair, Footprints, Ruler, Shield, Star, Users, Video } from 'lucide-react';
+import { BarChart3, CalendarDays, ChevronRight, Crosshair, Footprints, Ruler, Shield, Star, Users, Video } from 'lucide-react';
 import React, { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 
@@ -119,6 +119,30 @@ const calcAge = (dob?: string | null): number | null => {
     return age;
 };
 
+// Row-count choices offered under "Recent Matches"
+const MATCH_ROW_OPTIONS = [5, 10, 20];
+
+// Accepts "YYYY-MM-DD", "DD/MM/YYYY" and "DD/MM/YY"
+const parseMatchDate = (v?: string | null): Date | null => {
+    if (!v) return null;
+    const raw = String(v).trim();
+    const iso = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (iso) return new Date(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]));
+    const dmy = raw.match(/^(\d{1,2})[/.-](\d{1,2})[/.-](\d{2,4})$/);
+    if (dmy) {
+        const year = Number(dmy[3]);
+        return new Date(year < 100 ? 2000 + year : year, Number(dmy[2]) - 1, Number(dmy[1]));
+    }
+    const d = new Date(raw);
+    return isNaN(d.getTime()) ? null : d;
+};
+
+const formatMatchDate = (v?: string | null): string => {
+    const d = parseMatchDate(v);
+    if (!d) return '—';
+    return d.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' });
+};
+
 interface StarRatingProps {
     value: number;
     onChange: (v: number) => void;
@@ -149,6 +173,10 @@ export default function NewDetail() {
     const isMinor = playerAge !== null && playerAge < 18;
 
     const [videoDuration, setVideoDuration] = useState<string>('');
+
+    // How many match rows to show, and whether the full list is expanded
+    const [matchRowLimit, setMatchRowLimit] = useState<number>(MATCH_ROW_OPTIONS[0]);
+    const [showAllMatches, setShowAllMatches] = useState(false);
 
     React.useEffect(() => {
         const videoUrl: string | undefined = player?.video_url;
@@ -516,13 +544,75 @@ export default function NewDetail() {
                                 player.positions.length === 1 &&
                                 String(player.positions[0]).trim().toUpperCase() === 'GK';
 
+                            const allMatches = (player.matches ?? []).filter((match: any) => match?.home);
+
+                            // Newest first when a date is present; undated rows keep their original order at the end
+                            const sortedMatches = [...allMatches].sort((a: any, b: any) => {
+                                const da = parseMatchDate(a?.date);
+                                const db = parseMatchDate(b?.date);
+                                if (da && db) return db.getTime() - da.getTime();
+                                if (da) return -1;
+                                if (db) return 1;
+                                return 0;
+                            });
+
+                            const visibleMatches = showAllMatches ? sortedMatches : sortedMatches.slice(0, matchRowLimit);
+
+                            const totals = sortedMatches.reduce(
+                                (acc: any, m: any) => ({
+                                    games: acc.games + 1,
+                                    goals: acc.goals + (Number(m.goals) || 0),
+                                    assists: acc.assists + (Number(m.assists) || 0),
+                                    minutes: acc.minutes + (Number(String(m.minutes ?? '').replace(/\D/g, '')) || 0),
+                                }),
+                                { games: 0, goals: 0, assists: 0, minutes: 0 },
+                            );
+
+                            const statColumns = isGoalkeeperOnly
+                                ? [{ label: 'Minutes', value: totals.minutes }]
+                                : [
+                                      { label: 'Goals', value: totals.goals },
+                                      { label: 'Assists', value: totals.assists },
+                                      { label: 'Minutes', value: totals.minutes },
+                                  ];
+
                             return (
-                                <div className="overflow-hidden rounded-lg border border-[#152538] bg-[#07111d] p-6">
-                                    <h2 className="mb-6 text-[0.875rem] font-bold text-white uppercase md:text-xl">Recent Matches</h2>
+                                <div className="overflow-hidden rounded-lg border border-[#152538] bg-[#07111d] p-4 md:p-6">
+                                    <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+                                        <h2 className="text-[0.875rem] font-bold text-white uppercase md:text-xl">Recent Matches</h2>
+
+                                        {/* How many rows to show */}
+                                        {sortedMatches.length > MATCH_ROW_OPTIONS[0] && (
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-[0.625rem] tracking-wider text-gray-400 uppercase md:text-xs">Show</span>
+                                                <div className="flex items-center gap-1 rounded-lg border border-[#152538] bg-[#0b1523] p-1">
+                                                    {MATCH_ROW_OPTIONS.map((n) => (
+                                                        <button
+                                                            key={n}
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setMatchRowLimit(n);
+                                                                setShowAllMatches(false);
+                                                            }}
+                                                            className={`cursor-pointer rounded-md px-2 py-1 text-[0.625rem] font-semibold transition-colors md:text-xs ${
+                                                                !showAllMatches && matchRowLimit === n
+                                                                    ? 'bg-[#E53F01] text-white'
+                                                                    : 'text-gray-400 hover:text-white'
+                                                            }`}
+                                                        >
+                                                            {n}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
                                     <div className="overflow-x-auto">
-                                        <table className="w-full">
+                                        <table className="w-full min-w-[22rem]">
                                             <thead>
                                                 <tr className="border-b border-gray-300/10 text-left text-[0.75rem] text-gray-300 uppercase md:text-sm">
+                                                    <th className="pb-4 whitespace-nowrap">Date</th>
                                                     <th className="pb-4">Match</th>
                                                     {!isGoalkeeperOnly && <th className="pb-4 text-center">Goals</th>}
                                                     {!isGoalkeeperOnly && <th className="px-2 pb-4 text-center">Assists</th>}
@@ -530,28 +620,73 @@ export default function NewDetail() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {(player.matches ?? [])
-                                                    .filter((match: any) => match?.home)
-                                                    .map((match: any, index: number) => (
-                                                        <tr
-                                                            key={index}
-                                                            className="border-b border-gray-300/10 text-[0.625rem] text-gray-200 md:text-[0.875rem]"
-                                                        >
-                                                            <td className="py-3">
-                                                                <div className="flex items-center gap-2 md:gap-4">
-                                                                    <span>{match.home}</span>
-                                                                    <span className="font-semibold">{match.score}</span>
-                                                                    <span>{match.away}</span>
-                                                                </div>
-                                                            </td>
-                                                            {!isGoalkeeperOnly && <td className="py-3 text-center">{match.goals}</td>}
-                                                            {!isGoalkeeperOnly && <td className="py-3 text-center">{match.assists}</td>}
-                                                            <td className="py-3 text-center">{match.minutes}</td>
-                                                        </tr>
-                                                    ))}
+                                                {visibleMatches.map((match: any, index: number) => (
+                                                    <tr
+                                                        key={index}
+                                                        className="border-b border-gray-300/10 text-[0.625rem] text-gray-200 md:text-[0.875rem]"
+                                                    >
+                                                        <td className="py-3 whitespace-nowrap text-gray-400">
+                                                            {formatMatchDate(match.date)}
+                                                        </td>
+                                                        <td className="py-3">
+                                                            <div className="flex items-center gap-2 md:gap-4">
+                                                                <span>{match.home}</span>
+                                                                <span className="font-semibold whitespace-nowrap">{match.score}</span>
+                                                                <span>{match.away}</span>
+                                                            </div>
+                                                        </td>
+                                                        {!isGoalkeeperOnly && <td className="py-3 text-center">{match.goals}</td>}
+                                                        {!isGoalkeeperOnly && <td className="py-3 text-center">{match.assists}</td>}
+                                                        <td className="py-3 text-center">{match.minutes}</td>
+                                                    </tr>
+                                                ))}
+                                                {visibleMatches.length === 0 && (
+                                                    <tr>
+                                                        <td colSpan={isGoalkeeperOnly ? 3 : 5} className="py-6 text-center text-sm text-gray-400">
+                                                            No matches added yet.
+                                                        </td>
+                                                    </tr>
+                                                )}
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    {/* Season totals */}
+                                    {sortedMatches.length > 0 && (
+                                        <div className="mt-4 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-[#E53F01]/50 bg-[#E53F01]/10 px-4 py-3">
+                                            <div className="shrink-0">
+                                                <p className="text-[0.75rem] font-bold text-[#E53F01] uppercase md:text-sm">Total</p>
+                                                <p className="font-mono text-[0.625rem] text-gray-400 md:text-xs">
+                                                    {totals.games} {totals.games === 1 ? 'game' : 'games'}
+                                                </p>
+                                            </div>
+                                            <div className="flex flex-wrap items-center gap-5 md:gap-8">
+                                                {statColumns.map((c) => (
+                                                    <div key={c.label} className="text-center">
+                                                        <p className="font-mono text-base font-bold text-white md:text-xl">{c.value}</p>
+                                                        <p className="text-[0.625rem] tracking-wider text-gray-400 uppercase md:text-xs">
+                                                            {c.label}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* See every match */}
+                                    {sortedMatches.length > matchRowLimit && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowAllMatches((v) => !v)}
+                                            className="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#E53F01] px-4 py-3 text-[0.75rem] font-bold text-white uppercase transition-colors hover:bg-[#E53F01]/10 md:text-sm"
+                                        >
+                                            <BarChart3 className="h-4 w-4 shrink-0 text-[#E53F01]" />
+                                            {showAllMatches
+                                                ? 'Show fewer matches'
+                                                : `View full performance data (${sortedMatches.length})`}
+                                            <ChevronRight className="h-4 w-4 shrink-0" />
+                                        </button>
+                                    )}
                                 </div>
                             );
                         })()}

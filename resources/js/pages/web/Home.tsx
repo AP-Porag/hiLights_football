@@ -15,7 +15,8 @@ import {
     Star,
     Ruler,
     Clock3,
-    ArrowRight
+    ArrowRight,
+    Users2
 } from "lucide-react";
 import { Link } from '@inertiajs/react';
 
@@ -118,12 +119,9 @@ const HomeTwo = () => {
             title: "Be Seen. Be Discovered.",
             desc: (
                 <>
-                    A platform developed by professionals from various areas of football
-                    with{" "}
-                    <span className="text-[#E53F01]">
-                        over 20 years of experience worldwide
-                    </span>
-                    .
+                    Share your football identity and make your talent accessible to{" "}
+                    <span className="text-[#E53F01]">scouts, agents and clubs</span> around the
+                    world.
                 </>
             ),
         },
@@ -135,77 +133,113 @@ const HomeTwo = () => {
     return (
         <div className="bg-black text-[#0F172A] dark:bg-[#0D0D0D] dark:text-[#F5F5F5]">
             <PublicNavbar />
-            <main className="w-full pt-16 xl:pt-20 2xl:pt-24">
+            <main className="w-full space-y-16 pt-16 pb-16 sm:space-y-20 sm:pb-20 lg:space-y-24 lg:pb-24 xl:pt-20 2xl:space-y-28 2xl:pt-24 2xl:pb-28">
 
-                {/* SECTION 1: HERO */}
+                {/* SECTION 1: HERO — full-bleed image with the headline over it */}
                 <section className="relative w-full overflow-hidden bg-black text-white">
-                    {/* Text sits in the same wrapper every other section uses, so all headings share one left edge */}
-                    <div className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
-                        <div className="py-14 md:py-20 lg:flex lg:min-h-[calc(100vh-4rem)] lg:w-1/2 lg:flex-col lg:justify-center xl:min-h-[calc(100vh-5rem)] 2xl:min-h-[calc(100vh-6rem)]">
-                            <div className="max-w-xl 2xl:max-w-2xl">
-                                <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl md:text-[2.625rem] lg:text-5xl xl:text-6xl 2xl:text-7xl">
-                                    <span className="block text-white">Be Seen.</span>
-                                    <span className="block text-[#E53F01]">
-                                        Be Discovered <span className="text-white">!</span>
-                                    </span>
-                                </h1>
+                    {/* Backdrop */}
+                    <img
+                        src="/images/img/hero.jpeg"
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute inset-0 h-full w-full object-cover object-center"
+                    />
+                    {/*
+                      Feathered black pool behind the copy only — the photo itself stays
+                      at full brightness. Percentage stops keep the shape in proportion at
+                      every width; it sits wider and lower on small screens, where the text
+                      runs the full column, and tucks into the left half from lg.
+                    */}
+                    <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 lg:hidden"
+                        style={{
+                            background:
+                                'radial-gradient(ellipse 110% 55% at 50% 78%, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.88) 38%, rgba(0,0,0,0.55) 62%, rgba(0,0,0,0.18) 80%, rgba(0,0,0,0) 100%)',
+                        }}
+                    />
+                    <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 hidden lg:block"
+                        style={{
+                            background:
+                                'radial-gradient(ellipse 58% 62% at 26% 68%, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.86) 34%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.15) 80%, rgba(0,0,0,0) 100%)',
+                        }}
+                    />
 
-                                <p className="mt-6 max-w-lg text-sm leading-relaxed text-[#f4f4f4] sm:text-base xl:text-lg 2xl:mt-8 2xl:max-w-xl 2xl:text-xl">
-                                    The platform that connects players, clubs, agents and
-                                    scouts through videos, statistics and professional
-                                    football identities.
-                                </p>
+                    <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-end px-6 pt-32 pb-10 sm:px-10 sm:pt-40 lg:min-h-[calc(100vh-4rem)] lg:px-16 lg:pt-48 lg:pb-14 xl:min-h-[calc(100vh-5rem)] 2xl:min-h-[calc(100vh-6rem)]">
+                        <div className="max-w-xl 2xl:max-w-2xl">
+                            <h1 className="text-4xl leading-[1.05] font-extrabold sm:text-5xl lg:text-6xl 2xl:text-7xl">
+                                <span className="block text-white">Be Seen.</span>
+                                <span className="block text-[#E53F01]">
+                                    Be Discovered<span className="text-white">!</span>
+                                </span>
+                            </h1>
 
-                                <p className="mt-4 max-w-lg border-l-2 border-[#b2300e] pl-3 text-sm leading-relaxed text-[#f4f4f4] sm:text-base xl:text-lg 2xl:max-w-xl 2xl:text-xl">
-                                    Show your talent to the world and increase your
-                                    opportunities in football.
-                                </p>
+                            <p className="mt-5 max-w-lg text-base leading-relaxed text-[#f4f4f4] sm:text-lg xl:text-xl 2xl:mt-7 2xl:max-w-xl 2xl:text-2xl">
+                                The global platform connecting football talent with scouts, agents and clubs through
+                                professional profiles, videos and statistics.
+                            </p>
 
-                                {/* Buttons */}
-                                <div className="mt-8 flex flex-wrap items-center gap-4 2xl:mt-10">
-                                    <Link href={isLoggedIn ? dashboardHref : "/register"}>
-                                        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#E53F01] px-4 py-3 text-xs font-semibold  transition-all duration-300 hover:bg-[#E53F01] sm:text-sm lg:px-6 lg:py-3 lg:text-base 2xl:px-8 2xl:py-4 2xl:text-lg">
-                                            <UserRoundPlus className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
-                                            <span className="text-left leading-tight">
+                            {/* Buttons */}
+                            <div className="mt-8 flex flex-wrap items-center gap-4 2xl:mt-10">
+                                <Link href={isLoggedIn ? dashboardHref : "/register"}>
+                                    <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#E53F01] px-4 py-3 text-xs font-semibold  transition-all duration-300 hover:bg-[#E53F01] sm:text-sm lg:px-6 lg:py-3 lg:text-base 2xl:px-8 2xl:py-4 2xl:text-lg">
+                                        <UserRoundPlus className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
+                                        <span className="text-left leading-tight">
 
-                                                {isLoggedIn ? (
-                                                    "Dashboard"
-                                                ) : (
-                                                    <>
-                                                        Create A Free
-                                                        <br />
-                                                        Football Identity Now
-                                                    </>
-                                                )}
-                                            </span>
-                                        </button>
-                                    </Link>
-                                    <Link href="/about">
-                                        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-gray-600 px-4 py-3 text-xs font-semibold transition-all duration-300 hover:border-white sm:text-sm lg:px-6 lg:py-4 lg:text-base 2xl:px-8 2xl:text-lg">
-                                            <CirclePlay className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
-                                            <span>Learn More</span>
-                                        </button>
-                                    </Link>
-                                </div>
+                                            {isLoggedIn ? (
+                                                "Dashboard"
+                                            ) : (
+                                                <>
+                                                    Create A Free
+                                                    <br />
+                                                    Football Identity Now
+                                                </>
+                                            )}
+                                        </span>
+                                    </button>
+                                </Link>
+                                <Link href="/about">
+                                    <button className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-gray-600 px-4 py-3 text-xs font-semibold transition-all duration-300 hover:border-white sm:text-sm lg:px-6 lg:py-4 lg:text-base 2xl:px-8 2xl:text-lg">
+                                        <CirclePlay className="h-5 w-5 shrink-0 lg:h-6 lg:w-6 2xl:h-7 2xl:w-7" />
+                                        <span>Learn More</span>
+                                    </button>
+                                </Link>
                             </div>
                         </div>
-
                     </div>
+                </section>
 
-                    {/* Right side visual — bleeds to the screen edge on lg+, stacks below the text on tablet and mobile */}
-                    <div className="w-full lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full bg-black">
-                        <img
-                            src="/images/img/hero.jpeg"
-                            alt=""
-                            aria-hidden="true"
-                            className="w-full h-auto object-cover lg:h-full lg:w-full lg:object-contain"
-                        />
+                {/* SECTION 1.5: PLATFORM PREVIEW — the three phones, middle one raised */}
+                <section className="w-full bg-black">
+                    <div className="mx-auto w-full max-w-7xl px-4 sm:px-10 lg:px-16">
+                        <div className="flex items-end justify-center gap-2 sm:gap-4 lg:gap-6">
+                            <img
+                                src="/images/img/phone-positions.png"
+                                alt="Player positions on the pitch and achievements, shown on a phone"
+                                loading="lazy"
+                                className="w-[31%] max-w-[20rem] shrink-0"
+                            />
+                            <img
+                                src="/images/img/phone-identity.png"
+                                alt="A player football identity with photo, details and highlight video, shown on a phone"
+                                loading="lazy"
+                                className="w-[34%] max-w-[22rem] shrink-0"
+                            />
+                            <img
+                                src="/images/img/phone-stats.png"
+                                alt="Competition history and recent match statistics, shown on a phone"
+                                loading="lazy"
+                                className="w-[31%] max-w-[20rem] shrink-0"
+                            />
+                        </div>
                     </div>
                 </section>
 
                 {/* ADVERTISING */}
                 <aside className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
-                    <div className="my-6">
+                    <div>
                         <div className="flex w-full items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">
                             <p className="text-sm font-medium tracking-widest text-white/50 2xl:text-base">ADVERTISING SPACE</p>
                         </div>
@@ -213,7 +247,7 @@ const HomeTwo = () => {
                 </aside>
 
                 {/* SECTION 2: STEPS */}
-                <section className="mx-auto w-full max-w-7xl bg-black px-6 pt-10 text-white sm:px-10 lg:px-16 2xl:pt-14">
+                <section className="mx-auto w-full max-w-7xl bg-black px-6 text-white sm:px-10 lg:px-16">
                     <div>
                         {/* Heading */}
                         <h2 className="mb-6 text-2xl font-extrabold leading-tight sm:text-3xl lg:text-4xl 2xl:mb-8 2xl:text-5xl">
@@ -254,50 +288,84 @@ const HomeTwo = () => {
                         </div>
 
                         {/* Bottom CTA */}
-                        <div className="flex flex-wrap items-center gap-4 border-b border-[#1f1f1f] py-6 sm:grid sm:grid-cols-[4.375rem_1fr_12.5rem] md:grid-cols-[5.625rem_1fr_18.75rem] lg:grid-cols-[6.875rem_1fr_20rem] 2xl:grid-cols-[8.125rem_1fr_22.5rem] 2xl:py-8">
-                            {/* Left Icon */}
-                            <div className="flex justify-center">
-                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#E53F01] md:h-20 md:w-20 2xl:h-24 2xl:w-24">
-                                    <Users className="text-white md:h-12 md:w-12 2xl:h-14 2xl:w-14" />
+                        <div className="mt-10 rounded-2xl border border-[#2a2a2a] p-5 sm:p-6 lg:p-8 2xl:p-10">
+                            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:gap-8">
+                                {/* Icon + text */}
+                                <div className="flex min-w-0 flex-1 items-start gap-4 sm:gap-5">
+                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#E53F01] sm:h-16 sm:w-16 2xl:h-20 2xl:w-20">
+                                        <Users2 className="h-6 w-6 text-white sm:h-8 sm:w-8 2xl:h-10 2xl:w-10" />
+                                    </div>
+                                    <div className="min-w-0">
+                                        <h3 className="text-base leading-tight font-bold sm:text-lg lg:text-xl 2xl:text-2xl">
+                                            Not part of the <span className="text-[#E53F01]">HiLights Football</span>
+                                            <br className="hidden sm:block" /> community yet?
+                                        </h3>
+                                        <p className="mt-2 max-w-xl text-xs leading-relaxed text-[#bdbdbd] sm:text-sm 2xl:text-base">
+                                            Create your free football identity, share your best moments and become visible to coaches,
+                                            clubs and recruiters worldwide.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Divider — only where the row is side by side */}
+                                <span aria-hidden="true" className="hidden w-px self-stretch bg-[#2a2a2a] lg:block" />
+
+                                {/* Button */}
+                                <div className="shrink-0">
+                                    <Link href={isLoggedIn ? dashboardHref : "/register"}>
+                                        <button className="flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-[#E53F01] px-5 py-4 transition hover:bg-[#CC5500] lg:w-auto lg:px-8 2xl:px-10">
+                                            <UserPlus className="h-6 w-6 shrink-0 text-white 2xl:h-8 2xl:w-8" />
+                                            <span className="text-left text-xs font-bold tracking-wide text-white uppercase sm:text-sm 2xl:text-base">
+                                                {isLoggedIn ? (
+                                                    "Dashboard"
+                                                ) : (
+                                                    <>
+                                                        Create your free
+                                                        <br />
+                                                        football identity now
+                                                    </>
+                                                )}
+                                            </span>
+                                            <ArrowRight className="h-5 w-5 shrink-0 text-white 2xl:h-6 2xl:w-6" />
+                                        </button>
+                                    </Link>
                                 </div>
                             </div>
-                            {/* Text */}
-                            <div className="min-w-0 flex-1">
-                                <h3 className="text-base leading-tight font-bold sm:text-lg md:text-xl lg:text-2xl 2xl:text-3xl">
-                                    Not part of the <span className="text-[#E53F01]">HiLights Football</span>
-                                    <br />
-                                    community yet?
-                                </h3>
-                                <p className="mt-3 max-w-xl text-xs leading-relaxed text-[#efefef] sm:text-sm md:text-base 2xl:text-lg">
-                                    Create your free football identity, share your best moments and become visible to coaches, clubs and recruiters worldwide.
-                                </p>
-                            </div>
-                            {/* Button */}
-                            <div className="flex w-full items-end justify-end sm:w-auto lg:pr-4">
-                                <Link href={isLoggedIn ? dashboardHref : "/register"}>
-                                    <button className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#E53F01] px-4 py-2 transition hover:bg-[#E53F01]/10 md:gap-4 lg:px-8 lg:py-4 2xl:px-10">
-                                        <UserPlus className="h-6 w-6 shrink-0 text-white md:h-8 md:w-8 2xl:h-9 2xl:w-9" />
-                                        <span className="text-left text-xs font-bold  sm:text-sm lg:text-base 2xl:text-lg">
-                                            {isLoggedIn ? (
-                                                "Dashboard"
-                                            ) : (
-                                                <>
-                                                    Create A Free
-                                                    <br />
-                                                    Football Identity Now
-                                                </>
-                                            )}
-                                        </span>
-                                    </button>
-                                </Link>
-                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* SECTION 2.5: BUILT BY FOOTBALL PROFESSIONALS */}
+                <section className="relative w-full overflow-hidden bg-black text-white">
+                    {/* Collage sits behind the copy on small screens, beside it from lg */}
+                    <img
+                        src="/images/img/professionals.jpg"
+                        alt="Coaches, scouts and agents at work around the game"
+                        loading="lazy"
+                        className="absolute inset-y-0 right-0 h-full w-full object-cover object-right lg:w-3/5"
+                    />
+                    <span aria-hidden="true" className="absolute inset-0 bg-black/60 lg:hidden" />
+
+                    <div className="relative mx-auto w-full max-w-7xl px-6 py-16 sm:px-10 sm:py-20 lg:px-16 lg:py-24 2xl:py-28">
+                        <div className="max-w-md 2xl:max-w-lg">
+                            <h2 className="text-2xl leading-tight font-extrabold sm:text-3xl lg:text-4xl 2xl:text-5xl">
+                                Built by Football <span className="block text-[#E53F01]">Professionals.</span>
+                            </h2>
+                            <p className="mt-5 text-sm leading-relaxed text-[#e9e9e9] sm:text-base lg:text-lg 2xl:text-xl">
+                                A platform developed by professionals from various areas of football, with{" "}
+                                <span className="text-[#E53F01]">over 20 years of experience</span> worldwide.
+                            </p>
+                            <span aria-hidden="true" className="mt-6 block h-1 w-14 rounded-full bg-[#E53F01]" />
+                            <p className="mt-6 text-sm leading-relaxed text-[#e9e9e9] sm:text-base lg:text-lg 2xl:text-xl">
+                                Responsible for the development, growth and transfers of hundreds of players around the world.
+                            </p>
                         </div>
                     </div>
                 </section>
 
                 {/* ADVERTISING */}
                 <aside className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
-                    <div className="my-6">
+                    <div>
                         <div className="flex w-full items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">
                             <p className="text-sm font-medium tracking-widest text-white/50 2xl:text-base">ADVERTISING SPACE</p>
                         </div>
@@ -305,7 +373,7 @@ const HomeTwo = () => {
                 </aside>
 
                 {/* SECTION 3: COMMUNITY HIGHLIGHTS */}
-                <section className="mx-auto mb-6 w-full max-w-7xl overflow-x-hidden px-6 sm:px-10 lg:px-16">
+                <section className="mx-auto w-full max-w-7xl overflow-x-hidden px-6 sm:px-10 lg:px-16">
                     <div className="rounded-xl bg-[#f9f9f9] p-3 md:p-6 2xl:p-8">
                         {/* Header */}
                         <div className="flex items-center justify-between gap-2 pb-3">

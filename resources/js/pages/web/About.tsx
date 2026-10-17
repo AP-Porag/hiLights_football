@@ -1,36 +1,9 @@
 import { PublicFooter } from '@/components/public/PublicFooter';
 import PublicNavbar from '@/components/public/PublicNavbar';
 import { Link } from '@inertiajs/react';
-import { ArrowRight, BarChart3, CheckCircle2, Eye, Globe, Search, Shield, Target, Users, Zap } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Eye, Shield, Search, Users, Zap } from 'lucide-react';
 
-// TODO: Replace with usePage().props
-const stats = [
-    { value: '12,847', label: 'Players' },
-    { value: '67', label: 'Countries' },
-    { value: '1,243', label: 'Scouts' },
-    { value: '387', label: 'Clubs' },
-];
 
-const missionPoints = [
-    {
-        icon: Target,
-        title: 'Data-Driven Discovery',
-        description:
-            'Every player football identity is backed by verified match footage, performance metrics, and standardised position-based analytics scouts can trust.',
-    },
-    {
-        icon: Globe,
-        title: 'Global Reach, Local Roots',
-        description:
-            'From São Paulo academies to Lagos training grounds, we surface talent from leagues and regions that traditional scouting networks routinely overlook.',
-    },
-    {
-        icon: BarChart3,
-        title: 'Transparent Performance',
-        description:
-            'No agents inflating numbers. No coaches overselling. Just match-verified data, video evidence, and the player’s own development journey.',
-    },
-];
 
 const visionCards = [
     {
@@ -54,19 +27,41 @@ const visionCards = [
 ];
 
 const playerBenefits = [
-    'Build a verified video portfolio scouts actually watch',
-    'Track your performance metrics across every match',
-    'Get discovered by 1,200+ accredited scouts and clubs',
-    'Receive direct opportunities from interested clubs',
-    'Own and control your career football identity and data',
+    {
+        title: 'Your profile in the format the market knows',
+        description: 'Have your football identity read in the format the market is already used to seeing.',
+    },
+    {
+        title: 'Statistics and progress',
+        description: 'Have your statistics directly in your hands and track your development match after match.',
+    },
+    {
+        title: 'Greater visibility',
+        description: 'Be seen through our network of contacts, which is growing every day.',
+    },
+    {
+        title: 'HiLights Football community',
+        description: 'Be part of the HiLights Football community and stay up to date with our news, opportunities and benefits.',
+    },
 ];
 
 const scoutBenefits = [
-    'Search 12,000+ players by position, age, foot, and metrics',
-    'Watch verified match footage with synchronised stats',
-    'Build private shortlists and team scouting reports',
-    'Filter by league, region, contract status, and transfer fee',
-    'Export comprehensive scouting dossiers to PDF',
+    {
+        title: 'Athletes from all continents',
+        description: 'Athletes from all continents are looking for opportunities to be seen and discovered. Be the first to find the next football stars of the world.',
+    },
+    {
+        title: 'Videos and statistics',
+        description: 'Watch the videos, check the statistics and access the relevant information you need, all in one place.',
+    },
+    {
+        title: 'Personalised lists and reports',
+        description: 'Create your private lists and send scouting reports to your team, including the profiles of your preferred players.',
+    },
+    {
+        title: 'Advanced search filters',
+        description: 'Find the athlete profile you are looking for with advanced filters by age, club, region and more.',
+    },
 ];
 
 export default function About() {
@@ -75,87 +70,55 @@ export default function About() {
             <PublicNavbar />
 
             <main className="pt-16">
-                {/* HERO */}
-                <section className="bg-[#E53F01] px-6 py-24">
+                {/* HERO — orange band removed at the client's request */}
+                <section className="bg-black px-6 py-20 lg:py-24 dark:bg-[#0D0D0D]">
                     <div className="mx-auto max-w-[68.75rem] text-center">
-                        <div className="mb-6 text-xs font-semibold tracking-[0.2em] text-white/70 uppercase">About HiLights Football</div>
+                        <div className="mb-6 text-xs font-semibold tracking-[0.2em] text-white/60 uppercase">About HiLights Football</div>
                         <h1 className="font-display text-4xl leading-[1.05] font-black text-white sm:text-5xl lg:text-[3.5rem]">
                             We Exist to Make Talent Visible
                         </h1>
                         <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg lg:text-xl">
-                            The world is full of footballers who never get seen. We built the data and video infrastructure to change that — for every
-                            player, in every league, on every continent.
+                            We are the infrastructure needed and accessible to everyone who lives in the football ecosystem. Our purpose is to give
+                            visibility to players at all levels, in every league, in every country.
+                        </p>
+                        <span aria-hidden="true" className="mx-auto mt-8 block h-px w-16 bg-white/25" />
+                        <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
+                            Don't wait for your name to appear in traditional databases. Be the one responsible for adding your data and achievements,
+                            and send the link to your football identity directly to coaches, scouts, agents and clubs.
+                        </p>
+                        <p className="mx-auto mt-6 max-w-2xl text-base font-bold text-white sm:text-lg">
+                            Be part of the HiLights Football community!
                         </p>
                     </div>
                 </section>
 
                 {/* MISSION */}
                 <section className="bg-white px-6 py-16 lg:py-20 dark:bg-[#0D0D0D]">
-                    <div className="mx-auto grid max-w-[68.75rem] items-center gap-12 lg:grid-cols-2 lg:gap-16">
-                        {/* LEFT */}
-                        <div className="relative">
-                            <span
-                                aria-hidden="true"
-                                className="font-display pointer-events-none absolute -top-12 -left-4 text-[7.5rem] leading-none font-black text-[#E53F01] opacity-[0.08] select-none lg:text-[8.75rem]"
-                            >
-                                01
-                            </span>
-                            <div className="relative">
-                                <div className="text-xs font-bold tracking-[0.2em] text-[#E53F01] uppercase">Our Mission</div>
-                                <h2 className="font-display mt-3 text-3xl leading-tight font-black text-[#0F172A] sm:text-4xl dark:text-[#F5F5F5]">
-                                    Connect every talented player with their right opportunity
-                                </h2>
-                                <div className="mt-6 space-y-4 text-base leading-relaxed text-[#475569] dark:text-[#9A9A9A]">
-                                    <p>
-                                        Football's talent market is broken. Scouts can't be everywhere. Players in overlooked leagues stay overlooked.
-                                        Clubs sign the wrong players because they couldn't see the right ones. The result is wasted careers, wasted
-                                        budgets, and a sport that fails to reach its full competitive potential.
-                                    </p>
-                                    <p>
-                                        HiLights Football is the infrastructure layer that fixes this. We give every player — from a Serie B reserve
-                                        in Brazil to a Championship loanee in England — a verified, data-rich football identity that puts them in
-                                        front of the people who decide careers.
-                                    </p>
-                                    <p>
-                                        We don't replace scouts. We give them better tools. We don't promise players fame. We promise them a fair shot
-                                        at being seen by someone who can change their life.
-                                    </p>
-                                </div>
-                            </div>
+                    <div className="mx-auto max-w-[50rem] text-center">
+                        <div className="text-xs font-bold tracking-[0.2em] text-[#E53F01] uppercase">Our Mission</div>
+                        <h2 className="font-display mt-3 text-3xl leading-tight font-black text-[#0F172A] sm:text-4xl dark:text-[#F5F5F5]">
+                            Connecting talent with new opportunities in football
+                        </h2>
+                        {/* TODO: Replace with the client's final mission copy — the text in the
+                            reference screenshot was too low-resolution to transcribe reliably. */}
+                        <div className="mt-6 space-y-4 text-base leading-relaxed text-[#475569] dark:text-[#9A9A9A]">
+                            <p>
+                                Football is a world of talent, but opportunity does not reach every corner of it. Many deserving players are never
+                                seen simply because nobody was watching on the right day.
+                            </p>
+                            <p>
+                                We created HiLights Football so that every player can present themselves directly to coaches, scouts, agents and
+                                clubs — with their data, their videos and their achievements gathered in one place.
+                            </p>
+                            <span aria-hidden="true" className="mx-auto block h-px w-12 bg-[#E2E8F0] dark:bg-[#2A2A2A]" />
+                            <p>
+                                HiLights Football was born with the purpose of making talent more visible and more reachable, bringing information,
+                                statistics and achievements together so a player can be evaluated fairly.
+                            </p>
+                            <p>
+                                In the same way, scouts, agents and clubs gain a faster, clearer path to the players they are looking for.
+                            </p>
                         </div>
-
-                        {/* RIGHT */}
-                        <div className="space-y-5">
-                            {missionPoints.map((point) => {
-                                const Icon = point.icon;
-                                return (
-                                    <div
-                                        key={point.title}
-                                        className="flex gap-5 rounded-2xl border border-[#E2E8F0] bg-white p-6 dark:border-[#2A2A2A] dark:bg-[#161616]"
-                                    >
-                                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]">
-                                            <Icon className="h-6 w-6 text-[#E53F01]" strokeWidth={2} />
-                                        </div>
-                                        <div>
-                                            <h3 className="mb-1.5 text-lg font-bold text-[#0F172A] dark:text-[#F5F5F5]">{point.title}</h3>
-                                            <p className="text-sm leading-relaxed text-[#475569] dark:text-[#9A9A9A]">{point.description}</p>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </section>
-
-                {/* STATS BAND */}
-                <section className="bg-[#E53F01] px-6 py-14">
-                    <div className="mx-auto grid max-w-[68.75rem] grid-cols-2 gap-8 lg:grid-cols-4 lg:gap-6">
-                        {stats.map((stat) => (
-                            <div key={stat.label} className="text-center">
-                                <div className="font-mono text-4xl font-bold tracking-tight text-white sm:text-5xl">{stat.value}</div>
-                                <div className="mt-2 text-xs font-semibold tracking-[0.2em] text-white/80 uppercase">{stat.label}</div>
-                            </div>
-                        ))}
                     </div>
                 </section>
 
@@ -190,113 +153,113 @@ export default function About() {
                 </section>
 
                 {/* FOR WHOM */}
-                <section className="bg-white px-6 py-16 lg:py-20 dark:bg-[#0D0D0D]">
+                <section className="bg-black px-6 py-16 lg:py-20 dark:bg-[#0D0D0D]">
                     <div className="mx-auto max-w-[68.75rem]">
                         <div className="mx-auto mb-12 max-w-2xl text-center lg:mb-14">
-                            <div className="text-xs font-bold tracking-[0.2em] text-[#E53F01] uppercase">Built For Both Sides Of The Pitch</div>
-                            <h2 className="font-display mt-3 text-3xl leading-tight font-black text-[#0F172A] sm:text-4xl dark:text-[#F5F5F5]">
+                            <h2 className="font-display text-3xl leading-tight font-black text-white sm:text-4xl">
                                 One platform. Two purposes.
                             </h2>
                         </div>
 
                         <div className="grid gap-6 md:grid-cols-2">
                             {/* For Players */}
-                            <div className="rounded-2xl border-2 border-[#E53F01] bg-[#FFF3EB] p-8 lg:p-10 dark:bg-[rgba(255,107,0,0.08)]">
-                                <div className="mb-2 flex items-center gap-3">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#E53F01]">
+                            <div className="rounded-2xl border-2 border-[#E53F01] bg-[#161616] p-6 sm:p-8 lg:p-10">
+                                <div className="mb-4 flex items-center gap-3">
+                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#E53F01]">
                                         <Users className="h-5 w-5 text-white" strokeWidth={2.5} />
                                     </div>
-                                    <div className="text-xs font-bold tracking-[0.2em] text-[##E53F01] uppercase dark:text-[##E53F01]">
-                                        For Players
-                                    </div>
+                                    <div className="text-xs font-bold tracking-[0.2em] text-white/70 uppercase">For Players</div>
                                 </div>
-                                <h3 className="font-display mb-3 text-2xl leading-tight font-black text-[#0F172A] sm:text-3xl dark:text-[#F5F5F5]">
-                                    Take ownership of your career
+                                <h3 className="font-display mb-3 text-2xl leading-tight font-black text-white sm:text-3xl">
+                                    Take control of your career
                                 </h3>
-                                <p className="mb-6 text-sm leading-relaxed text-[#475569] dark:text-[#9A9A9A]">
-                                    Stop waiting to be discovered. Build the football identity that puts you in front of the scouts and clubs already
-                                    searching for someone like you.
+                                <p className="mb-6 text-sm leading-relaxed text-[#9A9A9A]">
+                                    Don't wait to be discovered. Create your football identity, showcase your talent and increase your chances of
+                                    opportunities in football.
                                 </p>
-                                <ul className="space-y-3.5">
+                                <ul className="space-y-4">
                                     {playerBenefits.map((benefit) => (
-                                        <li key={benefit} className="flex items-start gap-3">
+                                        <li key={benefit.title} className="flex items-start gap-3">
                                             <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#E53F01]" strokeWidth={2} />
-                                            <span className="text-sm leading-relaxed text-[#0F172A] dark:text-[#F5F5F5]">{benefit}</span>
+                                            <div className="min-w-0">
+                                                <p className="text-sm font-bold text-white">{benefit.title}</p>
+                                                <p className="mt-1 text-sm leading-relaxed text-[#9A9A9A]">{benefit.description}</p>
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
                                 <Link
                                     href="/register"
-                                    className="mt-8 inline-flex items-center gap-2 rounded-lg bg-[#E53F01] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#E53F01]"
+                                    className="mt-8 inline-flex items-center gap-2 rounded-lg bg-[#E53F01] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#CC5500]"
                                 >
                                     Create Player Football Identity
-                                    <ArrowRight className="h-4 w-4" />
+                                    <ArrowRight className="h-4 w-4 shrink-0" />
                                 </Link>
                             </div>
 
-                            {/* For Scouts & Clubs */}
-                            <div className="rounded-2xl border border-[#E2E8F0] bg-white p-8 lg:p-10 dark:border-[#2A2A2A] dark:bg-[#161616]">
-                                <div className="mb-2 flex items-center gap-3">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#0F172A] dark:bg-[#1F1F1F]">
+                            {/* For Scouts, Agents & Clubs */}
+                            <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 sm:p-8 lg:p-10">
+                                <div className="mb-4 flex items-center gap-3">
+                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#E53F01]">
                                         <Search className="h-5 w-5 text-white" strokeWidth={2.5} />
                                     </div>
-                                    <div className="text-xs font-bold tracking-[0.2em] text-[#0F172A] uppercase dark:text-[#F5F5F5]">
-                                        For Scouts &amp; Clubs
+                                    <div className="text-xs font-bold tracking-[0.2em] text-white/70 uppercase">
+                                        For Scouts, Agents &amp; Clubs
                                     </div>
                                 </div>
-                                <h3 className="font-display mb-3 text-2xl leading-tight font-black text-[#0F172A] sm:text-3xl dark:text-[#F5F5F5]">
-                                    Find the player you've been missing
+                                <h3 className="font-display mb-3 text-2xl leading-tight font-black text-white sm:text-3xl">
+                                    Find the player you are looking for
                                 </h3>
-                                <p className="mb-6 text-sm leading-relaxed text-[#475569] dark:text-[#9A9A9A]">
-                                    Search, filter, and shortlist verified players across 67 countries. Watch the footage, read the data, build the
-                                    case — all in one workflow.
+                                <p className="mb-6 text-sm leading-relaxed text-[#9A9A9A]">
+                                    Search, filter and select players from our community. Watch the videos, analyse the data and gather all the
+                                    information you need to support your evaluations — all on one platform.
                                 </p>
-                                <ul className="space-y-3.5">
+                                <ul className="space-y-4">
                                     {scoutBenefits.map((benefit) => (
-                                        <li key={benefit} className="flex items-start gap-3">
+                                        <li key={benefit.title} className="flex items-start gap-3">
                                             <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#E53F01]" strokeWidth={2} />
-                                            <span className="text-sm leading-relaxed text-[#0F172A] dark:text-[#F5F5F5]">{benefit}</span>
+                                            <div className="min-w-0">
+                                                <p className="text-sm font-bold text-white">{benefit.title}</p>
+                                                <p className="mt-1 text-sm leading-relaxed text-[#9A9A9A]">{benefit.description}</p>
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
                                 <Link
                                     href="/request-access"
-                                    className="mt-8 inline-flex items-center gap-2 rounded-lg bg-[#0F172A] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1F1F1F] dark:bg-[#1F1F1F] dark:hover:bg-[#2A2A2A]"
+                                    className="mt-8 inline-flex items-center gap-2 rounded-lg border border-[#2A2A2A] bg-[#1F1F1F] px-6 py-3 text-sm font-semibold text-white transition-colors hover:border-[#E53F01] hover:text-[#E53F01]"
                                 >
                                     Request Scout Access
-                                    <ArrowRight className="h-4 w-4" />
+                                    <ArrowRight className="h-4 w-4 shrink-0" />
                                 </Link>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* CTA BAND */}
-                <section className="bg-[#E53F01] px-6 py-16 text-center lg:py-20">
+                {/* CTA BAND — orange band removed at the client's request */}
+                <section className="bg-black px-6 py-16 text-center lg:py-20 dark:bg-[#0D0D0D]">
                     <div className="mx-auto max-w-2xl">
-                        <div className="mb-4 text-xs font-bold tracking-[0.2em] text-white/70 uppercase">Ready When You Are</div>
                         <h2 className="font-display text-3xl leading-tight font-black text-white sm:text-4xl lg:text-5xl">
-                            Talent is everywhere.
-                            <br />
-                            Opportunity should be too.
+                            Talent is everywhere and opportunities will be too, starting now.
                         </h2>
-                        <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
-                            Join 12,000+ players and 1,200+ scouts already using HiLights Football to reshape how the game discovers its next
-                            generation.
+                        <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg">
+                            Join our community, strengthen the ecosystem of everyone who lives football and help transform the way the next
+                            generations of talent are discovered.
                         </p>
                         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                             <Link
                                 href="/register"
-                                className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-7 py-3.5 text-sm font-bold text-[#E53F01] transition-colors hover:bg-white/90"
+                                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#E53F01] px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-[#CC5500]"
                             >
-                                Get Started Free
-                                <ArrowRight className="h-4 w-4" />
+                                Create A Free Football Identity
+                                <ArrowRight className="h-4 w-4 shrink-0" />
                             </Link>
                             <Link
                                 href="/contact"
-                                className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white/40 bg-transparent px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white/10"
+                                className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#2A2A2A] bg-[#1F1F1F] px-7 py-3.5 text-sm font-bold text-white transition-colors hover:border-[#E53F01] hover:text-[#E53F01]"
                             >
-                                Talk to Sales
+                                Talk to Us
                             </Link>
                         </div>
                     </div>
