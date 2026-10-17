@@ -271,10 +271,10 @@ export default function NewDetail() {
                                                 ? calcAge(player.user.dob) < 18
                                                     ? new Date(player.user.dob).getFullYear()
                                                     : `${new Date(player.user.dob).toLocaleDateString('en-US', {
-                                                          day: 'numeric',
-                                                          month: 'short',
-                                                          year: 'numeric',
-                                                      })} (${calcAge(player.user.dob)})`
+                                                        day: 'numeric',
+                                                        month: 'short',
+                                                        year: 'numeric',
+                                                    })} (${calcAge(player.user.dob)})`
                                                 : '—'}
                                         </span>
                                     </div>
@@ -571,10 +571,10 @@ export default function NewDetail() {
                             const statColumns = isGoalkeeperOnly
                                 ? [{ label: 'Minutes', value: totals.minutes }]
                                 : [
-                                      { label: 'Goals', value: totals.goals },
-                                      { label: 'Assists', value: totals.assists },
-                                      { label: 'Minutes', value: totals.minutes },
-                                  ];
+                                    { label: 'Goals', value: totals.goals },
+                                    { label: 'Assists', value: totals.assists },
+                                    { label: 'Minutes', value: totals.minutes },
+                                ];
 
                             return (
                                 <div className="overflow-hidden rounded-lg border border-[#152538] bg-[#07111d] p-4 md:p-6">
@@ -594,11 +594,10 @@ export default function NewDetail() {
                                                                 setMatchRowLimit(n);
                                                                 setShowAllMatches(false);
                                                             }}
-                                                            className={`cursor-pointer rounded-md px-2 py-1 text-[0.625rem] font-semibold transition-colors md:text-xs ${
-                                                                !showAllMatches && matchRowLimit === n
+                                                            className={`cursor-pointer rounded-md px-2 py-1 text-[0.625rem] font-semibold transition-colors md:text-xs ${!showAllMatches && matchRowLimit === n
                                                                     ? 'bg-[#E53F01] text-white'
                                                                     : 'text-gray-400 hover:text-white'
-                                                            }`}
+                                                                }`}
                                                         >
                                                             {n}
                                                         </button>
@@ -673,19 +672,18 @@ export default function NewDetail() {
                                         </div>
                                     )}
 
-                                    {/* See every match */}
-                                    {sortedMatches.length > matchRowLimit && (
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowAllMatches((v) => !v)}
-                                            className="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#E53F01] px-4 py-3 text-[0.75rem] font-bold text-white uppercase transition-colors hover:bg-[#E53F01]/10 md:text-sm"
-                                        >
-                                            <BarChart3 className="h-4 w-4 shrink-0 text-[#E53F01]" />
-                                            {showAllMatches
-                                                ? 'Show fewer matches'
-                                                : `View full performance data (${sortedMatches.length})`}
-                                            <ChevronRight className="h-4 w-4 shrink-0" />
-                                        </button>
+                                    {/* Full performance page */}
+                                    {sortedMatches.length > 0 && (
+                                        <Link href={`/player/profile/${player?.slug ?? player?.user?.slug}/performance`} className="block">
+                                            <button
+                                                type="button"
+                                                className="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#E53F01] px-4 py-3 text-[0.75rem] font-bold text-white uppercase transition-colors hover:bg-[#E53F01]/10 md:text-sm"
+                                            >
+                                                <BarChart3 className="h-4 w-4 shrink-0 text-[#E53F01]" />
+                                                View full performance data
+                                                <ChevronRight className="h-4 w-4 shrink-0" />
+                                            </button>
+                                        </Link>
                                     )}
                                 </div>
                             );

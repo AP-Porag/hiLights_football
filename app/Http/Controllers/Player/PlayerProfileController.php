@@ -249,6 +249,7 @@ class PlayerProfileController extends Controller
             'competitions.*.year'        => ['nullable'],
             'competitions.*.country' => ['nullable', 'string', 'size:2'],
             'matches'                    => ['sometimes', 'array'],
+            'matches.*.date'             => ['nullable', 'date'],
             'matches.*.home'             => ['nullable', 'string', 'max:255'],
             'matches.*.score'            => ['nullable', 'string', 'max:20'],
             'matches.*.away'             => ['nullable', 'string', 'max:255'],
@@ -519,6 +520,38 @@ class PlayerProfileController extends Controller
                 'description'          => $player->description,
                 'user'                 => [
                     'name'        => $user->name,
+                    'dob'         => $user->dob?->format('Y-m-d'),
+                    'nationality' => $user->nationality,
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * Full performance page — ek player er shob match ar competition.
+     * Shudhu porar page, tai view counter e hat dey na.
+     */
+    public function publicPlayerPerformance(string $slug)
+    {
+        $user = User::where('slug', $slug)->firstOrFail();
+        $player = PlayerProfile::with('user')->where('user_id', $user->id)->firstOrFail();
+
+        // Ekhane o shudhu dorkari field — kono ID, email, phone, OTP, Stripe data na
+        return Inertia::render('player/profile/public/Performance', [
+            'player' => [
+                'slug'                 => $user->slug,
+                'photo_url'            => $player->photo_url,
+                'positions'            => $player->positions,
+                'height'               => $player->height,
+                'foot'                 => $player->foot,
+                'current_club'         => $player->current_club,
+                'current_club_country' => $player->current_club_country,
+                'achievements'         => $player->achievements,
+                'competitions'         => $player->competitions,
+                'matches'              => $player->matches,
+                'user'                 => [
+                    'name'        => $user->name,
+                    'slug'        => $user->slug,
                     'dob'         => $user->dob?->format('Y-m-d'),
                     'nationality' => $user->nationality,
                 ],

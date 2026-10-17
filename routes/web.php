@@ -91,6 +91,11 @@ Route::post('/request-access', [AccessRequestController::class, 'store'])->name(
 
 
 // Public profile — slug only (numeric ID URLs are NOT accepted, prevents ID enumeration)
+// স্পেসিফিক রাউট আগে
+Route::get('/player/profile/{slug}/performance', [PlayerProfileController::class, 'publicPlayerPerformance'])
+    ->where('slug', '[a-z0-9\-]+')
+    ->name('player.public.performance');
+
 Route::get('/player/profile/{slug}', [PlayerProfileController::class, 'publicPlayerDetails'])
     ->where('slug', '[a-z0-9\-]+')
     ->name('player.public.profile');

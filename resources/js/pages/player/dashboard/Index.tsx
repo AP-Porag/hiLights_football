@@ -5,6 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getPositionName } from '@/utils/helper';
 import { Progress } from '@/components/ui/progress';
+import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Link, router } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
 import { QRCodeSVG } from 'qrcode.react';
@@ -58,7 +62,8 @@ import {
     ArrowDown,
     Calendar,
     ChevronLeft,
-    ChevronRight
+    ChevronRight,
+    Save
 } from 'lucide-react';
 import {
     Bar,
@@ -1363,6 +1368,8 @@ function FormModal({
     );
 }
 
+const BOOT_BRANDS = ['Nike', 'Adidas', 'Puma', 'New Balance', 'Umbro', 'Mizuno', 'Other'];
+
 export default function PlayerDashboard() {
     const { auth } = usePage().props as any;
     const { flash } = usePage().props as any;
@@ -1389,6 +1396,51 @@ export default function PlayerDashboard() {
     const dateStr = formatDate();
     const [activeModal, setActiveModal] = useState<string | null>(null);
     const [shareOpen, setShareOpen] = useState(false);
+
+    // About You + Player Questionnaire — saved straight to player_profile
+    const [aboutData, setAboutData] = useState({
+        description: pp?.description ?? '',
+        supported_club: pp?.supported_club ?? '',
+        dream_club: pp?.dream_club ?? '',
+        boot_brands: Array.isArray(pp?.boot_brands) ? pp.boot_brands : [],
+        boot_brand_other: pp?.boot_brand_other ?? '',
+    });
+    const [aboutSaving, setAboutSaving] = useState(false);
+    const [aboutSaved, setAboutSaved] = useState(false);
+    const [aboutErrors, setAboutErrors] = useState<Record<string, string>>({});
+
+    const setAboutField = (key: string, value: any) => {
+        setAboutData((prev) => ({ ...prev, [key]: value }));
+        setAboutSaved(false);
+    };
+
+    const toggleBootBrand = (brand: string) => {
+        setAboutData((prev) => ({
+            ...prev,
+            boot_brands: prev.boot_brands.includes(brand)
+                ? prev.boot_brands.filter((b: string) => b !== brand)
+                : [...prev.boot_brands, brand],
+        }));
+        setAboutSaved(false);
+    };
+
+    const saveAbout = () => {
+        setAboutSaving(true);
+        setAboutErrors({});
+        // 'Other' unchecked hole free-text ta o clear kore pathai, na hole purono value DB te theke jay
+        const payload = {
+            ...aboutData,
+            boot_brand_other: aboutData.boot_brands.includes('Other') ? aboutData.boot_brand_other : '',
+        };
+        router.post('/player/profile/fields', payload, {
+            preserveScroll: true,
+            onSuccess: () => setAboutSaved(true),
+            onError: (errs) => setAboutErrors(errs as Record<string, string>),
+            onFinish: () => setAboutSaving(false),
+        });
+    };
+
+    const descCount = (aboutData.description ?? '').length;
     // Country analytics time range (URL param diye backend-e jabe)
     const [countryRange, setCountryRange] = useState<'7d' | '30d' | '90d' | 'all'>('all');
 
@@ -1946,6 +1998,128 @@ export default function PlayerDashboard() {
                         </ul>
                     </section>
                 </div>
+
+                {/* ABOUT YOU + PLAYER QUESTIONNAIRE — saves to player_profile */}
+                <section>
+                    <div className="mb-4 text-[0.625rem] font-bold tracking-[0.14em] text-[#E53F01] uppercase">About You</div>
+
+                    <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 sm:p-8">
+                        <Label htmlFor="description" className="mb-3 block text-xs font-semibold text-[#F5F5F5]">
+                            Description
+                        </Label>
+                        <Textarea
+                            id="description"
+                            rows={5}
+                            maxLength={500}
+                            value={aboutData.description}
+                            onChange={(e) => setAboutField('description', e.target.value)}
+                            placeholder="Describe your playing style, strengths, and football journey..."
+                            className="resize-none border-[#2A2A2A] bg-[#111111] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800"
+                        />
+                        <div className="mt-2 flex justify-between gap-3">
+                            <span className="text-xs text-red-400">{aboutErrors.description}</span>
+                            <span className={`font-mono text-xs ${descCount > 450 ? 'font-bold text-[#E53F01]' : 'text-[#94A3B8]'}`}>
+                                {descCount} / 500
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Player Questionnaire — private, not shown on public profile */}
+                    <div className="mt-6 rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 sm:p-8">
+                        <h3 className="mb-1 text-sm font-bold text-[#F5F5F5]">Player Questionnaire</h3>
+                        <p className="mb-6 text-xs text-[#94A3B8]">
+                            The answers to these questions will not appear on your public football identity.
+                        </p>
+
+                        <div className="space-y-6">
+                            <div>
+                                <Label htmlFor="supported_club" className="mb-2 block text-xs font-semibold text-[#F5F5F5]">
+                                    1. Which football club do you support?
+                                </Label>
+                                <Input
+                                    id="supported_club"
+                                    value={aboutData.supported_club}
+                                    onChange={(e) => setAboutField('supported_club', e.target.value)}
+                                    placeholder="e.g. Manchester United"
+                                    className="border-[#2A2A2A] bg-[#111111] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800"
+                                />
+                                <span className="text-xs text-red-400">{aboutErrors.supported_club}</span>
+                            </div>
+
+                            <div>
+                                <Label htmlFor="dream_club" className="mb-2 block text-xs font-semibold text-[#F5F5F5]">
+                                    2. Besides the club you support, which club do you dream of playing for?
+                                </Label>
+                                <Input
+                                    id="dream_club"
+                                    value={aboutData.dream_club}
+                                    onChange={(e) => setAboutField('dream_club', e.target.value)}
+                                    placeholder="e.g. Real Madrid"
+                                    className="border-[#2A2A2A] bg-[#111111] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800"
+                                />
+                                <span className="text-xs text-red-400">{aboutErrors.dream_club}</span>
+                            </div>
+
+                            <div>
+                                <Label className="mb-2 block text-xs font-semibold text-[#F5F5F5]">
+                                    3. Which football boot brand do you prefer and would most like to be sponsored by?
+                                    <span className="ml-1 font-normal text-[#94A3B8]">(select all that apply)</span>
+                                </Label>
+                                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                                    {BOOT_BRANDS.map((brand) => {
+                                        const selected = aboutData.boot_brands.includes(brand);
+                                        return (
+                                            <label
+                                                key={brand}
+                                                className={`flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-2.5 transition-colors ${selected ? 'border-[#E53F01] bg-[rgba(255,107,0,0.12)]' : 'border-[#2A2A2A] bg-[#1F1F1F]'}`}
+                                            >
+                                                <Checkbox
+                                                    checked={selected}
+                                                    onCheckedChange={() => toggleBootBrand(brand)}
+                                                    className="border-[#2A2A2A] data-[state=checked]:border-[#E53F01] data-[state=checked]:bg-[#E53F01]"
+                                                />
+                                                <span className={`text-sm ${selected ? 'font-semibold text-[#E53F01]' : 'text-[#F5F5F5]'}`}>
+                                                    {brand}
+                                                </span>
+                                            </label>
+                                        );
+                                    })}
+                                </div>
+
+                                {aboutData.boot_brands.includes('Other') && (
+                                    <div className="mt-3">
+                                        <Input
+                                            value={aboutData.boot_brand_other}
+                                            onChange={(e) => setAboutField('boot_brand_other', e.target.value)}
+                                            placeholder="Please specify the brand"
+                                            className="border-[#2A2A2A] bg-[#111111] text-[#F5F5F5] focus-visible:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-800"
+                                        />
+                                    </div>
+                                )}
+                                <span className="text-xs text-red-400">{aboutErrors.boot_brands}</span>
+                            </div>
+                        </div>
+
+                        {/* Save */}
+                        <div className="mt-8 flex flex-wrap items-center gap-3">
+                            <Button
+                                onClick={saveAbout}
+                                disabled={aboutSaving}
+                                className="bg-[#E53F01] text-white hover:bg-[#CC5500] disabled:opacity-60"
+                            >
+                                <Save className="mr-2 h-4 w-4 shrink-0" />
+                                {aboutSaving ? 'Saving...' : 'Save'}
+                            </Button>
+                            {aboutSaved && !aboutSaving && (
+                                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-green-400">
+                                    <CheckCircle2 className="h-4 w-4 shrink-0" />
+                                    Saved
+                                </span>
+                            )}
+                        </div>
+                    </div>
+                </section>
+
                 {/* COUNTRY ANALYTICS */}
                 {/* <section className="relative overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
                     <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
