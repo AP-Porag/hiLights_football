@@ -372,7 +372,7 @@ export default function Performance() {
                 </section>
 
                 {/* COMPETITIONS + ACHIEVEMENTS */}
-                {/* <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                     <div className="rounded-xl border border-[#152538] bg-[#07111d] p-4 sm:p-6">
                         <h2 className="mb-5 text-[0.875rem] font-bold text-white uppercase md:text-xl">Competition History</h2>
                         <div className="space-y-3">
@@ -409,7 +409,7 @@ export default function Performance() {
                             {achievements.length === 0 && <p className="text-sm text-gray-400">No achievements added yet.</p>}
                         </div>
                     </div>
-                </section> */}
+                </section>
             </main>
 
             <PublicFooter />

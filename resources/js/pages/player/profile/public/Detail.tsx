@@ -234,13 +234,15 @@ export default function NewDetail() {
             <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6">
                 <main className="min-w-0 space-y-6 overflow-x-hidden">
                     {/* ═══════════ MINOR NOTICE — own row above player info + video ═══════════ */}
+                    {isMinor && (
+                        <div>
 
-                    <div>
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E53F01]/60 bg-[#E53F01]/10 px-3 py-1 text-xs font-semibold text-[#ff8a4c]">
-                            <Users className="h-3.5 w-3.5 shrink-0" />
-                            Football identity managed by parents
-                        </span>
-                    </div>
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E53F01]/60 bg-[#E53F01]/10 px-3 py-1 text-xs font-semibold text-[#ff8a4c]">
+                                <Users className="h-3.5 w-3.5 shrink-0" />
+                                Football identity managed by parents
+                            </span>
+                        </div>
+                    )}
 
                     {/* ═══════════ TOP: player info (left) + main video (right) ═══════════ */}
                     <section className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start">
@@ -595,8 +597,8 @@ export default function NewDetail() {
                                                                 setShowAllMatches(false);
                                                             }}
                                                             className={`cursor-pointer rounded-md px-2 py-1 text-[0.625rem] font-semibold transition-colors md:text-xs ${!showAllMatches && matchRowLimit === n
-                                                                    ? 'bg-[#E53F01] text-white'
-                                                                    : 'text-gray-400 hover:text-white'
+                                                                ? 'bg-[#E53F01] text-white'
+                                                                : 'text-gray-400 hover:text-white'
                                                                 }`}
                                                         >
                                                             {n}
