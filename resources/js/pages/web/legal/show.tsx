@@ -19,7 +19,7 @@ import {
     type LegalSection,
     type LegalUi,
     type LocaleCode,
-} from '@/Components/Web/Legal/LegalShared';
+} from '@/components/web/legal/LegalShared';
 
 type ItemStyle = 'bullet' | 'checkbox';
 

@@ -827,11 +827,11 @@ export default function Edit() {
     };
 
     return (
-        <div className="min-h-screen bg-[#0D0D0D] pt-16 pb-32">
+        <div className="min-h-screen bg-[#0D0D0D] pt-16 pb-32 lg:pt-18 2xl:pt-24">
             <PhoneDarkStyles />
             <PlayerNavbar />
             <div className="bg-[#0D0D0D] border-b border-[#2A2A2A] sticky top-16 z-20 px-4 sm:px-8 py-4">
-                <div className="max-w-[68.75rem] mx-auto">
+                <div className="max-w-[68.75rem] mx-auto 2xl:max-w-[81.25rem]">
                     <div className="flex items-center">
                         {STEPS.map((s, idx) => {
                             const completed = idx < step;
@@ -870,7 +870,7 @@ export default function Edit() {
                 </div>
             </div>
 
-            <div className="max-w-[68.75rem] mx-auto px-4 py-8">
+            <div className="max-w-[68.75rem] mx-auto px-4 py-8 lg:px-8 lg:py-10 2xl:max-w-[81.25rem] 2xl:px-12 2xl:py-14">
                 {step === 0 && (
                     <section>
                         <div className="text-[#E53F01] text-[0.625rem] font-bold tracking-[0.14em] uppercase mb-4 font-sans">01 / Basic Information</div>
@@ -1573,7 +1573,7 @@ export default function Edit() {
 
             {/* Sticky Bottom — full-width bar, buttons aligned to main container */}
             <div className="bg-[#0D0D0D] border-t border-[#2A2A2A] fixed bottom-0 left-0 right-0 z-20 h-[4.25rem]">
-                <div className="max-w-[68.75rem] mx-auto h-full px-4 flex items-center justify-between">
+                <div className="max-w-[68.75rem] mx-auto h-full px-4 flex items-center justify-between lg:px-8 2xl:max-w-[81.25rem] 2xl:px-12">
                     <div className="hidden sm:flex items-center gap-2">
                         {/* <CheckCircle2 className="text-green-500 w-4 h-4" />
                         <span className="text-xs text-[#94A3B8] font-sans">Draft saved 2 min ago</span> */}

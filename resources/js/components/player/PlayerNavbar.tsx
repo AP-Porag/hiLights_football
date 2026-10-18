@@ -123,14 +123,14 @@ export default function PlayerNavbar() {
     return (
         <header
             className={[
-                'fixed top-0 right-0 left-0 z-50 h-14 lg:h-18',
+                'fixed top-0 right-0 left-0 z-50 h-14 lg:h-18 2xl:h-24',
                 'bg-[#0D0D0D]',
                 'border-b border-[#2A2A2A]',
                 scrolled ? 'shadow-md' : 'shadow-none',
                 'transition-shadow duration-200',
             ].join(' ')}
         >
-            <div className="mx-auto flex h-full max-w-[87.5rem] items-center justify-between gap-4 px-2 sm:px-6">
+            <div className="mx-auto flex h-full max-w-[87.5rem] items-center justify-between gap-4 px-2 sm:px-6 lg:px-8 2xl:max-w-[100rem] 2xl:px-12">
                 {/* LEFT — Logo */}
                 <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="HiLights Football dashboard">
                     <img
@@ -140,7 +140,7 @@ export default function PlayerNavbar() {
                     />
                 </Link>
                 {/* CENTER — Nav links (desktop) */}
-                <nav className="hidden items-center gap-8 md:flex">
+                <nav className="hidden items-center gap-8 md:flex lg:gap-10 2xl:gap-14">
                     {NAV_LINKS.map((link) => {
                         const active = isActive(link.href);
                         return (
@@ -148,7 +148,7 @@ export default function PlayerNavbar() {
                                 key={link.href}
                                 href={link.href}
                                 className={[
-                                    'relative text-sm font-medium transition-colors',
+                                    'relative text-sm font-medium transition-colors lg:text-base 2xl:text-lg',
                                     active
                                         ? 'text-[#E53F01] after:absolute after:right-0 after:bottom-[-1.375rem] after:left-0 after:h-[0.125rem] after:bg-[#E53F01]'
                                         : 'text-[#9A9A9A] hover:text-[#E53F01]',
@@ -182,9 +182,9 @@ export default function PlayerNavbar() {
                                 className="flex items-center gap-1.5 rounded-full p-0.5 transition-colors outline-none hover:bg-[#F8FAFC] focus-visible:ring-2 focus-visible:ring-[#E53F01] dark:hover:bg-[#1F1F1F]"
                                 aria-label="Account menu"
                             >
-                                <Avatar className="h-9 w-9 border border-[#E2E8F0] dark:border-[#2A2A2A]">
+                                <Avatar className="h-9 w-9 border border-[#E2E8F0] lg:h-10 lg:w-10 2xl:h-12 2xl:w-12 dark:border-[#2A2A2A]">
                                     {auth.user.avatar_url ? <AvatarImage src={auth.user.avatar_url} alt={auth.user.name} /> : null}
-                                    <AvatarFallback className="bg-[#FFF3EB] text-sm font-bold text-[#E53F01] dark:bg-[rgba(255,107,0,0.15)]">
+                                    <AvatarFallback className="bg-[#FFF3EB] text-sm font-bold text-[#E53F01] lg:text-base 2xl:text-lg dark:bg-[rgba(255,107,0,0.15)]">
                                         {initials}
                                     </AvatarFallback>
                                 </Avatar>

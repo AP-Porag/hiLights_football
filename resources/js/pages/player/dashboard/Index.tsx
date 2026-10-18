@@ -1748,23 +1748,23 @@ export default function PlayerDashboard() {
     }, [flash]);
 
     return (
-        <div className="min-h-screen bg-[#0D0D0D] pt-16">
+        <div className="min-h-screen bg-[#0D0D0D] pt-16 lg:pt-18 2xl:pt-24">
             <PlayerNavbar />
             {/* PAGE HEADER */}
-            <header className="border-b border-[#2A2A2A] bg-[#0D0D0D] px-4 py-5 sm:px-8">
-                <div className="mx-auto max-w-[81.25rem]">
-                    <h1 className="font-display text-2xl font-bold text-[#F5F5F5] sm:text-3xl">
+            <header className="border-b border-[#2A2A2A] bg-[#0D0D0D] px-4 py-5 sm:px-8 lg:px-10 lg:py-7 2xl:px-14 2xl:py-9">
+                <div className="mx-auto max-w-[81.25rem] 2xl:max-w-[100rem]">
+                    <h1 className="font-display text-2xl font-bold text-[#F5F5F5] sm:text-3xl lg:text-4xl 2xl:text-5xl">
                         {greeting}, {auth?.user?.name}
                     </h1>
-                    <p className="mt-1 text-sm text-[#9A9A9A]">{dateStr}</p>
+                    <p className="mt-1 text-sm text-[#9A9A9A] lg:text-base 2xl:text-lg">{dateStr}</p>
                 </div>
             </header>
-            <main className="mx-auto max-w-[81.25rem] space-y-6 px-4 py-6 sm:px-8 sm:py-8">
+            <main className="mx-auto max-w-[81.25rem] space-y-6 px-4 py-6 sm:px-8 sm:py-8 lg:space-y-8 lg:px-10 lg:py-10 2xl:max-w-[100rem] 2xl:space-y-10 2xl:px-14 2xl:py-12">
                 {/* WIDGETS ROW */}
-                <section className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_28.125rem] lg:gap-4">
+                <section className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_28.125rem] lg:gap-6 2xl:grid-cols-[1fr_31.25rem] 2xl:gap-8">
                     {/* [1] Profile Complete */}
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="flex flex-col items-center rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
+                        <div className="flex flex-col items-center rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 lg:p-7 2xl:p-9">
                             <div className="relative h-[7rem] w-[7rem]">
                                 <svg width="112" height="112" viewBox="0 0 112 112" className="-rotate-90">
                                     <circle cx="56" cy="56" r="44" fill="none" strokeWidth="10" className="stroke-[#2A2A2A]" />
@@ -1780,7 +1780,7 @@ export default function PlayerDashboard() {
                             </p>
                         </div>
                         {/* [2] Profile Views */}
-                        <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
+                        <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 lg:p-7 2xl:p-9">
                             <div className="flex items-start justify-between">
                                 <div>
                                     <p className="font-mono text-3xl font-black text-[#F5F5F5]"> {totalViews}</p>
@@ -1803,7 +1803,7 @@ export default function PlayerDashboard() {
                             </svg>
                         </div>
                         {/* [4] Subscription */}
-                        {/* <div className="flex flex-col rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 ">
+                        {/* <div className="flex flex-col rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 lg:p-7 2xl:p-9 ">
                             {!hasSubscription ? (
                                 <>
                                     <Badge className="w-fit border border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[0.625rem] font-bold tracking-wider text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]">FREE PLAN</Badge>
@@ -2003,7 +2003,7 @@ export default function PlayerDashboard() {
                 <section>
                     <div className="mb-4 text-[0.625rem] font-bold tracking-[0.14em] text-[#E53F01] uppercase">About You</div>
 
-                    <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 sm:p-8">
+                    <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 lg:p-7 2xl:p-9 sm:p-8">
                         <Label htmlFor="description" className="mb-3 block text-xs font-semibold text-[#F5F5F5]">
                             Description
                         </Label>
@@ -2025,7 +2025,7 @@ export default function PlayerDashboard() {
                     </div>
 
                     {/* Player Questionnaire — private, not shown on public profile */}
-                    <div className="mt-6 rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 sm:p-8">
+                    <div className="mt-6 rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 lg:p-7 2xl:p-9 sm:p-8">
                         <h3 className="mb-1 text-sm font-bold text-[#F5F5F5]">Player Questionnaire</h3>
                         <p className="mb-6 text-xs text-[#94A3B8]">
                             The answers to these questions will not appear on your public football identity.
@@ -2121,7 +2121,7 @@ export default function PlayerDashboard() {
                 </section>
 
                 {/* COUNTRY ANALYTICS */}
-                {/* <section className="relative overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6">
+                {/* <section className="relative overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 lg:p-7 2xl:p-9">
                     <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div>
                             <h2 className="text-lg font-bold text-[#F5F5F5]">Country Analytics</h2>

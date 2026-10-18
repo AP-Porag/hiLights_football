@@ -43,10 +43,10 @@ export default function Index({ views, pagination }: Props) {
     };
 
     return (
-        <div className="min-h-screen bg-[#0D0D0D] pt-16">
+        <div className="min-h-screen bg-[#0D0D0D] pt-16 lg:pt-18 2xl:pt-24">
             <PlayerNavbar />
 
-            <div className="mx-auto max-w-4xl px-4 py-8 sm:px-8">
+            <div className="mx-auto max-w-4xl px-4 py-8 sm:px-8 lg:max-w-5xl lg:py-10 2xl:max-w-6xl 2xl:px-12 2xl:py-14">
                 <div className="flex items-center gap-3 border-b border-[#2A2A2A] pb-4">
                     <Eye className="h-6 w-6 text-[#E53F01]" />
                     <h1 className="text-2xl font-bold text-[#F5F5F5]">Football Identity Views</h1>

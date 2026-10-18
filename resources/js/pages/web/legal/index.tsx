@@ -17,7 +17,7 @@ import {
     type LegalPageProps,
     type LegalUi,
     type LocaleCode,
-} from '@/Components/Web/Legal/LegalShared';
+} from '@/components/web/legal/LegalShared';
 
 interface IndexProps extends LegalPageProps {
     documents: LegalDocumentMeta[];
