@@ -238,13 +238,13 @@ const HomeTwo = () => {
                 </section>
 
                 {/* ADVERTISING */}
-                <aside className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
-                    <div>
-                        <div className="flex w-full items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">
-                            <p className="text-sm font-medium tracking-widest text-white/50 2xl:text-base">ADVERTISING SPACE</p>
-                        </div>
-                    </div>
-                </aside>
+                {/*<aside className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">*/}
+                {/*    <div>*/}
+                {/*        <div className="flex w-full items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">*/}
+                {/*            <p className="text-sm font-medium tracking-widest text-white/50 2xl:text-base">ADVERTISING SPACE</p>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</aside>*/}
 
                 {/* SECTION 2: STEPS */}
                 <section className="mx-auto w-full max-w-7xl bg-black px-6 text-white sm:px-10 lg:px-16">
@@ -364,13 +364,13 @@ const HomeTwo = () => {
                 </section>
 
                 {/* ADVERTISING */}
-                <aside className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
-                    <div>
-                        <div className="flex w-full items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">
-                            <p className="text-sm font-medium tracking-widest text-white/50 2xl:text-base">ADVERTISING SPACE</p>
-                        </div>
-                    </div>
-                </aside>
+                {/*<aside className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">*/}
+                {/*    <div>*/}
+                {/*        <div className="flex w-full items-center justify-center rounded-xl bg-[#464646] px-4 py-8 2xl:py-10">*/}
+                {/*            <p className="text-sm font-medium tracking-widest text-white/50 2xl:text-base">ADVERTISING SPACE</p>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</aside>*/}
 
                 {/* SECTION 3: COMMUNITY HIGHLIGHTS */}
                 <section className="mx-auto w-full max-w-7xl overflow-x-hidden px-6 sm:px-10 lg:px-16">

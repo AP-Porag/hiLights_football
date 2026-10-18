@@ -312,14 +312,14 @@ export default function Login() {
                             href="/terms"
                             className="text-[#9A9A9A] hover:text-[#E53F01] underline underline-offset-2"
                         >
-                            Terms
-                        </Link>{' '}
-                        and{' '}
-                        <Link
-                            href="/privacy"
-                            className="text-[#9A9A9A] hover:text-[#E53F01] underline underline-offset-2"
-                        >
-                            Privacy Policy
+                            Terms and Privacy Policy
+                        {/*</Link>{' '}*/}
+                        {/*{' '}*/}
+                        {/*<Link*/}
+                        {/*    href="/privacy"*/}
+                        {/*    className="text-[#9A9A9A] hover:text-[#E53F01] underline underline-offset-2"*/}
+                        {/*>*/}
+
                         </Link>
                         .
                     </p>
