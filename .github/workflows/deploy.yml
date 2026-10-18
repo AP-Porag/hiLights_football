@@ -68,7 +68,7 @@ jobs:
           rm: false
           strip_components: 0
 
-      # 9️⃣ Run Laravel Artisan Command
+      # 9️⃣ Run Laravel Artisan Commands
       - name: ⚙️ Run Laravel Artisan Commands
         uses: appleboy/ssh-action@v1.0.3
         with:
