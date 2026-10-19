@@ -313,7 +313,7 @@ const HomeTwo = () => {
                                 {/* Button */}
                                 <div className="shrink-0">
                                     <Link href={isLoggedIn ? dashboardHref : "/register"}>
-                                        <button className="flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-[#E53F01] px-5 py-4 transition hover:bg-[#CC5500] lg:w-auto lg:px-8 2xl:px-10">
+                                        <button className="flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-[#E53F01] px-5 py-4 transition hover:bg-[#E53F01] lg:w-auto lg:px-8 2xl:px-10">
                                             <UserPlus className="h-6 w-6 shrink-0 text-white 2xl:h-8 2xl:w-8" />
                                             <span className="text-left text-xs font-bold tracking-wide text-white uppercase sm:text-sm 2xl:text-base">
                                                 {isLoggedIn ? (

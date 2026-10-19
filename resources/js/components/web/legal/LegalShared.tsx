@@ -117,7 +117,7 @@ export function LanguageSwitcher({ locales, current, path, label }: LanguageSwit
                             preserveScroll
                             aria-current={active ? 'true' : undefined}
                             className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${active
-                                ? 'border-white bg-white text-[#CC5500]'
+                                ? 'border-white bg-white text-[#E53F01]'
                                 : 'border-white/40 text-white hover:border-white hover:bg-white/10'
                                 }`}
                         >
@@ -143,7 +143,7 @@ interface LegalHeroProps {
 
 export function LegalHero({ eyebrow, title, summary, breadcrumb, aside, children }: LegalHeroProps) {
     return (
-        <section className="bg-[#FF6B00] pt-20">
+        <section className="bg-[#E53F01] pt-20">
             <div className="mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-6 lg:px-8 lg:pb-16 lg:pt-14">
                 {breadcrumb && <div className="mb-6 print:hidden">{breadcrumb}</div>}
                 <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
@@ -165,7 +165,7 @@ export function LegalHero({ eyebrow, title, summary, breadcrumb, aside, children
 export function TranslationNotice({ text }: { text: string }) {
     return (
         <div className="border-b border-[#FFD9BF] bg-[#FFF3EB] dark:border-[#3A2414] dark:bg-[rgba(255,107,0,0.12)]">
-            <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-3 text-xs font-medium text-[#CC5500] sm:px-6 lg:px-8 dark:text-[#FF6B00]">
+            <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-3 text-xs font-medium text-[#E53F01] sm:px-6 lg:px-8 dark:text-[#E53F01]">
                 <Languages className="h-4 w-4 shrink-0" />
                 {text}
             </div>
@@ -184,7 +184,7 @@ export function LegalContactCard({ ui, email }: LegalContactCardProps) {
             <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                 <div className="flex gap-4">
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#FFF3EB] dark:bg-[rgba(255,107,0,0.12)]">
-                        <Mail className="h-5 w-5 text-[#FF6B00]" />
+                        <Mail className="h-5 w-5 text-[#E53F01]" />
                     </div>
                     <div className="min-w-0">
                         <h3 className="font-display text-xl font-bold uppercase tracking-wide text-[#0F172A] dark:text-[#F5F5F5]">
@@ -198,7 +198,7 @@ export function LegalContactCard({ ui, email }: LegalContactCardProps) {
                                 onClick={() => {
                                     window.location.href = `mailto:${email}`;
                                 }}
-                                className="break-all font-mono text-[#CC5500] underline-offset-4 hover:underline dark:text-[#FF6B00]"
+                                className="break-all font-mono text-[#E53F01] underline-offset-4 hover:underline dark:text-[#E53F01]"
                             >
                                 {email}
                             </button>
@@ -207,7 +207,7 @@ export function LegalContactCard({ ui, email }: LegalContactCardProps) {
                 </div>
                 <Link
                     href="/contact"
-                    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#FF6B00] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#CC5500]"
+                    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#E53F01] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#E53F01]"
                 >
                     {ui.contact_us}
                     <ArrowRight className="h-4 w-4" />
