@@ -62,7 +62,7 @@ export default function Contact() {
             <main className="pt-16 xl:pt-20 2xl:pt-24">
                 {/* ============ HEADER BAND ============ */}
                 <section
-                    className="relative overflow-hidden bg-[#E53F01] py-16"
+                    className="relative flex min-h-[75vh] items-center overflow-hidden bg-[#E53F01] py-16"
                     style={{
                         backgroundImage: "url('/images/img/contact-1.jpeg')",
                         backgroundRepeat: 'no-repeat',
@@ -71,7 +71,7 @@ export default function Contact() {
                     }}
                 >
                     <div aria-hidden="true" className="absolute inset-0 bg-black/65 lg:bg-black/60" />
-                    <div className="relative z-10 mx-auto max-w-[68.75rem] px-6 text-center">
+                    <div className="relative z-10 mx-auto w-full max-w-[68.75rem] px-6 text-center">
                         <h1 className="font-display text-4xl leading-tight font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
                             Contact HiLights Football
                         </h1>

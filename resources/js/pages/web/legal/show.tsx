@@ -155,14 +155,14 @@ export default function Show({ locale, locales, ui, contact, document: doc, rela
                                         <span className="font-mono text-xs text-[#94A3B8] dark:text-[#555555]">
                                             {ui.sections_count.replace(':count', String(doc.sectionsCount))} · {doc.readTime}
                                         </span>
-                                        <button
+                                        {/* <button
                                             type="button"
                                             onClick={() => window.print()}
                                             className="inline-flex items-center gap-2 rounded-lg border border-[#E2E8F0] px-3 py-2 text-xs font-semibold text-[#475569] transition-colors hover:border-[#FF6B00] hover:text-[#FF6B00] print:hidden dark:border-[#2A2A2A] dark:text-[#9A9A9A] dark:hover:border-[#FF6B00] dark:hover:text-[#FF6B00]"
                                         >
                                             <Printer className="h-3.5 w-3.5" />
                                             {ui.print}
-                                        </button>
+                                        </button> */}
                                     </div>
 
                                     {doc.intro && doc.intro.length > 0 && (

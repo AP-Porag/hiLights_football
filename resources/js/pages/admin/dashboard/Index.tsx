@@ -334,7 +334,7 @@ export default function Index() {
                                         <TableHead className="text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Email</TableHead>
                                         <TableHead className="text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Role</TableHead>
                                         <TableHead className="text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Subscription</TableHead>
-                                        <TableHead className="text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Status</TableHead>
+                                        {/* <TableHead className="text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Status</TableHead> */}
                                         <TableHead className="text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Registered</TableHead>
                                         <TableHead className="pr-6 text-right text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">
                                             Actions
@@ -371,14 +371,14 @@ export default function Index() {
                                                         {user.subscription}
                                                     </Badge>
                                                 </TableCell>
-                                                <TableCell>
+                                                {/* <TableCell>
                                                     <Badge variant="outline" className={`${statusClasses[user.status] ?? statusClasses.Active} text-xs font-medium`}>
                                                         <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${user.status === 'Active' ? 'bg-green-500' :
                                                             user.status === 'Pending' ? 'bg-yellow-500' : 'bg-red-500'
                                                             }`} />
                                                         {user.status}
                                                     </Badge>
-                                                </TableCell>
+                                                </TableCell> */}
                                                 <TableCell>
                                                     <span className="font-mono text-xs text-[#555555]">{user.registered}</span>
                                                 </TableCell>
@@ -406,7 +406,7 @@ export default function Index() {
                                                                     <span className="text-sm">Edit</span>
                                                                 </Link>
                                                             </DropdownMenuItem>
-                                                            <DropdownMenuSeparator className="bg-[#2A2A2A]" />
+                                                            {/* <DropdownMenuSeparator className="bg-[#2A2A2A]" />
                                                             {isSuspended ? (
                                                                 <DropdownMenuItem
                                                                     disabled={isToggling}
@@ -425,7 +425,7 @@ export default function Index() {
                                                                     <Ban className="mr-2 h-3.5 w-3.5" />
                                                                     <span className="text-sm">{isToggling ? 'Suspending...' : 'Suspend'}</span>
                                                                 </DropdownMenuItem>
-                                                            )}
+                                                            )} */}
                                                         </DropdownMenuContent>
                                                     </DropdownMenu>
                                                 </TableCell>

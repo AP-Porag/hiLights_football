@@ -146,7 +146,7 @@ export default function RequestAccess({ countries = [] }: Props) {
             <main className="pt-16">
                 {/* HEADER BAND */}
                 <section
-                    className="relative overflow-hidden bg-[#E53F01] py-16"
+                    className="relative flex min-h-[75vh] items-center overflow-hidden bg-[#E53F01] py-16"
                     style={{
                         backgroundImage: "url('/images/img/request-access-1.jpeg')",
                         backgroundRepeat: 'no-repeat',
@@ -155,7 +155,7 @@ export default function RequestAccess({ countries = [] }: Props) {
                     }}
                 >
                     <div aria-hidden="true" className="absolute inset-0 bg-black/65 lg:bg-black/60" />
-                    <div className="relative z-10 max-w-[56.25rem] mx-auto px-6 text-center">
+                    <div className="relative z-10 w-full max-w-[56.25rem] mx-auto px-6 text-center">
                         <h1 className="font-display font-bold text-4xl sm:text-5xl text-white tracking-tight leading-tight">
                             Request Access
                         </h1>
