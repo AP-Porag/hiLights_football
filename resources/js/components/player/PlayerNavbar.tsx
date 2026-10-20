@@ -36,7 +36,7 @@ interface NotifItem {
 }
 // TODO: Replace with route() helper from Ziggy
 const NAV_LINKS: NavLink[] = [
-    { label: 'Dashboard', href: '/player/' },
+    // { label: 'Dashboard', href: '/player/' },
     // { label: 'My Football Identity', href: '/player/profile/data/edit' },
     // { label: 'Analytics', href: '/player/analytics' },
     // { label: 'Subscription', href: '/player/subscription' },

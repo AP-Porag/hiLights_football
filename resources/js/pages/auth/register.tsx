@@ -368,6 +368,13 @@ export default function Register({ countries = [] }: Props) {
     return (
         <div className="relative min-h-screen bg-[#0D0D0D] font-sans antialiased">
             <PhoneDarkStyles />
+            {/* Back to home */}
+            <div className="px-6 pt-6">
+                <Link href="/" className="inline-flex items-center gap-2 text-sm text-[#9A9A9A] transition-colors hover:text-[#E53F01]">
+                    <ArrowLeft className="h-4 w-4" />
+                    Back
+                </Link>
+            </div>
             {/* TOP — Logo + heading */}
             <div className="px-6 py-10 text-center">
                 <Link href="/" className="inline-block">

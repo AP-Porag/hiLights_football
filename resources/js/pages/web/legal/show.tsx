@@ -138,7 +138,8 @@ export default function Show({ locale, locales, ui, contact, document: doc, rela
 
                 <section className="bg-[#F8FAFC] dark:bg-[#111111]">
                     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-                        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)_300px]">
+                        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
+                            {/* xl:grid-cols-[260px_minmax(0,1fr)_300px] */}
                             <aside className="min-w-0 print:hidden lg:sticky lg:top-24 lg:self-start">
                                 <TableOfContents
                                     title={ui.on_this_page}
@@ -190,11 +191,11 @@ export default function Show({ locale, locales, ui, contact, document: doc, rela
                                 {/* <RelatedDocuments documents={related} ui={ui} locale={locale} /> */}
                             </div>
 
-                            <aside className="hidden min-w-0 print:hidden xl:block">
+                            {/* <aside className="hidden min-w-0 print:hidden xl:block">
                                 <div className="sticky top-24">
                                     <WyscoutSidebarAd label={ui.sponsored} />
                                 </div>
-                            </aside>
+                            </aside> */}
                         </div>
                     </div>
                 </section>
