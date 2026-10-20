@@ -161,10 +161,10 @@ function DobCalendar({ value, onSelect }: { value?: Date; onSelect: (d: Date) =>
                                 selected
                                     ? 'bg-[#E53F01] font-semibold text-[#0D0D0D]'
                                     : disabled
-                                      ? 'pointer-events-none text-[#3A3A3A]'
-                                      : todayCell
-                                        ? 'font-semibold text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]'
-                                        : 'text-[#F5F5F5] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]',
+                                        ? 'pointer-events-none text-[#3A3A3A]'
+                                        : todayCell
+                                            ? 'font-semibold text-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]'
+                                            : 'text-[#F5F5F5] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]',
                             ].join(' ')}
                         >
                             {d.getDate()}
@@ -435,14 +435,14 @@ export default function Register({ countries = [] }: Props) {
                                     Registering as {selectedRoleObj.title}
                                 </span>
                             </div>
-                            <button
+                            {/* <button
                                 type="button"
                                 onClick={() => setStep(0)}
                                 className="inline-flex items-center gap-1 text-xs font-semibold text-[#E53F01] hover:underline"
                             >
                                 <ArrowLeft className="h-3.5 w-3.5" />
                                 Change
-                            </button>
+                            </button> */}
                         </div>
                         {/* Full Name */}
                         <div className="mb-4">
