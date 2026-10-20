@@ -1825,121 +1825,121 @@ export default function PlayerDashboard() {
                     </div>
                     {/* right side */}
                     <div className="mx-auto w-full max-w-[26.25rem] mb-20 lg:mb-16">
-                        <div ref={cardRef} className="w-full border border-gray-600 rounded-[1rem] bg-black">
-                            <div className="overflow-hidden text-white">
-                                <div className="flex items-center justify-between">
-                                    <div className="pl-3 sm:pl-4">
-                                        <img src="/images/logo/final_logo.png" alt="new-logo" className="w-[7.8125rem] sm:w-[10.625rem]" />
-                                    </div>
-                                    <div className="-translate-x-[15%] sm:-translate-x-[30%] translate-y-[20%]">
-                                        <h2 className="text-center font-bold uppercase text-[0.6875rem] sm:text-[0.875rem]">MEMBER CARD</h2>
-                                        <p className="text-center text-[0.5rem] sm:text-[0.625rem] font-semibold text-[#E53F01] uppercase">Official Member</p>
-                                        <svg width="130" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />
-                                            <path d="M90 4L92.35 9.15L98 9.8L94 13.6L95.2 19L90 16L84.8 19L86 13.6L82 9.8L87.65 9.15L90 4Z" fill="#F97316" />
-                                            <line x1="110" y1="12" x2="170" y2="12" stroke="#6B7280" strokeWidth="1" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div className="relative flex gap-2 sm:gap-4 pl-4 pt-2 border-b-1 border-gray-400">
-                                    <div className="h-[10rem] w-[5.9375rem] sm:h-[13.125rem] sm:w-[8.125rem] mb-3">
-                                        <img src={auth?.user?.player_profile?.photo_url || '/images/img/placeholder.webp'} alt="player" className="h-full w-full rounded-[0.625rem] sm:rounded-[0.75rem] border-1 border-gray-400" />
-                                    </div>
-                                    <div>
-                                        <div className="relative z-10">
-                                            <h3 className="mt-2 text-[0.75rem] sm:mt-4 sm:text-[1rem] font-bold uppercase">{auth?.user?.name}</h3>
-                                            <div className="absolute mt-2 h-[0.0625rem] bg-[#E53F01] w-[80%] sm:w-[110%]"></div>
-                                        </div>
-                                        <div className="mt-6 space-y-1">
-                                            <div className="flex items-center">
-                                                <User className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
-                                                <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">ID:<br /><span className="text-white">{auth?.user?.player_profile?.player_id}</span></p>
-                                            </div>
-                                            <div className="flex items-center">
-                                                <CalendarDays className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
-                                                <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">DATE OF BIRTH:<br /><span className="text-white">{auth?.user?.dob && new Date(auth?.user?.dob).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></p>
-                                            </div>
+                        {/*<div ref={cardRef} className="w-full border border-gray-600 rounded-[1rem] bg-black">*/}
+                        {/*    <div className="overflow-hidden text-white">*/}
+                        {/*        <div className="flex items-center justify-between">*/}
+                        {/*            <div className="pl-3 sm:pl-4">*/}
+                        {/*                <img src="/images/logo/final_logo.png" alt="new-logo" className="w-[7.8125rem] sm:w-[10.625rem]" />*/}
+                        {/*            </div>*/}
+                        {/*            <div className="-translate-x-[15%] sm:-translate-x-[30%] translate-y-[20%]">*/}
+                        {/*                <h2 className="text-center font-bold uppercase text-[0.6875rem] sm:text-[0.875rem]">MEMBER CARD</h2>*/}
+                        {/*                <p className="text-center text-[0.5rem] sm:text-[0.625rem] font-semibold text-[#E53F01] uppercase">Official Member</p>*/}
+                        {/*                <svg width="130" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">*/}
+                        {/*                    <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />*/}
+                        {/*                    <path d="M90 4L92.35 9.15L98 9.8L94 13.6L95.2 19L90 16L84.8 19L86 13.6L82 9.8L87.65 9.15L90 4Z" fill="#F97316" />*/}
+                        {/*                    <line x1="110" y1="12" x2="170" y2="12" stroke="#6B7280" strokeWidth="1" />*/}
+                        {/*                </svg>*/}
+                        {/*            </div>*/}
+                        {/*        </div>*/}
+                        {/*        <div className="relative flex gap-2 sm:gap-4 pl-4 pt-2 border-b-1 border-gray-400">*/}
+                        {/*            <div className="h-[10rem] w-[5.9375rem] sm:h-[13.125rem] sm:w-[8.125rem] mb-3">*/}
+                        {/*                <img src={auth?.user?.player_profile?.photo_url || '/images/img/placeholder.webp'} alt="player" className="h-full w-full rounded-[0.625rem] sm:rounded-[0.75rem] border-1 border-gray-400" />*/}
+                        {/*            </div>*/}
+                        {/*            <div>*/}
+                        {/*                <div className="relative z-10">*/}
+                        {/*                    <h3 className="mt-2 text-[0.75rem] sm:mt-4 sm:text-[1rem] font-bold uppercase">{auth?.user?.name}</h3>*/}
+                        {/*                    <div className="absolute mt-2 h-[0.0625rem] bg-[#E53F01] w-[80%] sm:w-[110%]"></div>*/}
+                        {/*                </div>*/}
+                        {/*                <div className="mt-6 space-y-1">*/}
+                        {/*                    <div className="flex items-center">*/}
+                        {/*                        <User className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />*/}
+                        {/*                        <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">ID:<br /><span className="text-white">{auth?.user?.player_profile?.player_id}</span></p>*/}
+                        {/*                    </div>*/}
+                        {/*                    <div className="flex items-center">*/}
+                        {/*                        <CalendarDays className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />*/}
+                        {/*                        <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">DATE OF BIRTH:<br /><span className="text-white">{auth?.user?.dob && new Date(auth?.user?.dob).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></p>*/}
+                        {/*                    </div>*/}
 
-                                            <div className="flex items-center">
-                                                <Flag className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
-                                                <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">NATIONALITY:<br />
-                                                    <span className="text-white inline-flex flex-wrap items-center gap-1">
-                                                        {Array.isArray(auth?.user?.nationality) && auth?.user?.nationality.length > 0
-                                                            ? auth.user.nationality.map((code: string, idx: number) => (
-                                                                <span key={code} className="inline-flex items-center gap-1">
-                                                                    <ReactCountryFlag countryCode={code} svg style={{ width: '1em', height: '1em' }} />
-                                                                    <span>{getCountryName(code)}</span>
-                                                                    {idx < auth.user.nationality.length - 1 && <span>,</span>}
-                                                                </span>
-                                                            ))
-                                                            : 'Not specified'}
-                                                    </span>
-                                                </p>
-                                            </div>
-                                            <div className="flex items-center">
-                                                <MapPin className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
-                                                <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">CITY:<br /><span className="text-white">{auth?.user?.player_profile?.birth_city || 'N/A'}</span></p>
-                                            </div>
-                                        </div>
-                                        <div className="absolute right-0 bottom-0 z-0">
-                                            <img src="/images/img/orange-img.png" alt="" className="w-[3.125rem] sm:w-[3.75rem]" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="bg-[#191917] p-4 sm:p-6 text-white">
-                                <div className="grid gap-3 sm:gap-6 grid-cols-2">
-                                    <div className="relative">
-                                        <div className="absolute top-0 -right-4 w-[0.0625rem] h-full border-r border-white/10"></div>
-                                        <h2 className="mb-2 text-[0.625rem] font-bold text-[#f4620c] uppercase">Player Info</h2>
-                                        <div className="space-y-2">
-                                            {playerInfo.map((item, index) => (
-                                                <div key={index} className="flex items-center justify-between border-b border-white/10 pb-4 last:border-b-0">
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="text-[#d2d2d2]">{item.icon}</span>
-                                                        <span className="text-[0.5rem] pr-2 text-[#d2d2d2] uppercase">{item.label}</span>
-                                                    </div>
-                                                    <span className="text-[0.4375rem] sm:text-[0.5rem] font-medium text-white uppercase">{item.value}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div className="pl-4 sm:pl-3">
-                                        <h2 className="text-[0.625rem] font-bold text-[#E53F01] uppercase">Scan To View Football Identity</h2>
-                                        <p className="mt-1 mb-6 text-[0.5rem] text-[#f1f1f1] uppercase">Open Your Camera And Scan</p>
-                                        <div className="w-fit rounded-[0.5rem] sm:rounded-xl border-2 sm:border-[3px] border-[#E53F01] bg-white sm:p-3 p-2">
-                                            <QRCodeSVG
-                                                value={`${typeof window !== 'undefined' ? window.location.origin : ''}/player/profile/${auth?.user?.slug}`}
-                                                size={90}
-                                                level="M"
-                                                bgColor="#ffffff"
-                                                fgColor="#000000"
-                                                className="h-[4.375rem] w-[4.375rem] sm:h-[5.625rem] sm:w-[5.625rem]"
-                                            />
-                                        </div>
-                                        <button className="mt-2 flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#E53F01]">
-                                            <span className=" text-black pr-1"><Smartphone className="h-6 w-4" /></span>
-                                            <span className="text-left text-[0.375rem] sm:text-[0.5rem] leading-tight">VIEW FULL IDENTITY, VIDEOS,<br />STATS AND ACHIEVEMENTS</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex justify-between items-center relative w-full -mt-2  border-t-1 border-gray-600 p-3 sm:p-6 bg-[url('/images/img/layer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[1rem] rounded-br-[1rem]">
-                                <p className=" flex justify-between items-center text-[0.4375rem] sm:text-[0.5rem] -ml-3 text-gray-300 pl-1">
-                                    <Shield className="w-6 h-6 " />
-                                    <span className="pl-2">THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br className="hidden sm:block" />MEMBER OF HILIGHTS FOOTBALL PLATFORM.</span>
-                                </p>
-                                <p className="text-[0.375rem] sm:text-[0.5rem] text-white font-bold translate-x-[0.3125rem] sm:translate-x-[10%]">WWW.HILIGHTSFOOTBALL.COM</p>
-                                <div className="absolute -bottom-16 left-0 flex justify-between w-full">
-                                    <button className="capitalize flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[1rem] cursor-pointer text-[0.625rem] transition-all hover:bg-[#E53F01]" onClick={() => setShareOpen(true)}>
-                                        <Share2 className="mr-2 w-[0.625rem] h-[0.625rem] sm:h-[0.75rem]" /> Share full football identity
-                                    </button>
-                                    <button onClick={downloadCard} className="capitalize cursor-pointer flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[0.625rem] transition-all">
-                                        <Download className="mr-2 w-[0.625rem] h-[0.625rem] sm:w-[0.75rem] sm:h-[0.75rem]" /> download member card
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        {/*                    <div className="flex items-center">*/}
+                        {/*                        <Flag className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />*/}
+                        {/*                        <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">NATIONALITY:<br />*/}
+                        {/*                            <span className="text-white inline-flex flex-wrap items-center gap-1">*/}
+                        {/*                                {Array.isArray(auth?.user?.nationality) && auth?.user?.nationality.length > 0*/}
+                        {/*                                    ? auth.user.nationality.map((code: string, idx: number) => (*/}
+                        {/*                                        <span key={code} className="inline-flex items-center gap-1">*/}
+                        {/*                                            <ReactCountryFlag countryCode={code} svg style={{ width: '1em', height: '1em' }} />*/}
+                        {/*                                            <span>{getCountryName(code)}</span>*/}
+                        {/*                                            {idx < auth.user.nationality.length - 1 && <span>,</span>}*/}
+                        {/*                                        </span>*/}
+                        {/*                                    ))*/}
+                        {/*                                    : 'Not specified'}*/}
+                        {/*                            </span>*/}
+                        {/*                        </p>*/}
+                        {/*                    </div>*/}
+                        {/*                    <div className="flex items-center">*/}
+                        {/*                        <MapPin className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />*/}
+                        {/*                        <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">CITY:<br /><span className="text-white">{auth?.user?.player_profile?.birth_city || 'N/A'}</span></p>*/}
+                        {/*                    </div>*/}
+                        {/*                </div>*/}
+                        {/*                <div className="absolute right-0 bottom-0 z-0">*/}
+                        {/*                    <img src="/images/img/orange-img.png" alt="" className="w-[3.125rem] sm:w-[3.75rem]" />*/}
+                        {/*                </div>*/}
+                        {/*            </div>*/}
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="bg-[#191917] p-4 sm:p-6 text-white">*/}
+                        {/*        <div className="grid gap-3 sm:gap-6 grid-cols-2">*/}
+                        {/*            <div className="relative">*/}
+                        {/*                <div className="absolute top-0 -right-4 w-[0.0625rem] h-full border-r border-white/10"></div>*/}
+                        {/*                <h2 className="mb-2 text-[0.625rem] font-bold text-[#f4620c] uppercase">Player Info</h2>*/}
+                        {/*                <div className="space-y-2">*/}
+                        {/*                    {playerInfo.map((item, index) => (*/}
+                        {/*                        <div key={index} className="flex items-center justify-between border-b border-white/10 pb-4 last:border-b-0">*/}
+                        {/*                            <div className="flex items-center gap-2">*/}
+                        {/*                                <span className="text-[#d2d2d2]">{item.icon}</span>*/}
+                        {/*                                <span className="text-[0.5rem] pr-2 text-[#d2d2d2] uppercase">{item.label}</span>*/}
+                        {/*                            </div>*/}
+                        {/*                            <span className="text-[0.4375rem] sm:text-[0.5rem] font-medium text-white uppercase">{item.value}</span>*/}
+                        {/*                        </div>*/}
+                        {/*                    ))}*/}
+                        {/*                </div>*/}
+                        {/*            </div>*/}
+                        {/*            <div className="pl-4 sm:pl-3">*/}
+                        {/*                <h2 className="text-[0.625rem] font-bold text-[#E53F01] uppercase">Scan To View Football Identity</h2>*/}
+                        {/*                <p className="mt-1 mb-6 text-[0.5rem] text-[#f1f1f1] uppercase">Open Your Camera And Scan</p>*/}
+                        {/*                <div className="w-fit rounded-[0.5rem] sm:rounded-xl border-2 sm:border-[3px] border-[#E53F01] bg-white sm:p-3 p-2">*/}
+                        {/*                    <QRCodeSVG*/}
+                        {/*                        value={`${typeof window !== 'undefined' ? window.location.origin : ''}/player/profile/${auth?.user?.slug}`}*/}
+                        {/*                        size={90}*/}
+                        {/*                        level="M"*/}
+                        {/*                        bgColor="#ffffff"*/}
+                        {/*                        fgColor="#000000"*/}
+                        {/*                        className="h-[4.375rem] w-[4.375rem] sm:h-[5.625rem] sm:w-[5.625rem]"*/}
+                        {/*                    />*/}
+                        {/*                </div>*/}
+                        {/*                <button className="mt-2 flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#E53F01]">*/}
+                        {/*                    <span className=" text-black pr-1"><Smartphone className="h-6 w-4" /></span>*/}
+                        {/*                    <span className="text-left text-[0.375rem] sm:text-[0.5rem] leading-tight">VIEW FULL IDENTITY, VIDEOS,<br />STATS AND ACHIEVEMENTS</span>*/}
+                        {/*                </button>*/}
+                        {/*            </div>*/}
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="flex justify-between items-center relative w-full -mt-2  border-t-1 border-gray-600 p-3 sm:p-6 bg-[url('/images/img/layer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[1rem] rounded-br-[1rem]">*/}
+                        {/*        <p className=" flex justify-between items-center text-[0.4375rem] sm:text-[0.5rem] -ml-3 text-gray-300 pl-1">*/}
+                        {/*            <Shield className="w-6 h-6 " />*/}
+                        {/*            <span className="pl-2">THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br className="hidden sm:block" />MEMBER OF HILIGHTS FOOTBALL PLATFORM.</span>*/}
+                        {/*        </p>*/}
+                        {/*        <p className="text-[0.375rem] sm:text-[0.5rem] text-white font-bold translate-x-[0.3125rem] sm:translate-x-[10%]">WWW.HILIGHTSFOOTBALL.COM</p>*/}
+                        {/*        <div className="absolute -bottom-16 left-0 flex justify-between w-full">*/}
+                        {/*            <button className="capitalize flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[1rem] cursor-pointer text-[0.625rem] transition-all hover:bg-[#E53F01]" onClick={() => setShareOpen(true)}>*/}
+                        {/*                <Share2 className="mr-2 w-[0.625rem] h-[0.625rem] sm:h-[0.75rem]" /> Share full football identity*/}
+                        {/*            </button>*/}
+                        {/*            <button onClick={downloadCard} className="capitalize cursor-pointer flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[0.625rem] transition-all">*/}
+                        {/*                <Download className="mr-2 w-[0.625rem] h-[0.625rem] sm:w-[0.75rem] sm:h-[0.75rem]" /> download member card*/}
+                        {/*            </button>*/}
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                     </div>
                 </section>
                 {/* AD ZONE */}
