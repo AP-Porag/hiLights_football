@@ -1,7 +1,28 @@
 import { PublicFooter } from '@/components/public/PublicFooter';
 import PublicNavbar from '@/components/public/PublicNavbar';
 import { Link } from '@inertiajs/react';
-import { ArrowRight, CheckCircle2, Eye, Shield, Search, Users, Zap } from 'lucide-react';
+import { ArrowRight, BarChart3, CheckCircle2, Eye, Globe, Shield, Search, Target, Users, Zap } from 'lucide-react';
+
+const discoveryCards = [
+    {
+        icon: Target,
+        title: 'Data-Driven Discovery',
+        description:
+            'Every player football identity is backed by verified match footage, performance metrics, and standardised position-based analytics scouts can trust.',
+    },
+    {
+        icon: Globe,
+        title: 'Global Reach, Local Roots',
+        description:
+            'From São Paulo academies to Lagos training grounds, we surface talent from leagues and regions that traditional scouting networks routinely overlook.',
+    },
+    {
+        icon: BarChart3,
+        title: 'Transparent Performance',
+        description:
+            'No agents inflating numbers. No coaches overselling. Just match-verified data, video evidence, and the player’s own development journey.',
+    },
+];
 
 const visionCards = [
     {
@@ -75,8 +96,17 @@ export default function About() {
 
             <main className="pt-16 lg:pt-20 2xl:pt-24">
                 {/* HERO — orange band removed at the client's request */}
-                <section className="bg-black px-6 py-20 sm:px-10 lg:px-16 lg:py-24 2xl:py-28 dark:bg-[#0D0D0D]">
-                    <div className="mx-auto max-w-[68.75rem] text-center 2xl:max-w-[81.25rem]">
+                <section
+                    className="relative overflow-hidden bg-black px-6 py-20 sm:px-10 lg:px-16 lg:py-24 2xl:py-28 dark:bg-[#0D0D0D]"
+                    style={{
+                        backgroundImage: "url('/images/img/about-1.jpeg')",
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        backgroundSize: 'cover',
+                    }}
+                >
+                    <div aria-hidden="true" className="absolute inset-0 bg-black/75 lg:bg-black/70" />
+                    <div className="relative z-10 mx-auto max-w-[68.75rem] text-center 2xl:max-w-[81.25rem]">
                         <div className="mb-6 text-xs font-semibold tracking-[0.2em] text-white/60 uppercase 2xl:text-sm">
                             About HiLights Football
                         </div>
@@ -141,6 +171,33 @@ export default function About() {
                                 HiLights Football — Connecting talents, people and opportunities.
                             </p>
                         </div>
+                    </div>
+                </section>
+
+                {/* WHY HILIGHTS */}
+                <section className="bg-white px-6 pb-16 sm:px-10 lg:px-16 lg:pb-20 2xl:pb-24 dark:bg-[#0D0D0D]">
+                    <div className="mx-auto grid max-w-[68.75rem] gap-6 lg:grid-cols-3 2xl:max-w-[81.25rem] 2xl:gap-8">
+                        {discoveryCards.map((card) => {
+                            const Icon = card.icon;
+                            return (
+                                <div
+                                    key={card.title}
+                                    className="rounded-2xl border border-[#E2E8F0] bg-white p-6 sm:p-8 2xl:p-10 dark:border-[#2A2A2A] dark:bg-[#161616]"
+                                >
+                                    <div className="flex items-start gap-4 2xl:gap-5">
+                                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FFF3EB] 2xl:h-14 2xl:w-14 dark:bg-[rgba(255,107,0,0.12)]">
+                                            <Icon className="h-6 w-6 text-[#E53F01] 2xl:h-7 2xl:w-7" strokeWidth={2} />
+                                        </div>
+                                        <div className="min-w-0">
+                                            <h3 className="text-xl font-bold text-[#0F172A] 2xl:text-2xl dark:text-[#F5F5F5]">{card.title}</h3>
+                                            <p className="mt-3 text-sm leading-relaxed text-[#475569] lg:text-base 2xl:text-lg dark:text-[#9A9A9A]">
+                                                {card.description}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </section>
 
@@ -218,7 +275,7 @@ export default function About() {
                                 </ul>
                                 <Link
                                     href="/register"
-                                    className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#E53F01] px-6 py-3.5 text-center text-sm font-bold tracking-wide text-white uppercase transition-colors hover:bg-[#E53F01] 2xl:py-4 2xl:text-base"
+                                    className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#E53F01] px-6 py-3.5 text-center text-sm font-bold tracking-wide text-white uppercase transition-colors hover:bg-[#CC5500] 2xl:py-4 2xl:text-base"
                                 >
                                     Create your football identity for free
                                     <ArrowRight className="h-4 w-4 shrink-0 2xl:h-5 2xl:w-5" />
@@ -257,7 +314,7 @@ export default function About() {
                                 </ul>
                                 <Link
                                     href="/request-access"
-                                    className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#E53F01] px-6 py-3.5 text-center text-sm font-bold tracking-wide text-white uppercase transition-colors hover:bg-[#E53F01] 2xl:py-4 2xl:text-base"
+                                    className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#E53F01] px-6 py-3.5 text-center text-sm font-bold tracking-wide text-white uppercase transition-colors hover:bg-[#CC5500] 2xl:py-4 2xl:text-base"
                                 >
                                     Request access for scouts, agents or clubs
                                     <ArrowRight className="h-4 w-4 shrink-0 2xl:h-5 2xl:w-5" />
@@ -280,7 +337,7 @@ export default function About() {
                         <div className="mt-8 2xl:mt-10">
                             <Link
                                 href="/register"
-                                className="inline-flex w-full items-center justify-center gap-3 rounded-lg bg-[#E53F01] px-7 py-4 text-sm font-bold tracking-wide text-white uppercase transition-colors hover:bg-[#E53F01] sm:w-auto sm:px-12 2xl:py-5 2xl:text-base"
+                                className="inline-flex w-full items-center justify-center gap-3 rounded-lg bg-[#E53F01] px-7 py-4 text-sm font-bold tracking-wide text-white uppercase transition-colors hover:bg-[#CC5500] sm:w-auto sm:px-12 2xl:py-5 2xl:text-base"
                             >
                                 Get started for free
                                 <ArrowRight className="h-4 w-4 shrink-0 2xl:h-5 2xl:w-5" />

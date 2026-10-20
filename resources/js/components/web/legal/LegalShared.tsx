@@ -143,13 +143,13 @@ interface LegalHeroProps {
 
 export function LegalHero({ eyebrow, title, summary, breadcrumb, aside, children }: LegalHeroProps) {
     return (
-        <section className="bg-[#E53F01] pt-20">
+        <section className="pt-20">
             <div className="mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-6 lg:px-8 lg:pb-16 lg:pt-14">
                 {breadcrumb && <div className="mb-6 print:hidden">{breadcrumb}</div>}
                 <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
                     <div className="max-w-3xl">
                         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/80">{eyebrow}</p>
-                        <h1 className="mt-3 font-display text-5xl font-bold uppercase leading-none tracking-tight text-white">
+                        <h1 className="mt-3 font-display text-4xl font-bold uppercase leading-none tracking-tight text-white">
                             {title}
                         </h1>
                         <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/90">{summary}</p>

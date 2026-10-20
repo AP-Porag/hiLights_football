@@ -145,8 +145,17 @@ export default function RequestAccess({ countries = [] }: Props) {
 
             <main className="pt-16">
                 {/* HEADER BAND */}
-                <section className="bg-[#E53F01] py-16">
-                    <div className="max-w-[56.25rem] mx-auto px-6 text-center">
+                <section
+                    className="relative overflow-hidden bg-[#E53F01] py-16"
+                    style={{
+                        backgroundImage: "url('/images/img/request-access-1.jpeg')",
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        backgroundSize: 'cover',
+                    }}
+                >
+                    <div aria-hidden="true" className="absolute inset-0 bg-black/65 lg:bg-black/60" />
+                    <div className="relative z-10 max-w-[56.25rem] mx-auto px-6 text-center">
                         <h1 className="font-display font-bold text-4xl sm:text-5xl text-white tracking-tight leading-tight">
                             Request Access
                         </h1>

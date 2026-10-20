@@ -3,7 +3,7 @@ import PublicNavbar from '@/components/public/PublicNavbar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Link, useForm } from '@inertiajs/react';
-import { CheckCircle2, Clock, Instagram, Linkedin, Mail, Send, Twitter, Youtube } from 'lucide-react';
+import { CheckCircle2, Clock, Instagram, Linkedin, Mail, Send, Twitter, Youtube, Facebook, InstagramIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
 // TODO: Replace with usePage().props for any server-driven content
@@ -25,8 +25,8 @@ const faqs = [
         a: 'Absolutely. We offer placement across player football identities, search results, video pages, and editorial content. Select "Advertising" in the subject dropdown above and our partnerships team will share our media kit and rate card.',
     },
     {
-        q: 'What video formats and file sizes do you support?',
-        a: 'We accept MP4, MOV, and AVI files up to 2 GB per clip. Videos are automatically transcoded to multiple resolutions for adaptive streaming. We recommend uploading in 1080p or higher for the best presentation in scout reviews.',
+        q: 'What video links do you support?',
+        a: 'We only accept YouTube and Vimeo links — there are no direct file uploads. Upload your highlights to YouTube or Vimeo, then paste the link into your football identity. Make sure the video is set to public or unlisted so scouts can watch it, and we recommend 1080p or higher for the best presentation in scout reviews.',
     },
 ];
 
@@ -59,10 +59,19 @@ export default function Contact() {
         <div className="min-h-screen bg-white dark:bg-[#0D0D0D]">
             <PublicNavbar />
 
-            <main className="pt-16">
+            <main className="pt-16 xl:pt-20 2xl:pt-24">
                 {/* ============ HEADER BAND ============ */}
-                <section className="bg-[#E53F01] py-16">
-                    <div className="mx-auto max-w-[68.75rem] px-6 text-center">
+                <section
+                    className="relative overflow-hidden bg-[#E53F01] py-16"
+                    style={{
+                        backgroundImage: "url('/images/img/contact-1.jpeg')",
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        backgroundSize: 'cover',
+                    }}
+                >
+                    <div aria-hidden="true" className="absolute inset-0 bg-black/65 lg:bg-black/60" />
+                    <div className="relative z-10 mx-auto max-w-[68.75rem] px-6 text-center">
                         <h1 className="font-display text-4xl leading-tight font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
                             Contact HiLights Football
                         </h1>
@@ -172,7 +181,7 @@ export default function Contact() {
 
                                 <p className="text-center font-sans text-xs text-[#94A3B8] dark:text-[#555555]">
                                     By submitting, you agree to our{' '}
-                                    <Link href="/privacy" className="text-[#E53F01] hover:underline">
+                                    <Link href="/legal/terms-and-conditions" className="text-[#E53F01] hover:underline">
                                         Privacy Policy
                                     </Link>
                                     .
@@ -223,10 +232,10 @@ export default function Contact() {
                                     </p>
                                     <div className="flex gap-2">
                                         {[
-                                            { Icon: Instagram, label: 'Instagram', href: '#' },
-                                            { Icon: Twitter, label: 'Twitter', href: '#' },
-                                            { Icon: Youtube, label: 'YouTube', href: '#' },
-                                            { Icon: Linkedin, label: 'LinkedIn', href: '#' },
+                                            { Icon: Facebook, label: 'Facebook', href: 'https://www.facebook.com/share/1C7zZCAjeq/?mibextid=wwXIfr' },
+                                            { Icon: InstagramIcon, label: 'Instagram', href: 'https://www.instagram.com/hilights.football?rpxt=MTBwb3hiZXo3aG1pNA%3D%3D&utm_source=qr' },
+                                            // { Icon: Youtube, label: 'YouTube', href: '#' },
+                                            // { Icon: Linkedin, label: 'LinkedIn', href: '#' },
                                         ].map(({ Icon, label, href }) => (
                                             <a
                                                 key={label}
@@ -244,15 +253,15 @@ export default function Contact() {
                             </div>
 
                             {/* AD — ScoutPro */}
-                            <div className="relative h-[17.5rem] overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white dark:border-[#2A2A2A] dark:bg-[#161616]">
+                            {/* <div className="relative h-[17.5rem] overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white dark:border-[#2A2A2A] dark:bg-[#161616]">
                                 <div className="absolute inset-0 flex flex-col justify-between bg-gradient-to-br from-[#0A1628] via-[#0F2347] to-[#0A1628] p-6">
-                                    {/* Brand top */}
+
                                     <div></div>
 
-                                    {/* Stats + CTA */}
+
                                     <div></div>
                                 </div>
-                            </div>
+                            </div> */}
                         </aside>
                     </div>
                 </section>

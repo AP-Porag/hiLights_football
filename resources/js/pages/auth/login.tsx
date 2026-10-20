@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useForm, usePage } from '@inertiajs/react';
-import { Eye, EyeOff, AlertCircle, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, AlertCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -142,6 +142,15 @@ export default function Login() {
             {/* RIGHT PANEL — Login form */}
             <div className="flex items-center justify-center p-6 sm:p-8 bg-[#0D0D0D] min-h-screen lg:min-h-0">
                 <div className="w-full max-w-md">
+                    {/* Back to home */}
+                    <Link
+                        href="/"
+                        className="inline-flex items-center gap-2 mb-6 text-sm text-[#9A9A9A] hover:text-[#E53F01] transition-colors"
+                    >
+                        <ArrowLeft className="h-4 w-4" />
+                        Back
+                    </Link>
+
                     {/* Mobile-only logo */}
                     <div className="lg:hidden flex justify-center mb-8">
                         <Link href="/">
@@ -312,14 +321,14 @@ export default function Login() {
                             href="/terms"
                             className="text-[#9A9A9A] hover:text-[#E53F01] underline underline-offset-2"
                         >
-                            Terms and Privacy Policy
-                        {/*</Link>{' '}*/}
-                        {/*{' '}*/}
-                        {/*<Link*/}
-                        {/*    href="/privacy"*/}
-                        {/*    className="text-[#9A9A9A] hover:text-[#E53F01] underline underline-offset-2"*/}
-                        {/*>*/}
-
+                            Terms
+                        </Link>{' '}
+                        and{' '}
+                        <Link
+                            href="/terms"
+                            className="text-[#9A9A9A] hover:text-[#E53F01] underline underline-offset-2"
+                        >
+                            Privacy Policy
                         </Link>
                         .
                     </p>

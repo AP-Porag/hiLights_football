@@ -339,10 +339,10 @@ const HomeTwo = () => {
                 <section className="relative w-full overflow-hidden bg-black text-white">
                     {/* Collage sits behind the copy on small screens, beside it from lg */}
                     <img
-                        src="/images/img/professionals.jpg"
+                        src="/images/img/professionals.jpeg"
                         alt="Coaches, scouts and agents at work around the game"
                         loading="lazy"
-                        className="absolute inset-y-0 right-0 h-full w-full object-cover object-right lg:w-3/5"
+                        className="absolute inset-y-0 right-0 h-full w-full object-cover object-right lg:w-3/5 lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,rgba(0,0,0,0.35)_18%,black_45%)] lg:[mask-image:linear-gradient(to_right,transparent_0%,rgba(0,0,0,0.35)_18%,black_45%)]"
                     />
                     <span aria-hidden="true" className="absolute inset-0 bg-black/60 lg:hidden" />
 
