@@ -165,7 +165,7 @@ function StarRating({ value, onChange }: StarRatingProps) {
     );
 }
 
-export default function NewDetail() {
+export default function Detail() {
     const { player } = usePage<{ player: any }>().props;
 
     // Minor check — based on users.dob
@@ -540,11 +540,14 @@ export default function NewDetail() {
                         </div>
                         {/* Recent Matches */}
                         {(() => {
-                            // Only goalkeeper (e.g. ["GK"]) → hide Goals & Assists
-                            const isGoalkeeperOnly =
-                                Array.isArray(player?.positions) &&
-                                player.positions.length === 1 &&
-                                String(player.positions[0]).trim().toUpperCase() === 'GK';
+                            // Main position GK → Saves. GK er sathe onno position thakle Goals + Assists-o.
+                            const positions: string[] = Array.isArray(player?.positions) ? player.positions : [];
+                            const isGoalkeeper = positions.length > 0 && String(positions[0]).trim().toUpperCase() === 'GK';
+                            const isGoalkeeperOnly = isGoalkeeper && positions.length === 1;
+                            const showSaves = isGoalkeeper;
+                            const showGoals = !isGoalkeeperOnly;
+                            const showAssists = !isGoalkeeperOnly;
+                            const matchColSpan = 3 + Number(showSaves) + Number(showGoals) + Number(showAssists);
 
                             const allMatches = (player.matches ?? []).filter((match: any) => match?.home);
 
@@ -564,19 +567,19 @@ export default function NewDetail() {
                                 (acc: any, m: any) => ({
                                     games: acc.games + 1,
                                     goals: acc.goals + (Number(m.goals) || 0),
+                                    saves: acc.saves + (Number(m.saves) || 0),
                                     assists: acc.assists + (Number(m.assists) || 0),
                                     minutes: acc.minutes + (Number(String(m.minutes ?? '').replace(/\D/g, '')) || 0),
                                 }),
-                                { games: 0, goals: 0, assists: 0, minutes: 0 },
+                                { games: 0, goals: 0, saves: 0, assists: 0, minutes: 0 },
                             );
 
-                            const statColumns = isGoalkeeperOnly
-                                ? [{ label: 'Minutes', value: totals.minutes }]
-                                : [
-                                    { label: 'Goals', value: totals.goals },
-                                    { label: 'Assists', value: totals.assists },
-                                    { label: 'Minutes', value: totals.minutes },
-                                ];
+                            const statColumns = [
+                                ...(showSaves ? [{ label: 'Saves', value: totals.saves }] : []),
+                                ...(showGoals ? [{ label: 'Goals', value: totals.goals }] : []),
+                                ...(showAssists ? [{ label: 'Assists', value: totals.assists }] : []),
+                                { label: 'Minutes', value: totals.minutes },
+                            ];
 
                             return (
                                 <div className="overflow-hidden rounded-lg border border-[#152538] bg-[#07111d] p-4 md:p-6">
@@ -615,8 +618,9 @@ export default function NewDetail() {
                                                 <tr className="border-b border-gray-300/10 text-left text-[0.75rem] text-gray-300 uppercase md:text-sm">
                                                     <th className="pb-4 whitespace-nowrap">Date</th>
                                                     <th className="pb-4">Match</th>
-                                                    {!isGoalkeeperOnly && <th className="pb-4 text-center">Goals</th>}
-                                                    {!isGoalkeeperOnly && <th className="px-2 pb-4 text-center">Assists</th>}
+                                                    {showSaves && <th className="pb-4 text-center">Saves</th>}
+                                                    {showGoals && <th className="pb-4 text-center">Goals</th>}
+                                                    {showAssists && <th className="px-2 pb-4 text-center">Assists</th>}
                                                     <th className="pb-4 text-center">Minutes</th>
                                                 </tr>
                                             </thead>
@@ -636,14 +640,15 @@ export default function NewDetail() {
                                                                 <span>{match.away}</span>
                                                             </div>
                                                         </td>
-                                                        {!isGoalkeeperOnly && <td className="py-3 text-center">{match.goals}</td>}
-                                                        {!isGoalkeeperOnly && <td className="py-3 text-center">{match.assists}</td>}
+                                                        {showSaves && <td className="py-3 text-center">{match.saves}</td>}
+                                                        {showGoals && <td className="py-3 text-center">{match.goals}</td>}
+                                                        {showAssists && <td className="py-3 text-center">{match.assists}</td>}
                                                         <td className="py-3 text-center">{match.minutes}</td>
                                                     </tr>
                                                 ))}
                                                 {visibleMatches.length === 0 && (
                                                     <tr>
-                                                        <td colSpan={isGoalkeeperOnly ? 3 : 5} className="py-6 text-center text-sm text-gray-400">
+                                                        <td colSpan={matchColSpan} className="py-6 text-center text-sm text-gray-400">
                                                             No matches added yet.
                                                         </td>
                                                     </tr>

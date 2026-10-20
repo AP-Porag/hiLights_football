@@ -238,6 +238,7 @@ class PlayerProfileController extends Controller
             'club_history.*.country'     => ['nullable', 'string', 'size:2'],
             'transfer_history'           => ['sometimes', 'array'],
             'transfer_history.*.year'    => ['nullable'],
+            'club_history.*.year_type'   => ['nullable', 'string', 'in:european,brazilian'],
             'transfer_history.*.club'    => ['nullable', 'string', 'max:255'],
             'transfer_history.*.country' => ['nullable', 'string', 'size:2'],
             'transfer_history.*.logo'    => ['nullable', 'string', 'max:255'],
@@ -254,6 +255,7 @@ class PlayerProfileController extends Controller
             'matches.*.score'            => ['nullable', 'string', 'max:20'],
             'matches.*.away'             => ['nullable', 'string', 'max:255'],
             'matches.*.goals'            => ['nullable'],
+            'matches.*.saves'            => ['nullable'],
             'matches.*.assists'          => ['nullable'],
             'matches.*.minutes'          => ['nullable', 'string', 'max:20'],
         ]);

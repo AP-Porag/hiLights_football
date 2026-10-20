@@ -63,7 +63,9 @@ import {
     Calendar,
     ChevronLeft,
     ChevronRight,
-    Save
+    Save,
+    Clock,
+    Stethoscope
 } from 'lucide-react';
 import {
     Bar,
@@ -538,6 +540,13 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
     },
 };
 
+// Ei modality gulo ekhono chalu hoyni — select korle "Coming soon" modal dekhabe
+const COMING_SOON_MODALITIES = ['Futsal', 'Beach Soccer'];
+
+// Recent Matches-er stat field gulo
+const MATCH_STAT_KEYS = ['goals', 'saves'];
+const MATCH_STAT_LABELS: Record<string, string> = { goals: 'Goals', saves: 'Saves' };
+
 const inputClass =
     'h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none';
 
@@ -548,29 +557,57 @@ function ListModal({
     onClose,
     countries,
     maxVideos = 1,
+    statFields = ['goals'],
 }: {
     configKey: string;
     initialRows: any[];
     onClose: () => void;
     countries?: any[];
     maxVideos?: number;
+    statFields?: string[];
 }) {
     const cfg = LIST_CONFIGS[configKey];
+
+    // Recent Matches-e kon stat field dekhabe — statFields decide kore (['goals'] / ['saves'] / ['saves','goals'])
+    const isMatches = configKey === 'matches';
+    const fields: FieldDef[] = isMatches
+        ? cfg.fields.flatMap((f) =>
+            f.name === 'goals' ? statFields.map((n) => ({ ...f, name: n, label: MATCH_STAT_LABELS[n] ?? n })) : [f],
+        )
+        : cfg.fields;
+    const rowEmpty: Record<string, any> = isMatches
+        ? (() => {
+            const { goals, ...rest } = cfg.empty as any;
+            return { ...rest, ...Object.fromEntries(statFields.map((n) => [n, ''])) };
+        })()
+        : cfg.empty;
+
+    // Je stat field ta ei player-er jonno dekhano hoy na, ta row theke baad — JSON porishkar thake
+    const normalizeRow = (r: any) => {
+        const merged: Record<string, any> = { ...rowEmpty, ...r };
+        if (isMatches) {
+            MATCH_STAT_KEYS.forEach((k) => {
+                if (!statFields.includes(k)) delete merged[k];
+            });
+        }
+        return merged;
+    };
+
     const [rows, setRows] = useState<any[]>(() => {
         if (configKey === 'videos') {
             const existing = initialRows.length
-                ? initialRows.map((r: any) => ({ ...cfg.empty, ...r }))
+                ? initialRows.map(normalizeRow)
                 : [];
             const total = maxVideos;
             const result = [...existing].slice(0, total);
             while (result.length < total) {
-                result.push({ ...cfg.empty });
+                result.push({ ...rowEmpty });
             }
             return result;
         }
-        if (initialRows.length) return initialRows.map((r: any) => ({ ...cfg.empty, ...r }));
-        if (cfg.defaultRows) return cfg.defaultRows.map((r: any) => ({ ...cfg.empty, ...r }));
-        return [{ ...cfg.empty }];
+        if (initialRows.length) return initialRows.map(normalizeRow);
+        if (cfg.defaultRows) return cfg.defaultRows.map(normalizeRow);
+        return [{ ...rowEmpty }];
     });
     const [saving, setSaving] = useState(false);
     const [uploadingKey, setUploadingKey] = useState<string | null>(null);
@@ -637,7 +674,7 @@ function ListModal({
         }
     };
 
-    const addRow = () => setRows([...rows, { ...cfg.empty }]);
+    const addRow = () => setRows([...rows, { ...rowEmpty }]);
     const removeRow = (i: number) => {
         if (configKey === 'videos') return;
         if (cfg.firstFixed && i === 0) return;
@@ -662,7 +699,7 @@ function ListModal({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
             <div
-                className={`w-full ${configKey === 'club_history' ? 'max-w-2xl' : 'max-w-lg'} max-h-[85vh] overflow-y-auto rounded-2xl border border-[#2A2A2A] bg-[#161616] p-4 sm:p-6`}
+                className={`w-full ${configKey === 'club_history' ? 'max-w-2xl' : configKey === 'competitions' ? 'max-w-xl' : 'max-w-lg'} max-h-[85vh] overflow-y-auto rounded-2xl border border-[#2A2A2A] bg-[#161616] p-4 sm:p-6`}
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="mb-5 flex items-center justify-between">
@@ -694,6 +731,8 @@ function ListModal({
                                             value={yearType}
                                             onChange={(e) => {
                                                 update(i, 'year_type', e.target.value);
+                                                // Format bodlale age lekha year ta onno format-e invalid — tai clear kore dao
+                                                update(i, 'year', '');
                                                 setYearErrors((prev) => ({ ...prev, [i]: '' }));
                                             }}
                                             className="h-10 w-full min-w-0 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-xs text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans"
@@ -778,7 +817,7 @@ function ListModal({
                         // Generic layout for other lists
                         rows.map((row, i) => (
                             <div key={i} className="flex flex-wrap items-end gap-2 rounded-xl border border-[#2A2A2A] bg-[#111111] p-3">
-                                {cfg.fields.map((f) => (
+                                {fields.map((f) => (
                                     <div key={f.name} className={f.type === 'date' ? 'basis-full min-w-0' : 'flex-1 min-w-[5.625rem]'}>
                                         <label className="mb-1 block text-[0.625rem] font-semibold uppercase tracking-wider text-[#94A3B8]">
                                             {f.label}
@@ -948,6 +987,7 @@ function FormModal({
     const [saving, setSaving] = useState(false);
     const [serverErrors, setServerErrors] = useState<Record<string, string>>({});
     const [openDob, setOpenDob] = useState(false);
+    const [comingSoon, setComingSoon] = useState<string | null>(null); // Futsal / Beach Soccer
     const setField = (name: string, val: any) => setValues((prev) => ({ ...prev, [name]: val }));
 
     // ── In Team Since (Month + Year) ──
@@ -1182,7 +1222,19 @@ function FormModal({
                                     </div>
                                 )}
                                 {f.type === 'select' && (
-                                    <select value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass}>
+                                    <select
+                                        value={values[f.name] ?? ''}
+                                        onChange={(e) => {
+                                            const v = e.target.value;
+                                            // Futsal / Beach Soccer ekhono chalu hoyni — modal dekhao, value bodlio na
+                                            if (f.name === 'modality' && COMING_SOON_MODALITIES.includes(v)) {
+                                                setComingSoon(v);
+                                                return;
+                                            }
+                                            setField(f.name, v);
+                                        }}
+                                        className={inputClass}
+                                    >
                                         <option value="">Select...</option>
                                         {f.options!.map((o) => (
                                             <option key={o} value={o}>{o}</option>
@@ -1364,6 +1416,37 @@ function FormModal({
                     </Button>
                 </div>
             </div>
+
+            {/* COMING SOON — Futsal / Beach Soccer */}
+            {comingSoon && (
+                <div
+                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-4"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setComingSoon(null);
+                    }}
+                >
+                    <div
+                        className="w-full max-w-sm rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 text-center sm:p-8"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[rgba(255,107,0,0.12)]">
+                            <Clock className="h-7 w-7 text-[#E53F01]" />
+                        </div>
+                        <h3 className="mt-5 text-lg font-bold text-[#F5F5F5]">Coming soon</h3>
+                        <p className="mt-2 text-sm leading-relaxed text-[#9A9A9A]">
+                            {comingSoon} is not available yet. We are working on it — for now you can continue with Football.
+                        </p>
+                        <Button
+                            type="button"
+                            onClick={() => setComingSoon(null)}
+                            className="mt-6 h-10 w-full bg-[#E53F01] text-sm font-semibold text-white hover:bg-[#E53F01]"
+                        >
+                            Got it
+                        </Button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
@@ -1395,6 +1478,7 @@ export default function PlayerDashboard() {
     const hasSubscription = !!subscription?.current_plan;
     const dateStr = formatDate();
     const [activeModal, setActiveModal] = useState<string | null>(null);
+    const [healthOpen, setHealthOpen] = useState(false);
     const [shareOpen, setShareOpen] = useState(false);
 
     // About You + Player Questionnaire — saved straight to player_profile
@@ -1501,30 +1585,47 @@ export default function PlayerDashboard() {
         (Array.isArray(pp.club_history) && pp.club_history.some((r: any) => nonEmpty(r?.club))) ||
         (Array.isArray(pp.transfer_history) && pp.transfer_history.some((r: any) => nonEmpty(r?.club)));
 
-    const completionChecks: boolean[] = [
-        nonEmpty(auth?.user?.name),
-        nonEmpty(auth?.user?.dob),
-        nonEmpty(auth?.user?.nationality),
-        nonEmpty(pp.gender),
-        nonEmpty(pp.height),
-        nonEmpty(pp.birth_city),
-        nonEmpty(pp.birth_country),
-        nonEmpty(pp.current_club),
-        nonEmpty(pp.current_club_country),
-        nonEmpty(pp.in_team_since),
-        nonEmpty(pp.agent),
-        nonEmpty(auth?.user?.whatsapp),
-        nonEmpty(pp.modality),
-        nonEmpty(pp.foot),
-        nonEmpty(pp.photo_path),
-        videoDone,
-        nonEmpty(pp.description),
-        Array.isArray(pp.positions) && pp.positions.length > 0,
-        clubHistoryDone, // ✅ এখন transfer_history-ও club_history-র সাথে হিসাব হয়
-        Array.isArray(pp.achievements) && pp.achievements.some((r: any) => nonEmpty(r?.title)),
-        Array.isArray(pp.competitions) && pp.competitions.some((r: any) => nonEmpty(r?.name)),
-        Array.isArray(pp.matches) && pp.matches.some((r: any) => nonEmpty(r?.home)),
+    // Main position GK kina — public Detail/Performance page-er same niyom
+    const playerPositions: string[] = Array.isArray(pp.positions) ? pp.positions : [];
+    const isGoalkeeper = playerPositions.length > 0 && String(playerPositions[0]).trim().toUpperCase() === 'GK';
+    const isGoalkeeperOnly = isGoalkeeper && playerPositions.length === 1;
+
+    // Shudhu GK → Saves | GK er sathe onno position → Saves + Goals | GK na → Goals
+    const matchStatFields: string[] = isGoalkeeperOnly ? ['saves'] : isGoalkeeper ? ['saves', 'goals'] : ['goals'];
+
+    // Profile health — ekhane label + check ek jaygay, tai modal ar % kokhono alada hobe na
+    const healthItems: { group: string; label: string; done: boolean; modal: string }[] = [
+        { group: 'Basic information', label: 'Full name', done: nonEmpty(auth?.user?.name), modal: 'basic_info' },
+        { group: 'Basic information', label: 'Date of birth', done: nonEmpty(auth?.user?.dob), modal: 'basic_info' },
+        { group: 'Basic information', label: 'Nationality', done: nonEmpty(auth?.user?.nationality), modal: 'basic_info' },
+        { group: 'Basic information', label: 'Gender', done: nonEmpty(pp.gender), modal: 'basic_info' },
+        { group: 'Basic information', label: 'Height', done: nonEmpty(pp.height), modal: 'basic_info' },
+        { group: 'Basic information', label: 'Birth city', done: nonEmpty(pp.birth_city), modal: 'basic_info' },
+        { group: 'Basic information', label: 'Birth country', done: nonEmpty(pp.birth_country), modal: 'basic_info' },
+        { group: 'Basic information', label: 'Current club', done: nonEmpty(pp.current_club), modal: 'basic_info' },
+        { group: 'Basic information', label: 'Club country', done: nonEmpty(pp.current_club_country), modal: 'basic_info' },
+        { group: 'Basic information', label: 'In team since', done: nonEmpty(pp.in_team_since), modal: 'basic_info' },
+        { group: 'Basic information', label: 'Agent', done: nonEmpty(pp.agent), modal: 'basic_info' },
+        { group: 'Basic information', label: 'WhatsApp number', done: nonEmpty(auth?.user?.whatsapp), modal: 'basic_info' },
+        { group: 'Basic information', label: 'About / bio', done: nonEmpty(pp.description), modal: 'basic_info' },
+        { group: 'Position & modality', label: 'Modality', done: nonEmpty(pp.modality), modal: 'position_modality' },
+        { group: 'Position & modality', label: 'Positions', done: Array.isArray(pp.positions) && pp.positions.length > 0, modal: 'position_modality' },
+        { group: 'Position & modality', label: 'Dominant foot', done: nonEmpty(pp.foot), modal: 'position_modality' },
+        { group: 'Media', label: 'Football identity photo', done: nonEmpty(pp.photo_path), modal: 'photo' },
+        { group: 'Media', label: 'Highlight video', done: videoDone, modal: 'videos' },
+        { group: 'Career', label: 'Club history', done: clubHistoryDone, modal: 'club_history' },
+        { group: 'Career', label: 'Achievements', done: Array.isArray(pp.achievements) && pp.achievements.some((r: any) => nonEmpty(r?.title)), modal: 'achievements' },
+        { group: 'Career', label: 'Competition history', done: Array.isArray(pp.competitions) && pp.competitions.some((r: any) => nonEmpty(r?.name)), modal: 'competitions' },
+        { group: 'Career', label: 'Recent matches', done: Array.isArray(pp.matches) && pp.matches.some((r: any) => nonEmpty(r?.home)), modal: 'matches' },
+        {
+            group: 'Career',
+            label: `${matchStatFields.map((n) => MATCH_STAT_LABELS[n]).join(' / ')} recorded in matches`,
+            done: Array.isArray(pp.matches) && pp.matches.some((r: any) => matchStatFields.some((n) => nonEmpty(r?.[n]))),
+            modal: 'matches',
+        },
     ];
+
+    const completionChecks: boolean[] = healthItems.map((h) => h.done);
 
     const profileComplete = Math.round(
         (completionChecks.filter(Boolean).length / completionChecks.length) * 100
@@ -1824,145 +1925,158 @@ export default function PlayerDashboard() {
                         </div> */}
                     </div>
                     {/* right side */}
-                    <div className="mx-auto w-full max-w-[26.25rem] mb-20 lg:mb-16">
-                        {/*<div ref={cardRef} className="w-full border border-gray-600 rounded-[1rem] bg-black">*/}
-                        {/*    <div className="overflow-hidden text-white">*/}
-                        {/*        <div className="flex items-center justify-between">*/}
-                        {/*            <div className="pl-3 sm:pl-4">*/}
-                        {/*                <img src="/images/logo/final_logo.png" alt="new-logo" className="w-[7.8125rem] sm:w-[10.625rem]" />*/}
-                        {/*            </div>*/}
-                        {/*            <div className="-translate-x-[15%] sm:-translate-x-[30%] translate-y-[20%]">*/}
-                        {/*                <h2 className="text-center font-bold uppercase text-[0.6875rem] sm:text-[0.875rem]">MEMBER CARD</h2>*/}
-                        {/*                <p className="text-center text-[0.5rem] sm:text-[0.625rem] font-semibold text-[#E53F01] uppercase">Official Member</p>*/}
-                        {/*                <svg width="130" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">*/}
-                        {/*                    <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />*/}
-                        {/*                    <path d="M90 4L92.35 9.15L98 9.8L94 13.6L95.2 19L90 16L84.8 19L86 13.6L82 9.8L87.65 9.15L90 4Z" fill="#F97316" />*/}
-                        {/*                    <line x1="110" y1="12" x2="170" y2="12" stroke="#6B7280" strokeWidth="1" />*/}
-                        {/*                </svg>*/}
-                        {/*            </div>*/}
-                        {/*        </div>*/}
-                        {/*        <div className="relative flex gap-2 sm:gap-4 pl-4 pt-2 border-b-1 border-gray-400">*/}
-                        {/*            <div className="h-[10rem] w-[5.9375rem] sm:h-[13.125rem] sm:w-[8.125rem] mb-3">*/}
-                        {/*                <img src={auth?.user?.player_profile?.photo_url || '/images/img/placeholder.webp'} alt="player" className="h-full w-full rounded-[0.625rem] sm:rounded-[0.75rem] border-1 border-gray-400" />*/}
-                        {/*            </div>*/}
-                        {/*            <div>*/}
-                        {/*                <div className="relative z-10">*/}
-                        {/*                    <h3 className="mt-2 text-[0.75rem] sm:mt-4 sm:text-[1rem] font-bold uppercase">{auth?.user?.name}</h3>*/}
-                        {/*                    <div className="absolute mt-2 h-[0.0625rem] bg-[#E53F01] w-[80%] sm:w-[110%]"></div>*/}
-                        {/*                </div>*/}
-                        {/*                <div className="mt-6 space-y-1">*/}
-                        {/*                    <div className="flex items-center">*/}
-                        {/*                        <User className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />*/}
-                        {/*                        <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">ID:<br /><span className="text-white">{auth?.user?.player_profile?.player_id}</span></p>*/}
-                        {/*                    </div>*/}
-                        {/*                    <div className="flex items-center">*/}
-                        {/*                        <CalendarDays className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />*/}
-                        {/*                        <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">DATE OF BIRTH:<br /><span className="text-white">{auth?.user?.dob && new Date(auth?.user?.dob).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></p>*/}
-                        {/*                    </div>*/}
+                    {/* <div className="mx-auto w-full max-w-[26.25rem] mb-20 lg:mb-16">
+                        <div ref={cardRef} className="w-full border border-gray-600 rounded-[1rem] bg-black">
+                            <div className="overflow-hidden text-white">
+                                <div className="flex items-center justify-between">
+                                    <div className="pl-3 sm:pl-4">
+                                        <img src="/images/logo/final_logo.png" alt="new-logo" className="w-[7.8125rem] sm:w-[10.625rem]" />
+                                    </div>
+                                    <div className="-translate-x-[15%] sm:-translate-x-[30%] translate-y-[20%]">
+                                        <h2 className="text-center font-bold uppercase text-[0.6875rem] sm:text-[0.875rem]">MEMBER CARD</h2>
+                                        <p className="text-center text-[0.5rem] sm:text-[0.625rem] font-semibold text-[#E53F01] uppercase">Official Member</p>
+                                        <svg width="130" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <line x1="10" y1="12" x2="70" y2="12" stroke="#6B7280" strokeWidth="1" />
+                                            <path d="M90 4L92.35 9.15L98 9.8L94 13.6L95.2 19L90 16L84.8 19L86 13.6L82 9.8L87.65 9.15L90 4Z" fill="#F97316" />
+                                            <line x1="110" y1="12" x2="170" y2="12" stroke="#6B7280" strokeWidth="1" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div className="relative flex gap-2 sm:gap-4 pl-4 pt-2 border-b-1 border-gray-400">
+                                    <div className="h-[10rem] w-[5.9375rem] sm:h-[13.125rem] sm:w-[8.125rem] mb-3">
+                                        <img src={auth?.user?.player_profile?.photo_url || '/images/img/placeholder.webp'} alt="player" className="h-full w-full rounded-[0.625rem] sm:rounded-[0.75rem] border-1 border-gray-400" />
+                                    </div>
+                                    <div>
+                                        <div className="relative z-10">
+                                            <h3 className="mt-2 text-[0.75rem] sm:mt-4 sm:text-[1rem] font-bold uppercase">{auth?.user?.name}</h3>
+                                            <div className="absolute mt-2 h-[0.0625rem] bg-[#E53F01] w-[80%] sm:w-[110%]"></div>
+                                        </div>
+                                        <div className="mt-6 space-y-1">
+                                            <div className="flex items-center">
+                                                <User className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
+                                                <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">ID:<br /><span className="text-white">{auth?.user?.player_profile?.player_id}</span></p>
+                                            </div>
+                                            <div className="flex items-center">
+                                                <CalendarDays className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
+                                                <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">DATE OF BIRTH:<br /><span className="text-white">{auth?.user?.dob && new Date(auth?.user?.dob).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></p>
+                                            </div>
 
-                        {/*                    <div className="flex items-center">*/}
-                        {/*                        <Flag className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />*/}
-                        {/*                        <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">NATIONALITY:<br />*/}
-                        {/*                            <span className="text-white inline-flex flex-wrap items-center gap-1">*/}
-                        {/*                                {Array.isArray(auth?.user?.nationality) && auth?.user?.nationality.length > 0*/}
-                        {/*                                    ? auth.user.nationality.map((code: string, idx: number) => (*/}
-                        {/*                                        <span key={code} className="inline-flex items-center gap-1">*/}
-                        {/*                                            <ReactCountryFlag countryCode={code} svg style={{ width: '1em', height: '1em' }} />*/}
-                        {/*                                            <span>{getCountryName(code)}</span>*/}
-                        {/*                                            {idx < auth.user.nationality.length - 1 && <span>,</span>}*/}
-                        {/*                                        </span>*/}
-                        {/*                                    ))*/}
-                        {/*                                    : 'Not specified'}*/}
-                        {/*                            </span>*/}
-                        {/*                        </p>*/}
-                        {/*                    </div>*/}
-                        {/*                    <div className="flex items-center">*/}
-                        {/*                        <MapPin className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />*/}
-                        {/*                        <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">CITY:<br /><span className="text-white">{auth?.user?.player_profile?.birth_city || 'N/A'}</span></p>*/}
-                        {/*                    </div>*/}
-                        {/*                </div>*/}
-                        {/*                <div className="absolute right-0 bottom-0 z-0">*/}
-                        {/*                    <img src="/images/img/orange-img.png" alt="" className="w-[3.125rem] sm:w-[3.75rem]" />*/}
-                        {/*                </div>*/}
-                        {/*            </div>*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-                        {/*    <div className="bg-[#191917] p-4 sm:p-6 text-white">*/}
-                        {/*        <div className="grid gap-3 sm:gap-6 grid-cols-2">*/}
-                        {/*            <div className="relative">*/}
-                        {/*                <div className="absolute top-0 -right-4 w-[0.0625rem] h-full border-r border-white/10"></div>*/}
-                        {/*                <h2 className="mb-2 text-[0.625rem] font-bold text-[#f4620c] uppercase">Player Info</h2>*/}
-                        {/*                <div className="space-y-2">*/}
-                        {/*                    {playerInfo.map((item, index) => (*/}
-                        {/*                        <div key={index} className="flex items-center justify-between border-b border-white/10 pb-4 last:border-b-0">*/}
-                        {/*                            <div className="flex items-center gap-2">*/}
-                        {/*                                <span className="text-[#d2d2d2]">{item.icon}</span>*/}
-                        {/*                                <span className="text-[0.5rem] pr-2 text-[#d2d2d2] uppercase">{item.label}</span>*/}
-                        {/*                            </div>*/}
-                        {/*                            <span className="text-[0.4375rem] sm:text-[0.5rem] font-medium text-white uppercase">{item.value}</span>*/}
-                        {/*                        </div>*/}
-                        {/*                    ))}*/}
-                        {/*                </div>*/}
-                        {/*            </div>*/}
-                        {/*            <div className="pl-4 sm:pl-3">*/}
-                        {/*                <h2 className="text-[0.625rem] font-bold text-[#E53F01] uppercase">Scan To View Football Identity</h2>*/}
-                        {/*                <p className="mt-1 mb-6 text-[0.5rem] text-[#f1f1f1] uppercase">Open Your Camera And Scan</p>*/}
-                        {/*                <div className="w-fit rounded-[0.5rem] sm:rounded-xl border-2 sm:border-[3px] border-[#E53F01] bg-white sm:p-3 p-2">*/}
-                        {/*                    <QRCodeSVG*/}
-                        {/*                        value={`${typeof window !== 'undefined' ? window.location.origin : ''}/player/profile/${auth?.user?.slug}`}*/}
-                        {/*                        size={90}*/}
-                        {/*                        level="M"*/}
-                        {/*                        bgColor="#ffffff"*/}
-                        {/*                        fgColor="#000000"*/}
-                        {/*                        className="h-[4.375rem] w-[4.375rem] sm:h-[5.625rem] sm:w-[5.625rem]"*/}
-                        {/*                    />*/}
-                        {/*                </div>*/}
-                        {/*                <button className="mt-2 flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#E53F01]">*/}
-                        {/*                    <span className=" text-black pr-1"><Smartphone className="h-6 w-4" /></span>*/}
-                        {/*                    <span className="text-left text-[0.375rem] sm:text-[0.5rem] leading-tight">VIEW FULL IDENTITY, VIDEOS,<br />STATS AND ACHIEVEMENTS</span>*/}
-                        {/*                </button>*/}
-                        {/*            </div>*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-                        {/*    <div className="flex justify-between items-center relative w-full -mt-2  border-t-1 border-gray-600 p-3 sm:p-6 bg-[url('/images/img/layer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[1rem] rounded-br-[1rem]">*/}
-                        {/*        <p className=" flex justify-between items-center text-[0.4375rem] sm:text-[0.5rem] -ml-3 text-gray-300 pl-1">*/}
-                        {/*            <Shield className="w-6 h-6 " />*/}
-                        {/*            <span className="pl-2">THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br className="hidden sm:block" />MEMBER OF HILIGHTS FOOTBALL PLATFORM.</span>*/}
-                        {/*        </p>*/}
-                        {/*        <p className="text-[0.375rem] sm:text-[0.5rem] text-white font-bold translate-x-[0.3125rem] sm:translate-x-[10%]">WWW.HILIGHTSFOOTBALL.COM</p>*/}
-                        {/*        <div className="absolute -bottom-16 left-0 flex justify-between w-full">*/}
-                        {/*            <button className="capitalize flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[1rem] cursor-pointer text-[0.625rem] transition-all hover:bg-[#E53F01]" onClick={() => setShareOpen(true)}>*/}
-                        {/*                <Share2 className="mr-2 w-[0.625rem] h-[0.625rem] sm:h-[0.75rem]" /> Share full football identity*/}
-                        {/*            </button>*/}
-                        {/*            <button onClick={downloadCard} className="capitalize cursor-pointer flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[0.625rem] transition-all">*/}
-                        {/*                <Download className="mr-2 w-[0.625rem] h-[0.625rem] sm:w-[0.75rem] sm:h-[0.75rem]" /> download member card*/}
-                        {/*            </button>*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                    </div>
+                                            <div className="flex items-center">
+                                                <Flag className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
+                                                <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">NATIONALITY:<br />
+                                                    <span className="text-white inline-flex flex-wrap items-center gap-1">
+                                                        {Array.isArray(auth?.user?.nationality) && auth?.user?.nationality.length > 0
+                                                            ? auth.user.nationality.map((code: string, idx: number) => (
+                                                                <span key={code} className="inline-flex items-center gap-1">
+                                                                    <ReactCountryFlag countryCode={code} svg style={{ width: '1em', height: '1em' }} />
+                                                                    <span>{getCountryName(code)}</span>
+                                                                    {idx < auth.user.nationality.length - 1 && <span>,</span>}
+                                                                </span>
+                                                            ))
+                                                            : 'Not specified'}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div className="flex items-center">
+                                                <MapPin className="mr-[0.3125rem] sm:mr-[0.625rem] w-4 h-4 sm:w-5 sm:h-5 text-[#E53F01]" />
+                                                <p className="z-10 text-[0.5rem] md:text-[0.625rem] text-[#c7c7c7] uppercase">CITY:<br /><span className="text-white">{auth?.user?.player_profile?.birth_city || 'N/A'}</span></p>
+                                            </div>
+                                        </div>
+                                        <div className="absolute right-0 bottom-0 z-0">
+                                            <img src="/images/img/orange-img.png" alt="" className="w-[3.125rem] sm:w-[3.75rem]" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bg-[#191917] p-4 sm:p-6 text-white">
+                                <div className="grid gap-3 sm:gap-6 grid-cols-2">
+                                    <div className="relative">
+                                        <div className="absolute top-0 -right-4 w-[0.0625rem] h-full border-r border-white/10"></div>
+                                        <h2 className="mb-2 text-[0.625rem] font-bold text-[#f4620c] uppercase">Player Info</h2>
+                                        <div className="space-y-2">
+                                            {playerInfo.map((item, index) => (
+                                                <div key={index} className="flex items-center justify-between border-b border-white/10 pb-4 last:border-b-0">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-[#d2d2d2]">{item.icon}</span>
+                                                        <span className="text-[0.5rem] pr-2 text-[#d2d2d2] uppercase">{item.label}</span>
+                                                    </div>
+                                                    <span className="text-[0.4375rem] sm:text-[0.5rem] font-medium text-white uppercase">{item.value}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="pl-4 sm:pl-3">
+                                        <h2 className="text-[0.625rem] font-bold text-[#E53F01] uppercase">Scan To View Football Identity</h2>
+                                        <p className="mt-1 mb-6 text-[0.5rem] text-[#f1f1f1] uppercase">Open Your Camera And Scan</p>
+                                        <div className="w-fit rounded-[0.5rem] sm:rounded-xl border-2 sm:border-[3px] border-[#E53F01] bg-white sm:p-3 p-2">
+                                            <QRCodeSVG
+                                                value={`${typeof window !== 'undefined' ? window.location.origin : ''}/player/profile/${auth?.user?.slug}`}
+                                                size={90}
+                                                level="M"
+                                                bgColor="#ffffff"
+                                                fgColor="#000000"
+                                                className="h-[4.375rem] w-[4.375rem] sm:h-[5.625rem] sm:w-[5.625rem]"
+                                            />
+                                        </div>
+                                        <button className="mt-2 flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-black uppercase transition-all hover:bg-[#E53F01]">
+                                            <span className=" text-black pr-1"><Smartphone className="h-6 w-4" /></span>
+                                            <span className="text-left text-[0.375rem] sm:text-[0.5rem] leading-tight">VIEW FULL IDENTITY, VIDEOS,<br />STATS AND ACHIEVEMENTS</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex justify-between items-center relative w-full -mt-2  border-t-1 border-gray-600 p-3 sm:p-6 bg-[url('/images/img/layer.png')] bg-cover bg-center bg-no-repeat rounded-bl-[1rem] rounded-br-[1rem]">
+                                <p className=" flex justify-between items-center text-[0.4375rem] sm:text-[0.5rem] -ml-3 text-gray-300 pl-1">
+                                    <Shield className="w-6 h-6 " />
+                                    <span className="pl-2">THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br className="hidden sm:block" />MEMBER OF HILIGHTS FOOTBALL PLATFORM.</span>
+                                </p>
+                                <p className="text-[0.375rem] sm:text-[0.5rem] text-white font-bold translate-x-[0.3125rem] sm:translate-x-[10%]">WWW.HILIGHTSFOOTBALL.COM</p>
+                                <div className="absolute -bottom-16 left-0 flex justify-between w-full">
+                                    <button className="capitalize flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[1rem] cursor-pointer text-[0.625rem] transition-all hover:bg-[#E53F01]" onClick={() => setShareOpen(true)}>
+                                        <Share2 className="mr-2 w-[0.625rem] h-[0.625rem] sm:h-[0.75rem]" /> Share full football identity
+                                    </button>
+                                    <button onClick={downloadCard} className="capitalize cursor-pointer flex items-center rounded-xl bg-black px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold border-1  text-white text-[0.625rem] transition-all">
+                                        <Download className="mr-2 w-[0.625rem] h-[0.625rem] sm:w-[0.75rem] sm:h-[0.75rem]" /> download member card
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> */}
                 </section>
                 {/* AD ZONE */}
-                <section>
-                    {/*<div className="relative flex h-[5.625rem] items-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-[#1a1a2e] to-[#0f3460] px-4 sm:gap-4 sm:px-6">*/}
-                    {/*    <div className="flex flex-shrink-0 items-center gap-3">*/}
-                    {/*        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#E53F01]"><ArrowRight className="h-5 w-5 text-white" /></div>*/}
-                    {/*        <div className="hidden sm:block">*/}
-                    {/*            <p className="text-lg leading-none font-black tracking-tight text-white">TRANSFERROOM</p>*/}
-                    {/*            <p className="mt-0.5 text-[0.625rem] tracking-wider text-white/50 uppercase">Football Transfer Network</p>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*    <p className="hidden flex-1 text-xs text-white/70 sm:text-sm md:block">The transfer platform trusted by 1,200+ clubs worldwide.</p>*/}
-                    {/*    <Button size="sm" className="ml-auto flex-shrink-0 bg-[#E53F01] font-semibold text-white hover:bg-[#E53F01]">Start Free →</Button>*/}
-                    {/*    <span className="absolute top-1 right-2 text-[0.625rem] text-white/30">Sponsored</span>*/}
-                    {/*</div>*/}
-                </section>
+                {/* <section>
+                    <div className="relative flex h-[5.625rem] items-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-[#1a1a2e] to-[#0f3460] px-4 sm:gap-4 sm:px-6">
+                        <div className="flex flex-shrink-0 items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#E53F01]"><ArrowRight className="h-5 w-5 text-white" /></div>
+                            <div className="hidden sm:block">
+                                <p className="text-lg leading-none font-black tracking-tight text-white">TRANSFERROOM</p>
+                                <p className="mt-0.5 text-[0.625rem] tracking-wider text-white/50 uppercase">Football Transfer Network</p>
+                            </div>
+                        </div>
+                        <p className="hidden flex-1 text-xs text-white/70 sm:text-sm md:block">The transfer platform trusted by 1,200+ clubs worldwide.</p>
+                        <Button size="sm" className="ml-auto flex-shrink-0 bg-[#E53F01] font-semibold text-white hover:bg-[#E53F01]">Start Free →</Button>
+                        <span className="absolute top-1 right-2 text-[0.625rem] text-white/30">Sponsored</span>
+                    </div>
+                </section> */}
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">
                     {/* COMPLETION CHECKLIST — no outer card, each row is its own card */}
                     <section>
-                        <div className="mb-1 flex items-center justify-between">
-                            <h2 className="text-lg font-bold text-[#F5F5F5]">Complete Your Football Identity</h2>
-                            <span className="font-mono text-sm font-bold text-[#E53F01]">{profileComplete}%</span>
+                        <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
+                            <div className="flex min-w-0 flex-wrap items-center gap-2">
+                                <h2 className="text-lg font-bold text-[#F5F5F5]">Complete Your Football Identity</h2>
+
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setHealthOpen(true)}
+                                className="inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border border-[#2A2A2A] px-3 text-xs font-semibold text-[#9A9A9A] transition-colors hover:border-[#E53F01] hover:text-[#E53F01]"
+                            >
+                                <Stethoscope className="h-3.5 w-3.5 shrink-0" />
+                                Profile health
+                                <span className="font-mono text-sm font-bold text-[#E53F01]">{profileComplete}%</span>
+
+                            </button>
+
                         </div>
                         <Progress value={profileComplete} className="mb-5 h-2 bg-[#2A2A2A] [&>div]:bg-[#E53F01]" />
                         <ul className="space-y-3">
@@ -2237,12 +2351,93 @@ export default function PlayerDashboard() {
                             onClose={() => setActiveModal(null)}
                             countries={countries}
                             maxVideos={hasSubscription ? 4 : 1}
+                            statFields={matchStatFields}
                         />
                     ) : (
                         <FormModal configKey={activeModal} user={auth?.user} pp={pp} onClose={() => setActiveModal(null)} countries={countries} />
                     )
                 )
             }
+            {/* MODAL - PROFILE HEALTH */}
+            {healthOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => setHealthOpen(false)}>
+                    <div
+                        className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-[#2A2A2A] bg-[#161616] p-4 sm:p-6"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="mb-5 flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                                <h3 className="text-lg font-bold text-[#F5F5F5]">Profile health</h3>
+                                <p className="mt-1 text-xs text-[#9A9A9A]">
+                                    {completionChecks.filter(Boolean).length} of {completionChecks.length} complete
+                                </p>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setHealthOpen(false)}
+                                className="shrink-0 text-[#94A3B8] hover:text-[#F5F5F5]"
+                                aria-label="Close"
+                            >
+                                <X className="h-5 w-5" />
+                            </button>
+                        </div>
+
+                        <div className="mb-5 flex items-center gap-3">
+                            <Progress value={profileComplete} className="h-2 flex-1 bg-[#2A2A2A] [&>div]:bg-[#E53F01]" />
+                            <span className="shrink-0 font-mono text-sm font-bold text-[#E53F01]">{profileComplete}%</span>
+                        </div>
+
+                        <div className="space-y-5">
+                            {[...new Set(healthItems.map((h) => h.group))].map((group) => (
+                                <div key={group}>
+                                    <p className="mb-2 text-[0.625rem] font-bold tracking-[0.14em] text-[#94A3B8] uppercase">{group}</p>
+                                    <ul className="space-y-1.5">
+                                        {healthItems
+                                            .filter((h) => h.group === group)
+                                            .map((h) => (
+                                                <li
+                                                    key={h.label}
+                                                    className="flex items-center gap-3 rounded-lg border border-[#2A2A2A] bg-[#111111] px-3 py-2.5"
+                                                >
+                                                    {h.done ? (
+                                                        <CheckCircle2 className="h-4 w-4 shrink-0 text-green-400" />
+                                                    ) : (
+                                                        <Circle className="h-4 w-4 shrink-0 text-[#555555]" />
+                                                    )}
+                                                    <span className={`min-w-0 flex-1 text-sm ${h.done ? 'text-[#F5F5F5]' : 'text-[#9A9A9A]'}`}>
+                                                        {h.label}
+                                                    </span>
+                                                    {!h.done && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setHealthOpen(false);
+                                                                setActiveModal(h.modal);
+                                                            }}
+                                                            className="shrink-0 cursor-pointer text-xs font-semibold text-[#E53F01] hover:underline"
+                                                        >
+                                                            Add
+                                                        </button>
+                                                    )}
+                                                </li>
+                                            ))}
+                                    </ul>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="mt-6 flex justify-end">
+                            <Button
+                                type="button"
+                                onClick={() => setHealthOpen(false)}
+                                className="bg-[#E53F01] text-white hover:bg-[#E53F01]"
+                            >
+                                Close
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
             {/* MODAL - SHARE */}
             {shareOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
