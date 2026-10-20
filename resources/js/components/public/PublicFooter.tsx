@@ -31,12 +31,12 @@ export const PublicFooter = () => {
                                             About Us
                                         </Link>
                                     </li>
-                                    <li>
-                                        <Link href="/#" className="flex items-center gap-2 hover:text-white">
-                                            <span className="h-2 w-2 rounded-full bg-[#E53F01]" />
-                                            How It Works
-                                        </Link>
-                                    </li>
+                                    {/*<li>*/}
+                                    {/*    <Link href="/#" className="flex items-center gap-2 hover:text-white">*/}
+                                    {/*        <span className="h-2 w-2 rounded-full bg-[#E53F01]" />*/}
+                                    {/*        How It Works*/}
+                                    {/*    </Link>*/}
+                                    {/*</li>*/}
                                     {/*<li>*/}
                                     {/*    <Link href="/#" className="flex items-center gap-2 hover:text-white">*/}
                                     {/*        <span className="h-2 w-2 rounded-full bg-[#E53F01]" />*/}

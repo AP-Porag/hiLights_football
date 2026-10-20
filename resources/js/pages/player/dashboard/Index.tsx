@@ -1944,18 +1944,18 @@ export default function PlayerDashboard() {
                 </section>
                 {/* AD ZONE */}
                 <section>
-                    <div className="relative flex h-[5.625rem] items-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-[#1a1a2e] to-[#0f3460] px-4 sm:gap-4 sm:px-6">
-                        <div className="flex flex-shrink-0 items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#E53F01]"><ArrowRight className="h-5 w-5 text-white" /></div>
-                            <div className="hidden sm:block">
-                                <p className="text-lg leading-none font-black tracking-tight text-white">TRANSFERROOM</p>
-                                <p className="mt-0.5 text-[0.625rem] tracking-wider text-white/50 uppercase">Football Transfer Network</p>
-                            </div>
-                        </div>
-                        <p className="hidden flex-1 text-xs text-white/70 sm:text-sm md:block">The transfer platform trusted by 1,200+ clubs worldwide.</p>
-                        <Button size="sm" className="ml-auto flex-shrink-0 bg-[#E53F01] font-semibold text-white hover:bg-[#E53F01]">Start Free →</Button>
-                        <span className="absolute top-1 right-2 text-[0.625rem] text-white/30">Sponsored</span>
-                    </div>
+                    {/*<div className="relative flex h-[5.625rem] items-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-[#1a1a2e] to-[#0f3460] px-4 sm:gap-4 sm:px-6">*/}
+                    {/*    <div className="flex flex-shrink-0 items-center gap-3">*/}
+                    {/*        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#E53F01]"><ArrowRight className="h-5 w-5 text-white" /></div>*/}
+                    {/*        <div className="hidden sm:block">*/}
+                    {/*            <p className="text-lg leading-none font-black tracking-tight text-white">TRANSFERROOM</p>*/}
+                    {/*            <p className="mt-0.5 text-[0.625rem] tracking-wider text-white/50 uppercase">Football Transfer Network</p>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*    <p className="hidden flex-1 text-xs text-white/70 sm:text-sm md:block">The transfer platform trusted by 1,200+ clubs worldwide.</p>*/}
+                    {/*    <Button size="sm" className="ml-auto flex-shrink-0 bg-[#E53F01] font-semibold text-white hover:bg-[#E53F01]">Start Free →</Button>*/}
+                    {/*    <span className="absolute top-1 right-2 text-[0.625rem] text-white/30">Sponsored</span>*/}
+                    {/*</div>*/}
                 </section>
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">
                     {/* COMPLETION CHECKLIST — no outer card, each row is its own card */}
