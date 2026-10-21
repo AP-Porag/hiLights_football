@@ -891,6 +891,15 @@ function ListModal({
                                     <div className="h-9 w-9 flex-shrink-0" />
                                 ) : cfg.firstFixed && i === 0 ? (
                                     <div className="h-9 w-9 flex-shrink-0" />
+                                ) : i === 0 ? (
+                                    <button
+                                        type="button"
+                                        onClick={addRow}
+                                        className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-[#2A2A2A] text-[#E53F01] hover:border-[#E53F01] hover:bg-[rgba(255,107,0,0.12)]"
+                                        aria-label="Add row"
+                                    >
+                                        <Plus className="h-4 w-4" />
+                                    </button>
                                 ) : (
                                     <button
                                         type="button"
