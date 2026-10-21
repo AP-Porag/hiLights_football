@@ -65,7 +65,8 @@ import {
     ChevronRight,
     Save,
     Clock,
-    Stethoscope
+    Stethoscope,
+    Trash2
 } from 'lucide-react';
 import {
     Bar,
@@ -521,7 +522,7 @@ const FORM_CONFIGS: Record<string, FormConfig> = {
             { name: 'current_club', label: 'Current Club', type: 'text' },
             { name: 'current_club_country', label: 'Club Country', type: 'country' },
             { name: 'in_team_since', label: 'In Team Since (MM/YYYY)', type: 'month_year' },
-            { name: 'agent', label: 'Agent', type: 'text' },
+            // { name: 'agent', label: 'Agent', type: 'text' },
             { name: 'whatsapp', label: 'WhatsApp Number', type: 'phone' }, // ← Register er moto flag + country code
             { name: 'description', label: 'About / Bio', type: 'textarea' },
         ],
@@ -796,9 +797,10 @@ function ListModal({
                                                     type="button"
                                                     onClick={() => removeRow(i)}
                                                     className="h-10 w-10 shrink-0 flex items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01]"
-                                                    aria-label="Remove row"
+                                                    aria-label="Delete row"
+                                                    title="Delete"
                                                 >
-                                                    <X className="w-4 h-4" />
+                                                    <Trash2 className="w-4 h-4 text-[#E53F01]" />
                                                 </button>
                                             )}
                                         </div>
@@ -894,9 +896,10 @@ function ListModal({
                                         type="button"
                                         onClick={() => removeRow(i)}
                                         className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-[#2A2A2A] text-[#94A3B8] hover:border-[#E53F01] hover:text-[#E53F01]"
-                                        aria-label="Remove"
+                                        aria-label="Delete row"
+                                        title="Delete"
                                     >
-                                        <X className="h-4 w-4" />
+                                        <Trash2 className="h-4 w-4 text-[#E53F01]" />
                                     </button>
                                 )}
 
@@ -1483,7 +1486,7 @@ export default function PlayerDashboard() {
 
     // About You + Player Questionnaire — saved straight to player_profile
     const [aboutData, setAboutData] = useState({
-        description: pp?.description ?? '',
+        // description: pp?.description ?? '',
         supported_club: pp?.supported_club ?? '',
         dream_club: pp?.dream_club ?? '',
         boot_brands: Array.isArray(pp?.boot_brands) ? pp.boot_brands : [],
@@ -1605,7 +1608,7 @@ export default function PlayerDashboard() {
         { group: 'Basic information', label: 'Current club', done: nonEmpty(pp.current_club), modal: 'basic_info' },
         { group: 'Basic information', label: 'Club country', done: nonEmpty(pp.current_club_country), modal: 'basic_info' },
         { group: 'Basic information', label: 'In team since', done: nonEmpty(pp.in_team_since), modal: 'basic_info' },
-        { group: 'Basic information', label: 'Agent', done: nonEmpty(pp.agent), modal: 'basic_info' },
+        // { group: 'Basic information', label: 'Agent', done: nonEmpty(pp.agent), modal: 'basic_info' },
         { group: 'Basic information', label: 'WhatsApp number', done: nonEmpty(auth?.user?.whatsapp), modal: 'basic_info' },
         { group: 'Basic information', label: 'About / bio', done: nonEmpty(pp.description), modal: 'basic_info' },
         { group: 'Position & modality', label: 'Modality', done: nonEmpty(pp.modality), modal: 'position_modality' },
@@ -1646,7 +1649,7 @@ export default function PlayerDashboard() {
                     && nonEmpty(pp.gender) && nonEmpty(pp.height)
                     && nonEmpty(pp.birth_city) && nonEmpty(pp.birth_country)
                     && nonEmpty(pp.current_club) && nonEmpty(pp.current_club_country)
-                    && nonEmpty(pp.in_team_since) && nonEmpty(pp.agent) && nonEmpty(auth?.user?.whatsapp)
+                    && nonEmpty(pp.in_team_since) && nonEmpty(auth?.user?.whatsapp)
                     && nonEmpty(pp.description),
                 modal: 'basic_info',
                 cta: 'Edit',
@@ -1881,7 +1884,7 @@ export default function PlayerDashboard() {
                             </p>
                         </div>
                         {/* [2] Profile Views */}
-                        <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 lg:p-7 2xl:p-9">
+                        {/* <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 lg:p-7 2xl:p-9">
                             <div className="flex items-start justify-between">
                                 <div>
                                     <p className="font-mono text-3xl font-black text-[#F5F5F5]"> {totalViews}</p>
@@ -1902,7 +1905,7 @@ export default function PlayerDashboard() {
                             <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="mt-2 h-12 w-full">
                                 <polyline points={sparkPoints} fill="none" stroke="#E53F01" strokeWidth="2" vectorEffect="non-scaling-stroke" />
                             </svg>
-                        </div>
+                        </div> */}
                         {/* [4] Subscription */}
                         {/* <div className="flex flex-col rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 lg:p-7 2xl:p-9 ">
                             {!hasSubscription ? (
@@ -2115,7 +2118,7 @@ export default function PlayerDashboard() {
 
                 {/* ABOUT YOU + PLAYER QUESTIONNAIRE — saves to player_profile */}
                 <section>
-                    <div className="mb-4 text-[0.625rem] font-bold tracking-[0.14em] text-[#E53F01] uppercase">About You</div>
+                    {/* <div className="mb-4 text-[0.625rem] font-bold tracking-[0.14em] text-[#E53F01] uppercase">About You</div>
 
                     <div className="rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 lg:p-7 2xl:p-9 sm:p-8">
                         <Label htmlFor="description" className="mb-3 block text-xs font-semibold text-[#F5F5F5]">
@@ -2136,7 +2139,7 @@ export default function PlayerDashboard() {
                                 {descCount} / 500
                             </span>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Player Questionnaire — private, not shown on public profile */}
                     <div className="mt-6 rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 lg:p-7 2xl:p-9 sm:p-8">
@@ -2224,12 +2227,6 @@ export default function PlayerDashboard() {
                                 <Save className="mr-2 h-4 w-4 shrink-0" />
                                 {aboutSaving ? 'Saving...' : 'Save'}
                             </Button>
-                            {aboutSaved && !aboutSaving && (
-                                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-green-400">
-                                    <CheckCircle2 className="h-4 w-4 shrink-0" />
-                                    Saved
-                                </span>
-                            )}
                         </div>
                     </div>
                 </section>
@@ -2358,6 +2355,53 @@ export default function PlayerDashboard() {
                     )
                 )
             }
+            {/* MODAL - WELCOME (Player Questionnaire save er por) */}
+            {aboutSaved && !aboutSaving && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => setAboutSaved(false)}>
+                    <div
+                        className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 text-center sm:p-8 [@media(max-height:34rem)]:p-4"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            type="button"
+                            onClick={() => setAboutSaved(false)}
+                            className="ml-auto block cursor-pointer text-[#94A3B8] hover:text-[#F5F5F5]"
+                            aria-label="Close"
+                        >
+                            <X className="h-5 w-5" />
+                        </button>
+
+                        {/* Landscape phone-e jaiga kom — icon ta tokhon lukiye rakhi */}
+                        <div className="mx-auto -mt-2 flex h-14 w-14 items-center justify-center rounded-full bg-[rgba(255,107,0,0.12)] [@media(max-height:34rem)]:hidden">
+                            <CheckCircle2 className="h-7 w-7 text-[#E53F01]" />
+                        </div>
+
+                        <p className="mt-5 font-mono text-4xl font-black text-[#E53F01] [@media(max-height:34rem)]:mt-0 [@media(max-height:34rem)]:text-3xl">
+                            {profileComplete}%
+                        </p>
+                        <p className="mt-1 text-xs font-semibold tracking-wider text-[#94A3B8] uppercase">Football Identity health</p>
+
+                        <div className="mt-4 flex items-center gap-3 [@media(max-height:34rem)]:mt-3">
+                            <Progress value={profileComplete} className="h-2 flex-1 bg-[#2A2A2A] [&>div]:bg-[#E53F01]" />
+                            <span className="shrink-0 font-mono text-xs text-[#9A9A9A]">
+                                {completionChecks.filter(Boolean).length}/{completionChecks.length}
+                            </span>
+                        </div>
+
+                        <h3 className="mt-6 uppercase text-lg font-bold text-[#F5F5F5] [@media(max-height:34rem)]:mt-4 [@media(max-height:34rem)]:text-base">
+                            Welcome to HiLights and now invite your team mates…
+                        </h3>
+
+                        <Button
+                            type="button"
+                            onClick={() => setAboutSaved(false)}
+                            className="mt-6 h-11 w-full bg-[#E53F01] text-sm font-semibold text-white hover:bg-[#CC5500] [@media(max-height:34rem)]:mt-4"
+                        >
+                            Close
+                        </Button>
+                    </div>
+                </div>
+            )}
             {/* MODAL - PROFILE HEALTH */}
             {healthOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => setHealthOpen(false)}>
