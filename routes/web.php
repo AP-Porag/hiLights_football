@@ -77,6 +77,13 @@ Route::get('/contact', function () {
     return Inertia::render('web/Contact');
 })->name('contact');
 
+// Suspended account notice — public, karon suspended player-ke logout kore ekhane pathano hoy
+Route::get('/account/suspended', function () {
+    return Inertia::render('player/Suspended', [
+        'supportEmail' => 'hello@hilightsfootball.com',
+    ]);
+})->name('account.suspended');
+
 
 Route::get('/request-access', [AccessRequestController::class, 'create'])->name('request-access');
 Route::post('/request-access', [AccessRequestController::class, 'store'])->name('request-access.store');
@@ -128,7 +135,7 @@ Route::get('/youtube/durations', [YouTubeController::class, 'durations'])
 
 
 //all player routes
-Route::middleware(['auth'])->prefix('player')->group(function () {
+Route::middleware(['auth', 'player.active'])->prefix('player')->group(function () {
 
 
 

@@ -2072,10 +2072,10 @@ export default function PlayerDashboard() {
                             <button
                                 type="button"
                                 onClick={() => setHealthOpen(true)}
-                                className="inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border border-[#2A2A2A] px-3 text-xs font-semibold text-[#9A9A9A] transition-colors hover:border-[#E53F01] hover:text-[#E53F01]"
+                                className="inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border px-3 text-xs font-semibold border-[#E53F01] text-[#E53F01] transition-colors hover:border-[#E53F01] hover:text-[#E53F01]"
                             >
                                 <Stethoscope className="h-3.5 w-3.5 shrink-0" />
-                                Profile health
+                                Football identity health
                                 <span className="font-mono text-sm font-bold text-[#E53F01]">{profileComplete}%</span>
 
                             </button>
