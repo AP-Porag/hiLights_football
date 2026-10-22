@@ -90,7 +90,7 @@ export default function Index() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <div className="grid min-h-screen grid-cols-[minmax(0,1fr)] gap-6 bg-[#0D0D0D] p-4 sm:p-6 lg:p-8">
+            <div className="grid min-h-screen grid-cols-[minmax(0,1fr)] content-start gap-6 bg-[#0D0D0D] p-4 sm:p-6 lg:p-8">
                 {/* Header */}
                 <div>
                     <h1 className="font-display text-3xl font-bold tracking-tight text-[#F5F5F5] sm:text-4xl">Access Requests</h1>
@@ -106,7 +106,7 @@ export default function Index() {
                             className={`rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${(filters.status ?? 'all') === tab.key
                                 ? 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01]'
                                 : 'border-[#2A2A2A] bg-[#161616] text-[#9A9A9A] hover:text-[#F5F5F5]'
-                                }`}
+                            }`}
                         >
                             {tab.label}
                             <span className="ml-1.5 font-mono opacity-70">
@@ -136,97 +136,97 @@ export default function Index() {
                     <div className="max-h-[65vh] w-full overflow-auto">
                         <table className="w-full min-w-[62.5rem] caption-bottom text-sm">
                             <thead className="sticky top-0 z-10 bg-[#161616]">
-                                <tr className="border-b border-[#2A2A2A]">
-                                    <th className="h-12 whitespace-nowrap px-6 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Name</th>
-                                    <th className="h-12 whitespace-nowrap px-4 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Contact</th>
-                                    <th className="h-12 whitespace-nowrap px-4 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Role</th>
-                                    <th className="h-12 whitespace-nowrap px-4 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Organization</th>
-                                    <th className="h-12 whitespace-nowrap px-4 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Interest</th>
-                                    <th className="h-12 whitespace-nowrap px-4 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Status</th>
-                                    <th className="h-12 whitespace-nowrap px-4 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Received</th>
-                                    <th className="h-12 whitespace-nowrap pr-6 pl-4 text-right align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Actions</th>
-                                </tr>
+                            <tr className="border-b border-[#2A2A2A]">
+                                <th className="h-12 whitespace-nowrap px-6 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Name</th>
+                                <th className="h-12 whitespace-nowrap px-4 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Contact</th>
+                                <th className="h-12 whitespace-nowrap px-4 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Role</th>
+                                <th className="h-12 whitespace-nowrap px-4 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Organization</th>
+                                <th className="h-12 whitespace-nowrap px-4 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Interest</th>
+                                <th className="h-12 whitespace-nowrap px-4 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Status</th>
+                                <th className="h-12 whitespace-nowrap px-4 text-left align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Received</th>
+                                <th className="h-12 whitespace-nowrap pr-6 pl-4 text-right align-middle text-xs font-medium tracking-wider text-[#9A9A9A] uppercase">Actions</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {requests.data.map((r) => (
-                                    <tr key={r.id} className="border-b border-[#2A2A2A] transition-colors hover:bg-[#1F1F1F]">
-                                        <td className="whitespace-nowrap px-6 py-4 align-middle">
-                                            <span className="text-sm font-medium text-[#F5F5F5]">{r.name}</span>
-                                        </td>
-                                        <td className="whitespace-nowrap px-4 py-4 align-middle">
-                                            <div className="flex flex-col gap-1">
-                                                <a href={`mailto:${r.email}`} className="inline-flex items-center gap-1 text-xs text-[#9A9A9A] hover:text-[#E53F01]">
-                                                    <Mail className="h-3 w-3 shrink-0" /> {r.email}
-                                                </a>
-                                                {r.phone && (
-                                                    <span className="inline-flex items-center gap-1 text-xs text-[#555555]">
+                            {requests.data.map((r) => (
+                                <tr key={r.id} className="border-b border-[#2A2A2A] transition-colors hover:bg-[#1F1F1F]">
+                                    <td className="whitespace-nowrap px-6 py-4 align-middle">
+                                        <span className="text-sm font-medium text-[#F5F5F5]">{r.name}</span>
+                                    </td>
+                                    <td className="whitespace-nowrap px-4 py-4 align-middle">
+                                        <div className="flex flex-col gap-1">
+                                            <a href={`mailto:${r.email}`} className="inline-flex items-center gap-1 text-xs text-[#9A9A9A] hover:text-[#E53F01]">
+                                                <Mail className="h-3 w-3 shrink-0" /> {r.email}
+                                            </a>
+                                            {r.phone && (
+                                                <span className="inline-flex items-center gap-1 text-xs text-[#555555]">
                                                         <Phone className="h-3 w-3 shrink-0" /> {r.phone}
                                                     </span>
-                                                )}
-                                            </div>
-                                        </td>
-                                        <td className="whitespace-nowrap px-4 py-4 align-middle">
-                                            <Badge variant="outline" className={`${roleStyles[r.role] ?? roleStyles.other} text-xs font-medium capitalize`}>
-                                                {r.role}
-                                            </Badge>
-                                        </td>
-                                        <td className="whitespace-nowrap px-4 py-4 align-middle">
+                                            )}
+                                        </div>
+                                    </td>
+                                    <td className="whitespace-nowrap px-4 py-4 align-middle">
+                                        <Badge variant="outline" className={`${roleStyles[r.role] ?? roleStyles.other} text-xs font-medium capitalize`}>
+                                            {r.role}
+                                        </Badge>
+                                    </td>
+                                    <td className="whitespace-nowrap px-4 py-4 align-middle">
                                             <span className="inline-flex items-center gap-1 text-xs text-[#9A9A9A]">
                                                 {r.organization && <Building2 className="h-3 w-3 shrink-0" />}
                                                 {r.organization || '—'}
                                             </span>
-                                        </td>
-                                        <td className="px-4 py-4 align-middle">
+                                    </td>
+                                    <td className="px-4 py-4 align-middle">
                                             <span className="block max-w-[12.5rem] truncate text-xs text-[#9A9A9A]" title={r.interest ?? ''}>
                                                 {r.interest || '—'}
                                             </span>
-                                        </td>
-                                        <td className="whitespace-nowrap px-4 py-4 align-middle">
-                                            <select
-                                                value={r.status}
-                                                onChange={(e) => changeStatus(r.id, e.target.value)}
-                                                className={`cursor-pointer rounded-lg border bg-transparent px-2 py-1.5 text-xs font-semibold ${statusStyles[r.status] ?? statusStyles.pending}`}
+                                    </td>
+                                    <td className="whitespace-nowrap px-4 py-4 align-middle">
+                                        <select
+                                            value={r.status}
+                                            onChange={(e) => changeStatus(r.id, e.target.value)}
+                                            className={`cursor-pointer rounded-lg border bg-transparent px-2 py-1.5 text-xs font-semibold ${statusStyles[r.status] ?? statusStyles.pending}`}
+                                        >
+                                            <option value="pending" className="bg-[#161616] text-[#F5F5F5]">Pending</option>
+                                            <option value="contacted" className="bg-[#161616] text-[#F5F5F5]">Contacted</option>
+                                            <option value="approved" className="bg-[#161616] text-[#F5F5F5]">Approved</option>
+                                            <option value="rejected" className="bg-[#161616] text-[#F5F5F5]">Rejected</option>
+                                        </select>
+                                    </td>
+                                    <td className="whitespace-nowrap px-4 py-4 align-middle">
+                                        <span className="font-mono text-xs text-[#555555]">{r.created_at}</span>
+                                    </td>
+                                    <td className="whitespace-nowrap pr-6 pl-4 py-4 text-right align-middle">
+                                        <div className="flex items-center justify-end gap-1">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => setViewRequest(r)}
+                                                className="h-8 w-8 p-0 text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]"
+                                                aria-label="View details"
                                             >
-                                                <option value="pending" className="bg-[#161616] text-[#F5F5F5]">Pending</option>
-                                                <option value="contacted" className="bg-[#161616] text-[#F5F5F5]">Contacted</option>
-                                                <option value="approved" className="bg-[#161616] text-[#F5F5F5]">Approved</option>
-                                                <option value="rejected" className="bg-[#161616] text-[#F5F5F5]">Rejected</option>
-                                            </select>
-                                        </td>
-                                        <td className="whitespace-nowrap px-4 py-4 align-middle">
-                                            <span className="font-mono text-xs text-[#555555]">{r.created_at}</span>
-                                        </td>
-                                        <td className="whitespace-nowrap pr-6 pl-4 py-4 text-right align-middle">
-                                            <div className="flex items-center justify-end gap-1">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    onClick={() => setViewRequest(r)}
-                                                    className="h-8 w-8 p-0 text-[#9A9A9A] hover:bg-[rgba(255,107,0,0.12)] hover:text-[#E53F01]"
-                                                    aria-label="View details"
-                                                >
-                                                    <Eye className="h-4 w-4" />
-                                                </Button>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    onClick={() => setDeleteTarget(r)}
-                                                    className="h-8 w-8 p-0 text-[#9A9A9A] hover:bg-red-500/10 hover:text-red-400"
-                                                    aria-label="Delete request"
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                </Button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                                {requests.data.length === 0 && (
-                                    <tr>
-                                        <td colSpan={8} className="py-12 text-center text-sm text-[#9A9A9A]">
-                                            No access requests found.
-                                        </td>
-                                    </tr>
-                                )}
+                                                <Eye className="h-4 w-4" />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => setDeleteTarget(r)}
+                                                className="h-8 w-8 p-0 text-[#9A9A9A] hover:bg-red-500/10 hover:text-red-400"
+                                                aria-label="Delete request"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                            {requests.data.length === 0 && (
+                                <tr>
+                                    <td colSpan={8} className="py-12 text-center text-sm text-[#9A9A9A]">
+                                        No access requests found.
+                                    </td>
+                                </tr>
+                            )}
                             </tbody>
                         </table>
                     </div>
@@ -242,7 +242,7 @@ export default function Index() {
                                 className={`h-8 w-8 flex items-center justify-center rounded-lg text-xs font-semibold ${page === requests.current_page
                                     ? 'bg-[#E53F01] text-white'
                                     : 'bg-[#161616] border border-[#2A2A2A] text-[#9A9A9A] hover:text-[#F5F5F5]'
-                                    }`}
+                                }`}
                             >
                                 {page}
                             </Link>
