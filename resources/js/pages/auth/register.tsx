@@ -1,5 +1,5 @@
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Link, useForm } from '@inertiajs/react';
+import { Link, useForm, useRemember } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { ArrowLeft, Calendar, Check, ChevronLeft, ChevronRight, Eye, EyeOff, Zap } from 'lucide-react';
 import { FormEvent, useEffect, useState } from 'react';
@@ -245,14 +245,14 @@ function PhoneDarkStyles() {
 
 // ────────────────────────────────────────────────────────────────────────
 export default function Register({ countries = [] }: Props) {
-    const [step, setStep] = useState<0 | 1>(0);
-    const [selectedRole, setSelectedRole] = useState<RoleId | null>(null);
+    const [step, setStep] = useRemember<0 | 1>(0, 'register:step');
+    const [selectedRole, setSelectedRole] = useRemember<RoleId | null>(null, 'register:role');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
     const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
     const [openCalendar, setOpenCalendar] = useState(false);
 
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm('register', {
         role: '' as RoleId | '',
         name: '',
         email: '',
@@ -312,10 +312,13 @@ export default function Register({ countries = [] }: Props) {
     };
     const sortedCountries = [...countries].sort((a, b) => a.name.localeCompare(b.name));
 
-    const options = sortedCountries.map((c) => ({
-        value: c.code,
-        label: `${c.name} (${c.code})`, // optional
-    }));
+    // Shudhu ISO 2-letter desh — "Brazilian I. (BRI)" er moto non-country entry baad jay
+    const options = sortedCountries
+        .filter((c) => typeof c.code === 'string' && c.code.length === 2)
+        .map((c) => ({
+            value: c.code,
+            label: c.name,
+        }));
 
     // react-select dark theme styles (nationality ar country dutoi te use hobe)
     const selectStyles = {
@@ -719,13 +722,13 @@ export default function Register({ countries = [] }: Props) {
                             </span>
                             <span className="text-xs leading-relaxed text-[#9A9A9A]">
                                 I agree to the{' '}
-                                <Link href="/terms" className="font-semibold text-[#E53F01] hover:underline">
+                                <a href="/terms" target="_blank" className="font-semibold text-[#E53F01] hover:underline">
                                     Terms of Service
-                                </Link>{' '}
+                                </a>{' '}
                                 and{' '}
-                                <Link href="/privacy" className="font-semibold text-[#E53F01] hover:underline">
+                                <a href="/terms" target="_blank" className="font-semibold text-[#E53F01] hover:underline">
                                     Privacy Policy
-                                </Link>
+                                </a>
                                 .
                             </span>
                         </label>

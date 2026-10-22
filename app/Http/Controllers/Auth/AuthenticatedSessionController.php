@@ -31,7 +31,18 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
         $request->session()->regenerate();
-        return match ($request->user()->role) {
+
+        // Admin suspend korle player login-i korte parbe na — session shesh kore notice page-e
+        $user = $request->user();
+        if ($user->role === 'player' && $user->playerProfile?->status === 'Suspended') {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('account.suspended');
+        }
+
+        return match ($user->role) {
             'player' => redirect('/player'),
             'scout' => redirect('/scouting'),
             'agent' => redirect('/agent'),

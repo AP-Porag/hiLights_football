@@ -86,8 +86,18 @@ const toInt = (v: any): number => Number(String(v ?? '').replace(/\D/g, '')) || 
 export default function Performance() {
     const { player } = usePage<{ player: any }>().props;
 
-    const isGoalkeeperOnly =
-        Array.isArray(player?.positions) && player.positions.length === 1 && String(player.positions[0]).trim().toUpperCase() === 'GK';
+    // Main position GK → Saves. GK er sathe onno position thakle Goals + Assists-o.
+    const positions: string[] = Array.isArray(player?.positions) ? player.positions : [];
+    const isGoalkeeper = positions.length > 0 && String(positions[0]).trim().toUpperCase() === 'GK';
+    const isGoalkeeperOnly = isGoalkeeper && positions.length === 1;
+    const showSaves = isGoalkeeper;
+    const showGoals = !isGoalkeeperOnly;
+    const showAssists = !isGoalkeeperOnly;
+    const matchColSpan = 3 + Number(showSaves) + Number(showGoals) + Number(showAssists);
+
+    // Minor check — Detail page er moto, users.dob theke
+    const playerAge = calcAge(player?.user?.dob);
+    const isMinor = playerAge !== null && playerAge < 18;
 
     const allMatches = useMemo(() => {
         const rows = (player?.matches ?? []).filter((m: any) => m?.home);
@@ -128,27 +138,30 @@ export default function Performance() {
                 (acc: any, m: any) => ({
                     games: acc.games + 1,
                     goals: acc.goals + toInt(m.goals),
+                    saves: acc.saves + toInt(m.saves),
                     assists: acc.assists + toInt(m.assists),
                     minutes: acc.minutes + toInt(m.minutes),
                 }),
-                { games: 0, goals: 0, assists: 0, minutes: 0 },
+                { games: 0, goals: 0, saves: 0, assists: 0, minutes: 0 },
             ),
         [matches],
     );
 
     const perGame = (v: number) => (totals.games ? (v / totals.games).toFixed(2) : '0.00');
 
-    const statCards = isGoalkeeperOnly
-        ? [
-            { icon: Users, label: 'Games', value: totals.games, sub: 'Matches played' },
-            { icon: Timer, label: 'Minutes', value: totals.minutes, sub: `${perGame(totals.minutes)} per game` },
-        ]
-        : [
-            { icon: Users, label: 'Games', value: totals.games, sub: 'Matches played' },
-            { icon: Target, label: 'Goals', value: totals.goals, sub: `${perGame(totals.goals)} per game` },
-            { icon: Crosshair, label: 'Assists', value: totals.assists, sub: `${perGame(totals.assists)} per game` },
-            { icon: Timer, label: 'Minutes', value: totals.minutes, sub: `${perGame(totals.minutes)} per game` },
-        ];
+    const statCards = [
+        { icon: Users, label: 'Games', value: totals.games, sub: 'Matches played' },
+        ...(showSaves ? [{ icon: Shield, label: 'Saves', value: totals.saves, sub: `${perGame(totals.saves)} per game` }] : []),
+        ...(showGoals ? [{ icon: Target, label: 'Goals', value: totals.goals, sub: `${perGame(totals.goals)} per game` }] : []),
+        ...(showAssists ? [{ icon: Crosshair, label: 'Assists', value: totals.assists, sub: `${perGame(totals.assists)} per game` }] : []),
+        { icon: Timer, label: 'Minutes', value: totals.minutes, sub: `${perGame(totals.minutes)} per game` },
+    ];
+
+    // 2 / 3 / 4 / 5 card — tai column count card shonkha theke
+    const statGridClass =
+        statCards.length >= 5 ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-5'
+            : statCards.length === 4 ? 'grid-cols-2 lg:grid-cols-4'
+                : 'grid-cols-2 lg:grid-cols-3';
 
     const competitions = useMemo(
         () =>
@@ -189,6 +202,16 @@ export default function Performance() {
             </div>
 
             <main className="mx-auto w-full max-w-7xl space-y-6 px-4 pb-12 sm:px-6">
+                {/* MINOR NOTICE — Detail page er moto */}
+                {isMinor && (
+                    <div>
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E53F01]/60 bg-[#E53F01]/10 px-3 py-1 text-xs font-semibold text-[#ff8a4c]">
+                            <Users className="h-3.5 w-3.5 shrink-0" />
+                            Football identity managed by parents
+                        </span>
+                    </div>
+                )}
+
                 {/* PLAYER HEADER */}
                 <section className="rounded-xl border border-[#152538] bg-[#07111d] p-4 sm:p-6">
                     <div className="flex flex-col gap-4 min-[420px]:flex-row sm:gap-6">
@@ -209,8 +232,12 @@ export default function Performance() {
                                     <CalendarDays className="h-4 w-4 shrink-0 text-[#E53F01]" />
                                     {player?.user?.dob
                                         ? calcAge(player.user.dob) !== null && calcAge(player.user.dob)! < 18
-                                            ? new Date(player.user.dob).getFullYear()
-                                            : `${calcAge(player.user.dob)} years`
+                                            ? `${new Date(player.user.dob).getFullYear()} (${calcAge(player.user.dob)} years)`
+                                            : `${new Date(player.user.dob).toLocaleDateString('en-US', {
+                                                day: 'numeric',
+                                                month: 'short',
+                                                year: 'numeric',
+                                            })} (${calcAge(player.user.dob)} years)`
                                         : '—'}
                                 </span>
                                 <span className="flex min-w-0 items-center gap-1.5">
@@ -280,7 +307,7 @@ export default function Performance() {
                 )}
 
                 {/* SUMMARY CARDS */}
-                <section className={`grid gap-3 sm:gap-4 ${isGoalkeeperOnly ? 'grid-cols-2' : 'grid-cols-2 lg:grid-cols-4'}`}>
+                <section className={`grid gap-3 sm:gap-4 ${statGridClass}`}>
                     {statCards.map((c) => {
                         const Icon = c.icon;
                         return (
@@ -311,8 +338,9 @@ export default function Performance() {
                                 <tr className="border-b border-gray-300/10 text-left text-[0.75rem] text-gray-300 uppercase md:text-sm">
                                     <th className="pb-4 whitespace-nowrap">Date</th>
                                     <th className="pb-4">Match</th>
-                                    {!isGoalkeeperOnly && <th className="pb-4 text-center">Goals</th>}
-                                    {!isGoalkeeperOnly && <th className="px-2 pb-4 text-center">Assists</th>}
+                                    {showSaves && <th className="pb-4 text-center">Saves</th>}
+                                    {showGoals && <th className="pb-4 text-center">Goals</th>}
+                                    {showAssists && <th className="px-2 pb-4 text-center">Assists</th>}
                                     <th className="pb-4 text-center">Minutes</th>
                                 </tr>
                             </thead>
@@ -327,14 +355,15 @@ export default function Performance() {
                                                 <span>{match.away}</span>
                                             </div>
                                         </td>
-                                        {!isGoalkeeperOnly && <td className="py-3 text-center">{match.goals}</td>}
-                                        {!isGoalkeeperOnly && <td className="py-3 text-center">{match.assists}</td>}
+                                        {showSaves && <td className="py-3 text-center">{match.saves}</td>}
+                                        {showGoals && <td className="py-3 text-center">{match.goals}</td>}
+                                        {showAssists && <td className="py-3 text-center">{match.assists}</td>}
                                         <td className="py-3 text-center">{match.minutes}</td>
                                     </tr>
                                 ))}
                                 {matches.length === 0 && (
                                     <tr>
-                                        <td colSpan={isGoalkeeperOnly ? 3 : 5} className="py-8 text-center text-sm text-gray-400">
+                                        <td colSpan={matchColSpan} className="py-8 text-center text-sm text-gray-400">
                                             No matches for this season.
                                         </td>
                                     </tr>
@@ -353,14 +382,12 @@ export default function Performance() {
                                 </p>
                             </div>
                             <div className="flex flex-wrap items-center gap-5 md:gap-8">
-                                {(isGoalkeeperOnly
-                                    ? [{ label: 'Minutes', value: totals.minutes }]
-                                    : [
-                                        { label: 'Goals', value: totals.goals },
-                                        { label: 'Assists', value: totals.assists },
-                                        { label: 'Minutes', value: totals.minutes },
-                                    ]
-                                ).map((c) => (
+                                {[
+                                    ...(showSaves ? [{ label: 'Saves', value: totals.saves }] : []),
+                                    ...(showGoals ? [{ label: 'Goals', value: totals.goals }] : []),
+                                    ...(showAssists ? [{ label: 'Assists', value: totals.assists }] : []),
+                                    { label: 'Minutes', value: totals.minutes },
+                                ].map((c) => (
                                     <div key={c.label} className="text-center">
                                         <p className="font-mono text-base font-bold text-white md:text-xl">{c.value}</p>
                                         <p className="text-[0.625rem] tracking-wider text-gray-400 uppercase md:text-xs">{c.label}</p>

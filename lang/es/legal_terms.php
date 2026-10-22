@@ -2,32 +2,32 @@
 
 // Términos de Uso y Política Global de Privacidad — Español
 return [
-    'title' => "Términos de Uso y Política Global de Privacidad",
-    'summary' => "Aplicable a la operación internacional de la plataforma. Versión consolidada con cláusulas de licencia y puesta a disposición comercial de datos.",
+    'title' => "TÉRMINOS GLOBALES DE USO Y POLÍTICA DE PRIVACIDAD",
+    'summary' => "Aplicable a las operaciones internacionales de la plataforma | Versión consolidada con cláusulas de licencia y puesta a disposición comercial de datos",
     'intro' => [
-        "Bienvenido a HiLights Football. Estos Términos y esta Política regulan el uso mundial de la Plataforma y establecen un marco global de privacidad y protección de los usuarios, incluidas reglas específicas para niños y adolescentes. Cuando la legislación local otorgue una protección superior a la prevista en este documento, prevalecerá la legislación local.",
+        "Bienvenido a HiLights Football. Estos Términos y esta Política regulan el uso mundial de la Plataforma y establecen un marco global de privacidad y protección de usuarios, con normas específicas para niños y adolescentes. Si la legislación local ofrece mayor protección, prevalecerá dicha legislación.",
     ],
     'sections' => [
         [
             'id' => 'section-1',
             'number' => '1',
-            'part' => "Parte I — Términos globales de uso",
+            'part' => "PARTE I — TÉRMINOS GLOBALES DE USO",
             'part_intro' => [
-                "Estos Términos se aplican al sitio web, la aplicación, los perfiles, las herramientas de networking, la publicación de contenido, las estadísticas, el descubrimiento de talentos, la mensajería, las oportunidades deportivas y demás funcionalidades ofrecidas bajo la marca HiLights Football en cualquier país.",
+                "Estos Términos se aplican al sitio web, aplicación, perfiles, herramientas de contactos, publicación de contenidos, estadísticas, descubrimiento de talentos, mensajes, oportunidades deportivas y demás funciones ofrecidas bajo la marca HiLights Football en cualquier país.",
             ],
             'heading' => "Finalidad de la Plataforma",
             'paragraphs' => [
-                "HiLights Football es una plataforma de identidad, visibilidad y desarrollo deportivo para jugadores de fútbol, especialmente atletas en formación, y para clubes, academias, entrenadores, scouts, agentes y otros profesionales del ecosistema del fútbol.",
-                "La Plataforma proporciona infraestructura tecnológica y no garantiza contratación, pruebas, becas, transferencias, representación, empleo, patrocinio, convocatorias ni ningún resultado deportivo o profesional.",
+                "HiLights Football es una plataforma de identidad, visibilidad y desarrollo deportivo para futbolistas, especialmente atletas en formación, y para clubes, academias, entrenadores, ojeadores, agentes y otros profesionales del fútbol.",
+                "La Plataforma ofrece infraestructura tecnológica y no garantiza contratación, pruebas, becas, traspasos, representación, empleo, patrocinio, convocatorias ni resultados deportivos o profesionales.",
             ],
         ],
         [
             'id' => 'section-2',
             'number' => '2',
-            'heading' => "Elegibilidad, edad y reglas locales",
+            'heading' => "Elegibilidad, edad y normas locales",
             'paragraphs' => [
-                "La edad mínima y las condiciones de uso pueden variar según el país del usuario y la naturaleza de las funcionalidades ofrecidas. HiLights Football podrá limitar o deshabilitar determinadas funcionalidades por país, edad o categoría de usuario para cumplir la legislación local.",
-                "Cuando la legislación exija consentimiento o autorización parental, la cuenta o funcionalidad correspondiente solo estará disponible tras el procedimiento exigido. Cuando la legislación prohíba a una determinada categoría de menor mantener una cuenta en un servicio clasificado como red social o equivalente, HiLights Football aplicará la restricción local.",
+                "La edad mínima y las condiciones de uso pueden variar según el país y las funciones ofrecidas. HiLights Football podrá limitar o desactivar funciones por país, edad o categoría de usuario para cumplir las leyes locales.",
+                "Cuando la ley exija consentimiento o autorización parental, la cuenta o función correspondiente solo estará disponible tras el procedimiento exigido. Cuando se prohíba a determinadas categorías de menores tener cuentas en redes sociales o servicios equivalentes, se aplicará la restricción local.",
             ],
         ],
         [
@@ -35,8 +35,7 @@ return [
             'number' => '3',
             'heading' => "Registro e identidad",
             'paragraphs' => [
-                "El usuario debe proporcionar información verdadera, actual y compatible con su identidad. Cuando un representante legal participe en el registro, declara tener legitimidad para actuar en dicha condición.",
-                "Está prohibido crear perfiles falsos, suplantar a terceros, falsificar vínculos con clubes u organizaciones, declarar credenciales profesionales inexistentes o utilizar la cuenta de otra persona sin autorización.",
+                "El usuario debe proporcionar datos veraces, actuales y acordes con su identidad. El representante legal que participe en el registro declara estar facultado para actuar como tal. Se prohíbe crear perfiles falsos, suplantar a terceros, falsear vínculos con clubes u organizaciones, alegar credenciales profesionales inexistentes o utilizar cuentas ajenas sin autorización.",
             ],
         ],
         [
@@ -44,8 +43,8 @@ return [
             'number' => '4',
             'heading' => "Perfil deportivo y contenido",
             'paragraphs' => [
-                "El usuario podrá introducir nombre, fotografía, edad o año de nacimiento según sea necesario, nacionalidad, posición, categoría, club, historial deportivo, estadísticas, resultados, vídeos, logros, certificados, evaluaciones y otra información relacionada con su carrera.",
-                "El usuario declara poseer los derechos y autorizaciones necesarios para publicar el contenido enviado. Está prohibido introducir material ilícito, engañoso, discriminatorio o abusivo, o que vulnere derechos de imagen, privacidad, confidencialidad o propiedad intelectual.",
+                "El usuario podrá incluir nombre, fotografía, edad o año de nacimiento cuando sea necesario, nacionalidad, posición, categoría, club, trayectoria deportiva, estadísticas, resultados, vídeos, logros, certificados, evaluaciones y otros datos de su carrera.",
+                "Declara disponer de los derechos y permisos necesarios para publicar el contenido enviado. Se prohíbe el material ilícito, engañoso, discriminatorio, abusivo o que vulnere derechos de imagen, privacidad, confidencialidad o propiedad intelectual.",
             ],
         ],
         [
@@ -53,17 +52,17 @@ return [
             'number' => '5',
             'heading' => "Visibilidad y descubrimiento",
             'paragraphs' => [
-                "HiLights Football podrá ofrecer distintos niveles de visibilidad: público, usuarios autenticados, profesionales verificados, conexiones aprobadas o privado. Los datos de contacto directo, documentos de identidad, domicilio e información de mayor riesgo no serán públicos por defecto.",
-                "Las cuentas de menores podrán recibir configuraciones más protectoras, incluidas restricciones de búsqueda, mensajería, geolocalización, indexación externa, intercambio y exposición pública.",
+                "HiLights Football podrá ofrecer distintos niveles de visibilidad: público, usuarios autenticados, profesionales verificados, contactos aprobados o privado. Los datos de contacto directo, documentos de identidad, domicilio e información de mayor riesgo no serán públicos por defecto.",
+                "Las cuentas de menores podrán contar con ajustes más protectores, incluidos límites de búsqueda, mensajes, geolocalización, indexación externa, intercambio y exposición pública.",
             ],
         ],
         [
             'id' => 'section-6',
             'number' => '6',
-            'heading' => "Clubes, scouts, entrenadores y agentes",
+            'heading' => "Clubes, ojeadores, entrenadores y agentes",
             'paragraphs' => [
-                "Las cuentas profesionales podrán estar sujetas a verificación. La verificación o un distintivo solo indica que determinada información ha sido revisada conforme a los procedimientos de la Plataforma y no constituye recomendación ni garantía.",
-                "Los agentes e intermediarios deben cumplir las normas profesionales, deportivas y de protección de menores aplicables, incluidas las normas de federaciones nacionales e internacionales.",
+                "Las cuentas profesionales podrán someterse a verificación. La verificación o insignia solo indica que ciertos datos se revisaron según los procedimientos de la Plataforma; no constituye recomendación ni garantía.",
+                "Los agentes e intermediarios deben cumplir las normas profesionales, deportivas y de protección de menores aplicables, incluidas las federativas nacionales e internacionales.",
             ],
         ],
         [
@@ -71,10 +70,10 @@ return [
             'number' => '7',
             'heading' => "Comunicación y seguridad",
             'items' => [
-                "Está prohibido acosar, amenazar, perseguir, explotar, manipular o discriminar a los usuarios.",
-                "Está prohibido sexualizar a menores, solicitar contenido íntimo, intentar obtener contacto privado en contra de los controles de seguridad o eludir la supervisión parental.",
-                "Está prohibido promover oportunidades falsas, estafas, pagos fraudulentos, spam o recopilación no autorizada de datos.",
-                "HiLights Football podrá limitar los mensajes entre adultos y menores, exigir verificación adicional y registrar eventos de seguridad.",
+                "Se prohíbe acosar, amenazar, perseguir, explotar, manipular o discriminar a los usuarios.",
+                "Se prohíbe sexualizar a menores, solicitar contenido íntimo, intentar obtener contacto privado infringiendo controles de seguridad o eludir la supervisión parental.",
+                "Se prohíben las falsas oportunidades, estafas, pagos fraudulentos, spam y recopilación no autorizada de datos.",
+                "HiLights Football podrá limitar mensajes entre adultos y menores, exigir verificaciones adicionales y registrar incidentes de seguridad.",
             ],
         ],
         [
@@ -82,8 +81,8 @@ return [
             'number' => '8',
             'heading' => "Moderación y denuncias",
             'paragraphs' => [
-                "HiLights Football podrá investigar denuncias y señales de abuso, restringir funcionalidades, eliminar contenido, suspender o cerrar cuentas y conservar registros cuando sea necesario para la seguridad, prevención del fraude, cumplimiento legal o ejercicio de derechos.",
-                "Las situaciones de riesgo que involucren a niños o adolescentes podrán ser priorizadas y comunicadas a las autoridades competentes cuando lo exija o permita la legislación aplicable.",
+                "HiLights Football podrá investigar denuncias e indicios de abuso, restringir funciones, retirar contenido, suspender o cerrar cuentas y conservar registros cuando sea necesario por seguridad, prevención del fraude, cumplimiento legal o ejercicio de derechos.",
+                "Los riesgos para niños o adolescentes podrán priorizarse y comunicarse a las autoridades competentes cuando la ley lo exija o permita.",
             ],
         ],
         [
@@ -91,8 +90,8 @@ return [
             'number' => '9',
             'heading' => "Contenido del usuario y licencia",
             'paragraphs' => [
-                "El usuario conserva los derechos que posea sobre el contenido publicado. Al ponerlo a disposición, concede a HiLights Football una licencia no exclusiva, mundial, gratuita y limitada a lo necesario para alojar, procesar técnicamente, reproducir, mostrar y distribuir dicho contenido dentro de las funcionalidades elegidas.",
-                "La licencia no autoriza, por sí sola, campañas publicitarias externas con la imagen identificable del usuario. El uso promocional se tratará por separado cuando la ley exija autorización.",
+                "El usuario conserva sus derechos sobre el contenido publicado. Al ponerlo a disposición, concede a HiLights Football una licencia no exclusiva, mundial, gratuita y limitada a lo necesario para alojarlo, procesarlo técnicamente, reproducirlo, mostrarlo y distribuirlo en las funciones elegidas.",
+                "Esta licencia no autoriza por sí sola campañas publicitarias externas con la imagen identificable del usuario. El uso promocional se tratará por separado cuando la ley exija autorización.",
             ],
         ],
         [
@@ -100,7 +99,7 @@ return [
             'number' => '10',
             'heading' => "Propiedad intelectual de la Plataforma",
             'paragraphs' => [
-                "La marca HiLights Football, el software, las interfaces, la base de datos, la identidad visual, los textos institucionales, las funcionalidades y demás elementos propios están protegidos. Se prohíben la extracción sistemática no autorizada, el scraping abusivo, la ingeniería inversa ilícita y la explotación comercial no autorizada.",
+                "La marca HiLights Football, software, interfaces, bases de datos, identidad visual, textos institucionales, funciones y demás elementos propios están protegidos. Se prohíbe la extracción sistemática no autorizada, el scraping abusivo, la ingeniería inversa ilícita y la explotación comercial no autorizada.",
             ],
         ],
         [
@@ -108,8 +107,8 @@ return [
             'number' => '11',
             'heading' => "Suspensión, cierre y disponibilidad",
             'paragraphs' => [
-                "El usuario podrá cerrar su cuenta por los medios disponibles. HiLights Football podrá suspender o cerrar cuentas por incumplimiento de estos Términos, fraude, riesgo para la seguridad, orden legal o protección de usuarios.",
-                "La Plataforma podrá sufrir interrupciones, mantenimiento y cambios. Ninguna disposición excluye derechos o responsabilidades que legalmente no puedan excluirse.",
+                "El usuario podrá cerrar su cuenta mediante los mecanismos disponibles. HiLights Football podrá suspender o cerrar cuentas por incumplimiento de estos Términos, fraude, riesgos de seguridad, orden legal o protección de usuarios.",
+                "La Plataforma puede experimentar interrupciones, mantenimiento y cambios. Ninguna disposición excluye derechos o responsabilidades que legalmente no puedan excluirse.",
             ],
         ],
         [
@@ -117,46 +116,38 @@ return [
             'number' => '12',
             'heading' => "Contratos entre usuarios",
             'paragraphs' => [
-                "HiLights Football no es parte automática de los contratos celebrados entre atletas, representantes, clubes, agentes u otros usuarios. Cada parte debe verificar identidad, facultades de representación, licencias, condiciones financieras y requisitos regulatorios antes de asumir obligaciones.",
+                "HiLights Football no es automáticamente parte de contratos entre atletas, representantes, clubes, agentes u otros usuarios. Cada parte debe verificar identidad, facultades de representación, licencias, condiciones económicas y requisitos regulatorios antes de asumir obligaciones.",
             ],
         ],
         [
             'id' => 'section-13',
             'number' => '13',
-            'part' => "Parte II — Política global de privacidad",
+            'part' => "PARTE II — POLÍTICA GLOBAL DE PRIVACIDAD",
             'part_intro' => [
-                "Esta Política describe cómo HiLights Football trata datos personales a nivel mundial. Las reglas regionales de la Parte IV complementan esta Política y prevalecen cuando otorguen protección adicional.",
+                "Esta Política describe cómo HiLights Football trata datos personales en todo el mundo. Las normas regionales de la Parte IV la complementan y prevalecen cuando proporcionan protección adicional.",
             ],
             'heading' => "Datos tratados",
             'items' => [
                 "Identificación y cuenta: nombre, nombre de usuario, fecha o año de nacimiento, correo electrónico, teléfono y datos de autenticación.",
-                "Perfil deportivo: posición, categoría, club, historial, nacionalidad, pie dominante, altura, peso, estadísticas, evaluaciones y logros.",
+                "Perfil deportivo: posición, categoría, club, trayectoria, nacionalidad, pie dominante, altura, peso, estadísticas, evaluaciones y logros.",
                 "Contenido: fotografías, vídeos, textos, comentarios y materiales enviados.",
                 "Representantes legales: nombre, contacto, vínculo con el menor y registros de autorización o consentimiento.",
-                "Profesionales: organización, función, credenciales, licencias y datos de verificación.",
+                "Profesionales: organización, función, credenciales, licencias y verificación.",
                 "Datos técnicos: IP, dispositivo, sistema operativo, identificadores, registros, cookies, SDK y eventos de seguridad.",
                 "Comunicaciones y seguridad: mensajes de soporte, denuncias, bloqueos y registros necesarios para prevenir abusos.",
-                "Ubicación: solo cuando sea necesaria para una funcionalidad, con controles adecuados y protección reforzada para menores.",
+                "Ubicación: solo cuando sea necesaria para una función, con controles adecuados y protección reforzada de menores.",
             ],
         ],
         [
             'id' => 'section-14',
             'number' => '14',
             'heading' => "Finalidades",
-            'items' => [
-                "Crear, autenticar y administrar cuentas y perfiles deportivos.",
-                "Permitir networking, descubrimiento de talentos e interacción entre usuarios.",
-                "Personalizar funcionalidades y recomendaciones.",
-                "Verificar profesionales y reducir el fraude y la falsedad de identidad.",
-                "Aplicar protección adecuada a la edad y prevenir riesgos para menores.",
-                "Moderar contenido, investigar denuncias y mantener la seguridad.",
-                "Cumplir obligaciones legales y ejercer derechos.",
-                "Enviar comunicaciones operativas y, cuando esté permitido, marketing.",
-                "Producir estadísticas, análisis, métricas, tendencias, rankings, indicadores y otros productos de información relacionados con el fútbol, la formación y el desarrollo deportivo, incluso mediante datos agregados o anonimizados, con sujeción a la legislación aplicable.",
-                "Cuando exista una base jurídica válida y, cuando sea exigido, consentimiento específico del usuario, compartir, poner a disposición o licenciar datos, información del perfil deportivo, estadísticas y otros datos proporcionados o generados mediante el uso de la Plataforma a socios comerciales, clubes, academias, organizaciones deportivas, empresas tecnológicas, empresas de análisis de datos y otros terceros, incluso a cambio de remuneración para HiLights Football, para las finalidades previamente informadas al usuario.",
+            'paragraphs' => [
+                "Crear, autenticar y gestionar cuentas y perfiles deportivos; permitir contactos, descubrimiento de talentos e interacción; personalizar funciones y recomendaciones; verificar profesionales y reducir fraude y suplantación; aplicar protección adecuada a la edad y prevenir riesgos para menores; moderar contenido, investigar denuncias y mantener la seguridad; cumplir obligaciones legales y ejercer derechos; enviar comunicaciones operativas y, cuando se permita, publicidad; producir estadísticas, análisis, métricas, tendencias, clasificaciones, indicadores y otros productos informativos sobre fútbol, formación y desarrollo deportivo, incluidos datos agregados o anonimizados conforme a la ley; y, cuando exista base jurídica válida y se obtenga consentimiento específico cuando se exija, compartir, poner a disposición o licenciar datos, información de perfiles deportivos, estadísticas y otros datos proporcionados o generados al usar la Plataforma a socios comerciales, clubes, academias, organizaciones deportivas, empresas tecnológicas o de análisis de datos y otros terceros, incluso a cambio de remuneración para HiLights Football, para las finalidades previamente comunicadas.",
             ],
             'closing' => [
-                "HiLights Football no utilizará un consentimiento otorgado para una finalidad específica para tratamientos incompatibles con la finalidad originalmente informada. Cuando la ley exija un nuevo consentimiento para una finalidad adicional, este se solicitará antes del tratamiento correspondiente.",
+                "No se usará el consentimiento dado para una finalidad en tratamientos incompatibles.",
+                "Cuando la ley exija nuevo consentimiento, se solicitará antes del tratamiento adicional.",
             ],
         ],
         [
@@ -164,8 +155,8 @@ return [
             'number' => '15',
             'heading' => "Bases jurídicas",
             'paragraphs' => [
-                "Dependiendo del país y la finalidad, el tratamiento podrá basarse en la ejecución de un contrato, consentimiento, obligación legal, intereses legítimos, protección de la vida o seguridad, ejercicio de derechos, interés público u otras bases previstas por la legislación aplicable.",
-                "Cuando sea necesario el consentimiento, se solicitará de forma informada, específica y revocable. La negativa a un consentimiento opcional no impedirá el acceso a funcionalidades que no dependan de él.",
+                "Según el país y la finalidad, el tratamiento podrá basarse en la ejecución de un contrato, consentimiento, obligación legal, intereses legítimos, protección de la vida o seguridad, ejercicio de derechos, interés público u otras bases legales.",
+                "Cuando sea necesario el consentimiento, se solicitará de forma informada, específica y revocable. Negarse a consentimientos opcionales no impedirá acceder a funciones que no dependan de ellos.",
             ],
         ],
         [
@@ -173,9 +164,9 @@ return [
             'number' => '16',
             'heading' => "Privacidad de niños y adolescentes",
             'paragraphs' => [
-                "HiLights Football adopta el interés superior del niño como principio central. La recopilación se limitará a lo necesario y las configuraciones para menores se diseñarán con mayor protección por defecto.",
-                "La Plataforma podrá realizar estimación o verificación de edad de forma proporcional al riesgo y podrá solicitar la participación del padre, madre o representante. La información destinada a menores se presentará en un lenguaje apropiado para su edad.",
-                "Para menores, HiLights Football podrá mantener la geolocalización desactivada por defecto, restringir el profiling y la publicidad personalizada, limitar el intercambio e impedir técnicas de diseño destinadas a inducir una reducción de las protecciones de privacidad.",
+                "HiLights Football considera prioritario el interés superior del niño. La recogida de datos se limitará a lo necesario y las cuentas de menores tendrán mayor protección por defecto.",
+                "La Plataforma podrá comprobar la edad proporcionalmente al riesgo y solicitar la participación de padres o representantes. La información para menores se presentará con lenguaje adecuado a su edad.",
+                "Podrán desactivarse por defecto la geolocalización, limitarse la elaboración de perfiles, publicidad personalizada e intercambio de datos y prohibirse diseños que induzcan a reducir protecciones.",
             ],
         ],
         [
@@ -183,13 +174,13 @@ return [
             'number' => '17',
             'heading' => "Intercambio, licencia y puesta a disposición de datos",
             'paragraphs' => [
-                "Los datos podrán compartirse con proveedores de alojamiento, seguridad, autenticación, comunicación, analytics, moderación, soporte, pagos y otros proveedores necesarios para la operación, sujetos a obligaciones de protección de datos.",
-                "La información podrá ponerse a disposición de clubes, academias, scouts, entrenadores, agentes u otros usuarios cuando forme parte de una interacción iniciada o autorizada por el usuario y sea compatible con la configuración de la cuenta.",
-                "HiLights Football podrá producir y comercializar análisis, estadísticas, tendencias, indicadores, estudios, productos de inteligencia y otros productos derivados de datos agregados o anonimizados, siempre que dicha información no permita razonablemente identificar a una persona física, con sujeción a la legislación aplicable.",
-                "Cuando exista una base jurídica válida y, cuando lo exija la legislación aplicable, el consentimiento específico, libre e informado del titular o de su representante legal, HiLights Football podrá compartir, poner a disposición, proporcionar acceso o licenciar datos personales e información del perfil deportivo a terceros, incluso a cambio de remuneración u otra ventaja económica para HiLights Football.",
-                "En estos casos, se proporcionará al usuario, según lo exija la legislación aplicable, información sobre la finalidad del tratamiento, los datos o categorías de datos implicados, la identidad o categoría de los destinatarios y la naturaleza comercial de la operación.",
-                "Salvo acuerdo expreso en contrario, cualquier remuneración o ventaja económica recibida por HiLights Football como consecuencia del intercambio, puesta a disposición, licencia o comercialización autorizada de datos no confiere al usuario derecho a participación en ingresos, regalías u otra compensación económica.",
-                "HiLights Football también podrá divulgar datos cuando lo exija la ley, una orden válida de una autoridad, la protección de derechos o de la seguridad, o en una reorganización societaria, fusión, adquisición, inversión, financiación, venta de activos u operación equivalente, sujeta a las salvaguardias exigidas por la legislación aplicable.",
+                "Los datos podrán compartirse con proveedores de alojamiento, seguridad, autenticación, comunicaciones, analítica, moderación, soporte, pagos y otros necesarios para operar, sujetos a obligaciones de protección.",
+                "La información podrá mostrarse a clubes, academias, ojeadores, entrenadores, agentes u otros usuarios en interacciones iniciadas o autorizadas por el usuario y compatibles con los ajustes de su cuenta.",
+                "HiLights Football podrá crear y comercializar análisis, estadísticas, tendencias, indicadores, estudios, productos de inteligencia y otros derivados de datos agregados o anonimizados, siempre que no permitan identificar razonablemente a una persona y conforme a la ley.",
+                "Cuando exista base jurídica válida y, si la ley lo exige, consentimiento específico, libre e informado del titular o representante legal, HiLights Football podrá compartir, poner a disposición, dar acceso o licenciar datos personales y perfiles deportivos a terceros, incluso a cambio de remuneración u otro beneficio económico.",
+                "Se informará al usuario, según lo exigido, sobre finalidad, datos o categorías, destinatarios o categorías y carácter comercial.",
+                "Salvo pacto expreso en contrario, las remuneraciones o ventajas económicas recibidas por HiLights Football por estas operaciones autorizadas no generan derecho del usuario a ingresos, regalías u otra compensación.",
+                "También podrán divulgarse datos por ley, orden válida de autoridad, protección de derechos o seguridad, o reestructuración, fusión, adquisición, inversión, financiación, venta de activos u operación equivalente, con las garantías exigidas.",
             ],
         ],
         [
@@ -197,8 +188,8 @@ return [
             'number' => '18',
             'heading' => "Transferencias internacionales",
             'paragraphs' => [
-                "Como servicio global, HiLights Football podrá tratar datos en países distintos del país de residencia del usuario. Las transferencias internacionales se realizarán mediante mecanismos reconocidos por la legislación aplicable, como decisiones de adecuación, cláusulas contractuales aprobadas, normas corporativas vinculantes u otros instrumentos legales.",
-                "Cuando sea exigido, se adoptarán evaluaciones de riesgo y medidas complementarias de seguridad.",
+                "Como servicio global, HiLights Football podrá tratar datos en países distintos al de residencia del usuario. Las transferencias internacionales utilizarán mecanismos reconocidos legalmente, como decisiones de adecuación, cláusulas contractuales aprobadas, normas corporativas vinculantes u otros instrumentos.",
+                "Se realizarán evaluaciones de riesgo y medidas complementarias cuando se exijan.",
             ],
         ],
         [
@@ -206,7 +197,7 @@ return [
             'number' => '19',
             'heading' => "Conservación",
             'paragraphs' => [
-                "Los datos se conservarán durante el tiempo necesario para prestar los servicios, mantener la seguridad, prevenir el fraude, cumplir obligaciones legales y ejercer derechos. Cuando no exista fundamento para su conservación, serán eliminados o anonimizados.",
+                "Los datos se conservarán durante el tiempo necesario para prestar servicios, garantizar seguridad, prevenir fraude, cumplir obligaciones legales y ejercer derechos. Cuando no exista fundamento para conservarlos, se eliminarán o anonimizarán.",
             ],
         ],
         [
@@ -214,8 +205,8 @@ return [
             'number' => '20',
             'heading' => "Seguridad e incidentes",
             'paragraphs' => [
-                "HiLights Football adoptará medidas técnicas y organizativas proporcionales a los riesgos, incluidos controles de acceso, protección de credenciales, cifrado cuando corresponda, monitorización, copias de seguridad y respuesta a incidentes.",
-                "Las notificaciones de incidentes se realizarán a las autoridades y titulares cuando lo exija la legislación aplicable.",
+                "HiLights Football adoptará medidas técnicas y organizativas proporcionales al riesgo, incluidos controles de acceso, protección de credenciales, cifrado cuando proceda, supervisión, copias de seguridad y respuesta a incidentes.",
+                "Se notificará a autoridades y titulares cuando lo exija la ley.",
             ],
         ],
         [
@@ -223,8 +214,7 @@ return [
             'number' => '21',
             'heading' => "Cookies, SDK y publicidad",
             'paragraphs' => [
-                "La Plataforma podrá utilizar tecnologías estrictamente necesarias y, conforme al consentimiento u otra base válida, tecnologías de analytics y publicidad. Cuando sea exigido, se ofrecerá un panel de preferencias.",
-                "La publicidad dirigida o el profiling de menores se restringirá o desactivará cuando lo exija la legislación o sea necesario para el interés superior del menor.",
+                "La Plataforma podrá utilizar tecnologías estrictamente necesarias y, con consentimiento u otra base válida, tecnologías analíticas y publicitarias. Se ofrecerá un panel de preferencias donde sea obligatorio. La publicidad dirigida o elaboración de perfiles de menores se restringirá o desactivará cuando la ley o su interés superior lo exijan.",
             ],
         ],
         [
@@ -232,8 +222,8 @@ return [
             'number' => '22',
             'heading' => "Derechos de privacidad",
             'paragraphs' => [
-                "Según la jurisdicción, el usuario podrá tener derechos de acceso, confirmación, rectificación, supresión, anonimización, limitación, oposición, portabilidad, retirada del consentimiento, información sobre el intercambio y revisión de determinadas decisiones automatizadas.",
-                "Las solicitudes podrán realizarse a través del área de ayuda, la configuración o el canal de privacidad disponible en la Plataforma. HiLights Football podrá verificar la identidad del solicitante antes de proporcionar o modificar datos.",
+                "Según la jurisdicción, el usuario podrá tener derechos de acceso, confirmación, rectificación, supresión, anonimización, limitación, oposición, portabilidad, retirada del consentimiento, información sobre cesiones y revisión de determinadas decisiones automatizadas.",
+                "Podrá solicitarlos en ayuda, ajustes o canal de privacidad. HiLights Football podrá verificar la identidad antes de entregar o modificar datos.",
             ],
         ],
         [
@@ -241,17 +231,20 @@ return [
             'number' => '23',
             'heading' => "Decisiones automatizadas",
             'paragraphs' => [
-                "La Plataforma podrá utilizar sistemas automatizados para recomendaciones, organización de contenido, detección de fraude y descubrimiento de perfiles. Cuando la legislación conceda derecho de información, oposición o revisión humana respecto de decisiones automatizadas relevantes, dichos mecanismos estarán disponibles.",
+                "La Plataforma podrá usar sistemas automatizados para recomendaciones, organización de contenido, detección de fraude y descubrimiento de perfiles. Se ofrecerán mecanismos de información, oposición o revisión humana cuando la ley reconozca estos derechos.",
             ],
         ],
         [
             'id' => 'section-24',
             'number' => '24',
-            'part' => "Parte III — Protección global de menores y consentimientos",
+            'part' => "PARTE III — PROTECCIÓN GLOBAL DE MENORES Y CONSENTIMIENTOS",
+            'part_intro' => [
+                "Las reglas de esta Parte se aplican junto con las exigencias locales de la Parte IV.",
+            ],
             'heading' => "Verificación de edad",
             'paragraphs' => [
-                "HiLights Football podrá solicitar fecha de nacimiento, confirmación del representante, señales técnicas o servicios especializados de verificación de edad. La solución elegida será proporcional al riesgo y buscará minimizar la recopilación de datos.",
-                "Los datos obtenidos exclusivamente para verificar la edad no se reutilizarán para publicidad ni finalidades incompatibles.",
+                "HiLights Football podrá solicitar fecha de nacimiento, confirmación del representante, señales técnicas o servicios especializados de verificación de edad. La solución será proporcional al riesgo y minimizará la recogida.",
+                "Los datos recogidos exclusivamente para verificar la edad no se reutilizarán para publicidad o finalidades incompatibles.",
             ],
         ],
         [
@@ -259,23 +252,15 @@ return [
             'number' => '25',
             'heading' => "Consentimiento parental",
             'paragraphs' => [
-                "Cuando la legislación local exija consentimiento verificable del representante, HiLights Football solicitará autorización antes de la recopilación o uso sujeto a dicho requisito y conservará un registro de la autorización según sea necesario.",
-                "El representante podrá solicitar acceso, rectificación o supresión y retirar consentimientos cuando la legislación aplicable lo permita.",
+                "Cuando la ley local exija consentimiento parental verificable, HiLights Football lo solicitará antes de la recogida o uso sujeto a ese requisito y conservará registro cuando sea necesario. El representante podrá solicitar acceso, corrección o supresión y retirar consentimientos cuando la ley lo permita.",
             ],
         ],
         [
             'id' => 'section-26',
             'number' => '26',
-            'heading' => "Configuraciones protectoras para menores",
-            'items' => [
-                "Privacidad elevada por defecto.",
-                "Geolocalización desactivada por defecto, salvo necesidad legítima y protección adecuada.",
-                "Datos de contacto directo no públicos por defecto.",
-                "Limitaciones de mensajes entre adultos y menores.",
-                "Controles contra descubrimiento indebido, scraping e indexación externa.",
-                "Profiling y publicidad comportamental restringidos o desactivados cuando corresponda.",
-                "Herramientas claras de denuncia, bloqueo y ejercicio de derechos.",
-                "Prohibición de nudges que incentiven a menores a revelar datos innecesarios o reducir protecciones.",
+            'heading' => "Ajustes de protección de menores",
+            'paragraphs' => [
+                "Mayor privacidad por defecto; geolocalización desactivada salvo necesidad legítima y protección adecuada; contacto directo no público por defecto; límites a mensajes entre adultos y menores; controles contra descubrimiento indebido, scraping e indexación externa; elaboración de perfiles y publicidad comportamental restringidas o desactivadas cuando proceda; herramientas claras de denuncia, bloqueo y ejercicio de derechos; prohibición de estímulos de diseño que animen a revelar datos innecesarios o reducir protecciones.",
             ],
         ],
         [
@@ -283,21 +268,21 @@ return [
             'number' => '27',
             'heading' => "Consentimientos separados y usos comerciales opcionales",
             'paragraphs' => [
-                "Los consentimientos opcionales estarán separados de las aceptaciones esenciales. El marketing, la publicidad personalizada, los intercambios opcionales, la licencia o puesta a disposición comercial de datos personales y el uso promocional de imagen no se agruparán en una autorización genérica cuando la ley exija una elección específica.",
-                "Cuando HiLights Football pretenda compartir, poner a disposición o licenciar datos personales a cambio de remuneración u otra ventaja económica y la legislación aplicable exija consentimiento, el usuario recibirá información suficiente para comprender la naturaleza del tratamiento, su finalidad, los datos implicados y los destinatarios o categorías de destinatarios.",
-                "La negativa o retirada del consentimiento para un tratamiento comercial opcional no impedirá el acceso a funcionalidades de la Plataforma que no dependan de dicho tratamiento.",
-                "La retirada del consentimiento tendrá efectos para tratamientos futuros y no afectará a la licitud de las operaciones realizadas antes de la retirada, sin perjuicio de las obligaciones legales aplicables y los derechos del titular.",
-                "Los consentimientos relativos a niños y adolescentes cumplirán requisitos adicionales de edad, capacidad, interés superior, autorización parental y demás protecciones previstas en esta Política y en la legislación aplicable.",
+                "Los consentimientos opcionales se separarán de las aceptaciones esenciales. Marketing, publicidad personalizada, intercambios opcionales, licencias o puesta a disposición comercial de datos personales y uso promocional de imágenes no se agruparán en una autorización genérica cuando la ley exija elección específica.",
+                "Cuando HiLights Football pretenda compartir, facilitar o licenciar datos personales por remuneración u otra ventaja económica y se requiera consentimiento, informará suficientemente de la naturaleza, finalidad, datos y destinatarios o categorías.",
+                "Negarse o retirar el consentimiento para tratamientos comerciales opcionales no impedirá acceder a funciones independientes.",
+                "La retirada tendrá efectos futuros sin afectar la licitud de operaciones anteriores, respetando obligaciones y derechos legales.",
+                "Los consentimientos relativos a menores cumplirán requisitos adicionales de edad, capacidad, interés superior, autorización parental y demás protecciones.",
             ],
         ],
         [
             'id' => 'section-28',
             'number' => '28',
-            'part' => "Parte IV — Reglas regionales",
+            'part' => "PARTE IV — NORMAS REGIONALES",
             'heading' => "Brasil",
             'paragraphs' => [
-                "En Brasil, el tratamiento cumplirá la LGPD, el ECA y demás normas aplicables a la protección de niños y adolescentes en el entorno digital. Los datos de niños se tratarán atendiendo a su interés superior y, cuando el tratamiento se base en el consentimiento, se solicitará el consentimiento específico y destacado de al menos uno de los padres o del representante legal.",
-                "Los titulares podrán ejercer los derechos previstos en la LGPD a través de los canales de privacidad de la Plataforma.",
+                "En Brasil, el tratamiento cumplirá la LGPD, el ECA y otras normas de protección de niños y adolescentes en línea. Los datos de niños se tratarán en su interés superior y, cuando se basen en consentimiento, se solicitará consentimiento específico y destacado de al menos un progenitor o representante legal.",
+                "Los titulares podrán ejercer sus derechos LGPD por los canales de privacidad.",
             ],
         ],
         [
@@ -305,8 +290,8 @@ return [
             'number' => '29',
             'heading' => "Unión Europea y Espacio Económico Europeo",
             'paragraphs' => [
-                "Para usuarios del EEE, el tratamiento cumplirá el GDPR. HiLights Football proporcionará bases jurídicas, transparencia, derechos de acceso, rectificación, supresión, limitación, oposición y portabilidad cuando correspondan, así como salvaguardias para transferencias internacionales.",
-                "Cuando un servicio de la sociedad de la información se ofrezca directamente a un niño y el tratamiento se base en el consentimiento, se aplicará la edad de consentimiento digital definida por el Estado miembro, que puede variar entre 13 y 16 años. HiLights Football realizará esfuerzos razonables para verificar la autorización parental cuando sea exigida.",
+                "Para usuarios del EEE, se cumplirá el RGPD. HiLights Football proporcionará bases jurídicas, transparencia, derechos de acceso, rectificación, supresión, limitación, oposición y portabilidad cuando correspondan y garantías para transferencias internacionales.",
+                "Cuando un servicio de la sociedad de la información se ofrezca directamente a un niño y el tratamiento se base en consentimiento, se aplicará la edad fijada por el Estado miembro, entre 13 y 16 años. Se realizarán esfuerzos razonables para verificar la autorización parental cuando sea necesaria.",
             ],
         ],
         [
@@ -314,8 +299,7 @@ return [
             'number' => '30',
             'heading' => "Reino Unido",
             'paragraphs' => [
-                "Para usuarios del Reino Unido, HiLights Football cumplirá el UK GDPR, la Data Protection Act y los estándares aplicables del Children's Code cuando sea probable que el servicio sea utilizado por menores de 18 años.",
-                "Esto incluye consideración prioritaria del interés superior del niño, evaluación de impacto cuando corresponda, privacidad elevada por defecto, minimización, controles de geolocalización, transparencia adecuada a la edad, protección contra profiling perjudicial y herramientas accesibles de privacidad y denuncia.",
+                "Para usuarios del Reino Unido, HiLights Football cumplirá el UK GDPR, Data Protection Act y normas aplicables del Children's Code cuando sea probable que menores de 18 años accedan al servicio. Se priorizará su interés superior, evaluaciones de impacto cuando procedan, alta privacidad por defecto, minimización, controles de geolocalización, transparencia adecuada a la edad, protección frente a perfiles perjudiciales y herramientas accesibles de privacidad y denuncia.",
             ],
         ],
         [
@@ -323,8 +307,8 @@ return [
             'number' => '31',
             'heading' => "Estados Unidos",
             'paragraphs' => [
-                "En Estados Unidos, cuando HiLights Football opere un servicio dirigido a menores de 13 años o tenga conocimiento efectivo de la recopilación en línea de datos personales de un menor de 13 años en una situación cubierta por COPPA, se aplicarán aviso adecuado, consentimiento parental verificable cuando sea exigido, minimización, seguridad y derechos parentales.",
-                "HiLights Football también cumplirá las leyes estatales aplicables de privacidad y protección de menores, incluidas las normas sobre datos sensibles, publicidad dirigida, venta o intercambio de datos y diseño apropiado para la edad cuando estén vigentes y sean aplicables al servicio.",
+                "En Estados Unidos, si HiLights Football presta servicios dirigidos a menores de 13 años o tiene conocimiento efectivo de la recogida en línea de datos de menores de 13 en supuestos cubiertos por COPPA, aplicará avisos adecuados, consentimiento parental verificable cuando se exija, minimización, seguridad y derechos parentales.",
+                "También cumplirá las leyes estatales aplicables de privacidad y protección de menores, incluidas las relativas a datos sensibles, publicidad dirigida, venta o intercambio de datos y diseño adecuado a la edad.",
             ],
         ],
         [
@@ -332,8 +316,7 @@ return [
             'number' => '32',
             'heading' => "Canadá",
             'paragraphs' => [
-                "En Canadá, HiLights Football cumplirá las leyes federales y provinciales aplicables, incluidos los requisitos de consentimiento significativo, transparencia y finalidad apropiada. Cuando el menor no tenga capacidad para otorgar consentimiento significativo, se obtendrá autorización del representante según sea exigido.",
-                "La sensibilidad de los datos y la madurez del joven se considerarán en la forma del consentimiento y en la presentación de la información.",
+                "En Canadá, HiLights Football cumplirá las leyes federales y provinciales aplicables, incluidos consentimiento significativo, transparencia y finalidad apropiada. Cuando un menor no pueda dar consentimiento significativo, se obtendrá autorización del representante según lo exigido. Se considerarán la sensibilidad de los datos y la madurez del joven al presentar la información y solicitar consentimiento.",
             ],
         ],
         [
@@ -341,9 +324,9 @@ return [
             'number' => '33',
             'heading' => "Australia",
             'paragraphs' => [
-                "En Australia, HiLights Football cumplirá la Privacy Act, los Australian Privacy Principles, las normas de seguridad en línea y los requisitos específicos aplicables a servicios utilizados por niños.",
-                "Cuando HiLights Football esté clasificada como plataforma sujeta a las normas australianas de edad mínima para redes sociales, no se permitirán cuentas de usuarios por debajo de la edad mínima legal. La verificación de edad será proporcional y los datos recopilados para ese fin no se reutilizarán de forma incompatible.",
-                "HiLights Football también seguirá e implementará las obligaciones del Children's Online Privacy Code australiano cuando sean aplicables y estén vigentes.",
+                "En Australia, HiLights Football cumplirá el Privacy Act, Australian Privacy Principles, normas de seguridad en línea y requisitos para servicios utilizados por niños.",
+                "Si queda sujeta a las normas australianas de edad mínima para redes sociales, no permitirá cuentas por debajo de la edad legal. La verificación de edad será proporcional y sus datos no se reutilizarán de forma incompatible.",
+                "También seguirá e implementará las obligaciones del Children's Online Privacy Code cuando correspondan y estén vigentes.",
             ],
         ],
         [
@@ -351,7 +334,7 @@ return [
             'number' => '34',
             'heading' => "Singapur",
             'paragraphs' => [
-                "En Singapur, el tratamiento cumplirá la Personal Data Protection Act (PDPA) y las orientaciones aplicables a la protección de datos de niños en el entorno digital. HiLights Football adoptará avisos comprensibles, minimización, seguridad y procesos de consentimiento adecuados a la edad y capacidad del usuario.",
+                "En Singapur, el tratamiento cumplirá la Personal Data Protection Act (PDPA) y orientaciones aplicables sobre datos de niños en línea. HiLights Football ofrecerá avisos comprensibles, minimización, seguridad y procedimientos de consentimiento adecuados a la edad y capacidad.",
             ],
         ],
         [
@@ -359,8 +342,8 @@ return [
             'number' => '35',
             'heading' => "India",
             'paragraphs' => [
-                "En India, HiLights Football cumplirá la Digital Personal Data Protection Act y las normas vigentes aplicables, incluidos requisitos específicos para el tratamiento de datos de niños, consentimiento verificable del representante cuando sea exigido y restricciones aplicables al tracking, monitoring o publicidad dirigida a niños.",
-                "Si la legislación o reglamentación establece excepciones por edad, categoría de servicio o finalidad, solo se aplicarán cuando sean efectivamente pertinentes.",
+                "En India, HiLights Football cumplirá la Digital Personal Data Protection Act y normas vigentes, incluidos requisitos específicos para datos de niños, consentimiento verificable del representante cuando se exija y restricciones de seguimiento, monitorización o publicidad dirigida a niños.",
+                "Las excepciones por edad, servicio o finalidad solo se aplicarán cuando realmente correspondan.",
             ],
         ],
         [
@@ -368,59 +351,50 @@ return [
             'number' => '36',
             'heading' => "Otras jurisdicciones",
             'paragraphs' => [
-                "En países no mencionados expresamente, HiLights Football aplicará esta Política Global y, adicionalmente, las normas locales obligatorias de privacidad, protección de menores, consumo, comunicaciones electrónicas y seguridad en línea.",
-                "Cuando una ley local exija representante, registro, aviso específico, almacenamiento local, consentimiento adicional, restricción de edad u otra medida, HiLights Football podrá adaptar la experiencia del producto para dicha jurisdicción.",
+                "En países no citados expresamente, HiLights Football aplicará esta Política Global y las normas locales obligatorias de privacidad, protección de menores, consumo, comunicaciones electrónicas y seguridad en línea.",
+                "Si se exige representante, registro, aviso específico, almacenamiento local, consentimiento adicional, restricción de edad u otra medida, podrá adaptarse la experiencia del producto.",
             ],
         ],
         [
             'id' => 'section-37',
             'number' => '37',
-            'part' => "Parte V — Consentimientos y declaraciones",
+            'part' => "PARTE V — ACEPTACIONES Y DECLARACIONES",
             'heading' => "Aceptaciones esenciales",
             'item_style' => 'checkbox',
             'items' => [
                 "He leído y acepto los Términos de Uso de HiLights Football.",
-                "Declaro que he leído la Política Global de Privacidad y comprendido la información sobre el tratamiento de datos.",
-                "Declaro que la información proporcionada es verdadera y que poseo los derechos o autorizaciones necesarios para publicar los contenidos enviados.",
+                "Declaro haber leído la Política Global de Privacidad y comprendido la información sobre tratamiento de datos.",
+                "Declaro que la información facilitada es verdadera y que poseo los derechos o autorizaciones necesarios para publicar el contenido enviado.",
             ],
         ],
         [
             'id' => 'section-38',
             'number' => '38',
-            'heading' => "Consentimiento del representante legal — cuando sea exigido",
+            'heading' => "Consentimiento del representante legal — cuando sea necesario",
             'paragraphs' => [
-                "Declaro ser padre, madre o representante legal del usuario menor identificado en el registro. Confirmo que he leído la información sobre HiLights Football y, en las actividades en las que la legislación aplicable exija mi consentimiento, autorizo específicamente el tratamiento de los datos personales del menor para la creación y mantenimiento de su perfil deportivo y la utilización de las funcionalidades presentadas en el momento de la autorización, respetando el interés superior del menor y sus derechos legales.",
+                "Declaro ser padre, madre o representante legal del usuario menor identificado en el registro. Confirmo haber leído la información sobre HiLights Football y, en las actividades para las que la legislación aplicable requiera mi consentimiento, autorizo específicamente el tratamiento de los datos personales del menor para crear y mantener su perfil deportivo y utilizar las funciones presentadas en el momento de la autorización, respetando su interés superior y derechos legales.",
             ],
         ],
         [
             'id' => 'section-39',
             'number' => '39',
-            'heading' => "Autorizaciones opcionales",
+            'heading' => "Tratamientos incluidos en la aceptación general de los Términos",
             'paragraphs' => [
-                "Las autorizaciones siguientes se presentarán por separado cuando correspondan, permitiendo al usuario elegir libremente qué tratamientos opcionales desea autorizar.",
-            ],
-            'item_style' => 'checkbox',
-            'items' => [
-                "Quiero recibir comunicaciones promocionales de HiLights Football y puedo cancelar esta opción en cualquier momento.",
-                "Autorizo el uso promocional de mi imagen — o de la imagen del menor bajo mi responsabilidad, cuando esté legalmente permitido — conforme a las finalidades, formatos y canales presentados en el momento de la autorización.",
-                "Autorizo el intercambio de los datos indicados con el socio identificado, para la finalidad específica presentada en el momento de esta autorización.",
-                "Autorizo, de forma libre, específica e informada, que HiLights Football comparta, ponga a disposición o licencie, incluso a cambio de remuneración u otra ventaja económica para HiLights Football, los datos personales, información de mi perfil deportivo, estadísticas, historial deportivo y demás datos específicamente indicados en el momento de esta autorización, a los terceros o categorías de terceros presentados, para las finalidades que se me informen.",
-            ],
-            'closing' => [
-                "Declaro conocer que estas operaciones podrán formar parte de productos, servicios, herramientas de scouting, análisis deportivo, inteligencia de mercado, estadísticas u otras soluciones comerciales ofrecidas por HiLights Football o sus socios, según lo informado en el momento de la autorización.",
-                "Comprendo que cualquier remuneración o ventaja económica recibida por HiLights Football como consecuencia de estas operaciones no genera, por sí sola, derecho a participación en ingresos, regalías o compensación económica, salvo acuerdo expreso en contrario.",
-                "También comprendo que esta autorización es opcional y que puedo retirarla mediante los mecanismos ofrecidos por HiLights Football. La retirada tendrá efectos para tratamientos futuros, sin afectar a la licitud de las operaciones realizadas anteriormente, respetando mis derechos y la legislación aplicable.",
+                "Al aceptar los Términos de Uso y declarar conocer la Política Global de Privacidad, el usuario reconoce que el funcionamiento de HiLights Football implica recopilar, organizar, analizar, mostrar y compartir información del perfil deportivo según las funciones utilizadas, los ajustes de cuenta y las bases jurídicas aplicables.",
+                "La prestación del servicio incluye poner el perfil a disposición de clubes, academias, ojeadores, entrenadores, agentes y otros participantes autorizados del entorno deportivo, y elaborar estadísticas, indicadores, clasificaciones y análisis de fútbol.",
+                "HiLights Football podrá desarrollar, ofrecer y comercializar productos y análisis basados en datos efectivamente anonimizados o agregados, conforme a la ley. La aceptación general no constituye por sí sola consentimiento para vender, licenciar o compartir comercialmente datos personales identificables cuando la ley exija autorización específica.",
+                "El uso de imágenes identificables en campañas externas, el envío de marketing y otros tratamientos sujetos a consentimiento separado dependerán de la autorización legalmente exigida. Para niños y adolescentes también rigen las protecciones y autorizaciones de las cláusulas 16, 25 y 39-A.",
+                "Cuando exista fundamento jurídico válido distinto del consentimiento, el tratamiento podrá realizarse dentro de los límites de la finalidad informada, la ley y los derechos del titular. Nada en esta aceptación excluye derechos obligatorios de privacidad, oposición o retirada del consentimiento.",
             ],
         ],
         [
             'id' => 'section-39a',
             'number' => '39-A',
-            'heading' => "Datos de niños y adolescentes para finalidades comerciales",
+            'heading' => "Datos de niños y adolescentes con fines comerciales",
             'paragraphs' => [
-                "Los datos personales de niños y adolescentes no serán objeto de intercambio, licencia o puesta a disposición comercial basándose exclusivamente en una autorización genérica concedida durante el registro.",
-                "Cuando una operación que implique datos de un niño o adolescente esté legalmente permitida, HiLights Football evaluará previamente su compatibilidad con el interés superior del menor, aplicará medidas de minimización y protección y obtendrá las autorizaciones o consentimientos específicos exigidos por la legislación aplicable.",
-                "Cuando sea exigido el consentimiento parental, el representante recibirá información clara sobre los datos implicados, la finalidad específica, los destinatarios o categorías de destinatarios, la eventual naturaleza comercial de la operación y los mecanismos disponibles para retirar el consentimiento y ejercer los derechos aplicables.",
-                "Los datos recopilados exclusivamente para estimación o verificación de edad no serán comercializados, licenciados para finalidades comerciales ni reutilizados para publicidad u otras finalidades incompatibles.",
+                "Los datos personales de niños y adolescentes no serán objeto de intercambio, licencia o puesta a disposición comercial basados exclusivamente en una autorización genérica otorgada en el registro. Cuando una operación sea legalmente permitida, HiLights Football evaluará previamente su compatibilidad con el interés superior del menor, aplicará minimización y protección y obtendrá las autorizaciones o consentimientos específicos exigidos.",
+                "Si se requiere consentimiento parental, el representante recibirá información clara sobre los datos, finalidad, destinatarios o categorías, eventual naturaleza comercial y mecanismos de retirada y ejercicio de derechos.",
+                "Los datos recogidos exclusivamente para verificar la edad no se comercializarán, licenciarán para fines comerciales ni reutilizarán para publicidad u otros fines incompatibles.",
             ],
         ],
         [
@@ -428,7 +402,7 @@ return [
             'number' => '40',
             'heading' => "Ley aplicable y derechos locales",
             'paragraphs' => [
-                "Estos Términos se interpretan conforme a las leyes aplicables a la operación de HiLights Football, sin excluir derechos obligatorios otorgados al usuario por la legislación de su país o región. Las reglas de jurisdicción o resolución de disputas no limitarán derechos irrenunciables de consumidores o titulares de datos.",
+                "Estos Términos se interpretarán conforme a las leyes aplicables a las operaciones de HiLights Football, sin excluir derechos obligatorios de los usuarios en su país o región. Las reglas de jurisdicción o resolución de conflictos no limitarán derechos irrenunciables de consumidores o titulares de datos.",
             ],
         ],
         [
@@ -436,9 +410,10 @@ return [
             'number' => '41',
             'heading' => "Actualizaciones y contacto",
             'paragraphs' => [
-                "La versión vigente estará disponible en la Plataforma. Los cambios materiales se comunicarán de forma apropiada y se solicitarán nuevos consentimientos cuando sea exigido.",
-                "Las dudas, solicitudes de privacidad, denuncias y ejercicio de derechos podrán remitirse a través de los canales de soporte y privacidad disponibles en el área de ayuda y configuración de HiLights Football.",
+                "La versión vigente estará disponible en la Plataforma. Los cambios importantes se comunicarán adecuadamente y se solicitarán nuevos consentimientos cuando se exijan.",
+                "Las dudas, solicitudes de privacidad, denuncias y ejercicio de derechos podrán dirigirse a los canales de soporte y privacidad del área de ayuda y ajustes de HiLights Football.",
             ],
         ],
     ],
+    'copyright' => "© 2026 HiLights Football. Todos los derechos reservados.",
 ];

@@ -120,7 +120,7 @@ export default function About() {
                         <span aria-hidden="true" className="mx-auto mt-8 block h-px w-16 bg-white/25 2xl:mt-10 2xl:w-20" />
                         <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg 2xl:mt-10 2xl:max-w-3xl 2xl:text-xl">
                             Don’t wait for your name to appear in traditional databases. Be the one responsible for adding your data and achievements,
-                            and send the link to your football identity directly to coaches, scouts, agents and clubs.
+                            and send the link of your football identity directly to coaches, scouts, agents and clubs.
                         </p>
                         <p className="mx-auto mt-6 max-w-2xl text-base font-bold text-white sm:text-lg 2xl:max-w-3xl 2xl:text-xl">
                             Be part of the HiLights Football community!
@@ -175,7 +175,7 @@ export default function About() {
                 </section>
 
                 {/* WHY HILIGHTS */}
-                <section className="bg-white px-6 pb-16 sm:px-10 lg:px-16 lg:pb-20 2xl:pb-24 dark:bg-[#0D0D0D]">
+                {/* <section className="bg-white px-6 pb-16 sm:px-10 lg:px-16 lg:pb-20 2xl:pb-24 dark:bg-[#0D0D0D]">
                     <div className="mx-auto grid max-w-[68.75rem] gap-6 lg:grid-cols-3 2xl:max-w-[81.25rem] 2xl:gap-8">
                         {discoveryCards.map((card) => {
                             const Icon = card.icon;
@@ -199,7 +199,7 @@ export default function About() {
                             );
                         })}
                     </div>
-                </section>
+                </section> */}
 
                 {/* VISION */}
                 <section className="bg-[#F8FAFC] px-6 py-16 sm:px-10 lg:px-16 lg:py-20 2xl:py-24 dark:bg-[#111111]">

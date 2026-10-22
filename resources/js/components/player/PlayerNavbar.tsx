@@ -329,13 +329,13 @@ export default function PlayerNavbar() {
                                 >
                                     View Public Football Identity
                                 </Link>
-                                <Link
+                                {/* <Link
                                     href="/player/settings"
                                     onClick={() => setMobileOpen(false)}
                                     className="block border-b border-[#F1F5F9] py-3 text-base font-medium text-[#0F172A] transition-colors hover:text-[#E53F01] dark:border-[#1F1F1F] dark:text-[#F5F5F5]"
                                 >
                                     Account Settings
-                                </Link>
+                                </Link> */}
                             </nav>
                             <div className="mt-4 border-t border-[#E2E8F0] px-6 py-4 dark:border-[#2A2A2A]">
                                 <Button

@@ -6,6 +6,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { CheckCircle2, Send, Users, Building2, Briefcase } from 'lucide-react';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import Select from 'react-select';
 
 interface Country {
     code: string;
@@ -137,6 +138,44 @@ export default function RequestAccess({ countries = [] }: Props) {
         'w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-11 px-4 text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)] transition-colors';
 
     const labelClasses = 'block text-sm font-medium text-[#0F172A] dark:text-[#F5F5F5] mb-2 font-sans';
+
+    // Shudhu ISO 2-letter desh — "Brazilian I. (BRI)" er moto non-country entry baad jay
+    const countryOptions = countries
+        .filter((c) => typeof c.code === 'string' && c.code.length === 2)
+        .map((c) => ({ value: c.code, label: c.name }));
+
+    // Register page-er moto dark searchable dropdown
+    const countrySelectStyles = {
+        control: (base: any) => ({
+            ...base,
+            backgroundColor: '#111111',
+            borderColor: '#2A2A2A',
+            color: '#F5F5F5',
+            minHeight: '2.75rem',
+            height: '2.75rem',
+            borderRadius: '0.75rem',
+        }),
+        valueContainer: (base: any) => ({ ...base, padding: '0 1rem' }),
+        indicatorsContainer: (base: any) => ({ ...base, height: '2.75rem' }),
+        menu: (base: any) => ({
+            ...base,
+            backgroundColor: '#1F1F1F',
+            borderColor: '#2A2A2A',
+            borderRadius: '0.75rem',
+            marginTop: '0.5rem',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
+        }),
+        option: (base: any, state: any) => ({
+            ...base,
+            backgroundColor: state.isSelected ? '#E53F01' : state.isFocused ? '#2A2A2A' : '#1F1F1F',
+            color: state.isSelected ? '#0D0D0D' : '#F5F5F5',
+            fontWeight: state.isSelected ? '600' : '400',
+            padding: '0.625rem 0.75rem',
+        }),
+        input: (base: any) => ({ ...base, color: '#F5F5F5', margin: 0 }),
+        singleValue: (base: any) => ({ ...base, color: '#F5F5F5' }),
+        placeholder: (base: any) => ({ ...base, color: '#555555' }),
+    };
 
     return (
         <div className="min-h-screen bg-white dark:bg-[#0D0D0D]">
@@ -294,17 +333,17 @@ export default function RequestAccess({ countries = [] }: Props) {
                                 {/* Country */}
                                 <div>
                                     <label htmlFor="country" className={labelClasses}>Country / Location</label>
-                                    <select
-                                        id="country"
-                                        value={data.country}
-                                        onChange={(e) => setData('country', e.target.value)}
-                                        className={inputClasses}
-                                    >
-                                        <option value="">Select country</option>
-                                        {countries.map((c) => (
-                                            <option key={c.code} value={c.code}>{c.name}</option>
-                                        ))}
-                                    </select>
+                                    <Select
+                                        inputId="country"
+                                        options={countryOptions}
+                                        value={countryOptions.find((o) => o.value === data.country) ?? null}
+                                        onChange={(opt: any) => setData('country', opt?.value ?? '')}
+                                        placeholder="Select country"
+                                        isSearchable
+                                        isClearable
+                                        className="text-sm"
+                                        styles={countrySelectStyles}
+                                    />
                                     {errors.country && <p className="mt-1 text-xs text-[#E53F01]">{errors.country}</p>}
                                 </div>
 
