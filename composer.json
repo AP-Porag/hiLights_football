@@ -17,6 +17,7 @@
         "laravel/passkeys": "^0.2.1",
         "laravel/tinker": "^2.10.1",
         "pragmarx/countries": "^1.0",
+        "resend/resend-php": "^1.17",
         "stevebauman/location": "^7.6",
         "symfony/intl": "^7.4",
         "tightenco/ziggy": "^2.4"

@@ -411,15 +411,18 @@ export default function Detail() {
                                     {/* Pitch (left) — full width of the column */}
                                     <div className="w-full min-w-0">
                                         {/* Direction arrow — field positions start from the left */}
-                                        <div className="mb-3 flex items-center" role="img" aria-label="Field direction: left to right">
-                                            <span className="h-[0.1875rem] flex-1 rounded-full bg-[#E53F01]" />
-                                            <svg
-                                                viewBox="0 0 12 12"
-                                                fill="currentColor"
-                                                className="-ml-px h-3 w-3 shrink-0 text-[#E53F01] md:h-4 md:w-4"
-                                                aria-hidden="true"
-                                            >
-                                                <path d="M0 0 L12 6 L0 12 Z" />
+                                        <div className="mb-3 flex justify-center" role="img" aria-label="Field direction: left to right">
+                                            <svg viewBox="0 0 602 112" className="h-auto w-4/5 max-h-24" aria-hidden="true">
+                                                <defs>
+                                                    <linearGradient id="fieldArrowFade" x1="0" y1="0" x2="1" y2="0">
+                                                        <stop offset="0" stopColor="#E53F01" stopOpacity="0" />
+                                                        <stop offset="0.52" stopColor="#E53F01" stopOpacity="1" />
+                                                    </linearGradient>
+                                                </defs>
+                                                <path
+                                                    fill="url(#fieldArrowFade)"
+                                                    d="M0 44 L486 44 C504 44 501 18 468 4 C504 12 553 33 600 56 C553 79 504 100 468 108 C501 94 504 68 486 68 L0 68 Z"
+                                                />
                                             </svg>
                                         </div>
                                         <PitchPriority selected={player.positions ?? []} />
