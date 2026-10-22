@@ -30,7 +30,6 @@ jobs:
       # 4️⃣ Prepare environment file (Wayfinder & Vite-এর জন্য build-এর আগেই প্রয়োজন)
       - name: ⚙️ Prepare .env
         run: |
-          run: php -r "file_exists('.env') || copy('.env.staging', '.env');"
           mkdir -p resources/js/types || true
 
       # 5️⃣ Setup Node
