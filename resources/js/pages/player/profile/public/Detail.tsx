@@ -393,12 +393,12 @@ export default function NewDetail() {
                     </section>
 
                     {/* IN-CONTENT AD (mobile only) */}
-                    <aside className="block space-y-3 lg:hidden">
-                        <p className="text-[0.625rem] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>
-                        <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center">
-                            <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
-                        </div>
-                    </aside>
+                    {/*<aside className="block space-y-3 lg:hidden">*/}
+                    {/*    <p className="text-[0.625rem] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>*/}
+                    {/*    <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center">*/}
+                    {/*        <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>*/}
+                    {/*    </div>*/}
+                    {/*</aside>*/}
 
                     {/* CLUB HISTORY */}
                     <section className="overflow-hidden">
@@ -498,12 +498,12 @@ export default function NewDetail() {
                     </div>
 
                     {/* IN-CONTENT AD (mobile only) */}
-                    <aside className="block space-y-3 lg:hidden">
-                        <p className="text-[0.625rem] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>
-                        <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center">
-                            <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>
-                        </div>
-                    </aside>
+                    {/*<aside className="block space-y-3 lg:hidden">*/}
+                    {/*    <p className="text-[0.625rem] tracking-wider text-[#94A3B8] uppercase">Sponsored</p>*/}
+                    {/*    <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#222] bg-[#464646] p-5 py-12 text-center">*/}
+                    {/*        <p className="text-sm font-medium tracking-widest text-white/50 uppercase">ADVERTISING SPACE</p>*/}
+                    {/*    </div>*/}
+                    {/*</aside>*/}
 
                     {/* COMPETITIONS + RECENT MATCHES */}
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1.50fr] md:gap-4 lg:grid-cols-[1fr_1.25fr]">
