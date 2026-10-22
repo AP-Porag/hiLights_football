@@ -380,7 +380,7 @@ const HomeTwo = () => {
                             <div className="flex min-w-0 items-center gap-2">
                                 <Star fill="#E53F01" className="size-[1.125rem] shrink-0 text-[#f25704]" />
                                 <h2 className="truncate text-xs font-extrabold whitespace-nowrap text-[#222] md:text-sm lg:text-base 2xl:text-lg">
-                                    Community Highlights
+                                    SCOUTS, AGENTS AND CLUBS REQUEST ACESS
                                 </h2>
                             </div>
                             <Link href="/request-access" > <button className="flex shrink-0 items-center gap-1 rounded-[0.625rem] bg-white px-3 py-2 text-[0.625rem] font-bold whitespace-nowrap text-gray-700 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:gap-2 sm:px-4 md:text-xs"> View All <ArrowRight className="size-[1.125rem] text-[#E53F01] font-bold" /> </button> </Link>

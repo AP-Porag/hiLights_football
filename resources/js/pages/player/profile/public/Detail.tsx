@@ -271,12 +271,12 @@ export default function Detail() {
                                             <span className="text-white">Date of Birth:</span>{' '}
                                             {player.user?.dob
                                                 ? calcAge(player.user.dob) < 18
-                                                    ? new Date(player.user.dob).getFullYear()
+                                                    ? `${new Date(player.user.dob).getFullYear()} (${calcAge(player.user.dob)} years)`
                                                     : `${new Date(player.user.dob).toLocaleDateString('en-US', {
                                                         day: 'numeric',
                                                         month: 'short',
                                                         year: 'numeric',
-                                                    })} (${calcAge(player.user.dob)})`
+                                                    })} (${calcAge(player.user.dob)} years)`
                                                 : '—'}
                                         </span>
                                     </div>

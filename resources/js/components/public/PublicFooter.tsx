@@ -107,13 +107,14 @@ export const PublicFooter = () => {
                                         <Youtube className="h-5 w-5 md:h-6 md:w-6" />
                                     </a> */}
 
-                                    {/* <a
-                                        href="#"
+                                    <a
+                                        href="https://www.tiktok.com/@Hilights.football"
+                                        target='_blank'
                                         className="flex h-10 w-10 border-2 border-[#221f27] items-center justify-center rounded-lg bg-[#010101] text-white shadow-md transition-transform duration-200 hover:scale-110 hover:shadow-lg md:h-12 md:w-12"
                                         aria-label="TikTok"
                                     >
                                         <Music2 className="h-5 w-5 md:h-6 md:w-6" />
-                                    </a> */}
+                                    </a>
                                 </div>
                             </div>
 
@@ -133,7 +134,7 @@ export const PublicFooter = () => {
                 <div className="border-t border-[#2B2B2B]">
                     <div className="mx-auto max-w-7xl px-3 py-3 text-center">
                         <p className="text-[0.75rem] break-words text-[#BFBFBF] sm:text-[0.75rem] md:text-[0.875rem] lg:text-[1rem]">
-                            © 2024 HiLights Football. All rights reserved.
+                            © 2026 HiLights Football. All rights reserved.
                         </p>
                     </div>
                 </div>

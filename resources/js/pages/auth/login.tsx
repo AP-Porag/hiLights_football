@@ -18,7 +18,7 @@ export default function Login() {
     // TODO: Replace with usePage().props.errors
     const { errors, status } = usePage().props as unknown as { errors: LoginErrors; status?: string };
     const [showPassword, setShowPassword] = useState(false);
-    const { data, setData, post, processing } = useForm({
+    const { data, setData, post, processing } = useForm('login', {
         email: '',
         password: '',
         remember: false as boolean,
@@ -317,19 +317,19 @@ export default function Login() {
                     {/* Footer — Trust line */}
                     <p className="text-center text-xs text-[#555555] mt-6">
                         By signing in, you agree to our{' '}
-                        <Link
-                            href="/terms"
+                        <a
+                            href="/terms" target='_blank'
                             className="text-[#9A9A9A] hover:text-[#E53F01] underline underline-offset-2"
                         >
                             Terms
-                        </Link>{' '}
+                        </a>{' '}
                         and{' '}
-                        <Link
-                            href="/terms"
+                        <a
+                            href="/terms" target='_blank'
                             className="text-[#9A9A9A] hover:text-[#E53F01] underline underline-offset-2"
                         >
                             Privacy Policy
-                        </Link>
+                        </a>
                         .
                     </p>
                 </div>

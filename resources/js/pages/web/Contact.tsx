@@ -10,12 +10,12 @@ import React, { useState } from 'react';
 const faqs = [
     {
         q: 'How do scouts discover players on HiLights Football?',
-        a: 'Verified scouts and clubs use our advanced search filters — position, age, nationality, performance metrics, and video tags — to identify players that match their recruitment criteria. Players with complete football Identities and recent highlight uploads appear higher in scout search results.',
+        a: 'Verified scouts and clubs use our advanced search filters to identify players that match their recruitment criteria. Players with complete football Identities and recent highlight uploads appear higher in scout search results.',
     },
-    {
-        q: 'Is HiLights Football free for players to use?',
-        a: 'Yes. Player accounts are free to create and maintain. We offer optional premium tiers for players who want enhanced football Identities visibility, advanced analytics, and priority placement in scout searches.',
-    },
+    // {
+    //     q: 'Is HiLights Football free for players to use?',
+    //     a: 'Yes. Player accounts are free to create and maintain. We offer optional premium tiers for players who want enhanced football Identities visibility, advanced analytics, and priority placement in scout searches.',
+    // },
     {
         q: 'How do I become a verified scout or club on the platform?',
         a: 'Submit a verification request through your scout portal account. Our team reviews club affiliations, credentials, and references within 3–5 business days. Verified accounts receive a badge and unlock full access to the player database.',
@@ -24,10 +24,10 @@ const faqs = [
         q: 'Can I advertise my football academy or brand on HiLights?',
         a: 'Absolutely. We offer placement across player football identities, search results, video pages, and editorial content. Select "Advertising" in the subject dropdown above and our partnerships team will share our media kit and rate card.',
     },
-    {
-        q: 'What video links do you support?',
-        a: 'We only accept YouTube and Vimeo links — there are no direct file uploads. Upload your highlights to YouTube or Vimeo, then paste the link into your football identity. Make sure the video is set to public or unlisted so scouts can watch it, and we recommend 1080p or higher for the best presentation in scout reviews.',
-    },
+    // {
+    //     q: 'What video links do you support?',
+    //     a: 'We only accept YouTube and Vimeo links — there are no direct file uploads. Upload your highlights to YouTube or Vimeo, then paste the link into your football identity. Make sure the video is set to public or unlisted so scouts can watch it, and we recommend 1080p or higher for the best presentation in scout reviews.',
+    // },
 ];
 
 export default function Contact() {
@@ -54,6 +54,14 @@ export default function Contact() {
 
     const inputClasses =
         'w-full bg-white dark:bg-[#111111] border border-[#E2E8F0] dark:border-[#2A2A2A] rounded-xl h-11 px-4 text-sm text-[#0F172A] dark:text-[#F5F5F5] placeholder:text-[#94A3B8] dark:placeholder:text-[#555555] focus:outline-none focus:border-[#E53F01] focus:ring-2 focus:ring-orange-100 dark:focus:ring-1 dark:focus:ring-[rgba(255,107,0,0.15)] transition-colors';
+
+    function TiktokIcon({ className }: { className?: string }) {
+        return (
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+                <path d="M12.53 2h3.02c.18 1.3.76 2.48 1.62 3.4.86.9 2.01 1.5 3.3 1.66v3.06c-1.56-.05-3.05-.52-4.3-1.35v6.07c0 3.4-2.75 6.16-6.15 6.16S3.87 18.24 3.87 14.84s2.75-6.16 6.15-6.16c.3 0 .6.02.89.07v3.13a3.06 3.06 0 1 0 2.14 2.92V2z" />
+            </svg>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-white dark:bg-[#0D0D0D]">
@@ -235,7 +243,7 @@ export default function Contact() {
                                             { Icon: Facebook, label: 'Facebook', href: 'https://www.facebook.com/share/1C7zZCAjeq/?mibextid=wwXIfr' },
                                             { Icon: InstagramIcon, label: 'Instagram', href: 'https://www.instagram.com/hilights.football?rpxt=MTBwb3hiZXo3aG1pNA%3D%3D&utm_source=qr' },
                                             // { Icon: Youtube, label: 'YouTube', href: '#' },
-                                            // { Icon: Linkedin, label: 'LinkedIn', href: '#' },
+                                            { Icon: TiktokIcon, label: 'TikTok', href: 'https://www.tiktok.com/@Hilights.football' },
                                         ].map(({ Icon, label, href }) => (
                                             <a
                                                 key={label}

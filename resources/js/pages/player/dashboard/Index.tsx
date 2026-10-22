@@ -21,6 +21,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { format } from 'date-fns';
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import Select from 'react-select';
 import {
     Share2,
     Download,
@@ -551,6 +552,31 @@ const MATCH_STAT_LABELS: Record<string, string> = { goals: 'Goals', saves: 'Save
 const inputClass =
     'h-9 w-full rounded-lg border border-[#2A2A2A] bg-[#0D0D0D] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none';
 
+// Register page-er moto searchable country dropdown
+const countrySelectStyles = (height: string) => ({
+    control: (base: any) => ({
+        ...base, backgroundColor: '#111111', borderColor: '#2A2A2A', color: '#F5F5F5',
+        minHeight: height, height, borderRadius: '0.5rem', boxShadow: 'none',
+    }),
+    valueContainer: (base: any) => ({ ...base, padding: '0 0.5rem' }),
+    indicatorsContainer: (base: any) => ({ ...base, height }),
+    menu: (base: any) => ({ ...base, backgroundColor: '#1F1F1F', borderColor: '#2A2A2A', borderRadius: '0.75rem', marginTop: '0.5rem' }),
+    menuPortal: (base: any) => ({ ...base, zIndex: 9999 }),
+    option: (base: any, state: any) => ({
+        ...base,
+        backgroundColor: state.isSelected ? '#E53F01' : state.isFocused ? '#2A2A2A' : '#1F1F1F',
+        color: state.isSelected ? '#0D0D0D' : '#F5F5F5',
+        fontWeight: state.isSelected ? 600 : 400,
+        padding: '0.625rem 0.75rem',
+    }),
+    input: (base: any) => ({ ...base, color: '#F5F5F5', margin: 0 }),
+    singleValue: (base: any) => ({ ...base, color: '#F5F5F5' }),
+    placeholder: (base: any) => ({ ...base, color: '#555555' }),
+});
+
+// Modal-er bhitore dropdown kete jay, tai menu body-te portal kore dekhai
+const MENU_PORTAL = typeof document !== 'undefined' ? document.body : undefined;
+
 // ── Generic list modal (repeatable rows) ──
 function ListModal({
     configKey,
@@ -568,6 +594,7 @@ function ListModal({
     statFields?: string[];
 }) {
     const cfg = LIST_CONFIGS[configKey];
+    const countryOptions = (countries ?? []).map((c: any) => ({ value: c.code, label: c.name }));
 
     // Recent Matches-e kon stat field dekhabe — statFields decide kore (['goals'] / ['saves'] / ['saves','goals'])
     const isMatches = configKey === 'matches';
@@ -769,18 +796,19 @@ function ListModal({
 
                                         {/* Country + Button — mobile-e ek line, md+ e grid cell (contents) */}
                                         <div className="col-span-2 flex items-center gap-2 md:contents">
-                                            <select
-                                                value={row.country ?? ''}
-                                                onChange={(e) => update(i, 'country', e.target.value)}
-                                                className="h-10 min-w-0 flex-1 rounded-lg border border-[#2A2A2A] bg-[#111111] px-2 text-sm text-[#F5F5F5] focus:border-[#E53F01] focus:outline-none font-sans md:w-full"
-                                            >
-                                                <option value="">Country...</option>
-                                                {countries.map((c: any) => (
-                                                    <option key={c.code} value={c.code}>
-                                                        {c.flag ?? ''} {c.name}
-                                                    </option>
-                                                ))}
-                                            </select>
+                                            <div className="min-w-0 flex-1 md:w-full">
+                                                <Select
+                                                    options={countryOptions}
+                                                    value={countryOptions.find((o) => o.value === row.country) ?? null}
+                                                    onChange={(opt: any) => update(i, 'country', opt?.value ?? '')}
+                                                    placeholder="Country..."
+                                                    isSearchable
+                                                    isClearable
+                                                    className="text-sm"
+                                                    styles={countrySelectStyles('2.5rem')}
+                                                    menuPortalTarget={MENU_PORTAL}
+                                                />
+                                            </div>
 
                                             {/* Add / Remove Button */}
                                             {i === 0 ? (
@@ -852,18 +880,19 @@ function ListModal({
                                             </div>
                                         ) : f.type === 'country' ? (
                                             <div className="flex items-center gap-2 w-full">
-                                                <select
-                                                    value={row[f.name] ?? ''}
-                                                    onChange={(e) => update(i, f.name, e.target.value)}
-                                                    className={`${inputClass} flex-1`}
-                                                >
-                                                    <option value="">Country...</option>
-                                                    {countries.map((country: any) => (
-                                                        <option key={country.code} value={country.code}>
-                                                            {country.name}
-                                                        </option>
-                                                    ))}
-                                                </select>
+                                                <div className="min-w-0 flex-1">
+                                                    <Select
+                                                        options={countryOptions}
+                                                        value={countryOptions.find((o) => o.value === row[f.name]) ?? null}
+                                                        onChange={(opt: any) => update(i, f.name, opt?.value ?? '')}
+                                                        placeholder="Country..."
+                                                        isSearchable
+                                                        isClearable
+                                                        className="text-sm"
+                                                        styles={countrySelectStyles('2.25rem')}
+                                                        menuPortalTarget={MENU_PORTAL}
+                                                    />
+                                                </div>
 
                                                 {row[f.name] && (
                                                     <span className="text-xl leading-none whitespace-nowrap">
@@ -960,6 +989,7 @@ function FormModal({
     countries: { code: string; name: string; flag?: string }[];
 }) {
     const cfg = FORM_CONFIGS[configKey];
+    const countryOptions = (countries ?? []).map((c: any) => ({ value: c.code, label: c.name }));
     const [values, setValues] = useState<Record<string, any>>(() => {
         const init: Record<string, any> = {};
         cfg.fields.forEach((f) => {
@@ -1256,14 +1286,17 @@ function FormModal({
                                 {f.type === 'country' && (
                                     <div className="flex items-center gap-2">
                                         <div className="min-w-0 flex-1">
-                                            <select value={values[f.name] ?? ''} onChange={(e) => setField(f.name, e.target.value)} className={inputClass}>
-                                                <option value="">Select country...</option>
-                                                {countries.map((c) => (
-                                                    <option key={c.code} value={c.code}>
-                                                        {c.flag ?? ''} {c.name}
-                                                    </option>
-                                                ))}
-                                            </select>
+                                            <Select
+                                                options={countryOptions}
+                                                value={countryOptions.find((o) => o.value === values[f.name]) ?? null}
+                                                onChange={(opt: any) => setField(f.name, opt?.value ?? '')}
+                                                placeholder="Select country..."
+                                                isSearchable
+                                                isClearable
+                                                className="text-sm"
+                                                styles={countrySelectStyles('2.25rem')}
+                                                menuPortalTarget={MENU_PORTAL}
+                                            />
                                         </div>
                                         {nonEmpty(values[f.name]) && (
                                             <span className="shrink-0 text-2xl leading-none">{codeToFlag(values[f.name])}</span>
@@ -1286,23 +1319,21 @@ function FormModal({
                                                 </span>
                                             ))}
                                         </div>
-                                        <select
-                                            value=""
-                                            onChange={(e) => {
-                                                const code = e.target.value;
+                                        <Select
+                                            options={countryOptions.filter((o) => !(values[f.name] || []).includes(o.value))}
+                                            value={null}
+                                            onChange={(opt: any) => {
+                                                const code = opt?.value;
                                                 if (code && !values[f.name].includes(code)) {
                                                     setField(f.name, [...(values[f.name] || []), code]);
                                                 }
                                             }}
-                                            className={inputClass}
-                                        >
-                                            <option value="">Add country...</option>
-                                            {countries.map((c) => (
-                                                <option key={c.code} value={c.code}>
-                                                    {c.flag ?? ''} {c.name}
-                                                </option>
-                                            ))}
-                                        </select>
+                                            placeholder="Add country..."
+                                            isSearchable
+                                            className="text-sm"
+                                            styles={countrySelectStyles('2.25rem')}
+                                            menuPortalTarget={MENU_PORTAL}
+                                        />
                                     </div>
                                 )}
 
@@ -2371,14 +2402,14 @@ export default function PlayerDashboard() {
                         className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 text-center sm:p-8 [@media(max-height:34rem)]:p-4"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <button
+                        {/* <button
                             type="button"
                             onClick={() => setAboutSaved(false)}
                             className="ml-auto block cursor-pointer text-[#94A3B8] hover:text-[#F5F5F5]"
                             aria-label="Close"
                         >
                             <X className="h-5 w-5" />
-                        </button>
+                        </button> */}
 
                         {/* Landscape phone-e jaiga kom — icon ta tokhon lukiye rakhi */}
                         <div className="mx-auto -mt-2 flex h-14 w-14 items-center justify-center rounded-full bg-[rgba(255,107,0,0.12)] [@media(max-height:34rem)]:hidden">
@@ -2398,12 +2429,15 @@ export default function PlayerDashboard() {
                         </div>
 
                         <h3 className="mt-6 uppercase text-lg font-bold text-[#F5F5F5] [@media(max-height:34rem)]:mt-4 [@media(max-height:34rem)]:text-base">
-                            Welcome to HiLights and now invite your team mates…
+                            WELCOME TO HILIGHTS FOOTBALL! WHAT ABOUT INVITING YOUR TEAMMATES TO OUR COMMUNITY?
                         </h3>
 
                         <Button
                             type="button"
-                            onClick={() => setAboutSaved(false)}
+                            onClick={() => {
+                                setAboutSaved(false);
+                                router.visit(`/player/profile/${auth?.user?.slug}`);
+                            }}
                             className="mt-6 h-11 w-full bg-[#E53F01] text-sm font-semibold text-white hover:bg-[#CC5500] [@media(max-height:34rem)]:mt-4"
                         >
                             Close

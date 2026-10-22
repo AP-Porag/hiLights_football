@@ -232,8 +232,12 @@ export default function Performance() {
                                     <CalendarDays className="h-4 w-4 shrink-0 text-[#E53F01]" />
                                     {player?.user?.dob
                                         ? calcAge(player.user.dob) !== null && calcAge(player.user.dob)! < 18
-                                            ? new Date(player.user.dob).getFullYear()
-                                            : `${calcAge(player.user.dob)} years`
+                                            ? `${new Date(player.user.dob).getFullYear()} (${calcAge(player.user.dob)} years)`
+                                            : `${new Date(player.user.dob).toLocaleDateString('en-US', {
+                                                day: 'numeric',
+                                                month: 'short',
+                                                year: 'numeric',
+                                            })} (${calcAge(player.user.dob)} years)`
                                         : '—'}
                                 </span>
                                 <span className="flex min-w-0 items-center gap-1.5">
