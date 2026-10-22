@@ -193,8 +193,8 @@ export default function PlayersIndex() {
         },
     ];
     return (
-        <AppLayout pageTitle="Player Football Identities" breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <div className="min-h-screen space-y-6 bg-black p-6 text-white">
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                     {[
