@@ -376,11 +376,10 @@ return [
             'number' => '37',
             'part' => "PARTE V - CONSENTIMENTOS E DECLARAÇÕES",
             'heading' => "Aceites essenciais",
-            'item_style' => 'checkbox',
-            'items' => [
-                "Li e aceito os Termos de Uso da HiLights Football.",
-                "Declaro que li a Política Global de Privacidade e compreendi as informações sobre tratamento de dados.",
-                "Declaro que as informações fornecidas são verdadeiras e que possuo os direitos ou autorizações necessários para publicar os conteúdos enviados.",
+            'paragraphs' => [
+                "Ao criar uma conta, realizar seu cadastro ou utilizar a Plataforma HiLights Football, o usuário declara estar ciente e concordar integralmente com os Termos de Uso, confirmando que leu e compreendeu a Política Global de Privacidade, incluindo as disposições relativas ao tratamento, utilização e compartilhamento de dados pessoais.",
+                "O usuário declara, ainda, que todas as informações fornecidas durante o cadastro e ao longo da utilização da Plataforma são verdadeiras, precisas e atualizadas, confirmando possuir todos os direitos, permissões e autorizações necessários para publicar, carregar ou compartilhar quaisquer conteúdos disponibilizados na Plataforma.",
+                "Estas declarações constituem parte integrante do aceite geral dos Termos de Uso da HiLights Football, não sendo necessária a apresentação de caixas de seleção ou autorizações individuais para cada uma delas, exceto quando expressamente exigido pela legislação aplicável.",
             ],
         ],
         [

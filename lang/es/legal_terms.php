@@ -360,11 +360,10 @@ return [
             'number' => '37',
             'part' => "PARTE V — ACEPTACIONES Y DECLARACIONES",
             'heading' => "Aceptaciones esenciales",
-            'item_style' => 'checkbox',
-            'items' => [
-                "He leído y acepto los Términos de Uso de HiLights Football.",
-                "Declaro haber leído la Política Global de Privacidad y comprendido la información sobre tratamiento de datos.",
-                "Declaro que la información facilitada es verdadera y que poseo los derechos o autorizaciones necesarios para publicar el contenido enviado.",
+            'paragraphs' => [
+                "Al crear una cuenta, registrarse o utilizar la Plataforma HiLights Football, el usuario declara conocer y aceptar íntegramente los Términos de Uso, confirmando que ha leído y comprendido la Política Global de Privacidad, incluidas las disposiciones relativas al tratamiento, uso y compartición de datos personales.",
+                "Asimismo, el usuario declara que toda la información proporcionada durante el registro y a lo largo de la utilización de la Plataforma es verdadera, precisa y está actualizada, confirmando que posee todos los derechos, permisos y autorizaciones necesarios para publicar, cargar o compartir cualquier contenido disponible en la Plataforma.",
+                "Estas declaraciones forman parte integrante de la aceptación general de los Términos de Uso de HiLights Football, sin que sea necesaria la presentación de casillas de verificación o autorizaciones individuales para cada una de ellas, salvo cuando así lo exija expresamente la legislación aplicable.",
             ],
         ],
         [
