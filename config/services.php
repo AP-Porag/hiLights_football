@@ -45,6 +45,7 @@ return [
         'sid' => env('TWILIO_SID'),
         'auth_token' => env('TWILIO_AUTH_TOKEN'),
         'verify_sid' => env('TWILIO_VERIFY_SERVICE_SID'),
+        'auto_otp_on_register' => env('TWILIO_AUTO_OTP_ON_REGISTER', false),
     ],
     'youtube' => [
         'key' => env('YOUTUBE_API_KEY'),
