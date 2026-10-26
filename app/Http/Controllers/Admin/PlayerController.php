@@ -12,7 +12,7 @@ class PlayerController extends Controller
 {
     public function index(Request $request)
     {
-        $query = PlayerProfile::with('user:id,name,nationality,slug');
+        $query = PlayerProfile::with('user:id,name,nationality,email,whatsapp,slug');
 
         // Search filter (name, club, country)
         if ($search = $request->input('search')) {
@@ -87,8 +87,11 @@ class PlayerController extends Controller
 
                 return [
                     'id'             => $profile->id,
+                    'playerId'       => $profile->player_id,          // HLF ID
                     'slug'           => $user?->slug,
                     'name'           => $user?->name ?? 'Unknown',
+                    'email'          => $user?->email ?? '',
+                    'phone'          => $user?->whatsapp,
                     'age'            => $profile->dob ? \Carbon\Carbon::parse($profile->dob)->age : null,
                     'position'       => $this->getPositionGroup($profile->positions),
                     'positionShort'  => is_array($profile->positions) ? ($profile->positions[0] ?? 'N/A') : 'N/A',
@@ -125,6 +128,105 @@ class PlayerController extends Controller
         ]);
     }
 
+    // ── Admin: single player full view ──
+    public function show($id)
+    {
+        $profile = PlayerProfile::with('user')->findOrFail($id);
+        $user    = $profile->user;
+
+        $nationality = $user?->nationality;
+        $nationality = is_array($nationality)
+            ? $nationality
+            : ($nationality ? [$nationality] : []);
+
+        return Inertia::render('admin/players/Detail', [
+            'player' => [
+                // Identity
+                'id'              => $profile->id,
+                'playerId'        => $profile->player_id,           // HLF ID
+                'slug'            => $user?->slug,
+                'name'            => $user?->name ?? 'Unknown',
+                'nickname'        => $profile->nickname,
+                'avatar'          => $profile->photo_url ?? '',
+                'status'          => $profile->status ?? 'Draft',
+                'featured'        => (bool) $profile->featured,
+                'subscription'    => $profile->subscription_plan ?? 'Free',
+                'views'           => (int) ($profile->views ?? 0),
+                'registeredAt'    => $this->fmtDateTime($profile->created_at),
+                'updatedAt'       => $this->fmtDateTime($profile->updated_at),
+
+                // Contact
+                'email'           => $user?->email,
+                'emailVerifiedAt' => $this->fmtDateTime($user?->email_verified_at),
+                'phone'           => $user?->whatsapp,
+                'phoneVerifiedAt' => $this->fmtDateTime($user?->whatsapp_verified_at),
+
+                // Personal
+                'dob'             => $user?->dob ? \Carbon\Carbon::parse($user->dob)->format('d M Y') : null,
+                'age'             => $user?->dob ? \Carbon\Carbon::parse($user->dob)->age : null,
+                'gender'          => $profile->gender,
+                'nationality'     => $nationality,
+                'nationalityNames' => array_values(array_filter(array_map(
+                    fn($code) => $this->countryName($code),
+                    $nationality
+                ))),
+                'birthCity'       => $profile->birth_city,
+                'birthCountry'    => $this->countryName($profile->birth_country),
+                'guardianName'    => $profile->guardian_name,
+                'agent'           => $profile->agent,
+
+                // Football
+                'modality'        => $profile->modality,
+                'positions'       => is_array($profile->positions) ? $profile->positions : [],
+                'foot'            => $profile->foot,
+                'height'          => $profile->height,
+                'weight'          => $profile->weight,
+                'currentClub'     => $profile->current_club,
+                'currentClubCountry' => $this->countryName($profile->current_club_country),
+                'inTeamSince'     => $profile->in_team_since,
+                'marketValue'     => $profile->market_value,
+                'description'     => $profile->description,
+
+                // Preferences
+                'supportedClub'   => $profile->supported_club,
+                'dreamClub'       => $profile->dream_club,
+                'bootBrands'      => is_array($profile->boot_brands) ? $profile->boot_brands : [],
+                'bootBrandOther'  => $profile->boot_brand_other,
+
+                // Lists
+                'videoUrl'        => $profile->video_url,
+                'videos'          => is_array($profile->videos) ? $profile->videos : [],
+                'clubHistory'     => is_array($profile->club_history) ? $profile->club_history : [],
+                'transferHistory' => is_array($profile->transfer_history) ? $profile->transfer_history : [],
+                'achievements'    => is_array($profile->achievements) ? $profile->achievements : [],
+                'competitions'    => is_array($profile->competitions) ? $profile->competitions : [],
+                'matches'         => is_array($profile->matches) ? $profile->matches : [],
+            ],
+        ]);
+    }
+
+    private function fmtDateTime($value): ?string
+    {
+        if (empty($value)) return null;
+
+        try {
+            return \Carbon\Carbon::parse($value)->format('d M Y, H:i');
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    private function countryName(?string $code): ?string
+    {
+        if (empty($code)) return null;
+
+        try {
+            return Countries::getName(strtoupper($code));
+        } catch (\Exception $e) {
+            return strtoupper($code);
+        }
+    }
+
     private function getPositionGroup($positions)
     {
         if (!$positions || !is_array($positions) || empty($positions)) return 'N/A';
@@ -157,7 +259,7 @@ class PlayerController extends Controller
     // ── বাকি মেথড (update, toggleFeatured, suspend, destroy) অপরিবর্তিত ──
     public function update(Request $request, $id)
     {
-        // আপনার দেওয়া আপডেট লজিক (পরিবর্তন ছাড়া)
+        // আপনার দেওয়া আপডেট লজিক (পরিবর্তন ছাড়া)
     }
 
     public function toggleFeatured($id)
@@ -171,15 +273,9 @@ class PlayerController extends Controller
     public function suspend($id)
     {
         $profile = PlayerProfile::findOrFail($id);
-
-        // Toggle: Suspended ↔ Published
-        $profile->status = $profile->status === 'Suspended' ? 'Published' : 'Suspended';
+        $profile->status = 'Suspended';
         $profile->save();
-
-        return back()->with(
-            'success',
-            $profile->status === 'Suspended' ? 'Player suspended.' : 'Player activated.'
-        );
+        return back()->with('success', 'Player suspended.');
     }
 
     public function destroy($id)

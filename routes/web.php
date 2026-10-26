@@ -329,6 +329,7 @@ Route::prefix('admin')->group(function () {
 
     // Players
     Route::get('/players', [PlayerController::class, 'index'])->name('players.index');
+    Route::get('/players/{id}', [PlayerController::class, 'show'])->name('players.show');
     Route::put('/players/{id}', [PlayerController::class, 'update'])->name('players.update');
     Route::put('/players/{id}/featured', [PlayerController::class, 'toggleFeatured'])->name('players.toggle-featured');
     Route::put('/players/{id}/suspend', [PlayerController::class, 'suspend'])->name('players.suspend');

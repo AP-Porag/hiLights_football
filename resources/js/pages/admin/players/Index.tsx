@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
+import type { BreadcrumbItem } from '@/types';
 import {
-    Search, Filter, Download, MoreHorizontal, Eye, Pencil, Ban, Trash2, X, Star, CheckCircle2, AlertTriangle,
+    Search, Filter, Download, MoreHorizontal, Eye, Pencil, Ban, Trash2, X, Star, CheckCircle2, AlertTriangle, FileUser,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -21,8 +22,11 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 // ── Types ──
 interface Player {
     id: number;
+    playerId: string;
     slug: string | null;
     name: string;
+    email: string;
+    phone: string | null;
     age: number | null;
     position: string;
     positionShort: string;
@@ -253,6 +257,8 @@ export default function PlayersIndex() {
                                 <TableRow className="border-[#2A2A2A] bg-[#1A1A1A] hover:bg-[#1A1A1A]">
                                     <TableHead className="w-[3.75rem]"></TableHead>
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Player</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Email</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Phone</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Position</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Country</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Club</TableHead>
@@ -265,7 +271,7 @@ export default function PlayersIndex() {
                             <TableBody>
                                 {players.data.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={9} className="h-32 text-center text-sm text-[#94A3B8]">No players found.</TableCell>
+                                        <TableCell colSpan={11} className="h-32 text-center text-sm text-[#94A3B8]">No players found.</TableCell>
                                     </TableRow>
                                 ) : (
                                     players.data.map((player) => {
@@ -295,6 +301,7 @@ export default function PlayersIndex() {
                                                 <TableCell className="py-4">
                                                     <div className="flex flex-col">
                                                         <Link href={`/player/profile/${player.slug}`} className="font-display text-sm font-semibold text-[#F5F5F5] hover:text-[#E53F01]">{player.name}</Link>
+                                                        <span className="mt-0.5 font-mono text-[0.6875rem] text-[#555555]">{player.playerId}</span>
                                                         {isSuspended && (
                                                             <div className="mt-1">
                                                                 <StatusBadge status={player.status} />
@@ -306,6 +313,20 @@ export default function PlayersIndex() {
                                                             <StatusBadge status={player.status} />
                                                         </div> */}
                                                     </div>
+                                                </TableCell>
+                                                <TableCell className="py-4">
+                                                    {player.email ? (
+                                                        <a href={`mailto:${player.email}`} className="whitespace-nowrap text-sm text-[#94A3B8] hover:text-[#E53F01]">{player.email}</a>
+                                                    ) : (
+                                                        <span className="text-sm text-[#555555]">—</span>
+                                                    )}
+                                                </TableCell>
+                                                <TableCell className="py-4">
+                                                    {player.phone ? (
+                                                        <a href={`tel:${player.phone}`} className="whitespace-nowrap font-mono text-sm text-[#94A3B8] hover:text-[#E53F01]">{player.phone}</a>
+                                                    ) : (
+                                                        <span className="text-sm text-[#555555]">—</span>
+                                                    )}
                                                 </TableCell>
                                                 <TableCell className="py-4">
                                                     <span className="inline-flex items-center rounded-md border border-[#E53F01] bg-[rgba(255,107,0,0.12)] px-2 py-1 font-mono text-xs font-semibold text-[#E53F01]">{player.positionShort}</span>
@@ -332,7 +353,12 @@ export default function PlayersIndex() {
                                                                 <MoreHorizontal className="h-4 w-4" />
                                                             </Button>
                                                         </DropdownMenuTrigger>
-                                                        <DropdownMenuContent align="end" className="w-44 border-[#2A2A2A] bg-[#0D0D0D]">
+                                                        <DropdownMenuContent align="end" className="w-52 border-[#2A2A2A] bg-[#0D0D0D]">
+                                                            <DropdownMenuItem asChild className="text-sm text-[#F5F5F5] hover:bg-[#1A1A1A] focus:bg-[#1A1A1A]">
+                                                                <Link href={route('players.show', player.id)}>
+                                                                    <FileUser className="mr-2 h-4 w-4" /> View Details
+                                                                </Link>
+                                                            </DropdownMenuItem>
                                                             <DropdownMenuItem onClick={() => window.open(`/player/profile/${player.slug}`, '_blank')} className="text-sm text-[#F5F5F5] hover:bg-[#1A1A1A] focus:bg-[#1A1A1A]">
                                                                 <Eye className="mr-2 h-4 w-4" /> View Football Identity
                                                             </DropdownMenuItem>
@@ -468,7 +494,7 @@ function EditPlayerForm({ player, onClose }: { player: Player; onClose: () => vo
                         </div>
                         <div>
                             <SheetTitle className="font-display text-xl font-bold uppercase tracking-tight text-[#F5F5F5]">Edit Player</SheetTitle>
-                            <SheetDescription className="text-xs text-[#94A3B8]">Football Identity ID #{player.id}</SheetDescription>
+                            <SheetDescription className="text-xs text-[#94A3B8]">Football Identity ID {player.playerId}</SheetDescription>
                         </div>
                     </div>
                     <button type="button" onClick={onClose} className="shrink-0 rounded-md p-1 text-[#94A3B8] hover:bg-[#1A1A1A]"><X className="h-4 w-4" /></button>
