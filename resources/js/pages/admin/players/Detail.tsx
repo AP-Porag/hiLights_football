@@ -331,7 +331,7 @@ export default function PlayerDetail() {
                     <StatTile label="Profile Views" value={String(player.views)} accent />
                     <StatTile label="Age" value={player.age ? `${player.age}` : DASH} />
                     <StatTile label="Height" value={player.height ? `${player.height} cm` : DASH} />
-                    <StatTile label="Weight" value={player.weight ? `${player.weight} kg` : DASH} />
+                    {/* <StatTile label="Weight" value={player.weight ? `${player.weight} kg` : DASH} /> */}
                 </div>
 
                 {/* Info grid */}
@@ -377,18 +377,18 @@ export default function PlayerDetail() {
                         <Row k="Positions" v={value(player.positions)} mono />
                         <Row k="Preferred Foot" v={value(player.foot)} />
                         <Row k="Height" v={player.height ? `${player.height} cm` : DASH} mono />
-                        <Row k="Weight" v={player.weight ? `${player.weight} kg` : DASH} mono />
+                        {/* <Row k="Weight" v={player.weight ? `${player.weight} kg` : DASH} mono /> */}
                         <Row k="Current Club" v={value(player.currentClub)} />
                         <Row k="Club Country" v={value(player.currentClubCountry)} />
                         <Row k="In Team Since" v={value(player.inTeamSince)} mono />
-                        <Row k="Market Value" v={value(player.marketValue)} mono />
+                        {/* <Row k="Market Value" v={value(player.marketValue)} mono /> */}
                     </InfoCard>
 
                     <InfoCard title="Preferences" icon={Footprints}>
                         <Row k="Supported Club" v={value(player.supportedClub)} />
                         <Row k="Dream Club" v={value(player.dreamClub)} />
                         <Row k="Boot Brands" v={value(player.bootBrands)} />
-                        <Row k="Other Boot Brand" v={value(player.bootBrandOther)} />
+                        {/* <Row k="Other Boot Brand" v={value(player.bootBrandOther)} /> */}
                         <Row
                             k="Main Video"
                             v={player.videoUrl
@@ -412,7 +412,7 @@ export default function PlayerDetail() {
                 {/* Data tables */}
                 <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
                     <JsonTable title="Club History" icon={MapPin} rows={player.clubHistory} />
-                    <JsonTable title="Transfer History" icon={Ruler} rows={player.transferHistory} />
+                    {/* <JsonTable title="Transfer History" icon={Ruler} rows={player.transferHistory} /> */}
                     <JsonTable title="Achievements" icon={Trophy} rows={player.achievements} />
                     <JsonTable title="Competitions" icon={Shield} rows={player.competitions} />
                 </div>
