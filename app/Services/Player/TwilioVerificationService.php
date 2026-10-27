@@ -57,6 +57,15 @@ class TwilioVerificationService
      */
     public function checkCode(string $phoneE164, string $code): bool
     {
+        return $this->checkCodeDetailed($phoneE164, $code)['approved'];
+    }
+
+    /**
+     * Code check kore ebong Twilio-r deya channel-o ferot dey.
+     * channel = 'whatsapp' | 'sms' | 'call' | 'email' | 'sna' | null
+     */
+    public function checkCodeDetailed(string $phoneE164, string $code): array
+    {
         $response = Http::withBasicAuth($this->sid, $this->authToken)
             ->asForm()
             ->post("https://verify.twilio.com/v2/Services/{$this->verifySid}/VerificationCheck", [
@@ -65,6 +74,9 @@ class TwilioVerificationService
             ])
             ->throw();
 
-        return $response->json('status') === 'approved';
+        return [
+            'approved' => $response->json('status') === 'approved',
+            'channel'  => $response->json('channel'),
+        ];
     }
 }

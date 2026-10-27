@@ -3,7 +3,7 @@ import { Link, router, useForm, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import {
-    Search, Filter, Download, MoreHorizontal, Eye, Pencil, Ban, Trash2, X, Star, CheckCircle2, AlertTriangle, FileUser,
+    Search, Filter, Download, MoreHorizontal, Eye, Pencil, Ban, Trash2, X, Star, CheckCircle2, AlertTriangle, FileUser, BadgeCheck,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -26,7 +26,10 @@ interface Player {
     slug: string | null;
     name: string;
     email: string;
+    emailVerified: boolean;
     phone: string | null;
+    phoneVerified: boolean;
+    phoneVerifiedVia: 'whatsapp' | 'sms' | null;
     age: number | null;
     position: string;
     positionShort: string;
@@ -84,6 +87,21 @@ function StatusBadge({ status }: { status: Player['status'] }) {
     return (
         <span className={`inline-flex items-center rounded-md border px-2 py-0.5 text-[0.6875rem] font-medium ${styles[status]}`}>
             {status}
+        </span>
+    );
+}
+
+function VerifyBadge({ verified, label }: { verified: boolean; label: string }) {
+    if (!verified) {
+        return (
+            <span className="mt-1 inline-flex w-fit items-center rounded-md border border-amber-700 bg-amber-900/30 px-1.5 py-0.5 text-[0.6875rem] font-medium text-amber-400">
+                Not verified
+            </span>
+        );
+    }
+    return (
+        <span className="mt-1 inline-flex w-fit items-center gap-1 rounded-md border border-green-700 bg-green-900/30 px-1.5 py-0.5 text-[0.6875rem] font-medium text-green-400">
+            <BadgeCheck className="h-3 w-3" /> {label}
         </span>
     );
 }
@@ -256,13 +274,13 @@ export default function PlayersIndex() {
                             <TableHeader>
                                 <TableRow className="border-[#2A2A2A] bg-[#1A1A1A] hover:bg-[#1A1A1A]">
                                     <TableHead className="w-[3.75rem]"></TableHead>
-                                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Player</TableHead>
+                                    <TableHead className="min-w-[15rem] text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Player</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Email</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Phone</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Position</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Country</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Club</TableHead>
-                                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Subscription</TableHead>
+                                    {/* <TableHead className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Subscription</TableHead> */}
                                     <TableHead className="text-right text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Views</TableHead>
                                     <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Featured</TableHead>
                                     <TableHead className="w-[5rem] text-right text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">Actions</TableHead>
@@ -298,10 +316,9 @@ export default function PlayersIndex() {
                                                         </div>
                                                     )}
                                                 </TableCell>
-                                                <TableCell className="py-4">
+                                                <TableCell className="min-w-[15rem] py-4">
                                                     <div className="flex flex-col">
-                                                        <Link href={`/player/profile/${player.slug}`} className="font-display text-sm font-semibold text-[#F5F5F5] hover:text-[#E53F01]">{player.name}</Link>
-                                                        <span className="mt-0.5 font-mono text-[0.6875rem] text-[#555555]">{player.playerId}</span>
+                                                        <Link href={`/player/profile/${player.slug}`} className="font-display text-sm font-semibold whitespace-nowrap text-[#F5F5F5] hover:text-[#E53F01]">{player.name}</Link>
                                                         {isSuspended && (
                                                             <div className="mt-1">
                                                                 <StatusBadge status={player.status} />
@@ -316,14 +333,23 @@ export default function PlayersIndex() {
                                                 </TableCell>
                                                 <TableCell className="py-4">
                                                     {player.email ? (
-                                                        <a href={`mailto:${player.email}`} className="whitespace-nowrap text-sm text-[#94A3B8] hover:text-[#E53F01]">{player.email}</a>
+                                                        <div className="flex flex-col">
+                                                            <a href={`mailto:${player.email}`} className="whitespace-nowrap text-sm text-[#94A3B8] hover:text-[#E53F01]">{player.email}</a>
+                                                            <VerifyBadge verified={player.emailVerified} label="Verified" />
+                                                        </div>
                                                     ) : (
                                                         <span className="text-sm text-[#555555]">—</span>
                                                     )}
                                                 </TableCell>
                                                 <TableCell className="py-4">
                                                     {player.phone ? (
-                                                        <a href={`tel:${player.phone}`} className="whitespace-nowrap font-mono text-sm text-[#94A3B8] hover:text-[#E53F01]">{player.phone}</a>
+                                                        <div className="flex flex-col">
+                                                            <a href={`tel:${player.phone}`} className="whitespace-nowrap font-mono text-sm text-[#94A3B8] hover:text-[#E53F01]">{player.phone}</a>
+                                                            <VerifyBadge
+                                                                verified={player.phoneVerified}
+                                                                label={player.phoneVerifiedVia === 'sms' ? 'Phone verified' : 'WhatsApp verified'}
+                                                            />
+                                                        </div>
                                                     ) : (
                                                         <span className="text-sm text-[#555555]">—</span>
                                                     )}
@@ -337,7 +363,7 @@ export default function PlayersIndex() {
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="py-4 text-sm text-[#94A3B8]">{player.club}</TableCell>
-                                                <TableCell className="py-4"><SubscriptionBadge sub={player.subscription} /></TableCell>
+                                                {/* <TableCell className="py-4"><SubscriptionBadge sub={player.subscription} /></TableCell> */}
                                                 <TableCell className="py-4 text-right font-mono text-sm font-semibold text-[#E53F01]">{formatViews(player.views)}</TableCell>
                                                 <TableCell className="py-4 text-center">
                                                     <Switch

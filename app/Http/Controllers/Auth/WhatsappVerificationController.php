@@ -59,14 +59,14 @@ class WhatsappVerificationController extends Controller
         }
 
         try {
-            $approved = $this->twilio->checkCode($user->whatsapp, $request->code);
+            $result = $this->twilio->checkCodeDetailed($user->whatsapp, $request->code);
         } catch (RequestException $e) {
             throw ValidationException::withMessages([
                 'code' => 'We could not verify this code right now. Please try again later.',
             ]);
         }
 
-        if (!$approved) {
+        if (!$result['approved']) {
             throw ValidationException::withMessages([
                 'code' => 'The code you entered is incorrect or has expired.',
             ]);
@@ -74,6 +74,8 @@ class WhatsappVerificationController extends Controller
 
         $user->forceFill([
             'whatsapp_verified_at' => now(),
+            // Twilio bole dey kon channel-e verify hoyeche; na pele 'whatsapp' dhore nao
+            'whatsapp_verified_via' => $result['channel'] ?? 'whatsapp',
         ])->save();
 
         return $this->redirectToDashboard($user)->with('verified', true);

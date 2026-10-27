@@ -12,7 +12,7 @@ class PlayerController extends Controller
 {
     public function index(Request $request)
     {
-        $query = PlayerProfile::with('user:id,name,nationality,email,whatsapp,slug');
+        $query = PlayerProfile::with('user:id,name,nationality,email,whatsapp,slug,email_verified_at,whatsapp_verified_at,whatsapp_verified_via');
 
         // Search filter (name, club, country)
         if ($search = $request->input('search')) {
@@ -91,7 +91,13 @@ class PlayerController extends Controller
                     'slug'           => $user?->slug,
                     'name'           => $user?->name ?? 'Unknown',
                     'email'          => $user?->email ?? '',
+                    'emailVerified'  => (bool) $user?->email_verified_at,
                     'phone'          => $user?->whatsapp,
+                    'phoneVerified'  => (bool) $user?->whatsapp_verified_at,
+                    // Kon channel-e verify hoyeche. Column na thakle default 'whatsapp'.
+                    'phoneVerifiedVia' => $user?->whatsapp_verified_at
+                        ? ($user->whatsapp_verified_via ?? 'whatsapp')
+                        : null,
                     'age'            => $profile->dob ? \Carbon\Carbon::parse($profile->dob)->age : null,
                     'position'       => $this->getPositionGroup($profile->positions),
                     'positionShort'  => is_array($profile->positions) ? ($profile->positions[0] ?? 'N/A') : 'N/A',
