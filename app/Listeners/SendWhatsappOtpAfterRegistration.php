@@ -27,6 +27,18 @@ class SendWhatsappOtpAfterRegistration
             return;
         }
 
+        // Service ekhane resolve kora hocche — constructor-e na.
+        // Tai credentials na thakleo registration-e kono crash hobe na.
+        $twilio = app(TwilioVerificationService::class);
+
+        if (! $twilio->isConfigured()) {
+            Log::warning('Twilio OTP skipped: credentials are not configured.', [
+                'user_id' => $user->id,
+            ]);
+
+            return;
+        }
+
         try {
             // WhatsApp first; the service falls back to SMS on failure
             $this->twilio->sendCode($user->whatsapp);

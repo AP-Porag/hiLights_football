@@ -18,6 +18,13 @@ class TwilioVerificationService
         $this->authToken = config('services.twilio.auth_token');
         $this->verifySid = config('services.twilio.verify_sid');
     }
+    /**
+     * Twilio credentials set kora ache kina.
+     */
+    public function isConfigured(): bool
+    {
+        return $this->sid !== '' && $this->authToken !== '' && $this->verifySid !== '';
+    }
 
     /**
      * Prothome WhatsApp channel-e code pathanor chesta kore;
