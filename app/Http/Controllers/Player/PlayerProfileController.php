@@ -313,6 +313,8 @@ class PlayerProfileController extends Controller
             'boot_brands' => ['sometimes', 'array'],
             'boot_brands.*' => ['string', 'max:20'],
             'boot_brand_other' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'boots_per_year'   => ['nullable', 'string', 'max:20'],
+            'boot_price_range' => ['nullable', 'string', 'max:40'],
         ]);
 
         $user = $request->user();

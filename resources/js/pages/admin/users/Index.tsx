@@ -336,11 +336,11 @@ export default function UsersIndex() {
                                                     align="end"
                                                     className="w-48 rounded-xl border border-[#2A2A2A] bg-[#1A1A1A] shadow-lg"
                                                 >
-                                                    <Link href={route('users.show', user.id)}>
+                                                    {/* <Link href={route('users.show', user.id)}>
                                                         <DropdownMenuItem className="cursor-pointer py-2 text-sm text-[#F5F5F5] hover:bg-[#2A2A2A] focus:bg-[#2A2A2A]">
                                                             <Eye className="mr-2 h-4 w-4 text-[#94A3B8]" /> View Football Identity
                                                         </DropdownMenuItem>
-                                                    </Link>
+                                                    </Link> */}
                                                     <Link href={route('users.edit', user.id)}>
                                                         <DropdownMenuItem className="cursor-pointer py-2 text-sm text-[#F5F5F5] hover:bg-[#2A2A2A] focus:bg-[#2A2A2A]">
                                                             <Edit className="mr-2 h-4 w-4 text-[#94A3B8]" /> Edit User

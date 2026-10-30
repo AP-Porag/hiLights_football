@@ -31,6 +31,7 @@ interface Player {
     phoneVerifiedAt: string | null;
 
     dob: string | null;
+    birthYear: number | null;
     age: number | null;
     gender: string | null;
     nationality: string[];
@@ -55,6 +56,8 @@ interface Player {
     dreamClub: string | null;
     bootBrands: string[];
     bootBrandOther: string | null;
+    bootsPerYear: string | null;
+    bootPriceRange: string | null;
 
     videoUrl: string | null;
     videos: unknown[];
@@ -279,7 +282,7 @@ export default function PlayerDetail() {
                                 <p className="mt-1 font-mono text-sm font-semibold text-[#E53F01]">{player.playerId}</p>
 
                                 <div className="mt-3 flex flex-wrap items-center gap-2">
-                                    <StatusBadge status={player.status} />
+                                    {/* <StatusBadge status={player.status} /> */}
                                     <SubscriptionBadge sub={player.subscription} />
                                     {player.featured && (
                                         <span className="inline-flex items-center gap-1 rounded-md border border-[#E53F01] bg-[rgba(255,107,0,0.12)] px-2 py-0.5 text-[0.6875rem] font-medium uppercase tracking-wider text-[#E53F01]">
@@ -363,6 +366,7 @@ export default function PlayerDetail() {
 
                     <InfoCard title="Personal" icon={Users}>
                         <Row k="Date of Birth" v={value(player.dob)} mono />
+                        <Row k="Year of Birth" v={value(player.birthYear)} mono />
                         <Row k="Age" v={player.age ? `${player.age} years` : DASH} />
                         <Row k="Gender" v={value(player.gender)} />
                         <Row k="Nationality" v={player.nationalityNames.length ? player.nationalityNames.join(', ') : value(player.nationality)} />
@@ -382,19 +386,21 @@ export default function PlayerDetail() {
                         <Row k="Club Country" v={value(player.currentClubCountry)} />
                         <Row k="In Team Since" v={value(player.inTeamSince)} mono />
                         {/* <Row k="Market Value" v={value(player.marketValue)} mono /> */}
-                    </InfoCard>
-
-                    <InfoCard title="Preferences" icon={Footprints}>
-                        <Row k="Supported Club" v={value(player.supportedClub)} />
-                        <Row k="Dream Club" v={value(player.dreamClub)} />
-                        <Row k="Boot Brands" v={value(player.bootBrands)} />
-                        {/* <Row k="Other Boot Brand" v={value(player.bootBrandOther)} /> */}
                         <Row
                             k="Main Video"
                             v={player.videoUrl
                                 ? <a href={player.videoUrl} target="_blank" rel="noreferrer" className="break-all hover:text-[#E53F01]">{player.videoUrl}</a>
                                 : DASH}
                         />
+                    </InfoCard>
+
+                    <InfoCard title="Player Questionnaire" icon={Footprints}>
+                        <Row k="Supported Club" v={value(player.supportedClub)} />
+                        <Row k="Dream Club" v={value(player.dreamClub)} />
+                        <Row k="Boot Brands" v={value(player.bootBrands)} />
+                        {/* <Row k="Other Boot Brand" v={value(player.bootBrandOther)} /> */}
+                        <Row k="Boots Per Year" v={value(player.bootsPerYear)} mono />
+                        <Row k="Usual Price Range" v={value(player.bootPriceRange)} mono />
                     </InfoCard>
                 </div>
 

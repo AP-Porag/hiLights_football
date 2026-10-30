@@ -1495,6 +1495,13 @@ function FormModal({
 }
 
 const BOOT_BRANDS = ['Nike', 'Adidas', 'Puma', 'New Balance', 'Umbro', 'Mizuno', 'Other'];
+const BOOTS_PER_YEAR = ['1', '2', '3', '4', '5 or more'];
+const BOOT_PRICE_RANGES = ['Under €50', '€50 – €100', '€100 – €150', '€150 – €250', 'Over €250'];
+
+// Football identity health-e questionnaire group-er naam (weight hisheb-e-o lage)
+const QUESTIONNAIRE_GROUP = 'Player questionnaire';
+// Questionnaire section-er id — health modal theke ekhane scroll kora hoy
+const QUESTIONNAIRE_ANCHOR = 'player-questionnaire';
 
 export default function PlayerDashboard() {
     const { auth } = usePage().props as any;
@@ -1531,6 +1538,8 @@ export default function PlayerDashboard() {
         dream_club: pp?.dream_club ?? '',
         boot_brands: Array.isArray(pp?.boot_brands) ? pp.boot_brands : [],
         boot_brand_other: pp?.boot_brand_other ?? '',
+        boots_per_year: pp?.boots_per_year ?? '',
+        boot_price_range: pp?.boot_price_range ?? '',
     });
     const [aboutSaving, setAboutSaving] = useState(false);
     const [aboutSaved, setAboutSaved] = useState(false);
@@ -1666,12 +1675,28 @@ export default function PlayerDashboard() {
             done: Array.isArray(pp.matches) && pp.matches.some((r: any) => matchStatFields.some((n) => nonEmpty(r?.[n]))),
             modal: 'matches',
         },
+        { group: QUESTIONNAIRE_GROUP, label: 'Club you support', done: nonEmpty(pp.supported_club), modal: '' },
+        { group: QUESTIONNAIRE_GROUP, label: 'Dream club', done: nonEmpty(pp.dream_club), modal: '' },
+        { group: QUESTIONNAIRE_GROUP, label: 'Preferred boot brand', done: Array.isArray(pp.boot_brands) && pp.boot_brands.length > 0, modal: '' },
+        { group: QUESTIONNAIRE_GROUP, label: 'Boots bought per year', done: nonEmpty(pp.boots_per_year), modal: '' },
+        { group: QUESTIONNAIRE_GROUP, label: 'Usual price range', done: nonEmpty(pp.boot_price_range), modal: '' },
     ];
 
     const completionChecks: boolean[] = healthItems.map((h) => h.done);
 
+    // Questionnaire ei koto % pabe — baki sob item mile pabe (100 - ei value)%
+    const QUESTIONNAIRE_WEIGHT = 15;
+
+    const questionnaireItems = healthItems.filter((h) => h.group === QUESTIONNAIRE_GROUP);
+    const otherItems = healthItems.filter((h) => h.group !== QUESTIONNAIRE_GROUP);
+
+    // Per-item weight — dui group mile sob somoy thik 100% hoy
+    const perQuestionnaire = questionnaireItems.length ? QUESTIONNAIRE_WEIGHT / questionnaireItems.length : 0;
+    const perOther = otherItems.length ? (100 - QUESTIONNAIRE_WEIGHT) / otherItems.length : 0;
+
     const profileComplete = Math.round(
-        (completionChecks.filter(Boolean).length / completionChecks.length) * 100
+        questionnaireItems.filter((h) => h.done).length * perQuestionnaire +
+        otherItems.filter((h) => h.done).length * perOther
     );
 
     const checklist: {
@@ -2073,7 +2098,7 @@ export default function PlayerDashboard() {
                                     <Shield className="w-6 h-6 " />
                                     <span className="pl-2">THIS CARD IDENTIFIES THE HOLDER AS AN OFFICIAL<br className="hidden sm:block" />MEMBER OF HILIGHTS FOOTBALL PLATFORM.</span>
                                 </p>
-                                <p className="text-[0.375rem] sm:text-[0.5rem] text-white font-bold translate-x-[0.3125rem] sm:translate-x-[10%]">WWW.HILIGHTSFOOTBALL.COM</p>
+                                <p className="text-[0.375rem] sm:text-[0.5rem] text-white font-bold translate-x-[0.3125rem] sm:translate-x-[10%]">[WWW.HILIGHTSFOOTBALL.COM](https://WWW.HILIGHTSFOOTBALL.COM)</p>
                                 <div className="absolute -bottom-16 left-0 flex justify-between w-full">
                                     <button className="capitalize flex items-center rounded-xl bg-[#E53F01] px-1.5 py-1.5 sm:px-2 sm:py-2 font-bold text-white sm:text-[1rem] cursor-pointer text-[0.625rem] transition-all hover:bg-[#E53F01]" onClick={() => setShareOpen(true)}>
                                         <Share2 className="mr-2 w-[0.625rem] h-[0.625rem] sm:h-[0.75rem]" /> Share full football identity
@@ -2182,7 +2207,7 @@ export default function PlayerDashboard() {
                     </div> */}
 
                     {/* Player Questionnaire — private, not shown on public profile */}
-                    <div className="mt-6 rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 lg:p-7 2xl:p-9 sm:p-8">
+                    <div id={QUESTIONNAIRE_ANCHOR} className="mt-6 scroll-mt-24 rounded-2xl border border-[#2A2A2A] bg-[#161616] p-6 lg:p-7 2xl:p-9 sm:p-8">
                         <h3 className="mb-1 text-sm font-bold text-[#F5F5F5]">Player Questionnaire</h3>
                         <p className="mb-6 text-xs text-[#94A3B8]">
                             The answers to these questions will not appear on your public football identity.
@@ -2254,6 +2279,49 @@ export default function PlayerDashboard() {
                                     </div>
                                 )}
                                 <span className="text-xs text-red-400">{aboutErrors.boot_brands}</span>
+                            </div>
+                            <div>
+                                <Label className="mb-2 block text-xs font-semibold text-[#F5F5F5]">
+                                    4. How many football boots do you normally buy per year?
+                                </Label>
+                                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                                    {BOOTS_PER_YEAR.map((opt) => {
+                                        const selected = aboutData.boots_per_year === opt;
+                                        return (
+                                            <button
+                                                key={opt}
+                                                type="button"
+                                                onClick={() => setAboutField('boots_per_year', selected ? '' : opt)}
+                                                className={`flex cursor-pointer items-center justify-center rounded-xl border px-3 py-2.5 text-sm transition-colors ${selected ? 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] font-semibold text-[#E53F01]' : 'border-[#2A2A2A] bg-[#1F1F1F] text-[#F5F5F5]'}`}
+                                            >
+                                                {opt}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                                <span className="text-xs text-red-400">{aboutErrors.boots_per_year}</span>
+                            </div>
+
+                            <div>
+                                <Label className="mb-2 block text-xs font-semibold text-[#F5F5F5]">
+                                    5. What price range do you usually pay?
+                                </Label>
+                                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                                    {BOOT_PRICE_RANGES.map((opt) => {
+                                        const selected = aboutData.boot_price_range === opt;
+                                        return (
+                                            <button
+                                                key={opt}
+                                                type="button"
+                                                onClick={() => setAboutField('boot_price_range', selected ? '' : opt)}
+                                                className={`flex cursor-pointer items-center justify-center rounded-xl border px-3 py-2.5 text-sm transition-colors ${selected ? 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] font-semibold text-[#E53F01]' : 'border-[#2A2A2A] bg-[#1F1F1F] text-[#F5F5F5]'}`}
+                                            >
+                                                {opt}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                                <span className="text-xs text-red-400">{aboutErrors.boot_price_range}</span>
                             </div>
                         </div>
 
@@ -2499,7 +2567,14 @@ export default function PlayerDashboard() {
                                                             type="button"
                                                             onClick={() => {
                                                                 setHealthOpen(false);
-                                                                setActiveModal(h.modal);
+                                                                // Questionnaire-er kono modal nei — page-er section-e scroll kori
+                                                                if (h.modal) {
+                                                                    setActiveModal(h.modal);
+                                                                } else {
+                                                                    document
+                                                                        .getElementById(QUESTIONNAIRE_ANCHOR)
+                                                                        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                                                }
                                                             }}
                                                             className="shrink-0 cursor-pointer text-xs font-semibold text-[#E53F01] hover:underline"
                                                         >

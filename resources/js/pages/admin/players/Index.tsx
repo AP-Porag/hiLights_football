@@ -51,6 +51,25 @@ interface Player {
 interface Filters {
     search?: string;
     filter?: string;
+    country?: string;
+    birth_year?: string;
+    birth_city?: string;
+    position?: string;
+    boot_brand?: string;
+    boots_per_year?: string;
+    price_range?: string;
+    supported_club?: string;
+    dream_club?: string;
+}
+
+interface FilterOptions {
+    countries: { code: string; name: string }[];
+    birthYears: number[];
+    birthCities: string[];
+    positions: string[];
+    bootBrands: string[];
+    bootsPerYear: string[];
+    priceRanges: string[];
 }
 
 interface Stats {
@@ -62,6 +81,60 @@ interface Stats {
 
 const FILTER_TABS = ['All', 'Featured'] as const;
 type FilterTab = (typeof FILTER_TABS)[number];
+
+// Advanced filter er khali obostha — "Clear all" eta-i firiye dey
+const ADV_EMPTY = {
+    country: '',
+    birth_year: '',
+    birth_city: '',
+    position: '',
+    boot_brand: '',
+    boots_per_year: '',
+    price_range: '',
+    supported_club: '',
+    dream_club: '',
+};
+type Adv = typeof ADV_EMPTY;
+
+// Radix Select khali string value nite pare na, tai "All" er jonno sentinel
+const ALL_OPTION = '__all';
+
+// Controller theke filterOptions na ashle page crash korbe na
+const OPTIONS_EMPTY: FilterOptions = {
+    countries: [],
+    birthYears: [],
+    birthCities: [],
+    positions: [],
+    bootBrands: [],
+    bootsPerYear: [],
+    priceRanges: [],
+};
+
+function FilterSelect({ label, value, options, onChange }: {
+    label: string;
+    value: string;
+    options: { value: string; label: string }[];
+    onChange: (v: string) => void;
+}) {
+    return (
+        <div className="space-y-1.5">
+            <Label className="text-[0.6875rem] font-semibold uppercase tracking-wider text-[#94A3B8]">{label}</Label>
+            <Select value={value || ALL_OPTION} onValueChange={(v) => onChange(v === ALL_OPTION ? '' : v)}>
+                <SelectTrigger className="h-9 border-[#2A2A2A] bg-[#1A1A1A] text-xs text-[#F5F5F5]">
+                    <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="max-h-72 border-[#2A2A2A] bg-[#0D0D0D]">
+                    <SelectItem value={ALL_OPTION} className="text-xs text-[#94A3B8] hover:bg-[#1A1A1A]">All</SelectItem>
+                    {options.map((o) => (
+                        <SelectItem key={o.value} value={o.value} className="text-xs text-[#F5F5F5] hover:bg-[#1A1A1A]">
+                            {o.label}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+        </div>
+    );
+}
 
 // ── Badges ──
 function SubscriptionBadge({ sub }: { sub: Player['subscription'] }) {
@@ -108,15 +181,36 @@ function VerifyBadge({ verified, label }: { verified: boolean; label: string }) 
 
 // ── Main Component ──
 export default function PlayersIndex() {
-    const { players, filters = {}, stats } = usePage<{
+    const { players, filters = {}, stats, filterOptions = OPTIONS_EMPTY } = usePage<{
         players: { data: Player[]; current_page: number; last_page: number; total: number };
         filters: Filters;
         stats: Stats;
+        filterOptions: FilterOptions;
     }>().props;
 
     const [search, setSearch] = useState(filters.search || '');
     const [activeFilter, setActiveFilter] = useState<FilterTab>((filters.filter as FilterTab) || 'All');
     const [editPlayer, setEditPlayer] = useState<Player | null>(null);
+
+    // Advanced filters
+    const [adv, setAdv] = useState<Adv>({
+        country: filters.country || '',
+        birth_year: filters.birth_year || '',
+        birth_city: filters.birth_city || '',
+        position: filters.position || '',
+        boot_brand: filters.boot_brand || '',
+        boots_per_year: filters.boots_per_year || '',
+        price_range: filters.price_range || '',
+        supported_club: filters.supported_club || '',
+        dream_club: filters.dream_club || '',
+    });
+    // Kono filter chalu thakle panel ta khola-i thakbe
+    const [showAdv, setShowAdv] = useState(() =>
+        (Object.keys(ADV_EMPTY) as (keyof Adv)[]).some((k) => !!filters[k]),
+    );
+    const [revision, setRevision] = useState(0);
+
+    const activeAdvCount = Object.values(adv).filter(Boolean).length;
 
     // Delete confirmation modal
     const [deleteTarget, setDeleteTarget] = useState<Player | null>(null);
@@ -127,14 +221,45 @@ export default function PlayersIndex() {
 
     const isInitialMount = useRef(true);
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const delayRef = useRef(300);
 
     const formatViews = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n.toString();
 
-    const applyFilters = (searchVal: string, filterVal: string) => {
-        router.get(route('players.index'), { search: searchVal, filter: filterVal }, { preserveState: true, replace: true });
+    // Khali filter gulo URL-e pathai na, tai link porishkar thake
+    const queryPayload = (searchVal: string, filterVal: string, advVal: Adv, extra: Record<string, unknown> = {}) => {
+        const q: Record<string, unknown> = { search: searchVal, filter: filterVal, ...extra };
+        (Object.keys(advVal) as (keyof Adv)[]).forEach((k) => {
+            if (advVal[k]) q[k] = advVal[k];
+        });
+        return q;
     };
 
-    // Live search with debounce (skips initial render)
+    const applyFilters = (searchVal: string, filterVal: string, advVal: Adv = adv) => {
+        router.get(route('players.index'), queryPayload(searchVal, filterVal, advVal), { preserveState: true, replace: true });
+    };
+
+    // Dropdown — sathe sathe apply (delay 0)
+    const setSelectFilter = (key: keyof Adv, val: string) => {
+        setAdv((prev) => ({ ...prev, [key]: val }));
+        delayRef.current = 0;
+        setRevision((r) => r + 1);
+    };
+
+    // Text box — type kora sesh hole apply (delay 300)
+    const setTextFilter = (key: keyof Adv, val: string) => {
+        setAdv((prev) => ({ ...prev, [key]: val }));
+        delayRef.current = 300;
+        setRevision((r) => r + 1);
+    };
+
+    const clearAllFilters = () => {
+        setAdv(ADV_EMPTY);
+        setSearch('');
+        delayRef.current = 0;
+        setRevision((r) => r + 1);
+    };
+
+    // Live search + filter, debounce diye (initial render skip kore)
     useEffect(() => {
         if (isInitialMount.current) {
             isInitialMount.current = false;
@@ -143,11 +268,11 @@ export default function PlayersIndex() {
         if (debounceRef.current) clearTimeout(debounceRef.current);
         debounceRef.current = setTimeout(() => {
             applyFilters(search, activeFilter);
-        }, 300);
+        }, delayRef.current);
         return () => {
             if (debounceRef.current) clearTimeout(debounceRef.current);
         };
-    }, [search]);
+    }, [search, revision]);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -238,13 +363,32 @@ export default function PlayersIndex() {
                             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" />
                             <Input
                                 type="text"
-                                placeholder="Search by name, club, or country..."
+                                placeholder="Search by name, email, phone, club, or country..."
                                 value={search}
-                                onChange={(e) => setSearch(e.target.value)}
+                                onChange={(e) => {
+                                    setSearch(e.target.value);
+                                    delayRef.current = 300;
+                                }}
                                 className="h-10 border-[#2A2A2A] bg-[#1A1A1A] pl-9 text-sm text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-800"
                             />
                         </form>
                         <div className="flex flex-wrap items-center gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setShowAdv((v) => !v)}
+                                className={`inline-flex h-9 items-center gap-2 rounded-md border px-3 text-xs font-medium transition-colors ${showAdv || activeAdvCount > 0
+                                    ? 'border-[#E53F01] bg-[rgba(255,107,0,0.12)] text-[#E53F01]'
+                                    : 'border-[#2A2A2A] bg-[#1A1A1A] text-[#94A3B8] hover:text-[#F5F5F5]'
+                                    }`}
+                            >
+                                <Filter className="h-3.5 w-3.5" />
+                                Filters
+                                {activeAdvCount > 0 && (
+                                    <span className="rounded bg-[#E53F01] px-1.5 font-mono text-[0.6875rem] font-semibold text-white">
+                                        {activeAdvCount}
+                                    </span>
+                                )}
+                            </button>
                             <div className="inline-flex items-center rounded-md border border-[#2A2A2A] bg-[#1A1A1A] p-1">
                                 {FILTER_TABS.map((tab) => (
                                     <button
@@ -265,6 +409,99 @@ export default function PlayersIndex() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Advanced filters */}
+                    {showAdv && (
+                        <div className="mt-4 border-t border-[#2A2A2A] pt-4">
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                <FilterSelect
+                                    label="Country"
+                                    value={adv.country}
+                                    onChange={(v) => setSelectFilter('country', v)}
+                                    options={filterOptions.countries.map((c) => ({ value: c.code, label: c.name }))}
+                                />
+                                <FilterSelect
+                                    label="Year of Birth"
+                                    value={adv.birth_year}
+                                    onChange={(v) => setSelectFilter('birth_year', v)}
+                                    options={filterOptions.birthYears.map((y) => ({ value: String(y), label: String(y) }))}
+                                />
+                                <FilterSelect
+                                    label="Birth City"
+                                    value={adv.birth_city}
+                                    onChange={(v) => setSelectFilter('birth_city', v)}
+                                    options={filterOptions.birthCities.map((c) => ({ value: c, label: c }))}
+                                />
+                                <FilterSelect
+                                    label="Position"
+                                    value={adv.position}
+                                    onChange={(v) => setSelectFilter('position', v)}
+                                    options={filterOptions.positions.map((pos) => ({ value: pos, label: pos }))}
+                                />
+                                <FilterSelect
+                                    label="Preferred Boot Brand"
+                                    value={adv.boot_brand}
+                                    onChange={(v) => setSelectFilter('boot_brand', v)}
+                                    options={filterOptions.bootBrands.map((b) => ({ value: b, label: b }))}
+                                />
+                                <FilterSelect
+                                    label="Boots Per Year"
+                                    value={adv.boots_per_year}
+                                    onChange={(v) => setSelectFilter('boots_per_year', v)}
+                                    options={filterOptions.bootsPerYear.map((b) => ({ value: b, label: b }))}
+                                />
+                                <FilterSelect
+                                    label="Usual Price Range"
+                                    value={adv.price_range}
+                                    onChange={(v) => setSelectFilter('price_range', v)}
+                                    options={filterOptions.priceRanges.map((r) => ({ value: r, label: r }))}
+                                />
+
+                                <div className="space-y-1.5">
+                                    <Label className="text-[0.6875rem] font-semibold uppercase tracking-wider text-[#94A3B8]">
+                                        Supported Club
+                                    </Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Club of heart..."
+                                        value={adv.supported_club}
+                                        onChange={(e) => setTextFilter('supported_club', e.target.value)}
+                                        className="h-9 border-[#2A2A2A] bg-[#1A1A1A] text-xs text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-800"
+                                    />
+                                </div>
+
+                                <div className="space-y-1.5">
+                                    <Label className="text-[0.6875rem] font-semibold uppercase tracking-wider text-[#94A3B8]">
+                                        Dream Club
+                                    </Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Dream club..."
+                                        value={adv.dream_club}
+                                        onChange={(e) => setTextFilter('dream_club', e.target.value)}
+                                        className="h-9 border-[#2A2A2A] bg-[#1A1A1A] text-xs text-[#F5F5F5] placeholder:text-[#555555] focus-visible:border-[#E53F01] focus-visible:ring-2 focus-visible:ring-orange-800"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                                <p className="text-xs text-[#94A3B8]">
+                                    <span className="font-mono text-sm font-semibold text-[#E53F01]">{players.total}</span>{' '}
+                                    player{players.total === 1 ? '' : 's'} match the current filters
+                                </p>
+                                {(activeAdvCount > 0 || !!search) && (
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={clearAllFilters}
+                                        className="h-8 border-[#2A2A2A] bg-[#1A1A1A] text-xs text-[#F5F5F5] hover:bg-[#2A2A2A]"
+                                    >
+                                        <X className="mr-1.5 h-3.5 w-3.5" /> Clear all
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Table */}
@@ -427,12 +664,12 @@ export default function PlayersIndex() {
                         </div>
                         <div className="flex items-center gap-2">
                             {players.current_page > 1 && (
-                                <Button variant="outline" size="sm" onClick={() => router.get(route('players.index', { page: players.current_page - 1, search, filter: activeFilter }))} className="h-8 border-[#2A2A2A] bg-[#1A1A1A] text-xs text-[#F5F5F5] hover:bg-[#2A2A2A]">
+                                <Button variant="outline" size="sm" onClick={() => router.get(route('players.index'), queryPayload(search, activeFilter, adv, { page: players.current_page - 1 }))} className="h-8 border-[#2A2A2A] bg-[#1A1A1A] text-xs text-[#F5F5F5] hover:bg-[#2A2A2A]">
                                     Previous
                                 </Button>
                             )}
                             {players.current_page < players.last_page && (
-                                <Button variant="outline" size="sm" onClick={() => router.get(route('players.index', { page: players.current_page + 1, search, filter: activeFilter }))} className="h-8 border-[#2A2A2A] bg-[#1A1A1A] text-xs text-[#F5F5F5] hover:bg-[#2A2A2A]">
+                                <Button variant="outline" size="sm" onClick={() => router.get(route('players.index'), queryPayload(search, activeFilter, adv, { page: players.current_page + 1 }))} className="h-8 border-[#2A2A2A] bg-[#1A1A1A] text-xs text-[#F5F5F5] hover:bg-[#2A2A2A]">
                                     Next
                                 </Button>
                             )}
